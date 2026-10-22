@@ -4,30 +4,37 @@
 
 **tools.specul.com** · 独立信息项目（非厂商官方榜单）
 
-<span data-zh>按角色分三层：现成的 AI 工具、自己搭（进阶）的运行时与 SDK、给 AI 装的工具（MCP）。三层的坐标系不同，不做横向排名。</span><span data-en>Three layers by role: ready-made AI tools, runtimes and SDKs you assemble yourself (advanced), and tools you install for an AI (MCP). The three layers use different coordinate systems, so this site does not rank across them.</span>
+按任务分 10 大类，归三族：找现成的（编程 / 对话 / 图像 / 视频 / 音频 / 研究）、自己搭（自动化 / 框架）、接上与跑起来（MCP 工具 / 本地运行器）。各族坐标系不同，不做横向排名。
 
-## 三个分区，坐标系不同
+## 10 个大类，归三族
 
-| 分区 | 主题 | 对象数 | 主要坐标系 |
+| 大类 | 主题 | 对象数 | 主要坐标系 |
 |---|---|---|---|
-| [Tools](./) | <span data-zh>装在编辑器、终端，或厂商云里</span><span data-en>Installed in an editor, a terminal, or a vendor cloud</span> | 27 | 8 通用维度，按形态分组 |
-| [Harness](./harness/) | <span data-zh>运行时、编排框架、SDK</span><span data-en>Runtimes, orchestration frameworks, SDKs</span> | 15 | 8 通用维度，按抽象层分组 |
-| [Tools](./tools/) | <span data-zh>缺什么，装什么 —— 给 agent 装的 MCP 工具</span><span data-en>Fill the gap — MCP tools an agent can install</span> | 10 | 8 通用 + 3 MCP 特有 |
+| [AI 编程](./coding/) | 装在编辑器、终端，或厂商云里 | 32 | 8 通用维度，按形态分组 |
+| [AI 对话助手](./chat/) | 通用对话产品，含国产 | 14 | 8 通用维度 |
+| [AI 图像创作](./image/) | 文生图与图像工作台 | 13 | 8 通用维度 |
+| [AI 视频创作](./video/) | 文生视频与数字人 | 12 | 8 通用维度 |
+| [AI 音频与语音](./audio/) | 音乐生成、语音合成与转写 | 10 | 8 通用维度 |
+| [AI 搜索与研究](./research/) | AI 搜索、学术检索与研究工作台 | 11 | 8 通用维度 |
+| [AI 自动化与工作流](./automation/) | 可视化搭 AI 工作流与 agent | 14 | 8 通用维度 |
+| [框架与运行时](./framework/) | 运行时、编排框架、SDK | 22 | 8 通用维度，按抽象层分组 |
+| [MCP 工具](./mcp/) | 缺什么，装什么 —— 给 agent 装的 MCP 工具 | 24 | 8 通用 + 3 MCP 特有 |
+| [本地模型运行器](./runner/) | 在自己机器上跑开源模型 | 12 | 8 通用维度 |
 
-**为什么不给一张 33 行的总表**：三层的坐标系不同，混排会制造假的可比性。
-成品 agent 与自己搭的底座都能进同一个八维坐标系，但它们解决的不是同一个问题；
+**为什么不把所有对象塞进一张总表**：三族的坐标系不同，混排会制造假的可比性。
+成品工具与自己搭的底座都能进同一个八维坐标系，但它们解决的不是同一个问题；
 MCP 工具层用的是另外三个维度（传输 / 认证 / 权限范围），八维套不上去。
 
 ## 方法
 
 - **不给总分排名**——缺少跨工具的统一实测，排名会误导
 - **「未知」是合法答案**——查不到就写未知并说明原因，不用推测填充
-- **不同层不混排**——三条铁律都写在数据仓 `METHODOLOGY.md` 里
+- **不同族不混排**——铁律都写在数据仓 `METHODOLOGY.md` 里
 
 ## 数据来源
 
-全部数据来自 **[speculcom/ai-agent-guide](https://github.com/speculcom/ai-agent-guide)**（CC BY 4.0），
-由 `sites/build.mjs` 构建，本仓库只存产物。
+全部数据来自 **[speculcom/ai-handbook](https://github.com/speculcom/ai-handbook)**（CC BY 4.0），
+由 `tools/sites/build.mjs` 构建，本仓库只存产物。
 
 ---
 

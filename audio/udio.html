@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Udio — Audio | 投机取巧</title>
+  <meta name="description" content="Udio（Udio）：Udio 是音乐生成双雄的另一半（v1.5 Allegro 线，复杂曲风口碑）， 现在正处「版权被告→授权平台」的转型期——UMG/WMG 已和解，新平台走 walled garden 路线。" />
+  <link rel="canonical" href="https://tools.specul.com/audio/udio.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Udio" />
+  <meta property="og:url" content="https://tools.specul.com/audio/udio.html" />
+  <meta property="og:title" content="Udio — Audio | 投机取巧" />
+  <meta property="og:description" content="Udio（Udio）：Udio 是音乐生成双雄的另一半（v1.5 Allegro 线，复杂曲风口碑）， 现在正处「版权被告→授权平台」的转型期——UMG/WMG 已和解，新平台走 walled garden 路线。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="../brand.css" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Udio","applicationCategory":"DeveloperApplication","sameAs":"https://www.udio.com","description":"Udio 是音乐生成双雄的另一半（v1.5 Allegro 线，复杂曲风口碑）， 现在正处「版权被告→授权平台」的转型期——UMG/WMG 已和解，新平台走 walled garden 路线。","dateModified":"2026-10-22"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑">
+        <a href="https://tools.specul.com/">AI 工具</a>
+        <span aria-current="page">Audio</span>
+      </nav>
+      <a class="back" href="./">← Audio</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#34d399" aria-hidden="true">Ud</div>
+        <div>
+          <h1><span data-zh>Udio</span><span data-en>Udio</span></h1>
+          <div class="vendor is-caps">Udio</div>
+        </div>
+      </div>
+
+      <div class="badges">
+        <span class="tag on">免费+订阅</span>
+        <span class="tag on">音乐生成</span>
+        <span class="tag on">版权和解</span>
+        <span class="tag on">walled-garden</span>
+        <span class="tag on">过渡期</span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-22</span>
+      </div>
+
+            <div class="panel-lead"><span data-zh><p><strong>Udio 是音乐生成双雄的另一半</strong>（v1.5 Allegro 线，复杂曲风口碑）， 现在正处「版权被告→授权平台」的转型期——UMG/WMG 已和解，新平台走 walled garden 路线。</p></span><span data-en><p><strong>Udio is the other half of the music-generation duo</strong> (v1.5 Allegro line, complex-genre reputation), now mid-transition from copyright defendant to licensed platform — UMG/WMG have settled, the new platform goes walled-garden.</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+<span data-zh>        <div><p>适合：音乐创作体验、跟踪授权平台新形态。 不适合：要下载带走的商用管线（walled garden 方向）、要确定性条款（过渡期）。</p></div></span><span data-en>        <div><p>Fits: music creation experience (complex genres), tracking the licensed-platform new form. Not a fit: commercial pipelines that download and carry away (walled-garden direction), needing stable terms (transition period).</p></div></span>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-22</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>Udio（美国纽约）。</span><span data-en>Udio (New York, US).</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>udio.com 大陆直连实测 200（2026-10-22）。</span><span data-en>udio.com measured 200 direct from mainland (2026-10-22).</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>未见于备案名单</span><span data-en>not in filing list</span>：<span data-zh>未见于网信办公示名单（2026-10-22 检索）；该产品未面向大陆公众提供服务，备案不适用。</span><span data-en>not in the CAC public registry (searched 2026-10-22); the product does not serve the mainland</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><p>自研模型线（v1/v1.5/v1.5 Allegro——官方 FAQ 点名当前可用模型）；新平台将用「授权与许可音乐」 训练新模型（UMG 官方公告叙事）。开放权重线未核验到官方声明。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><p>网页（udio.com）；生成在厂商云端。曾有 Discord 内测入口（社区史叙事，当前状态未逐条核验）。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><p>作品存账户侧云端；<strong>新平台走向「walled garden」——官方公告明说 AI 生成音乐不可下载/分发到平台外</strong> （UMG 公告叙事）；过渡期下载面按现行 ToS（未逐条核验）。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><p>生成为任务制（提交→排队→进账户库）；无「关机续跑」形态声明—— 任务在云端跑，不依赖本机在线。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><p>生成/extend/remix/Styles 等创作工具（官方 FAQ 点名）；新平台方向是 remix/covers/参与艺人 声音风格的新创作体验（WMG 公告叙事）。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><p>任务制无对话记忆；风格延续靠 Styles 等机制——风格预设可复用不是记忆。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><p><strong>版权和解是理解 Udio 的关键背景</strong>：2024-06 RIAA 代表 UMG/Sony/WMG 起诉；2025-10-29 UMG 和解+ 授权协议（官方公告直抓）、2025-11-19 WMG 和解（官方公告直抓）、Merlin/Kobalt 等后续跟进（第三方 行业媒体报道，未逐条核验）；Sony 诉讼仍在进行（第三方叙事）。输出权利随过渡 ToS 与新平台条款变化—— 商用前必查当前版 ToS。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><p>适合：音乐生成双雄之一的创作体验（复杂曲风向口碑）、跟踪授权平台新形态。 不适合：需要「下载带走」的商用管线（walled garden 方向）、要确定性条款（过渡期）。</p></dd>
+        </div>
+      </dl>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li><span data-zh>Udio 处于「版权被告→授权平台」转型期——任何「Udio 输出可商用」的旧教程都可能过时，用前查现行 ToS</span><span data-en>Udio is mid-transition from copyright defendant to licensed platform — any old &#39;Udio outputs are commercial&#39; tutorial may be stale; check the current ToS before use</span></li>
+          <li><span data-zh>walled garden 是新平台方向（UMG 公告原文叙事）——按「生成即拥有可下载」理解会误判未来形态</span><span data-en>Walled garden is the new-platform direction (UMG announcement wording) — assuming &#39;generate = own + download&#39; misjudges the future form</span></li>
+          <li><span data-zh>与 Suno 的诉讼与和解线各自独立——两家条款走向不同，别互相推断</span><span data-en>Udio&#39;s and Suno&#39;s litigation/settlement tracks are independent — their terms diverge; don&#39;t infer one from the other</span></li>
+        </ul>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
+        
+        <ul>
+          <li>新平台上线时间与功能面（官方叙事 2026 内，具体未定）</li>
+          <li>Sony 诉讼走向（第三方叙事，未核验到判决）</li>
+          <li>过渡期下载权利细节（未逐条核验 ToS）</li>
+          <li>Discord 入口当前状态（未核验）</li>
+        </ul>
+      </div>
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>判断可回到以下一手源复核。本站核验日</span><span data-en>Every judgement can be rechecked against the primary sources below. Verified on</span> 2026-10-22，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-22。</p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>official</td><td>Udio · 官网（产品与能力叙事）</td><td><a href="https://www.udio.com" target="_blank" rel="noopener">https://www.udio.com</a></td></tr>
+            <tr><td>official</td><td>Udio · Terms of Service（官方条款，2026-10-22 直抓核验）</td><td><a href="https://www.udio.com/terms-of-service" target="_blank" rel="noopener">https://www.udio.com/terms-of-service</a></td></tr>
+            <tr><td>official</td><td>Udio · FAQ（过渡 ToS 与当前模型口径，2026-10-22 直抓核验）</td><td><a href="https://www.udio.com/faq" target="_blank" rel="noopener">https://www.udio.com/faq</a></td></tr>
+            <tr><td>changelog</td><td>Udio · Blog（官方更新线，changelog；含 WMG 合作公告）</td><td><a href="https://www.udio.com/blog" target="_blank" rel="noopener">https://www.udio.com/blog</a></td></tr>
+            <tr><td>official</td><td>UMG · 和解与授权公告（2025-10-29，对方官方公告）</td><td><a href="https://www.universalmusic.com/universal-music-group-and-udio-announce-udios-first-strategic-agreements-for-new-licensed-ai-music-creation-platform/" target="_blank" rel="noopener">https://www.universalmusic.com/universal-music-group-and-udio-announce-udios-first-strategic-agreements-for-new-licensed-ai-music-creation-platform/</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
+        <p>本站尚未完成实测。编码向实测协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a>（创作产品不适用编码任务集）。</p>
+            <p><strong>实测建议</strong>（三条，都指向官方可读页没给的东西）：</p>
+            <ul><li><strong>过渡 ToS 下现行下载的商用边界</strong>（ToS 原文逐条读）</li><li><strong>v1.5 Allegro 与 Suno v6 的同提示词对比</strong>（曲风复杂度/人声自然度）</li><li><strong>新平台（Starstruck 叙事）上线后的账号/作品迁移</strong></li></ul>
+      </div>
+
+
+      
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./suno.html">Suno</a></span><span class="rel-n">音乐生成双雄的另一半：两家诉讼/和解线独立，条款走向不同。</span></li>
+          <li><span class="rel-t"><a href="./minimax-audio.html">MiniMax Audio</a></span><span class="rel-n">同为音频生成：MiniMax 语音/音乐双线，Udio 专注音乐。</span></li>
+          <li><span class="rel-t"><a href="/video/runway.html">Runway</a></span><span class="rel-n">音画上下游：Udio 生成的配乐常喂给 Runway 类视频台做配乐短片（建档后互链）。</span></li>
+          <li><span class="rel-t"><a href="/audio/elevenlabs.html"><span data-zh>ElevenLabs</span><span data-en>ElevenLabs</span></a></span><span class="rel-n"><span data-zh>同分区对照</span><span data-en>Same layer</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        方法论与坐标系定义见仓库内 <code>METHODOLOGY.md</code>。
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 投机取巧 · <span data-zh>Specul</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+  <script src="../brand.js"></script>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      function sync() { root.setAttribute('data-lang', root.lang === 'en' ? 'en' : 'zh'); }
+      new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['lang'] });
+      sync();
+    })();
+  </script>
+</body>
+</html>

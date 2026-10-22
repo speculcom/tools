@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeepSeek — Chat | 投机取巧</title>
+  <meta name="description" content="DeepSeek（深度求索）：DeepSeek 是「推理向问答 + 官方模型文档可回溯」的国产对话产品：云端对话与 API 文档同族， 开源权重线在站外可选；备案号经两家云厂商官方公示页交叉核验。" />
+  <link rel="canonical" href="https://tools.specul.com/chat/deepseek-chat.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="DeepSeek" />
+  <meta property="og:url" content="https://tools.specul.com/chat/deepseek-chat.html" />
+  <meta property="og:title" content="DeepSeek — Chat | 投机取巧" />
+  <meta property="og:description" content="DeepSeek（深度求索）：DeepSeek 是「推理向问答 + 官方模型文档可回溯」的国产对话产品：云端对话与 API 文档同族， 开源权重线在站外可选；备案号经两家云厂商官方公示页交叉核验。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="../brand.css" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"DeepSeek","applicationCategory":"DeveloperApplication","sameAs":"https://chat.deepseek.com","description":"DeepSeek 是「推理向问答 + 官方模型文档可回溯」的国产对话产品：云端对话与 API 文档同族， 开源权重线在站外可选；备案号经两家云厂商官方公示页交叉核验。","dateModified":"2026-10-22"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑">
+        <a href="https://tools.specul.com/">AI 工具</a>
+        <span aria-current="page">Chat</span>
+      </nav>
+      <a class="back" href="./">← Chat</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#f5c542" aria-hidden="true">De</div>
+        <div>
+          <h1><span data-zh>DeepSeek</span><span data-en>DeepSeek Chat</span></h1>
+          <div class="vendor is-caps"><span data-zh>深度求索</span><span data-en>DeepSeek</span></div>
+        </div>
+      </div>
+
+      <div class="badges">
+        <span class="tag on">国产</span>
+        <span class="tag on">免费+注册</span>
+        <span class="tag on">推理模式</span>
+        <span class="tag on">开源权重同族</span>
+        <span class="tag on">已备案</span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-22</span>
+      </div>
+
+            <div class="panel-lead"><span data-zh><p><strong>DeepSeek 是「推理向问答 + 官方模型文档可回溯」的国产对话产品</strong>：云端对话与 API 文档同族， 开源权重线在站外可选；备案号经两家云厂商官方公示页交叉核验。</p></span><span data-en><p><strong>DeepSeek is the domestic chat product built on reasoning-first Q&amp;A with traceable official model docs</strong>: cloud chat and API docs share one family, open-weight models are selectable off-site; the filing number is cross-verified on two cloud vendors&#39; official disclosure pages.</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+<span data-zh>        <div><p>适合：中文推理问答、要模型文档可回溯、云端与本地权重同族可选。 不适合：要后台长任务、要办公/社交生态联动。</p></div></span><span data-en>        <div><p>Fits: Chinese reasoning Q&amp;A, traceable official model docs, cloud + local open weights in one family. Not a fit: background long tasks, office/social ecosystem integration.</p></div></span>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-22</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国产</span><span data-en>domestic</span>　<span data-zh>深度求索（杭州）。</span><span data-en>DeepSeek (Hangzhou).</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>chat.deepseek.com 大陆直连实测 429（2026-10-22）——限流但可达，非站点死亡。</span><span data-en>chat.deepseek.com measured 429 direct from mainland (2026-10-22) — rate-limited but reachable, not dead.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>已备案</span><span data-en>Filed</span>：<code>Beijing-DeepseekChat-202404280016</code>　<span data-zh>公示名称</span><span data-en>listed as</span>「求索对话 DeepSeek Chat」　·　<span data-zh>备案号经阿里云百炼与火山方舟两页官方公示交叉核验；属地北京，2024 年新增批次。</span><span data-en>filing no. cross-verified on Alibaba Cloud Model Studio and Volcengine Ark official disclosure pages;</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><p>消费应用与 API 线共用官方模型族：api-docs.deepseek.com 官方文档列模型名与版本记录（news 页有模型更新公告）； 应用内模型档位以登录后界面展示为准。开源权重线（HF/ModelScope）是同一厂商的另一面——本地跑归 runner 档案。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><p>网页（chat.deepseek.com）+ iOS/Android App；生成在厂商云端处理，本机不跑模型。 API 线（platform.deepseek.com）是开发者入口，与对话产品同厂商两接口。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><p>对话历史存于账户侧；上传文件解析在云端进行。未见官方声明的本机数据面——对话产品不承载本地文件。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><p>对话即时返回，无离线任务队列形态（官方未声明后台任务面）；「深度思考」模式是会话内的推理档位切换， 不是异步任务。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><p>联网搜索与文件解析是产品内能力线；无自建 agent/工作流面（官方未声明）。MCP 支持未核验到官方声明。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><p>会话历史按对话组织、登录同步；跨会话记忆机制未核验到官方声明（未知就说未知）。 上下文长度按模型档决定，官方文档给模型参数页。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><p>账号体系（手机号注册）；训练用途口径见官方隐私政策与「Model Mechanism and Training Methods」专页 （cdn.deepseek.com 直抓所见入口），具体开关路径未逐条核验。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><p>适合：中文推理向问答、要官方模型文档可回溯（API 文档质量在国产里突出）、开源权重与云端同族可选。 不适合：要后台长任务/工作流、要生态联动（办公/社交套件）。</p></dd>
+        </div>
+      </dl>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li><span data-zh>把对话产品与 API 平台混为一谈——chat.deepseek.com 与 platform.deepseek.com 同厂商两接口，条款与配额各自成页</span><span data-en>Mixing the chat product with the API platform — chat.deepseek.com and platform.deepseek.com are two interfaces of one vendor, with separate terms and quotas</span></li>
+          <li><span data-zh>把开源权重当产品本体——权重本地跑归 Ollama/llama.cpp 等 runner，与云端对话产品的数据边界完全不同</span><span data-en>Treating open weights as the product itself — running weights locally belongs to Ollama/llama.cpp runners, with a completely different data boundary from cloud chat</span></li>
+          <li><span data-zh>直抓 chat.deepseek.com 返回 429 是限流不是站点死亡（2026-10-22 实测）——浏览器可达</span><span data-en>Direct fetch of chat.deepseek.com returns 429 — that is rate limiting, not a dead site (measured 2026-10-22); browsers reach it</span></li>
+        </ul>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
+        
+        <ul>
+          <li>应用内模型档位分流细节（未登录核实）</li>
+          <li>训练用途开关路径与默认态（未逐条核验）</li>
+          <li>跨会话记忆机制（未核验到官方声明）</li>
+          <li>文件解析格式/大小上限（未核验）</li>
+        </ul>
+      </div>
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>判断可回到以下一手源复核。本站核验日</span><span data-en>Every judgement can be rechecked against the primary sources below. Verified on</span> 2026-10-22，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-22。</p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>official</td><td>DeepSeek API Docs · 官方文档（模型名/版本/news 更新线）</td><td><a href="https://api-docs.deepseek.com/" target="_blank" rel="noopener">https://api-docs.deepseek.com/</a></td></tr>
+            <tr><td>changelog</td><td>DeepSeek API Docs · News（模型更新公告，changelog）</td><td><a href="https://api-docs.deepseek.com/news/news250324" target="_blank" rel="noopener">https://api-docs.deepseek.com/news/news250324</a></td></tr>
+            <tr><td>official</td><td>DeepSeek · Terms of Use（官方条款，2026-10-22 直抓核验）</td><td><a href="https://cdn.deepseek.com/policies/en-US/deepseek-terms-of-use.html" target="_blank" rel="noopener">https://cdn.deepseek.com/policies/en-US/deepseek-terms-of-use.html</a></td></tr>
+            <tr><td>official</td><td>阿里云百炼 · 模型备案信息公示（求索对话 DeepSeek Chat 备案号交叉核验）</td><td><a href="https://help.aliyun.com/zh/model-studio/model-filing-information-publicity" target="_blank" rel="noopener">https://help.aliyun.com/zh/model-studio/model-filing-information-publicity</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
+        <p>本站尚未完成实测。编码向实测协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a>（对话产品不适用编码任务集）。</p>
+            <p><strong>实测建议</strong>（三条，都指向官方可读页没给的东西）：</p>
+            <ul><li><strong>应用内模型档位选择器的实际形态</strong>（登录后才可见，本站未登录核实）</li><li><strong>训练用途开关的路径与默认态</strong>（隐私政策入口已见，开关未逐条核验）</li><li><strong>文件解析的格式与大小上限</strong>（产品页有叙事，边界未核验）</li></ul>
+      </div>
+
+
+      
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./doubao-chat.html">豆包</a></span><span class="rel-n">同为国产通用对话：豆包重生态联动与文生图，DeepSeek 重推理与文档可回溯。</span></li>
+          <li><span class="rel-t"><a href="./chatglm-chat.html">智谱清言</a></span><span class="rel-n">同为国产且开源权重同族：GLM 与 DeepSeek 权重都可在 runner 里本地跑。</span></li>
+          <li><span class="rel-t"><a href="/runner/ollama.html"><span data-zh>Ollama</span><span data-en>Ollama</span></a></span><span class="rel-n"><span data-zh>另一层 · 本地模型运行器</span><span data-en>Other layer · Local model runners</span></span></li>
+          <li><span class="rel-t"><a href="/runner/llama-cpp.html"><span data-zh>llama.cpp</span><span data-en>llama.cpp</span></a></span><span class="rel-n"><span data-zh>另一层 · 本地模型运行器</span><span data-en>Other layer · Local model runners</span></span></li>
+          <li><span class="rel-t"><a href="/chat/kimi-chat.html"><span data-zh>Kimi</span><span data-en>Kimi</span></a></span><span class="rel-n"><span data-zh>同分区对照</span><span data-en>Same layer</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        方法论与坐标系定义见仓库内 <code>METHODOLOGY.md</code>。
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 投机取巧 · <span data-zh>Specul</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+  <script src="../brand.js"></script>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      function sync() { root.setAttribute('data-lang', root.lang === 'en' ? 'en' : 'zh'); }
+      new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['lang'] });
+      sync();
+    })();
+  </script>
+</body>
+</html>

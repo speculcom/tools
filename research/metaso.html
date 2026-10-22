@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>秘塔 AI 搜索 — Research | 投机取巧</title>
+  <meta name="description" content="秘塔 AI 搜索（秘塔科技（上海秘塔网络科技））：秘塔 AI 搜索是「没有广告，直达结果」的中文 AI 搜索：自研 MetaLLM（少见的自研路线）、 六路检索、学术中文库细分、大纲/脑图结构化输出；国内直连可用。" />
+  <link rel="canonical" href="https://tools.specul.com/research/metaso.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="秘塔 AI 搜索" />
+  <meta property="og:url" content="https://tools.specul.com/research/metaso.html" />
+  <meta property="og:title" content="秘塔 AI 搜索 — Research | 投机取巧" />
+  <meta property="og:description" content="秘塔 AI 搜索（秘塔科技（上海秘塔网络科技））：秘塔 AI 搜索是「没有广告，直达结果」的中文 AI 搜索：自研 MetaLLM（少见的自研路线）、 六路检索、学术中文库细分、大纲/脑图结构化输出；国内直连可用。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="../brand.css" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"秘塔 AI 搜索","applicationCategory":"DeveloperApplication","sameAs":"https://metaso.cn","description":"秘塔 AI 搜索是「没有广告，直达结果」的中文 AI 搜索：自研 MetaLLM（少见的自研路线）、 六路检索、学术中文库细分、大纲/脑图结构化输出；国内直连可用。","dateModified":"2026-10-22"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑">
+        <a href="https://tools.specul.com/">AI 工具</a>
+        <span aria-current="page">Research</span>
+      </nav>
+      <a class="back" href="./">← Research</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#38bdf8" aria-hidden="true">秘塔</div>
+        <div>
+          <h1><span data-zh>秘塔 AI 搜索</span><span data-en>Metaso AI Search</span></h1>
+          <div class="vendor is-caps"><span data-zh>秘塔科技（上海秘塔网络科技）</span><span data-en>Metaso (Shanghai Metaso Network Technology)</span></div>
+        </div>
+      </div>
+
+      <div class="badges">
+        <span class="tag on">免费+会员</span>
+        <span class="tag on">中文AI搜索</span>
+        <span class="tag on">自研MetaLLM</span>
+        <span class="tag on">学术检索</span>
+        <span class="tag on">国产直连</span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-22</span>
+      </div>
+
+            <div class="panel-lead"><span data-zh><p><strong>秘塔 AI 搜索是「没有广告，直达结果」的中文 AI 搜索</strong>：自研 MetaLLM（少见的自研路线）、 六路检索、学术中文库细分、大纲/脑图结构化输出；国内直连可用。</p></span><span data-en><p>The Chinese AI search that &quot;skips ads, goes straight to results&quot;: in-house MetaLLM (a rare self-built route), six retrieval lanes, Chinese academic databases, outline/mind-map structured output; reachable directly from the mainland.</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+<span data-zh>        <div><p>适合：中文深度检索、学术中文库、结构化输出（大纲/脑图/幻灯片）、国内直连。 不适合：英文全球检索主打、不核原文就引用。</p></div></span><span data-en>        <div><p>Deep Chinese research retrieval (ad-free straight to results), Chinese academic database search, structured output (outline/mind-map/slides), mainland direct access. Not for: English-first global retrieval, treating AI answers as source-free conclusions (click the footnotes and check originals).</p></div></span>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-22</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国产</span><span data-en>domestic</span>　<span data-zh>上海秘塔网络科技有限公司（中国，2018 年成立，官网 about-us 叙事）。</span><span data-en>Shanghai Metaso Network Technology Co., Ltd. (China, founded 2018 per the official about-us page).</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>metaso.cn 大陆直连实测 200（2026-10-22）。</span><span data-en>metaso.cn measured 200 direct from mainland (2026-10-22).</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>已备案</span><span data-en>Filed</span>：<code>Shanghai-MetaLLM-20231106</code>　·　<span data-zh>MetaLLM 生成式 AI 服务备案号（网信办 2024-04 公告附件汇总表直抓核验，2026-10-22，</span><span data-en>MetaLLM generative-AI service filing number (CAC April-2024 announcement attachment,</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><p>自研 MetaLLM 大语言模型（官网 about-us 明确自研叙事）——AI 搜索产品里少见的自研路线； 各功能调用的模型版本官网未逐项披露（不推测）。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><p>网页（metaso.cn）+ App/小程序（官网所见）；检索与生成在厂商云端；国内直连可用。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><p>历史/书架存账户侧云端；导出（word/PDF）归本地。未见官方声明的其他本机数据面。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><p>三档强度（简洁/深入/深度研究，官网产品面）；深度研究是多线追搜任务线；无「关机续跑」概念。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><p>六路检索（全网/文库/学术/图片/视频/播客，官网产品面）、答案分节+来源角标、 大纲/脑图生成、学术档细分（中文库/英文库/PubMed/分区筛选，官网所见）、 幻灯片/互动网页生成、事实核验入口、API 开放。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><p>以历史/书架组织检索记录；跨会话记忆未核验到官方声明（未逐条核验）。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><p>账号+会员/积分体系（D9：价格不采）；训练用途开关未逐条核验。 备案：MetaLLM 备案号 Shanghai-MetaLLM-20231106（网信办 2024-04 备案汇总附件直抓核验， 2026-10-22）；算法备案「MetaLLM大语言模型文本生成算法」覆盖秘塔AI搜索多端 （网信办 2023-08 算法清单直抓）——两套编号别混引。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><p>适合：中文资料深度检索（无广告直达结果）、学术中文库检索、要大纲/脑图结构化输出、国内直连。 不适合：英文向全球检索主打、把 AI 答案当无源结论（角标要核原文）。</p></dd>
+        </div>
+      </dl>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li><span data-zh>「没有广告，直达结果」是产品口号——「直达的结果」仍是 AI 综合，来源角标要点开核原文</span><span data-en>&quot;No ads, straight to results&quot; is a product slogan — the &quot;straight result&quot; is still an AI synthesis; click the source footnotes and check originals</span></li>
+          <li><span data-zh>自研 MetaLLM 意味着能力曲线跟秘塔自己走——与调 GPT/Claude 系的产品对比时别假设同源能力</span><span data-en>Self-built MetaLLM means the capability curve follows Metaso itself — when comparing against products built on GPT/Claude-class models, do not assume the same capabilities</span></li>
+          <li><span data-zh>会员/积分购买页要登录才展示——本站不采价格数字（D9），额度面以登录后页面为准</span><span data-en>The membership/credits purchase page only shows after login — this site does not relay pricing (D9); quota details follow the post-login page</span></li>
+        </ul>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
+        
+        <ul>
+          <li>各功能调用的 MetaLLM 版本（官网未逐项披露——不推测）</li>
+          <li>会员/积分额度边界（购买页登录后才展示，D9）</li>
+          <li>训练用途开关（未逐条核验）</li>
+        </ul>
+      </div>
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>判断可回到以下一手源复核。本站核验日</span><span data-en>Every judgement can be rechecked against the primary sources below. Verified on</span> 2026-10-22，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-22。</p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>official</td><td>秘塔 AI 搜索 · 官网（产品与能力叙事、备案号页脚、MiniMax H3 接入公告横幅）</td><td><a href="https://metaso.cn" target="_blank" rel="noopener">https://metaso.cn</a></td></tr>
+            <tr><td>changelog</td><td>秘塔 AI 搜索 · 官网首页（产品更新公告横幅入口，changelog——首页直抓所见 H3 接入横幅）</td><td><a href="https://metaso.cn" target="_blank" rel="noopener">https://metaso.cn</a></td></tr>
+            <tr><td>docs</td><td>网信办 · 生成式人工智能服务已备案信息（2024-04 公告，附件汇总表直抓核验——MetaLLM 条目 Shanghai-MetaLLM-20231106 所见，2026-10-22）</td><td><a href="https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm" target="_blank" rel="noopener">https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm</a></td></tr>
+            <tr><td>docs</td><td>网信办 · 境内深度合成服务算法备案清单（2023-08 批次，MetaLLM 算法条目直抓）</td><td><a href="https://www.cac.gov.cn/cms/pub/interact/downloadfile.jsp?fText=%E5%A2%83%E5%86%85%E6%B7%B1%E5%BA%A6%E5%90%88%E6%88%90%E6%9C%8D%E5%8A%A1%E7%AE%97%E6%B3%95%E5%A4%87%E6%A1%88%E6%B8%85%E5%8D%95%EF%BC%882023%E5%B9%B48%E6%9C%88%EF%BC%89&amp;filepath=NUtqEIwGiCjGm2Bhl20cvMl3O6cRrdmvwKACW6Gg5zgI1MtuxXVthi1ipH4LQnB4nVO~ptGxSrYZoGdFmo~iOjZS2%2FBjnic3oqu3HpPj8kk%3D" target="_blank" rel="noopener">https://www.cac.gov.cn/cms/pub/interact/downloadfile.jsp?fText=%E5%A2%83%E5%86%85%E6%B7%B1%E5%BA%A6%E5%90%88%E6%88%90%E6%9C%8D%E5%8A%A1%E7%AE%97%E6%B3%95%E5%A4%87%E6%A1%88%E6%B8%85%E5%8D%95%EF%BC%882023%E5%B9%B48%E6%9C%88%EF%BC%89&amp;filepath=NUtqEIwGiCjGm2Bhl20cvMl3O6cRrdmvwKACW6Gg5zgI1MtuxXVthi1ipH4LQnB4nVO~ptGxSrYZoGdFmo~iOjZS2%2FBjnic3oqu3HpPj8kk%3D</a></td></tr>
+            <tr><td>official</td><td>秘塔 · 关于页（自研 MetaLLM 叙事）</td><td><a href="https://metaso.cn/about-us" target="_blank" rel="noopener">https://metaso.cn/about-us</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
+        <p>本站尚未完成实测。编码向实测协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a>（创作产品不适用编码任务集）。</p>
+            <p><strong>实测建议</strong>（三条，都指向官方可读页没给的东西）：</p>
+            <ul><li><strong>深度研究档的多线追搜与 Perplexity Deep Research 的质量对比</strong></li><li><strong>学术档 PubMed/分区筛选的召回完整度</strong></li><li><strong>事实核验入口的判定逻辑透明度</strong></li></ul>
+      </div>
+
+
+      
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./perplexity.html">Perplexity</a></span><span class="rel-n">英文向对照：Perplexity 需网络环境，秘塔国内直连+中文库深。</span></li>
+          <li><span class="rel-t"><a href="./notebooklm.html">NotebookLM</a></span><span class="rel-n">互补形态：秘塔帮你找源，NotebookLM 在你给的源里深挖。</span></li>
+          <li><span class="rel-t"><a href="./devv.html">Devv</a></span><span class="rel-n">同为国产 AI 搜索：Devv 开发者向（代码文档），秘塔通用+学术向。</span></li>
+          <li><span class="rel-t"><a href="/chat/kimi-chat.html"><span data-zh>Kimi</span><span data-en>Kimi</span></a></span><span class="rel-n"><span data-zh>另一层 · AI 对话助手</span><span data-en>Other layer · Chat assistants</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        方法论与坐标系定义见仓库内 <code>METHODOLOGY.md</code>。
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 投机取巧 · <span data-zh>Specul</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+  <script src="../brand.js"></script>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      function sync() { root.setAttribute('data-lang', root.lang === 'en' ? 'en' : 'zh'); }
+      new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['lang'] });
+      sync();
+    })();
+  </script>
+</body>
+</html>

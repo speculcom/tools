@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI 搜索与研究 — AI 搜索、学术检索与研究工作台 | 投机取巧</title>
+  <meta name="description" content="联网搜索问答、学术检索、AI 笔记/研究工作台——「帮你找答案、读文献、整理笔记」的产品。各家「深度研究」模式不单独立档（对象归 chat 档案的 capabilities 维）；纯检索 API 基础设施归 nav。" />
+  <link rel="canonical" href="https://tools.specul.com/research/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="AI 搜索与研究" />
+  <meta property="og:url" content="https://tools.specul.com/research/" />
+  <meta property="og:title" content="AI 搜索与研究 — AI 搜索、学术检索与研究工作台 | 投机取巧" />
+  <meta property="og:description" content="联网搜索问答、学术检索、AI 笔记/研究工作台——「帮你找答案、读文献、整理笔记」的产品。各家「深度研究」模式不单独立档（对象归 chat 档案的 capabilities 维）；纯检索 API 基础设施归 nav。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="../brand.css" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"AI 搜索与研究","description":"<span data-zh>联网搜索问答、学术检索、AI 笔记/研究工作台——「帮你找答案、读文献、整理笔记」的产品。各家「深度研究」模式不单独立档（对象归 chat 档案的 capabilities 维）；纯检索 API 基础设施归 nav。</span><span data-en>Web-search Q&A, academic retrieval, and AI-native research/notebook workbenches — products that \"find answers, read papers, organize notes\". Each vendor's \"deep research\" mode is not filed separately (it lives in the chat entry's capability axes); pure retrieval-API infrastructure goes to the nav site.</span>","url":"https://tools.specul.com/research/","isPartOf":{"@type":"WebSite","name":"Specul","url":"https://specul.com/"},"about":[{"@type":"SoftwareApplication","name":"Andi Search","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Consensus","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Devv","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Elicit","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Genspark","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Kagi","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"秘塔 AI 搜索","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"NotebookLM","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Perplexity","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"天工 AI 搜索","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"You.com","applicationCategory":"DeveloperApplication"}]}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <section class="hero">
+      <div class="container">
+        <p class="kicker"><span data-zh>AI 工具</span><span data-en>AI Tools</span> · Research</p>
+        <h1 class="t-hero"><span data-zh>AI 搜索与研究</span><span data-en>AI search &amp; research</span></h1>
+        <p class="lede"><span data-zh>联网搜索问答、学术检索、AI 笔记/研究工作台——「帮你找答案、读文献、整理笔记」的产品。各家「深度研究」模式不单独立档（对象归 chat 档案的 capabilities 维）；纯检索 API 基础设施归 nav。</span><span data-en>Web-search Q&A, academic retrieval, and AI-native research/notebook workbenches — products that "find answers, read papers, organize notes". Each vendor's "deep research" mode is not filed separately (it lives in the chat entry's capability axes); pure retrieval-API infrastructure goes to the nav site.</span></p>
+        <div class="hero-meta">
+          <span><b>11</b> <span data-zh>个对象</span><span data-en>objects</span></span>
+          <span><b>8</b> <span data-zh>个固定维度</span><span data-en>fixed dimensions</span></span>
+          <span><b>0</b> <span data-zh>个已完整核验</span><span data-en>fully verified</span></span>
+          <span><span data-zh>最后核验</span><span data-en>Last checked</span> <b>2026-10-22</b></span>
+        </div>
+      </div>
+    </section>
+
+    <nav class="part-bar" aria-label="站内大类">
+      <div class="container">
+        <a href="/coding/" title="装在编辑器、终端，或厂商云里" style="--pa:var(--pa-coding)"><b>Coding</b></a>
+        <a href="/chat/" title="通用对话产品，含国产" style="--pa:var(--pa-chat)"><b>Chat</b></a>
+        <a href="/image/" title="文生图与图像工作台" style="--pa:var(--pa-image)"><b>Image</b></a>
+        <a href="/video/" title="文生视频与数字人" style="--pa:var(--pa-video)"><b>Video</b></a>
+        <a href="/audio/" title="音乐生成、语音合成与转写" style="--pa:var(--pa-audio)"><b>Audio</b></a>
+        <a href="/research/" aria-current="page" title="AI 搜索、学术检索与研究工作台" style="--pa:var(--pa-research)"><b>Research</b></a>
+        <a href="/automation/" title="可视化搭 AI 工作流与 agent" style="--pa:var(--pa-automation)"><b>Automation</b></a>
+        <a href="/framework/" title="运行时、编排框架、SDK" style="--pa:var(--pa-framework)"><b>Frameworks</b></a>
+        <a href="/mcp/" title="缺什么，装什么 —— 给 agent 装的 MCP 工具" style="--pa:var(--pa-mcp)"><b>MCP</b></a>
+        <a href="/runner/" title="在自己机器上跑开源模型" style="--pa:var(--pa-runner)"><b>Runners</b></a>
+      </div>
+    </nav>
+
+        <section class="section">
+      <div class="container">
+        <div class="t-boundary">
+          <ol>
+            <li><span data-zh><strong>本站按 10 大类收录 AI 产品。</strong>编程、对话、图像、视频、音频、研究、自动化、框架、MCP 工具、本地运行器——每类都有明确的收录标准，写在各大类的目录页里。</span><span data-en><strong>This site files AI products into 10 categories.</strong> Coding, chat, image, video, audio, research, automation, frameworks, MCP tools and local runners — each with explicit admission criteria, written on the category page itself.</span></li>
+            <li><span data-zh><strong>大类看目录，形态看字段。</strong>一个产品属于哪一类由收录边界决定；它怎么装进你的工作流（IDE / CLI / 厂商云 / 框架 / MCP…）是另一根独立的轴。</span><span data-en><strong>Category comes from the shelf, form from a field.</strong> Which category a product belongs to is decided by admission boundaries; how it installs into your workflow (IDE / CLI / vendor cloud / framework / MCP…) is a separate axis.</span></li>
+            <li><span data-zh><strong>每条档案都是核验快照。</strong>字段逐条挂官方出处与核验日期，本站不实测、不排名，未知就写未知。</span><span data-en><strong>Every entry is a verification snapshot.</strong> Each field carries an official source and a checked date; we run no benchmarks, publish no rankings, and write "unknown" when it is unknown.</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+
+    
+
+    
+
+    <section class="section">
+      <div class="container">
+        <h2><span data-zh>全部对象</span><span data-en>All objects</span></h2>
+        <p class="section-desc"><span data-zh>按统一坐标系排列。点开任一对象可看到 模型与开放条件 / 运行位置 / 本地文件 / 关机后的任务 / 工具与扩展 / 上下文与记忆 / 权限与限制 / 适合什么任务 的完整记录、证据链接与未知项清单。</span><span data-en>Everything on one coordinate system. Open any object to see its full record across Model & openness / Where it runs / Local files / Tasks after shutdown / Tools & extensions / Context & memory / Permissions & limits / Best for, with source links and a list of unknowns.</span></p>
+                <div class="afilter" role="search">
+          <label class="af-f"><span class="af-h"><span data-zh>筛选档案</span><span data-en>Filter entries</span></span>
+            <input type="search" class="aq" autocomplete="off" placeholder="Cursor · Claude · Aider"></label>
+          <label class="af-f"><span class="af-h"><span data-zh>出品属地</span><span data-en>Origin</span></span>
+            <select class="asel-cnorigin" data-attr="data-cn-origin"><option value="">全部 / All</option><option value="foreign">国外出品 / foreign-made</option><option value="domestic">国产 / domestic</option></select></label>
+          <label class="af-f"><span class="af-h"><span data-zh>国内直连</span><span data-en>Direct access</span></span>
+            <select class="asel-cndirect" data-attr="data-cn-direct"><option value="">全部 / All</option><option value="yes">大陆可直连 / direct OK</option><option value="no">直连不可达 / direct blocked</option><option value="unknown">直连未核验 / direct unknown</option></select></label>
+          <label class="af-f"><span class="af-h"><span data-zh>备案状态</span><span data-en>Filing</span></span>
+            <select class="asel-cnfiling" data-attr="data-cn-filing"><option value="">全部 / All</option><option value="not-filed">未见于备案名单 / not in filing list</option><option value="unknown">备案未核验 / filing unknown</option><option value="filed">已备案 / filed</option></select></label>
+          <label class="af-f"><span class="af-h"><span data-zh>排序</span><span data-en>Sort</span></span>
+            <select class="asel-sort"><option value="">默认 / Default</option><option value="done-desc">完整度 高 → 低 / Completeness high–low</option><option value="done-asc">完整度 低 → 高 / Completeness low–high</option></select></label>
+          <span class="acount" aria-live="polite"></span>
+        </div>
+        <div class="grid">
+        <article class="card" style="--card-accent:#38bdf8" data-track="web" data-family="" data-conf="partial" data-cn-origin="foreign" data-cn-direct="yes" data-cn-filing="not-filed" data-done="4" data-total="8" data-name="Andi Search" data-blob="andi search andi search andi **andi 走「直接生成答案」的 ai 原生搜索路线**：不是「检索后包装」而是自研架构直接答+来源标注，
+免费无广告+不追踪隐私叙事；小团队产品的持续性要列风险项。">
+          <div class="card-top">
+            <div class="mark" aria-hidden="true">An</div>
+            <div class="card-id">
+              <h3><a href="./andi.html"><span data-zh>Andi Search</span><span data-en>Andi Search</span></a></h3>
+              <div class="vendor">Andi</div>
+            </div>
+          </div>
+          <p class="tagline"><span data-zh>Andi 走「直接生成答案」的 AI 原生搜索路线：不是「检索后包装」而是自研架构直接答+来源标注， 免费无广告+不追踪隐私</span><span data-en>Andi takes the "generate the answer directly" AI-native search</span></p>   // line 已是双节点，勿走 esc -->
+          <div class="card-foot">
+            <span class="t-state is-warn"><span data-zh>部分核验</span><span data-en>Partly verified</span></span>
+            <a class="more" href="./andi.html" aria-label="Andi Search 详情"><span data-zh>详情 →</span><span data-en>Details →</span></a>
+          </div>
+        </article>
+        <article class="card" style="--card-accent:#38bdf8" data-track="web" data-family="" data-conf="partial" data-cn-origin="foreign" data-cn-direct="yes" data-cn-filing="not-filed" data-done="4" data-total="8" data-name="Consensus" data-blob="consensus consensus consensus **consensus 回答「科学界怎么说」**：consensus meter 把多篇研究的结论极性统计成摘要——
+快速判断实证领域共识方向；但计数不等权，meter 不是定论。">
+          <div class="card-top">
+            <div class="mark" aria-hidden="true">Co</div>
+            <div class="card-id">
+              <h3><a href="./consensus.html"><span data-zh>Consensus</span><span data-en>Consensus</span></a></h3>
+              <div class="vendor">Consensus</div>
+            </div>
+          </div>
+          <p class="tagline"><span data-zh>Consensus 回答「科学界怎么说」：Consensus Meter 把多篇研究的结论极性统计成摘要—— 快速判断实证领</span><span data-en>Consensus answers "what does the scientific literature say": t</span></p>   // line 已是双节点，勿走 esc -->
+          <div class="card-foot">
+            <span class="t-state is-warn"><span data-zh>部分核验</span><span data-en>Partly verified</span></span>
+            <a class="more" href="./consensus.html" aria-label="Consensus 详情"><span data-zh>详情 →</span><span data-en>Details →</span></a>
+          </div>
+        </article>
+        <article class="card" style="--card-accent:#38bdf8" data-track="web" data-family="" data-conf="partial" data-cn-origin="domestic" data-cn-direct="no" data-cn-filing="unknown" data-done="3" data-total="8" data-name="Devv" data-blob="devv devv devv ai **devv 是开发者向的 ai 搜索问答**：代码问题→实时抓官方文档→带链接答案；
+它答代码问题但不改代码库——与 coding 大类的边界就在这条线上。">
+          <div class="card-top">
+            <div class="mark" aria-hidden="true">De</div>
+            <div class="card-id">
+              <h3><a href="./devv.html"><span data-zh>Devv</span><span data-en>Devv</span></a></h3>
+              <div class="vendor">Devv AI</div>
+            </div>
+          </div>
+          <p class="tagline"><span data-zh>Devv 是开发者向的 AI 搜索问答：代码问题→实时抓官方文档→带链接答案； 它答代码问题但不改代码库——与 coding</span><span data-en>A developer-facing AI search Q&A: coding questions → live fetc</span></p>   // line 已是双节点，勿走 esc -->
+          <div class="card-foot">
+            <span class="t-state is-warn"><span data-zh>部分核验</span><span data-en>Partly verified</span></span>
+            <a class="more" href="./devv.html" aria-label="Devv 详情"><span data-zh>详情 →</span><span data-en>Details →</span></a>
+          </div>
+        </article>
+        <article class="card" style="--card-accent:#38bdf8" data-track="web" data-family="" data-conf="partial" data-cn-origin="foreign" data-cn-direct="yes" data-cn-filing="not-filed" data-done="5" data-total="8" data-name="Elicit" data-blob="elicit elicit elicit **elicit 是学术文献的「检索+结构化抽取」工作台**：研究问题→论文筛选→抽取表→带引用综述——
+系统性综述流程的 ai 化；每个单元格仍要回原文核。">
+          <div class="card-top">
+            <div class="mark" aria-hidden="true">El</div>
+            <div class="card-id">
+              <h3><a href="./elicit.html"><span data-zh>Elicit</span><span data-en>Elicit</span></a></h3>
+              <div class="vendor">Elicit</div>
+            </div>
+          </div>
+          <p class="tagline"><span data-zh>Elicit 是学术文献的「检索+结构化抽取」工作台：研究问题→论文筛选→抽取表→带引用综述—— 系统性综述流程的 AI 化</span><span data-en>An academic-literature "retrieve + structured extraction" work</span></p>   // line 已是双节点，勿走 esc -->
+          <div class="card-foot">
+            <span class="t-state is-warn"><span data-zh>部分核验</span><span data-en>Partly verified</span></span>
+            <a class="more" href="./elicit.html" aria-label="Elicit 详情"><span data-zh>详情 →</span><span data-en>Details →</span></a>
+          </div>
+        </article>
+        <article class="card" style="--card-accent:#38bdf8" data-track="web" data-family="" data-conf="partial" data-cn-origin="foreign" data-cn-direct="unknown" data-cn-filing="unknown" data-done="5" data-total="8" data-name="Genspark" data-blob="genspark genspark genspark **genspark 是「搜索→报告→幻灯片」一条龙的研究 agent**：sparkpage 重组检索结果、
+slides/sheets/网站直接出产物；agent 形态意味着过程黑箱度要心里有数。">
+          <div class="card-top">
+            <div class="mark" aria-hidden="true">Ge</div>
+            <div class="card-id">
+              <h3><a href="./genspark.html"><span data-zh>Genspark</span><span data-en>Genspark</span></a></h3>
+              <div class="vendor">Genspark</div>
+            </div>
+          </div>
+          <p class="tagline"><span data-zh>Genspark 是「搜索→报告→幻灯片」一条龙的研究 agent：Sparkpage 重组检索结果、 Slides/She</span><span data-en>A research agent doing "search → report → slides" end to end: </span></p>   // line 已是双节点，勿走 esc -->
+          <div class="card-foot">
+            <span class="t-state is-warn"><span data-zh>部分核验</span><span data-en>Partly verified</span></span>
+            <a class="more" href="./genspark.html" aria-label="Genspark 详情"><span data-zh>详情 →</span><span data-en>Details →</span></a>
+          </div>
+        </article>
+        <article class="card" style="--card-accent:#38bdf8" data-track="web" data-family="" data-conf="partial" data-cn-origin="foreign" data-cn-direct="yes" data-cn-filing="not-filed" data-done="5" data-total="8" data-name="Kagi" data-blob="kagi kagi kagi **kagi 是「付费换隐私」的自建索引搜索引擎**：无广告无追踪是主轴，ai 答案层（fastgpt/teclis）
+是附加——它与「ai 搜索」的顺序正好相反。">
+          <div class="card-top">
+            <div class="mark" aria-hidden="true">Ka</div>
+            <div class="card-id">
+              <h3><a href="./kagi.html"><span data-zh>Kagi</span><span data-en>Kagi</span></a></h3>
+              <div class="vendor">Kagi</div>
+            </div>
+          </div>
+          <p class="tagline"><span data-zh>Kagi 是「付费换隐私」的自建索引搜索引擎：无广告无追踪是主轴，AI 答案层（FastGPT/Teclis） 是附加——它</span><span data-en>A self-built-index search engine where you pay for privacy: no</span></p>   // line 已是双节点，勿走 esc -->
+          <div class="card-foot">
+            <span class="t-state is-warn"><span data-zh>部分核验</span><span data-en>Partly verified</span></span>
+            <a class="more" href="./kagi.html" aria-label="Kagi 详情"><span data-zh>详情 →</span><span data-en>Details →</span></a>
+          </div>
+        </article>
+        <article class="card" style="--card-accent:#38bdf8" data-track="web" data-family="" data-conf="partial" data-cn-origin="domestic" data-cn-direct="yes" data-cn-filing="filed" data-done="6" data-total="8" data-name="秘塔 AI 搜索" data-blob="秘塔 ai 搜索 metaso ai search 秘塔科技（上海秘塔网络科技） **秘塔 ai 搜索是「没有广告，直达结果」的中文 ai 搜索**：自研 metallm（少见的自研路线）、
+六路检索、学术中文库细分、大纲/脑图结构化输出；国内直连可用。">
+          <div class="card-top">
+            <div class="mark" aria-hidden="true">秘塔</div>
+            <div class="card-id">
+              <h3><a href="./metaso.html"><span data-zh>秘塔 AI 搜索</span><span data-en>Metaso AI Search</span></a></h3>
+              <div class="vendor"><span data-zh>秘塔科技（上海秘塔网络科技）</span><span data-en>Metaso (Shanghai Metaso Network Technology)</span></div>
+            </div>
+          </div>
+          <p class="tagline"><span data-zh>秘塔 AI 搜索是「没有广告，直达结果」的中文 AI 搜索：自研 MetaLLM（少见的自研路线）、 六路检索、学术中文库细</span><span data-en>The Chinese AI search that "skips ads, goes straight to result</span></p>   // line 已是双节点，勿走 esc -->
+          <div class="card-foot">
+            <span class="t-state is-warn"><span data-zh>部分核验</span><span data-en>Partly verified</span></span>
+            <a class="more" href="./metaso.html" aria-label="秘塔 AI 搜索 详情"><span data-zh>详情 →</span><span data-en>Details →</span></a>
+          </div>
+        </article>
+        <article class="card" style="--card-accent:#38bdf8" data-track="web" data-family="" data-conf="partial" data-cn-origin="foreign" data-cn-direct="no" data-cn-filing="not-filed" data-done="6" data-total="8" data-name="NotebookLM" data-blob="notebooklm notebooklm google **notebooklm 是「源锚定」的研究工作台**：你给一组源，它只在这些源里回答+生成音频概览/学习指南；
+它不是搜索引擎——是资料集上的问答引擎。">
+          <div class="card-top">
+            <div class="mark" aria-hidden="true">No</div>
+            <div class="card-id">
+              <h3><a href="./notebooklm.html"><span data-zh>NotebookLM</span><span data-en>NotebookLM</span></a></h3>
+              <div class="vendor">Google</div>
+            </div>
+          </div>
+          <p class="tagline"><span data-zh>NotebookLM 是「源锚定」的研究工作台：你给一组源，它只在这些源里回答+生成音频概览/学习指南； 它不是搜索引擎——</span><span data-en>A source-anchored research workbench: you hand it a set of sou</span></p>   // line 已是双节点，勿走 esc -->
+          <div class="card-foot">
+            <span class="t-state is-warn"><span data-zh>部分核验</span><span data-en>Partly verified</span></span>
+            <a class="more" href="./notebooklm.html" aria-label="NotebookLM 详情"><span data-zh>详情 →</span><span data-en>Details →</span></a>
+          </div>
+        </article>
+        <article class="card" style="--card-accent:#38bdf8" data-track="web" data-family="" data-conf="partial" data-cn-origin="foreign" data-cn-direct="no" data-cn-filing="not-filed" data-done="4" data-total="8" data-name="Perplexity" data-blob="perplexity perplexity perplexity ai **perplexity 是「答案带来源角标」的 ai 搜索旗舰**：多模型路由+自研线，comet 浏览器把检索延伸成
+agent 浏览；「带来源」是招牌，但角标背后的原文仍要自己核。">
+          <div class="card-top">
+            <div class="mark" aria-hidden="true">Pe</div>
+            <div class="card-id">
+              <h3><a href="./perplexity.html"><span data-zh>Perplexity</span><span data-en>Perplexity</span></a></h3>
+              <div class="vendor">Perplexity AI</div>
+            </div>
+          </div>
+          <p class="tagline"><span data-zh>Perplexity 是「答案带来源角标」的 AI 搜索旗舰：多模型路由+自研线，Comet 浏览器把检索延伸成 agent</span><span data-en>The flagship of "answers with source footnotes" AI search: mul</span></p>   // line 已是双节点，勿走 esc -->
+          <div class="card-foot">
+            <span class="t-state is-warn"><span data-zh>部分核验</span><span data-en>Partly verified</span></span>
+            <a class="more" href="./perplexity.html" aria-label="Perplexity 详情"><span data-zh>详情 →</span><span data-en>Details →</span></a>
+          </div>
+        </article>
+        <article class="card" style="--card-accent:#38bdf8" data-track="web" data-family="" data-conf="partial" data-cn-origin="domestic" data-cn-direct="yes" data-cn-filing="filed" data-done="6" data-total="8" data-name="天工 AI 搜索" data-blob="天工 ai 搜索 tiangong ai search 昆仑万维 **天工从「ai 搜索」长成了「超级智能体」**：搜索打底，文档/ppt/表格/网页多模式直接出产物，
+「做同款」模板复用；国产直连可用。">
+          <div class="card-top">
+            <div class="mark" aria-hidden="true">天工</div>
+            <div class="card-id">
+              <h3><a href="./tiangong.html"><span data-zh>天工 AI 搜索</span><span data-en>Tiangong AI Search</span></a></h3>
+              <div class="vendor"><span data-zh>昆仑万维</span><span data-en>Kunlun Tech</span></div>
+            </div>
+          </div>
+          <p class="tagline"><span data-zh>天工从「AI 搜索」长成了「超级智能体」：搜索打底，文档/PPT/表格/网页多模式直接出产物， 「做同款」模板复用；国产直连</span><span data-en>Tiangong grew from "AI search" into a "super agent": search as</span></p>   // line 已是双节点，勿走 esc -->
+          <div class="card-foot">
+            <span class="t-state is-warn"><span data-zh>部分核验</span><span data-en>Partly verified</span></span>
+            <a class="more" href="./tiangong.html" aria-label="天工 AI 搜索 详情"><span data-zh>详情 →</span><span data-en>Details →</span></a>
+          </div>
+        </article>
+        <article class="card" style="--card-accent:#38bdf8" data-track="web" data-family="" data-conf="partial" data-cn-origin="foreign" data-cn-direct="no" data-cn-filing="not-filed" data-done="5" data-total="8" data-name="You.com" data-blob="you.com you.com you.com **you.com 的重心已经从消费端 ai 搜索转向企业检索基础设施**（ari/research api）：
+消费端 answer engine 仍在运营，但选型要把「消费端长期性」列为风险项。">
+          <div class="card-top">
+            <div class="mark" aria-hidden="true">Yo</div>
+            <div class="card-id">
+              <h3><a href="./you-com.html"><span data-zh>You.com</span><span data-en>You.com</span></a></h3>
+              <div class="vendor">You.com</div>
+            </div>
+          </div>
+          <p class="tagline"><span data-zh>You.com 的重心已经从消费端 AI 搜索转向企业检索基础设施（ARI/Research API）： 消费端 answe</span><span data-en>You.com has shifted its center of gravity from consumer AI sea</span></p>   // line 已是双节点，勿走 esc -->
+          <div class="card-foot">
+            <span class="t-state is-warn"><span data-zh>部分核验</span><span data-en>Partly verified</span></span>
+            <a class="more" href="./you-com.html" aria-label="You.com 详情"><span data-zh>详情 →</span><span data-en>Details →</span></a>
+          </div>
+        </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section status-band">
+      <div class="container">
+        <div class="status-inner">
+          <div class="status-mark" aria-hidden="true">!</div>
+          <div>
+            <h2><span data-zh>本站目前是「核验快照」，还没有实测数据</span><span data-en>This site is currently a verification snapshot — no measured runs yet</span></h2>
+            <p>
+              <span data-zh>下面每一个字段都能回到官方原文核对，但<strong>我们还没有在同一批任务上跑过这些工具</strong>。</span><span data-en>Every field below can be traced back to the official source, but <strong>we have not yet run these tools on the same batch of tasks</strong>.</span>
+              <span data-zh>实测协议已经写好（统一任务、统一验收、记录人工介入与返工次数），任务清单也已就绪，</span><span data-en>The measurement protocol is written (shared tasks, shared acceptance criteria, recording human interventions and rework counts) and the task list is ready, but it is </span>
+              <span data-zh><strong>尚未执行</strong>。</span><span data-en><strong>not yet run</strong>.</span>
+            </p>
+            <p class="t-sm">
+              <span data-zh>所以本站给的是<strong>能力边界与证据</strong>，不是「哪个更好用」的结论。</span><span data-en>So what this site gives you is <strong>capability boundaries and evidence</strong>, not a verdict on which is better to use.</span>
+              <span data-zh>真正的选型请用你自己的输入、预算与验收标准跑一遍。</span><span data-en>For an actual choice, run them yourself against your own inputs, budget and acceptance criteria.</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2><span data-zh>8 个维度，每格都能回溯</span><span data-en>8 dimensions, every cell traceable</span></h2>
+        <p class="section-desc">
+          <span data-zh>所有对象在同一坐标系下被描述。</span><span data-en>All objects are described on the same coordinate system.</span>
+          <span data-zh>点开任一对象，每一格下面都有官方源链接与核验日期——不认同可以自己回去查。</span><span data-en>Open any object and every cell carries an official source link and a checked date — disagree and verify it yourself.</span>
+        </p>
+        <div class="t-mesh axis-mesh">
+          <div class="axis-cell">
+            <span class="t-index">01</span>
+            <h3 class="axis-name"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></h3>
+            <p class="axis-ask"><span data-zh>用谁的模型？能不能换第三方？多模型路由怎么配？</span><span data-en>Whose model does it use? Can you switch to a third party? How is multi-model routing configured?</span></p>
+          </div>
+          <div class="axis-cell">
+            <span class="t-index">02</span>
+            <h3 class="axis-name"><span data-zh>运行位置</span><span data-en>Where it runs</span></h3>
+            <p class="axis-ask"><span data-zh>本地 / 云端 / 混合？索引在本地还是云端？远程控制不等于云端执行。</span><span data-en>Local, cloud or hybrid? Is the index local or remote? Remote control is not the same as cloud execution.</span></p>
+          </div>
+          <div class="axis-cell">
+            <span class="t-index">03</span>
+            <h3 class="axis-name"><span data-zh>本地文件</span><span data-en>Local files</span></h3>
+            <p class="axis-ask"><span data-zh>能访问多大范围？未打开的大文件怎么读？符号级能力如何？</span><span data-en>How wide an area can it reach? How does it read large files you have not opened? How capable is it at the symbol level?</span></p>
+          </div>
+          <div class="axis-cell">
+            <span class="t-index">04</span>
+            <h3 class="axis-name"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></h3>
+            <p class="axis-ask"><span data-zh>电脑关了还能继续跑吗？这是本地形态最常见的误解来源。</span><span data-en>Does it keep running once the computer is off? This is the most common misconception about local forms.</span></p>
+          </div>
+          <div class="axis-cell">
+            <span class="t-index">05</span>
+            <h3 class="axis-name"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></h3>
+            <p class="axis-ask"><span data-zh>工具链有多宽：MCP · LSP · 插件 · Hooks · 自定义指令。</span><span data-en>How wide is the toolchain: MCP · LSP · plugins · hooks · custom instructions?</span></p>
+          </div>
+          <div class="axis-cell">
+            <span class="t-index">06</span>
+            <h3 class="axis-name"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></h3>
+            <p class="axis-ask"><span data-zh>索引算法、上下文窗口、会话恢复与分叉、跨会话记忆边界。</span><span data-en>Indexing algorithm, context window, session resume and fork, and the boundary of cross-session memory.</span></p>
+          </div>
+          <div class="axis-cell">
+            <span class="t-index">07</span>
+            <h3 class="axis-name"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></h3>
+            <p class="axis-ask"><span data-zh>沙箱与审批边界、凭据管理、数据是否出境、额度如何计算。</span><span data-en>Sandbox and approval boundaries, credential handling, whether data leaves your machine, and how quota is charged.</span></p>
+          </div>
+          <div class="axis-cell">
+            <span class="t-index">08</span>
+            <h3 class="axis-name"><span data-zh>适合什么任务</span><span data-en>Best for</span></h3>
+            <p class="axis-ask"><span data-zh>最擅长什么任务？什么情况下别用它？</span><span data-en>What tasks is it best at? When should you not use it?</span></p>
+          </div>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2><span data-zh>全部数据一览</span><span data-en>All data at a glance</span></h2>
+        <p class="section-desc"><span data-zh>同一张表横向对比。点对象名进详情页看逐格证据。</span><span data-en>The same table side by side. Click an object name to see per-cell evidence.</span></p>
+        <div class="table-wrap">
+          <table class="cmp">
+            <thead>
+              <tr>
+                <th><span data-zh>对象</span><span data-en>Object</span></th><th><span data-zh>形态</span><span data-en>Form</span></th><th><span data-zh>厂商</span><span data-en>Vendor</span></th><th><span data-zh>适合</span><span data-en>Best for</span></th><th><span data-zh>核验日</span><span data-en>Checked</span></th><th><span data-zh>状态</span><span data-en>Status</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><a href="./andi.html"><span class="td-mark" style="--card-accent:#38bdf8">An</span><span data-zh>Andi Search</span><span data-en>Andi Search</span></a></td>
+                <td class="td-vendor"><span data-zh>网页服务</span><span data-en>Web service</span></td>
+                <td class="td-vendor">Andi</td>
+                <td class="td-fit"><span data-zh>适合：要直接答案+解释风格的轻量研究、对追踪敏感、免费无广告需求。 不适合：深度学术检索（无学术垂直）、中文向主打、要可审计检索过程。</span><span data-en>Light research that wants direct answers with an explanatory style, tr</span></td>
+                <td class="td-date">2026-10-22</td>
+                <td><span class="td-conf partial">partial</span></td>
+              </tr>
+              <tr>
+                <td><a href="./consensus.html"><span class="td-mark" style="--card-accent:#38bdf8">Co</span><span data-zh>Consensus</span><span data-en>Consensus</span></a></td>
+                <td class="td-vendor"><span data-zh>网页服务</span><span data-en>Web service</span></td>
+                <td class="td-vendor">Consensus</td>
+                <td class="td-fit"><span data-zh>适合：「科学界怎么说」类问题（医学/营养/气候等实证领域）、快速结论极性判断、 文献初筛。 不适合：深度系统性综述（抽取面比 Elicit </span><span data-en>"What does science say" questions (medical/nutrition/climate and other</span></td>
+                <td class="td-date">2026-10-22</td>
+                <td><span class="td-conf partial">partial</span></td>
+              </tr>
+              <tr>
+                <td><a href="./devv.html"><span class="td-mark" style="--card-accent:#38bdf8">De</span><span data-zh>Devv</span><span data-en>Devv</span></a></td>
+                <td class="td-vendor"><span data-zh>网页服务</span><span data-en>Web service</span></td>
+                <td class="td-vendor">Devv AI</td>
+                <td class="td-fit"><span data-zh>适合：查 API 用法/报错/库文档（答案带官方文档链接）、中文开发者要直连可用的搜索问答。 不适合：改代码库（那是 coding 大类）、</span><span data-en>Looking up API usage/errors/library docs (answers carry official-doc l</span></td>
+                <td class="td-date">2026-10-22</td>
+                <td><span class="td-conf partial">partial</span></td>
+              </tr>
+              <tr>
+                <td><a href="./elicit.html"><span class="td-mark" style="--card-accent:#38bdf8">El</span><span data-zh>Elicit</span><span data-en>Elicit</span></a></td>
+                <td class="td-vendor"><span data-zh>网页服务</span><span data-en>Web service</span></td>
+                <td class="td-vendor">Elicit</td>
+                <td class="td-fit"><span data-zh>适合：系统性综述/文献调研（医学/社科/ML 等英文文献池）、要「抽取表」而非「读摘要」的研究者。 不适合：中文文献主打（学术库英文向）、非</span><span data-en>Systematic reviews and literature surveys (medical/social-science/ML E</span></td>
+                <td class="td-date">2026-10-22</td>
+                <td><span class="td-conf partial">partial</span></td>
+              </tr>
+              <tr>
+                <td><a href="./genspark.html"><span class="td-mark" style="--card-accent:#38bdf8">Ge</span><span data-zh>Genspark</span><span data-en>Genspark</span></a></td>
+                <td class="td-vendor"><span data-zh>网页服务</span><span data-en>Web service</span></td>
+                <td class="td-vendor">Genspark</td>
+                <td class="td-fit"><span data-zh>适合：「搜索→报告→幻灯片」一条龙、要现成产物的研究交付、轻量 agent 任务外包。 不适合：要过程可控可审计（agent 黑箱度）、企业</span><span data-en>"Search → report → slides" end to end, research delivery that wants fi</span></td>
+                <td class="td-date">2026-10-22</td>
+                <td><span class="td-conf partial">partial</span></td>
+              </tr>
+              <tr>
+                <td><a href="./kagi.html"><span class="td-mark" style="--card-accent:#38bdf8">Ka</span><span data-zh>Kagi</span><span data-en>Kagi</span></a></td>
+                <td class="td-vendor"><span data-zh>网页服务</span><span data-en>Web service</span></td>
+                <td class="td-vendor">Kagi</td>
+                <td class="td-fit"><span data-zh>适合：愿意付费换无广告/无追踪搜索体验、要「搜索+全文读」式答案（Teclis 线）、 对追踪敏感的用户。 不适合：免费用户（无免费档主打）</span><span data-en>Users willing to pay for ad-free/tracking-free search, "search + full-</span></td>
+                <td class="td-date">2026-10-22</td>
+                <td><span class="td-conf partial">partial</span></td>
+              </tr>
+              <tr>
+                <td><a href="./metaso.html"><span class="td-mark" style="--card-accent:#38bdf8">秘塔</span><span data-zh>秘塔 AI 搜索</span><span data-en>Metaso AI Search</span></a></td>
+                <td class="td-vendor"><span data-zh>网页服务</span><span data-en>Web service</span></td>
+                <td class="td-vendor"><span data-zh>秘塔科技（上海秘塔网络科技）</span><span data-en>Metaso (Shanghai Metaso Network Technology)</span></td>
+                <td class="td-fit"><span data-zh>适合：中文资料深度检索（无广告直达结果）、学术中文库检索、要大纲/脑图结构化输出、国内直连。 不适合：英文向全球检索主打、把 AI 答案当无</span><span data-en>Deep Chinese research retrieval (ad-free straight to results), Chinese</span></td>
+                <td class="td-date">2026-10-22</td>
+                <td><span class="td-conf partial">partial</span></td>
+              </tr>
+              <tr>
+                <td><a href="./notebooklm.html"><span class="td-mark" style="--card-accent:#38bdf8">No</span><span data-zh>NotebookLM</span><span data-en>NotebookLM</span></a></td>
+                <td class="td-vendor"><span data-zh>网页服务</span><span data-en>Web service</span></td>
+                <td class="td-vendor">Google</td>
+                <td class="td-fit"><span data-zh>适合：给定资料集内的问答与研究整理（论文组/尽调材料/课程资料）、把长材料转成音频概览、 要「答案只从你的源里出」的场景。 不适合：开放网络</span><span data-en>Q&A and research organization inside a given source set (paper groups,</span></td>
+                <td class="td-date">2026-10-22</td>
+                <td><span class="td-conf partial">partial</span></td>
+              </tr>
+              <tr>
+                <td><a href="./perplexity.html"><span class="td-mark" style="--card-accent:#38bdf8">Pe</span><span data-zh>Perplexity</span><span data-en>Perplexity</span></a></td>
+                <td class="td-vendor"><span data-zh>网页服务</span><span data-en>Web service</span></td>
+                <td class="td-vendor">Perplexity AI</td>
+                <td class="td-fit"><span data-zh>适合：带来源的事实问答、快速研究入口、英文向检索质量优先。 不适合：大陆直连（实测 000）、把答案当无源结论（必须点角标核原文）、中文深度</span><span data-en>Sourced factual Q&A, quick research entry points, English-first retrie</span></td>
+                <td class="td-date">2026-10-22</td>
+                <td><span class="td-conf partial">partial</span></td>
+              </tr>
+              <tr>
+                <td><a href="./tiangong.html"><span class="td-mark" style="--card-accent:#38bdf8">天工</span><span data-zh>天工 AI 搜索</span><span data-en>Tiangong AI Search</span></a></td>
+                <td class="td-vendor"><span data-zh>网页服务</span><span data-en>Web service</span></td>
+                <td class="td-vendor"><span data-zh>昆仑万维</span><span data-en>Kunlun Tech</span></td>
+                <td class="td-fit"><span data-zh>适合：中文搜索+办公产物一条龙（PPT/表格/文档直接生成）、国内直连、模板复用工作流。 不适合：英文向检索主打、把生成产物当免审成品（PP</span><span data-en>Chinese search plus office artifacts in one chain (PPT/spreadsheet/doc</span></td>
+                <td class="td-date">2026-10-22</td>
+                <td><span class="td-conf partial">partial</span></td>
+              </tr>
+              <tr>
+                <td><a href="./you-com.html"><span class="td-mark" style="--card-accent:#38bdf8">Yo</span><span data-zh>You.com</span><span data-en>You.com</span></a></td>
+                <td class="td-vendor"><span data-zh>网页服务</span><span data-en>Web service</span></td>
+                <td class="td-vendor">You.com</td>
+                <td class="td-fit"><span data-zh>适合：企业检索基础设施采购评估（ARI/Research API）、消费端多模型切换体验。 不适合：把消费端当长期承诺（重心已转企业端）、大</span><span data-en>Enterprise retrieval-infrastructure procurement evaluation (ARI/Resear</span></td>
+                <td class="td-date">2026-10-22</td>
+                <td><span class="td-conf partial">partial</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2><span data-zh>为什么这里不给总分排名</span><span data-en>Why there is no overall ranking</span></h2>
+        <p class="section-desc"><span data-zh>这不是省略，是方法上的明确取舍。</span><span data-en>This is not an omission but a deliberate methodological choice.</span></p>
+        <div class="panel">
+          <ul>
+            <li><span data-zh><strong>缺统一实测，就不给分。</strong>跨工具的跑分口径不同——题目、预算、执行环境都不一样，A 的 90 分和 B 的 88 分不可比。</span><span data-en><strong>No shared measurement, no score.</strong> Benchmarks across tools use different rules — different questions, budgets and environments. A 90 and a B 88 are not comparable.</span></li>
+            <li><span data-zh><strong>「未知」是合法答案。</strong></span><span data-en><strong>"Unknown" is a legitimate answer.</strong></span>查不到就写「未知」并说明为什么，不用推测填充。缺信息本身也是信息。</li>
+            <li><span data-zh>来源链接、类型与核验日都在详情页里，可以逐条回去复核。</span><span data-en>The source link, its kind and the checked date are all on the detail page, so you can walk any of them back and re-check.</span></li>
+            <li><span data-zh><strong>lifecycle 单独标注。</strong>核验日新不等于数据有效——上游归档后数据会失效，所以单独标 <code>active</code> / <code>maintenance</code> / <code>archived</code>。</span><span data-en><strong>lifecycle is marked separately.</strong> A recent check date does not mean the data is still valid — it goes stale when upstream archives the repo, so <code>active</code> / <code>maintenance</code> / <code>archived</code> are tracked separately.</span></li>
+            <li><span data-zh><strong>不同族不混排。</strong>找现成的、自己搭的、接上与跑起来的是三种角色，坐标系不同；硬合成一张总表只会制造假的可比性。</span><span data-en><strong>Families are not mixed.</strong> Ready-made tools, things you build yourself, and plug-in-and-run components are three different roles with different coordinate systems; forcing them into one master table would manufacture false comparability.</span></li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2><span data-zh>可信度标记怎么读</span><span data-en>How to read the confidence marks</span></h2>
+          <p class="t-sm mb-3"><span data-zh>详情页与上表都带</span><span data-en>Both the detail pages and the table above carry</span> <code>confidence</code><span data-zh>，它反映</span><span data-en>, which reflects</span> <strong><span data-zh>本站数据的完整度</span><span data-en>how complete this site's data is</span></strong><span data-zh>，不是对产品的评价。</span><span data-en>, not a judgement of the product.</span></p>
+          <table class="src is-flush">
+            <tbody>
+              <tr><th class="w-24"><span class="td-conf verified">verified</span></th><td><span data-zh>8 个维度均有官方源支撑，且核验日在 90 天内</span><span data-en>all 8 dimensions have official sources and were checked within 90 days</span></td></tr>
+              <tr><th><span class="td-conf partial">partial</span></th><td><span data-zh>部分维度标为未知，或官方文档不可访问，或核验日超过 90 天</span><span data-en>some dimensions are marked unknown, or the official docs were unreachable, or checked over 90 days ago</span></td></tr>
+              <tr><th><span class="td-conf stale">stale</span></th><td><span data-zh>官方已发布重大变化，本站尚未核验</span><span data-en>the vendor has shipped a significant change that this site has not re-checked</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <h2><span data-zh>本站当前的完整度</span><span data-en>Current completeness on this site</span></h2>
+          <p class="t-sm mb-2">
+            数据层用 <code>node scripts/audit-gaps.mjs</code> 可随时复核这个数字。
+            下表实时计算（本页档案最后核验日 2026-10-22）：
+          </p>
+          <table class="src is-flush mb-3">
+            <thead><tr><th><span data-zh>大类</span><span data-en>Category</span></th><th><span data-zh>已补齐</span><span data-en>Filled</span></th><th><span data-zh>说明</span><span data-en>Meaning</span></th></tr></thead>
+            <tbody>
+              <tr><td class="nw"><span data-zh>深度研究</span><span data-en>Deep research</span></td>
+                <td class="nw"><strong>53/88</strong></td>
+                <td class="td-vendor"><span data-zh>检索与排序机制大多不公开；备案号、官方公告与条款页是最可核验的部分</span><span data-en>Retrieval and ranking internals are mostly undisclosed; filing numbers, official announcements and terms pages are the verifiable parts</span></td></tr>
+            </tbody>
+          </table>
+          <p><strong class="em"><span data-zh>全站合计 1024/1384 维度已补齐</span><span data-en>Site-wide 1024/1384 dimensions filled</span>（74%）</strong></p>
+          <p class="t-sm">
+            <span data-zh>剩余未补齐项分三类：<strong>官方未公开</strong>（索引算法、沙箱实现细节本就不对外说明）、<strong>需实测才能确定</strong>（大仓库表现、CI 无 TTY 行为）、<strong>客观渠道不可达</strong>。</span><span data-en>The remaining gaps fall into three kinds: <strong>not disclosed by the vendor</strong> (indexing algorithms, sandbox internals are simply not documented), <strong>requires measurement</strong> (behaviour on very large repositories, CI without a TTY), and <strong>unreachable through objective channels</strong>.</span>
+          </p>
+          <p class="t-sm">
+            <span data-zh>我们选择留白而不是填「已支持」——错误的成本最终由使用者承担。</span><span data-en>We chose to leave a blank rather than fill in "supported" — the cost of an error is ultimately borne by whoever uses it.</span>
+          </p>
+        </div>
+        <div class="panel">
+          <h2><span data-zh>数据来源与复核方式</span><span data-en>Sources and how to re-check them</span></h2>
+          <p><span data-zh>全部数据来自开源仓库</span><span data-en>All data comes from the open-source repository</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">speculcom/ai-handbook</a>（CC BY 4.0）。</p>
+          <p><span data-zh>每个条目都是纯 Markdown + frontmatter，含维度记录、证据链</span><span data-en>Every entry is plain Markdown plus frontmatter, carrying dimension records and an evidence chain</span>接、核验日与可信度标记。仓库内含：</p>
+          <ul>
+            <li><code>tools/METHODOLOGY.md</code> —— 方法论总纲与核心规则</li>
+            <li><code>tools/axes/</code> —— 每个维度的定义与判定标准（含正反例）</li>
+            <li><code>tools/SCHEMA.md</code> —— 数据格式规范与构建校验规则</li>
+            <li><code>tools/protocols/&lt;大类&gt;/_protocol.md</code> —— 实测协议(<span data-zh><strong>尚未执行</strong></span><span data-en><strong>not yet run</strong></span><span data-zh>，故本站暂无实测结论</span><span data-en>, so this site has no measured conclusions</span>)</li>
+          </ul>
+          <p class="t-sm"><span data-zh>发现错误或有新证据，欢迎提 Issue 或 PR——每条修正都会注明依据与影响范围。</span><span data-en>Found an error or have new evidence? Open an issue or a PR — each correction notes its basis and blast radius.</span></p>
+        </div>
+      </div>
+    </section>
+    <!-- B2：索引页筛选与排序（脚本读独立文件 agent-filter.js，作用域 .afilter） -->
+    <script>/* Agent 图谱 · 客户端筛选与排序（B2，2026-10-09）
+ *
+ * 为什么单独一个文件：agent 的 build.mjs 用模板字符串生成页面，
+ * 脚本里任何反引号或 ${} 都会提前截断/插值（本会话已踩三次）。独立文件从根上避开。
+ *
+ * 作用域：`.afilter`（三个分区页各一份）
+ *   搜索   —— data-blob（名称 + 厂商 + 定位句）
+ *   分组   —— data-form（agents 页=形态 track / harness 页=抽象层 family / tools 页无此项）
+ *   核验   —— data-conf（verified / partial / stale）
+ *   任务   —— data-task（S43：空格分隔多值，卡片可挂多个任务；任务卡链 ?task=<id> 到此）
+ *   中文生态 —— data-cn-origin / data-cn-direct / data-cn-filing（S52：与 models 站同一套字段口径）
+ *   排序   —— data-done & data-total（**按产品**的维度补齐数），在各自 .grid 内重排
+ *
+ * ⚠ 排序只在**同一个 .grid 内**进行：页面按形态/抽象层分了组，
+ *   跨组重排会把分组打散（而分组本身是本站的一条判断，不能因为排序就没了）。
+ *
+ * URL 可还原：?q=&form=&conf=&task=&cnorigin=&cndirect=&cnfiling=&sort= 写进地址栏。
+ */
+(function () {
+  'use strict';
+
+  var box = document.querySelector('.afilter');
+  if (!box) return;
+
+  var q = box.querySelector('.aq');
+  var selForm = box.querySelector('.asel-form');
+  var selConf = box.querySelector('.asel-conf');
+  var selTask = box.querySelector('.asel-task');
+  var selSort = box.querySelector('.asel-sort');
+  /* S52 中文生态三选：与 models 站 .ssel-cn* 同一套口径。
+   * 控件由构建器按「本页真有区分度」才渲染，所以这里对 null 要防御。 */
+  var cnSels = [
+    { el: box.querySelector('.asel-cnorigin'), attr: 'data-cn-origin', key: 'cnorigin' },
+    { el: box.querySelector('.asel-cndirect'), attr: 'data-cn-direct', key: 'cndirect' },
+    { el: box.querySelector('.asel-cnfiling'), attr: 'data-cn-filing', key: 'cnfiling' },
+  ].filter(function (x) { return x.el; });
+  var count = box.querySelector('.acount');
+  var allCards = Array.prototype.slice.call(document.querySelectorAll('.grid > .card'));
+  if (!allCards.length) return;
+
+  function param(n) {
+    try { return new URLSearchParams(location.search).get(n) || ''; } catch (e) { return ''; }
+  }
+  function writeUrl() {
+    try {
+      var u = new URL(location.href);
+      var vals = { q: q ? q.value.trim() : '', form: selForm ? selForm.value : '', conf: selConf ? selConf.value : '', task: selTask ? selTask.value : '', sort: selSort ? selSort.value : '' };
+      cnSels.forEach(function (x) { vals[x.key] = x.el.value; });
+      Object.keys(vals).forEach(function (k) { if (vals[k]) u.searchParams.set(k, vals[k]); else u.searchParams.delete(k); });
+      history.replaceState(null, '', u.toString());
+    } catch (e) { /* file:// 等场景静默降级：功能可用，地址栏不同步 */ }
+  }
+
+  function ratio(c) {
+    var d = Number(c.getAttribute('data-done') || 0);
+    var t = Number(c.getAttribute('data-total') || 0);
+    return t ? d / t : 0;
+  }
+
+  function apply() {
+    var term = q ? q.value.trim().toLowerCase() : '';
+    var form = selForm ? selForm.value : '';
+    /* 分组轴因分区而异（agents=形态 track / harness=抽象层 family），
+     * 由 select 的 data-attr 指明比哪个属性 —— 卡片上两个属性都有。 */
+    var formAttr = selForm ? (selForm.getAttribute('data-attr') || 'track') : 'track';
+    var conf = selConf ? selConf.value : '';
+    var task = selTask ? selTask.value : '';
+    var shown = 0;
+    allCards.forEach(function (c) {
+      var okQ = !term || (c.getAttribute('data-blob') || '').indexOf(term) !== -1;
+      var okForm = !form || c.getAttribute('data-' + formAttr) === form;
+      var okConf = !conf || c.getAttribute('data-conf') === conf;
+      /* data-task 是空格分隔多值（一份档案可挂多个任务），按 token 匹配。 */
+      var okTask = !task || (c.getAttribute('data-task') || '').split(/\s+/).indexOf(task) !== -1;
+      /* S52：cn 三维各是单值属性；卡片没这维度时属性为空串，
+       * 任何指名筛选都不该匹配它（空 ≠ 该值），未指名则放行。 */
+      var okCn = cnSels.every(function (x) { return !x.el.value || (c.getAttribute(x.attr) || '') === x.el.value; });
+      var on = okQ && okForm && okConf && okTask && okCn;
+      c.hidden = !on;
+      if (on) shown++;
+    });
+    // 空分组（全部卡片被筛掉）连标题一起藏起来，否则会留下一个孤零零的组标题
+    Array.prototype.slice.call(document.querySelectorAll('.fam-block')).forEach(function (b) {
+      var vis = Array.prototype.slice.call(b.querySelectorAll('.card')).some(function (c) { return !c.hidden; });
+      b.hidden = !vis;
+    });
+    if (count) {
+      count.textContent = shown + ' / ' + allCards.length;
+      count.setAttribute('data-zh', shown + ' / ' + allCards.length + ' 份档案');
+      count.setAttribute('data-en', shown + ' / ' + allCards.length + ' entries');
+    }
+  }
+
+  function sort() {
+    var mode = selSort ? selSort.value : '';
+    if (!mode) return;
+    Array.prototype.slice.call(document.querySelectorAll('.grid')).forEach(function (g) {
+      var cards = Array.prototype.slice.call(g.children).filter(function (c) { return c.classList.contains('card'); });
+      if (cards.length < 2) return;
+      cards.sort(function (a, b) {
+        var d = ratio(b) - ratio(a);
+        if (mode.indexOf('asc') !== -1) d = -d;
+        // 同分时按原名排序，保证**结果确定**（否则每次打开顺序可能不同）
+        return d || (a.getAttribute('data-name') || '').localeCompare(b.getAttribute('data-name') || '', 'zh');
+      });
+      cards.forEach(function (c) { g.appendChild(c); });
+    });
+  }
+
+  // 首次：用 URL 参数还原
+  if (q) q.value = param('q');
+  [[selForm, 'form'], [selConf, 'conf'], [selTask, 'task'], [selSort, 'sort']].forEach(function (pair) {
+    var el = pair[0]; var v = param(pair[1]);
+    if (!el || !v) return;
+    /* `<select>` 遇到选项里没有的值会**静默忽略** —— 那就成了「指名筛选却被无视」。
+     * 把未知值补成一个选项：筛出来 0 条，计数会如实显示「0 / N」。 */
+    var found = Array.prototype.some.call(el.options, function (o) { return o.value === v; });
+    if (!found) {
+      var extra = document.createElement('option');
+      extra.value = v; extra.textContent = v;
+      el.appendChild(extra);
+    }
+    el.value = v;
+  });
+  cnSels.forEach(function (x) {
+    var v = param(x.key);
+    if (!v) return;
+    var found = Array.prototype.some.call(x.el.options, function (o) { return o.value === v; });
+    if (!found) {
+      var extra = document.createElement('option');
+      extra.value = v; extra.textContent = v;
+      x.el.appendChild(extra);
+    }
+    x.el.value = v;
+  });
+
+  if (q) q.addEventListener('input', function () { apply(); writeUrl(); });
+  [selForm, selConf, selTask].forEach(function (s) { if (s) s.addEventListener('change', function () { apply(); writeUrl(); }); });
+  cnSels.forEach(function (x) { x.el.addEventListener('change', function () { apply(); writeUrl(); }); });
+  if (selSort) selSort.addEventListener('change', function () { sort(); writeUrl(); });
+
+  sort();
+  apply();
+})();
+</script>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 投机取巧 · <span data-zh>Specul</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-agent-guide" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+  <script src="../brand.js"></script>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      function sync() { root.setAttribute('data-lang', root.lang === 'en' ? 'en' : 'zh'); }
+      new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['lang'] });
+      sync();
+    })();
+  </script>
+</body>
+</html>
