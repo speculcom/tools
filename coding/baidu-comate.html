@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>文心快码（Baidu Comate） — Coding | 投机取巧</title>
+  <meta name="description" content="文心快码（Baidu Comate）（百度）：文心快码（Baidu Comate）是百度的 AI 编码全家桶：Comate AI IDE + VS Code/JetBrains/Visual Studio/Xcode 插件 + CLI，官方模型页以国产模型为主（DeepSeek/GLM/Kimi/MiniMax…" />
+  <link rel="canonical" href="https://tools.specul.com/coding/baidu-comate.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="文心快码（Baidu Comate）" />
+  <meta property="og:url" content="https://tools.specul.com/coding/baidu-comate.html" />
+  <meta property="og:title" content="文心快码（Baidu Comate） — Coding | 投机取巧" />
+  <meta property="og:description" content="文心快码（Baidu Comate）（百度）：文心快码（Baidu Comate）是百度的 AI 编码全家桶：Comate AI IDE + VS Code/JetBrains/Visual Studio/Xcode 插件 + CLI，官方模型页以国产模型为主（DeepSeek/GLM/Kimi/MiniMax…" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="../brand.css" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"文心快码（Baidu Comate）","applicationCategory":"DeveloperApplication","sameAs":"https://kuaima.baidu.com","description":"文心快码（Baidu Comate）是百度的 AI 编码全家桶：Comate AI IDE + VS Code/JetBrains/Visual Studio/Xcode 插件 + CLI，官方模型页以国产模型为主（DeepSeek/GLM/Kimi/MiniMax 可切、企业可加千帆）， Skills/Rules/Subagents/MCP/Memory/Automation 扩展面全成页，个人/企业/私有化三档—— 私有化「数据不出域」是它的官方合规主打。","dateModified":"2026-10-22"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑">
+        <a href="https://tools.specul.com/">AI 工具</a>
+        <span aria-current="page">Coding</span>
+      </nav>
+      <a class="back" href="./">← Coding</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#8b7cf8" aria-hidden="true">文心</div>
+        <div>
+          <h1><span data-zh>文心快码（Baidu Comate）</span><span data-en>Baidu Comate (Wenxin Kuaima)</span></h1>
+          <div class="vendor is-caps"><span data-zh>百度</span><span data-en>Baidu</span></div>
+        </div>
+      </div>
+
+      <div class="badges">
+        <span class="tag on">国产</span>
+        <span class="tag on">免费+付费</span>
+        <span class="tag on">IDE</span>
+        <span class="tag on">插件</span>
+        <span class="tag on">CLI</span>
+        <span class="tag on">国产模型</span>
+        <span class="tag on">MCP</span>
+        <span class="tag on">私有化</span>
+        <span class="tag on">企业控制台</span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-22</span>
+      </div>
+
+            <div class="panel-lead"><span data-zh><p><strong>文心快码（Baidu Comate）是百度的 AI 编码全家桶</strong>：Comate AI IDE + VS Code/JetBrains/Visual Studio/Xcode 插件 + CLI，官方模型页以国产模型为主（DeepSeek/GLM/Kimi/MiniMax 可切、企业可加千帆）， Skills/Rules/Subagents/MCP/Memory/Automation 扩展面全成页，个人/企业/私有化三档—— 私有化「数据不出域」是它的官方合规主打。</p></span><span data-en><p><strong>Baidu Comate (Wenxin Kuaima) is Baidu&#39;s AI coding family</strong>: a standalone Comate AI IDE + plugins for VS Code/JetBrains/Visual Studio/Xcode + CLI, with a model menu dominated by domestic LLMs (DeepSeek/GLM/Kimi/MiniMax switchable, enterprises can add Qianfan providers), a full extension stack (Skills/Rules/Subagents/MCP/Memory/Automation) and personal/enterprise/private-deployment tiers — &#39;data stays in-domain&#39; private deployment is its official compliance flagship.</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+<span data-zh>        <div><p>适合：国内合规与私有化叙事（金融/医疗客群官方点名）、IDE 覆盖广（含 Xcode/Visual Studio）、企业控制台与 AgentHub 资产中台。 不适合：要海外前沿模型清单、要个人 BYOK 接任意自有 Key（未核验到）。</p></div></span><span data-en>        <div><p>Fits: domestic-compliance and private-deployment narratives (finance/healthcare named by the official pages), broad IDE coverage (including Xcode/Visual Studio), enterprise console + AgentHub asset hub. Not a fit: wanting an overseas frontier-model menu (the official model page is domestic-first); wanting personal BYOK with arbitrary keys (enterprise adds Qianfan/third-party providers; personal BYOK not verified).</p></div></span>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-22</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国产</span><span data-en>domestic</span>　<span data-zh>百度（百度智能云体系）——官方文档在 cloud.baidu.com，账号走百度智能云。</span><span data-en>Baidu (Baidu Intelligent Cloud); docs live on cloud.baidu.com with a Baidu Cloud account.</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>kuaima.baidu.com / comate.baidu.com / cloud.baidu.com 大陆直连实测 200（2026-10-22）。</span><span data-en>kuaima.baidu.com / comate.baidu.com / cloud.baidu.com measured 200 direct from mainland (2026-10-22).</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>备案未核验</span><span data-en>filing unknown</span>：<span data-zh>官方文档未公示所用模型的备案号；当前模型页清单（DeepSeek/GLM/Kimi/MiniMax）各模型</span><span data-en>the official docs do not publish filing numbers for the models used; the current model</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">9 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><p>官方「模型」文档页列可选清单：DeepSeek V4 Flash/V4 Pro、GLM-4.7/5-Turbo/5.0/5.1/5.2/5v-Turbo、 Kimi-K2.5/K2.6、MiniMax M2.5/M3/M2.7——注意主线是第三方国产大模型，不只文心系； 企业用户可再添加第三方模型提供商 API（官方页点名百度智能云千帆 ModelBuilder 清单）。 切换走对话框 Auto 按钮或模型选择页（官方两种方法成页）。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><p>形态全家桶（官方文档导航）：Comate AI IDE（独立 IDE）、VS Code / JetBrains 全系 / Visual Studio / Xcode 插件、CLI；企业控制台（权限/用量/知识管理/指令管理/开放中心）与 Deepwiki、AgentHub 企业面成页。 个人版/企业版/私有化部署版三档（官方 FAQ 明示差异：License 管理、数据报表、规模化私有部署）。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><p>插件/IDE/CLI 形态处理本机代码；官方 FAQ 明示 SaaS 推理需把正在编写文件的上文传给模型， 并承诺「不使用这部分上传的代码做任何积累、分析、加工等后续动作」； 私有化部署下模型与服务都在客户私域，数据不出域（FAQ 原文口径）。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><p>Mission Mode（明确目标端到端交付：自主分解目标、持续执行直到完成）与 Spec 模式（规范驱动）官方成页； Automation（定时/事件自动化）扩展能力成页；Comate NEXT 计划（云端工作台、智能体自主协作） 见官方文档页口径。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><p>扩展能力官方全成页：Subagent（内置 Explore 子代理，各自独立上下文窗口）、Skills（开放标准能力包）、 Rules（自定义指令：代码规范/框架偏好/项目约定）、MCP、Command、Memory； 「@」快捷键加 File/Folder/Terminal/Doc/Rules 上下文、「/」快捷键加 Skills/Commands/Subagents。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><p>Memory 官方成页（跨会话记忆）；代码索引官方成页（仓库级索引）； 企业面知识管理（私域知识注入）。内置 Explore 子代理做代码库探索。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><p>账号走百度智能云体系；企业控制台权限管理/三级角色（企业管理员/部门管理员/普通成员口径见企业文档）； Agent 执行的文件/终端操作审批细节未逐条核验。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><p>适合：国内合规与私有化叙事（金融/医疗等客群官方点名）、IDE 全家桶（含 Xcode/Visual Studio 这类 同行少覆盖的 IDE）、国产模型清单可切、企业控制台+AgentHub 资产中台。 不适合：要海外前沿模型清单（官方模型页主线是国产模型）、要 BYOK 接任意自有 Key （企业面走千帆/第三方提供商，个人 BYOK 未核验到）。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>改名史</span><span data-en>Name history</span></dt>
+          <dd><p>品牌史：Comate（2023-06 百度智能云开放邀测）→ Comate X（2023-08 商用版）→ 中文名「文心快码」（2024-06 文心大模型大会品牌焕新）；官网 kuaima.baidu.com 与 comate.baidu.com 并行可用，文档在 cloud.baidu.com/doc/COMATE——检索时 Comate/文心快码都要认。</p></dd>
+        </div>
+      </dl>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li>中文名「文心快码」与英文名 Baidu Comate 是同一产品（2024-06 官方品牌焕新）——</li>
+          <li>官网已主用 kuaima.baidu.com，旧链接 comate.baidu.com 仍可用</li>
+          <li>2026-09-07 媒体报道（界面新闻经财联社转述）称文心快码并入通用智能体平台「百度搭子（DuMate）」——</li>
+          <li><strong>官方公告本站未检索到</strong>，官网与文档仍独立活跃在售；两口径分开记录，别当停运处理</li>
+          <li>官方模型页当前清单以第三方国产模型为主（DeepSeek/GLM/Kimi/MiniMax）——</li>
+          <li>「Comate=只用文心大模型」的旧印象已过时，企业面还可加千帆等第三方提供商</li>
+          <li>SaaS 面代码上文会传服务侧推理（官方 FAQ 明示），承诺不积累不加工；</li>
+          <li>数据敏感场景官方给的路径是私有化部署版——别按「插件=全本地」推断</li>
+        </ul>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
+        
+        <ul>
+          <li>并入百度搭子（DuMate）的官方口径（只有媒体报道，未见官方公告；官网仍活跃）</li>
+          <li>所用各模型的备案号公示（官方文档未公示）</li>
+          <li>个人 BYOK 是否支持（企业面走千帆/第三方提供商，个人面未核验到）</li>
+          <li>Agent 执行的文件/终端审批模型细节（未逐条核验）</li>
+        </ul>
+      </div>
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>判断可回到以下一手源复核。本站核验日</span><span data-en>Every judgement can be rechecked against the primary sources below. Verified on</span> 2026-10-22，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-22。</p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>official</td><td>百度智能云文档 · COMATE 概述（Tab/Agent/Mode 四模式/Skills/Rules/Subagents/快捷键）</td><td><a href="https://cloud.baidu.com/doc/COMATE/s/qm7yrpa11" target="_blank" rel="noopener">https://cloud.baidu.com/doc/COMATE/s/qm7yrpa11</a></td></tr>
+            <tr><td>official</td><td>百度智能云文档 · COMATE 模型（可选模型清单与切换方法）</td><td><a href="https://cloud.baidu.com/doc/COMATE/s/emsseobso" target="_blank" rel="noopener">https://cloud.baidu.com/doc/COMATE/s/emsseobso</a></td></tr>
+            <tr><td>official</td><td>百度智能云文档 · COMATE 常见问题（三档差异/IDE 清单/代码数据口径）</td><td><a href="https://cloud.baidu.com/doc/COMATE/s/Dlnvqzquu" target="_blank" rel="noopener">https://cloud.baidu.com/doc/COMATE/s/Dlnvqzquu</a></td></tr>
+            <tr><td>official</td><td>百度智能云文档 · CLI 快速入门（CLI 形态在位）</td><td><a href="https://cloud.baidu.com/doc/COMATE/s/0mrcv8nsa" target="_blank" rel="noopener">https://cloud.baidu.com/doc/COMATE/s/0mrcv8nsa</a></td></tr>
+            <tr><td>changelog</td><td>百度智能云文档 · Comate AI IDE 更新日志（changelog）</td><td><a href="https://cloud.baidu.com/doc/COMATE/s/2mjzerjsp" target="_blank" rel="noopener">https://cloud.baidu.com/doc/COMATE/s/2mjzerjsp</a></td></tr>
+            <tr><td>official</td><td>文心快码官网（产品入口/最新动态）</td><td><a href="https://kuaima.baidu.com" target="_blank" rel="noopener">https://kuaima.baidu.com</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
+        <p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a>。</p>
+            <p><strong>实测建议</strong>（三条，都指向官方可读页没给的东西）：</p>
+            <ul><li><strong>「并入百度搭子」报道后的产品独立性</strong>（官网/文档/计费是否仍独立走 Comate 体系）</li><li><strong>SaaS 面代码上文传输的实际边界</strong>（FAQ 只讲补全上文，Agent 多文件读取传什么未写）</li><li><strong>私有化部署版的模型切换自由度</strong>（官方称支持文心/开源/企业微调模型，未实测）</li></ul>
+      </div>
+
+
+      
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./codebuddy.html">CodeBuddy</a></span><span class="rel-n">同为国产大厂编码全家桶：腾讯系混元备案号官方文档可查；文心快码所用模型备案号官方未公示。</span></li>
+          <li><span class="rel-t"><a href="./qoder-cn.html">Qoder CN（原通义灵码）</a></span><span class="rel-n">同为国产大厂编码线：阿里系走「一方产品+全家桶 Credits」；文心快码走「私有化数据不出域」叙事。</span></li>
+          <li><span class="rel-t"><a href="./trae.html">Trae</a></span><span class="rel-n">同为国产编码工具：Trae 出海双线活跃；文心快码主线在国内企业面（私有化）。</span></li>
+          <li><span class="rel-t"><a href="/mcp/context7.html"><span data-zh>Context7</span><span data-en>Context7</span></a></span><span class="rel-n"><span data-zh>另一层 · MCP 工具</span><span data-en>Other layer · MCP tools</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        方法论与坐标系定义见仓库内 <code>METHODOLOGY.md</code>。
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 投机取巧 · <span data-zh>Specul</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+  <script src="../brand.js"></script>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      function sync() { root.setAttribute('data-lang', root.lang === 'en' ? 'en' : 'zh'); }
+      new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['lang'] });
+      sync();
+    })();
+  </script>
+</body>
+</html>

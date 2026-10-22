@@ -10,7 +10,7 @@
 
 ## 这个大类提供什么
 
-- **39 个对象**，按固定 8 个维度记录
+- **41 个对象**，按固定 8 个维度记录
 - 每个维度都能回溯到官方一手源，附来源类型与核验日期
 - **不给总分排名**——缺少跨工具的统一实测，排名会误导
 - **「未知」是合法答案**——查不到就写未知并说明原因，不用推测填充
@@ -24,6 +24,7 @@
 | [Amazon Q Developer](./amazon-q-developer.html) | IDE 形态 | AWS | partial | 2026-10-22 |
 | [Amp](./amp.html) | CLI 形态 | Amp Frontier Corporation（原 Sourcegraph，2025-12 分拆独立） | partial | 2026-10-08 |
 | [Augment Code](./augment-code.html) | 厂商云形态 | Augment Code | partial | 2026-10-22 |
+| [文心快码（Baidu Comate）](./baidu-comate.html) | IDE 形态 | 百度 | partial | 2026-10-22 |
 | [Bolt.new](./bolt-new.html) | 厂商云形态 | StackBlitz | partial | 2026-10-22 |
 | [Claude Code CLI](./claude-code-cli.html) | CLI 形态 | Anthropic | partial | 2026-10-08 |
 | [Claude Code IDE 扩展](./claude-code.html) | IDE 形态 | Anthropic | partial | 2026-10-08 |
@@ -45,6 +46,7 @@
 | [xAI Grok Bot](./grok-bot.html) | 厂商云形态 | xAI | partial | 2026-10-03 |
 | [Jules](./jules.html) | 厂商云形态 | Google | partial | 2026-10-08 |
 | [Junie](./junie.html) | IDE 形态 | JetBrains | partial | 2026-10-08 |
+| [Kilo Code](./kilocode.html) | IDE 形态 | Kilo-Org | partial | 2026-10-22 |
 | [Kiro](./kiro.html) | IDE 形态 | AWS | partial | 2026-10-08 |
 | [Lovable](./lovable.html) | 厂商云形态 | Lovable | partial | 2026-10-22 |
 | [Meta Muse](./meta-muse.html) | 厂商云形态 | Meta | partial | 2026-10-03 |
@@ -67,7 +69,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 39 个对象中，**0 个为 verified**。
+当前 41 个对象中，**0 个为 verified**。
 
 ## 数据来源
 
@@ -80,7 +82,7 @@
 
 | 大类 | 主题 | 对象数 |
 |---|---|---|
-| [AI 编程](/coding/) | 装在编辑器、终端，或厂商云里 | 39 |
+| [AI 编程](/coding/) | 装在编辑器、终端，或厂商云里 | 41 |
 | [AI 对话助手](/chat/) | 通用对话产品，含国产 | 14 |
 | [AI 图像创作](/image/) | 文生图与图像工作台 | 13 |
 | [AI 视频创作](/video/) | 文生视频与数字人 | 12 |
