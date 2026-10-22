@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>v0 — Coding | 投机取巧</title>
+  <meta name="description" content="v0（Vercel）：v0 是 Vercel 的提示词到全栈应用平台：聊天生成 Next.js 应用，VM 沙箱内跑真终端与预装 agent （claude 可直接用），GitHub 同步进你的仓库，publish 走 Vercel 部署链——权限三档 Ask/Auto/Full， 自定义模型是 Enterpri…" />
+  <link rel="canonical" href="https://tools.specul.com/coding/v0.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="v0" />
+  <meta property="og:url" content="https://tools.specul.com/coding/v0.html" />
+  <meta property="og:title" content="v0 — Coding | 投机取巧" />
+  <meta property="og:description" content="v0（Vercel）：v0 是 Vercel 的提示词到全栈应用平台：聊天生成 Next.js 应用，VM 沙箱内跑真终端与预装 agent （claude 可直接用），GitHub 同步进你的仓库，publish 走 Vercel 部署链——权限三档 Ask/Auto/Full， 自定义模型是 Enterpri…" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="../brand.css" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"v0","applicationCategory":"DeveloperApplication","sameAs":"https://v0.app","description":"v0 是 Vercel 的提示词到全栈应用平台：聊天生成 Next.js 应用，VM 沙箱内跑真终端与预装 agent （claude 可直接用），GitHub 同步进你的仓库，publish 走 Vercel 部署链——权限三档 Ask/Auto/Full， 自定义模型是 Enterprise 面。","dateModified":"2026-10-22"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑">
+        <a href="https://tools.specul.com/">AI 工具</a>
+        <span aria-current="page">Coding</span>
+      </nav>
+      <a class="back" href="./">← Coding</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#8b7cf8" aria-hidden="true">v0</div>
+        <div>
+          <h1><span data-zh>v0</span><span data-en>v0</span></h1>
+          <div class="vendor is-caps">Vercel</div>
+        </div>
+      </div>
+
+      <div class="badges">
+        <span class="tag on">海外</span>
+        <span class="tag on">免费+付费</span>
+        <span class="tag on">Web</span>
+        <span class="tag on">Next.js</span>
+        <span class="tag on">Vercel</span>
+        <span class="tag on">沙箱</span>
+        <span class="tag on">MCP</span>
+        <span class="tag on">GitHub同步</span>
+        <span class="tag on">预装agent</span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-22</span>
+      </div>
+
+            <div class="panel-lead"><span data-zh><p><strong>v0 是 Vercel 的提示词到全栈应用平台</strong>：聊天生成 Next.js 应用，VM 沙箱内跑真终端与预装 agent （claude 可直接用），GitHub 同步进你的仓库，publish 走 Vercel 部署链——权限三档 Ask/Auto/Full， 自定义模型是 Enterprise 面。</p></span><span data-en><p><strong>v0 is Vercel&#39;s prompt-to-full-stack platform</strong>: chats generate Next.js apps, a VM sandbox runs a real terminal with pre-installed agents (claude is ready to use), GitHub sync moves code into your repo, and publishing runs through the Vercel deployment chain — Ask/Auto/Full permission tiers, custom models are Enterprise-side.</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+<span data-zh>        <div><p>适合：Next.js/Vercel 栈团队、要沙箱终端与预装 agent、企业席位并入 Vercel 账号体系。 不适合：栈不在 Vercel 生态、非 Enterprise 要自定义模型。</p></div></span><span data-en>        <div><p>Fits: Next.js/Vercel-stack teams (the deployment chain is natively wired), wanting a real terminal and pre-installed agents in a sandbox, enterprise seats unified with the Vercel account system. Not a fit: stacks outside the Next.js/Vercel ecosystem (the deployment chain is part of the product semantics); non-Enterprise teams wanting custom models.</p></div></span>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-22</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>Vercel（美国）。</span><span data-en>Vercel (US).</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>v0.app / v0.dev（307→v0.app）/ v0.dev/docs 大陆直连实测 200（2026-10-22）。</span><span data-en>v0.app / v0.dev (307 to v0.app) / v0.dev/docs measured 200 direct from mainland (2026-10-22).</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>未见于备案名单</span><span data-en>not in filing list</span>：<span data-zh>未见于网信办公示名单（2026-10-22 检索）；该产品未面向大陆公众提供服务，备案不适用。</span><span data-en>not in the CAC public registry (searched 2026-10-22); the product does not serve</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><p>官方「Choosing models」页：聊天内模型选择器选 v0 模型或从 AI Gateway 目录加自定义模型； 更新版选择器与自定义模型面向 Enterprise 团队（自定义模型需团队 owner 批准）。 会话内模型跟随最近一次响应，直到你换。应用内 AI 功能另有 ai-models 集成页（Grok/fal/Deep Infra 等）。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><p>网页形态（v0.app）；VM-backed 聊天跑在 Vercel Sandbox 隔离虚拟机里（官方 sandbox 页： 托管项目文件/跑预览/执行命令，聊天间状态互不泄漏；取代旧的浏览器内环境）。 沙箱内预装编码 agent（官方页：终端里直接跑 claude 等 CLI，与 v0 内置助手同项目并用）。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><p>项目在 v0 平台；GitHub 集成官方成页：代码进你的仓库、分支隔离、PR 与 CI 走标准流； 可导入现有 GitHub 仓库（git-import 页）。官方明示 GitHub sync 只搬代码， 不等于授予经 GitHub 部署的权限（部署权限看 Vercel 角色）。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><p>部署线常驻：preview 部署按分支构建、publish 更新 Vercel 生产部署（官方 deployments 页）； 部署报错可「Fix with v0」读日志诊断修复（agentic-features 页）。 构建任务关闭页面后是否续跑未核验到官方声明。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><p>agent 能力官方成页：web 搜索、浏览器使用、终端命令、错误修复、外部工具集成，全部在沙箱内； MCP 两条线（自带 MCP 服务器含预设清单/Marketplace 集成的 Remote MCP）； 数据库集成 Supabase/Blob/Neon/Upstash；Figma 导入；v0 自身也可作为 MCP server 被别的 agent 调。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><p>代码查看器（浏览/编辑代码、评审改动、加注释作下轮上下文）；Design mode 可视化选元素改样式回写代码； 项目（projects）组织多聊天。跨会话记忆机制未核验到官方声明。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><p>工具调用三档权限模式（Ask/Auto/Full）+ Agent Permissions 规则（MCP 页与 agentic-features 页口径）； 企业面走 Vercel Enterprise：席位/v0 角色（Builder 等）与 Vercel 团队角色分离管理（enterprise 页）； 安全页官方口径：不信任 LLM 生成代码——执行前安全分析、沙箱隔离、输入校验、对抗测试。</p></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><p>适合：Next.js/Vercel 栈团队（部署链原生打通）、要沙箱内跑真终端与预装 agent、 企业席位与 Vercel 账号体系统一。 不适合：栈不在 Next.js/Vercel 生态（部署线是产品语义一部分）、非 Enterprise 要自定义模型。</p></dd>
+        </div>
+      </dl>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li>部署链绑 Vercel：publish 走 Vercel 项目与域名（官方 deployments 页）——GitHub 同步只搬代码，</li>
+          <li>经 GitHub/Vercel CLI 的部署权限看 Vercel 角色，两套权限别混（官方页专门警告）</li>
+          <li>自定义模型（AI Gateway 目录）是 Enterprise 团队功能且需 owner 批准——普通计划的模型选择面比官方文档读感窄</li>
+          <li>沙箱有 VM-backed 与旧浏览器内两代（官方 sandbox 页明示取代关系）——旧教程里「浏览器内跑」的行为描述可能已过时</li>
+        </ul>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
+        
+        <ul>
+          <li>跨会话记忆机制（未核验到官方声明）</li>
+          <li>构建任务关闭页面后是否续跑（未核验到官方声明）</li>
+          <li>免费/付费计划的额度差完整表（pricing 页在，未逐条清点）</li>
+          <li>聊天生成侧的可选模型完整清单（选择器随计划与网关目录变化，未逐条清点）</li>
+        </ul>
+      </div>
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>判断可回到以下一手源复核。本站核验日</span><span data-en>Every judgement can be rechecked against the primary sources below. Verified on</span> 2026-10-22，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-22。</p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>official</td><td>v0 文档 · Quickstart（产品入口 v0.app/主工作流）</td><td><a href="https://v0.dev/docs/quickstart" target="_blank" rel="noopener">https://v0.dev/docs/quickstart</a></td></tr>
+            <tr><td>official</td><td>v0 文档 · Sandbox（Vercel Sandbox VM/取代浏览器内环境）</td><td><a href="https://v0.dev/docs/sandbox" target="_blank" rel="noopener">https://v0.dev/docs/sandbox</a></td></tr>
+            <tr><td>official</td><td>v0 文档 · Agentic features（搜索/浏览器/终端/修错/权限档）</td><td><a href="https://v0.dev/docs/agentic-features" target="_blank" rel="noopener">https://v0.dev/docs/agentic-features</a></td></tr>
+            <tr><td>official</td><td>v0 文档 · Choosing models（选择器/AI Gateway/Enterprise 门槛）</td><td><a href="https://v0.dev/docs/model-picker" target="_blank" rel="noopener">https://v0.dev/docs/model-picker</a></td></tr>
+            <tr><td>official</td><td>v0 文档 · GitHub（同步与部署权限分离警告）</td><td><a href="https://v0.dev/docs/github" target="_blank" rel="noopener">https://v0.dev/docs/github</a></td></tr>
+            <tr><td>official</td><td>v0 文档 · Security（威胁模型/沙箱执行口径）</td><td><a href="https://v0.dev/docs/security" target="_blank" rel="noopener">https://v0.dev/docs/security</a></td></tr>
+            <tr><td>official</td><td>v0 文档 · Pre-installed Agents（沙箱内跑 claude 等）</td><td><a href="https://v0.dev/docs/pre-installed-agents" target="_blank" rel="noopener">https://v0.dev/docs/pre-installed-agents</a></td></tr>
+            <tr><td>changelog</td><td>Vercel Changelog · v0 相关条目（产品变更公告通道）</td><td><a href="https://vercel.com/changelog?q=v0" target="_blank" rel="noopener">https://vercel.com/changelog?q=v0</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
+        <p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a>。</p>
+            <p><strong>实测建议</strong>（三条，都指向官方可读页没给的东西）：</p>
+            <ul><li><strong>Ask/Auto/Full 三档在终端命令上的实际拦截粒度</strong>（官方给档位定义，未给逐类命令矩阵）</li><li><strong>预装 claude 与 v0 内置助手同项目并行的上下文互见程度</strong></li><li><strong>旧浏览器内沙箱存量项目的迁移行为</strong>（官方页只说取代，未给存量指引）</li></ul>
+      </div>
+
+
+      
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./lovable.html">Lovable</a></span><span class="rel-n">同类产品：Lovable 自带后端与多 Git 平台同步，v0 绑 Vercel 部署链。</span></li>
+          <li><span class="rel-t"><a href="./bolt-new.html">Bolt.new</a></span><span class="rel-n">同类产品：Bolt 浏览器内 WebContainers，v0 已换 Vercel Sandbox VM。</span></li>
+          <li><span class="rel-t"><a href="./codex-ide.html">Codex（IDE 扩展）</a></span><span class="rel-n">生态互嵌对照：v0 沙箱预装 claude，Codex 扩展把 agent 装进你的 IDE。</span></li>
+          <li><span class="rel-t"><a href="/mcp/supabase-mcp.html"><span data-zh>Supabase MCP</span><span data-en>Supabase MCP</span></a></span><span class="rel-n"><span data-zh>另一层 · MCP 工具</span><span data-en>Other layer · MCP tools</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        方法论与坐标系定义见仓库内 <code>METHODOLOGY.md</code>。
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 投机取巧 · <span data-zh>Specul</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+  <script src="../brand.js"></script>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      function sync() { root.setAttribute('data-lang', root.lang === 'en' ? 'en' : 'zh'); }
+      new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['lang'] });
+      sync();
+    })();
+  </script>
+</body>
+</html>
