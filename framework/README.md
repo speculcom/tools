@@ -21,21 +21,21 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 |---|---|---|---|---|
 | [AG2](./ag2.html) | 框架 / SDK | ag2ai | partial | 2026-10-08 |
 | [AgentScope](./agentscope.html) | 框架 / SDK | 阿里巴巴（魔搭社区） | partial | 2026-10-21 |
-| [Claude Agent SDK](./claude-agent-sdk.html) | 框架 / SDK | Anthropic | partial | 2026-09-30 |
-| [Codex SDK](./codex-sdk.html) | 框架 / SDK | OpenAI | partial | 2026-10-01 |
+| [Claude Agent SDK](./claude-agent-sdk.html) | 框架 / SDK | Anthropic | partial | 2026-10-23 |
+| [Codex SDK](./codex-sdk.html) | 框架 / SDK | OpenAI | partial | 2026-10-23 |
 | [CrewAI](./crewai.html) | 框架 / SDK | CrewAI Inc | partial | 2026-10-08 |
-| [Deep Agents](./deepagents.html) | 框架 / SDK | LangChain | partial | 2026-09-30 |
+| [Deep Agents](./deepagents.html) | 框架 / SDK | LangChain | partial | 2026-10-23 |
 | [DSPy](./dspy.html) | 框架 / SDK | Stanford NLP / Databricks | partial | 2026-10-21 |
-| [Google ADK（Agent Development Kit）](./google-adk.html) | 框架 / SDK | Google | partial | 2026-10-01 |
+| [Google ADK（Agent Development Kit）](./google-adk.html) | 框架 / SDK | Google | partial | 2026-10-23 |
 | [Haystack](./haystack.html) | 框架 / SDK | deepset | partial | 2026-10-21 |
-| [Hermes Agent](./hermes-agent.html) | 框架 / SDK | Nous Research | partial | 2026-10-01 |
+| [Hermes Agent](./hermes-agent.html) | 框架 / SDK | Nous Research | partial | 2026-10-23 |
 | [LangChain](./langchain.html) | 框架 / SDK | LangChain, Inc. | partial | 2026-10-21 |
 | [LangGraph](./langgraph.html) | 框架 / SDK | LangChain Inc | partial | 2026-10-01 |
 | [Letta / MemGPT](./letta.html) | 框架 / SDK | Letta, Inc. | partial | 2026-10-21 |
 | [LlamaIndex Framework](./llamaindex.html) | 框架 / SDK | LlamaIndex（run-llama） | partial | 2026-10-01 |
 | [Mastra](./mastra.html) | 框架 / SDK | Mastra AI | partial | 2026-10-08 |
 | [Microsoft Agent Framework](./microsoft-agent-framework.html) | 框架 / SDK | Microsoft | partial | 2026-10-08 |
-| [OpenAI Agents SDK](./openai-agents-sdk.html) | 框架 / SDK | OpenAI | partial | 2026-09-30 |
+| [OpenAI Agents SDK](./openai-agents-sdk.html) | 框架 / SDK | OpenAI | partial | 2026-10-23 |
 | [OpenHands Agent Canvas](./openhands.html) | 框架 / SDK | OpenHands（All-Hands-AI） | partial | 2026-10-01 |
 | [Pydantic AI](./pydantic-ai.html) | 框架 / SDK | Pydantic | partial | 2026-10-08 |
 | [smolagents](./smolagents.html) | 框架 / SDK | Hugging Face | partial | 2026-10-08 |

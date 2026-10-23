@@ -35,12 +35,12 @@
 | [Continue](./continue.html) | IDE 形态 | Continue | partial | 2026-10-08 |
 | [GitHub Copilot CLI](./copilot-cli.html) | CLI 形态 | GitHub | partial | 2026-10-08 |
 | [GitHub Copilot](./copilot.html) | IDE 形态 | GitHub / Microsoft | partial | 2026-10-08 |
-| [Crush](./crush.html) | CLI 形态 | Charm | partial | 2026-09-29 |
+| [Crush](./crush.html) | CLI 形态 | Charm | partial | 2026-10-23 |
 | [Cursor CLI](./cursor-cli.html) | CLI 形态 | Anysphere | partial | 2026-10-08 |
 | [Cursor](./cursor.html) | IDE 形态 | Anysphere | partial | 2026-10-03 |
 | [Devin](./devin.html) | 厂商云形态 | Cognition | partial | 2026-10-21 |
 | [Droid](./factory-droid.html) | CLI 形态 | Factory AI | partial | 2026-10-08 |
-| [Gemini CLI](./gemini-cli.html) | CLI 形态 | Google | partial | 2026-09-29 |
+| [Gemini CLI](./gemini-cli.html) | CLI 形态 | Google | partial | 2026-10-23 |
 | [Google Antigravity](./google-antigravity.html) | IDE 形态 | Google | partial | 2026-10-21 |
 | [Goose](./goose.html) | CLI 形态 | Agentic AI Foundation | partial | 2026-10-08 |
 | [xAI Grok Bot](./grok-bot.html) | 厂商云形态 | xAI | partial | 2026-10-03 |
