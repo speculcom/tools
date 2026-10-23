@@ -19,47 +19,47 @@
 
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
-| [Aider](./aider-cli.html) | CLI 形态 | Aider-AI | partial | 2026-10-08 |
-| [Aider Watch 模式](./aider.html) | IDE 形态 | Aider-AI | partial | 2026-10-08 |
+| [Aider](./aider-cli.html) | CLI 形态 | Aider-AI | partial | 2026-10-23 |
+| [Aider Watch 模式](./aider.html) | IDE 形态 | Aider-AI | partial | 2026-10-23 |
 | [Amazon Q Developer](./amazon-q-developer.html) | IDE 形态 | AWS | partial | 2026-10-22 |
-| [Amp](./amp.html) | CLI 形态 | Amp Frontier Corporation（原 Sourcegraph，2025-12 分拆独立） | partial | 2026-10-08 |
+| [Amp](./amp.html) | CLI 形态 | Amp Frontier Corporation（原 Sourcegraph，2025-12 分拆独立） | partial | 2026-10-23 |
 | [Augment Code](./augment-code.html) | 厂商云形态 | Augment Code | partial | 2026-10-22 |
 | [文心快码（Baidu Comate）](./baidu-comate.html) | IDE 形态 | 百度 | partial | 2026-10-22 |
 | [Bolt.new](./bolt-new.html) | 厂商云形态 | StackBlitz | partial | 2026-10-22 |
-| [Claude Code CLI](./claude-code-cli.html) | CLI 形态 | Anthropic | partial | 2026-10-08 |
-| [Claude Code IDE 扩展](./claude-code.html) | IDE 形态 | Anthropic | partial | 2026-10-08 |
-| [Cline](./cline.html) | IDE 形态 | Cline Bot | partial | 2026-10-08 |
+| [Claude Code CLI](./claude-code-cli.html) | CLI 形态 | Anthropic | partial | 2026-10-23 |
+| [Claude Code IDE 扩展](./claude-code.html) | IDE 形态 | Anthropic | partial | 2026-10-23 |
+| [Cline](./cline.html) | IDE 形态 | Cline Bot | partial | 2026-10-23 |
 | [CodeBuddy](./codebuddy.html) | IDE 形态 | 腾讯云 | partial | 2026-10-21 |
-| [Codex CLI](./codex-cli.html) | CLI 形态 | OpenAI | partial | 2026-10-08 |
-| [Codex IDE 扩展](./codex-ide.html) | IDE 形态 | OpenAI | partial | 2026-10-08 |
-| [Continue](./continue.html) | IDE 形态 | Continue | partial | 2026-10-08 |
-| [GitHub Copilot CLI](./copilot-cli.html) | CLI 形态 | GitHub | partial | 2026-10-08 |
-| [GitHub Copilot](./copilot.html) | IDE 形态 | GitHub / Microsoft | partial | 2026-10-08 |
+| [Codex CLI](./codex-cli.html) | CLI 形态 | OpenAI | partial | 2026-10-23 |
+| [Codex IDE 扩展](./codex-ide.html) | IDE 形态 | OpenAI | partial | 2026-10-23 |
+| [Continue](./continue.html) | IDE 形态 | Continue | partial | 2026-10-23 |
+| [GitHub Copilot CLI](./copilot-cli.html) | CLI 形态 | GitHub | partial | 2026-10-23 |
+| [GitHub Copilot](./copilot.html) | IDE 形态 | GitHub / Microsoft | partial | 2026-10-23 |
 | [Crush](./crush.html) | CLI 形态 | Charm | partial | 2026-10-23 |
-| [Cursor CLI](./cursor-cli.html) | CLI 形态 | Anysphere | partial | 2026-10-08 |
+| [Cursor CLI](./cursor-cli.html) | CLI 形态 | Anysphere | partial | 2026-10-23 |
 | [Cursor](./cursor.html) | IDE 形态 | Anysphere | partial | 2026-10-23 |
 | [Devin](./devin.html) | 厂商云形态 | Cognition | partial | 2026-10-21 |
-| [Droid](./factory-droid.html) | CLI 形态 | Factory AI | partial | 2026-10-08 |
+| [Droid](./factory-droid.html) | CLI 形态 | Factory AI | partial | 2026-10-23 |
 | [Gemini CLI](./gemini-cli.html) | CLI 形态 | Google | partial | 2026-10-23 |
 | [Google Antigravity](./google-antigravity.html) | IDE 形态 | Google | partial | 2026-10-21 |
-| [Goose](./goose.html) | CLI 形态 | Agentic AI Foundation | partial | 2026-10-08 |
+| [Goose](./goose.html) | CLI 形态 | Agentic AI Foundation | partial | 2026-10-23 |
 | [xAI Grok Bot](./grok-bot.html) | 厂商云形态 | xAI | partial | 2026-10-23 |
-| [Jules](./jules.html) | 厂商云形态 | Google | partial | 2026-10-08 |
-| [Junie](./junie.html) | IDE 形态 | JetBrains | partial | 2026-10-08 |
+| [Jules](./jules.html) | 厂商云形态 | Google | partial | 2026-10-23 |
+| [Junie](./junie.html) | IDE 形态 | JetBrains | partial | 2026-10-23 |
 | [Kilo Code](./kilocode.html) | IDE 形态 | Kilo-Org | partial | 2026-10-22 |
-| [Kiro](./kiro.html) | IDE 形态 | AWS | partial | 2026-10-08 |
+| [Kiro](./kiro.html) | IDE 形态 | AWS | partial | 2026-10-23 |
 | [Lovable](./lovable.html) | 厂商云形态 | Lovable | partial | 2026-10-22 |
 | [Meta Muse](./meta-muse.html) | 厂商云形态 | Meta | partial | 2026-10-23 |
 | [OpenAI Dot](./openai-dot.html) | 厂商云形态 | OpenAI | partial | 2026-10-23 |
-| [OpenCode](./opencode.html) | CLI 形态 | OpenCode | partial | 2026-10-08 |
+| [OpenCode](./opencode.html) | CLI 形态 | OpenCode | partial | 2026-10-23 |
 | [Qoder CN（原通义灵码）](./qoder-cn.html) | IDE 形态 | 阿里云 | partial | 2026-10-22 |
 | [Qoder](./qoder.html) | IDE 形态 | 阿里云 | partial | 2026-10-22 |
 | [Replit Agent](./replit-agent.html) | 厂商云形态 | Replit | partial | 2026-10-21 |
 | [Trae](./trae.html) | IDE 形态 | 字节跳动 | partial | 2026-10-21 |
 | [v0](./v0.html) | 厂商云形态 | Vercel | partial | 2026-10-22 |
-| [Warp](./warp.html) | CLI 形态 | Warp | partial | 2026-10-08 |
-| [Windsurf / Devin Desktop](./windsurf.html) | IDE 形态 | Cognition | partial | 2026-10-08 |
-| [Zed](./zed.html) | IDE 形态 | Zed Industries | partial | 2026-10-08 |
+| [Warp](./warp.html) | CLI 形态 | Warp | partial | 2026-10-23 |
+| [Windsurf / Devin Desktop](./windsurf.html) | IDE 形态 | Cognition | partial | 2026-10-23 |
+| [Zed](./zed.html) | IDE 形态 | Zed Industries | partial | 2026-10-23 |
 
 ## 可信度标记
 
