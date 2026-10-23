@@ -30,13 +30,13 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 | [Haystack](./haystack.html) | 框架 / SDK | deepset | partial | 2026-10-21 |
 | [Hermes Agent](./hermes-agent.html) | 框架 / SDK | Nous Research | partial | 2026-10-23 |
 | [LangChain](./langchain.html) | 框架 / SDK | LangChain, Inc. | partial | 2026-10-21 |
-| [LangGraph](./langgraph.html) | 框架 / SDK | LangChain Inc | partial | 2026-10-01 |
+| [LangGraph](./langgraph.html) | 框架 / SDK | LangChain Inc | partial | 2026-10-23 |
 | [Letta / MemGPT](./letta.html) | 框架 / SDK | Letta, Inc. | partial | 2026-10-21 |
-| [LlamaIndex Framework](./llamaindex.html) | 框架 / SDK | LlamaIndex（run-llama） | partial | 2026-10-01 |
+| [LlamaIndex Framework](./llamaindex.html) | 框架 / SDK | LlamaIndex（run-llama） | partial | 2026-10-23 |
 | [Mastra](./mastra.html) | 框架 / SDK | Mastra AI | partial | 2026-10-08 |
 | [Microsoft Agent Framework](./microsoft-agent-framework.html) | 框架 / SDK | Microsoft | partial | 2026-10-08 |
 | [OpenAI Agents SDK](./openai-agents-sdk.html) | 框架 / SDK | OpenAI | partial | 2026-10-23 |
-| [OpenHands Agent Canvas](./openhands.html) | 框架 / SDK | OpenHands（All-Hands-AI） | partial | 2026-10-01 |
+| [OpenHands Agent Canvas](./openhands.html) | 框架 / SDK | OpenHands（All-Hands-AI） | partial | 2026-10-23 |
 | [Pydantic AI](./pydantic-ai.html) | 框架 / SDK | Pydantic | partial | 2026-10-08 |
 | [smolagents](./smolagents.html) | 框架 / SDK | Hugging Face | partial | 2026-10-08 |
 | [Strands Agents SDK](./strands-agents.html) | 框架 / SDK | AWS | partial | 2026-10-21 |

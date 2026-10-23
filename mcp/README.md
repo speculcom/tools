@@ -23,7 +23,7 @@ MCP server 的权限范围、传输方式与输出可用性。收录标准：已
 | [Brave Search MCP Server](./brave-search-mcp.html) | MCP | Brave | partial | 2026-10-21 |
 | [Chrome DevTools MCP](./chrome-devtools-mcp.html) | MCP | Google（Chrome DevTools 团队） | partial | 2026-10-21 |
 | [Cloudflare MCP Server](./cloudflare-mcp.html) | MCP | Cloudflare | partial | 2026-10-21 |
-| [Context7](./context7.html) | MCP | Upstash | partial | 2026-10-01 |
+| [Context7](./context7.html) | MCP | Upstash | partial | 2026-10-23 |
 | [Everything MCP Server](./everything.html) | MCP | Model Context Protocol | verified | 2026-10-08 |
 | [Fetch MCP Server](./fetch.html) | MCP | Model Context Protocol | verified | 2026-10-08 |
 | [Figma MCP Server](./figma-mcp.html) | MCP | Figma | partial | 2026-10-21 |

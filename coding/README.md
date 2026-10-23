@@ -37,20 +37,20 @@
 | [GitHub Copilot](./copilot.html) | IDE 形态 | GitHub / Microsoft | partial | 2026-10-08 |
 | [Crush](./crush.html) | CLI 形态 | Charm | partial | 2026-10-23 |
 | [Cursor CLI](./cursor-cli.html) | CLI 形态 | Anysphere | partial | 2026-10-08 |
-| [Cursor](./cursor.html) | IDE 形态 | Anysphere | partial | 2026-10-03 |
+| [Cursor](./cursor.html) | IDE 形态 | Anysphere | partial | 2026-10-23 |
 | [Devin](./devin.html) | 厂商云形态 | Cognition | partial | 2026-10-21 |
 | [Droid](./factory-droid.html) | CLI 形态 | Factory AI | partial | 2026-10-08 |
 | [Gemini CLI](./gemini-cli.html) | CLI 形态 | Google | partial | 2026-10-23 |
 | [Google Antigravity](./google-antigravity.html) | IDE 形态 | Google | partial | 2026-10-21 |
 | [Goose](./goose.html) | CLI 形态 | Agentic AI Foundation | partial | 2026-10-08 |
-| [xAI Grok Bot](./grok-bot.html) | 厂商云形态 | xAI | partial | 2026-10-03 |
+| [xAI Grok Bot](./grok-bot.html) | 厂商云形态 | xAI | partial | 2026-10-23 |
 | [Jules](./jules.html) | 厂商云形态 | Google | partial | 2026-10-08 |
 | [Junie](./junie.html) | IDE 形态 | JetBrains | partial | 2026-10-08 |
 | [Kilo Code](./kilocode.html) | IDE 形态 | Kilo-Org | partial | 2026-10-22 |
 | [Kiro](./kiro.html) | IDE 形态 | AWS | partial | 2026-10-08 |
 | [Lovable](./lovable.html) | 厂商云形态 | Lovable | partial | 2026-10-22 |
-| [Meta Muse](./meta-muse.html) | 厂商云形态 | Meta | partial | 2026-10-03 |
-| [OpenAI Dot](./openai-dot.html) | 厂商云形态 | OpenAI | partial | 2026-10-03 |
+| [Meta Muse](./meta-muse.html) | 厂商云形态 | Meta | partial | 2026-10-23 |
+| [OpenAI Dot](./openai-dot.html) | 厂商云形态 | OpenAI | partial | 2026-10-23 |
 | [OpenCode](./opencode.html) | CLI 形态 | OpenCode | partial | 2026-10-08 |
 | [Qoder CN（原通义灵码）](./qoder-cn.html) | IDE 形态 | 阿里云 | partial | 2026-10-22 |
 | [Qoder](./qoder.html) | IDE 形态 | 阿里云 | partial | 2026-10-22 |
