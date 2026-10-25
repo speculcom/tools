@@ -134,47 +134,47 @@
       <dl class="axes">
         <div class="axis">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
-          <dd><p><strong>它自己不调模型</strong>——被 MCP 客户端调用的接口实现。它是「千余应用的入口」： 用户在 Zapier 侧挑选哪些 action 暴露给 agent，server 把这些 action 包装成 MCP 工具。</p></dd>
+          <dd><span data-zh><p><strong>它自己不调模型</strong>——被 MCP 客户端调用的接口实现。它是「千余应用的入口」： 用户在 Zapier 侧挑选哪些 action 暴露给 agent，server 把这些 action 包装成 MCP 工具。</p></span><span data-en><p><strong>It calls no model itself</strong> — an interface implementation called by MCP clients. It is &quot;an entry point to a thousand-plus apps&quot;: the user picks on the Zapier side which actions are exposed to the agent, and the server wraps those actions as MCP tools.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
-          <dd><p>官方托管远程 server（actions.zapier.com 文档线直抓 200）；每用户按配置生成专属端点。</p></dd>
+          <dd><span data-zh><p>官方托管远程 server（actions.zapier.com 文档线直抓 200）；每用户按配置生成专属端点。</p></span><span data-en><p>Official hosted remote server (actions.zapier.com docs line direct fetch 200); each user gets a dedicated endpoint URL generated from their configuration.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
-          <dd><p>不碰本机文件系统——它代执行的是 Zapier 平台侧的 action（读写各 SaaS 应用）。</p></dd>
+          <dd><span data-zh><p>不碰本机文件系统——它代执行的是 Zapier 平台侧的 action（读写各 SaaS 应用）。</p></span><span data-en><p>Never touches the local file system — what it executes on your behalf are Zapier-platform-side actions (reading and writing various SaaS apps).</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
-          <dd><p>服务在 Zapier 侧；请求-响应语义。注意：Zapier 平台的 Zap（自动化线）是常驻自动化—— 那是 automation 大类的另一产品面，不算 MCP server 本体。</p></dd>
+          <dd><span data-zh><p>服务在 Zapier 侧；请求-响应语义。注意：Zapier 平台的 Zap（自动化线）是常驻自动化—— 那是 automation 大类的另一产品面，不算 MCP server 本体。</p></span><span data-en><p>The service lives on Zapier&#39;s side; request-response semantics. Note: Zapier&#39;s platform Zaps (the automation line) are resident automations — that is another product surface in the automation category, not part of this MCP server itself.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
-          <dd><p><strong>动态工具面</strong>：暴露哪些工具=用户在 Zapier MCP 配置里勾选了哪些应用的哪些 action （Gmail/Sheets/Notion/Slack…千余应用）。工具清单因人而异，无法逐条清点——这是它与 其他厂商 server 最大的结构差异。</p></dd>
+          <dd><span data-zh><p><strong>动态工具面</strong>：暴露哪些工具=用户在 Zapier MCP 配置里勾选了哪些应用的哪些 action （Gmail/Sheets/Notion/Slack…千余应用）。工具清单因人而异，无法逐条清点——这是它与 其他厂商 server 最大的结构差异。</p></span><span data-en><p><strong>A dynamic tool surface</strong>: which tools are exposed = which actions of which apps the user checked in the Zapier MCP configuration (Gmail/Sheets/Notion/Slack… a thousand-plus apps). The tool inventory varies per person and cannot be enumerated item by item — this is its biggest structural difference from other vendor servers.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
-          <dd><p>无 server 侧跨会话记忆——状态在各目标应用里。</p></dd>
+          <dd><span data-zh><p>无 server 侧跨会话记忆——状态在各目标应用里。</p></span><span data-en><p>No server-side cross-session memory — state lives in the various target apps.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
-          <dd><p><strong>两层权限叠加</strong>：Zapier 侧「勾选哪些 action」是第一层白名单；各目标应用的 OAuth 授权是第二层。写能力跟着勾选走——没勾的 action 不存在，这是它相对 「单应用全权限 server」的结构性收紧优势。</p></dd>
+          <dd><span data-zh><p><strong>两层权限叠加</strong>：Zapier 侧「勾选哪些 action」是第一层白名单；各目标应用的 OAuth 授权是第二层。写能力跟着勾选走——没勾的 action 不存在，这是它相对 「单应用全权限 server」的结构性收紧优势。</p></span><span data-en><p><strong>Two permission layers stack</strong>: the Zapier-side &quot;which actions are checked&quot; is the first allowlist layer; each target app&#39;s OAuth authorization is the second layer. Write capabilities follow the checkboxes — unchecked actions do not exist, which is its structural tightening advantage over &quot;single-app full-permission servers&quot;.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
-          <dd><p>适合：一个 server 接多应用（agent 要同时碰 Gmail+Sheets+CRM 时）、按 action 白名单收紧。 不适合：要单应用深度工具面（官方单厂商 server 更深）；要免费（Zapier 套餐线约束）。</p></dd>
+          <dd><span data-zh><p>适合：一个 server 接多应用（agent 要同时碰 Gmail+Sheets+CRM 时）、按 action 白名单收紧。 不适合：要单应用深度工具面（官方单厂商 server 更深）；要免费（Zapier 套餐线约束）。</p></span><span data-en><p>Fits: one server reaching many apps (when an agent needs to touch Gmail+Sheets+CRM at once), tightening by action allowlist. Not a fit: needing a deep single-app tool surface (official single-vendor servers go deeper); expecting free (Zapier plan-line constraints).</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
-          <dd><p><strong>Streamable HTTP 远程托管</strong>（每用户专属端点 URL）；核验：actions.zapier.com 文档 200（2026-10-21）。</p></dd>
+          <dd><span data-zh><p><strong>Streamable HTTP 远程托管</strong>（每用户专属端点 URL）；核验：actions.zapier.com 文档 200（2026-10-21）。</p></span><span data-en><p><strong>Streamable HTTP remote hosting</strong> (a dedicated endpoint URL per user); verified: actions.zapier.com docs 200 (2026-10-21).</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
-          <dd><p>端点 URL 本身带鉴权语义（专属密钥端点）+ 各目标应用 OAuth； 端点泄露=权限泄露——保管口径按凭据级。</p></dd>
+          <dd><span data-zh><p>端点 URL 本身带鉴权语义（专属密钥端点）+ 各目标应用 OAuth； 端点泄露=权限泄露——保管口径按凭据级。</p></span><span data-en><p>The endpoint URL itself carries authentication semantics (a dedicated secret endpoint) + OAuth for each target app; endpoint leak = permission leak — treat its custody at credential grade.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
-          <dd><p>作用域=勾选的 action 集合；读写都有（跟着 action 性质）。 白名单是第一层收紧；无逐操作审批机制的官方说明。</p></dd>
+          <dd><span data-zh><p>作用域=勾选的 action 集合；读写都有（跟着 action 性质）。 白名单是第一层收紧；无逐操作审批机制的官方说明。</p></span><span data-en><p>Scope = the checked action set; both read and write (following each action&#39;s nature). The allowlist is the first tightening layer; no official docs for a per-operation approval mechanism.</p></span></dd>
         </div>
       </dl>
 
@@ -191,12 +191,17 @@
 
             <div class="panel is-slim">
         <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
-        
+        <span data-zh>
         <ul>
           <li>套餐对 MCP 的约束细则（未逐条核验；D9 不采价格数字）</li>
           <li>专属端点的轮换/吊销机制（未逐条核验）</li>
           <li>支持应用×action 的完整矩阵（千余应用，未逐条清点）</li>
-        </ul>
+        </ul></span><span data-en>
+        <ul>
+          <li>Plan constraints on MCP details (not verified item by item; D9 does not collect price numbers)</li>
+          <li>Rotation/revocation mechanism of the dedicated endpoint (not verified item by item)</li>
+          <li>The complete app×action support matrix (a thousand-plus apps, not enumerated item by item)</li>
+        </ul></span>
       </div>
 
 
@@ -206,16 +211,16 @@
         <table class="src">
           <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
           <tbody>
-            <tr><td>docs</td><td>Zapier · 官方 MCP 文档（配置与端点口径，2026-10-21 直抓核验）</td><td><a href="https://actions.zapier.com/docs/platform/mcp/" target="_blank" rel="noopener">https://actions.zapier.com/docs/platform/mcp/</a></td></tr>
-            <tr><td>changelog</td><td>Zapier · 官方更新日志（changelog）</td><td><a href="https://zapier.com/blog/updates/" target="_blank" rel="noopener">https://zapier.com/blog/updates/</a></td></tr>
-            <tr><td>docs</td><td>Zapier · 官方 MCP 产品页</td><td><a href="https://zapier.com/mcp" target="_blank" rel="noopener">https://zapier.com/mcp</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Zapier · 官方 MCP 文档（配置与端点口径，2026-10-21 直抓核验）</span><span data-en>Zapier · official MCP docs (configuration and endpoint wording, direct-fetched and verified 2026-10-21)</span></td><td><a href="https://actions.zapier.com/docs/platform/mcp/" target="_blank" rel="noopener">https://actions.zapier.com/docs/platform/mcp/</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>Zapier · 官方更新日志（changelog）</span><span data-en>Zapier · official update log (changelog)</span></td><td><a href="https://zapier.com/blog/updates/" target="_blank" rel="noopener">https://zapier.com/blog/updates/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Zapier · 官方 MCP 产品页</span><span data-en>Zapier · official MCP product page</span></td><td><a href="https://zapier.com/mcp" target="_blank" rel="noopener">https://zapier.com/mcp</a></td></tr>
           </tbody>
         </table>
       </div>
 
             <div class="panel is-slim">
         <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
-        <p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>。</p>
+        <span data-zh><p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>。</p></span><span data-en><p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>.</p></span>
       </div>
 
 

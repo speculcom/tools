@@ -109,7 +109,7 @@
         <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-21</span>
       </div>
 
-            <p class="t-xs" data-en>English summaries and interface labels are available. Detailed source notes below are currently in Chinese.</p>
+            
       <div class="panel-lead"><span data-zh><p><strong>Slack 自营的官方 MCP server</strong>（mcp.slack.com/mcp）：agent 能搜工作区、读线程、代拟消息、 管 canvas 与 Lists。两条硬口径：<strong>admin 审批是前置门</strong>；<strong>它只在会话里响应，不监视不触发</strong>。 诚实标注：旧 slackapi 仓已 404；reference 版已归档转第三方维护——本条目是 Slack 自营线。</p></span><span data-en><p><strong>Slack&#39;s self-hosted official MCP server</strong> (mcp.slack.com/mcp): agents search the workspace, read threads, draft messages, manage canvases and Lists. Two hard facts: <strong>admin approval is a front gate</strong>; it only answers inside a session — no watching, no triggers. The old slackapi repo 404s; the reference version was archived to a third party.</p></span></div>
 
             <div class="panel is-slim">
@@ -135,47 +135,47 @@
       <dl class="axes">
         <div class="axis">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
-          <dd><p><strong>它自己不调模型</strong>——被 MCP 客户端调用的接口实现。它把 Slack 工作区能力 （搜索、读消息/线程、发消息、canvases、Lists）包装成工具给 agent 用。</p></dd>
+          <dd><span data-zh><p><strong>它自己不调模型</strong>——被 MCP 客户端调用的接口实现。它把 Slack 工作区能力 （搜索、读消息/线程、发消息、canvases、Lists）包装成工具给 agent 用。</p></span><span data-en><p><strong>It calls no model itself</strong> — an interface implementation called by MCP clients. It wraps Slack workspace capabilities (search, read messages/threads, send messages, canvases, Lists) as tools for agents.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
-          <dd><p>官方托管远程 server（mcp.slack.com/mcp——直抓 401=存在需鉴权）； Streamable HTTP + JSON-RPC 2.0（官方文档口径）。旧 slackapi/slack-mcp-server 仓已 404（2026-10-21 直抓）。</p></dd>
+          <dd><span data-zh><p>官方托管远程 server（mcp.slack.com/mcp——直抓 401=存在需鉴权）； Streamable HTTP + JSON-RPC 2.0（官方文档口径）。旧 slackapi/slack-mcp-server 仓已 404（2026-10-21 直抓）。</p></span><span data-en><p>Official hosted remote server (mcp.slack.com/mcp — direct fetch 401 = exists but needs auth); Streamable HTTP + JSON-RPC 2.0 (official docs wording). The old slackapi/slack-mcp-server repo is now 404 (direct fetch 2026-10-21).</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
-          <dd><p>不碰本机文件系统——作用域是 Slack 云端工作区（消息、文件、canvases、Lists）。</p></dd>
+          <dd><span data-zh><p>不碰本机文件系统——作用域是 Slack 云端工作区（消息、文件、canvases、Lists）。</p></span><span data-en><p>Never touches the local file system — the scope is the Slack cloud workspace (messages, files, canvases, Lists).</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
-          <dd><p>服务在 Slack 侧；会话请求-响应，无后台监听语义——「agent 不监视 Slack，等你问」。</p></dd>
+          <dd><span data-zh><p>服务在 Slack 侧；会话请求-响应，无后台监听语义——「agent 不监视 Slack，等你问」。</p></span><span data-en><p>The service lives on Slack&#39;s side; session request-response, no background-listening semantics — &quot;the agent does not watch Slack, it waits for you to ask&quot;.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
-          <dd><p>搜索（消息/文件/用户/频道）、读频道与线程、发消息、建会话、reaction、 canvas 读写、用户档案、Lists 增删改查、文件上传（官方 changelog 2026-05 有新增工具记录）； 完整清单以 docs.slack.dev 为准。</p></dd>
+          <dd><span data-zh><p>搜索（消息/文件/用户/频道）、读频道与线程、发消息、建会话、reaction、 canvas 读写、用户档案、Lists 增删改查、文件上传（官方 changelog 2026-05 有新增工具记录）； 完整清单以 docs.slack.dev 为准。</p></span><span data-en><p>Search (messages/files/users/channels), read channels and threads, send messages, create conversations, reactions, canvas read/write, user profiles, Lists CRUD, file uploads (the official changelog has new-tool records for 2026-05); the complete inventory follows docs.slack.dev.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
-          <dd><p>无 server 侧跨会话记忆——状态在 Slack 工作区本身；搜索工具是它的「取上下文」主手段。</p></dd>
+          <dd><span data-zh><p>无 server 侧跨会话记忆——状态在 Slack 工作区本身；搜索工具是它的「取上下文」主手段。</p></span><span data-en><p>No server-side cross-session memory — state lives in the Slack workspace itself; the search tools are its main means of &quot;fetching context&quot;.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
-          <dd><p><strong>权限面是这条目的核心</strong>：OAuth user-token scopes 逐工具映射（search:read、chat:write、 canvases:write 等）+ <strong>工作区管理员审批</strong>（admin 决定哪些 MCP 客户端可连）—— 未发布 Marketplace/内部 app 连不上。写动作（发消息/建会话）跟着授权 scope 走。</p></dd>
+          <dd><span data-zh><p><strong>权限面是这条目的核心</strong>：OAuth user-token scopes 逐工具映射（search:read、chat:write、 canvases:write 等）+ <strong>工作区管理员审批</strong>（admin 决定哪些 MCP 客户端可连）—— 未发布 Marketplace/内部 app 连不上。写动作（发消息/建会话）跟着授权 scope 走。</p></span><span data-en><p><strong>The permission surface is the core of this entry</strong>: OAuth user-token scopes mapped per tool (search:read, chat:write, canvases:write etc.) + <strong>workspace admin approval</strong> (admins decide which MCP clients may connect) — unpublished Marketplace/internal apps cannot connect. Write actions (sending messages/creating conversations) follow the granted scopes.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
-          <dd><p>适合：编码/研究 agent 取「团队在 Slack 里的决策与上下文」、总结频道、代拟消息。 不适合：要事件触发自动化（MCP 不是触发器——要自动化走 Workflow/automation 线）； 要 bot-token 无 OAuth 路线（官方走 user-token OAuth）。</p></dd>
+          <dd><span data-zh><p>适合：编码/研究 agent 取「团队在 Slack 里的决策与上下文」、总结频道、代拟消息。 不适合：要事件触发自动化（MCP 不是触发器——要自动化走 Workflow/automation 线）； 要 bot-token 无 OAuth 路线（官方走 user-token OAuth）。</p></span><span data-en><p>Fits: coding/research agents fetching &quot;the team&#39;s decisions and context in Slack&quot;, summarizing channels, drafting messages on your behalf. Not a fit: event-triggered automation (MCP is not a trigger — automation goes through the Workflow/automation line); bot-token routes without OAuth (the official line uses user-token OAuth).</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
-          <dd><p><strong>Streamable HTTP</strong>（JSON-RPC 2.0），端点 mcp.slack.com/mcp。 官方明写 <strong>SSE 与 Dynamic Client Registration 暂不支持</strong>（第三方核验页转述官方 docs）—— 客户端要走现行 remote MCP/OAuth 路径。核验：docs.slack.dev 200、端点 401（2026-10-21 直抓）。</p></dd>
+          <dd><span data-zh><p><strong>Streamable HTTP</strong>（JSON-RPC 2.0），端点 mcp.slack.com/mcp。 官方明写 <strong>SSE 与 Dynamic Client Registration 暂不支持</strong>（第三方核验页转述官方 docs）—— 客户端要走现行 remote MCP/OAuth 路径。核验：docs.slack.dev 200、端点 401（2026-10-21 直抓）。</p></span><span data-en><p><strong>Streamable HTTP</strong> (JSON-RPC 2.0), endpoint mcp.slack.com/mcp. The official docs state plainly that <strong>SSE and Dynamic Client Registration are not supported for now</strong> (third-party verification page paraphrasing the official docs) — clients must take the current remote MCP/OAuth path. Verified: docs.slack.dev 200, endpoint 401 (direct fetch 2026-10-21).</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
-          <dd><p>OAuth 2.0 user-token 流（slack.com OAuth 端点授权）；工具逐一对应 scope。 <strong>管理员审批是前置门</strong>：工作区 admin 批准 MCP 客户端集成才能连。</p></dd>
+          <dd><span data-zh><p>OAuth 2.0 user-token 流（slack.com OAuth 端点授权）；工具逐一对应 scope。 <strong>管理员审批是前置门</strong>：工作区 admin 批准 MCP 客户端集成才能连。</p></span><span data-en><p>OAuth 2.0 user-token flow (authorization at the slack.com OAuth endpoints); tools map one-to-one to scopes. <strong>Admin approval is a front gate</strong>: the workspace admin must approve the MCP client integration before it can connect.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
-          <dd><p>读面：搜索/历史/用户档案/canvas 读；写面：发消息、建会话、reaction、canvas 写、 Lists 写、文件上传。全部跟着 OAuth scope 与 admin 策略走；无工具级独立审批机制的官方说明。</p></dd>
+          <dd><span data-zh><p>读面：搜索/历史/用户档案/canvas 读；写面：发消息、建会话、reaction、canvas 写、 Lists 写、文件上传。全部跟着 OAuth scope 与 admin 策略走；无工具级独立审批机制的官方说明。</p></span><span data-en><p>Read surface: search/history/user profiles/canvas reads; write surface: send messages, create conversations, reactions, canvas writes, Lists writes, file uploads. All of it follows OAuth scopes and admin policy; no official docs for a tool-level separate approval mechanism.</p></span></dd>
         </div>
       </dl>
 
@@ -193,12 +193,17 @@
 
             <div class="panel is-slim">
         <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
-        
+        <span data-zh>
         <ul>
           <li>工具全清单与逐工具 scope 映射表（未逐条清点——docs.slack.dev 有页未逐条核）</li>
           <li>admin 审批的粒度（按客户端/按 scope？未逐条核验）</li>
           <li>速率限制细则（官方按 Web API 限流口径，数字未逐条核验）</li>
-        </ul>
+        </ul></span><span data-en>
+        <ul>
+          <li>The full tool inventory and the per-tool scope mapping table (not enumerated item by item — docs.slack.dev has pages not checked one by one)</li>
+          <li>The granularity of admin approval (per client/per scope? not verified item by item)</li>
+          <li>Rate-limit details (the official side follows Web API rate-limit wording, numbers not verified item by item)</li>
+        </ul></span>
       </div>
 
 
@@ -208,16 +213,16 @@
         <table class="src">
           <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
           <tbody>
-            <tr><td>docs</td><td>Slack · 官方 MCP 文档（端点、传输、鉴权口径，2026-10-21 直抓核验）</td><td><a href="https://docs.slack.dev/ai/slack-mcp-server" target="_blank" rel="noopener">https://docs.slack.dev/ai/slack-mcp-server</a></td></tr>
-            <tr><td>changelog</td><td>Slack · 开发者 changelog（MCP 工具新增记录）</td><td><a href="https://docs.slack.dev/changelog" target="_blank" rel="noopener">https://docs.slack.dev/changelog</a></td></tr>
-            <tr><td>docs</td><td>Slack · 官方帮助中心 MCP 指南</td><td><a href="https://slack.com/help/articles/48855576908307-Guide-to-the-Slack-MCP-server" target="_blank" rel="noopener">https://slack.com/help/articles/48855576908307-Guide-to-the-Slack-MCP-server</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Slack · 官方 MCP 文档（端点、传输、鉴权口径，2026-10-21 直抓核验）</span><span data-en>Slack · official MCP docs (endpoint, transport, auth wording, direct-fetched and verified 2026-10-21)</span></td><td><a href="https://docs.slack.dev/ai/slack-mcp-server" target="_blank" rel="noopener">https://docs.slack.dev/ai/slack-mcp-server</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>Slack · 开发者 changelog（MCP 工具新增记录）</span><span data-en>Slack · developer changelog (MCP new-tool records)</span></td><td><a href="https://docs.slack.dev/changelog" target="_blank" rel="noopener">https://docs.slack.dev/changelog</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Slack · 官方帮助中心 MCP 指南</span><span data-en>Slack · official help-center MCP guide</span></td><td><a href="https://slack.com/help/articles/48855576908307-Guide-to-the-Slack-MCP-server" target="_blank" rel="noopener">https://slack.com/help/articles/48855576908307-Guide-to-the-Slack-MCP-server</a></td></tr>
           </tbody>
         </table>
       </div>
 
             <div class="panel is-slim">
         <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
-        <p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>。</p>
+        <span data-zh><p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>。</p></span><span data-en><p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>.</p></span>
       </div>
 
 
@@ -226,8 +231,8 @@
             <div class="panel is-slim">
         <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
         <ul class="rel-list">
-          <li><span class="rel-t"><a href="./notion-mcp.html"><span data-zh>Notion MCP</span><span data-en>Notion MCP</span></a></span><span class="rel-n">同为协作 SaaS 官方 remote：Notion 写面直接，Slack 多一道 admin 审批门。</span></li>
-          <li><span class="rel-t"><a href="./zapier-mcp.html"><span data-zh>Zapier MCP</span><span data-en>Zapier MCP</span></a></span><span class="rel-n">跨大类对照：Slack 官方 server 只管 Slack；要「Slack 触发跨应用动作」走 Zapier 线。</span></li>
+          <li><span class="rel-t"><a href="./notion-mcp.html"><span data-zh>Notion MCP</span><span data-en>Notion MCP</span></a></span><span class="rel-n"><span data-zh>同为协作 SaaS 官方 remote：Notion 写面直接，Slack 多一道 admin 审批门。</span><span data-en>Both official remote servers for collaboration SaaS: Notion&#39;s write surface is direct, Slack adds an admin-approval gate.</span></span></li>
+          <li><span class="rel-t"><a href="./zapier-mcp.html"><span data-zh>Zapier MCP</span><span data-en>Zapier MCP</span></a></span><span class="rel-n"><span data-zh>跨大类对照：Slack 官方 server 只管 Slack；要「Slack 触发跨应用动作」走 Zapier 线。</span><span data-en>A cross-category contrast: the official Slack server only covers Slack; for &quot;Slack triggering cross-app actions&quot; go the Zapier line.</span></span></li>
           <li><span class="rel-t"><a href="/coding/cursor.html"><span data-zh>Cursor</span><span data-en>Cursor</span></a></span><span class="rel-n"><span data-zh>另一层 · AI 编程</span><span data-en>Other layer · AI coding</span></span></li>
           <li><span class="rel-t"><a href="/coding/windsurf.html"><span data-zh>Windsurf / Devin Desktop</span><span data-en>Windsurf / Devin Desktop</span></a></span><span class="rel-n"><span data-zh>另一层 · AI 编程</span><span data-en>Other layer · AI coding</span></span></li>
         </ul>
