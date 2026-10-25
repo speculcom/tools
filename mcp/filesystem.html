@@ -107,7 +107,7 @@
         <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-23</span>
       </div>
 
-            <p class="t-xs" data-en>English summaries and interface labels are available. Detailed source notes below are currently in Chinese.</p>
+            
       <div class="panel-lead"><span data-zh><p>MCP 官方 reference server 里的文件操作实现。<strong>它是「白名单目录」式访问：必须显式声明允许目录，不允许静默访问全盘</strong>。</p></span><span data-en><p>The file-operation implementation among MCP&#39;s official reference servers, <strong>requiring allowed directories to be declared explicitly, with no silent whole-disk access</strong>.</p></span></div>
 
             <div class="panel is-slim">
@@ -135,54 +135,58 @@
       <dl class="axes">
         <div class="axis">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
-          <dd><p>本身不调用模型，是被客户端调用的接口实现。</p>
-            <p>依赖 @modelcontextprotocol/sdk（npm 2026.8.31 实测 ^1.30.0）； 协议版本在 initialize 握手时由 SDK 与客户端协商，不绑定单一版本。</p></dd>
+          <dd><span data-zh><p>本身不调用模型，是被客户端调用的接口实现。</p>
+            <p>依赖 @modelcontextprotocol/sdk（npm 2026.8.31 实测 ^1.30.0）； 协议版本在 initialize 握手时由 SDK 与客户端协商，不绑定单一版本。</p></span><span data-en><p>It calls no model itself; it is an interface implementation called by clients. It depends on @modelcontextprotocol/sdk (npm measured 2026.8.31: ^1.30.0); the protocol version is negotiated between SDK and client at the initialize handshake, not pinned to a single version.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
-          <dd><p>本地 Node.js 子进程，通过 stdio 与客户端通信。 生命周期绑定客户端进程，客户端退出即停止。</p></dd>
+          <dd><span data-zh><p>本地 Node.js 子进程，通过 stdio 与客户端通信。 生命周期绑定客户端进程，客户端退出即停止。</p></span><span data-en><p>A local Node.js child process communicating with the client over stdio. Its lifecycle is bound to the client process — it stops when the client exits.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
-          <dd><p>核心能力。<strong>默认不支持无限制访问</strong>： 必须通过命令行参数指定允许目录，或客户端支持 Roots 协议动态下发。 <strong>若无参数启动且客户端不支持 roots，server 在初始化阶段直接报错。</strong></p></dd>
+          <dd><span data-zh><p>核心能力。<strong>默认不支持无限制访问</strong>： 必须通过命令行参数指定允许目录，或客户端支持 Roots 协议动态下发。 <strong>若无参数启动且客户端不支持 roots，server 在初始化阶段直接报错。</strong></p></span><span data-en><p>The core capability. <strong>Unrestricted access is not the default</strong>: allowed directories must be given via command-line arguments, or delivered dynamically if the client supports the Roots protocol. <strong>If started with no arguments and the client does not support roots, the server errors out directly at initialization.</strong></p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
-          <dd><p>不支持。本地 stdio 进程随客户端生死， 无独立守护或云端执行形态。</p></dd>
+          <dd><span data-zh><p>不支持。本地 stdio 进程随客户端生死， 无独立守护或云端执行形态。</p></span><span data-en><p>Not supported. A local stdio process lives and dies with the client; there is no standalone daemon or cloud-execution form.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
-          <dd><p>提供 11 个工具：read_text_file、read_media_file、read_multiple_files、</p>
+          <dd><span data-zh><p>提供 11 个工具：read_text_file、read_media_file、read_multiple_files、</p>
             <p>write_file、edit_file、create_directory、list_directory、</p>
             <p>list_directory_with_sizes、move_file、search_files、directory_tree。</p>
-            <p>输出为结构化内容，可直接消费。</p></dd>
+            <p>输出为结构化内容，可直接消费。</p></span><span data-en><p>It provides 11 tools: read_text_file, read_media_file, read_multiple_files,</p>
+            <p>write_file, edit_file, create_directory, list_directory,</p>
+            <p>list_directory_with_sizes, move_file, search_files, directory_tree. Output is structured content, ready for direct consumption.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
-          <dd><p>无状态。每次调用独立，不保留会话记忆。 list_allowed_directories 可查询当前生效目录。</p></dd>
+          <dd><span data-zh><p>无状态。每次调用独立，不保留会话记忆。 list_allowed_directories 可查询当前生效目录。</p></span><span data-en><p>Stateless. Each call is independent; no session memory is kept. list_allowed_directories can query the currently effective directories.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
-          <dd><p><strong>无独立审批机制</strong>，权限边界完全由允许目录决定。 全部文件操作限制在允许目录内，越界会被拒绝。</p>
-            <p><strong>注意：提供 write_file / edit_file / move_file / create_directory， 属可写但无删除工具的组合。</strong></p></dd>
+          <dd><span data-zh><p><strong>无独立审批机制</strong>，权限边界完全由允许目录决定。 全部文件操作限制在允许目录内，越界会被拒绝。</p>
+            <p><strong>注意：提供 write_file / edit_file / move_file / create_directory， 属可写但无删除工具的组合。</strong></p></span><span data-en><p><strong>No separate approval mechanism</strong>; the permission boundary is defined entirely by the allowed directories. All file operations are confined to the allowed directories; anything outside is rejected.</p>
+            <p><strong>Note: it provides write_file / edit_file / move_file / create_directory — a combination that is writable but has no delete tool.</strong></p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
-          <dd><p>让 Agent 安全读写指定目录内的文本与媒体文件。 不适合需要删除操作或需要跨目录聚合的场景。</p></dd>
+          <dd><span data-zh><p>让 Agent 安全读写指定目录内的文本与媒体文件。 不适合需要删除操作或需要跨目录聚合的场景。</p></span><span data-en><p>Lets an Agent safely read and write text and media files inside specified directories. Not a fit for scenarios needing delete operations or cross-directory aggregation.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
-          <dd><p>仅 stdio。本地 Node.js 进程，通过标准输入输出通信。</p>
-            <p>官方 README（2026-10-08 全文核验）只给两种本地启动方式。 即 npx 与 Docker。它没有远程传输的官方配置。 目录控制走命令行参数或 MCP Roots（可动态更新）。</p></dd>
+          <dd><span data-zh><p>仅 stdio。本地 Node.js 进程，通过标准输入输出通信。</p>
+            <p>官方 README（2026-10-08 全文核验）只给两种本地启动方式。 即 npx 与 Docker。它没有远程传输的官方配置。 目录控制走命令行参数或 MCP Roots（可动态更新）。</p></span><span data-en><p>stdio only. A local Node.js process communicating over standard input/output. The official README (full-text verified 2026-10-08) gives only two local launch methods: npx and Docker. There is no official configuration for a remote transport. Directory control goes through command-line arguments or MCP Roots (dynamically updatable).</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
-          <dd><p>无独立认证层。stdio 形态继承启动它的客户端用户的全部文件权限。 权限边界不是认证机制，而是目录白名单。</p></dd>
+          <dd><span data-zh><p>无独立认证层。stdio 形态继承启动它的客户端用户的全部文件权限。 权限边界不是认证机制，而是目录白名单。</p></span><span data-en><p>No separate authentication layer. In stdio form it inherits all file permissions of the client user that launches it. The permission boundary is not an auth mechanism but a directory allowlist.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
-          <dd><p><strong>默认范围窄且强制显式</strong>：必须通过命令行参数指定允许目录， 或客户端支持 Roots 协议动态下发。 无参数且客户端不支持 roots 时，server 初始化即报错。</p>
-            <p><strong>不提供删除工具</strong>；提供写入、编辑、移动、建目录。 可用 list_allowed_directories 查询当前生效目录。</p></dd>
+          <dd><span data-zh><p><strong>默认范围窄且强制显式</strong>：必须通过命令行参数指定允许目录， 或客户端支持 Roots 协议动态下发。 无参数且客户端不支持 roots 时，server 初始化即报错。</p>
+            <p><strong>不提供删除工具</strong>；提供写入、编辑、移动、建目录。 可用 list_allowed_directories 查询当前生效目录。</p></span><span data-en><p><strong>The default scope is narrow and explicitly forced</strong>: allowed directories must be given via command-line arguments, or delivered dynamically if the client supports the Roots protocol. With no arguments and no client roots support, the server errors out at initialization.</p>
+            <p><strong>No delete tool is provided</strong>; write, edit, move and create-directory are. list_allowed_directories can query the currently effective directories.</p></span></dd>
         </div>
       </dl>
 
@@ -199,13 +203,19 @@
 
             <div class="panel is-slim">
         <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
-        
+        <span data-zh>
         <ul>
           <li>最低协议版本要求（仓库未声明）</li>
           <li>是否支持 Streamable HTTP（仓库未声明）</li>
           <li>输出结构的具体 schema（需读源码或实测）</li>
           <li>各工具在路径不存在时的错误信息质量</li>
-        </ul>
+        </ul></span><span data-en>
+        <ul>
+          <li>Minimum protocol version requirement (not declared in the repo)</li>
+          <li>Whether Streamable HTTP is supported (not declared in the repo)</li>
+          <li>The concrete schema of output structures (requires reading source or measuring)</li>
+          <li>The quality of error messages from each tool when a path does not exist</li>
+        </ul></span>
       </div>
 
 
@@ -215,52 +225,61 @@
         <table class="src">
           <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
           <tbody>
-            <tr><td>changelog</td><td>MCP · Servers Releases（2026.8.31 / 2026.8.18 / 2026.7.10）</td><td><a href="https://github.com/modelcontextprotocol/servers/releases" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers/releases</a></td></tr>
-            <tr><td>changelog</td><td>MCP · Filesystem 目录变更历史</td><td><a href="https://github.com/modelcontextprotocol/servers/commits/main/src/filesystem" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers/commits/main/src/filesystem</a></td></tr>
-            <tr><td>docs</td><td>MCP · Filesystem Server</td><td><a href="https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem</a></td></tr>
-            <tr><td>repo</td><td>MCP · Servers 仓库 README（含生产环境免责声明）</td><td><a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers</a></td></tr>
-            <tr><td>docs</td><td>MCP · 规范</td><td><a href="https://modelcontextprotocol.io/specification" target="_blank" rel="noopener">https://modelcontextprotocol.io/specification</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>MCP · Servers Releases（2026.8.31 / 2026.8.18 / 2026.7.10）</span><span data-en>MCP · Servers Releases (2026.8.31 / 2026.8.18 / 2026.7.10)</span></td><td><a href="https://github.com/modelcontextprotocol/servers/releases" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers/releases</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>MCP · Filesystem 目录变更历史</span><span data-en>MCP · Filesystem directory change history</span></td><td><a href="https://github.com/modelcontextprotocol/servers/commits/main/src/filesystem" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers/commits/main/src/filesystem</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>MCP · Filesystem Server</span><span data-en>MCP · Filesystem Server</span></td><td><a href="https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>MCP · Servers 仓库 README（含生产环境免责声明）</span><span data-en>MCP · Servers repo README (with production-use disclaimer)</span></td><td><a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>MCP · 规范</span><span data-en>MCP · specification</span></td><td><a href="https://modelcontextprotocol.io/specification" target="_blank" rel="noopener">https://modelcontextprotocol.io/specification</a></td></tr>
           </tbody>
         </table>
       </div>
 
             <div class="panel is-slim">
         <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
-        <p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>。</p>
+        <span data-zh><p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>。</p></span><span data-en><p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>.</p></span>
       </div>
 
 
             <div class="panel is-slim">
-        <h2>变更记录说明</h2>
-        <p><strong>本对象无独立 changelog 页</strong>。变更记录看 MCP servers 仓库的 releases 页。目录级改动看该目录的 commit 历史：</p>
+        <h2><span data-zh>变更记录说明</span><span data-en>Change-log notes</span></h2>
+        <span data-zh><p><strong>本对象无独立 changelog 页</strong>。变更记录看 MCP servers 仓库的 releases 页。目录级改动看该目录的 commit 历史：</p>
             <div class="tbl-wrap"><table><thead><tr><th>日期</th><th>类型</th><th>内容</th></tr></thead><tbody><tr><td>2026-09-03</td><td>fix</td><td>声明 zod 运行时依赖</td></tr><tr><td>2026-08-30</td><td>fix</td><td>拒绝 POSIX 下的 Windows 路径</td></tr><tr><td>2026-08-28</td><td>fix</td><td><code>create_directory</code> 不创建父目录</td></tr></tbody></table></div>
             <p>仓库整体 releases：2026.8.31 / 2026.8.18 / 2026.7.10。</p>
-            <p><strong>注意 08-30 那个修复</strong>。它说明 filesystem server 在不同平台路径语义上出过问题。这是实测时值得关注的点。</p>
+            <p><strong>注意 08-30 那个修复</strong>。它说明 filesystem server 在不同平台路径语义上出过问题。这是实测时值得关注的点。</p></span><span data-en><p><strong>This object has no standalone changelog page</strong>. Change records are on the MCP servers repo&#39;s releases page. Directory-level changes are in that directory&#39;s commit history:</p>
+            <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Type</th><th>Content</th></tr></thead><tbody><tr><td>2026-09-03</td><td>fix</td><td>Declare the zod runtime dependency</td></tr><tr><td>2026-08-30</td><td>fix</td><td>Reject Windows paths under POSIX</td></tr><tr><td>2026-08-28</td><td>fix</td><td><code>create_directory</code> does not create parent directories</td></tr></tbody></table></div>
+            <p>Repo-wide releases: 2026.8.31 / 2026.8.18 / 2026.7.10.</p>
+            <p><strong>Note the 08-30 fix</strong>. It shows the filesystem server had path-semantics issues across platforms — a point worth watching during measurement.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>⚠ 生产环境免责声明（适用于全部官方 reference server）</h2>
-        <p>MCP servers 仓库 README 原文：</p>
+        <h2><span data-zh>⚠ 生产环境免责声明（适用于全部官方 reference server）</span><span data-en>⚠ Production-use disclaimer (applies to all official reference servers)</span></h2>
+        <span data-zh><p>MCP servers 仓库 README 原文：</p>
             <blockquote>The servers in this repository are intended as <strong>reference implementations</strong> to demonstrate MCP features and SDK usage. They are meant to serve as educational examples for developers building their own MCP servers, <strong>not as production-ready solutions</strong>. Developers should evaluate their own security requirements and implement appropriate safeguards based on their specific threat model and use case.</blockquote>
             <p><strong>翻译</strong>：本仓库的 server 是<strong>参考实现</strong>，用于演示 MCP 特性与 SDK 用法。 它面向正在构建自己 MCP server 的开发者，<strong>不是生产就绪方案</strong>。 使用者需自行评估安全需求并按自身威胁模型实现防护。</p>
-            <blockquote><strong>注意</strong>：这句话适用于本分区所有官方 reference server， 每个条目的正文都应保留这一提示。</blockquote>
+            <blockquote><strong>注意</strong>：这句话适用于本分区所有官方 reference server， 每个条目的正文都应保留这一提示。</blockquote></span><span data-en><p>The MCP servers repo README, original wording:</p>
+            <blockquote>The servers in this repository are intended as <strong>reference implementations</strong> to demonstrate MCP features and SDK usage. They are meant to serve as educational examples for developers building their own MCP servers, <strong>not as production-ready solutions</strong>. Developers should evaluate their own security requirements and implement appropriate safeguards based on their specific threat model and use case.</blockquote>
+            <blockquote><strong>Note</strong>: this statement applies to every official reference server in this section;</blockquote>
+            <p>each entry&#39;s body should keep this reminder.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>权限设计实测记录</h2>
-        <p>这是本 server 最有价值的设计细节。</p>
+        <h2><span data-zh>权限设计实测记录</span><span data-en>Permission-design test notes</span></h2>
+        <span data-zh><p>这是本 server 最有价值的设计细节。</p>
             <div class="tbl-wrap"><table><thead><tr><th>场景</th><th>行为</th></tr></thead><tbody><tr><td>启动时传目录参数</td><td>以参数为允许目录</td></tr><tr><td>启动时不传参数 + 客户端支持 Roots</td><td>客户端 roots <strong>完全替换</strong>服务端目录</td></tr><tr><td>启动时不传参数 + 客户端不支持 Roots</td><td><strong>初始化阶段报错</strong></td></tr><tr><td>运行时客户端 roots 变更</td><td>通过 <code>roots/list_changed</code> 通知更新，无需重启</td></tr></tbody></table></div>
-            <p><strong>&quot;无参数 + 不支持 roots = 启动失败&quot;这个设计值得肯定</strong>—— 它把一个潜在的权限失控（无限制文件访问）变成了显式的失败。</p>
+            <p><strong>&quot;无参数 + 不支持 roots = 启动失败&quot;这个设计值得肯定</strong>—— 它把一个潜在的权限失控（无限制文件访问）变成了显式的失败。</p></span><span data-en><p>This is the most valuable design detail of this server.</p>
+            <div class="tbl-wrap"><table><thead><tr><th>Scenario</th><th>Behaviour</th></tr></thead><tbody><tr><td>Directory arguments passed at launch</td><td>The arguments become the allowed directories</td></tr><tr><td>No arguments + client supports Roots</td><td>Client roots <strong>fully replace</strong> server-side directories</td></tr><tr><td>No arguments + client lacks Roots</td><td><strong>Error at initialization</strong></td></tr><tr><td>Client roots change at runtime</td><td>Updated via <code>roots/list_changed</code> notification, no restart needed</td></tr></tbody></table></div>
+            <p><strong>The &quot;no arguments + no roots support = startup failure&quot; design deserves credit</strong> — it turns a potential permission escape (unrestricted file access) into an explicit failure.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>工具清单</h2>
-        <div class="tbl-wrap"><table><thead><tr><th>类别</th><th>工具</th></tr></thead><tbody><tr><td>读</td><td><code>read_text_file</code> <code>read_media_file</code> <code>read_multiple_files</code></td></tr><tr><td>写</td><td><code>write_file</code> <code>edit_file</code></td></tr><tr><td>目录</td><td><code>create_directory</code> <code>list_directory</code> <code>list_directory_with_sizes</code> <code>move_file</code> <code>directory_tree</code></td></tr><tr><td>检索</td><td><code>search_files</code></td></tr></tbody></table></div>
-            <p><strong>注意</strong>：<strong>没有删除工具</strong>。这是有意的权限收敛设计。</p>
+        <h2><span data-zh>工具清单</span><span data-en>Tool inventory</span></h2>
+        <span data-zh><div class="tbl-wrap"><table><thead><tr><th>类别</th><th>工具</th></tr></thead><tbody><tr><td>读</td><td><code>read_text_file</code> <code>read_media_file</code> <code>read_multiple_files</code></td></tr><tr><td>写</td><td><code>write_file</code> <code>edit_file</code></td></tr><tr><td>目录</td><td><code>create_directory</code> <code>list_directory</code> <code>list_directory_with_sizes</code> <code>move_file</code> <code>directory_tree</code></td></tr><tr><td>检索</td><td><code>search_files</code></td></tr></tbody></table></div>
+            <p><strong>注意</strong>：<strong>没有删除工具</strong>。这是有意的权限收敛设计。</p></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Category</th><th>Tools</th></tr></thead><tbody><tr><td>Read</td><td><code>read_text_file</code> <code>read_media_file</code> <code>read_multiple_files</code></td></tr><tr><td>Write</td><td><code>write_file</code> <code>edit_file</code></td></tr><tr><td>Directory</td><td><code>create_directory</code> <code>list_directory</code> <code>list_directory_with_sizes</code> <code>move_file</code> <code>directory_tree</code></td></tr><tr><td>Search</td><td><code>search_files</code></td></tr></tbody></table></div>
+            <p><strong>Note</strong>: <strong>there is no delete tool</strong>. This is a deliberate permission-narrowing design.</p></span>
       </div>
 
             <div class="panel is-slim">
         <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
         <ul class="rel-list">
-          <li><span class="rel-t"><a href="./git.html"><span data-zh>Git MCP Server</span><span data-en>Git MCP Server</span></a></span><span class="rel-n">版本控制方向</span></li>
-          <li><span class="rel-t"><a href="./memory.html"><span data-zh>Memory MCP Server</span><span data-en>Knowledge Graph Memory Server</span></a></span><span class="rel-n">跨会话记忆方向</span></li>
+          <li><span class="rel-t"><a href="./git.html"><span data-zh>Git MCP Server</span><span data-en>Git MCP Server</span></a></span><span class="rel-n"><span data-zh>版本控制方向</span><span data-en>The version-control direction</span></span></li>
+          <li><span class="rel-t"><a href="./memory.html"><span data-zh>Memory MCP Server</span><span data-en>Knowledge Graph Memory Server</span></a></span><span class="rel-n"><span data-zh>跨会话记忆方向</span><span data-en>The cross-session memory direction</span></span></li>
           <li><span class="rel-t"><a href="/coding/claude-code-cli.html"><span data-zh>Claude Code CLI</span><span data-en>Claude Code CLI</span></a></span><span class="rel-n"><span data-zh>另一层 · AI 编程</span><span data-en>Other layer · AI coding</span></span></li>
         </ul>
       </div>

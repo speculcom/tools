@@ -106,7 +106,7 @@
         <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-23</span>
       </div>
 
-            <p class="t-xs" data-en>English summaries and interface labels are available. Detailed source notes below are currently in Chinese.</p>
+            
       <div class="panel-lead"><span data-zh><p>把网页内容转成 Markdown 的 reference server，<strong>官方在其 README 里明确标注了安全警告：它能访问本地与内网 IP</strong>。</p></span><span data-en><p>A reference server that converts web pages to Markdown, <strong>with an explicit security warning in its official README: it can reach local and internal IPs</strong>.</p></span></div>
 
             <div class="panel is-slim">
@@ -134,49 +134,51 @@
       <dl class="axes">
         <div class="axis">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
-          <dd><p>本身不调用模型，是被客户端调用的接口实现。 核心是把网页 HTML 转换为 Markdown，便于 LLM 消费。</p></dd>
+          <dd><span data-zh><p>本身不调用模型，是被客户端调用的接口实现。 核心是把网页 HTML 转换为 Markdown，便于 LLM 消费。</p></span><span data-en><p>It calls no model itself; it is an interface implementation called by clients. Its core is converting web-page HTML into Markdown for LLM consumption.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
-          <dd><p>本地 <strong>Python</strong> 进程，通过 stdio 通信。 依赖 Python MCP SDK 1.x（要求 mcp<strong>=1.29.0,</strong>2），SDK 2.0 重命名了该 server 使用的 API。</p>
-            <p>2026-08-30 修复了容器 bind mount 在 Docker / Podman / SELinux 下的安全与兼容问题。</p></dd>
+          <dd><span data-zh><p>本地 <strong>Python</strong> 进程，通过 stdio 通信。 依赖 Python MCP SDK 1.x（要求 mcp<strong>=1.29.0,</strong>2），SDK 2.0 重命名了该 server 使用的 API。</p>
+            <p>2026-08-30 修复了容器 bind mount 在 Docker / Podman / SELinux 下的安全与兼容问题。</p></span><span data-en><p>A local <strong>Python</strong> process communicating over stdio. It depends on the Python MCP SDK 1.x (requires mcp<strong>=1.29.0,</strong>2); SDK 2.0 renamed the APIs this server uses.</p>
+            <p>A 2026-08-30 fix addressed security and compatibility issues of container bind mounts under Docker / Podman / SELinux.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
-          <dd><p><strong>无文件读写工具</strong>。核心能力是网络抓取，不涉及本地文件。</p></dd>
+          <dd><span data-zh><p><strong>无文件读写工具</strong>。核心能力是网络抓取，不涉及本地文件。</p></span><span data-en><p><strong>No file read/write tools.</strong> The core capability is web fetching; local files are not involved.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
-          <dd><p>不支持。单次抓取为同步操作，随客户端进程结束。</p></dd>
+          <dd><span data-zh><p>不支持。单次抓取为同步操作，随客户端进程结束。</p></span><span data-en><p>Not supported. A single fetch is a synchronous operation, ending with the client process.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
-          <dd><p>提供 fetch 工具获取网页内容并转换为 Markdown。 输出为转换后的文本，<strong>结构化程度取决于目标页面本身</strong>。</p></dd>
+          <dd><span data-zh><p>提供 fetch 工具获取网页内容并转换为 Markdown。 输出为转换后的文本，<strong>结构化程度取决于目标页面本身</strong>。</p></span><span data-en><p>It provides the fetch tool to retrieve web content and convert it to Markdown. Output is converted text; <strong>its degree of structure depends on the target page itself</strong>.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
-          <dd><p>无状态。每次调用独立，不保留历史抓取记录。</p></dd>
+          <dd><span data-zh><p>无状态。每次调用独立，不保留历史抓取记录。</p></span><span data-en><p>Stateless. Each call is independent; no fetch history is kept.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
-          <dd><p><strong>官方明确警告安全风险</strong>：README 声明本 server <strong>可访问本地与内网 IP 地址，可能构成安全风险</strong>。 需谨慎使用，确保不会暴露敏感数据。 无独立审批机制，无法限制目标地址范围。</p></dd>
+          <dd><span data-zh><p><strong>官方明确警告安全风险</strong>：README 声明本 server <strong>可访问本地与内网 IP 地址，可能构成安全风险</strong>。 需谨慎使用，确保不会暴露敏感数据。 无独立审批机制，无法限制目标地址范围。</p></span><span data-en><p><strong>The official docs warn explicitly about the security risk</strong>: the README states this server <strong>can access local/internal IP addresses and may represent a security risk</strong>. Use with caution and make sure no sensitive data is exposed. There is no separate approval mechanism, and the target-address range cannot be restricted.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
-          <dd><p>把公开网页内容转成 Markdown 供 Agent 读取。 <strong>不适合在能访问内网的环境中使用</strong>， 也不适合需要登录态的页面。</p></dd>
+          <dd><span data-zh><p>把公开网页内容转成 Markdown 供 Agent 读取。 <strong>不适合在能访问内网的环境中使用</strong>， 也不适合需要登录态的页面。</p></span><span data-en><p>Converts public web content to Markdown for an Agent to read. <strong>Not a fit for environments with intranet access</strong>, nor for pages requiring login state.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
-          <dd><p>支持 stdio，<strong>并提供容器部署方式（Docker / Podman）</strong>。 2026-08-30 修复了 bind mount 的安全与兼容问题（含 SELinux）。</p>
-            <p>官方 README（2026-10-08 全文核验）只给本地进程接入： uvx / pip / Docker；没有远程传输的官方启动方式。</p></dd>
+          <dd><span data-zh><p>支持 stdio，<strong>并提供容器部署方式（Docker / Podman）</strong>。 2026-08-30 修复了 bind mount 的安全与兼容问题（含 SELinux）。</p>
+            <p>官方 README（2026-10-08 全文核验）只给本地进程接入： uvx / pip / Docker；没有远程传输的官方启动方式。</p></span><span data-en><p>Supports stdio, <strong>and offers container deployment (Docker / Podman)</strong>. The 2026-08-30 fix addressed bind-mount security and compatibility (including SELinux).</p>
+            <p>The official README (full-text verification 2026-10-08) gives only local-process integration: uvx / pip / Docker; there is no official launch method for a remote transport.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
-          <dd><p>无独立认证层。stdio 形态继承客户端用户权限。 <strong>容器形态的认证配置仓库未说明。</strong></p></dd>
+          <dd><span data-zh><p>无独立认证层。stdio 形态继承客户端用户权限。 <strong>容器形态的认证配置仓库未说明。</strong></p></span><span data-en><p>No separate authentication layer. In stdio form it inherits the client user&#39;s permissions. <strong>Authentication configuration for the container form is not stated in the repo.</strong></p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
-          <dd><p><strong>风险最高的一类</strong>：文件范围无限制（不涉及文件）， 但<strong>网络范围无法收敛</strong>—— 官方警告它可访问本地与内网 IP。 无地址白名单、无审批机制。 在生产或含内网服务的环境中使用前必须评估。</p></dd>
+          <dd><span data-zh><p><strong>风险最高的一类</strong>：文件范围无限制（不涉及文件）， 但<strong>网络范围无法收敛</strong>—— 官方警告它可访问本地与内网 IP。 无地址白名单、无审批机制。 在生产或含内网服务的环境中使用前必须评估。</p></span><span data-en><p><strong>The highest-risk class</strong>: no file scope (files are not involved), but <strong>the network range cannot be narrowed</strong> — the official warning says it can access local/internal IPs. No address allowlist, no approval mechanism. An assessment is mandatory before using it in production or in environments hosting intranet services.</p></span></dd>
         </div>
       </dl>
 
@@ -193,13 +195,19 @@
 
             <div class="panel is-slim">
         <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
-        
+        <span data-zh>
         <ul>
           <li>是否支持 Streamable HTTP（仓库未声明）</li>
           <li>是否有超时与重试策略</li>
           <li>大页面的截断行为</li>
           <li>容器形态下的认证配置</li>
-        </ul>
+        </ul></span><span data-en>
+        <ul>
+          <li>Whether Streamable HTTP is supported (not declared in the repo)</li>
+          <li>Whether there are timeout and retry policies</li>
+          <li>Truncation behaviour on very large pages</li>
+          <li>Authentication configuration in the container form</li>
+        </ul></span>
       </div>
 
 
@@ -209,58 +217,69 @@
         <table class="src">
           <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
           <tbody>
-            <tr><td>docs</td><td>MCP · Fetch Server（含官方安全警告）</td><td><a href="https://github.com/modelcontextprotocol/servers/tree/main/src/fetch" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers/tree/main/src/fetch</a></td></tr>
-            <tr><td>changelog</td><td>MCP · Fetch 目录变更历史</td><td><a href="https://github.com/modelcontextprotocol/servers/commits/main/src/fetch" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers/commits/main/src/fetch</a></td></tr>
-            <tr><td>changelog</td><td>MCP · Servers Releases</td><td><a href="https://github.com/modelcontextprotocol/servers/releases" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers/releases</a></td></tr>
-            <tr><td>repo</td><td>MCP · Servers 仓库 README（生产环境免责声明）</td><td><a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>MCP · Fetch Server（含官方安全警告）</span><span data-en>MCP · Fetch Server (with the official security warning)</span></td><td><a href="https://github.com/modelcontextprotocol/servers/tree/main/src/fetch" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers/tree/main/src/fetch</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>MCP · Fetch 目录变更历史</span><span data-en>MCP · Fetch directory change history</span></td><td><a href="https://github.com/modelcontextprotocol/servers/commits/main/src/fetch" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers/commits/main/src/fetch</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>MCP · Servers Releases</span><span data-en>MCP · Servers Releases</span></td><td><a href="https://github.com/modelcontextprotocol/servers/releases" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers/releases</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>MCP · Servers 仓库 README（生产环境免责声明）</span><span data-en>MCP · Servers repo README (production-use disclaimer)</span></td><td><a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers</a></td></tr>
           </tbody>
         </table>
       </div>
 
             <div class="panel is-slim">
         <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
-        <p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>。</p>
-            <p><strong>实测建议</strong>：这个 server 的实测<strong>不应在含内网敏感服务的环境中进行</strong>。 建议在隔离容器或测试网络中验证抓取成功率与输出质量。</p>
+        <span data-zh><p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>。</p>
+            <p><strong>实测建议</strong>：这个 server 的实测<strong>不应在含内网敏感服务的环境中进行</strong>。 建议在隔离容器或测试网络中验证抓取成功率与输出质量。</p></span><span data-en><p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>.</p>
+            <p><strong>Suggested measurement</strong>: measurement of this server <strong>should not be done in environments containing sensitive intranet services</strong>. Verify fetch success rate and output quality in an isolated container or test network.</p></span>
       </div>
 
 
             <div class="panel is-slim">
-        <h2>⚠ 官方安全警告（原文）</h2>
-        <blockquote><strong>CAUTION</strong> This server can access local/internal IP addresses and may represent a security risk. Exercise caution when using this MCP server to ensure this does not expose any sensitive data.</blockquote>
+        <h2><span data-zh>⚠ 官方安全警告（原文）</span><span data-en>⚠ The official security warning (original wording)</span></h2>
+        <span data-zh><blockquote><strong>CAUTION</strong> This server can access local/internal IP addresses and may represent a security risk. Exercise caution when using this MCP server to ensure this does not expose any sensitive data.</blockquote>
             <p><strong>翻译</strong>：本 server 能访问本地与内网 IP 地址，可能构成安全风险。 使用时务必谨慎，确保不会暴露敏感数据。</p>
-            <p><strong>这是本分区里官方自己标注风险最明确的一个</strong>， 也是本站认为最有价值的一条一手信息——因为这类警告极少见， 大多数同类工具只会写「使用前请注意安全」。</p>
+            <p><strong>这是本分区里官方自己标注风险最明确的一个</strong>， 也是本站认为最有价值的一条一手信息——因为这类警告极少见， 大多数同类工具只会写「使用前请注意安全」。</p></span><span data-en><blockquote><strong>CAUTION</strong> This server can access local/internal IP addresses and may represent a security risk. Exercise caution when using this MCP server to ensure this does not expose any sensitive data.</blockquote>
+            <p><strong>This is the clearest self-flagged risk by the official side in this entire section</strong>, and the site considers it the most valuable first-hand information — such warnings are rare; most comparable tools only write &quot;be careful when using&quot;.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>为什么这个风险值得单独说</h2>
-        <div class="tbl-wrap"><table><thead><tr><th>场景</th><th>风险</th></tr></thead><tbody><tr><td>内网有数据库管理面板（<code>10.x</code> / <code>192.168.x</code>）</td><td>Agent 可能抓到内网页面</td></tr><tr><td>云环境 metadata 服务（如 <code>169.254.169.254</code>）</td><td>可能拿到实例元数据与凭据</td></tr><tr><td>本机有开发服务器</td><td>可能抓到本机服务的响应</td></tr><tr><td>Agent 被诱导抓取恶意 URL</td><td>可探测内网拓扑</td></tr></tbody></table></div>
-            <p><strong>关键</strong>：没有地址白名单，也没有审批机制。 一旦启用，Agent 就有了探测内网的通道。</p>
+        <h2><span data-zh>为什么这个风险值得单独说</span><span data-en>Why this risk deserves its own section</span></h2>
+        <span data-zh><div class="tbl-wrap"><table><thead><tr><th>场景</th><th>风险</th></tr></thead><tbody><tr><td>内网有数据库管理面板（<code>10.x</code> / <code>192.168.x</code>）</td><td>Agent 可能抓到内网页面</td></tr><tr><td>云环境 metadata 服务（如 <code>169.254.169.254</code>）</td><td>可能拿到实例元数据与凭据</td></tr><tr><td>本机有开发服务器</td><td>可能抓到本机服务的响应</td></tr><tr><td>Agent 被诱导抓取恶意 URL</td><td>可探测内网拓扑</td></tr></tbody></table></div>
+            <p><strong>关键</strong>：没有地址白名单，也没有审批机制。 一旦启用，Agent 就有了探测内网的通道。</p></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Scenario</th><th>Risk</th></tr></thead><tbody><tr><td>Intranet has database admin panels (<code>10.x</code> / <code>192.168.x</code>)</td><td>The Agent may fetch intranet pages</td></tr><tr><td>Cloud metadata services (e.g. <code>169.254.169.254</code>)</td><td>Instance metadata and credentials may be obtained</td></tr><tr><td>A dev server runs on the local machine</td><td>Local service responses may be fetched</td></tr><tr><td>The Agent is lured into fetching a malicious URL</td><td>Intranet topology can be probed</td></tr></tbody></table></div>
+            <p><strong>The key point</strong>: there is no address allowlist and no approval mechanism. Once enabled, the Agent has a channel for probing the intranet.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>变更记录说明</h2>
-        <p><strong>本对象无独立 changelog 页</strong>，变更记录在目录 commit 历史中：</p>
+        <h2><span data-zh>变更记录说明</span><span data-en>Change-log notes</span></h2>
+        <span data-zh><p><strong>本对象无独立 changelog 页</strong>，变更记录在目录 commit 历史中：</p>
             <div class="tbl-wrap"><table><thead><tr><th>日期</th><th>内容</th></tr></thead><tbody><tr><td>2026-08-30</td><td>修复容器 bind mount 安全与兼容问题（Docker / Podman / SELinux）</td></tr><tr><td>2026-08-18</td><td>文档补充 Python MCP 1.x 版本要求</td></tr><tr><td>2026-08-18</td><td>固定依赖 <code>mcp&gt;=1.29.0,&lt;2</code></td></tr><tr><td>2026-07-29</td><td>uv 依赖批量更新</td></tr></tbody></table></div>
             <p><strong>两条值得注意</strong>：</p>
             <ul><li><strong>08-18 的版本固定</strong>：SDK 2.0 重命名了本 server 使用的 API，官方明确锁在 1.x。 如果你的环境装了 SDK 2.x，这个 server 可能起不来。</li></ul>
-            <ul><li><strong>08-30 的容器修复</strong>和 git / time 是同一条 commit（#2205），说明这三个 server 有共同的容器化问题。</li></ul>
+            <ul><li><strong>08-30 的容器修复</strong>和 git / time 是同一条 commit（#2205），说明这三个 server 有共同的容器化问题。</li></ul></span><span data-en><p><strong>This object has no standalone changelog page</strong>; change records are in the directory&#39;s commit history:</p>
+            <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Content</th></tr></thead><tbody><tr><td>2026-08-30</td><td>Fix container bind-mount security and compatibility (Docker / Podman / SELinux)</td></tr><tr><td>2026-08-18</td><td>Document the Python MCP 1.x version requirement</td></tr><tr><td>2026-08-18</td><td>Pin the dependency <code>mcp&gt;=1.29.0,&lt;2</code></td></tr><tr><td>2026-07-29</td><td>Batch uv dependency updates</td></tr></tbody></table></div>
+            <p><strong>Two entries worth noting</strong>:</p>
+            <ul><li><strong>The 08-18 version pin</strong>: SDK 2.0 renamed the APIs this server uses, and the official side pins it to 1.x. If your environment has SDK 2.x installed, this server may fail to start.</li></ul>
+            <ul><li><strong>The 08-30 container fix</strong> is the same commit (#2205) as git / time, showing these three servers shared a containerization problem.</li></ul></span>
       </div>
       <div class="panel is-slim">
-        <h2>输出质量评估</h2>
-        <p><strong>输出结构取决于目标页面本身</strong>，不是统一 schema：</p>
+        <h2><span data-zh>输出质量评估</span><span data-en>Output-quality assessment</span></h2>
+        <span data-zh><p><strong>输出结构取决于目标页面本身</strong>，不是统一 schema：</p>
             <div class="tbl-wrap"><table><thead><tr><th>目标页面类型</th><th>输出质量</th></tr></thead><tbody><tr><td>文档站（结构规整）</td><td>好</td></tr><tr><td>博客正文</td><td>中</td></tr><tr><td>单页应用（内容由 JS 渲染）</td><td><strong>差</strong> — 抓不到正文</td></tr><tr><td>需要登录的页面</td><td><strong>失败</strong></td></tr><tr><td>纯图片 / PDF</td><td>不可用</td></tr></tbody></table></div>
-            <p><strong>这不是 server 的缺陷，但它决定了这个工具的适用边界。</strong></p>
+            <p><strong>这不是 server 的缺陷，但它决定了这个工具的适用边界。</strong></p></span><span data-en><p><strong>Output structure depends on the target page itself</strong>; there is no unified schema:</p>
+            <div class="tbl-wrap"><table><thead><tr><th>Target page type</th><th>Output quality</th></tr></thead><tbody><tr><td>Documentation sites (regular structure)</td><td>good</td></tr><tr><td>Blog article bodies</td><td>medium</td></tr><tr><td>Single-page apps (content rendered by JS)</td><td><strong>poor</strong> — the body text cannot be fetched</td></tr><tr><td>Pages requiring login</td><td><strong>fails</strong></td></tr><tr><td>Pure images / PDFs</td><td>unusable</td></tr></tbody></table></div>
+            <p><strong>This is not a defect of the server, but it defines the tool&#39;s applicability boundary.</strong></p></span>
       </div>
       <div class="panel is-slim">
-        <h2>部署建议</h2>
-        <p>如果确实要用，在以下条件下才考虑：</p>
+        <h2><span data-zh>部署建议</span><span data-en>Deployment advice</span></h2>
+        <span data-zh><p>如果确实要用，在以下条件下才考虑：</p>
             <div class="tbl-wrap"><table><thead><tr><th>条件</th><th>说明</th></tr></thead><tbody><tr><td>隔离网络环境</td><td>不与内网服务同网段</td></tr><tr><td>或容器化并限制出网</td><td>白名单出站，只允许目标域名</td></tr><tr><td>且不接受内网访问需求</td><td>因为它无法被限制</td></tr></tbody></table></div>
-            <p><strong>注意</strong>：容器化本身不解决这个风险—— 容器内依然能访问宿主网络，除非配置网络策略。</p>
+            <p><strong>注意</strong>：容器化本身不解决这个风险—— 容器内依然能访问宿主网络，除非配置网络策略。</p></span><span data-en><p>If you really need it, consider it only under these conditions:</p>
+            <div class="tbl-wrap"><table><thead><tr><th>Condition</th><th>Explanation</th></tr></thead><tbody><tr><td>Isolated network environment</td><td>not on the same segment as intranet services</td></tr><tr><td>or containerized with egress restricted</td><td>allowlist outbound, only target domains permitted</td></tr><tr><td>and no intranet-access requirement is accepted</td><td>because it cannot be restricted</td></tr></tbody></table></div>
+            <p><strong>Note</strong>: containerization alone does not solve this risk — inside a container the host network is still reachable unless network policies are configured.</p></span>
       </div>
 
             <div class="panel is-slim">
         <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
         <ul class="rel-list">
-          <li><span class="rel-t"><a href="./sequential-thinking.html"><span data-zh>Sequential Thinking MCP Server</span><span data-en>Sequential Thinking MCP Server</span></a></span><span class="rel-n">权限风险最低的对照</span></li>
-          <li><span class="rel-t"><a href="./filesystem.html"><span data-zh>Filesystem MCP Server</span><span data-en>Filesystem MCP Server</span></a></span><span class="rel-n">文件方向，权限设计更保守</span></li>
+          <li><span class="rel-t"><a href="./sequential-thinking.html"><span data-zh>Sequential Thinking MCP Server</span><span data-en>Sequential Thinking MCP Server</span></a></span><span class="rel-n"><span data-zh>权限风险最低的对照</span><span data-en>The lowest permission-risk contrast</span></span></li>
+          <li><span class="rel-t"><a href="./filesystem.html"><span data-zh>Filesystem MCP Server</span><span data-en>Filesystem MCP Server</span></a></span><span class="rel-n"><span data-zh>文件方向，权限设计更保守</span><span data-en>The file direction, with more conservative permission design</span></span></li>
           <li><span class="rel-t"><a href="/coding/grok-bot.html"><span data-zh>xAI Grok Bot</span><span data-en>xAI Grok Bot</span></a></span><span class="rel-n"><span data-zh>另一层 · AI 编程</span><span data-en>Other layer · AI coding</span></span></li>
         </ul>
       </div>

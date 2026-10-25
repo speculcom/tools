@@ -109,7 +109,7 @@
         <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-23</span>
       </div>
 
-            <p class="t-xs" data-en>English summaries and interface labels are available. Detailed source notes below are currently in Chinese.</p>
+            
       <div class="panel-lead"><span data-zh><p><strong>Datadog 自营的官方 MCP server</strong>（mcp.datadoghq.com/v1/mcp）：agent 排障时直查生产日志、 指标、trace、incident。三条硬口径：<strong>凭据透传——RBAC 原样生效，server 不越权</strong>； <strong>工具按 toolsets 分组按需开</strong>；<strong>GovCloud 不兼容</strong>（官方明写）。 诚实标注：无开源仓；另有一条独立的本地 Code Security MCP Server，别混。</p></span><span data-en><p><strong>Datadog&#39;s self-run official MCP server</strong> (mcp.datadoghq.com/v1/mcp): agents query live production logs, metrics, traces and incidents while debugging. Three hard facts: <strong>credentials are passed through — RBAC applies as-is, the server cannot exceed the user</strong>; <strong>tools are grouped into toolsets, enable on demand</strong>; <strong>GovCloud is not compatible</strong> (stated outright). Honest note: no open-source repo; a separate local Code Security MCP Server exists — don&#39;t conflate them.</p></span></div>
 
             <div class="panel is-slim">
@@ -135,47 +135,47 @@
       <dl class="axes">
         <div class="axis">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
-          <dd><p><strong>它自己不调模型</strong>——被 MCP 客户端调用的接口实现。它把 Datadog 可观测数据 （logs/metrics/traces/dashboards/monitors/incidents/security signals 等）包装成工具给 agent 用。 官方文档口径：多数工具直查 Datadog 后端不经模型；少数语义检索/自然语言转查询类工具 会用 Datadog 的 AI 供应商托管的模型，可整组织关闭。</p></dd>
+          <dd><span data-zh><p><strong>它自己不调模型</strong>——被 MCP 客户端调用的接口实现。它把 Datadog 可观测数据 （logs/metrics/traces/dashboards/monitors/incidents/security signals 等）包装成工具给 agent 用。 官方文档口径：多数工具直查 Datadog 后端不经模型；少数语义检索/自然语言转查询类工具 会用 Datadog 的 AI 供应商托管的模型，可整组织关闭。</p></span><span data-en><p><strong>It calls no model itself</strong> — an interface implementation called by MCP clients. It wraps Datadog observability data (logs/metrics/traces/dashboards/monitors/incidents/security signals, etc.) as tools for agents. The official docs&#39; position: most tools query the Datadog backend directly without a model; a few semantic-search / natural-language-to-query tools do use models hosted by Datadog&#39;s AI providers, and can be disabled org-wide.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
-          <dd><p>官方托管远程 server（mcp.datadoghq.com/v1/mcp——直抓 401=存在需鉴权）； 另有本地二进制线（coterm.datadoghq.com 安装脚本装 datadog_mcp_cli，stdio 连远程工具）。 官方文档明写 <strong>not GovCloud compatible</strong>；HIPAA-eligible。</p></dd>
+          <dd><span data-zh><p>官方托管远程 server（mcp.datadoghq.com/v1/mcp——直抓 401=存在需鉴权）； 另有本地二进制线（coterm.datadoghq.com 安装脚本装 datadog_mcp_cli，stdio 连远程工具）。 官方文档明写 <strong>not GovCloud compatible</strong>；HIPAA-eligible。</p></span><span data-en><p>An official hosted remote server (mcp.datadoghq.com/v1/mcp — direct fetch 401 = exists, auth required); there is also a local-binary line (the coterm.datadoghq.com install script installs datadog_mcp_cli, stdio connecting to remote tools). The official docs state plainly <strong>not GovCloud compatible</strong>; HIPAA-eligible.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
-          <dd><p>不碰本机文件系统——作用域是 Datadog 云端数据。 例外：官方另有一条<strong>独立的 Code Security MCP Server</strong>（本地跑 SAST/SCA/IaC/secrets/SBOM 扫描）， 文档明说那是窄范围的另一条线，不是本条目的主体。</p></dd>
+          <dd><span data-zh><p>不碰本机文件系统——作用域是 Datadog 云端数据。 例外：官方另有一条<strong>独立的 Code Security MCP Server</strong>（本地跑 SAST/SCA/IaC/secrets/SBOM 扫描）， 文档明说那是窄范围的另一条线，不是本条目的主体。</p></span><span data-en><p>Never touches the local file system — the scope is Datadog cloud data. Exception: the official docs carry a <strong>separate Code Security MCP Server</strong> (running SAST/SCA/IaC/secrets/SBOM scans locally); the docs say explicitly it is a narrow, separate line, not the subject of this entry.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
-          <dd><p>服务在 Datadog 侧；会话请求-响应，无后台监听语义。 官方声明会收集 MCP 使用信息（工具名/参数/错误/用户标识，不含 prompt 与模型推理），存 120 天。</p></dd>
+          <dd><span data-zh><p>服务在 Datadog 侧；会话请求-响应，无后台监听语义。 官方声明会收集 MCP 使用信息（工具名/参数/错误/用户标识，不含 prompt 与模型推理），存 120 天。</p></span><span data-en><p>The service lives on Datadog&#39;s side; session request-response, no background-listening semantics. The official docs state that MCP usage information is collected (tool names/parameters/errors/user identifiers, excluding prompts and model reasoning), stored for 120 days.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
-          <dd><p>按 <strong>toolsets 分组</strong>（URL 参数 ?toolsets= 选择，默认 core）：core（logs/metrics/traces/ dashboards/monitors/incidents/hosts/services/events/notebooks）、alerting、apm（Preview）、 cases、dbm、ddsql（Preview）、error-tracking、feature-flags、llmobs、product-analytics、 networks、onboarding、security、software-delivery、synthetics、workflows；toolsets=all 开全部 GA 组。</p></dd>
+          <dd><span data-zh><p>按 <strong>toolsets 分组</strong>（URL 参数 ?toolsets= 选择，默认 core）：core（logs/metrics/traces/ dashboards/monitors/incidents/hosts/services/events/notebooks）、alerting、apm（Preview）、 cases、dbm、ddsql（Preview）、error-tracking、feature-flags、llmobs、product-analytics、 networks、onboarding、security、software-delivery、synthetics、workflows；toolsets=all 开全部 GA 组。</p></span><span data-en><p>Grouped by <strong>toolsets</strong> (selected via the URL parameter ?toolsets=, default core): core (logs/metrics/traces/ dashboards/monitors/incidents/hosts/services/events/notebooks), alerting, apm (Preview), cases, dbm, ddsql (Preview), error-tracking, feature-flags, llmobs, product-analytics, networks, onboarding, security, software-delivery, synthetics, workflows; toolsets=all enables every GA group.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
-          <dd><p>无 server 侧跨会话记忆——状态在 Datadog 平台本身；官方建议用 toolsets 裁剪工具省上下文窗口。</p></dd>
+          <dd><span data-zh><p>无 server 侧跨会话记忆——状态在 Datadog 平台本身；官方建议用 toolsets 裁剪工具省上下文窗口。</p></span><span data-en><p>No server-side cross-session memory — state lives on the Datadog platform itself; the official docs recommend trimming tools via toolsets to save context window.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
-          <dd><p><strong>权限面是这条目的核心</strong>：官方明写 server 把已认证用户自己的凭据转发给 Datadog API—— <strong>RBAC/Data Access Control/日志限制查询原样生效，server 不能给用户越权</strong>。 写动作要对应权限（如 monitors_write），每次工具调用都检查；只读用户调写工具会被拒。 组织管理员可在 Organization Settings 管全局 MCP 访问与写能力，可开 IP allowlist。</p></dd>
+          <dd><span data-zh><p><strong>权限面是这条目的核心</strong>：官方明写 server 把已认证用户自己的凭据转发给 Datadog API—— <strong>RBAC/Data Access Control/日志限制查询原样生效，server 不能给用户越权</strong>。 写动作要对应权限（如 monitors_write），每次工具调用都检查；只读用户调写工具会被拒。 组织管理员可在 Organization Settings 管全局 MCP 访问与写能力，可开 IP allowlist。</p></span><span data-en><p><strong>The permission surface is the core of this entry</strong>: the official docs state plainly that the server forwards the authenticated user&#39;s own credentials to the Datadog API — <strong>RBAC / Data Access Control / log restrictions apply unchanged; the server cannot grant a user anything beyond their own access</strong>. Write actions require the corresponding permission (e.g. monitors_write), checked on every tool call; read-only users calling write tools get rejected. Org admins can manage global MCP access and write capability in Organization Settings, and can enable an IP allowlist.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
-          <dd><p>适合：编码/运维 agent 排障时取生产实时上下文（日志/指标/trace/incident）、 在 IDE 里对着真实数据调试。 不适合：GovCloud 环境（官方明写不兼容）；要本地全离线（远程线要连 Datadog； 本地二进制也只是本地鉴权壳，工具仍在远端）。</p></dd>
+          <dd><span data-zh><p>适合：编码/运维 agent 排障时取生产实时上下文（日志/指标/trace/incident）、 在 IDE 里对着真实数据调试。 不适合：GovCloud 环境（官方明写不兼容）；要本地全离线（远程线要连 Datadog； 本地二进制也只是本地鉴权壳，工具仍在远端）。</p></span><span data-en><p>Fits: coding/ops agents pulling live production context (logs/metrics/traces/incidents) while debugging, debugging against real data inside the IDE. Not a fit: GovCloud environments (officially stated incompatible); needing fully local offline (the remote line must reach Datadog; the local binary is only a local auth shell — tools still live remotely).</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
-          <dd><p><strong>Streamable HTTP</strong>（远程 https://mcp.datadoghq.com/v1/mcp）为主； 本地二进制 datadog_mcp_cli 走 stdio（鉴权在本地完成，工具仍在远端）。 核验：官方文档 setup 页（2026-10-23 直抓）。</p></dd>
+          <dd><span data-zh><p><strong>Streamable HTTP</strong>（远程 https://mcp.datadoghq.com/v1/mcp）为主； 本地二进制 datadog_mcp_cli 走 stdio（鉴权在本地完成，工具仍在远端）。 核验：官方文档 setup 页（2026-10-23 直抓）。</p></span><span data-en><p><strong>Streamable HTTP</strong> (remote https://mcp.datadoghq.com/v1/mcp) is primary; the local binary datadog_mcp_cli uses stdio (authentication happens locally, tools remain remote). Verified against: the official docs setup page (direct-fetched 2026-10-23).</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
-          <dd><p>OAuth 2.0（推荐，客户端自动走流程；自定义子域要加 ?subdomain= 参数）； 或 PAT/SAT Bearer 头；或 DD_API_KEY + DD_APPLICATION_KEY 头（官方建议用带 scope 的 服务账号 key）。端点直抓 401=存在需鉴权。</p></dd>
+          <dd><span data-zh><p>OAuth 2.0（推荐，客户端自动走流程；自定义子域要加 ?subdomain= 参数）； 或 PAT/SAT Bearer 头；或 DD_API_KEY + DD_APPLICATION_KEY 头（官方建议用带 scope 的 服务账号 key）。端点直抓 401=存在需鉴权。</p></span><span data-en><p>OAuth 2.0 (recommended, clients run the flow automatically; custom subdomains need a ?subdomain= parameter); or a PAT/SAT Bearer header; or DD_API_KEY + DD_APPLICATION_KEY headers (the official docs recommend a scoped service-account key). The endpoint&#39;s direct-fetch 401 = exists, auth required.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
-          <dd><p>读面大（logs/metrics/traces/dashboards/monitors/incidents 等按 toolsets 分组）； 写动作（建 monitor、改 case 等）要对应写权限、逐调用检查。 官方口径：MCP 工具调用全部进 Audit Trail（工具名/参数/用户/客户端）， 另有 datadog.mcp.session.starts 与 datadog.mcp.tool.calls 两个标准指标。</p></dd>
+          <dd><span data-zh><p>读面大（logs/metrics/traces/dashboards/monitors/incidents 等按 toolsets 分组）； 写动作（建 monitor、改 case 等）要对应写权限、逐调用检查。 官方口径：MCP 工具调用全部进 Audit Trail（工具名/参数/用户/客户端）， 另有 datadog.mcp.session.starts 与 datadog.mcp.tool.calls 两个标准指标。</p></span><span data-en><p>A large read surface (logs/metrics/traces/dashboards/monitors/incidents etc., grouped by toolsets); write actions (creating monitors, modifying cases, etc.) require the corresponding write permission, checked per call. The official position: all MCP tool calls go into the Audit Trail (tool name/parameters/user/client), plus two standard metrics, datadog.mcp.session.starts and datadog.mcp.tool.calls.</p></span></dd>
         </div>
       </dl>
 
@@ -193,12 +193,17 @@
 
             <div class="panel is-slim">
         <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
-        
+        <span data-zh>
         <ul>
           <li>各 toolset 内工具的完整清单（官方文档列了组名与部分工具，未逐条清点）</li>
           <li>速率限制的当前数值（官方文档给过口径且明写「可能调整」，按 D9 与快照纪律不记具体数字）</li>
           <li>本地二进制线的 Windows 支持细节（官方给下载指引，未逐条核验）</li>
-        </ul>
+        </ul></span><span data-en>
+        <ul>
+          <li>The complete tool list within each toolset (the official docs list group names and some tools, not enumerated item by item)</li>
+          <li>Current rate-limit numbers (the official docs gave figures and state plainly they &quot;may change&quot;; per our D9 rule and snapshot discipline no specific numbers are stored)</li>
+          <li>Windows support details of the local-binary line (the official docs give download guidance, not verified item by item)</li>
+        </ul></span>
       </div>
 
 
@@ -208,16 +213,16 @@
         <table class="src">
           <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
           <tbody>
-            <tr><td>docs</td><td>Datadog · 官方 MCP Server 文档（定位、toolsets、权限与合规口径，2026-10-23 直抓核验）</td><td><a href="https://docs.datadoghq.com/mcp_server/" target="_blank" rel="noopener">https://docs.datadoghq.com/mcp_server/</a></td></tr>
-            <tr><td>docs</td><td>Datadog · 官方 setup 文档（端点、OAuth/PAT/SAT 鉴权、本地二进制、速率限制）</td><td><a href="https://docs.datadoghq.com/mcp_server/setup/" target="_blank" rel="noopener">https://docs.datadoghq.com/mcp_server/setup/</a></td></tr>
-            <tr><td>changelog</td><td>Datadog · 官方发布博客（remote MCP server 上线与工具清单）</td><td><a href="https://www.datadoghq.com/blog/datadog-remote-mcp-server/" target="_blank" rel="noopener">https://www.datadoghq.com/blog/datadog-remote-mcp-server/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Datadog · 官方 MCP Server 文档（定位、toolsets、权限与合规口径，2026-10-23 直抓核验）</span><span data-en>Datadog · official MCP Server docs (positioning, toolsets, permission and compliance positions, direct-fetched 2026-10-23)</span></td><td><a href="https://docs.datadoghq.com/mcp_server/" target="_blank" rel="noopener">https://docs.datadoghq.com/mcp_server/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Datadog · 官方 setup 文档（端点、OAuth/PAT/SAT 鉴权、本地二进制、速率限制）</span><span data-en>Datadog · official setup docs (endpoint, OAuth/PAT/SAT auth, local binary, rate limits)</span></td><td><a href="https://docs.datadoghq.com/mcp_server/setup/" target="_blank" rel="noopener">https://docs.datadoghq.com/mcp_server/setup/</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>Datadog · 官方发布博客（remote MCP server 上线与工具清单）</span><span data-en>Datadog · official launch blog (remote MCP server launch and tool inventory)</span></td><td><a href="https://www.datadoghq.com/blog/datadog-remote-mcp-server/" target="_blank" rel="noopener">https://www.datadoghq.com/blog/datadog-remote-mcp-server/</a></td></tr>
           </tbody>
         </table>
       </div>
 
             <div class="panel is-slim">
         <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
-        <p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>。</p>
+        <span data-zh><p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>。</p></span><span data-en><p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>.</p></span>
       </div>
 
 
@@ -226,8 +231,8 @@
             <div class="panel is-slim">
         <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
         <ul class="rel-list">
-          <li><span class="rel-t"><a href="./grafana-mcp.html"><span data-zh>Grafana MCP</span><span data-en>Grafana MCP Server</span></a></span><span class="rel-n">同为可观测面：Grafana 开源可自托管，Datadog 闭源托管加凭据透传。</span></li>
-          <li><span class="rel-t"><a href="./sentry-mcp.html"><span data-zh>Sentry MCP</span><span data-en>Sentry MCP / Toolkit</span></a></span><span class="rel-n">同大类对照：Sentry 聚焦错误 issue，Datadog 是全栈可观测平台面。</span></li>
+          <li><span class="rel-t"><a href="./grafana-mcp.html"><span data-zh>Grafana MCP</span><span data-en>Grafana MCP Server</span></a></span><span class="rel-n"><span data-zh>同为可观测面：Grafana 开源可自托管，Datadog 闭源托管加凭据透传。</span><span data-en>Also the observability surface: Grafana is open-source and self-hostable; Datadog is closed-source hosted with credential pass-through.</span></span></li>
+          <li><span class="rel-t"><a href="./sentry-mcp.html"><span data-zh>Sentry MCP</span><span data-en>Sentry MCP / Toolkit</span></a></span><span class="rel-n"><span data-zh>同大类对照：Sentry 聚焦错误 issue，Datadog 是全栈可观测平台面。</span><span data-en>Same-category contrast: Sentry focuses on error issues; Datadog is the full-stack observability platform surface.</span></span></li>
           <li><span class="rel-t"><a href="/coding/cursor.html"><span data-zh>Cursor</span><span data-en>Cursor</span></a></span><span class="rel-n"><span data-zh>另一层 · AI 编程</span><span data-en>Other layer · AI coding</span></span></li>
           <li><span class="rel-t"><a href="/coding/claude-code.html"><span data-zh>Claude Code IDE 扩展</span><span data-en>Claude Code (IDE extension)</span></a></span><span class="rel-n"><span data-zh>另一层 · AI 编程</span><span data-en>Other layer · AI coding</span></span></li>
         </ul>
