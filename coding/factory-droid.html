@@ -107,7 +107,7 @@
         <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-23</span>
       </div>
 
-            <p class="t-xs" data-en>English summaries and interface labels are available. Detailed source notes below are currently in Chinese.</p>
+            
       <div class="panel-lead"><span data-zh><p><strong>Droid 是 Factory AI 的终端编码 agent</strong>。</p>
             <p>它模型无关——官方托管、BYOK、本地模型三路并存。</p>
             <p>它以<strong>滚动 Rate Limits + 分级自主</strong>面向企业治理。</p></span><span data-en><p>Factory AI&#39;s terminal coding agent. Its pitch is <strong>model independence</strong> — the official BYOK page says &quot;Use your own OpenAI or Anthropic keys, connect to any open source model providers, or run models locally&quot;, and <strong>your keys stay local: &quot;Your API keys remain local and are not uploaded to Factory servers&quot;</strong>. Quota is not one monthly bucket but three independent rolling windows (5-hour / 7-day / 30-day); when you hit one you can fall back to <strong>Droid Core</strong> (a free open-weight model pool) or <strong>Extra Usage</strong> (prepaid credits, $10 minimum, never expiring). Every mutating action is gated by an <strong>Autonomy Level</strong> (Off / Low / Medium / High) plus command allow / deny / block lists. And it is not a single CLI: the official pricing page lists the Pro tier as &quot;Factory App / Droid CLI / Droid SDK&quot;.</p></span></div>
@@ -140,7 +140,7 @@
       <dl class="axes">
         <div class="axis">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
-          <dd><p><strong>模型无关是它的卖点：官方托管模型、BYOK、本地模型三路并存。</strong></p>
+          <dd><span data-zh><p><strong>模型无关是它的卖点：官方托管模型、BYOK、本地模型三路并存。</strong></p>
             <p>官方托管的模型覆盖四家厂商，另有一个开放权重池。</p>
             <ul><li>Anthropic：Claude Opus / Sonnet / Fable / Haiku</li><li>OpenAI：GPT-6 / GPT-5.5 / GPT-5.3-Codex</li><li>Google：Gemini</li><li>xAI：Grok</li><li>Droid Core 开放权重：GLM、Kimi、Qwen、DeepSeek、MiniMax、Nemotron 等</li></ul>
             <p>每个模型都标了消耗倍率与支持的 <code>reasoningEffort</code>。</p>
@@ -155,11 +155,26 @@
             <p><strong>官方原文</strong>：&quot;Your API keys remain local and are not uploaded to Factory servers&quot;</p>
             <p>换模型用 <code>/model</code>。</p>
             <p><strong>自定义模型只在 CLI 可用，不出现在 Web / 移动端。</strong></p>
-            <p>另有官方 <strong>Factory Router</strong> 自动跨 provider 路由。</p></dd>
+            <p>另有官方 <strong>Factory Router</strong> 自动跨 provider 路由。</p></span><span data-en><p><strong>Model-agnosticism is its selling point: officially hosted models, BYOK, and local models coexist.</strong></p>
+            <p>Officially hosted models cover four vendors, plus an open-weight pool.</p>
+            <ul><li>Anthropic: Claude Opus / Sonnet / Fable / Haiku</li><li>OpenAI: GPT-6 / GPT-5.5 / GPT-5.3-Codex</li><li>Google: Gemini</li><li>xAI: Grok</li><li>Droid Core open weights: GLM, Kimi, Qwen, DeepSeek, MiniMax, Nemotron, etc.</li></ul>
+            <p>Every model is labeled with its burn multiplier and supported <code>reasoningEffort</code>.</p>
+            <p>Multiplier examples: <code>gpt-5.5</code> is 2×, <code>claude-sonnet-5</code> is 0.8×.</p>
+            <p><strong>BYOK can use your own keys or any OpenAI-compatible endpoint.</strong></p>
+            <p><strong>Official wording</strong>: &quot;Use your own OpenAI or Anthropic keys, connect to any open source model providers, or run models locally&quot;</p>
+            <p>Config lives in <code>customModels</code> in <code>~/.factory/settings.json</code>, three fields.</p>
+            <ul><li><code>baseUrl</code></li><li><code>apiKey</code></li><li><code>provider</code> (one of three: <code>anthropic</code>, <code>openai</code>, <code>generic-chat-completion-api</code>)</li></ul>
+            <p>Values can reference environment variables via <code>${VAR}</code>.</p>
+            <p>Any OpenAI-compatible endpoint works: OpenRouter / Fireworks / Together / Ollama / vLLM etc.</p>
+            <p><strong>API keys stay local and are not uploaded.</strong></p>
+            <p><strong>Official wording</strong>: &quot;Your API keys remain local and are not uploaded to Factory servers&quot;</p>
+            <p>Switch models with <code>/model</code>.</p>
+            <p><strong>Custom models are CLI-only and do not appear on Web / mobile.</strong></p>
+            <p>There is also the official <strong>Factory Router</strong> for automatic cross-provider routing.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
-          <dd><p><strong>CLI 优先，但官方定位是「一种 agent、多平台」。</strong></p>
+          <dd><span data-zh><p><strong>CLI 优先，但官方定位是「一种 agent、多平台」。</strong></p>
             <p>主力是终端进程 <code>droid</code>，也就是交互式 REPL。</p>
             <p>它的生命周期绑定终端会话，终端关掉就结束。</p>
             <p>安装三选一：</p>
@@ -169,11 +184,21 @@
             <p>官方定价页把这三者并列为 Pro 档内容。</p>
             <p><strong>官方原文</strong>：&quot;Factory App / Droid CLI / Droid SDK&quot;</p>
             <p>企业侧还有 <strong>Droid Computers</strong>，那是 Factory 托管的远端云环境，Plus 起。</p>
-            <p><strong>本条目只记录 CLI 形态</strong>，桌面与 SDK 的差异以官方页面为准。</p></dd>
+            <p><strong>本条目只记录 CLI 形态</strong>，桌面与 SDK 的差异以官方页面为准。</p></span><span data-en><p><strong>CLI-first, but the official positioning is &quot;one agent, multiple platforms&quot;.</strong></p>
+            <p>The workhorse is the terminal process <code>droid</code>, an interactive REPL.</p>
+            <p>Its lifecycle is bound to the terminal session — close the terminal and it ends.</p>
+            <p>Three install options:</p>
+            <ul><li>macOS / Linux: official script <code>curl -fsSL https://app.factory.ai/cli | sh</code></li><li>Windows: <code>irm https://app.factory.ai/cli/windows | iex</code></li><li>or npm: <code>npm install -g droid</code></li></ul>
+            <p><strong>The same agent has two more entry points.</strong></p>
+            <ul><li><strong>Factory App</strong> — a desktop client</li><li><strong>Droid SDK</strong> — TypeScript <code>@factory/droid-sdk</code>, Python <code>droid-sdk</code></li></ul>
+            <p>The official pricing page lists all three as Pro-tier contents.</p>
+            <p><strong>Official wording</strong>: &quot;Factory App / Droid CLI / Droid SDK&quot;</p>
+            <p>On the enterprise side there are also <strong>Droid Computers</strong>, Factory-managed remote cloud environments, from the Plus tier up.</p>
+            <p><strong>This entry documents the CLI form only</strong>; desktop and SDK differences follow the official pages.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
-          <dd><p><strong>它在你自己的工作目录里读写，官方另给了两个隔离手段。</strong></p>
+          <dd><span data-zh><p><strong>它在你自己的工作目录里读写，官方另给了两个隔离手段。</strong></p>
             <p>一是 <code>--cwd &lt;path&gt;</code>，指定工作目录。</p>
             <p>二是 <code>-w, --worktree [name]</code>，在独立 git worktree 上跑。</p>
             <p><strong>官方原文</strong>：&quot;fanning out parallel <code>droid exec</code> jobs against the same repo without file conflicts&quot;</p>
@@ -184,11 +209,22 @@
             <p>官方在 DEFAULT 档写明：</p>
             <p><strong>官方原文</strong>：&quot;No modifications to files or system&quot;</p>
             <p>要改文件，得显式开到 <code>--auto low</code> 以上。</p>
-            <p><strong>代码库是否做向量索引、大仓库首次建索引要多久，官方未说明</strong> （已查 CLI Reference 与 Quickstart 两页）。</p></dd>
+            <p><strong>代码库是否做向量索引、大仓库首次建索引要多久，官方未说明</strong> （已查 CLI Reference 与 Quickstart 两页）。</p></span><span data-en><p><strong>It reads and writes in your own working directory; the official docs add two isolation mechanisms.</strong></p>
+            <p>One is <code>--cwd &lt;path&gt;</code>, setting the working directory.</p>
+            <p>Two is <code>-w, --worktree [name]</code>, running on a separate git worktree.</p>
+            <p><strong>Official wording</strong>: &quot;fanning out parallel <code>droid exec</code> jobs against the same repo without file conflicts&quot;</p>
+            <p>Official note: clean worktrees are auto-deleted on exit; dirty ones are kept for review.</p>
+            <p><strong>Non-interactive <code>droid exec</code> is read-only by default.</strong></p>
+            <p>Read commands listed under the DEFAULT tier include:</p>
+            <ul><li><code>cat</code> / <code>ls</code> / <code>git status</code> / <code>git log</code></li><li><code>find</code>, but not with <code>-delete</code> / <code>-exec</code></li></ul>
+            <p>The official docs state plainly under the DEFAULT tier:</p>
+            <p><strong>Official wording</strong>: &quot;No modifications to files or system&quot;</p>
+            <p>To change files you must explicitly raise it to <code>--auto low</code> or above.</p>
+            <p><strong>Whether the codebase is vector-indexed, and how long first indexing takes on large repos, is not stated officially</strong> (CLI Reference and Quickstart pages checked).</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
-          <dd><p><strong>CLI 本体绑定会话，但官方有明确的云端后台形态。</strong></p>
+          <dd><span data-zh><p><strong>CLI 本体绑定会话，但官方有明确的云端后台形态。</strong></p>
             <p>终端进程退出即结束。</p>
             <p>官方定价页 Pro 档写有：</p>
             <p><strong>官方原文</strong>：&quot;Cloud &amp; local background agents&quot;</p>
@@ -199,11 +235,22 @@
             <p><strong>Missions</strong> 是多 agent 编排形态：orchestrator 协调 worker 与 validator。</p>
             <p>发起方式二选一：<code>/missions</code> 或 <code>droid exec --mission</code>。</p>
             <p>官方要求 High 自主级别，或用 <code>--skip-permissions-unsafe</code>。</p>
-            <p><strong>云端并发的具体数值与配额官方未给</strong> （已查 Plans &amp; Pricing 与 Missions 概览两页）。</p></dd>
+            <p><strong>云端并发的具体数值与配额官方未给</strong> （已查 Plans &amp; Pricing 与 Missions 概览两页）。</p></span><span data-en><p><strong>The CLI itself is session-bound, but there is an explicit cloud background form officially.</strong></p>
+            <p>The terminal process ends on exit.</p>
+            <p>The official pricing page&#39;s Pro tier lists:</p>
+            <p><strong>Official wording</strong>: &quot;Cloud &amp; local background agents&quot;</p>
+            <p>The Plus tier unlocks <strong>Droid Computers</strong>.</p>
+            <p><strong>Official wording</strong>: &quot;Factory-managed Droid Computers (remote cloud environments)&quot;</p>
+            <p>The enterprise page also says Droid can run on:</p>
+            <ul><li>CI runners, VMs, Kubernetes clusters</li></ul>
+            <p><strong>Missions</strong> is the multi-agent orchestration form: an orchestrator coordinates workers and validators.</p>
+            <p>Launch either via <code>/missions</code> or <code>droid exec --mission</code>.</p>
+            <p>The official docs require the High autonomy level, or <code>--skip-permissions-unsafe</code>.</p>
+            <p><strong>Concrete cloud concurrency numbers and quotas are not given by the official docs</strong> (Plans &amp; Pricing and the Missions overview checked).</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
-          <dd><p><strong>内置工具面很宽，MCP 支持完整，还带一个交互式管理器。</strong></p>
+          <dd><span data-zh><p><strong>内置工具面很宽，MCP 支持完整，还带一个交互式管理器。</strong></p>
             <p>内置能力包括：</p>
             <ul><li>命令执行、文件读写、git 操作</li><li>代码评审（<code>/review</code>）</li><li>图像生成、PDF 读取</li></ul>
             <p>扩展面另有五类：</p>
@@ -217,11 +264,25 @@
             <p>另有 <code>disabledTools</code> 可以按工具禁用，OAuth token 存系统 keyring。</p>
             <p><strong>非交互模式官方也支持。</strong></p>
             <p><code>droid exec</code> 的输出格式有 <code>text</code> / <code>json</code> 两种。</p>
-            <p>并有 <code>--input-format stream-jsonrpc</code> 的长期 JSON-RPC 控制面。</p></dd>
+            <p>并有 <code>--input-format stream-jsonrpc</code> 的长期 JSON-RPC 控制面。</p></span><span data-en><p><strong>The built-in tool surface is broad, MCP support is complete, and there is an interactive manager.</strong></p>
+            <p>Built-in capabilities include:</p>
+            <ul><li>command execution, file read/write, git operations</li><li>code review (<code>/review</code>)</li><li>image generation, PDF reading</li></ul>
+            <p>The extension surface adds five more classes:</p>
+            <ul><li><strong>Skills</strong> — <code>/skills</code>, <code>/create-skill</code></li><li><strong>Hooks</strong> — nine event types including PreToolUse / PostToolUse / PreCompact</li><li><strong>Custom Droids sub-agents</strong> — <code>/droids</code></li><li><strong>Plugins</strong> — <code>/plugins</code>, distributed via a marketplace</li><li>custom slash commands and <strong>AGENTS.md</strong></li></ul>
+            <p><strong>MCP supports two transports.</strong></p>
+            <p><strong>Official wording</strong>: &quot;Droid supports two types of servers: http (remote endpoints) and stdio (local processes)&quot;</p>
+            <p>Add via <code>droid mcp add &lt;name&gt; &lt;url&gt; --type http</code> or <code>droid mcp add &lt;name&gt; &quot;&lt;command&gt;&quot;</code>.</p>
+            <p><code>/mcp</code> opens the interactive manager: browse, inspect tools, enable/disable, do OAuth auth.</p>
+            <p>It can also add 40+ servers from a registry.</p>
+            <p>Config is two-layer: user-level <code>~/.factory/mcp.json</code> and project-level <code>.factory/mcp.json</code>.</p>
+            <p>There is also <code>disabledTools</code> to disable per tool; OAuth tokens are stored in the system keyring.</p>
+            <p><strong>Non-interactive mode is also officially supported.</strong></p>
+            <p><code>droid exec</code> output formats are <code>text</code> / <code>json</code>.</p>
+            <p>There is also <code>--input-format stream-jsonrpc</code>, a long-lived JSON-RPC control plane.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
-          <dd><p><strong>会话可以按 id 续接，也可以分叉；压缩与控制面都是公开的。</strong></p>
+          <dd><span data-zh><p><strong>会话可以按 id 续接，也可以分叉；压缩与控制面都是公开的。</strong></p>
             <p>非交互侧用 <code>droid exec --session-id &lt;id&gt;</code> 续接。</p>
             <p>分叉用 <code>--fork &lt;id&gt;</code>。</p>
             <p>交互侧退出时会提示 resume，CLI 参考里有 <code>-r, --resume</code>。</p>
@@ -234,11 +295,24 @@
             <p>另有 issue 跟踪上下文。</p>
             <p>Enterprise 档另有：</p>
             <p><strong>官方原文</strong>：&quot;Cross-harness agent memory&quot;</p>
-            <p><strong>CLI 侧记忆的持久化边界与保留策略，官方未在 CLI 页说明</strong> （已查 CLI Overview 与 Droid Exec 两页）。</p></dd>
+            <p><strong>CLI 侧记忆的持久化边界与保留策略，官方未在 CLI 页说明</strong> （已查 CLI Overview 与 Droid Exec 两页）。</p></span><span data-en><p><strong>Sessions can be resumed by id and forked; compaction and the control plane are documented.</strong></p>
+            <p>On the non-interactive side, resume with <code>droid exec --session-id &lt;id&gt;</code>.</p>
+            <p>Fork with <code>--fork &lt;id&gt;</code>.</p>
+            <p>On the interactive side, exit prompts resume, and the CLI reference has <code>-r, --resume</code>.</p>
+            <p>The stream-jsonrpc control plane exposes <code>droid.load_session</code>, session forking and history compaction.</p>
+            <p><strong>Official wording</strong>: &quot;interrupt work, update settings, manage MCP servers/tools, inspect context, fork sessions, or compact history&quot;</p>
+            <p>Compaction additionally has a <code>PreCompact</code> hook event.</p>
+            <p>The changelog also has this line:</p>
+            <p><strong>Official wording</strong>: &quot;in-place compression&quot;</p>
+            <p><strong>On memory</strong>, the official enterprise form mentions cross-repo &quot;organizational knowledge&quot;.</p>
+            <p>There is also issue-tracker context.</p>
+            <p>The Enterprise tier additionally has:</p>
+            <p><strong>Official wording</strong>: &quot;Cross-harness agent memory&quot;</p>
+            <p><strong>The persistence boundary and retention policy of memory on the CLI side are not stated on the CLI pages</strong> (CLI Overview and Droid Exec pages checked).</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
-          <dd><p><strong>权限是两级设计：分级自主（Autonomy Level）加命令黑白名单。</strong></p>
+          <dd><span data-zh><p><strong>权限是两级设计：分级自主（Autonomy Level）加命令黑白名单。</strong></p>
             <p>企业还能给这两级设上限。</p>
             <p>官方 Autonomy 页把执行风险分成四档。</p>
             <ul><li><strong>Off</strong> —— 只读工具 + 白名单命令</li><li><strong>Low</strong> —— 文件编辑 + 低风险命令 / MCP</li><li><strong>Medium</strong> —— 加上可逆的工作区改动，如 <code>npm install</code>、<code>git commit</code></li><li><strong>High</strong> —— 高风险操作，如 <code>git push</code>、迁移</li></ul>
@@ -251,14 +325,30 @@
             <p>放开用 <code>--auto low|medium|high</code> 逐级提升。</p>
             <p><code>--skip-permissions-unsafe</code> 是全放开，官方标注 DANGEROUS，仅限隔离环境。</p>
             <p>越级即停：返回非零码，不做部分改动（fail-fast）。</p>
-            <p>企业可以设 Default / Maximum Autonomy Level 封顶。</p></dd>
+            <p>企业可以设 Default / Maximum Autonomy Level 封顶。</p></span><span data-en><p><strong>Permissions are a two-level design: tiered autonomy (Autonomy Level) plus command allow/deny/block lists.</strong></p>
+            <p>Enterprises can additionally cap both levels.</p>
+            <p>The official Autonomy page splits execution risk into four tiers.</p>
+            <ul><li><strong>Off</strong> — read-only tools + allowlisted commands</li><li><strong>Low</strong> — file edits + low-risk commands / MCP</li><li><strong>Medium</strong> — plus reversible workspace changes, e.g. <code>npm install</code>, <code>git commit</code></li><li><strong>High</strong> — high-risk operations, e.g. <code>git push</code>, migrations</li></ul>
+            <p>Switch by cycling with <code>Ctrl+L</code>; <code>Shift+Tab</code> toggles Auto / Spec.</p>
+            <p>Command policy is three tables.</p>
+            <ul><li><code>commandAllowlist</code> — treated as low risk</li><li><code>commandDenylist</code> — requires approval even when relaxed</li><li><code>commandBlocklist</code> — <strong>refused at any level, with no approval prompt</strong>; sees through <code>bash -c</code> wrapper evasion</li></ul>
+            <p>The official docs call <code>commandBlocklist</code>:</p>
+            <p><strong>Official wording</strong>: &quot;the strongest control available&quot;</p>
+            <p>Non-interactive <code>droid exec</code> is read-only by default.</p>
+            <p>Open it up stepwise with <code>--auto low|medium|high</code>.</p>
+            <p><code>--skip-permissions-unsafe</code> opens everything; officially labeled DANGEROUS, isolated environments only.</p>
+            <p>Exceeding the level stops immediately: non-zero exit code, no partial changes (fail-fast).</p>
+            <p>Enterprises can cap with Default / Maximum Autonomy Level.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
-          <dd><p><strong>适合在终端里跑端到端软件工程、且需要企业级治理的团队。</strong></p>
+          <dd><span data-zh><p><strong>适合在终端里跑端到端软件工程、且需要企业级治理的团队。</strong></p>
             <p>三类团队最对得上：</p>
             <ul><li>已有仓库，想跑完规划 → 实现 → 测试的完整流程（<code>/missions</code> 多 agent 编排）</li><li>要做 CI/CD 自动化：<code>droid exec</code> 单次执行、JSON 输出、失败返回非零码</li><li>需要 BYOK / 本地模型 / 气隙部署，以此摆脱单一厂商锁定</li></ul>
-            <p><strong>不适合只想找一个免费轻量终端助手的个人</strong>——官方没有免费档，最低是付费档 Pro。</p></dd>
+            <p><strong>不适合只想找一个免费轻量终端助手的个人</strong>——官方没有免费档，最低是付费档 Pro。</p></span><span data-en><p><strong>Fits teams running end-to-end software engineering in the terminal and needing enterprise-grade governance.</strong></p>
+            <p>Three kinds of teams match best:</p>
+            <ul><li>those with existing repos who want the full plan → implement → test flow (<code>/missions</code> multi-agent orchestration)</li><li>those automating CI/CD: <code>droid exec</code> one-shot runs, JSON output, non-zero exit on failure</li><li>those needing BYOK / local models / airgapped deployment, to break free of single-vendor lock-in</li></ul>
+            <p><strong>Not a fit</strong> for individuals just wanting a free lightweight terminal assistant — there is no free tier officially; the lowest is the paid Pro tier.</p></span></dd>
         </div>
       </dl>
 
@@ -275,13 +365,19 @@
 
             <div class="panel is-slim">
         <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
-        
+        <span data-zh>
         <ul>
           <li>代码库向量索引是否存在、大仓库首次建索引耗时（官方未说明，已查 CLI Reference 与 Quickstart）</li>
           <li>云端背景 agent 与 Droid Computers 的并发数值与配额（官方只说随套餐，未给数字）</li>
           <li>CLI 侧跨会话记忆的持久化边界与保留策略（官方未在 CLI 页说明，已查 CLI Overview 与 Droid Exec）</li>
           <li>Business / Enterprise 的档位内容（官方页只写「联系销售」）</li>
-        </ul>
+        </ul></span><span data-en>
+        <ul>
+          <li>Whether codebase vector indexing exists, and first-index time on large repos (not stated officially; CLI Reference and Quickstart checked)</li>
+          <li>Concurrency numbers and quotas for cloud background agents and Droid Computers (official says only &quot;varies by plan&quot;, no numbers)</li>
+          <li>The persistence boundary and retention policy of cross-session memory on the CLI side (not stated on CLI pages; CLI Overview and Droid Exec checked)</li>
+          <li>Business / Enterprise tier contents (official pages say only &quot;contact sales&quot;)</li>
+        </ul></span>
       </div>
 
 
@@ -291,83 +387,109 @@
         <table class="src">
           <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
           <tbody>
-            <tr><td>pricing</td><td>Factory AI · 官方定价页（Pro / Plus / Max 三档；报价按 D9 口径不存；2026-10-08 核验）</td><td><a href="https://factory.ai/pricing" target="_blank" rel="noopener">https://factory.ai/pricing</a></td></tr>
-            <tr><td>pricing</td><td>Factory AI · 官方文档 · Plans &amp; Pricing（滚动 Rate Limits、Droid Core、Extra Usage、BYOK）</td><td><a href="https://docs.factory.ai/pricing" target="_blank" rel="noopener">https://docs.factory.ai/pricing</a></td></tr>
-            <tr><td>changelog</td><td>Factory AI · 官方文档 · Full Changelog（CLI / App / API / Web / Enterprise 分面维护）</td><td><a href="https://docs.factory.ai/changelog/release-notes" target="_blank" rel="noopener">https://docs.factory.ai/changelog/release-notes</a></td></tr>
-            <tr><td>changelog</td><td>Factory AI · 官方文档 · CLI Updates</td><td><a href="https://docs.factory.ai/changelog/cli-updates" target="_blank" rel="noopener">https://docs.factory.ai/changelog/cli-updates</a></td></tr>
-            <tr><td>docs</td><td>Factory AI · 官方文档 · CLI Overview（安装三选一、Key capabilities）</td><td><a href="https://docs.factory.ai/cli/getting-started/overview" target="_blank" rel="noopener">https://docs.factory.ai/cli/getting-started/overview</a></td></tr>
-            <tr><td>docs</td><td>Factory AI · 官方文档 · Quickstart（安装脚本、审批流程）</td><td><a href="https://docs.factory.ai/cli/getting-started/quickstart" target="_blank" rel="noopener">https://docs.factory.ai/cli/getting-started/quickstart</a></td></tr>
-            <tr><td>docs</td><td>Factory AI · 官方文档 · Droid Exec（headless、自主级别、输出格式）</td><td><a href="https://docs.factory.ai/cli/droid-exec/overview" target="_blank" rel="noopener">https://docs.factory.ai/cli/droid-exec/overview</a></td></tr>
-            <tr><td>docs</td><td>Factory AI · 官方文档 · Autonomy Level（四档、命令名单、企业上限）</td><td><a href="https://docs.factory.ai/cli/user-guides/auto-run" target="_blank" rel="noopener">https://docs.factory.ai/cli/user-guides/auto-run</a></td></tr>
-            <tr><td>docs</td><td>Factory AI · 官方文档 · Model Context Protocol (MCP)（http / stdio、注册表、分层配置）</td><td><a href="https://docs.factory.ai/cli/configuration/mcp" target="_blank" rel="noopener">https://docs.factory.ai/cli/configuration/mcp</a></td></tr>
-            <tr><td>docs</td><td>Factory AI · 官方文档 · Bring Your Own Key (BYOK)（三 provider 类型、本地模型、key 不外传）</td><td><a href="https://docs.factory.ai/cli/byok/overview" target="_blank" rel="noopener">https://docs.factory.ai/cli/byok/overview</a></td></tr>
-            <tr><td>docs</td><td>Factory AI · 官方文档 · Available Models（托管模型清单与倍率、Droid Core）</td><td><a href="https://docs.factory.ai/models" target="_blank" rel="noopener">https://docs.factory.ai/models</a></td></tr>
-            <tr><td>docs</td><td>Factory AI · 官方文档 · Enterprise Overview（云 / 混合 / 气隙部署、SOC 2 / ISO）</td><td><a href="https://docs.factory.ai/enterprise" target="_blank" rel="noopener">https://docs.factory.ai/enterprise</a></td></tr>
-            <tr><td>docs</td><td>Factory AI · 官方文档 · Droid CLI Reference（--cwd / --worktree / 安装与更新）</td><td><a href="https://docs.factory.ai/reference/cli-reference" target="_blank" rel="noopener">https://docs.factory.ai/reference/cli-reference</a></td></tr>
-            <tr><td>repo</td><td>Factory AI · 官方仓库 · Droid TypeScript SDK</td><td><a href="https://github.com/Factory-AI/droid-sdk-typescript" target="_blank" rel="noopener">https://github.com/Factory-AI/droid-sdk-typescript</a></td></tr>
+            <tr><td>pricing</td><td><span data-zh>Factory AI · 官方定价页（Pro / Plus / Max 三档；报价按 D9 口径不存；2026-10-08 核验）</span><span data-en>Factory AI · official pricing page (Pro / Plus / Max tiers; pricing not stored per D9 rule; verified 2026-10-08)</span></td><td><a href="https://factory.ai/pricing" target="_blank" rel="noopener">https://factory.ai/pricing</a></td></tr>
+            <tr><td>pricing</td><td><span data-zh>Factory AI · 官方文档 · Plans &amp; Pricing（滚动 Rate Limits、Droid Core、Extra Usage、BYOK）</span><span data-en>Factory AI · official docs · Plans &amp; Pricing (rolling Rate Limits, Droid Core, Extra Usage, BYOK)</span></td><td><a href="https://docs.factory.ai/pricing" target="_blank" rel="noopener">https://docs.factory.ai/pricing</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>Factory AI · 官方文档 · Full Changelog（CLI / App / API / Web / Enterprise 分面维护）</span><span data-en>Factory AI · official docs · Full Changelog (maintained per surface: CLI / App / API / Web / Enterprise)</span></td><td><a href="https://docs.factory.ai/changelog/release-notes" target="_blank" rel="noopener">https://docs.factory.ai/changelog/release-notes</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>Factory AI · 官方文档 · CLI Updates</span><span data-en>Factory AI · official docs · CLI Updates</span></td><td><a href="https://docs.factory.ai/changelog/cli-updates" target="_blank" rel="noopener">https://docs.factory.ai/changelog/cli-updates</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Factory AI · 官方文档 · CLI Overview（安装三选一、Key capabilities）</span><span data-en>Factory AI · official docs · CLI Overview (three install options, key capabilities)</span></td><td><a href="https://docs.factory.ai/cli/getting-started/overview" target="_blank" rel="noopener">https://docs.factory.ai/cli/getting-started/overview</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Factory AI · 官方文档 · Quickstart（安装脚本、审批流程）</span><span data-en>Factory AI · official docs · Quickstart (install script, approval flow)</span></td><td><a href="https://docs.factory.ai/cli/getting-started/quickstart" target="_blank" rel="noopener">https://docs.factory.ai/cli/getting-started/quickstart</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Factory AI · 官方文档 · Droid Exec（headless、自主级别、输出格式）</span><span data-en>Factory AI · official docs · Droid Exec (headless, autonomy levels, output formats)</span></td><td><a href="https://docs.factory.ai/cli/droid-exec/overview" target="_blank" rel="noopener">https://docs.factory.ai/cli/droid-exec/overview</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Factory AI · 官方文档 · Autonomy Level（四档、命令名单、企业上限）</span><span data-en>Factory AI · official docs · Autonomy Level (four tiers, command lists, enterprise caps)</span></td><td><a href="https://docs.factory.ai/cli/user-guides/auto-run" target="_blank" rel="noopener">https://docs.factory.ai/cli/user-guides/auto-run</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Factory AI · 官方文档 · Model Context Protocol (MCP)（http / stdio、注册表、分层配置）</span><span data-en>Factory AI · official docs · Model Context Protocol (MCP) (http / stdio, registry, layered config)</span></td><td><a href="https://docs.factory.ai/cli/configuration/mcp" target="_blank" rel="noopener">https://docs.factory.ai/cli/configuration/mcp</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Factory AI · 官方文档 · Bring Your Own Key (BYOK)（三 provider 类型、本地模型、key 不外传）</span><span data-en>Factory AI · official docs · Bring Your Own Key (BYOK) (three provider types, local models, keys stay local)</span></td><td><a href="https://docs.factory.ai/cli/byok/overview" target="_blank" rel="noopener">https://docs.factory.ai/cli/byok/overview</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Factory AI · 官方文档 · Available Models（托管模型清单与倍率、Droid Core）</span><span data-en>Factory AI · official docs · Available Models (hosted model list and multipliers, Droid Core)</span></td><td><a href="https://docs.factory.ai/models" target="_blank" rel="noopener">https://docs.factory.ai/models</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Factory AI · 官方文档 · Enterprise Overview（云 / 混合 / 气隙部署、SOC 2 / ISO）</span><span data-en>Factory AI · official docs · Enterprise Overview (cloud / hybrid / airgapped deployment, SOC 2 / ISO)</span></td><td><a href="https://docs.factory.ai/enterprise" target="_blank" rel="noopener">https://docs.factory.ai/enterprise</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Factory AI · 官方文档 · Droid CLI Reference（--cwd / --worktree / 安装与更新）</span><span data-en>Factory AI · official docs · Droid CLI Reference (--cwd / --worktree / install and update)</span></td><td><a href="https://docs.factory.ai/reference/cli-reference" target="_blank" rel="noopener">https://docs.factory.ai/reference/cli-reference</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>Factory AI · 官方仓库 · Droid TypeScript SDK</span><span data-en>Factory AI · official repository · Droid TypeScript SDK</span></td><td><a href="https://github.com/Factory-AI/droid-sdk-typescript" target="_blank" rel="noopener">https://github.com/Factory-AI/droid-sdk-typescript</a></td></tr>
           </tbody>
         </table>
       </div>
 
             <div class="panel is-slim">
         <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
-        <p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a>。</p>
+        <span data-zh><p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a>。</p>
             <p><strong>实测建议</strong>：重点测三窗口 Rate Limit 的实际打断频率。</p>
-            <p>这是它与「按月给一个总量」类工具最不同的工作流摩擦点。</p>
+            <p>这是它与「按月给一个总量」类工具最不同的工作流摩擦点。</p></span><span data-en><p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a>.</p>
+            <p><strong>Suggested measurement</strong>: focus on how often the three-window Rate Limit actually interrupts work.</p>
+            <p>That is its biggest workflow-friction difference from &quot;one monthly total&quot; tools.</p></span>
       </div>
 
 
             <div class="panel is-slim">
-        <h2>变更记录在官方文档站，不在 GitHub releases 页</h2>
-        <p>Droid 的版本号是<strong>分面维护</strong>的：CLI 与 Desktop 是两套号。</p>
+        <h2><span data-zh>变更记录在官方文档站，不在 GitHub releases 页</span><span data-en>Changelogs live on the official docs site, not GitHub releases</span></h2>
+        <span data-zh><p>Droid 的版本号是<strong>分面维护</strong>的：CLI 与 Desktop 是两套号。</p>
             <div class="tbl-wrap"><table><thead><tr><th>面</th><th>代表版本</th><th>日期</th></tr></thead><tbody><tr><td>CLI</td><td><code>v0.229.0</code></td><td>2026-09-29</td></tr><tr><td>Desktop</td><td><code>v0.186.0</code></td><td>2026-09-29</td></tr></tbody></table></div>
             <p>官方 Full Changelog 是<strong>分面累积列表</strong>，按 CLI / App / API / Web / Enterprise 多个面维护，并自称累计上百个 releases。</p>
             <p>另有单独的「CLI Updates」页。</p>
             <p><strong>引用版本号时要注明是哪个面。</strong></p>
             <p>官方 changelog 页头的「latest」摘要，与下方条目列表在核验当日不同步。</p>
             <p>页头写 <code>v0.228.0</code>，条目里已出现 <code>v0.229.0</code>。</p>
-            <p>引用前以页面实时为准。</p>
+            <p>引用前以页面实时为准。</p></span><span data-en><p>Droid&#39;s version numbers are <strong>maintained per surface</strong>: CLI and Desktop have separate numbering.</p>
+            <div class="tbl-wrap"><table><thead><tr><th>Surface</th><th>Representative version</th><th>Date</th></tr></thead><tbody><tr><td>CLI</td><td><code>v0.229.0</code></td><td>2026-09-29</td></tr><tr><td>Desktop</td><td><code>v0.186.0</code></td><td>2026-09-29</td></tr></tbody></table></div>
+            <p>The official Full Changelog is a <strong>per-surface cumulative list</strong>, maintained across CLI / App / API / Web / Enterprise surfaces, self-described as over a hundred releases in total.</p>
+            <p>There is also a separate &quot;CLI Updates&quot; page.</p>
+            <p><strong>When citing a version number, state which surface.</strong></p>
+            <p>The &quot;latest&quot; summary in the official changelog page header was out of sync with the entry list below it on the verification day.</p>
+            <p>The header said <code>v0.228.0</code> while the entries already showed <code>v0.229.0</code>.</p>
+            <p>Before citing, take the live page as authoritative.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>安装与三种入口</h2>
-        <p>三种装法都可以：</p>
+        <h2><span data-zh>安装与三种入口</span><span data-en>Installation and the three entry points</span></h2>
+        <span data-zh><p>三种装法都可以：</p>
             <p>``<code> curl -fsSL https://app.factory.ai/cli | sh      # macOS / Linux irm https://app.factory.ai/cli/windows | iex    # Windows npm install -g droid </code>``</p>
             <p><strong>它不是「一个 CLI 工具」，而是「一个 agent 的三个入口」。</strong></p>
             <ul><li>定价页把 Pro 档内容写成「Factory App / Droid CLI / Droid SDK」</li><li>官方文档另有「IDE Integrations」与 JetBrains / Zed 集成</li></ul>
-            <p>采购时要看清你要的是哪个入口：三者的运行面与额度口径不完全相同。</p>
+            <p>采购时要看清你要的是哪个入口：三者的运行面与额度口径不完全相同。</p></span><span data-en><p>All three installs work:</p>
+            <p>``<code> curl -fsSL https://app.factory.ai/cli | sh      # macOS / Linux irm https://app.factory.ai/cli/windows | iex    # Windows npm install -g droid </code>``</p>
+            <p><strong>It is not &quot;a CLI tool&quot; but &quot;one agent with three entry points&quot;.</strong></p>
+            <ul><li>the pricing page writes Pro-tier contents as &quot;Factory App / Droid CLI / Droid SDK&quot;</li><li>the official docs also have &quot;IDE Integrations&quot; with JetBrains / Zed integrations</li></ul>
+            <p>When purchasing, check which entry point you want: the three do not have identical execution surfaces or quota accounting.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>额度不是「每月一个总量」</h2>
-        <p>官方额度是<strong>三窗口滚动 Rate Limit</strong>：</p>
+        <h2><span data-zh>额度不是「每月一个总量」</span><span data-en>Quota is not &quot;one monthly total&quot;</span></h2>
+        <span data-zh><p>官方额度是<strong>三窗口滚动 Rate Limit</strong>：</p>
             <p>``<code> 5-hour / 7-day / 30-day 三个窗口独立，都需有余额才能发请求 </code>``</p>
             <p><strong>这解释了「为什么刚充值还是被限」</strong>——你可能撞的是 5 小时窗口。</p>
             <p>撞限后可以切 <strong>Droid Core</strong> 继续干：它是开放权重模型池，有独立的免费额度。</p>
             <p>也可以用 <strong>Extra Usage</strong>：预付制、不过期（起充额见官方页，本站按 D9 口径不存）。</p>
-            <p>这是本站见到的最细的额度口径之一。</p>
+            <p>这是本站见到的最细的额度口径之一。</p></span><span data-en><p>The official quota is a <strong>three-window rolling Rate Limit</strong>:</p>
+            <p>``<code> 5-hour / 7-day / 30-day windows are independent; all must have headroom for a request to go through </code>``</p>
+            <p><strong>This explains &quot;why I&#39;m still rate-limited right after topping up&quot;</strong> — you may be hitting the 5-hour window.</p>
+            <p>When rate-limited you can switch to <strong>Droid Core</strong> and keep working: it is an open-weight model pool with its own free quota.</p>
+            <p>You can also use <strong>Extra Usage</strong>: prepaid, never expires (minimum top-up on the official page; per this site&#39;s D9 rule, not stored here).</p>
+            <p>This is one of the finest-grained quota schemes this site has seen.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>企业形态</h2>
-        <p>官方 Enterprise 页把部署面写成：</p>
+        <h2><span data-zh>企业形态</span><span data-en>Enterprise form</span></h2>
+        <span data-zh><p>官方 Enterprise 页把部署面写成：</p>
             <blockquote>「cloud, hybrid, and fully airgapped environments」</blockquote>
             <p>Droid 可以跑在：</p>
             <blockquote>「developer laptops、CI runners、VMs、Kubernetes clusters、airgapped networks」</blockquote>
             <p>合规程序表列 <strong>SOC 2 Type II / ISO 27001 / ISO 42001</strong>。</p>
             <p>官方还提供 Droid Shield、命令策略、hooks、沙箱与 OpenTelemetry 遥测。</p>
-            <p><strong>这是本分区里企业治理表述最完整的一份</strong>，但均为官方自述。</p>
+            <p><strong>这是本分区里企业治理表述最完整的一份</strong>，但均为官方自述。</p></span><span data-en><p>The official Enterprise page writes the deployment surface as:</p>
+            <blockquote>&quot;cloud, hybrid, and fully airgapped environments&quot;</blockquote>
+            <p>Droid can run on:</p>
+            <blockquote>&quot;developer laptops, CI runners, VMs, Kubernetes clusters, airgapped networks&quot;</blockquote>
+            <p>The compliance-program table lists <strong>SOC 2 Type II / ISO 27001 / ISO 42001</strong>.</p>
+            <p>The official docs also offer Droid Shield, command policies, hooks, sandboxing and OpenTelemetry telemetry.</p>
+            <p><strong>This is the most complete enterprise-governance narrative in this section</strong>, though all of it is vendor self-description.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>核验说明</h2>
-        <p><code>confidence: partial</code> 的原因：</p>
+        <h2><span data-zh>核验说明</span><span data-en>Verification notes</span></h2>
+        <span data-zh><p><code>confidence: partial</code> 的原因：</p>
             <ul><li>✅ 已核验：五档档位结构与三窗口 Rate Limit 机制、Droid Core / Extra Usage / BYOK</li><li>✅ 已核验：安装三选一、CLI + Desktop + SDK 三入口</li><li>✅ 已核验：四档 Autonomy 与命令名单、MCP 两种传输与分层配置</li><li>✅ 已核验：headless <code>droid exec</code> 与自主级别、企业部署与合规自述</li><li>❌ 官方未说明：代码库索引策略与大仓库耗时、云端并发与配额数值、CLI 侧记忆的持久化边界（见「未知项清单」）</li></ul>
-            <p><strong>引用本条目时请只使用已核验部分。</strong></p>
+            <p><strong>引用本条目时请只使用已核验部分。</strong></p></span><span data-en><p>Why <code>confidence: partial</code>:</p>
+            <ul><li>✅ verified: the five-tier structure and three-window Rate Limit mechanics, Droid Core / Extra Usage / BYOK</li><li>✅ verified: three install options, CLI + Desktop + SDK three entry points</li><li>✅ verified: four Autonomy tiers and command lists, MCP&#39;s two transports and layered config</li><li>✅ verified: headless <code>droid exec</code> and autonomy levels, enterprise deployment and compliance self-descriptions</li><li>❌ not stated officially: codebase indexing strategy and large-repo time cost, cloud concurrency and quota numbers, the persistence boundary of CLI-side memory (see the unknowns list)</li></ul>
+            <p><strong>When citing this entry, use only the verified parts.</strong></p></span>
       </div>
 
             <div class="panel is-slim">
         <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
         <ul class="rel-list">
-          <li><span class="rel-t"><a href="./codex-cli.html"><span data-zh>Codex CLI</span><span data-en>Codex CLI</span></a></span><span class="rel-n">同为多 provider 终端 agent，架构侧重 app server</span></li>
-          <li><span class="rel-t"><a href="./opencode.html"><span data-zh>OpenCode</span><span data-en>OpenCode</span></a></span><span class="rel-n">同为 BYOK 多 provider，可对照开放许可一侧</span></li>
-          <li><span class="rel-t"><a href="./claude-code-cli.html"><span data-zh>Claude Code CLI</span><span data-en>Claude Code CLI</span></a></span><span class="rel-n">同为终端编码 agent，权限模型与生态不同</span></li>
+          <li><span class="rel-t"><a href="./codex-cli.html"><span data-zh>Codex CLI</span><span data-en>Codex CLI</span></a></span><span class="rel-n"><span data-zh>同为多 provider 终端 agent，架构侧重 app server</span><span data-en>also a multi-provider terminal agent; its architecture leans on the app server</span></span></li>
+          <li><span class="rel-t"><a href="./opencode.html"><span data-zh>OpenCode</span><span data-en>OpenCode</span></a></span><span class="rel-n"><span data-zh>同为 BYOK 多 provider，可对照开放许可一侧</span><span data-en>also BYOK multi-provider; useful as the open-license contrast</span></span></li>
+          <li><span class="rel-t"><a href="./claude-code-cli.html"><span data-zh>Claude Code CLI</span><span data-en>Claude Code CLI</span></a></span><span class="rel-n"><span data-zh>同为终端编码 agent，权限模型与生态不同</span><span data-en>also a terminal coding agent; different permission model and ecosystem</span></span></li>
           <li><span class="rel-t"><a href="/mcp/filesystem.html"><span data-zh>Filesystem MCP Server</span><span data-en>Filesystem MCP Server</span></a></span><span class="rel-n"><span data-zh>另一层 · MCP 工具</span><span data-en>Other layer · MCP tools</span></span></li>
         </ul>
       </div>
