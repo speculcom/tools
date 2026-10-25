@@ -109,7 +109,7 @@
         <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-23</span>
       </div>
 
-            <p class="t-xs" data-en>English summaries and interface labels are available. Detailed source notes below are currently in Chinese.</p>
+            
       <div class="panel-lead"><span data-zh><p><strong>Deep Agents 是 LangChain 出的通用 agent harness。</strong></p>
             <p>它把 filesystem、子代理、上下文管理、skills 都预置好了。</p>
             <p>开箱即跑。</p>
@@ -144,63 +144,91 @@
       <dl class="axes">
         <div class="axis">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
-          <dd><p><strong>官方自述 model-agnostic</strong>，README 列为四条原则之一。</p>
+          <dd><span data-zh><p><strong>官方自述 model-agnostic</strong>，README 列为四条原则之一。</p>
             <p><strong>官方原文</strong>： &quot;Model-agnostic — works with any LLM that supports tool calling: frontier, open-weight, or local&quot;</p>
             <p>FAQ 进一步说明：任何支持 tool calling 的模型都行。包括：</p>
             <ul><li>frontier API（OpenAI / Anthropic / Google）</li><li>provider 托管的开源权重（Baseten / Fireworks）</li><li>通过 <strong>Ollama / vLLM / llama.cpp 自托管</strong>的模型</li></ul>
-            <p>接入方式是任一 LangChain chat model。<strong>换 provider 不需要改 agent 代码。</strong></p></dd>
+            <p>接入方式是任一 LangChain chat model。<strong>换 provider 不需要改 agent 代码。</strong></p></span><span data-en><p><strong>Officially self-described as model-agnostic</strong>, listed as one of four principles in the README.</p>
+            <p><strong>Official wording</strong>: &quot;Model-agnostic — works with any LLM that supports tool calling: frontier, open-weight, or local&quot;</p>
+            <p>The FAQ elaborates: any model supporting tool calling works. Including:</p>
+            <ul><li>frontier APIs (OpenAI / Anthropic / Google)</li><li>provider-hosted open weights (Baseten / Fireworks)</li><li>models <strong>self-hosted via Ollama / vLLM / llama.cpp</strong></li></ul>
+            <p>The integration path is any LangChain chat model. <strong>Switching providers requires no agent-code changes.</strong></p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
-          <dd><p><strong>它是库，不是服务 —— 进程由你自己运营。</strong></p>
+          <dd><span data-zh><p><strong>它是库，不是服务 —— 进程由你自己运营。</strong></p>
             <p>README 明确 built on LangGraph（streaming, persistence, checkpointing）。 另可配 LangSmith 做 tracing/evaluation/deployment。</p>
             <p><strong>agent loop 的责任分布</strong>：</p>
-            <ul><li>模型决策与工具调用在 LangGraph runtime 上</li><li>Deep Agents 预置了规划、上下文管理、子代理委派</li></ul></dd>
+            <ul><li>模型决策与工具调用在 LangGraph runtime 上</li><li>Deep Agents 预置了规划、上下文管理、子代理委派</li></ul></span><span data-en><p><strong>It is a library, not a service — you operate the process yourself.</strong></p>
+            <p>The README states it is built on LangGraph (streaming, persistence, checkpointing). LangSmith can additionally be configured for tracing/evaluation/deployment.</p>
+            <p><strong>Responsibility split of the agent loop</strong>:</p>
+            <ul><li>model decisions and tool calls run on the LangGraph runtime</li><li>Deep Agents presets planning, context management, sub-agent delegation</li></ul></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
-          <dd><p><strong>Filesystem 能力是核心卖点</strong>：read / write / edit / search。</p>
+          <dd><span data-zh><p><strong>Filesystem 能力是核心卖点</strong>：read / write / edit / search。</p>
             <p>它的后端<strong>可插拔</strong>（pluggable local, sandboxed, or remote backends）。 官方另设独立 Sandboxes 页，讲隔离执行环境与 <code>execute</code> 工具 （<code>SandboxBackendProtocolV2</code>，仅 sandbox 后端暴露 shell）。</p>
             <p><strong>重要边界</strong>：官方安全声明原文说 「<strong>Enforce boundaries at the tool/sandbox level, not by expecting the model to self-police</strong>」。</p>
             <p>即官方明确不提供一层权限护栏，边界要靠你自己在 tool/sandbox 层实现。</p>
-            <p><strong>官方未说明</strong>：多 agent 并发写同一文件的冲突处理（已查 overview / backends 页）。</p></dd>
+            <p><strong>官方未说明</strong>：多 agent 并发写同一文件的冲突处理（已查 overview / backends 页）。</p></span><span data-en><p><strong>Filesystem capability is the core selling point</strong>: read / write / edit / search.</p>
+            <p>Its backends are <strong>pluggable</strong> (pluggable local, sandboxed, or remote backends). The official docs also have a standalone Sandboxes page covering isolated execution environments and the <code>execute</code> tool (<code>SandboxBackendProtocolV2</code>; only sandbox backends expose a shell).</p>
+            <p><strong>Important boundary</strong>: the official security statement says verbatim &quot;<strong>Enforce boundaries at the tool/sandbox level, not by expecting the model to self-police</strong>&quot;.</p>
+            <p>That is, the official docs explicitly do not provide a permission-guardrail layer; boundaries must be implemented by you at the tool/sandbox layer.</p>
+            <p><strong>Not stated officially</strong>: conflict handling when multiple agents concurrently write the same file (overview / backends pages checked).</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
-          <dd><p>自托管 = <strong>关了就停</strong>，没有托管执行选项（README 无相关承诺）。</p>
+          <dd><span data-zh><p>自托管 = <strong>关了就停</strong>，没有托管执行选项（README 无相关承诺）。</p>
             <p><strong>但断点续跑有官方支撑</strong>：</p>
             <ul><li>built on LangGraph 的 persistence + checkpointing</li><li>persistent memory（pluggable state and store backends for cross-session recall）</li></ul>
-            <p>官方另有 LangSmith 提供 deployment。</p></dd>
+            <p>官方另有 LangSmith 提供 deployment。</p></span><span data-en><p>Self-hosted = <strong>stops when stopped</strong>, no hosted execution option (the README makes no such promise).</p>
+            <p><strong>But resume-after-crash has official support</strong>:</p>
+            <ul><li>built on LangGraph&#39;s persistence + checkpointing</li><li>persistent memory (pluggable state and store backends for cross-session recall)</li></ul>
+            <p>LangSmith separately provides deployment officially.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
-          <dd><p><strong>工具链是 &quot;batteries-included&quot; 定位。</strong> 官方列出的能力：</p>
+          <dd><span data-zh><p><strong>工具链是 &quot;batteries-included&quot; 定位。</strong> 官方列出的能力：</p>
             <ul><li>Sub-agents —— 隔离子上下文的委派</li><li>Filesystem</li><li>Shell access（run commands in your sandbox of choice）</li><li>Skills —— 按需加载的可复用行为</li><li>Tools —— 自带函数或<strong>任意 MCP server</strong></li></ul>
             <p><strong>MCP 支持明确</strong>：官方列「bring your own functions or any MCP server」。</p>
-            <p>human-in-the-loop：可 approve / edit / reject 工具调用，发生在<strong>执行前</strong>。</p></dd>
+            <p>human-in-the-loop：可 approve / edit / reject 工具调用，发生在<strong>执行前</strong>。</p></span><span data-en><p><strong>The toolchain is positioned &quot;batteries-included.&quot;</strong> Officially listed capabilities:</p>
+            <ul><li>Sub-agents — delegation with isolated sub-contexts</li><li>Filesystem</li><li>Shell access (run commands in your sandbox of choice)</li><li>Skills — reusable behaviors loaded on demand</li><li>Tools — your own functions or <strong>any MCP server</strong></li></ul>
+            <p><strong>MCP support is explicit</strong>: the official docs list &quot;bring your own functions or any MCP server&quot;.</p>
+            <p>Human-in-the-loop: tool calls can be approved / edited / rejected, happening <strong>before execution</strong>.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
-          <dd><p><strong>本分区&quot;状态 ≠ 上下文&quot;分野的教科书案例。</strong></p>
+          <dd><span data-zh><p><strong>本分区&quot;状态 ≠ 上下文&quot;分野的教科书案例。</strong></p>
             <ul><li>Context management = summarize long threads and <strong>offload tool outputs to disk</strong>（卸载，不是丢）</li><li>Persistent memory = pluggable state and store backends，<strong>支持跨会话召回</strong></li></ul>
             <p>官方描述 defaults are tuned for <strong>long-horizon, multi-step work</strong>。</p>
-            <p>两种做法并存：压缩历史 + 把大工具输出落盘 + 跨会话记忆。</p></dd>
+            <p>两种做法并存：压缩历史 + 把大工具输出落盘 + 跨会话记忆。</p></span><span data-en><p><strong>The textbook case of this track&#39;s &quot;state ≠ context&quot; distinction.</strong></p>
+            <ul><li>Context management = summarize long threads and <strong>offload tool outputs to disk</strong> (offloading, not discarding)</li><li>Persistent memory = pluggable state and store backends, <strong>supporting cross-session recall</strong></li></ul>
+            <p>The official description: defaults are tuned for <strong>long-horizon, multi-step work</strong>.</p>
+            <p>Two practices coexist: compressing history + landing large tool outputs on disk + cross-session memory.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
-          <dd><p><strong>官方明确不设防模型越界。</strong> Security 章节原文：</p>
+          <dd><span data-zh><p><strong>官方明确不设防模型越界。</strong> Security 章节原文：</p>
             <p><strong>官方原文</strong>（三句连引）：&quot;Deep Agents follows a &quot;trust the LLM&quot; model.&quot; &quot;The agent can do anything its tools allow.&quot; &quot;Enforce boundaries at the tool/sandbox level, not by expecting the model to self-police.&quot;</p>
             <p>翻译：采用「信任 LLM」模型，Agent 能做任何它的工具允许的事。 边界要在<strong>工具/沙箱层</strong>强制，不要指望模型自我约束。</p>
             <p><strong>唯一的内建人工干预点</strong>是这个。</p>
             <p>human-in-the-loop 的工具调用审批（approve/edit/reject）。</p>
-            <p>这意味着：装了 Deep Agents 之后，权限模型是<strong>你的责任</strong>。</p></dd>
+            <p>这意味着：装了 Deep Agents 之后，权限模型是<strong>你的责任</strong>。</p></span><span data-en><p><strong>The official docs explicitly do not defend against model overreach.</strong> Security section wording:</p>
+            <p><strong>Official wording</strong> (three sentences quoted together): &quot;Deep Agents follows a &quot;trust the LLM&quot; model.&quot; &quot;The agent can do anything its tools allow.&quot; &quot;Enforce boundaries at the tool/sandbox level, not by expecting the model to self-police.&quot;</p>
+            <p>Meaning: it follows a &quot;trust the LLM&quot; model; the agent can do anything its tools allow. Boundaries must be enforced at the <strong>tool/sandbox layer</strong> — do not expect the model to self-restrain.</p>
+            <p><strong>The only built-in human intervention point</strong> is this:</p>
+            <p>human-in-the-loop tool-call approval (approve/edit/reject).</p>
+            <p>This means: after installing Deep Agents, the permission model is <strong>your responsibility</strong>.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
-          <dd><p><strong>适合</strong>三类场景。</p>
+          <dd><span data-zh><p><strong>适合</strong>三类场景。</p>
             <p>要一个开箱即用、默认调优好、面向长任务多步流程的通用 Agent。 不想自己拼 filesystem / 记忆 / 子代理。已经在 LangChain 生态里。</p>
             <p><strong>不适合</strong>三类场景。</p>
-            <p>需要细粒度权限护栏 —— 官方明说不提供，必须自建沙箱。 要严格控制 agent loop 形状 —— 该用 LangGraph 自定义图。 想要轻量 harness —— 该用 LangChain <code>create_agent</code>。</p></dd>
+            <p>需要细粒度权限护栏 —— 官方明说不提供，必须自建沙箱。 要严格控制 agent loop 形状 —— 该用 LangGraph 自定义图。 想要轻量 harness —— 该用 LangChain <code>create_agent</code>。</p></span><span data-en><p><strong>Fits</strong> three scenarios.</p>
+            <p>Wanting an out-of-the-box, well-tuned-by-default general Agent for long-horizon multi-step flows. Not wanting to assemble filesystem / memory / sub-agents yourself. Already in the LangChain ecosystem.</p>
+            <p><strong>Does not fit</strong> three scenarios.</p>
+            <p>Needing fine-grained permission guardrails — the official docs say they do not provide them; you must build your own sandbox. Wanting strict control of the agent loop shape — use LangGraph custom graphs. Wanting a lightweight harness — use LangChain <code>create_agent</code>.</p></span></dd>
         </div>
       </dl>
 
@@ -218,14 +246,21 @@
 
             <div class="panel is-slim">
         <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
-        
+        <span data-zh>
         <ul>
           <li>LangSmith 配套（README 推荐搭配，但商业条款未核验；报价按 D9 口径本站不采）</li>
           <li>sandbox backend 的具体可选项与隔离强度</li>
           <li>interrupt / 补充询问机制在 Deep Agents 上的暴露方式</li>
           <li>Deep Agents Code 是否与本仓同许可</li>
           <li>多 agent 并发时的文件锁策略</li>
-        </ul>
+        </ul></span><span data-en>
+        <ul>
+          <li>LangSmith accompaniment (the README recommends pairing with it, but commercial terms unverified; quotes not collected by this site per the D9 rule)</li>
+          <li>The concrete options and isolation strength of sandbox backends</li>
+          <li>How the interrupt / follow-up-question mechanism is exposed on Deep Agents</li>
+          <li>Whether Deep Agents Code shares this repository&#39;s license</li>
+          <li>File-lock strategy under multi-agent concurrency</li>
+        </ul></span>
       </div>
 
 
@@ -235,29 +270,32 @@
         <table class="src">
           <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
           <tbody>
-            <tr><td>repo</td><td>LangChain · Deep Agents 仓库</td><td><a href="https://github.com/langchain-ai/deepagents" target="_blank" rel="noopener">https://github.com/langchain-ai/deepagents</a></td></tr>
-            <tr><td>docs</td><td>Deep Agents 官方文档（overview）</td><td><a href="https://docs.langchain.com/oss/python/deepagents/overview" target="_blank" rel="noopener">https://docs.langchain.com/oss/python/deepagents/overview</a></td></tr>
-            <tr><td>docs</td><td>Deep Agents · Going to production</td><td><a href="https://docs.langchain.com/oss/python/deepagents/going-to-production" target="_blank" rel="noopener">https://docs.langchain.com/oss/python/deepagents/going-to-production</a></td></tr>
-            <tr><td>docs</td><td>Deep Agents · Security policy（trust the LLM 声明原文）</td><td><a href="https://github.com/langchain-ai/deepagents?tab=security-ov-file" target="_blank" rel="noopener">https://github.com/langchain-ai/deepagents?tab=security-ov-file</a></td></tr>
-            <tr><td>docs</td><td>LangChain 生态关系说明（三层如何配合）</td><td><a href="https://docs.langchain.com/oss/python/concepts/products" target="_blank" rel="noopener">https://docs.langchain.com/oss/python/concepts/products</a></td></tr>
-            <tr><td>changelog</td><td>Deep Agents Releases（0.7.20 @ 2026-09-29）</td><td><a href="https://github.com/langchain-ai/deepagents/releases" target="_blank" rel="noopener">https://github.com/langchain-ai/deepagents/releases</a></td></tr>
-            <tr><td>docs</td><td>Deep Agents · Backends（可插拔文件系统后端、permission 规则与边界，核验 2026-10-08）</td><td><a href="https://docs.langchain.com/oss/python/deepagents/backends" target="_blank" rel="noopener">https://docs.langchain.com/oss/python/deepagents/backends</a></td></tr>
-            <tr><td>docs</td><td>Deep Agents · Sandboxes（隔离执行环境、<code>execute</code> 工具）</td><td><a href="https://docs.langchain.com/oss/python/deepagents/sandboxes" target="_blank" rel="noopener">https://docs.langchain.com/oss/python/deepagents/sandboxes</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>LangChain · Deep Agents 仓库</span><span data-en>LangChain · Deep Agents repository</span></td><td><a href="https://github.com/langchain-ai/deepagents" target="_blank" rel="noopener">https://github.com/langchain-ai/deepagents</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Deep Agents 官方文档（overview）</span><span data-en>Deep Agents official docs (overview)</span></td><td><a href="https://docs.langchain.com/oss/python/deepagents/overview" target="_blank" rel="noopener">https://docs.langchain.com/oss/python/deepagents/overview</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Deep Agents · Going to production</span><span data-en>Deep Agents · Going to production</span></td><td><a href="https://docs.langchain.com/oss/python/deepagents/going-to-production" target="_blank" rel="noopener">https://docs.langchain.com/oss/python/deepagents/going-to-production</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Deep Agents · Security policy（trust the LLM 声明原文）</span><span data-en>Deep Agents · Security policy (the &quot;trust the LLM&quot; statement verbatim)</span></td><td><a href="https://github.com/langchain-ai/deepagents?tab=security-ov-file" target="_blank" rel="noopener">https://github.com/langchain-ai/deepagents?tab=security-ov-file</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>LangChain 生态关系说明（三层如何配合）</span><span data-en>LangChain ecosystem relationship notes (how the three layers fit together)</span></td><td><a href="https://docs.langchain.com/oss/python/concepts/products" target="_blank" rel="noopener">https://docs.langchain.com/oss/python/concepts/products</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>Deep Agents Releases（0.7.20 @ 2026-09-29）</span><span data-en>Deep Agents Releases (0.7.20 @ 2026-09-29)</span></td><td><a href="https://github.com/langchain-ai/deepagents/releases" target="_blank" rel="noopener">https://github.com/langchain-ai/deepagents/releases</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Deep Agents · Backends（可插拔文件系统后端、permission 规则与边界，核验 2026-10-08）</span><span data-en>Deep Agents · Backends (pluggable filesystem backends, permission rules and boundaries, verified 2026-10-08)</span></td><td><a href="https://docs.langchain.com/oss/python/deepagents/backends" target="_blank" rel="noopener">https://docs.langchain.com/oss/python/deepagents/backends</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Deep Agents · Sandboxes（隔离执行环境、<code>execute</code> 工具）</span><span data-en>Deep Agents · Sandboxes (isolated execution environments, the <code>execute</code> tool)</span></td><td><a href="https://docs.langchain.com/oss/python/deepagents/sandboxes" target="_blank" rel="noopener">https://docs.langchain.com/oss/python/deepagents/sandboxes</a></td></tr>
           </tbody>
         </table>
       </div>
 
             <div class="panel is-slim">
         <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
-        <p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" target="_blank" rel="noopener">protocols/framework/_protocol.md</a>。</p>
+        <span data-zh><p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" target="_blank" rel="noopener">protocols/framework/_protocol.md</a>。</p>
             <p><strong>实测建议</strong>（按本站 harness 分区特有的 5 个测试维度）：</p>
-            <div class="tbl-wrap"><table><thead><tr><th>#</th><th>测什么</th><th>为什么值得测</th></tr></thead><tbody><tr><td>1</td><td>最小 hello agent 要几个文件、多少行</td><td>官方称 &quot;batteries-included&quot;，要看预置层实际带来多少</td></tr><tr><td>2</td><td>中断后能否恢复、状态存在哪</td><td>官方承诺 persistence + checkpointing + persistent memory，需验证落点</td></tr><tr><td>3</td><td><strong>把 sandbox 收到最紧，看工具还能做什么</strong></td><td>官方把边界责任交给用户，这条最该实测</td></tr><tr><td>4</td><td>两个 agent 并发读写同一目录</td><td>文件冲突策略官方未说明</td></tr><tr><td>5</td><td>换成 Ollama 本地模型要改多少</td><td>官方说 model-agnostic，验证是否真的零改动</td></tr></tbody></table></div>
+            <div class="tbl-wrap"><table><thead><tr><th>#</th><th>测什么</th><th>为什么值得测</th></tr></thead><tbody><tr><td>1</td><td>最小 hello agent 要几个文件、多少行</td><td>官方称 &quot;batteries-included&quot;，要看预置层实际带来多少</td></tr><tr><td>2</td><td>中断后能否恢复、状态存在哪</td><td>官方承诺 persistence + checkpointing + persistent memory，需验证落点</td></tr><tr><td>3</td><td><strong>把 sandbox 收到最紧，看工具还能做什么</strong></td><td>官方把边界责任交给用户，这条最该实测</td></tr><tr><td>4</td><td>两个 agent 并发读写同一目录</td><td>文件冲突策略官方未说明</td></tr><tr><td>5</td><td>换成 Ollama 本地模型要改多少</td><td>官方说 model-agnostic，验证是否真的零改动</td></tr></tbody></table></div></span><span data-en><p>This site has not completed measured runs.</p>
+            <p>The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" target="_blank" rel="noopener">protocols/framework/_protocol.md</a>.</p>
+            <p><strong>Suggested measurement</strong> (per the five test dimensions specific to this site&#39;s harness section):</p>
+            <div class="tbl-wrap"><table><thead><tr><th>#</th><th>What to test</th><th>Why it is worth testing</th></tr></thead><tbody><tr><td>1</td><td>How many files and lines a minimal hello agent takes</td><td>officially &quot;batteries-included&quot;; see how much the preset layer actually brings</td></tr><tr><td>2</td><td>Whether it can recover after interruption and where state is stored</td><td>officially promises persistence + checkpointing + persistent memory; the landing points need verifying</td></tr><tr><td>3</td><td><strong>Tighten the sandbox to the max and see what tools can still do</strong></td><td>the official docs hand boundary responsibility to users; this is the item most worth measuring</td></tr><tr><td>4</td><td>Two agents concurrently reading/writing the same directory</td><td>file-conflict policy not stated officially</td></tr><tr><td>5</td><td>How much changes when switching to an Ollama local model</td><td>officially model-agnostic; verify whether it really is zero-change</td></tr></tbody></table></div></span>
       </div>
 
 
             <div class="panel is-slim">
-        <h2>三层定位（本分区最需要讲清的一件事）</h2>
-        <p>这事最容易被搞混：Deep Agents、LangChain、LangGraph 是<strong>三层</strong>。</p>
+        <h2><span data-zh>三层定位（本分区最需要讲清的一件事）</span><span data-en>Three-layer positioning (the one thing this track most needs made clear)</span></h2>
+        <span data-zh><p>这事最容易被搞混：Deep Agents、LangChain、LangGraph 是<strong>三层</strong>。</p>
             <p>三层职责不同。</p>
             <p>官方 FAQ 直接回答了一个问题：这三者有什么区别？</p>
             <p>问的是 LangGraph 与 LangChain，官方把关系拆得很清楚。</p>
@@ -267,53 +305,82 @@
             <p><strong>官方还给了选择规则</strong>（这直接就是本站的选型答案）：</p>
             <blockquote>Use <strong>Deep Agents</strong> when you want the full harness — planning, context management, delegation — out of the box. Use [<strong>LangChain&#39;s <code>create_agent</code></strong>] when you want a lighter harness without the bundled middleware. Drop to [<strong>LangGraph</strong>] when the agent loop itself isn&#39;t the right shape and you need a custom graph.</blockquote>
             <p><strong>可组合性</strong>：官方明确 any LangGraph <code>CompiledStateGraph</code> 都能作为 sub-agent 传给 Deep Agent。</p>
-            <p>所以不是二选一。<strong>可以用 Deep Agents 打底、LangGraph 图做子代理</strong>。</p>
+            <p>所以不是二选一。<strong>可以用 Deep Agents 打底、LangGraph 图做子代理</strong>。</p></span><span data-en><p>This is the easiest thing to mix up: Deep Agents, LangChain, LangGraph are <strong>three layers</strong>.</p>
+            <p>The three layers have different responsibilities.</p>
+            <p>The official FAQ directly answers a question: what is the difference among the three?</p>
+            <p>Asked about LangGraph vs LangChain, the official docs break the relationship down clearly.</p>
+            <div class="tbl-wrap"><table><thead><tr><th>Layer</th><th>What it is</th><th>When to use</th></tr></thead><tbody><tr><td><strong>LangGraph</strong></td><td>graph runtime (the lowest orchestration layer)</td><td>the agent loop shape is wrong for you and you need a custom graph</td></tr><tr><td><strong>LangChain <code>create_agent</code></strong></td><td>minimal agent harness</td><td>wanting a lighter harness without preset middleware</td></tr><tr><td><strong>Deep Agents</strong></td><td>on top of <code>create_agent</code>, presets filesystem / sub-agents / context management / skills</td><td>wanting a complete harness out of the box</td></tr></tbody></table></div>
+            <p>The three-layer relationship, official wording:</p>
+            <blockquote>LangGraph is the graph runtime. LangChain&#39;s <code>create_agent</code> is a minimal agent harness on top of it. Deep Agents is a more opinionated harness on top of <code>create_agent</code> — same building blocks, but with filesystem, sub-agents, context management, and skills bundled in.</blockquote>
+            <p><strong>The official docs also give the selection rule</strong> (this is directly this site&#39;s selection answer):</p>
+            <blockquote>Use <strong>Deep Agents</strong> when you want the full harness — planning, context management, delegation — out of the box. Use [<strong>LangChain&#39;s <code>create_agent</code></strong>] when you want a lighter harness without the bundled middleware. Drop to [<strong>LangGraph</strong>] when the agent loop itself isn&#39;t the right shape and you need a custom graph.</blockquote>
+            <p><strong>Composability</strong>: the official docs state any LangGraph <code>CompiledStateGraph</code> can be passed to a Deep Agent as a sub-agent.</p>
+            <p>So it is not either/or. <strong>You can base on Deep Agents and use LangGraph graphs as sub-agents</strong>.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>⚠ 最需要注意的一条：官方把安全责任交给你</h2>
-        <p>Security 章节原文：</p>
+        <h2><span data-zh>⚠ 最需要注意的一条：官方把安全责任交给你</span><span data-en>⚠ The item needing most attention: the official docs hand security responsibility to you</span></h2>
+        <span data-zh><p>Security 章节原文：</p>
             <blockquote>Deep Agents follows a &quot;trust the LLM&quot; model. The agent can do anything its tools allow. Enforce boundaries at the tool/sandbox level, not by expecting the model to self-police.</blockquote>
             <p><strong>这不是营销话术，是风险声明。</strong> 装完之后：</p>
             <div class="tbl-wrap"><table><thead><tr><th>官方提供</th><th>官方不提供</th></tr></thead><tbody><tr><td>human-in-the-loop 工具调用审批（执行前可 approve / edit / reject）</td><td>沙箱边界之外的任何权限护栏</td></tr><tr><td>可插拔的 sandbox backend（<strong>但边界由你划</strong>）</td><td>模型自约束</td></tr></tbody></table></div>
             <p><strong>实操结论</strong>：想用它又担心越权，<strong>必须自己把 sandbox 收紧</strong>。</p>
-            <p>不能因为<strong>「它支持 human-in-the-loop」</strong>就以为安全到位了。</p>
+            <p>不能因为<strong>「它支持 human-in-the-loop」</strong>就以为安全到位了。</p></span><span data-en><p>Security section wording:</p>
+            <blockquote>Deep Agents follows a &quot;trust the LLM&quot; model. The agent can do anything its tools allow. Enforce boundaries at the tool/sandbox level, not by expecting the model to self-police.</blockquote>
+            <p><strong>This is not marketing language; it is a risk statement.</strong> After installing:</p>
+            <div class="tbl-wrap"><table><thead><tr><th>Officially provided</th><th>Officially not provided</th></tr></thead><tbody><tr><td>human-in-the-loop tool-call approval (approve / edit / reject before execution)</td><td>any permission guardrail beyond the sandbox boundary</td></tr><tr><td>pluggable sandbox backends (<strong>but you draw the boundary</strong>)</td><td>model self-restraint</td></tr></tbody></table></div>
+            <p><strong>Practical conclusion</strong>: wanting to use it while worrying about overreach, <strong>you must tighten the sandbox yourself</strong>.</p>
+            <p>Do not assume safety is in place just because <strong>&quot;it supports human-in-the-loop&quot;</strong>.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>&quot;状态 ≠ 上下文&quot;：它同时用了三种手段</h2>
-        <div class="tbl-wrap"><table><thead><tr><th>手段</th><th>官方原文</th><th>作用</th></tr></thead><tbody><tr><td>summarize long threads</td><td>Context management</td><td>压缩长对话</td></tr><tr><td><strong>offload tool outputs to disk</strong></td><td>Context management</td><td><strong>把大工具输出落盘而不是塞进上下文</strong></td></tr><tr><td>persistent memory</td><td>pluggable state and store backends</td><td><strong>跨会话召回</strong></td></tr></tbody></table></div>
+        <h2><span data-zh>&quot;状态 ≠ 上下文&quot;：它同时用了三种手段</span><span data-en>&quot;State ≠ context&quot;: it uses three means at once</span></h2>
+        <span data-zh><div class="tbl-wrap"><table><thead><tr><th>手段</th><th>官方原文</th><th>作用</th></tr></thead><tbody><tr><td>summarize long threads</td><td>Context management</td><td>压缩长对话</td></tr><tr><td><strong>offload tool outputs to disk</strong></td><td>Context management</td><td><strong>把大工具输出落盘而不是塞进上下文</strong></td></tr><tr><td>persistent memory</td><td>pluggable state and store backends</td><td><strong>跨会话召回</strong></td></tr></tbody></table></div>
             <p>第二条尤其值得注意。</p>
             <p>把工具输出<strong>卸载到磁盘</strong>，而不是压缩掉。</p>
             <p>这比单纯「压缩历史」更接近本站主张的可靠长期运行。</p>
-            <p>官方定位是 <code>defaults tuned for long-horizon, multi-step work</code>。默认就是为长任务调的。</p>
+            <p>官方定位是 <code>defaults tuned for long-horizon, multi-step work</code>。默认就是为长任务调的。</p></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Means</th><th>Official wording</th><th>Effect</th></tr></thead><tbody><tr><td>summarize long threads</td><td>Context management</td><td>compresses long conversations</td></tr><tr><td><strong>offload tool outputs to disk</strong></td><td>Context management</td><td><strong>lands large tool outputs on disk instead of stuffing them into context</strong></td></tr><tr><td>persistent memory</td><td>pluggable state and store backends</td><td><strong>cross-session recall</strong></td></tr></tbody></table></div>
+            <p>The second item deserves special attention.</p>
+            <p><strong>Offloading</strong> tool outputs to disk, rather than compressing them away.</p>
+            <p>This is closer to this site&#39;s stance on reliable long-running operation than simply &quot;compressing history&quot;.</p>
+            <p>The official positioning is <code>defaults tuned for long-horizon, multi-step work</code>. The defaults are tuned for long tasks.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>模型支持：真的可以接本地模型</h2>
-        <p>FAQ 原文：</p>
+        <h2><span data-zh>模型支持：真的可以接本地模型</span><span data-en>Model support: local models really can be connected</span></h2>
+        <span data-zh><p>FAQ 原文：</p>
             <blockquote>Yes. Any model that supports tool calling works — frontier APIs (OpenAI, Anthropic, Google), open-weight models hosted on providers like Baseten or Fireworks, and <strong>self-hosted models via Ollama, vLLM, or llama.cpp</strong>.</blockquote>
             <p><strong>这条对本站很关键</strong>：模型层（models.specul.com）推荐的本地量化版，也能接进来。</p>
-            <p>见该站系列的 provider 兼容性说明。</p>
+            <p>见该站系列的 provider 兼容性说明。</p></span><span data-en><p>FAQ wording:</p>
+            <blockquote>Yes. Any model that supports tool calling works — frontier APIs (OpenAI, Anthropic, Google), open-weight models hosted on providers like Baseten or Fireworks, and <strong>self-hosted models via Ollama, vLLM, or llama.cpp</strong>.</blockquote>
+            <p><strong>This is key for this site</strong>: the local quantized builds recommended by the model layer (models.specul.com) can also be connected.</p>
+            <p>See that site&#39;s series provider-compatibility notes.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>附：还有一个终端版</h2>
-        <p>README 提到 <strong>Deep Agents Code</strong> —— 预构建的终端 coding agent。</p>
+        <h2><span data-zh>附：还有一个终端版</span><span data-en>Appendix: there is also a terminal edition</span></h2>
+        <span data-zh><p>README 提到 <strong>Deep Agents Code</strong> —— 预构建的终端 coding agent。</p>
             <p>官方定位：</p>
             <blockquote><strong>官方原文</strong>： &quot;similar to Claude Code or Cursor, powered by any LLM&quot;</blockquote>
-            <blockquote>⚠ <strong>本站不把它作为独立对象收录</strong>：它是终端形态的产品，应属 <code>cli.specul.com</code> 分区。 此处记录是因为它说明 Deep Agents 的能力可直接用于编程场景。</blockquote>
+            <blockquote>⚠ <strong>本站不把它作为独立对象收录</strong>：它是终端形态的产品，应属 <code>cli.specul.com</code> 分区。 此处记录是因为它说明 Deep Agents 的能力可直接用于编程场景。</blockquote></span><span data-en><p>The README mentions <strong>Deep Agents Code</strong> — a prebuilt terminal coding agent.</p>
+            <p>Official positioning:</p>
+            <blockquote><strong>Official wording</strong>: &quot;similar to Claude Code or Cursor, powered by any LLM&quot;</blockquote>
+            <blockquote>⚠ <strong>This site does not collect it as a standalone object</strong>: it is a terminal-form product and belongs to the <code>cli.specul.com</code> section. It is recorded here because it shows Deep Agents&#39; capabilities apply directly to coding scenarios.</blockquote></span>
       </div>
       <div class="panel is-slim">
-        <h2>核验说明</h2>
-        <p><code>confidence: partial</code> 的依据（2026-10-03 由 verified 降级）：</p>
+        <h2><span data-zh>核验说明</span><span data-en>Verification notes</span></h2>
+        <span data-zh><p><code>confidence: partial</code> 的依据（2026-10-03 由 verified 降级）：</p>
             <blockquote><strong>为什么降级</strong>：下方 ❌ 项的主语是<strong>本站的取证缺口</strong>，不是 &quot;官方未提供&quot;。 按 v3 铁律「未知就说未知」，这些条目存在时标 verified 属于虚高，故降为 partial。 主要缺口：LangSmith 配套的商业条款、LangGraph interrupt 细节、多 agent 并发文件冲突。</blockquote>
             <ul><li>✅ 已核验：</li><li>仓库存在与星数（30,517 · 滚动核验 2026-10-23）</li><li><strong>许可原文（MIT，经 license API）</strong></li><li>最新版本 <strong>0.7.30</strong>（2026-10-22 releases）</li><li>仓库描述原文、README 全文四条原则与九条特性清单</li><li>FAQ 三层关系原文、Security 声明原文、provider 支持范围原文、Quickstart 代码示例</li><li>❌ 未核验：</li><li>LangSmith 配套的商业条款（报价按 D9 口径本站不采）</li><li>LangGraph interrupt 的细节</li><li>sandbox backend 的具体实现与可选项清单</li><li><code>CompiledStateGraph</code> 作为 sub-agent 的具体 API 形态</li><li>Deep Agents Code 的许可（它可能是另一个仓）</li></ul>
             <p><strong>特别记录一处二手资料偏差</strong>：竞品站（aiagentclash.com）2026-09-28 快照记 Deep Agents 为 <strong>0.7.0</strong>， 而 GitHub releases 实际为 <strong>0.7.20</strong>（2026-09-29）。</p>
-            <p><strong>这印证了 v3 计划 &quot;竞品研究只作方法论参考、不作数据来源&quot; 这条规矩是必要的。</strong></p>
+            <p><strong>这印证了 v3 计划 &quot;竞品研究只作方法论参考、不作数据来源&quot; 这条规矩是必要的。</strong></p></span><span data-en><p>Basis for <code>confidence: partial</code> (downgraded from verified on 2026-10-03):</p>
+            <blockquote><strong>Why downgraded</strong>: the subject of the ❌ items below is <strong>this site&#39;s evidence gap</strong>, not &quot;not provided officially&quot;. Per the v3 rule &quot;say unknown when unknown&quot;, marking verified while these items exist would be inflated, hence partial. Main gaps: LangSmith&#39;s accompanying commercial terms, LangGraph interrupt details, multi-agent concurrent file conflicts.</blockquote>
+            <ul><li>✅ Verified:</li><li>repository exists and star count (30,517 · rolling check 2026-10-23)</li><li><strong>license verbatim (MIT, via the license API)</strong></li><li>latest version <strong>0.7.30</strong> (2026-10-22 releases)</li><li>repository description verbatim, full README four principles and nine-feature list</li><li>FAQ three-layer relationship verbatim, Security statement verbatim, provider-support scope verbatim, Quickstart code example</li><li>❌ Not verified:</li><li>LangSmith&#39;s accompanying commercial terms (quotes not collected by this site per the D9 rule)</li><li>LangGraph interrupt details</li><li>the concrete implementations and option list of sandbox backends</li><li>the concrete API shape of <code>CompiledStateGraph</code> as a sub-agent</li><li>Deep Agents Code&#39;s license (it may be another repository)</li></ul>
+            <p><strong>One secondhand-source deviation recorded specially</strong>: the competitor site (aiagentclash.com) 2026-09-28 snapshot recorded Deep Agents as <strong>0.7.0</strong>, while GitHub releases actually had <strong>0.7.20</strong> (2026-09-29).</p>
+            <p><strong>This confirms the v3 plan&#39;s rule &quot;competitor research is methodology reference only, not a data source&quot; is necessary.</strong></p></span>
       </div>
 
             <div class="panel is-slim">
         <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
         <ul class="rel-list">
-          <li><span class="rel-t"><a href="./langgraph.html"><span data-zh>LangGraph</span><span data-en>LangGraph</span></a></span><span class="rel-n">同生态下层。LangGraph 是 Deep Agents 依赖的 graph runtime，官方 FAQ 明确区分两者层级。</span></li>
-          <li><span class="rel-t"><a href="./llamaindex.html"><span data-zh>LlamaIndex</span><span data-en>LlamaIndex Framework</span></a></span><span class="rel-n">同为编排层。但 LlamaIndex 重心在 RAG / 数据连接，Deep Agents 重心在通用 agent harness。</span></li>
+          <li><span class="rel-t"><a href="./langgraph.html"><span data-zh>LangGraph</span><span data-en>LangGraph</span></a></span><span class="rel-n"><span data-zh>同生态下层。LangGraph 是 Deep Agents 依赖的 graph runtime，官方 FAQ 明确区分两者层级。</span><span data-en>the lower layer of the same ecosystem. LangGraph is the graph runtime Deep Agents depends on; the official FAQ explicitly distinguishes the two layers.</span></span></li>
+          <li><span class="rel-t"><a href="./llamaindex.html"><span data-zh>LlamaIndex</span><span data-en>LlamaIndex Framework</span></a></span><span class="rel-n"><span data-zh>同为编排层。但 LlamaIndex 重心在 RAG / 数据连接，Deep Agents 重心在通用 agent harness。</span><span data-en>also an orchestration layer. But LlamaIndex centers on RAG / data connections; Deep Agents centers on a general agent harness.</span></span></li>
           <li><span class="rel-t"><a href="/coding/amp.html"><span data-zh>Amp</span><span data-en>Amp</span></a></span><span class="rel-n"><span data-zh>另一层 · AI 编程</span><span data-en>Other layer · AI coding</span></span></li>
         </ul>
       </div>

@@ -113,7 +113,7 @@
         <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-23</span>
       </div>
 
-            <p class="t-xs" data-en>English summaries and interface labels are available. Detailed source notes below are currently in Chinese.</p>
+            
       <div class="panel-lead"><span data-zh><p><strong>「把 Codex CLI 变成 Node 进程里可驱动的对象」</strong>。官方 README 首句就是 「Embed the Codex agent in your workflows and apps」，第二句划清了形态：</p>
             <blockquote>The TypeScript SDK <strong>wraps</strong> the <code>codex</code> CLI from <code>@openai/codex</code>. It <strong>spawns the CLI</strong> and exchanges JSONL events over stdin/stdout.</blockquote></span><span data-en><p><strong>&quot;Turns the Codex CLI into an object you can drive inside a Node process&quot;</strong> — the official README opens with &quot;Embed the Codex agent in your workflows and apps&quot;; the second sentence settles the form:</p>
             <blockquote>The TypeScript SDK <strong>wraps</strong> the <code>codex</code> CLI from <code>@openai/codex</code>. It <strong>spawns the CLI</strong> and exchanges JSONL events over stdin/stdout.</blockquote></span></div>
@@ -145,7 +145,7 @@
       <dl class="axes">
         <div class="axis">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
-          <dd><p><strong>默认走 OpenAI，但架构上没锁死。</strong></p>
+          <dd><span data-zh><p><strong>默认走 OpenAI，但架构上没锁死。</strong></p>
             <p>三条证据：</p>
             <ul><li>README 的配置示例里 <code>baseUrl</code> 会被翻译成 <code>--config openai_base_url=...</code> 传给 CLI —— 也就是说，<strong>换 API 端点是一等配置项</strong></li></ul>
             <ul><li>官方 <code>config-advanced</code> 有专节 <strong>Custom model providers</strong>（已核验）： 顶层 <code>model = ...</code> 配 <code>model_provider = &quot;proxy&quot;</code>，再写 <code>[model_providers.&lt;id&gt;]</code> （字段有 <code>base_url</code> / <code>env_key</code> / <code>wire_api</code> / <code>http_headers</code> / <code>auth.command</code>）</li></ul>
@@ -156,58 +156,96 @@
             <p>还支持 <strong>OSS 模式</strong>：<code>--oss</code> 配 <code>oss_provider = &quot;ollama&quot; | &quot;lmstudio&quot;</code>。</p>
             <p><strong>即：官方明确支持接非 OpenAI 模型</strong>（本地 Ollama / LM Studio、Mistral、Bedrock 等）。</p>
             <p><strong>README 原文</strong>：If you set <code>baseUrl</code>, the SDK passes it as a <code>--config openai_base_url=...</code> override</p>
-            <p>⚠ <strong>但换第三方模型之后呢？工具调用与 structured output 的质量如何？官方没给量化结论。本站也没实测。</strong></p></dd>
+            <p>⚠ <strong>但换第三方模型之后呢？工具调用与 structured output 的质量如何？官方没给量化结论。本站也没实测。</strong></p></span><span data-en><p><strong>Defaults to OpenAI, but the architecture is not locked down.</strong></p>
+            <p>Three pieces of evidence:</p>
+            <ul><li>the README&#39;s config example translates <code>baseUrl</code> into <code>--config openai_base_url=...</code> passed to the CLI — i.e. <strong>switching the API endpoint is a first-class config item</strong></li></ul>
+            <ul><li>the official <code>config-advanced</code> page has a dedicated <strong>Custom model providers</strong> section (verified): top-level <code>model = ...</code> with <code>model_provider = &quot;proxy&quot;</code>, then <code>[model_providers.&lt;id&gt;]</code> (fields include <code>base_url</code> / <code>env_key</code> / <code>wire_api</code> / <code>http_headers</code> / <code>auth.command</code>)</li></ul>
+            <ul><li><code>ThreadOptions</code> has its own <code>model?: string</code> field</li></ul>
+            <p><strong>Built-in provider IDs</strong>: reserved <code>openai</code>, <code>ollama</code>, <code>lmstudio</code>, plus built-in <code>amazon-bedrock</code> and <code>azure</code>. <code>openai_base_url</code> can change a built-in provider&#39;s base URL.</p>
+            <p>The official example directly gives a third party:</p>
+            <p><strong>Official example</strong>: <code>[model_providers.mistral]</code> <code>base_url = &quot;https://api.mistral.ai/v1&quot;</code></p>
+            <p><strong>OSS mode</strong> is also supported: <code>--oss</code> with <code>oss_provider = &quot;ollama&quot; | &quot;lmstudio&quot;</code>.</p>
+            <p><strong>That is: the official docs explicitly support non-OpenAI models</strong> (local Ollama / LM Studio, Mistral, Bedrock etc.).</p>
+            <p><strong>README wording</strong>: If you set <code>baseUrl</code>, the SDK passes it as a <code>--config openai_base_url=...</code> override</p>
+            <p>⚠ <strong>But after switching to a third-party model? How good are tool calling and structured output quality? The official docs give no quantified conclusion. This site has not measured either.</strong></p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
-          <dd><p><strong>进程形态是「你的 Node 进程 + 一个被 spawn 的 CLI 子进程」。</strong></p>
+          <dd><span data-zh><p><strong>进程形态是「你的 Node 进程 + 一个被 spawn 的 CLI 子进程」。</strong></p>
             <p>README 的 <code>env</code> 参数说明值得注意。默认情况下 CLI <strong>继承 Node 进程的环境变量</strong>。 所以你可以整体控制 CLI 能看到哪些变量。官方给的用途是 sandboxed hosts（例如 Electron 应用）。</p>
             <p>SDK 会在继承之上再注入自己需要的变量（如 <code>CODEX_API_KEY</code>）。</p>
             <p><strong>这条对 Electron / 桌面应用集成是决定性的</strong> —— 官方明确点了这个场景。</p>
-            <p><strong>README 原文</strong>：By default, the Codex CLI <strong>inherits the Node.js process environment</strong></p></dd>
+            <p><strong>README 原文</strong>：By default, the Codex CLI <strong>inherits the Node.js process environment</strong></p></span><span data-en><p><strong>The process form is &quot;your Node process + a spawned CLI subprocess.&quot;</strong></p>
+            <p>The README&#39;s <code>env</code> parameter note is worth attention. By default the CLI <strong>inherits the Node process environment</strong>. So you can fully control which variables the CLI sees. The official use case given is sandboxed hosts (e.g. Electron apps).</p>
+            <p>The SDK injects its own needed variables (like <code>CODEX_API_KEY</code>) on top of the inheritance.</p>
+            <p><strong>This is decisive for Electron / desktop-app integration</strong> — the official docs call out this scenario explicitly.</p>
+            <p><strong>README wording</strong>: By default, the Codex CLI <strong>inherits the Node.js process environment</strong></p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
-          <dd><p><strong>本地文件是 CLI 的原生能力，SDK 侧只需要给工作目录。</strong></p>
+          <dd><span data-zh><p><strong>本地文件是 CLI 的原生能力，SDK 侧只需要给工作目录。</strong></p>
             <p>三个相关参数：</p>
             <ul><li><code>workingDirectory</code> —— 设置运行目录</li><li><code>additionalDirectories</code> —— 追加额外目录</li><li><code>local_image</code> 类型的输入条目 —— 把本地图片传给 CLI（走 <code>--image</code>）</li></ul>
             <p>⚠ <strong>一个必须知道的行为</strong>：Codex <strong>要求工作目录是一个 Git 仓库</strong>。不满足就拒绝运行。 可以用 <code>skipGitRepoCheck</code> 跳过这个检查。</p>
             <p><strong>这对选型是硬约束</strong>：非 Git 目录（纯数据目录、临时目录）里开箱用不了。</p>
-            <p><strong>官方原文</strong>：To avoid unrecoverable errors, Codex requires the working directory to be a Git repository</p></dd>
+            <p><strong>官方原文</strong>：To avoid unrecoverable errors, Codex requires the working directory to be a Git repository</p></span><span data-en><p><strong>Local files are a native CLI capability; the SDK side only needs a working directory.</strong></p>
+            <p>Three relevant parameters:</p>
+            <ul><li><code>workingDirectory</code> — sets the run directory</li><li><code>additionalDirectories</code> — appends extra directories</li><li><code>local_image</code> type input items — pass local images to the CLI (via <code>--image</code>)</li></ul>
+            <p>⚠ <strong>One behavior you must know</strong>: Codex <strong>requires the working directory to be a Git repository</strong>. It refuses to run otherwise. The check can be skipped with <code>skipGitRepoCheck</code>.</p>
+            <p><strong>This is a selection-level hard constraint</strong>: it does not work out of the box in non-Git directories (pure data dirs, temp dirs).</p>
+            <p><strong>Official wording</strong>: To avoid unrecoverable errors, Codex requires the working directory to be a Git repository</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
-          <dd><p><strong>这是本站收录对象里，唯一被官方明确支持「非交互执行」的一个。</strong></p>
+          <dd><span data-zh><p><strong>这是本站收录对象里，唯一被官方明确支持「非交互执行」的一个。</strong></p>
             <p><strong>核验</strong>：官方 <code>noninteractive</code> 页已核验（<code>docs/exec.md</code> 指向它）。 <code>codex exec</code> 面向 scripts 与 CI。</p>
             <ul><li>默认 <strong>read-only sandbox</strong>；可用 <code>--sandbox workspace-write</code> 或 <code>danger-full-access</code></li><li><code>--json</code> 输出 JSONL</li><li><code>--output-schema</code> 给结构化输出</li><li><code>--ephemeral</code> 不落盘</li><li><strong>可续跑</strong>：<code>codex exec resume --last</code>，或 <code>codex exec resume &lt;SESSION_ID&gt;</code></li></ul>
             <p>SDK 侧对应 <code>resumeThread()</code>，Threads 持久化在 <code>~/.codex/sessions</code>。</p>
             <p>（这与 CLI 条目的对照构成一组。那边「Gemini CLI 是唯一明确支持非交互」。）</p>
             <p>⚠ <strong>注意 <code>~/.codex/sessions</code> 是文件目录，不是数据库</strong>。状态与进程在同一台机器上。</p>
             <p><strong>跨机迁移与多进程并发写的语义，官方未说明。</strong> （已查 noninteractive 与 config-reference 两页，它们只讲 <code>history.persistence</code> 与 resume。）</p>
-            <p><strong>官方对 <code>codex exec</code> 的定位</strong>：scripts and CI</p></dd>
+            <p><strong>官方对 <code>codex exec</code> 的定位</strong>：scripts and CI</p></span><span data-en><p><strong>Among objects collected on this site, this is the only one officially and explicitly supported for non-interactive execution.</strong></p>
+            <p><strong>Verified</strong>: the official <code>noninteractive</code> page is verified (<code>docs/exec.md</code> points to it). <code>codex exec</code> targets scripts and CI.</p>
+            <ul><li>default <strong>read-only sandbox</strong>; <code>--sandbox workspace-write</code> or <code>danger-full-access</code> available</li><li><code>--json</code> outputs JSONL</li><li><code>--output-schema</code> for structured output</li><li><code>--ephemeral</code> writes nothing to disk</li><li><strong>resumable</strong>: <code>codex exec resume --last</code>, or <code>codex exec resume &lt;SESSION_ID&gt;</code></li></ul>
+            <p>The SDK-side counterpart is <code>resumeThread()</code>; Threads persist under <code>~/.codex/sessions</code>.</p>
+            <p>(This forms a pair with the CLI entry. Over there, &quot;Gemini CLI is the only one explicitly supporting non-interactive&quot;.)</p>
+            <p>⚠ <strong>Note <code>~/.codex/sessions</code> is a file directory, not a database</strong>. State and process live on the same machine.</p>
+            <p><strong>Cross-machine migration and multi-process concurrent-write semantics are not stated officially.</strong> (noninteractive and config-reference pages checked; they only cover <code>history.persistence</code> and resume.)</p>
+            <p><strong>The official positioning of <code>codex exec</code></strong>: scripts and CI</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
-          <dd><p><strong>工具面完全由 CLI 决定 —— SDK 既不新增也不裁剪。</strong></p>
+          <dd><span data-zh><p><strong>工具面完全由 CLI 决定 —— SDK 既不新增也不裁剪。</strong></p>
             <p>SDK 侧你拿到的是<strong>结构化事件流</strong>。<code>runStreamed()</code> 返回 async generator。事件类型有：</p>
             <ul><li><code>item.completed</code> —— 工具调用、流式响应、文件变更通知</li><li><code>turn.completed</code> —— 含 usage 统计</li></ul>
             <p><strong>Structured output 是 SDK 明确支持的一等能力</strong>：<code>outputSchema</code> 可以传 JSON Schema， 官方还推荐 Zod 转换路径 <code>zodToJsonSchema(schema, { target: &quot;openAi&quot; })</code>。</p>
             <p>⚠ <strong>这里有个命名陷阱</strong>：那个 target 写的是 <code>&quot;openAi&quot;</code>。 但它产出的是<strong>通用 JSON Schema</strong>。给任何遵守该 schema 的模型用都行，<strong>不代表只能用 OpenAI</strong>。</p>
             <p><strong>MCP 的情况要说清</strong>。README 全文没出现 MCP。本站收录的 9 个 MCP server 里也没有它的位置。 但 Codex CLI 的 MCP 支持<strong>已核验</strong>（官方有独立 MCP 页）：</p>
             <ul><li>传输：<strong>STDIO</strong>（command / args / env / env_vars / cwd）与 <strong>Streamable HTTP</strong>（url / bearer / headers）</li><li>配置：<code>codex mcp</code> 命令行，或 <code>config.toml</code> 的 <code>[mcp_servers.&lt;name&gt;]</code></li><li>工具开关：<code>enabled_tools</code> / <code>disabled_tools</code></li><li>审批：<strong>per-server 与 per-tool 的 <code>approval_mode</code></strong>（<code>auto</code> / <code>prompt</code> / <code>approve</code>）</li><li>认证：<code>codex mcp login</code> 走 OAuth</li></ul>
-            <p><strong>官方原文</strong>：Codex supports MCP servers in both the CLI and the IDE extension <strong>SDK 侧</strong>：SDK 的 <code>config</code> 透传即写入 CLI 的 <code>config.toml</code>，故 MCP 可经此可用； 但<strong>官方未在 SDK README 明写这条衔接</strong>，本站只把它记作 CLI 能力， 仍不与 MCP 站的 server 建立关联。</p></dd>
+            <p><strong>官方原文</strong>：Codex supports MCP servers in both the CLI and the IDE extension <strong>SDK 侧</strong>：SDK 的 <code>config</code> 透传即写入 CLI 的 <code>config.toml</code>，故 MCP 可经此可用； 但<strong>官方未在 SDK README 明写这条衔接</strong>，本站只把它记作 CLI 能力， 仍不与 MCP 站的 server 建立关联。</p></span><span data-en><p><strong>The tool surface is entirely decided by the CLI — the SDK neither adds nor trims.</strong></p>
+            <p>On the SDK side you get a <strong>structured event stream</strong>. <code>runStreamed()</code> returns an async generator. Event types:</p>
+            <ul><li><code>item.completed</code> — tool calls, streaming responses, file-change notifications</li><li><code>turn.completed</code> — includes usage stats</li></ul>
+            <p><strong>Structured output is a first-class capability the SDK explicitly supports</strong>: <code>outputSchema</code> takes a JSON Schema, and the official docs also recommend the Zod conversion path <code>zodToJsonSchema(schema, { target: &quot;openAi&quot; })</code>.</p>
+            <p>⚠ <strong>There is a naming trap here</strong>: that target says <code>&quot;openAi&quot;</code>. But what it produces is <strong>generic JSON Schema</strong>. Any model honoring that schema can use it — <strong>it does not mean OpenAI only</strong>.</p>
+            <p><strong>The MCP situation needs stating clearly</strong>. The README never mentions MCP. None of the 9 MCP servers collected on this site involve it either. But Codex CLI&#39;s MCP support <strong>is verified</strong> (the official docs have a standalone MCP page):</p>
+            <ul><li>transports: <strong>STDIO</strong> (command / args / env / env_vars / cwd) and <strong>Streamable HTTP</strong> (url / bearer / headers)</li><li>config: the <code>codex mcp</code> command line, or <code>[mcp_servers.&lt;name&gt;]</code> in <code>config.toml</code></li><li>tool switches: <code>enabled_tools</code> / <code>disabled_tools</code></li><li>approvals: <strong>per-server and per-tool <code>approval_mode</code></strong> (<code>auto</code> / <code>prompt</code> / <code>approve</code>)</li><li>auth: <code>codex mcp login</code> via OAuth</li></ul>
+            <p><strong>Official wording</strong>: Codex supports MCP servers in both the CLI and the IDE extension <strong>SDK side</strong>: the SDK&#39;s <code>config</code> passthrough writes into the CLI&#39;s <code>config.toml</code>, so MCP is reachable this way; but <strong>the official SDK README does not spell out this linkage</strong>, so this site records it only as a CLI capability and still does not link it to the MCP-site servers.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
-          <dd><p><strong>它提供的是「会话续接」，不是「上下文管理」。</strong></p>
+          <dd><span data-zh><p><strong>它提供的是「会话续接」，不是「上下文管理」。</strong></p>
             <p>证据是 <code>resumeThread(threadId)</code>。它能恢复对话继续跑，但<strong>没有压缩、摘要或落盘机制</strong>。</p>
             <p>换句话说，<code>Thread</code> 解决的是<strong>可靠续跑</strong>（本站说的「状态」面）， 不解决<strong>长上下文</strong>（本站说的「上下文」面）。</p>
             <p><strong>要压上下文，只能靠 CLI 侧的配置或换模型</strong> —— SDK 层没有暴露相关选项。</p>
-            <p><strong>⚠ SDK 侧与 MCP 的衔接</strong>：SDK 的 <code>config</code> 透传会写入 CLI 的 <code>config.toml</code>， 所以 MCP 理论上可经此可用。但<strong>官方没有在 SDK README 里明写这条衔接</strong> —— 本站只把它记作 CLI 的能力，<strong>不与 MCP 站的 server 建立关联</strong>。</p></dd>
+            <p><strong>⚠ SDK 侧与 MCP 的衔接</strong>：SDK 的 <code>config</code> 透传会写入 CLI 的 <code>config.toml</code>， 所以 MCP 理论上可经此可用。但<strong>官方没有在 SDK README 里明写这条衔接</strong> —— 本站只把它记作 CLI 的能力，<strong>不与 MCP 站的 server 建立关联</strong>。</p></span><span data-en><p><strong>What it provides is &quot;session continuation&quot;, not &quot;context management&quot;.</strong></p>
+            <p>The evidence is <code>resumeThread(threadId)</code>. It can restore a conversation and keep running, but <strong>there is no compaction, summarization or offloading mechanism</strong>.</p>
+            <p>In other words, <code>Thread</code> solves <strong>reliable resume</strong> (the &quot;state&quot; surface as this site defines it), not <strong>long context</strong> (the &quot;context&quot; surface as this site defines it).</p>
+            <p><strong>To compact context you can only rely on CLI-side config or switch models</strong> — the SDK layer exposes no related options.</p>
+            <p><strong>⚠ SDK-side linkage with MCP</strong>: the SDK&#39;s <code>config</code> passthrough writes into the CLI&#39;s <code>config.toml</code>, so MCP is theoretically reachable this way. But <strong>the official SDK README does not spell out this linkage</strong> — this site records it only as a CLI capability and <strong>does not link it to the MCP-site servers</strong>.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
-          <dd><p><strong>这是本站核对下来最有价值的一处发现：它补上了 CLI 条目里遗留的审批枚举缺口。</strong></p>
+          <dd><span data-zh><p><strong>这是本站核对下来最有价值的一处发现：它补上了 CLI 条目里遗留的审批枚举缺口。</strong></p>
             <p>证据来自 SDK 源码（不是文档）<code>sdk/typescript/src/threadOptions.ts</code> 的类型定义：</p>
             <ul><li><strong>审批模式四档</strong> —— <code>ApprovalMode = &quot;never&quot; | &quot;on-request&quot; | &quot;on-failure&quot; | &quot;untrusted&quot;</code></li><li><strong>沙箱三档</strong> —— <code>SandboxMode = &quot;read-only&quot; | &quot;workspace-write&quot; | &quot;danger-full-access&quot;</code></li><li>网络单独控制 —— <code>networkAccessEnabled?: boolean</code>、 <code>webSearchMode?: &quot;disabled&quot; | &quot;cached&quot; | &quot;live&quot;</code>、<code>webSearchEnabled?: boolean</code></li></ul>
             <ul><li>推理强度 <strong>8 档</strong> —— <code>ModelReasoningEffort</code>：minimal / low / medium / high / xhigh / max / ultra / persistent</li></ul>
@@ -218,16 +256,32 @@
             <ul><li>本地默认 <strong>workspace-write + 网络关闭</strong>；非版本控制目录默认 <strong>read-only</strong></li><li>顶层键 <code>approval_policy</code>（<code>untrusted</code> / <code>on-request</code> / <code>never</code> / <code>granular</code>， 含 <code>approvals_reviewer = &quot;auto_review&quot;</code>）与 <code>sandbox_mode</code> 成对使用</li></ul>
             <ul><li><code>[sandbox_workspace_write]</code> 可设 <code>writable_roots</code>、<code>network_access</code></li><li>有命名 profile：<code>:read-only</code> / <code>:workspace</code> / <code>:danger-full-access</code></li><li><code>workspace-write</code> 下，<code>.git</code> / <code>.agents</code> / <code>.codex</code> <strong>仍递归只读</strong></li><li>网络另有 <code>features.network_proxy</code> 域名 allowlist + DNS 重绑定防护</li></ul>
             <p>⚠ <strong>三档沙箱在各平台的实现有差异。平台指 Windows / macOS / Linux。官方没有逐条给出这些差异</strong>。 官方只说<strong>「OS-level mechanisms enforce sandbox policies」</strong>，默认无网络、写入限工作区。</p>
-            <p>（已查 <code>agent-approvals-security</code>、<code>config-advanced</code>、<code>config-reference</code> 三页。）</p></dd>
+            <p>（已查 <code>agent-approvals-security</code>、<code>config-advanced</code>、<code>config-reference</code> 三页。）</p></span><span data-en><p><strong>This is the most valuable finding from this site&#39;s cross-check: it fills the approval-enum gap left in the CLI entry.</strong></p>
+            <p>The evidence comes from SDK source (not docs), the type definitions in <code>sdk/typescript/src/threadOptions.ts</code>:</p>
+            <ul><li><strong>four approval modes</strong> — <code>ApprovalMode = &quot;never&quot; | &quot;on-request&quot; | &quot;on-failure&quot; | &quot;untrusted&quot;</code></li><li><strong>three sandbox tiers</strong> — <code>SandboxMode = &quot;read-only&quot; | &quot;workspace-write&quot; | &quot;danger-full-access&quot;</code></li><li>network controlled separately — <code>networkAccessEnabled?: boolean</code>, <code>webSearchMode?: &quot;disabled&quot; | &quot;cached&quot; | &quot;live&quot;</code>, <code>webSearchEnabled?: boolean</code></li></ul>
+            <ul><li>reasoning effort has <strong>8 levels</strong> — <code>ModelReasoningEffort</code>: minimal / low / medium / high / xhigh / max / ultra / persistent</li></ul>
+            <p><strong>The other layer is config passthrough</strong>. The SDK supports <code>config</code>, auto-flattened into dotted paths and converted to TOML for <code>--config</code>. There is also <code>configOverrides</code> (raw TOML passed item by item). The official example directly gives filesystem-level rules:</p>
+            <p><strong>Official example</strong>: <code>permissions.audit.filesystem={&quot;:root&quot;=&quot;read&quot;,&quot;/path/to/project/.env&quot;=&quot;deny&quot;}</code></p>
+            <p>That means <strong>reading a file like <code>.env</code> can be denied precisely by path</strong>. The official precedence: raw overrides &gt; structured config &gt; SDK-managed settings.</p>
+            <p><strong>Sandbox and approval official defaults verified</strong> (<code>agent-approvals-security</code> and <code>config-advanced</code>):</p>
+            <ul><li>local default <strong>workspace-write + network off</strong>; non-version-controlled dirs default to <strong>read-only</strong></li><li>top-level keys <code>approval_policy</code> (<code>untrusted</code> / <code>on-request</code> / <code>never</code> / <code>granular</code>, including <code>approvals_reviewer = &quot;auto_review&quot;</code>) pair with <code>sandbox_mode</code></li></ul>
+            <ul><li><code>[sandbox_workspace_write]</code> can set <code>writable_roots</code>, <code>network_access</code></li><li>there are named profiles: <code>:read-only</code> / <code>:workspace</code> / <code>:danger-full-access</code></li><li>under <code>workspace-write</code>, <code>.git</code> / <code>.agents</code> / <code>.codex</code> <strong>remain recursively read-only</strong></li><li>network additionally has <code>features.network_proxy</code> domain allowlist + DNS-rebinding protection</li></ul>
+            <p>⚠ <strong>The three sandbox tiers differ in per-platform implementation. Platforms mean Windows / macOS / Linux. The official docs do not enumerate these differences item by item</strong>. They only say <strong>&quot;OS-level mechanisms enforce sandbox policies&quot;</strong>, with no network by default and writes limited to the workspace.</p>
+            <p>(<code>agent-approvals-security</code>, <code>config-advanced</code>, <code>config-reference</code> pages checked.)</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
-          <dd><p><strong>适合四类情况：</strong></p>
+          <dd><span data-zh><p><strong>适合四类情况：</strong></p>
             <ul><li>要把 Codex 塞进自己的 Node 应用 / Electron 应用 / CI</li><li>需要非交互执行</li><li>需要精确到文件级的权限规则</li><li>TypeScript 或 Python 栈，且已决定用 OpenAI 模型但想让模型层可换</li></ul>
             <p><strong>不适合两类情况：</strong></p>
             <ul><li>想要一个纯库、不想额外背一个 CLI 子进程 —— 那用 OpenAI Agents SDK</li><li>目标目录不是 Git 仓库，又不愿开 <code>skipGitRepoCheck</code></li></ul>
             <p>⚠ 还有一处能力边界：<strong>需要 SDK 层直接暴露压缩 API</strong> 的话它不满足。</p>
-            <p>CLI 侧有 <code>compact_prompt</code> / <code>experimental_compact_prompt_file</code> 与 <code>PreCompact</code> / <code>PostCompact</code> hooks 可配，但 <strong>SDK 层没有专门的压缩接口</strong>， 只能靠 config 透传。</p></dd>
+            <p>CLI 侧有 <code>compact_prompt</code> / <code>experimental_compact_prompt_file</code> 与 <code>PreCompact</code> / <code>PostCompact</code> hooks 可配，但 <strong>SDK 层没有专门的压缩接口</strong>， 只能靠 config 透传。</p></span><span data-en><p><strong>Fits four scenarios:</strong></p>
+            <ul><li>embedding Codex into your own Node app / Electron app / CI</li><li>needing non-interactive execution</li><li>needing file-path-precise permission rules</li><li>TypeScript or Python stacks, already committed to OpenAI models but wanting the model layer swappable</li></ul>
+            <p><strong>Does not fit two scenarios:</strong></p>
+            <ul><li>wanting a pure library without carrying an extra CLI subprocess — use the OpenAI Agents SDK for that</li><li>the target directory is not a Git repo and you are unwilling to enable <code>skipGitRepoCheck</code></li></ul>
+            <p>⚠ One more capability boundary: <strong>if you need a compaction API exposed directly at the SDK layer</strong>, it does not deliver.</p>
+            <p>The CLI side has <code>compact_prompt</code> / <code>experimental_compact_prompt_file</code> and <code>PreCompact</code> / <code>PostCompact</code> hooks configurable, but <strong>the SDK layer has no dedicated compaction interface</strong>, only config passthrough.</p></span></dd>
         </div>
       </dl>
 
@@ -246,14 +300,21 @@
 
             <div class="panel is-slim">
         <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
-        
+        <span data-zh>
         <ul>
           <li>三档沙箱在 Windows / macOS / Linux 的逐平台实现差异（尤其 Windows 是否走 WSL）</li>
           <li>第三方 provider 换用后工具调用与 structured output 的质量对齐度</li>
           <li>Python SDK 的 API 是否与 TS 版对齐（<code>Thread</code> / <code>run</code> / <code>resumeThread</code> 概念是否一致）</li>
           <li><code>~/.codex/sessions</code> 的并发写与跨机迁移语义</li>
           <li><code>permissions.audit</code> 规则的完整语法（官方只给了文件系统一项示例）</li>
-        </ul>
+        </ul></span><span data-en>
+        <ul>
+          <li>Per-platform implementation differences of the three sandbox tiers on Windows / macOS / Linux (especially whether Windows goes through WSL)</li>
+          <li>Tool-calling and structured-output quality alignment after switching to third-party providers</li>
+          <li>Whether the Python SDK&#39;s API aligns with the TS version (whether <code>Thread</code> / <code>run</code> / <code>resumeThread</code> concepts match)</li>
+          <li>Concurrent-write and cross-machine migration semantics of <code>~/.codex/sessions</code></li>
+          <li>The full syntax of <code>permissions.audit</code> rules (the official docs give only the filesystem example)</li>
+        </ul></span>
       </div>
 
 
@@ -263,96 +324,123 @@
         <table class="src">
           <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
           <tbody>
-            <tr><td>repo</td><td>openai/codex · 仓库（monorepo，SDK 在 sdk/ 子目录）</td><td><a href="https://github.com/openai/codex" target="_blank" rel="noopener">https://github.com/openai/codex</a></td></tr>
-            <tr><td>docs</td><td>TypeScript SDK README（包裹 CLI、JSONL 通信、thread/turn、resume、config 透传）</td><td><a href="https://github.com/openai/codex/tree/main/sdk/typescript" target="_blank" rel="noopener">https://github.com/openai/codex/tree/main/sdk/typescript</a></td></tr>
-            <tr><td>code</td><td>源码 sdk/typescript/src/threadOptions.ts（ApprovalMode 四档/ SandboxMode 三档 / 网络与推理强度）</td><td><a href="https://github.com/openai/codex/blob/main/sdk/typescript/src/threadOptions.ts" target="_blank" rel="noopener">https://github.com/openai/codex/blob/main/sdk/typescript/src/threadOptions.ts</a></td></tr>
-            <tr><td>code</td><td>sdk/typescript/package.json（包名 @openai/codex-sdk、Apache-2.0、Node≥18）</td><td><a href="https://github.com/openai/codex/blob/main/sdk/typescript/package.json" target="_blank" rel="noopener">https://github.com/openai/codex/blob/main/sdk/typescript/package.json</a></td></tr>
-            <tr><td>docs</td><td>docs/exec.md · Non-interactive mode（正文仅外链）</td><td><a href="https://github.com/openai/codex/blob/main/docs/exec.md" target="_blank" rel="noopener">https://github.com/openai/codex/blob/main/docs/exec.md</a></td></tr>
-            <tr><td>docs</td><td>docs/sandbox.md · Sandbox &amp; approvals（正文仅外链）</td><td><a href="https://github.com/openai/codex/blob/main/docs/sandbox.md" target="_blank" rel="noopener">https://github.com/openai/codex/blob/main/docs/sandbox.md</a></td></tr>
-            <tr><td>docs</td><td>官方 Agent approvals &amp; security（沙箱三档、审批策略、网络策略、受保护路径）</td><td><a href="https://developers.openai.com/codex/agent-approvals-security" target="_blank" rel="noopener">https://developers.openai.com/codex/agent-approvals-security</a></td></tr>
-            <tr><td>docs</td><td>官方 Configuration Reference（approval_policy / sandbox_mode / model_provider 等键）</td><td><a href="https://developers.openai.com/codex/config-reference" target="_blank" rel="noopener">https://developers.openai.com/codex/config-reference</a></td></tr>
-            <tr><td>docs</td><td>官方 Advanced Configuration（Custom model providers、OSS 模式、压缩、hooks）</td><td><a href="https://developers.openai.com/codex/config-advanced" target="_blank" rel="noopener">https://developers.openai.com/codex/config-advanced</a></td></tr>
-            <tr><td>docs</td><td>官方 MCP 文档（CLI 与 IDE 支持 STDIO / Streamable HTTP）</td><td><a href="https://developers.openai.com/codex/mcp" target="_blank" rel="noopener">https://developers.openai.com/codex/mcp</a></td></tr>
-            <tr><td>docs</td><td>官方 Non-interactive mode（codex exec、resume、默认 read-only）</td><td><a href="https://developers.openai.com/codex/noninteractive" target="_blank" rel="noopener">https://developers.openai.com/codex/noninteractive</a></td></tr>
-            <tr><td>repo</td><td>Python SDK 目录（本站记录存在，细节未核验）</td><td><a href="https://github.com/openai/codex/tree/main/sdk/python" target="_blank" rel="noopener">https://github.com/openai/codex/tree/main/sdk/python</a></td></tr>
-            <tr><td>changelog</td><td>Releases（0.159.3 @ 2026-09-30，另有 0.161.0-alpha 预发布）</td><td><a href="https://github.com/openai/codex/releases" target="_blank" rel="noopener">https://github.com/openai/codex/releases</a></td></tr>
-            <tr><td>docs</td><td>官方安全文档（沙箱与审批，JS 渲染，本站点未取到正文）</td><td><a href="https://developers.openai.com/codex/security" target="_blank" rel="noopener">https://developers.openai.com/codex/security</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>openai/codex · 仓库（monorepo，SDK 在 sdk/ 子目录）</span><span data-en>openai/codex · repository (monorepo, SDK under sdk/ subdirectories)</span></td><td><a href="https://github.com/openai/codex" target="_blank" rel="noopener">https://github.com/openai/codex</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>TypeScript SDK README（包裹 CLI、JSONL 通信、thread/turn、resume、config 透传）</span><span data-en>TypeScript SDK README (wraps the CLI, JSONL communication, thread/turn, resume, config passthrough)</span></td><td><a href="https://github.com/openai/codex/tree/main/sdk/typescript" target="_blank" rel="noopener">https://github.com/openai/codex/tree/main/sdk/typescript</a></td></tr>
+            <tr><td>code</td><td><span data-zh>源码 sdk/typescript/src/threadOptions.ts（ApprovalMode 四档/ SandboxMode 三档 / 网络与推理强度）</span><span data-en>Source sdk/typescript/src/threadOptions.ts (ApprovalMode four tiers / SandboxMode three tiers / network and reasoning effort)</span></td><td><a href="https://github.com/openai/codex/blob/main/sdk/typescript/src/threadOptions.ts" target="_blank" rel="noopener">https://github.com/openai/codex/blob/main/sdk/typescript/src/threadOptions.ts</a></td></tr>
+            <tr><td>code</td><td><span data-zh>sdk/typescript/package.json（包名 @openai/codex-sdk、Apache-2.0、Node≥18）</span><span data-en>sdk/typescript/package.json (package name @openai/codex-sdk, Apache-2.0, Node≥18)</span></td><td><a href="https://github.com/openai/codex/blob/main/sdk/typescript/package.json" target="_blank" rel="noopener">https://github.com/openai/codex/blob/main/sdk/typescript/package.json</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>docs/exec.md · Non-interactive mode（正文仅外链）</span><span data-en>docs/exec.md · Non-interactive mode (body is an external link only)</span></td><td><a href="https://github.com/openai/codex/blob/main/docs/exec.md" target="_blank" rel="noopener">https://github.com/openai/codex/blob/main/docs/exec.md</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>docs/sandbox.md · Sandbox &amp; approvals（正文仅外链）</span><span data-en>docs/sandbox.md · Sandbox &amp; approvals (body is an external link only)</span></td><td><a href="https://github.com/openai/codex/blob/main/docs/sandbox.md" target="_blank" rel="noopener">https://github.com/openai/codex/blob/main/docs/sandbox.md</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>官方 Agent approvals &amp; security（沙箱三档、审批策略、网络策略、受保护路径）</span><span data-en>Official Agent approvals &amp; security (three sandbox tiers, approval policies, network policies, protected paths)</span></td><td><a href="https://developers.openai.com/codex/agent-approvals-security" target="_blank" rel="noopener">https://developers.openai.com/codex/agent-approvals-security</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>官方 Configuration Reference（approval_policy / sandbox_mode / model_provider 等键）</span><span data-en>Official Configuration Reference (approval_policy / sandbox_mode / model_provider etc. keys)</span></td><td><a href="https://developers.openai.com/codex/config-reference" target="_blank" rel="noopener">https://developers.openai.com/codex/config-reference</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>官方 Advanced Configuration（Custom model providers、OSS 模式、压缩、hooks）</span><span data-en>Official Advanced Configuration (Custom model providers, OSS mode, compaction, hooks)</span></td><td><a href="https://developers.openai.com/codex/config-advanced" target="_blank" rel="noopener">https://developers.openai.com/codex/config-advanced</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>官方 MCP 文档（CLI 与 IDE 支持 STDIO / Streamable HTTP）</span><span data-en>Official MCP docs (CLI and IDE support STDIO / Streamable HTTP)</span></td><td><a href="https://developers.openai.com/codex/mcp" target="_blank" rel="noopener">https://developers.openai.com/codex/mcp</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>官方 Non-interactive mode（codex exec、resume、默认 read-only）</span><span data-en>Official Non-interactive mode (codex exec, resume, read-only default)</span></td><td><a href="https://developers.openai.com/codex/noninteractive" target="_blank" rel="noopener">https://developers.openai.com/codex/noninteractive</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>Python SDK 目录（本站记录存在，细节未核验）</span><span data-en>Python SDK directory (existence recorded by this site; details unverified)</span></td><td><a href="https://github.com/openai/codex/tree/main/sdk/python" target="_blank" rel="noopener">https://github.com/openai/codex/tree/main/sdk/python</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>Releases（0.159.3 @ 2026-09-30，另有 0.161.0-alpha 预发布）</span><span data-en>Releases (0.159.3 @ 2026-09-30, plus 0.161.0-alpha pre-releases)</span></td><td><a href="https://github.com/openai/codex/releases" target="_blank" rel="noopener">https://github.com/openai/codex/releases</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>官方安全文档（沙箱与审批，JS 渲染，本站点未取到正文）</span><span data-en>Official security docs (sandbox and approvals, JS-rendered; body not captured by this site)</span></td><td><a href="https://developers.openai.com/codex/security" target="_blank" rel="noopener">https://developers.openai.com/codex/security</a></td></tr>
           </tbody>
         </table>
       </div>
 
             <div class="panel is-slim">
         <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
-        <p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" target="_blank" rel="noopener">protocols/framework/_protocol.md</a>。</p>
+        <span data-zh><p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" target="_blank" rel="noopener">protocols/framework/_protocol.md</a>。</p>
             <p><strong>实测建议</strong>（按本 SDK 形态定制）：</p>
-            <div class="tbl-wrap"><table><thead><tr><th>#</th><th>测什么</th><th>为什么值得测</th></tr></thead><tbody><tr><td>1</td><td>CLI 与 SDK 版本组合矩阵（CLI 0.159.3 / 0.161.0-alpha × SDK）</td><td>SDK 版本号不反映能力，得知道哪些组合是验过的</td></tr><tr><td>2</td><td><code>permissions.audit.filesystem</code> 的 deny 规则能否真的挡住读 .env</td><td>官方示例给了写法，但拦截强度未核验</td></tr><tr><td>3</td><td><code>resumeThread</code> 在进程崩溃后恢复的完整度</td><td>本站最关心的「可靠长期运行」</td></tr><tr><td>4</td><td>8 档 <code>modelReasoningEffort</code> 的实际耗时与成本差异</td><td>官方只给枚举，不给代价</td></tr><tr><td>5</td><td>非交互模式跑一条真实任务链的失败率与中断行为</td><td>无人值守场景的核心指标</td></tr><tr><td>6</td><td>换 <code>baseUrl</code> 接第三方 provider 后 structured output 是否仍可靠</td><td>架构上没锁死，但可靠性未知</td></tr></tbody></table></div>
+            <div class="tbl-wrap"><table><thead><tr><th>#</th><th>测什么</th><th>为什么值得测</th></tr></thead><tbody><tr><td>1</td><td>CLI 与 SDK 版本组合矩阵（CLI 0.159.3 / 0.161.0-alpha × SDK）</td><td>SDK 版本号不反映能力，得知道哪些组合是验过的</td></tr><tr><td>2</td><td><code>permissions.audit.filesystem</code> 的 deny 规则能否真的挡住读 .env</td><td>官方示例给了写法，但拦截强度未核验</td></tr><tr><td>3</td><td><code>resumeThread</code> 在进程崩溃后恢复的完整度</td><td>本站最关心的「可靠长期运行」</td></tr><tr><td>4</td><td>8 档 <code>modelReasoningEffort</code> 的实际耗时与成本差异</td><td>官方只给枚举，不给代价</td></tr><tr><td>5</td><td>非交互模式跑一条真实任务链的失败率与中断行为</td><td>无人值守场景的核心指标</td></tr><tr><td>6</td><td>换 <code>baseUrl</code> 接第三方 provider 后 structured output 是否仍可靠</td><td>架构上没锁死，但可靠性未知</td></tr></tbody></table></div></span><span data-en><p>This site has not completed measured runs.</p>
+            <p>The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" target="_blank" rel="noopener">protocols/framework/_protocol.md</a>.</p>
+            <p><strong>Suggested measurement</strong> (tailored to this SDK&#39;s form):</p>
+            <div class="tbl-wrap"><table><thead><tr><th>#</th><th>What to test</th><th>Why it is worth testing</th></tr></thead><tbody><tr><td>1</td><td>CLI × SDK version combination matrix (CLI 0.159.3 / 0.161.0-alpha × SDK)</td><td>the SDK version does not reflect capability; you need to know which combinations are validated</td></tr><tr><td>2</td><td>Whether <code>permissions.audit.filesystem</code> deny rules actually block reading .env</td><td>the official example gives the syntax, but interception strength is unverified</td></tr><tr><td>3</td><td>How complete <code>resumeThread</code> recovery is after a process crash</td><td>this site&#39;s top concern: &quot;reliable long-running operation&quot;</td></tr><tr><td>4</td><td>Real time and cost differences across the 8 <code>modelReasoningEffort</code> levels</td><td>the official docs give the enum but not the price</td></tr><tr><td>5</td><td>Failure rate and interruption behavior of running a real task chain in non-interactive mode</td><td>the core metric of unattended scenarios</td></tr><tr><td>6</td><td>Whether structured output stays reliable after switching <code>baseUrl</code> to a third-party provider</td><td>the architecture is not locked down, but reliability is unknown</td></tr></tbody></table></div></span>
       </div>
 
 
             <div class="panel is-slim">
-        <h2>形态澄清：这是本站第一个「CLI 包装型」对象</h2>
-        <p>本站三种编程底座形态里，这个属于第2 类（包装既有 CLI）：</p>
+        <h2><span data-zh>形态澄清：这是本站第一个「CLI 包装型」对象</span><span data-en>Form clarification: this is the first &quot;CLI-wrapped&quot; object on this site</span></h2>
+        <span data-zh><p>本站三种编程底座形态里，这个属于第2 类（包装既有 CLI）：</p>
             <div class="tbl-wrap"><table><thead><tr><th>形态</th><th>谁在跑 agent loop</th><th>本站收录对象</th></tr></thead><tbody><tr><td>① 自建 loop 框架</td><td>你的进程里一个库</td><td>OpenAI Agents SDK、Deep Agents</td></tr><tr><td>② <strong>包装既有 CLI</strong></td><td><strong>外部 CLI 子进程</strong></td><td><strong>Codex SDK</strong>、Claude Agent SDK</td></tr><tr><td>③ 自带完整运行时</td><td>厂商托管</td><td>（暂无）</td></tr></tbody></table></div>
             <p><strong>这个差别不是措辞问题，它决定了几件实际的事</strong>：</p>
-            <p>1. <strong>行为边界 = CLI 版本边界</strong>。SDK 本身版本号是 <code>0.0.0-dev</code>（package.json 实测）， 真正决定能力的是它 spawn 的那个 CLI —— 当前 <code>0.159.3</code>（releases @ 2026-09-30， 另有 <code>0.161.0-alpha.7</code> 预发布）。升级 CLI 就等于升级 SDK 的能力与风险面。 2. <strong>沙箱与审批不由你定</strong>。它们是 CLI 的能力，SDK 只能通过参数影响（见下文 permissions）。 3. <strong>多一个进程就多一份开销和一个失败点</strong>。但换来的是 CLI 侧的全部能力不用你实现。</p>
+            <p>1. <strong>行为边界 = CLI 版本边界</strong>。SDK 本身版本号是 <code>0.0.0-dev</code>（package.json 实测）， 真正决定能力的是它 spawn 的那个 CLI —— 当前 <code>0.159.3</code>（releases @ 2026-09-30， 另有 <code>0.161.0-alpha.7</code> 预发布）。升级 CLI 就等于升级 SDK 的能力与风险面。 2. <strong>沙箱与审批不由你定</strong>。它们是 CLI 的能力，SDK 只能通过参数影响（见下文 permissions）。 3. <strong>多一个进程就多一份开销和一个失败点</strong>。但换来的是 CLI 侧的全部能力不用你实现。</p></span><span data-en><p>Of this site&#39;s three coding-base forms, this belongs to type 2 (wrapping an existing CLI):</p>
+            <div class="tbl-wrap"><table><thead><tr><th>Form</th><th>Who runs the agent loop</th><th>Objects on this site</th></tr></thead><tbody><tr><td>① build-your-own-loop framework</td><td>a library inside your process</td><td>OpenAI Agents SDK, Deep Agents</td></tr><tr><td>② <strong>wrapping an existing CLI</strong></td><td><strong>an external CLI subprocess</strong></td><td><strong>Codex SDK</strong>, Claude Agent SDK</td></tr><tr><td>③ ships a full runtime</td><td>vendor-hosted</td><td>(none yet)</td></tr></tbody></table></div>
+            <p><strong>This difference is not a matter of wording; it decides several practical things</strong>:</p>
+            <p>1. <strong>Behavior boundary = CLI version boundary</strong>. The SDK&#39;s own version number is <code>0.0.0-dev</code> (measured in package.json); what really decides capability is the CLI it spawns — currently <code>0.159.3</code> (releases @ 2026-09-30, with <code>0.161.0-alpha.7</code> pre-release). Upgrading the CLI equals upgrading the SDK&#39;s capability and risk surface. 2. <strong>Sandbox and approvals are not yours to define</strong>. They are CLI capabilities; the SDK can only influence them via parameters (see permissions below). 3. <strong>One more process means one more overhead and one more failure point</strong>. But in exchange you get the CLI&#39;s full capabilities without implementing them.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>权限面：源码给出了四种审批模式与三档沙箱</h2>
-        <p>⚠ <strong>这一段纠正了本站 CLI 站档案里的一个「未核验」</strong>： 本站 CLI 档案（<code>cli/products/codex-cli.md</code>）当时写了一句话。 原话是「具体审批模式本次未核验」。原因是在 CLI 文档里找不到枚举。 （2026-10-08 该档已按官方文档补全审批四档。） 这次从 SDK 源码的类型定义里找到了 —— <strong>文档外链里没有，源码里有</strong>：</p>
+        <h2><span data-zh>权限面：源码给出了四种审批模式与三档沙箱</span><span data-en>The permission surface: source code gives four approval modes and three sandbox tiers</span></h2>
+        <span data-zh><p>⚠ <strong>这一段纠正了本站 CLI 站档案里的一个「未核验」</strong>： 本站 CLI 档案（<code>cli/products/codex-cli.md</code>）当时写了一句话。 原话是「具体审批模式本次未核验」。原因是在 CLI 文档里找不到枚举。 （2026-10-08 该档已按官方文档补全审批四档。） 这次从 SDK 源码的类型定义里找到了 —— <strong>文档外链里没有，源码里有</strong>：</p>
             <p>``<code>ts // sdk/typescript/src/threadOptions.ts（核验 2026-10-01） export type ApprovalMode = &quot;never&quot; | &quot;on-request&quot; | &quot;on-failure&quot; | &quot;untrusted&quot;; export type SandboxMode = &quot;read-only&quot; | &quot;workspace-write&quot; | &quot;danger-full-access&quot;; </code>``</p>
             <p>配套还有：</p>
             <div class="tbl-wrap"><table><thead><tr><th>选项</th><th>取值</th><th>作用</th></tr></thead><tbody><tr><td><code>networkAccessEnabled</code></td><td>bool</td><td>沙箱内是否放行网络</td></tr><tr><td><code>webSearchMode</code></td><td><code>disabled</code> / <code>cached</code> / <code>live</code></td><td>联网检索的三档</td></tr><tr><td><code>webSearchEnabled</code></td><td>bool</td><td>检索总开关</td></tr><tr><td><code>modelReasoningEffort</code></td><td><strong>8 档</strong>：minimal / low / medium / high / xhigh / max / ultra / persistent</td><td>推理强度</td></tr><tr><td><code>additionalDirectories</code></td><td>string[]</td><td>追加可访问目录</td></tr></tbody></table></div>
             <p><strong>更深一层：可以按路径精确拒绝读文件。</strong> SDK 支持 <code>configOverrides</code> 逐条透传原始 TOML， 官方示例直接给了文件系统规则：</p>
             <p>``<code>ts configOverrides: [&#39;permissions.audit.filesystem={&quot;:root&quot;=&quot;read&quot;,&quot;/path/to/project/.env&quot;=&quot;deny&quot;}&#39;] </code>``</p>
             <p>这意味着 <code>.env</code> 这类文件可以被单独 deny。它不靠「沙箱一刀切不写」这种粗粒度保护。 官方给出了优先级顺序。从高到低是：原始 overrides、结构化 config、SDK 托管设置。</p>
-            <p><strong>沙箱 / 审批默认值已核验</strong>（见 axes.permissions）：本地默认 <code>workspace-write</code> + 网络关闭， 非版本控制目录默认 <code>read-only</code>；<code>workspace-write</code> 下 <code>.git</code> / <code>.agents</code> / <code>.codex</code> 递归只读。 <strong>三档沙箱的逐平台实现差异官方未逐条说明</strong>：只说 &quot;OS-level mechanisms enforce sandbox policies&quot;，未分别列举 Windows / macOS / Linux 的差别（已查 <code>agent-approvals-security</code> 与 <code>config-advanced</code> 两页）。<strong>Windows 用户尤其要自己确认</strong>。</p>
+            <p><strong>沙箱 / 审批默认值已核验</strong>（见 axes.permissions）：本地默认 <code>workspace-write</code> + 网络关闭， 非版本控制目录默认 <code>read-only</code>；<code>workspace-write</code> 下 <code>.git</code> / <code>.agents</code> / <code>.codex</code> 递归只读。 <strong>三档沙箱的逐平台实现差异官方未逐条说明</strong>：只说 &quot;OS-level mechanisms enforce sandbox policies&quot;，未分别列举 Windows / macOS / Linux 的差别（已查 <code>agent-approvals-security</code> 与 <code>config-advanced</code> 两页）。<strong>Windows 用户尤其要自己确认</strong>。</p></span><span data-en><p>⚠ <strong>This passage corrects an &quot;unverified&quot; in this site&#39;s CLI-site entry</strong>: this site&#39;s CLI entry (<code>cli/products/codex-cli.md</code>) once carried one sentence. It read &quot;the specific approval modes were not verified this pass&quot; (translated). The reason: no enum could be found in the CLI docs. (On 2026-10-08 that entry was completed with the four official approval tiers.) This time the enum was found in the SDK source&#39;s type definitions — <strong>not in the doc external links, but in the source</strong>:</p>
+            <p>``<code>ts // sdk/typescript/src/threadOptions.ts (verified 2026-10-01) export type ApprovalMode = &quot;never&quot; | &quot;on-request&quot; | &quot;on-failure&quot; | &quot;untrusted&quot;; export type SandboxMode = &quot;read-only&quot; | &quot;workspace-write&quot; | &quot;danger-full-access&quot;; </code>``</p>
+            <p>Accompanying options:</p>
+            <div class="tbl-wrap"><table><thead><tr><th>Option</th><th>Values</th><th>Role</th></tr></thead><tbody><tr><td><code>networkAccessEnabled</code></td><td>bool</td><td>whether the sandbox allows network</td></tr><tr><td><code>webSearchMode</code></td><td><code>disabled</code> / <code>cached</code> / <code>live</code></td><td>three tiers of web search</td></tr><tr><td><code>webSearchEnabled</code></td><td>bool</td><td>master search switch</td></tr><tr><td><code>modelReasoningEffort</code></td><td><strong>8 levels</strong>: minimal / low / medium / high / xhigh / max / ultra / persistent</td><td>reasoning effort</td></tr><tr><td><code>additionalDirectories</code></td><td>string[]</td><td>append accessible directories</td></tr></tbody></table></div>
+            <p><strong>One layer deeper: reading files can be denied precisely by path.</strong> The SDK supports <code>configOverrides</code> passing raw TOML item by item, and the official example directly gives filesystem rules:</p>
+            <p>``<code>ts configOverrides: [&#39;permissions.audit.filesystem={&quot;:root&quot;=&quot;read&quot;,&quot;/path/to/project/.env&quot;=&quot;deny&quot;}&#39;] </code>``</p>
+            <p>This means files like <code>.env</code> can be denied individually. It is not coarse-grained &quot;sandbox blocks all writes&quot; protection. The official precedence, high to low: raw overrides, structured config, SDK-managed settings.</p>
+            <p><strong>Sandbox / approval defaults verified</strong> (see axes.permissions): local default <code>workspace-write</code> + network off, non-version-controlled dirs default <code>read-only</code>; under <code>workspace-write</code>, <code>.git</code> / <code>.agents</code> / <code>.codex</code> are recursively read-only. <strong>The per-platform implementation differences of the three sandbox tiers are not enumerated officially</strong>: they only say &quot;OS-level mechanisms enforce sandbox policies&quot;, without listing Windows / macOS / Linux differences separately (<code>agent-approvals-security</code> and <code>config-advanced</code> pages checked). <strong>Windows users especially should verify themselves</strong>.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>本地文件：有个硬约束，必须知道</h2>
-        <blockquote>To avoid unrecoverable errors, Codex <strong>requires the working directory to be a Git repository</strong>.</blockquote>
+        <h2><span data-zh>本地文件：有个硬约束，必须知道</span><span data-en>Local files: there is a hard constraint you must know</span></h2>
+        <span data-zh><blockquote>To avoid unrecoverable errors, Codex <strong>requires the working directory to be a Git repository</strong>.</blockquote>
             <p>不满足就拒绝运行，可以用 <code>skipGitRepoCheck: true</code> 跳过。</p>
-            <p><strong>这是一条选型级约束</strong>：在纯数据目录、临时目录、上传目录里直接开箱即用是<strong>不行的</strong>， 而这类场景恰恰是「嵌进自己的产品」时最常遇到的。</p>
+            <p><strong>这是一条选型级约束</strong>：在纯数据目录、临时目录、上传目录里直接开箱即用是<strong>不行的</strong>， 而这类场景恰恰是「嵌进自己的产品」时最常遇到的。</p></span><span data-en><blockquote>To avoid unrecoverable errors, Codex <strong>requires the working directory to be a Git repository</strong>.</blockquote>
+            <p>It refuses to run otherwise; <code>skipGitRepoCheck: true</code> can skip it.</p>
+            <p><strong>This is a selection-level constraint</strong>: out-of-the-box use in pure data dirs, temp dirs, upload dirs <strong>does not work</strong>, and those scenarios are exactly what you hit most when &quot;embedding into your own product&quot;.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>状态 vs 上下文：它只解决前者</h2>
-        <div class="tbl-wrap"><table><thead><tr><th>本站关心的面</th><th>本SDK 的官方手段</th><th>够不够</th></tr></thead><tbody><tr><td><strong>状态</strong>（可靠续跑）</td><td><code>resumeThread(id)</code>，Threads 持久化在 <code>~/.codex/sessions</code></td><td>✅ 有官方支撑</td></tr><tr><td><strong>上下文</strong>（长任务压缩）</td><td>无。SDK 层没有压缩/摘要/落盘选项</td><td>❌ 只能靠 CLI 侧配置</td></tr></tbody></table></div>
+        <h2><span data-zh>状态 vs 上下文：它只解决前者</span><span data-en>State vs context: it only solves the former</span></h2>
+        <span data-zh><div class="tbl-wrap"><table><thead><tr><th>本站关心的面</th><th>本SDK 的官方手段</th><th>够不够</th></tr></thead><tbody><tr><td><strong>状态</strong>（可靠续跑）</td><td><code>resumeThread(id)</code>，Threads 持久化在 <code>~/.codex/sessions</code></td><td>✅ 有官方支撑</td></tr><tr><td><strong>上下文</strong>（长任务压缩）</td><td>无。SDK 层没有压缩/摘要/落盘选项</td><td>❌ 只能靠 CLI 侧配置</td></tr></tbody></table></div>
             <p><strong>「状态 ≠ 上下文」这条主张在这里正好得到印证</strong>：它把会话完整保住了， 但没有对内容做任何压缩 —— 线程长了之后成本与延迟是另一回事。</p>
-            <p>⚠ <code>~/.codex/sessions</code> 是<strong>文件目录</strong>而非数据库。跨机迁移、多进程并发写同一会话的语义<strong>官方未说明</strong>。</p>
+            <p>⚠ <code>~/.codex/sessions</code> 是<strong>文件目录</strong>而非数据库。跨机迁移、多进程并发写同一会话的语义<strong>官方未说明</strong>。</p></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>The surface this site cares about</th><th>This SDK&#39;s official means</th><th>Enough?</th></tr></thead><tbody><tr><td><strong>state</strong> (reliable resume)</td><td><code>resumeThread(id)</code>, Threads persisted under <code>~/.codex/sessions</code></td><td>✅ official support exists</td></tr><tr><td><strong>context</strong> (long-task compaction)</td><td>none. No compaction/summarization/offloading options at the SDK layer</td><td>❌ only CLI-side config</td></tr></tbody></table></div>
+            <p><strong>The &quot;state ≠ context&quot; stance is confirmed right here</strong>: it preserves the conversation completely, but does no compaction of content — cost and latency once threads grow is a separate matter.</p>
+            <p>⚠ <code>~/.codex/sessions</code> is a <strong>file directory</strong>, not a database. Cross-machine migration and multi-process concurrent writes to the same session are <strong>not stated officially</strong>.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>非交互执行：这站里目前唯一有官方证据的候选</h2>
-        <p><code>docs/exec.md</code> 的标题就是 <strong>Non-interactive mode</strong>。</p>
+        <h2><span data-zh>非交互执行：这站里目前唯一有官方证据的候选</span><span data-en>Non-interactive execution: the only candidate here with official evidence so far</span></h2>
+        <span data-zh><p><code>docs/exec.md</code> 的标题就是 <strong>Non-interactive mode</strong>。</p>
             <p>这与 CLI 站那份档案形成一组有意思的对照： 在 CLI 站 6 个对象里，<strong>只有 Gemini CLI 明确支持非交互脚本模式</strong>。其余的这项都标为未核验。 而在这个 harness 站，Codex SDK 是目前唯一的官方非交互文档对象。</p>
-            <p><strong>如果你要的是「无人值守跑完一串任务」，这两个是仅有的两个有证据的落点</strong>—— 一个在你的终端，一个在你的 Node 进程里。</p>
+            <p><strong>如果你要的是「无人值守跑完一串任务」，这两个是仅有的两个有证据的落点</strong>—— 一个在你的终端，一个在你的 Node 进程里。</p></span><span data-en><p>The title of <code>docs/exec.md</code> is <strong>Non-interactive mode</strong>.</p>
+            <p>This forms an interesting pair with that CLI-site entry: among the CLI site&#39;s 6 objects, <strong>only Gemini CLI explicitly supports non-interactive script mode</strong>. The rest are marked unverified on this item. And on this harness site, Codex SDK is currently the only object with official non-interactive documentation.</p>
+            <p><strong>If what you want is &quot;run a chain of tasks unattended&quot;, these two are the only evidence-backed landing points</strong> — one in your terminal, one inside your Node process.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>Structured output：支持得很完整</h2>
-        <p>``<code>ts const turn = await thread.run(&quot;Summarize repository status&quot;, { outputSchema: schema }); </code>``</p>
+        <h2><span data-zh>Structured output：支持得很完整</span><span data-en>Structured output: supported quite completely</span></h2>
+        <span data-zh><p>``<code>ts const turn = await thread.run(&quot;Summarize repository status&quot;, { outputSchema: schema }); </code>``</p>
             <ul><li>可直接传 JSON Schema（<code>as const</code> 带类型）</li><li>也可从 Zod 转换：<code>zodToJsonSchema(schema, { target: &quot;openAi&quot; })</code></li></ul>
-            <p>⚠ 这里有个命名陷阱。那个 <code>target: &quot;openAi&quot;</code> 只是告诉转换器用哪种目标格式。 它产出的是标准 JSON Schema，不代表只能 OpenAI 模型用。</p>
+            <p>⚠ 这里有个命名陷阱。那个 <code>target: &quot;openAi&quot;</code> 只是告诉转换器用哪种目标格式。 它产出的是标准 JSON Schema，不代表只能 OpenAI 模型用。</p></span><span data-en><p>``<code>ts const turn = await thread.run(&quot;Summarize repository status&quot;, { outputSchema: schema }); </code>``</p>
+            <ul><li>JSON Schema can be passed directly (<code>as const</code> with types)</li><li>or converted from Zod: <code>zodToJsonSchema(schema, { target: &quot;openAi&quot; })</code></li></ul>
+            <p>⚠ There is a naming trap here. That <code>target: &quot;openAi&quot;</code> only tells the converter which target format to use. What it produces is standard JSON Schema — it does not mean only OpenAI models can use it.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>MCP：Codex CLI 官方支持，SDK 侧经 config 透传</h2>
-        <p>SDK README 全文没有出现 MCP，主仓 <code>docs/</code> 目录里也没有 <code>mcp.md</code>（核验 2026-10-01）。 但官方开发者文档有独立的 <strong>MCP 页</strong>（核验 2026-10-08）：</p>
+        <h2><span data-zh>MCP：Codex CLI 官方支持，SDK 侧经 config 透传</span><span data-en>MCP: officially supported by Codex CLI, reachable on the SDK side via config passthrough</span></h2>
+        <span data-zh><p>SDK README 全文没有出现 MCP，主仓 <code>docs/</code> 目录里也没有 <code>mcp.md</code>（核验 2026-10-01）。 但官方开发者文档有独立的 <strong>MCP 页</strong>（核验 2026-10-08）：</p>
             <blockquote>Codex supports MCP servers in both the CLI and the IDE extension.</blockquote>
-            <p>支持 STDIO 与 Streamable HTTP 两种传输，<code>codex mcp add ...</code> 与 <code>config.toml</code> 的 <code>[mcp_servers.&lt;name&gt;]</code> 均可配，并有 per-server / per-tool <code>approval_mode</code> （<code>auto</code> / <code>prompt</code> / <code>approve</code>）与 <code>enabled_tools</code> / <code>disabled_tools</code>。 <strong>SDK 侧</strong>：SDK 的 <code>config</code> 透传即写入 CLI 的 <code>config.toml</code>，因此 MCP server 可经此可用； 不过<strong>官方未在 SDK README 明写这条衔接</strong>，本站只把它记作 CLI 能力， 仍不与本站 MCP 站的 9 个官方 server 建立关联。</p>
+            <p>支持 STDIO 与 Streamable HTTP 两种传输，<code>codex mcp add ...</code> 与 <code>config.toml</code> 的 <code>[mcp_servers.&lt;name&gt;]</code> 均可配，并有 per-server / per-tool <code>approval_mode</code> （<code>auto</code> / <code>prompt</code> / <code>approve</code>）与 <code>enabled_tools</code> / <code>disabled_tools</code>。 <strong>SDK 侧</strong>：SDK 的 <code>config</code> 透传即写入 CLI 的 <code>config.toml</code>，因此 MCP server 可经此可用； 不过<strong>官方未在 SDK README 明写这条衔接</strong>，本站只把它记作 CLI 能力， 仍不与本站 MCP 站的 9 个官方 server 建立关联。</p></span><span data-en><p>The SDK README never mentions MCP, and the main repo&#39;s <code>docs/</code> directory has no <code>mcp.md</code> either (verified 2026-10-01). But the official developer docs have a standalone <strong>MCP page</strong> (verified 2026-10-08):</p>
+            <blockquote>Codex supports MCP servers in both the CLI and the IDE extension.</blockquote>
+            <p>STDIO and Streamable HTTP transports are both supported, configurable via <code>codex mcp add ...</code> and <code>[mcp_servers.&lt;name&gt;]</code> in <code>config.toml</code>, with per-server / per-tool <code>approval_mode</code> (<code>auto</code> / <code>prompt</code> / <code>approve</code>) and <code>enabled_tools</code> / <code>disabled_tools</code>. <strong>SDK side</strong>: the SDK&#39;s <code>config</code> passthrough writes into the CLI&#39;s <code>config.toml</code>, so MCP servers are reachable this way; but <strong>the official SDK README does not spell out this linkage</strong>, so this site records it only as a CLI capability and still does not link it to the 9 official servers on this site&#39;s MCP section.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>核验说明</h2>
-        <p><code>confidence: partial</code> 的依据（2026-10-03 由 verified 降级）：</p>
+        <h2><span data-zh>核验说明</span><span data-en>Verification notes</span></h2>
+        <span data-zh><p><code>confidence: partial</code> 的依据（2026-10-03 由 verified 降级）：</p>
             <blockquote><strong>为什么降级</strong>：下方 ❌ 项的主语是<strong>本站的取证缺口</strong>，不是「官方未提供」。 按 v3 铁律「未知就说未知」，这些条目存在时标 verified 属于虚高，故降为 partial。 主要缺口：三档沙箱的<strong>逐平台</strong>实现差异、第三方 provider 能力对齐、权限审计规则语法。 （A6.2 已补：MCP 官方支持、model/provider 配置面、沙箱与审批默认值、非交互配置已核验。）</blockquote>
             <ul><li>✅ 已核验：仓库存在与星数（130,474 · 滚动核验 2026-10-23）、许可（Apache-2.0）、最近推送（2026-10-22，仍活跃）、 最新稳定版 <strong>0.163.0</strong>（releases @ 2026-10-15）、 <code>sdk/typescript/package.json</code> 全文（包名 <code>@openai/codex-sdk</code>、版本 0.0.0-dev、Node≥18）、 <code>sdk/typescript/README.md</code> 全文六节（quickstart / streaming / structured output / images / resume / 环境与 config）、 <strong><code>sdk/typescript/src/threadOptions.ts</code> 类型定义全文</strong>（审批四档、沙箱三档、网络与检索、推理八档）、 <code>docs/</code> 目录清单、<code>sdk/</code> 下python/typescript/python-runtime 三个子目录存在</li></ul>
             <ul><li>❌ 未核验：三档沙箱的<strong>逐平台</strong>实现差异（官方只说 OS 级强制，未逐条列举）、 第三方模型换用后工具调用与 structured output 的质量对齐度、 Python SDK 的 API 形态与 TS 版是否一致、<code>~/.codex/sessions</code> 的并发写语义</li></ul>
-            <p>⚠ <strong>顺带纠正计划</strong>。v3 计划里写的 <code>codex-sdk</code>（标注 127k★）作为独立仓库不存在。 gh api 返回 404。127,448★ 是 <code>openai/codex</code> monorepo 的星数， SDK 是它的 <code>sdk/typescript</code> 子目录。</p>
+            <p>⚠ <strong>顺带纠正计划</strong>。v3 计划里写的 <code>codex-sdk</code>（标注 127k★）作为独立仓库不存在。 gh api 返回 404。127,448★ 是 <code>openai/codex</code> monorepo 的星数， SDK 是它的 <code>sdk/typescript</code> 子目录。</p></span><span data-en><p>Basis for <code>confidence: partial</code> (downgraded from verified on 2026-10-03):</p>
+            <blockquote><strong>Why downgraded</strong>: the subject of the ❌ items below is <strong>this site&#39;s evidence gap</strong>, not &quot;not provided officially&quot;. Per the v3 rule &quot;say unknown when unknown&quot;, marking verified while these items exist would be inflated, hence partial. Main gaps: <strong>per-platform</strong> implementation differences of the three sandbox tiers, third-party provider capability alignment, permission-audit rule syntax. (A6.2 additions: official MCP support, model/provider config surface, sandbox and approval defaults, non-interactive config all verified.)</blockquote>
+            <ul><li>✅ Verified: repository exists and star count (130,474 · rolling check 2026-10-23), license (Apache-2.0), last push (2026-10-22, still active), latest stable <strong>0.163.0</strong> (releases @ 2026-10-15), full <code>sdk/typescript/package.json</code> (package name <code>@openai/codex-sdk</code>, version 0.0.0-dev, Node≥18), full six sections of <code>sdk/typescript/README.md</code> (quickstart / streaming / structured output / images / resume / environment and config), <strong>full type definitions of <code>sdk/typescript/src/threadOptions.ts</code></strong> (four approval tiers, three sandbox tiers, network and search, eight reasoning levels), the <code>docs/</code> directory listing, and the existence of python/typescript/python-runtime subdirectories under <code>sdk/</code></li></ul>
+            <ul><li>❌ Not verified: <strong>per-platform</strong> implementation differences of the three sandbox tiers (official only says OS-level enforcement, not enumerated item by item), tool-calling and structured-output quality alignment after switching to third-party models, whether the Python SDK&#39;s API shape matches the TS version, concurrent-write semantics of <code>~/.codex/sessions</code></li></ul>
+            <p>⚠ <strong>Also correcting the plan</strong>. The <code>codex-sdk</code> written in the v3 plan (labeled 127k★) does not exist as a standalone repository. gh api returns 404. The 127,448★ is the star count of the <code>openai/codex</code> monorepo; the SDK is its <code>sdk/typescript</code> subdirectory.</p></span>
       </div>
 
             <div class="panel is-slim">
         <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
         <ul class="rel-list">
-          <li><span class="rel-t"><a href="./claude-agent-sdk.html"><span data-zh>Claude Agent SDK</span><span data-en>Claude Agent SDK</span></a></span><span class="rel-n"><strong>本站最该对照的一对</strong>：同样是 CLI 包装型（捆绑 / spawn CLI + 进程通信），但Claude 侧 README 明说只支持 Claude、没有 provider 旁路，而本 SDK 有 <code>baseUrl</code> 与 <code>model_providers</code>。</span></li>
-          <li><span class="rel-t"><a href="./openai-agents-sdk.html"><span data-zh>OpenAI Agents SDK</span><span data-en>OpenAI Agents SDK</span></a></span><span class="rel-n">同一家厂商的两种形态：那个是纯 Python 库（primitives-only），这个是 Node + CLI 子进程包装。选型第一问就是「要不要多背一个 CLI 进程」。</span></li>
-          <li><span class="rel-t"><a href="./deepagents.html"><span data-zh>Deep Agents</span><span data-en>Deep Agents</span></a></span><span class="rel-n">batteries-included 的对照面：本 SDK 不预置任何东西，工具与沙箱全由 CLI 版本决定。</span></li>
-          <li><span class="rel-t"><a href="./langgraph.html"><span data-zh>LangGraph</span><span data-en>LangGraph</span></a></span><span class="rel-n">若要「非交互 + 有图结构 + 多Agent 协作」，编排框架才是对应层；本 SDK 只给单线程执行。</span></li>
+          <li><span class="rel-t"><a href="./claude-agent-sdk.html"><span data-zh>Claude Agent SDK</span><span data-en>Claude Agent SDK</span></a></span><span class="rel-n"><span data-zh><strong>本站最该对照的一对</strong>：同样是 CLI 包装型（捆绑 / spawn CLI + 进程通信），但Claude 侧 README 明说只支持 Claude、没有 provider 旁路，而本 SDK 有 <code>baseUrl</code> 与 <code>model_providers</code>。</span><span data-en><strong>The pair this site should contrast most</strong>: both are CLI-wrapped (bundled / spawn CLI + inter-process communication), but the Claude side&#39;s README states Claude-only with no provider bypass, while this SDK has <code>baseUrl</code> and <code>model_providers</code>.</span></span></li>
+          <li><span class="rel-t"><a href="./openai-agents-sdk.html"><span data-zh>OpenAI Agents SDK</span><span data-en>OpenAI Agents SDK</span></a></span><span class="rel-n"><span data-zh>同一家厂商的两种形态：那个是纯 Python 库（primitives-only），这个是 Node + CLI 子进程包装。选型第一问就是「要不要多背一个 CLI 进程」。</span><span data-en>Two forms from the same vendor: that one is a pure Python library (primitives-only), this one is a Node + CLI-subprocess wrapper. The first selection question is &quot;do you want to carry an extra CLI process&quot;.</span></span></li>
+          <li><span class="rel-t"><a href="./deepagents.html"><span data-zh>Deep Agents</span><span data-en>Deep Agents</span></a></span><span class="rel-n"><span data-zh>batteries-included 的对照面：本 SDK 不预置任何东西，工具与沙箱全由 CLI 版本决定。</span><span data-en>The batteries-included contrast surface: this SDK presets nothing; tools and sandbox are entirely decided by the CLI version.</span></span></li>
+          <li><span class="rel-t"><a href="./langgraph.html"><span data-zh>LangGraph</span><span data-en>LangGraph</span></a></span><span class="rel-n"><span data-zh>若要「非交互 + 有图结构 + 多Agent 协作」，编排框架才是对应层；本 SDK 只给单线程执行。</span><span data-en>If you need &quot;non-interactive + graph structure + multi-agent collaboration&quot;, an orchestration framework is the matching layer; this SDK only gives single-thread execution.</span></span></li>
           <li><span class="rel-t"><a href="/coding/codex-cli.html"><span data-zh>Codex CLI</span><span data-en>Codex CLI</span></a></span><span class="rel-n"><span data-zh>另一层 · AI 编程</span><span data-en>Other layer · AI coding</span></span></li>
         </ul>
       </div>

@@ -107,7 +107,7 @@
         <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-23</span>
       </div>
 
-            <p class="t-xs" data-en>English summaries and interface labels are available. Detailed source notes below are currently in Chinese.</p>
+            
       <div class="panel-lead"><span data-zh><p>MIT 许可的多 provider 编程 harness。<strong>它运行 bash 命令前会询问权限</strong>，并支持 ACP 载入。</p></span><span data-en><p>An MIT-licensed multi-provider programming harness that <strong>asks permission before running bash commands</strong>, and supports loading via ACP.</p></span></div>
 
             <div class="panel is-slim">
@@ -135,62 +135,90 @@
       <dl class="axes">
         <div class="axis">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
-          <dd><p>多 provider 接入的编程 harness。官方 <code>models</code> 与 <code>providers</code> 页原文： OpenCode 用 AI SDK 与 Models.dev，<strong>支持 75+ LLM 提供商， 也支持运行本地模型</strong>。目录含：</p>
+          <dd><span data-zh><p>多 provider 接入的编程 harness。官方 <code>models</code> 与 <code>providers</code> 页原文： OpenCode 用 AI SDK 与 Models.dev，<strong>支持 75+ LLM 提供商， 也支持运行本地模型</strong>。目录含：</p>
             <ul><li>302.AI</li><li>Amazon Bedrock</li><li>Anthropic</li><li>Azure OpenAI</li><li>DeepSeek</li><li>Google Vertex AI</li><li>Groq</li><li>Hugging Face</li><li>llama.cpp</li><li>LM Studio</li><li>Ollama</li><li>OpenAI</li><li>OpenRouter</li><li>xAI</li><li>Z.AI</li><li>ZenMux 等。</li></ul>
             <p>凭据经 <code>/connect</code> 存入 <code>~/.local/share/opencode/auth.json</code>；</p>
             <p>可用 <code>enabled_providers</code> / <code>disabled_providers</code> 白黑名单， 也能自定义 provider（<code>npm</code> + <code>baseURL</code>，含 OpenAI 兼容）； 另有官方精选清单 OpenCode Zen。<strong>本地模型可接</strong>——</p>
             <p>官方点名 llama.cpp、LM Studio、Ollama、Atomic Chat。</p>
-            <p>注意：用 Claude Pro/Max 订阅接入时，<strong>这不是 Anthropic 官方支持的用法</strong>。</p></dd>
+            <p>注意：用 Claude Pro/Max 订阅接入时，<strong>这不是 Anthropic 官方支持的用法</strong>。</p></span><span data-en><p>A coding harness that plugs into many providers. Official <code>models</code> and <code>providers</code> pages:</p>
+            <p>OpenCode uses AI SDK and Models.dev, <strong>supporting 75+ LLM providers, and also supports running local models</strong>. The catalog includes:</p>
+            <ul><li>302.AI</li><li>Amazon Bedrock</li><li>Anthropic</li><li>Azure OpenAI</li><li>DeepSeek</li><li>Google Vertex AI</li><li>Groq</li><li>Hugging Face</li><li>llama.cpp</li><li>LM Studio</li><li>Ollama</li><li>OpenAI</li><li>OpenRouter</li><li>xAI</li><li>Z.AI</li><li>ZenMux and more.</li></ul>
+            <p>Credentials go through <code>/connect</code> into <code>~/.local/share/opencode/auth.json</code>;</p>
+            <p><code>enabled_providers</code> / <code>disabled_providers</code> act as allow/deny lists, and custom providers can be defined (<code>npm</code> + <code>baseURL</code>, OpenAI-compatible included); there is also the official curated list OpenCode Zen. <strong>Local models can be connected</strong> —</p>
+            <p>the official docs name llama.cpp, LM Studio, Ollama, Atomic Chat.</p>
+            <p>Note: connecting via a Claude Pro/Max subscription <strong>is not an Anthropic-officially-supported usage</strong>.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
-          <dd><p>本地进程，在终端运行。提供多平台安装方式（macOS Homebrew / Windows Scoop 等）。 生命周期绑定终端会话。</p></dd>
+          <dd><span data-zh><p>本地进程，在终端运行。提供多平台安装方式（macOS Homebrew / Windows Scoop 等）。 生命周期绑定终端会话。</p></span><span data-en><p>A local process running in the terminal. Multi-platform installs are provided (macOS Homebrew / Windows Scoop etc.). Its lifecycle is bound to the terminal session.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
-          <dd><p>面向真实代码仓库的编程能力。<code>read</code>/<code>edit</code>/<code>write</code>/<code>grep</code>/<code>glob</code> 直接读写工作区。<code>grep</code>/<code>glob</code> 底层用 ripgrep，<strong>默认遵循 <code>.gitignore</code></strong>。</p>
+          <dd><span data-zh><p>面向真实代码仓库的编程能力。<code>read</code>/<code>edit</code>/<code>write</code>/<code>grep</code>/<code>glob</code> 直接读写工作区。<code>grep</code>/<code>glob</code> 底层用 ripgrep，<strong>默认遵循 <code>.gitignore</code></strong>。</p>
             <p><strong>访问范围默认限定在启动时的工作目录</strong>——越界路径须在 <code>permission</code> 里用 <code>external_directory</code> 显式放行（如 <code>~/projects/personal/**</code>）。</p>
             <p><code>read</code> 默认 allow，但 <strong><code>.env</code> / <code>.env.*</code> 默认 deny</strong>（<code>.env.example</code> allow）。 <code>@</code> 键可模糊搜索项目文件；文件变动有 <code>watcher</code>（可配 <code>ignore</code>）。</p>
             <p>符号能力来自 <strong>LSP 工具（实验性）</strong>：需 <code>OPENCODE_EXPERIMENTAL_LSP_TOOL=true</code> 并自配 LSP 服务器，支持 goToDefinition / findReferences / hover 等。</p>
-            <p><strong>官方未见代码库向量化索引的描述</strong>（已查 tools / config / permissions 页）。</p></dd>
+            <p><strong>官方未见代码库向量化索引的描述</strong>（已查 tools / config / permissions 页）。</p></span><span data-en><p>Coding capability aimed at real code repositories. <code>read</code>/<code>edit</code>/<code>write</code>/<code>grep</code>/<code>glob</code> read and write the workspace directly. <code>grep</code>/<code>glob</code> use ripgrep underneath, <strong>following <code>.gitignore</code> by default</strong>.</p>
+            <p><strong>Access is confined by default to the working directory at launch</strong> — paths outside it must be explicitly allowed via <code>external_directory</code> in <code>permission</code> (e.g. <code>~/projects/personal/**</code>).</p>
+            <p><code>read</code> is allow by default, but <strong><code>.env</code> / <code>.env.*</code> are deny by default</strong> (<code>.env.example</code> allow). The <code>@</code> key fuzzy-searches project files; file changes have a <code>watcher</code> (with configurable <code>ignore</code>).</p>
+            <p>Symbol-level capability comes from the <strong>LSP tool (experimental)</strong>: it needs <code>OPENCODE_EXPERIMENTAL_LSP_TOOL=true</code> plus your own LSP servers, supporting goToDefinition / findReferences / hover and more.</p>
+            <p><strong>No description of codebase vectorized indexing was found officially</strong> (tools / config / permissions pages checked).</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
-          <dd><p>终端形态，本地进程，生命周期绑定会话。</p>
+          <dd><span data-zh><p>终端形态，本地进程，生命周期绑定会话。</p>
             <p>官方另有 <code>opencode serve</code>（无头 HTTP 服务器）。 还有 <code>opencode web</code> 与桌面应用。<strong>它们都跑在你自己的机器上</strong>。 它们为客户提供会话 API，含 <code>prompt_async</code> 异步发送。执行环境归你自己， 不是厂商托管云。</p>
-            <p><strong>官方未见「客户端关闭后仍继续 / 关机续跑」的云端后台能力</strong> （已查 server 页与 docs 概览）。</p></dd>
+            <p><strong>官方未见「客户端关闭后仍继续 / 关机续跑」的云端后台能力</strong> （已查 server 页与 docs 概览）。</p></span><span data-en><p>Terminal form, local process, lifecycle bound to the session.</p>
+            <p>The official docs also have <code>opencode serve</code> (a headless HTTP server). There is also <code>opencode web</code> and a desktop app. <strong>They all run on your own machine.</strong> They expose a session API to clients, including <code>prompt_async</code> for async sending. The execution environment is yours, not a vendor-hosted cloud.</p>
+            <p><strong>No cloud background capability that &quot;keeps running after the client closes / survives shutdown&quot; was found officially</strong> (server page and docs overview checked).</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
-          <dd><p><strong>内置工具官方逐项列出</strong>：</p>
+          <dd><span data-zh><p><strong>内置工具官方逐项列出</strong>：</p>
             <ul><li>bash</li><li>edit</li><li>write</li><li>read</li><li>grep</li><li>glob</li><li>lsp（实验性）</li><li>patch</li><li>skill</li><li>todowrite</li><li>webfetch</li><li>websearch（Exa，需 OpenCode 提供商或 <code>OPENCODE_ENABLE_EXA</code>）</li><li>question</li></ul>
             <p>另有 <code>task</code> 派发子代理。</p>
             <p>内置代理含：</p>
             <ul><li>build</li><li>plan</li><li>general</li><li>explore</li><li>scout</li><li>compaction</li><li>title</li><li>summary</li></ul>
-            <p><strong>MCP 接入方式已核到</strong>： 本地 <code>type:&quot;local&quot;</code> 与远程 <code>type:&quot;remote&quot;</code> 两类，支持 OAuth 动态客户端注册（RFC 7591）与 <code>opencode mcp auth</code> 等命令； 还支持自定义工具与插件（hooks）。</p></dd>
+            <p><strong>MCP 接入方式已核到</strong>： 本地 <code>type:&quot;local&quot;</code> 与远程 <code>type:&quot;remote&quot;</code> 两类，支持 OAuth 动态客户端注册（RFC 7591）与 <code>opencode mcp auth</code> 等命令； 还支持自定义工具与插件（hooks）。</p></span><span data-en><p><strong>Built-in tools are listed item by item officially</strong>:</p>
+            <ul><li>bash</li><li>edit</li><li>write</li><li>read</li><li>grep</li><li>glob</li><li>lsp (experimental)</li><li>patch</li><li>skill</li><li>todowrite</li><li>webfetch</li><li>websearch (Exa, requires the OpenCode provider or <code>OPENCODE_ENABLE_EXA</code>)</li><li>question</li></ul>
+            <p>There is also <code>task</code> for dispatching subagents.</p>
+            <p>Built-in agents include:</p>
+            <ul><li>build</li><li>plan</li><li>general</li><li>explore</li><li>scout</li><li>compaction</li><li>title</li><li>summary</li></ul>
+            <p><strong>MCP integration verified</strong>: local <code>type:&quot;local&quot;</code> and remote <code>type:&quot;remote&quot;</code>, with OAuth dynamic client registration (RFC 7591) and commands like <code>opencode mcp auth</code>; custom tools and plugins (hooks) are also supported.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
-          <dd><p><strong>ACP（Agent Client Protocol）载入能力是其差异化设计</strong>—— 在恢复与分叉时保留模型、effort 与模式边界。</p>
+          <dd><span data-zh><p><strong>ACP（Agent Client Protocol）载入能力是其差异化设计</strong>—— 在恢复与分叉时保留模型、effort 与模式边界。</p>
             <p>会话机制已核到：<code>/session</code> API 支持创建、<strong>fork（在某条消息处分叉）</strong>、 revert/unrevert 与 summarize。TUI 有 <code>/undo</code>、<code>/redo</code>、<code>/share</code>。</p>
             <p><strong>压缩策略官方给了配置</strong>——<code>compaction</code> 项：</p>
             <ul><li><code>auto</code>（默认 true，上下文满时自动压缩会话）</li><li><code>prune</code>（删旧工具输出省 token，默认 false）</li><li><code>reserved</code>（压缩缓冲）</li></ul>
-            <p>另有 compaction / title / summary 三个内置代理。</p></dd>
+            <p>另有 compaction / title / summary 三个内置代理。</p></span><span data-en><p><strong>ACP (Agent Client Protocol) load capability is its differentiating design</strong> — preserving model, effort and mode boundaries across restore and fork.</p>
+            <p>Session mechanics verified: the <code>/session</code> API supports creating, <strong>forking (branching at a given message)</strong>, revert/unrevert and summarize. The TUI has <code>/undo</code>, <code>/redo</code>, <code>/share</code>.</p>
+            <p><strong>The compaction policy is configured officially</strong> — the <code>compaction</code> item:</p>
+            <ul><li><code>auto</code> (default true, auto-compacts the session when context fills up)</li><li><code>prune</code> (deletes old tool output to save tokens, default false)</li><li><code>reserved</code> (compaction buffer)</li></ul>
+            <p>There are also three built-in agents: compaction / title / summary.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
-          <dd><p><strong>权限策略已核到</strong>：<code>permission</code> 配置决定每个操作是自动运行、 提示审批还是阻止，三档 <code>&quot;allow&quot;</code> / <code>&quot;ask&quot;</code> / <code>&quot;deny&quot;</code>。</p>
+          <dd><span data-zh><p><strong>权限策略已核到</strong>：<code>permission</code> 配置决定每个操作是自动运行、 提示审批还是阻止，三档 <code>&quot;allow&quot;</code> / <code>&quot;ask&quot;</code> / <code>&quot;deny&quot;</code>。</p>
             <p>可按工具细粒度配置，支持通配符与对象语法（如 bash 的 <code>git *</code> allow、<code>rm *</code> deny，<strong>最后匹配的规则优先</strong>）。</p>
             <p>可配权限键：</p>
             <ul><li>read</li><li>edit（涵盖 edit、write、patch）</li><li>glob</li><li>grep</li><li>bash</li><li>task</li><li>skill</li><li>lsp</li><li>webfetch</li><li>websearch</li><li>external_directory</li><li>doom_loop</li></ul>
             <p><strong>默认值宽松</strong>：多数 allow， <code>doom_loop</code> 与 <code>external_directory</code> 为 ask；<code>read</code> 为 allow 但 <code>.env</code> / <code>.env.*</code> 默认 deny。</p>
             <p>官方 config 页亦称「默认允许所有操作，无需明确批准」。</p>
             <p>审批 UI 给 once / always / reject。它可对每个代理单独覆盖。</p>
-            <p>v1.1.1 起旧版 <code>tools</code> 布尔配置并入 <code>permission</code>。</p></dd>
+            <p>v1.1.1 起旧版 <code>tools</code> 布尔配置并入 <code>permission</code>。</p></span><span data-en><p><strong>Permission policy verified</strong>: the <code>permission</code> config decides per operation whether it runs automatically, asks for approval, or is blocked — three tiers <code>&quot;allow&quot;</code> / <code>&quot;ask&quot;</code> / <code>&quot;deny&quot;</code>.</p>
+            <p>Fine-grained per-tool config is supported, with wildcards and object syntax (for bash: <code>git *</code> allow, <code>rm *</code> deny, <strong>the last matching rule wins</strong>).</p>
+            <p>Configurable permission keys:</p>
+            <ul><li>read</li><li>edit (covers edit, write, patch)</li><li>glob</li><li>grep</li><li>bash</li><li>task</li><li>skill</li><li>lsp</li><li>webfetch</li><li>websearch</li><li>external_directory</li><li>doom_loop</li></ul>
+            <p><strong>Defaults are permissive</strong>: most are allow, <code>doom_loop</code> and <code>external_directory</code> are ask; <code>read</code> is allow but <code>.env</code> / <code>.env.*</code> are deny by default.</p>
+            <p>The official config page also says &quot;all operations are allowed by default, no explicit approval needed&quot;.</p>
+            <p>The approval UI offers once / always / reject. It can be overridden per agent.</p>
+            <p>Since v1.1.1 the legacy <code>tools</code> boolean config has been merged into <code>permission</code>.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
-          <dd><p>需要多 provider 可切换、且重视命令执行前确认的用户。 ACP 生态参与者。</p></dd>
+          <dd><span data-zh><p>需要多 provider 可切换、且重视命令执行前确认的用户。 ACP 生态参与者。</p></span><span data-en><p>Users who need switchable multi-provider access and value confirmation before command execution. Participants in the ACP ecosystem.</p></span></dd>
         </div>
       </dl>
 
@@ -207,12 +235,17 @@
 
             <div class="panel is-slim">
         <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
-        
+        <span data-zh>
         <ul>
           <li>YOLO 模式的具体开关与风险</li>
           <li>子代理的调度方式与 token 开销</li>
           <li>大仓库在「无向量化索引（靠 ripgrep / LSP）」路线下的实际表现</li>
-        </ul>
+        </ul></span><span data-en>
+        <ul>
+          <li>The exact YOLO-mode switch and its risks</li>
+          <li>Subagent scheduling and token overhead</li>
+          <li>Real-world behavior on large repos under the &quot;no vectorized index (ripgrep / LSP only)&quot; route</li>
+        </ul></span>
       </div>
 
 
@@ -222,70 +255,83 @@
         <table class="src">
           <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
           <tbody>
-            <tr><td>repo</td><td>OpenCode · 仓库 README（现址 anomalyco/opencode，旧 sst/opencode 301 跳转，滚动核验 2026-10-23）</td><td><a href="https://github.com/anomalyco/opencode" target="_blank" rel="noopener">https://github.com/anomalyco/opencode</a></td></tr>
-            <tr><td>changelog</td><td>OpenCode · Releases（v1.19.4 @ 2026-10-22）</td><td><a href="https://github.com/anomalyco/opencode/releases" target="_blank" rel="noopener">https://github.com/anomalyco/opencode/releases</a></td></tr>
-            <tr><td>changelog</td><td>OpenCode · 官方站 Changelog</td><td><a href="https://opencode.ai/changelog" target="_blank" rel="noopener">https://opencode.ai/changelog</a></td></tr>
-            <tr><td>docs</td><td>OpenCode · 官方文档</td><td><a href="https://opencode.ai/docs" target="_blank" rel="noopener">https://opencode.ai/docs</a></td></tr>
-            <tr><td>docs</td><td>OpenCode · 官方文档 · 提供商（75+ provider、目录、自定义 provider、凭据存储）</td><td><a href="https://opencode.ai/docs/providers" target="_blank" rel="noopener">https://opencode.ai/docs/providers</a></td></tr>
-            <tr><td>docs</td><td>OpenCode · 官方文档 · 模型（75+ provider、本地模型、默认模型与变体）</td><td><a href="https://opencode.ai/docs/models" target="_blank" rel="noopener">https://opencode.ai/docs/models</a></td></tr>
-            <tr><td>docs</td><td>OpenCode · 官方文档 · 权限（allow/ask/deny、细粒度规则、external_directory、默认值）</td><td><a href="https://opencode.ai/docs/permissions" target="_blank" rel="noopener">https://opencode.ai/docs/permissions</a></td></tr>
-            <tr><td>docs</td><td>OpenCode · 官方文档 · 工具（内置工具清单、子代理、MCP、自定义工具）</td><td><a href="https://opencode.ai/docs/tools" target="_blank" rel="noopener">https://opencode.ai/docs/tools</a></td></tr>
-            <tr><td>docs</td><td>OpenCode · 官方文档 · MCP 服务器（本地/远程、OAuth、管理）</td><td><a href="https://opencode.ai/docs/mcp-servers" target="_blank" rel="noopener">https://opencode.ai/docs/mcp-servers</a></td></tr>
-            <tr><td>docs</td><td>OpenCode · 官方文档 · 配置（compaction、watcher、permission、server）</td><td><a href="https://opencode.ai/docs/config" target="_blank" rel="noopener">https://opencode.ai/docs/config</a></td></tr>
-            <tr><td>docs</td><td>OpenCode · 官方文档 · 服务器（opencode serve、会话 API、fork/summarize）</td><td><a href="https://opencode.ai/docs/server" target="_blank" rel="noopener">https://opencode.ai/docs/server</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>OpenCode · 仓库 README（现址 anomalyco/opencode，旧 sst/opencode 301 跳转，滚动核验 2026-10-23）</span><span data-en>OpenCode · repository README (now at anomalyco/opencode; old sst/opencode 301-redirects; rolling check 2026-10-23)</span></td><td><a href="https://github.com/anomalyco/opencode" target="_blank" rel="noopener">https://github.com/anomalyco/opencode</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>OpenCode · Releases（v1.19.4 @ 2026-10-22）</span><span data-en>OpenCode · Releases (v1.19.4 @ 2026-10-22)</span></td><td><a href="https://github.com/anomalyco/opencode/releases" target="_blank" rel="noopener">https://github.com/anomalyco/opencode/releases</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>OpenCode · 官方站 Changelog</span><span data-en>OpenCode · official site Changelog</span></td><td><a href="https://opencode.ai/changelog" target="_blank" rel="noopener">https://opencode.ai/changelog</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>OpenCode · 官方文档</span><span data-en>OpenCode · official docs</span></td><td><a href="https://opencode.ai/docs" target="_blank" rel="noopener">https://opencode.ai/docs</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>OpenCode · 官方文档 · 提供商（75+ provider、目录、自定义 provider、凭据存储）</span><span data-en>OpenCode · official docs · Providers (75+ providers, catalog, custom providers, credential storage)</span></td><td><a href="https://opencode.ai/docs/providers" target="_blank" rel="noopener">https://opencode.ai/docs/providers</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>OpenCode · 官方文档 · 模型（75+ provider、本地模型、默认模型与变体）</span><span data-en>OpenCode · official docs · Models (75+ providers, local models, default model and variants)</span></td><td><a href="https://opencode.ai/docs/models" target="_blank" rel="noopener">https://opencode.ai/docs/models</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>OpenCode · 官方文档 · 权限（allow/ask/deny、细粒度规则、external_directory、默认值）</span><span data-en>OpenCode · official docs · Permissions (allow/ask/deny, fine-grained rules, external_directory, defaults)</span></td><td><a href="https://opencode.ai/docs/permissions" target="_blank" rel="noopener">https://opencode.ai/docs/permissions</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>OpenCode · 官方文档 · 工具（内置工具清单、子代理、MCP、自定义工具）</span><span data-en>OpenCode · official docs · Tools (built-in tool list, subagents, MCP, custom tools)</span></td><td><a href="https://opencode.ai/docs/tools" target="_blank" rel="noopener">https://opencode.ai/docs/tools</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>OpenCode · 官方文档 · MCP 服务器（本地/远程、OAuth、管理）</span><span data-en>OpenCode · official docs · MCP Servers (local/remote, OAuth, management)</span></td><td><a href="https://opencode.ai/docs/mcp-servers" target="_blank" rel="noopener">https://opencode.ai/docs/mcp-servers</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>OpenCode · 官方文档 · 配置（compaction、watcher、permission、server）</span><span data-en>OpenCode · official docs · Config (compaction, watcher, permission, server)</span></td><td><a href="https://opencode.ai/docs/config" target="_blank" rel="noopener">https://opencode.ai/docs/config</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>OpenCode · 官方文档 · 服务器（opencode serve、会话 API、fork/summarize）</span><span data-en>OpenCode · official docs · Server (opencode serve, session API, fork/summarize)</span></td><td><a href="https://opencode.ai/docs/server" target="_blank" rel="noopener">https://opencode.ai/docs/server</a></td></tr>
           </tbody>
         </table>
       </div>
 
             <div class="panel is-slim">
         <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
-        <p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a>。</p>
-            <p><strong>实测建议</strong>：这个工具的实测重点应放在 <strong>「命令执行前的询问」这个设计在长任务中的实际打断成本</strong>—— 这是它与全权执行类工具的核心工作流差异。</p>
+        <span data-zh><p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a>。</p>
+            <p><strong>实测建议</strong>：这个工具的实测重点应放在 <strong>「命令执行前的询问」这个设计在长任务中的实际打断成本</strong>—— 这是它与全权执行类工具的核心工作流差异。</p></span><span data-en><p>This site has not completed measured runs.</p>
+            <p>The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a>.</p>
+            <p><strong>Suggested measurement</strong>: the testing focus for this tool should be <strong>the real interruption cost of the &quot;ask-before-command&quot; design in long tasks</strong> — this is its core workflow difference from full-autonomy tools.</p></span>
       </div>
 
 
             <div class="panel is-slim">
-        <h2>变更记录说明</h2>
-        <div class="tbl-wrap"><table><thead><tr><th>版本</th><th>日期</th></tr></thead><tbody><tr><td><code>v1.18.33</code></td><td>2026-09-28</td></tr></tbody></table></div>
-            <p><strong>更新频率很高</strong>（release 与 changelog 都在 09-28）。</p>
+        <h2><span data-zh>变更记录说明</span><span data-en>Change-log notes</span></h2>
+        <span data-zh><div class="tbl-wrap"><table><thead><tr><th>版本</th><th>日期</th></tr></thead><tbody><tr><td><code>v1.18.33</code></td><td>2026-09-28</td></tr></tbody></table></div>
+            <p><strong>更新频率很高</strong>（release 与 changelog 都在 09-28）。</p></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Version</th><th>Date</th></tr></thead><tbody><tr><td><code>v1.18.33</code></td><td>2026-09-28</td></tr></tbody></table></div>
+            <p><strong>Update cadence is very high</strong> (release and changelog both on 09-28).</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>权限设计：执行前询问</h2>
-        <p>这是本条目最值得注意的一条，来自 README：</p>
+        <h2><span data-zh>权限设计：执行前询问</span><span data-en>Permission design: asks before executing</span></h2>
+        <span data-zh><p>这是本条目最值得注意的一条，来自 README：</p>
             <p>``<code> Asks permission before running bash commands </code>``</p>
             <p><strong>多数终端 agent 默认自动执行命令，OpenCode 默认会问。</strong></p>
-            <p>这降低了「模型误删文件 / 误跑危险命令」的风险， 代价是打断流程。README 另有 <strong>YOLO</strong> 相关内容， 推测是可选的免询问模式，<strong>但具体开关方式本次未核验，记为未知</strong>。</p>
+            <p>这降低了「模型误删文件 / 误跑危险命令」的风险， 代价是打断流程。README 另有 <strong>YOLO</strong> 相关内容， 推测是可选的免询问模式，<strong>但具体开关方式本次未核验，记为未知</strong>。</p></span><span data-en><p>This is the single most notable line in this entry, from the README:</p>
+            <p>``<code> Asks permission before running bash commands </code>``</p>
+            <p><strong>Most terminal agents execute commands automatically by default; OpenCode asks.</strong></p>
+            <p>This lowers the risk of &quot;the model deleting files / running dangerous commands by mistake&quot;, at the cost of interrupting the flow. The README also mentions <strong>YOLO</strong>, likely an optional no-ask mode, <strong>but the exact switch was not verified this pass — recorded as unknown</strong>.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>子代理能力</h2>
-        <p>``<code> Also included is a general subagent for complex searches and multistep tasks. </code>``</p>
+        <h2><span data-zh>子代理能力</span><span data-en>Subagent capability</span></h2>
+        <span data-zh><p>``<code> Also included is a general subagent for complex searches and multistep tasks. </code>``</p>
             <p>内置一个<strong>通用子代理</strong>，用于复杂搜索与多步任务。 这让它能处理「先调研再动手」这类需要多轮的任务。</p>
-            <p><strong>子代理的具体调度方式与 token 开销本次未核验。</strong></p>
+            <p><strong>子代理的具体调度方式与 token 开销本次未核验。</strong></p></span><span data-en><p>``<code> Also included is a general subagent for complex searches and multistep tasks. </code>``</p>
+            <p>A built-in <strong>general subagent</strong> for complex searches and multistep tasks. This lets it handle &quot;investigate first, then act&quot; style tasks that need multiple rounds.</p>
+            <p><strong>The subagent&#39;s scheduling details and token overhead were not verified this pass.</strong></p></span>
       </div>
       <div class="panel is-slim">
-        <h2>ACP：Agent Client Protocol</h2>
-        <p>这是它的架构亮点：</p>
+        <h2><span data-zh>ACP：Agent Client Protocol</span><span data-en>ACP: Agent Client Protocol</span></h2>
+        <span data-zh><p>这是它的架构亮点：</p>
             <p>``<code> ACP 载入、恢复、分叉时保留模型、effort 和模式边界 </code>``</p>
-            <p><strong>「分叉时保留模型与 effort」这个细节值得注意</strong>—— 很多工具分叉后会丢失设置，导致每次都要重设。</p>
+            <p><strong>「分叉时保留模型与 effort」这个细节值得注意</strong>—— 很多工具分叉后会丢失设置，导致每次都要重设。</p></span><span data-en><p>This is its architectural highlight:</p>
+            <p>``<code> ACP load/restore/fork preserves model, effort and mode boundaries (translated from the dossier&#39;s Chinese paraphrase) </code>``</p>
+            <p><strong>&quot;Preserving model and effort across forks&quot; is a detail worth noting</strong> — many tools lose settings after a fork, forcing you to re-set them every time.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>稳定性修复是重要信号</h2>
-        <p>参考 AgentClash 对 OpenCode v1.18.33 的核验记录（09-28）， 该版本包含四项修复：</p>
+        <h2><span data-zh>稳定性修复是重要信号</span><span data-en>Stability fixes are a meaningful signal</span></h2>
+        <span data-zh><p>参考 AgentClash 对 OpenCode v1.18.33 的核验记录（09-28）， 该版本包含四项修复：</p>
             <p>1. Cloudflare 超时控制 2. MCP 浏览器启动失败反馈 3. <strong>调试凭据脱敏</strong> 4. Gemini 推理参数修正</p>
-            <p><strong>四项里两项与权限/可靠性相关</strong>（凭据脱敏、MCP 启动失败反馈）。 这说明项目的可靠性投入在权限与可诊断性上， 但也说明<strong>这些方面曾经出过问题</strong>。</p>
+            <p><strong>四项里两项与权限/可靠性相关</strong>（凭据脱敏、MCP 启动失败反馈）。 这说明项目的可靠性投入在权限与可诊断性上， 但也说明<strong>这些方面曾经出过问题</strong>。</p></span><span data-en><p>Referring to AgentClash&#39;s verification record of OpenCode v1.18.33 (09-28), that version contains four fixes:</p>
+            <p>1. Cloudflare timeout control 2. MCP browser launch-failure feedback 3. <strong>debug credential redaction</strong> 4. Gemini reasoning-parameter correction</p>
+            <p><strong>Two of the four relate to permissions/reliability</strong> (credential redaction, MCP launch-failure feedback). This shows the project&#39;s reliability investment goes into permissions and diagnosability — but it also means <strong>these areas had problems before</strong>.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>权限定级说明</h2>
-        <p><code>confidence: partial</code> 的原因：</p>
-            <ul><li>✅ 已核验：仓库、许可（MIT）、最新版本与日期、star 数（220,242 · 滚动核验 2026-10-23，本分区最高）、权限策略（allow/ask/deny 细粒度）、ACP、安装方式；<strong>滚动核验补</strong>：仓库已从 <code>sst/opencode</code> 迁移到 <code>anomalyco/opencode</code>（GitHub 301 跳转坐实，仓 homepage 字段=opencode.ai）；<strong>A6.2 本轮补</strong>：75+ provider 与本地模型、内置工具清单与 MCP 接入方式、<code>compaction</code> 上下文策略</li><li>❌ 未核验：YOLO 模式的具体开关方式、子代理的调度细节与 token 开销</li></ul>
+        <h2><span data-zh>权限定级说明</span><span data-en>Confidence-level notes</span></h2>
+        <span data-zh><p><code>confidence: partial</code> 的原因：</p>
+            <ul><li>✅ 已核验：仓库、许可（MIT）、最新版本与日期、star 数（220,242 · 滚动核验 2026-10-23，本分区最高）、权限策略（allow/ask/deny 细粒度）、ACP、安装方式；<strong>滚动核验补</strong>：仓库已从 <code>sst/opencode</code> 迁移到 <code>anomalyco/opencode</code>（GitHub 301 跳转坐实，仓 homepage 字段=opencode.ai）；<strong>A6.2 本轮补</strong>：75+ provider 与本地模型、内置工具清单与 MCP 接入方式、<code>compaction</code> 上下文策略</li><li>❌ 未核验：YOLO 模式的具体开关方式、子代理的调度细节与 token 开销</li></ul></span><span data-en><p>Why <code>confidence: partial</code>:</p>
+            <ul><li>✅ Verified: repository, license (MIT), latest version and date, star count (220,242 · rolling check 2026-10-23, highest in this track), permission policy (allow/ask/deny fine-grained), ACP, install methods; <strong>rolling-check addition</strong>: the repo has migrated from <code>sst/opencode</code> to <code>anomalyco/opencode</code> (GitHub 301 redirect confirms it; the repo homepage field = opencode.ai); <strong>A6.2 this-round addition</strong>: 75+ providers and local models, built-in tool list and MCP integration, <code>compaction</code> context policy</li><li>❌ Not verified: the exact YOLO-mode switch, subagent scheduling details and token overhead</li></ul></span>
       </div>
 
             <div class="panel is-slim">
         <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
         <ul class="rel-list">
-          <li><span class="rel-t"><a href="./aider-cli.html"><span data-zh>Aider</span><span data-en>Aider</span></a></span><span class="rel-n">同类工具但已放缓维护</span></li>
-          <li><span class="rel-t"><a href="./codex-cli.html"><span data-zh>Codex CLI</span><span data-en>Codex CLI</span></a></span><span class="rel-n">同类工具，架构侧重点不同</span></li>
-          <li><span class="rel-t"><a href="./kilocode.html"><span data-zh>Kilo Code</span><span data-en>Kilo Code</span></a></span><span class="rel-n">官方明示的下游：Kilo 文档原文「The Kilo CLI is a fork of OpenCode」，同款配置可对照</span></li>
+          <li><span class="rel-t"><a href="./aider-cli.html"><span data-zh>Aider</span><span data-en>Aider</span></a></span><span class="rel-n"><span data-zh>同类工具但已放缓维护</span><span data-en>same category of tool, but maintenance has slowed</span></span></li>
+          <li><span class="rel-t"><a href="./codex-cli.html"><span data-zh>Codex CLI</span><span data-en>Codex CLI</span></a></span><span class="rel-n"><span data-zh>同类工具，架构侧重点不同</span><span data-en>same category of tool, with different architectural emphasis</span></span></li>
+          <li><span class="rel-t"><a href="./kilocode.html"><span data-zh>Kilo Code</span><span data-en>Kilo Code</span></a></span><span class="rel-n"><span data-zh>官方明示的下游：Kilo 文档原文「The Kilo CLI is a fork of OpenCode」，同款配置可对照</span><span data-en>an official downstream: Kilo docs state verbatim &quot;The Kilo CLI is a fork of OpenCode&quot; — configs can be compared side by side</span></span></li>
           <li><span class="rel-t"><a href="/mcp/filesystem.html"><span data-zh>Filesystem MCP Server</span><span data-en>Filesystem MCP Server</span></a></span><span class="rel-n"><span data-zh>另一层 · MCP 工具</span><span data-en>Other layer · MCP tools</span></span></li>
         </ul>
       </div>
