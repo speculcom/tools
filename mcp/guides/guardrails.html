@@ -91,46 +91,57 @@
         </div>
       </div>
       <div class="panel-lead"><span data-zh><p>输入输出与工具三层防线、触发即止的 tripwire 机制，以及并行与阻塞的成本取舍。</p></span><span data-en><p>Input, output, and tool-level defenses, tripwires that halt on trigger, and the cost trade-off between parallel and blocking checks.</p></span></div>
+
       <div class="panel is-slim">
         <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
-        <p><strong>护栏就是给 agent 的输入输出加检查，不合格就当场拦下。</strong> 它和评测是两回事：评测测「好不好」，护栏管「行不行」。 模型会犯错、会被诱导，护栏是工程上的最后一道闸。</p>
+        <span data-zh><p><strong>护栏就是给 agent 的输入输出加检查，不合格就当场拦下。</strong> 它和评测是两回事：评测测「好不好」，护栏管「行不行」。 模型会犯错、会被诱导，护栏是工程上的最后一道闸。</p></span><span data-en><p><strong>Guardrails mean putting checks on an agent&#39;s inputs and outputs, intercepting failures on the spot.</strong> They are a different thing from evaluation: evaluation measures &quot;how good&quot;, guardrails police &quot;is this allowed at all&quot;. Models err and can be manipulated; guardrails are engineering&#39;s last gate.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>三层防线</span><span data-en>Three lines of defense</span></h2>
-        <p>OpenAI Agents SDK 官方文档把 guardrails 定义为 <strong>&quot;Guardrails enable you to do checks and validations of user input and agent output.&quot;</strong> 在实践中分成三类，各自守在不同位置。</p>
+        <span data-zh><p>OpenAI Agents SDK 官方文档把 guardrails 定义为 <strong>&quot;Guardrails enable you to do checks and validations of user input and agent output.&quot;</strong> 在实践中分成三类，各自守在不同位置。</p>
             <p><strong>输入护栏</strong>：检查用户原始输入，只对链路里的<strong>第一个</strong> agent 生效。 <strong>输出护栏</strong>：检查 agent 的最终输出，只对<strong>最后一个</strong> agent 生效。 <strong>工具护栏</strong>：包住具体函数工具，每次调用前后都过一遍。</p>
-            <p>官方特意点出一个常见误区： 如果流程里有 manager、handoff 或委派的专家 agent， 指望 agent 级输入/输出护栏在每一跳都生效是会落空的—— 要那种「每次工具调用前都查」的效果，就得用工具护栏。</p>
+            <p>官方特意点出一个常见误区： 如果流程里有 manager、handoff 或委派的专家 agent， 指望 agent 级输入/输出护栏在每一跳都生效是会落空的—— 要那种「每次工具调用前都查」的效果，就得用工具护栏。</p></span><span data-en><p>The OpenAI Agents SDK official docs define guardrails as <strong>&quot;Guardrails enable you to do checks and validations of user input and agent output.&quot;</strong> In practice they split into three kinds, each standing at a different position.</p>
+            <p><strong>Input guardrails</strong>: check the user&#39;s raw input, effective only on the <strong>first</strong> agent in the chain. <strong>Output guardrails</strong>: check the agent&#39;s final output, effective only on the <strong>last</strong> agent. <strong>Tool guardrails</strong>: wrap a specific function tool, checked before and after every call.</p>
+            <p>The official docs deliberately call out a common misconception: if the flow has a manager, handoffs, or delegated specialist agents, expecting agent-level input/output guardrails to fire at every hop is a disappointment — for a &quot;check before every tool call&quot; effect, you need tool guardrails.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>触发即止：tripwire</span><span data-en>Tripwires: halt on trigger</span></h2>
-        <p>护栏的核心机制是 tripwire（触发线）。 检查不通过时，runner 立刻抛出对应异常并<strong>中止执行</strong>：</p>
+        <span data-zh><p>护栏的核心机制是 tripwire（触发线）。 检查不通过时，runner 立刻抛出对应异常并<strong>中止执行</strong>：</p>
             <div class="tbl-wrap"><table><thead><tr><th>防线</th><th>触发的异常</th></tr></thead><tbody><tr><td>输入护栏</td><td><code>InputGuardrailTripwireTriggered</code></td></tr><tr><td>输出护栏</td><td><code>OutputGuardrailTripwireTriggered</code></td></tr><tr><td>工具输入护栏</td><td><code>ToolInputGuardrailTripwireTriggered</code></td></tr><tr><td>工具输出护栏</td><td><code>ToolOutputGuardrailTripwireTriggered</code></td></tr></tbody></table></div>
             <p>异常里带着上下文：是哪个护栏触发的、触发前已完成的结果列表。 接入方 catch 到异常后自行决定怎么回应用户。</p>
-            <p>护栏也能直接调外部分类器，不必再起一个 agent。 官方给的示例场景很有代表性： 面向客服的贵模型前面挂一个快模型护栏， 遇到「帮我写数学作业」这类滥用直接挡掉。</p>
+            <p>护栏也能直接调外部分类器，不必再起一个 agent。 官方给的示例场景很有代表性： 面向客服的贵模型前面挂一个快模型护栏， 遇到「帮我写数学作业」这类滥用直接挡掉。</p></span><span data-en><p>The core mechanism of guardrails is the tripwire. When a check fails, the runner immediately raises the corresponding exception and <strong>halts execution</strong>:</p>
+            <div class="tbl-wrap"><table><thead><tr><th>Defense line</th><th>Exception raised</th></tr></thead><tbody><tr><td>Input guardrail</td><td><code>InputGuardrailTripwireTriggered</code></td></tr><tr><td>Output guardrail</td><td><code>OutputGuardrailTripwireTriggered</code></td></tr><tr><td>Tool input guardrail</td><td><code>ToolInputGuardrailTripwireTriggered</code></td></tr><tr><td>Tool output guardrail</td><td><code>ToolOutputGuardrailTripwireTriggered</code></td></tr></tbody></table></div>
+            <p>The exception carries context: which guardrail tripped, and the list of results completed before the trip. The integrating side catches the exception and decides how to respond to the user.</p>
+            <p>A guardrail can also call an external classifier directly, without spinning up another agent. The official example scenario is representative: in front of an expensive customer-service model, hang a fast-model guardrail that blocks abuse like &quot;write my math homework&quot; outright.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>并行还是阻塞：一笔成本账</span><span data-en>Parallel or blocking</span></h2>
-        <p>输入护栏有两种跑法，官方文档写明了代价差异。</p>
+        <span data-zh><p>输入护栏有两种跑法，官方文档写明了代价差异。</p>
             <p><strong>并行执行</strong>（默认）：护栏与 agent 同时跑，延迟最低。 但触发时 agent 可能已经烧过 token、执行过工具。</p>
             <p><strong>阻塞执行</strong>：护栏先跑完，agent 后启动。 触发即止，token 与工具副作用都不会发生。 <strong>OpenAI 官方原文</strong>：阻塞执行 &quot;is ideal for cost optimization and when you want to avoid potential side effects from tool calls&quot;。</p>
-            <p>注意输出护栏不支持并行参数——它永远在 agent 完成后跑。</p>
+            <p>注意输出护栏不支持并行参数——它永远在 agent 完成后跑。</p></span><span data-en><p>Input guardrails have two run modes, and the official docs spell out the cost difference.</p>
+            <p><strong>Parallel execution</strong> (default): the guardrail and the agent run together, lowest latency. But when it trips, the agent may already have burned tokens and executed tools.</p>
+            <p><strong>Blocking execution</strong>: the guardrail finishes first, the agent starts after. Trip and halt — no tokens spent, no tool side effects. <strong>OpenAI official text</strong>: blocking execution &quot;is ideal for cost optimization and when you want to avoid potential side effects from tool calls&quot;.</p>
+            <p>Note output guardrails do not support the parallel flag — they always run after the agent completes.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>拿什么当检查器</span><span data-en>What runs the check</span></h2>
-        <p>文档层面是函数加判定输出；模型层面可以是用 LLM 当分类器。 Llama Guard 论文（arXiv 2312.06674）是这条路线的代表： 一个指令微调的安全分类模型，自带安全风险分类体系（taxonomy）， 对 prompt 和 response 做多分类，输出二值判定。</p>
-            <p><strong>论文摘要原文</strong>：&quot;matches or exceeds that of currently available content moderation tools&quot;。 注意这是 2023 年底的论文结果， 换成今天的模型与场景需自行复验。</p>
+        <span data-zh><p>文档层面是函数加判定输出；模型层面可以是用 LLM 当分类器。 Llama Guard 论文（arXiv 2312.06674）是这条路线的代表： 一个指令微调的安全分类模型，自带安全风险分类体系（taxonomy）， 对 prompt 和 response 做多分类，输出二值判定。</p>
+            <p><strong>论文摘要原文</strong>：&quot;matches or exceeds that of currently available content moderation tools&quot;。 注意这是 2023 年底的论文结果， 换成今天的模型与场景需自行复验。</p></span><span data-en><p>At the code level it is a function plus a verdict; at the model level it can be an LLM acting as a classifier. The Llama Guard paper (arXiv 2312.06674) represents this route: an instruction-tuned safety classifier with its own risk taxonomy (taxonomy), multi-label classification over prompts and responses, emitting binary verdicts.</p>
+            <p><strong>Paper abstract text</strong>: &quot;matches or exceeds that of currently available content moderation tools&quot;. Note these are late-2023 paper results; with today&#39;s models and scenarios you must re-verify yourself.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>设计上的纪律</span><span data-en>Design discipline</span></h2>
-        <p>1. 护栏管「行不行」，别顺手让它管「好不好」——那是评测的活。 2. 检查要快：挂在主流程前的护栏，本身不能成为延迟大头。 3. 失败要可见：拦了什么、为什么拦，要留痕，否则无法排查误杀。 4. 别只守门口：工具调用、交接、委派，每一跳都可能是入口。</p>
-            <p>最后一句官方提醒值得放在案头： <strong>Anthropic 官方原文</strong>：&quot;The autonomous nature of agents means higher costs, and the potential for compounding errors.&quot; 护栏不是万能药，但它是把错误复合按在第一步的那只手。</p>
+        <span data-zh><p>1. 护栏管「行不行」，别顺手让它管「好不好」——那是评测的活。 2. 检查要快：挂在主流程前的护栏，本身不能成为延迟大头。 3. 失败要可见：拦了什么、为什么拦，要留痕，否则无法排查误杀。 4. 别只守门口：工具调用、交接、委派，每一跳都可能是入口。</p>
+            <p>最后一句官方提醒值得放在案头： <strong>Anthropic 官方原文</strong>：&quot;The autonomous nature of agents means higher costs, and the potential for compounding errors.&quot; 护栏不是万能药，但它是把错误复合按在第一步的那只手。</p></span><span data-en><p>1. Guardrails police &quot;allowed or not&quot; — don&#39;t let them drift into &quot;how good&quot;; that is evaluation&#39;s job. 2. Checks must be fast: a guardrail in front of the main flow must not itself become the latency hotspot. 3. Failures must be visible: what was blocked and why must leave a trace, or false positives cannot be debugged. 4. Don&#39;t guard only the front door: tool calls, handoffs, delegations — every hop can be an entry point.</p>
+            <p>One last official reminder worth keeping on the desk: <strong>Anthropic official text</strong>: &quot;The autonomous nature of agents means higher costs, and the potential for compounding errors.&quot; Guardrails are not a cure-all, but they are the hand that pins compounding errors down at the first step.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
         <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
-          <tr><td>OpenAI Agents SDK 官方文档 · Guardrails（2026-10-20 直抓 200）</td><td><a href="https://openai.github.io/openai-agents-python/guardrails/" target="_blank" rel="noopener">https://openai.github.io/openai-agents-python/guardrails/</a></td></tr>
-          <tr><td>Llama Guard 论文（arXiv 2312.06674，2026-10-20 直抓摘要页）</td><td><a href="https://arxiv.org/abs/2312.06674" target="_blank" rel="noopener">https://arxiv.org/abs/2312.06674</a></td></tr>
-          <tr><td>Anthropic 工程博客 · Building effective agents（2026-10-20 WebFetch 核验官方页）</td><td><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">https://www.anthropic.com/engineering/building-effective-agents</a></td></tr>
+          <tr><td><span data-zh>OpenAI Agents SDK 官方文档 · Guardrails（2026-10-20 直抓 200）</span><span data-en>OpenAI Agents SDK official docs · Guardrails (direct fetch 200 on 2026-10-20)</span></td><td><a href="https://openai.github.io/openai-agents-python/guardrails/" target="_blank" rel="noopener">https://openai.github.io/openai-agents-python/guardrails/</a></td></tr>
+          <tr><td><span data-zh>Llama Guard 论文（arXiv 2312.06674，2026-10-20 直抓摘要页）</span><span data-en>Llama Guard paper (arXiv 2312.06674, abstract page direct-fetched 2026-10-20)</span></td><td><a href="https://arxiv.org/abs/2312.06674" target="_blank" rel="noopener">https://arxiv.org/abs/2312.06674</a></td></tr>
+          <tr><td><span data-zh>Anthropic 工程博客 · Building effective agents（2026-10-20 WebFetch 核验官方页）</span><span data-en>Anthropic engineering blog · Building effective agents (official page verified via WebFetch on 2026-10-20)</span></td><td><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">https://www.anthropic.com/engineering/building-effective-agents</a></td></tr>
         </tbody></table></div>
         <p class="guide-foot"><span data-zh>核验快照：2026-10-20 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-10-20 · no benchmarks, no rankings — unknown stays unknown.</span></p>
       </div>

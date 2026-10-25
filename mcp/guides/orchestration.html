@@ -91,20 +91,24 @@
         </div>
       </div>
       <div class="panel-lead"><span data-zh><p>多个 agent 怎么分工、怎么交接、怎么收拢结果，以及什么时候根本不该上多 agent。</p></span><span data-en><p>How multiple agents divide work, hand off, and merge results — and when not to go multi-agent at all.</p></span></div>
+
       <div class="panel is-slim">
         <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
-        <p><strong>多 agent 编排就是让多个 agent 分工干同一件事。</strong> 分工的理由通常有三个：上下文装不下、任务能并行、不同环节要不同专业知识。 编排的核心问题只有一个：<strong>下一步交给谁，上下文跟着谁走。</strong></p>
-            <p>本站讲机制，不排名。文中提到的产品都链到各自的档案页——档案是事实源，这篇是视角。</p>
+        <span data-zh><p><strong>多 agent 编排就是让多个 agent 分工干同一件事。</strong> 分工的理由通常有三个：上下文装不下、任务能并行、不同环节要不同专业知识。 编排的核心问题只有一个：<strong>下一步交给谁，上下文跟着谁走。</strong></p>
+            <p>本站讲机制，不排名。文中提到的产品都链到各自的档案页——档案是事实源，这篇是视角。</p></span><span data-en><p><strong>Multi-agent orchestration means having several agents divide up one job.</strong> The usual reasons to divide are three: the context does not fit, tasks can run in parallel, different stages need different expertise. The core question of orchestration is a single one: <strong>who takes the next step, and whose context travels with it.</strong></p>
+            <p>This site explains mechanisms, not rankings. Every product mentioned links to its own dossier — the dossiers are the source of facts, this guide is the lens.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>先问一句：要不要多 agent</span><span data-en>First, do you need multi-agent?</span></h2>
-        <p>多数「想上多 agent」的需求，单 agent 加对工具和提示词就能满足。 LangGraph 官方文档把这句话放在多 agent 篇的开头：</p>
+        <span data-zh><p>多数「想上多 agent」的需求，单 agent 加对工具和提示词就能满足。 LangGraph 官方文档把这句话放在多 agent 篇的开头：</p>
             <blockquote>&quot;However, not every complex task requires this approach— a single agent with the right (sometimes dynamic) tools and prompt can often achieve similar results.&quot;</blockquote>
-            <p>开发者想要多 agent，通常真实想要的是三种能力之一： 上下文管理、并行化、多人分头开发。 后两个是好理由；第一个要先确认「上下文真的装不下」， 因为拆错的代价比不拆大。</p>
+            <p>开发者想要多 agent，通常真实想要的是三种能力之一： 上下文管理、并行化、多人分头开发。 后两个是好理由；第一个要先确认「上下文真的装不下」， 因为拆错的代价比不拆大。</p></span><span data-en><p>Most needs that &quot;want multi-agent&quot; are satisfied by a single agent with the right tools and prompt. LangGraph&#39;s official docs put this sentence at the top of the multi-agent page:</p>
+            <blockquote>&quot;However, not every complex task requires this approach— a single agent with the right (sometimes dynamic) tools and prompt can often achieve similar results.&quot;</blockquote>
+            <p>When developers want multi-agent, what they usually really want is one of three capabilities: context management, parallelism, or multiple people developing separately. The latter two are good reasons; for the first, first confirm &quot;the context genuinely does not fit&quot;, because the cost of splitting wrong is bigger than the cost of not splitting.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>四种主流形态</span><span data-en>Four common shapes</span></h2>
-        <p>LangGraph 把市面上的多 agent 实现归成四类模式。</p>
+        <span data-zh><p>LangGraph 把市面上的多 agent 实现归成四类模式。</p>
             <p><strong>Subagents（子 agent 当工具）</strong>：主 agent 把子 agent 当工具调用， 路由全部经过主 agent，由它决定何时调用哪个。 <a href="/framework/langgraph.html">LangGraph</a> 与 <a href="/framework/google-adk.html">Google ADK</a> 都属这一形态。</p>
             <p><strong>ADK 官方原文</strong>：&quot;ADK automatically generates weather_checker and flight_booker delegation tools&quot;—— 协调 agent 声明 SubAgents 后，委派工具以各子 agent 命名。 子 agent 干完活，控制权自动回到协调 agent。</p>
             <p><strong>Handoffs（交接）</strong>：当前 agent 把对话整个移交给下一个 agent。 <a href="/framework/openai-agents-sdk.html">OpenAI Agents SDK</a> 的官方定义是 <strong>&quot;Handoffs allow an agent to delegate tasks to another agent&quot;</strong>。 交接在模型眼里是一个工具：移交 refund agent 的工具就叫 <code>transfer_to_refund_agent</code>。</p>
@@ -112,37 +116,54 @@
             <p><strong>Router（路由）</strong>：一步分类，把输入导给专门的 agent，再合成回答。 它和 Anthropic 写的 routing 模式同源：先分类，再走专门路径。</p>
             <p><strong>自定义工作流</strong>：把编排画成图，确定性和 agent 行为混排。 适合流程本身需要被代码约束的场景——哪步必须拦、哪步可并行，写死在图里。</p>
             <p>四种形态对照：</p>
-            <div class="tbl-wrap"><table><thead><tr><th>形态</th><th>谁决定下一步</th><th>上下文</th><th>典型场景</th></tr></thead><tbody><tr><td>Subagents</td><td>主 agent</td><td>子 agent 只看分给它的部分</td><td>任务可枚举、要并行</td></tr><tr><td>Handoffs</td><td>模型自己选</td><td>整段历史默认跟走</td><td>客服分流、专业分工</td></tr><tr><td>Router</td><td>分类器</td><td>各走各的，最后合成</td><td>输入类别清晰</td></tr><tr><td>自定义工作流</td><td>代码</td><td>按图显式传递</td><td>流程要强约束</td></tr></tbody></table></div>
+            <div class="tbl-wrap"><table><thead><tr><th>形态</th><th>谁决定下一步</th><th>上下文</th><th>典型场景</th></tr></thead><tbody><tr><td>Subagents</td><td>主 agent</td><td>子 agent 只看分给它的部分</td><td>任务可枚举、要并行</td></tr><tr><td>Handoffs</td><td>模型自己选</td><td>整段历史默认跟走</td><td>客服分流、专业分工</td></tr><tr><td>Router</td><td>分类器</td><td>各走各的，最后合成</td><td>输入类别清晰</td></tr><tr><td>自定义工作流</td><td>代码</td><td>按图显式传递</td><td>流程要强约束</td></tr></tbody></table></div></span><span data-en><p>LangGraph groups the market&#39;s multi-agent implementations into four patterns.</p>
+            <p><strong>Subagents (a sub-agent as a tool)</strong>: the main agent calls sub-agents as tools, all routing passes through the main agent, which decides when to call which. <a href="/framework/langgraph.html">LangGraph</a> and <a href="/framework/google-adk.html">Google ADK</a> both belong to this shape.</p>
+            <p><strong>ADK official text</strong>: &quot;ADK automatically generates weather_checker and flight_booker delegation tools&quot; — after a coordinating agent declares SubAgents, delegation tools are named after each sub-agent. When a sub-agent finishes, control automatically returns to the coordinating agent.</p>
+            <p><strong>Handoffs</strong>: the current agent transfers the whole conversation to the next agent. The official definition in the <a href="/framework/openai-agents-sdk.html">OpenAI Agents SDK</a> is <strong>&quot;Handoffs allow an agent to delegate tasks to another agent&quot;</strong>. To the model a handoff is a tool: the tool that transfers to the refund agent is called <code>transfer_to_refund_agent</code>.</p>
+            <p><strong>CrewAI official text</strong>: under the hierarchical process, &quot;Tasks are not pre-assigned; the manager allocates tasks to agents based on their capabilities, reviews outputs, and assesses task completion&quot;. The manager dispatches dynamically, reviews outputs, and judges completion — close to Anthropic&#39;s orchestrator-workers.</p>
+            <p><strong>Router</strong>: one classification step sends the input to a specialized agent, then synthesizes the answer. It shares its roots with the routing pattern Anthropic describes: classify first, then take a specialized path.</p>
+            <p><strong>Custom workflows</strong>: draw the orchestration as a graph, mixing determinism and agent behavior. Fits scenarios where the flow itself must be constrained by code — which step must be intercepted, which can run in parallel, written into the graph.</p>
+            <p>The four shapes compared:</p>
+            <div class="tbl-wrap"><table><thead><tr><th>Shape</th><th>Who decides the next step</th><th>Context</th><th>Typical scenario</th></tr></thead><tbody><tr><td>Subagents</td><td>The main agent</td><td>Each sub-agent sees only its assigned slice</td><td>Tasks enumerable, want parallelism</td></tr><tr><td>Handoffs</td><td>The model chooses</td><td>The full history follows by default</td><td>Customer-service triage, specialization</td></tr><tr><td>Router</td><td>A classifier</td><td>Each path separate, merged at the end</td><td>Input categories are clear</td></tr><tr><td>Custom workflow</td><td>Code</td><td>Passed explicitly per the graph</td><td>The flow needs hard constraints</td></tr></tbody></table></div></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>交接时，上下文跟着谁走</span><span data-en>Whose context follows a handoff</span></h2>
-        <p>这是编排里最容易被忽略、出事最多的一点。</p>
+        <span data-zh><p>这是编排里最容易被忽略、出事最多的一点。</p>
             <p><strong>OpenAI 官方原文</strong>：&quot;the new agent takes over the conversation, and gets to see the entire previous conversation history&quot;。 也就是说，交接发生时默认全量历史跟走。 要改，用 <code>input_filter</code> 过滤，或用运行配置控制交接历史的嵌套方式。</p>
             <p>ADK 的协作模式还多一层选择，子 agent 可配成三种模式：</p>
             <ul><li>chat（默认）：可与用户来回。</li><li>task：可追问用户，做完自动还回控制权。</li><li>single_turn：单轮执行，做完即回。</li></ul>
             <p>官方特意提醒：这个模式只给子 agent 用，根 agent 不要配。</p>
-            <p>CrewAI 的 sequential 进程则是另一极：任务按列表顺序跑， 上一个任务的输出作为下一个的上下文。 可控，但不够灵活。</p>
+            <p>CrewAI 的 sequential 进程则是另一极：任务按列表顺序跑， 上一个任务的输出作为下一个的上下文。 可控，但不够灵活。</p></span><span data-en><p>This is the most overlooked, most accident-prone point in orchestration.</p>
+            <p><strong>OpenAI official text</strong>: &quot;the new agent takes over the conversation, and gets to see the entire previous conversation history&quot;. That is, when a handoff happens the full history follows by default. To change that, use an <code>input_filter</code>, or control the nesting of handoff history via run configuration.</p>
+            <p>ADK&#39;s collaboration modes add one more choice — a sub-agent can be configured in three modes:</p>
+            <ul><li>chat (default): can go back and forth with the user.</li><li>task: can ask the user follow-ups, then automatically returns control when done.</li><li>single_turn: one turn, returns immediately when done.</li></ul>
+            <p>The official docs specifically remind: this mode is for sub-agents only; do not set it on the root agent.</p>
+            <p>CrewAI&#39;s sequential process is the other pole: tasks run in list order, the previous task&#39;s output becomes the next one&#39;s context. Controllable, but not flexible enough.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>失败模式</span><span data-en>Failure modes</span></h2>
-        <p><strong>上下文逐级膨胀。</strong> 每交接一次默认带上全量历史， 多跳之后提示词被历史撑爆，成本和延迟一起涨。 拆 agent 的初衷（省上下文）反而没了。</p>
+        <span data-zh><p><strong>上下文逐级膨胀。</strong> 每交接一次默认带上全量历史， 多跳之后提示词被历史撑爆，成本和延迟一起涨。 拆 agent 的初衷（省上下文）反而没了。</p>
             <p><strong>职责重叠或留空。</strong> 两个 agent 都以为某件事归对方， 或者某件事谁都不接。 Anthropic 的建议是从简单做起：先优化单次调用，不够再叠加多步系统。</p>
-            <p><strong>错误复合。</strong> 单 agent 出错还能原地重试； 多 agent 一环错、环环错，且更难定位是哪一环开始的。 <strong>Anthropic 官方原文</strong>：&quot;The autonomous nature of agents means higher costs, and the potential for compounding errors.&quot;</p>
+            <p><strong>错误复合。</strong> 单 agent 出错还能原地重试； 多 agent 一环错、环环错，且更难定位是哪一环开始的。 <strong>Anthropic 官方原文</strong>：&quot;The autonomous nature of agents means higher costs, and the potential for compounding errors.&quot;</p></span><span data-en><p><strong>Context balloons hop by hop.</strong> Each handoff carries the full history by default; after several hops the prompt is swollen by history and cost and latency rise together. The original point of splitting agents (saving context) is gone.</p>
+            <p><strong>Overlapping or empty responsibilities.</strong> Two agents each assume the other owns something, or nobody picks something up. Anthropic&#39;s advice is to start simple: optimize the single call first, add multi-step systems only if it is not enough.</p>
+            <p><strong>Errors compound.</strong> A single agent can retry in place; in multi-agent one wrong link poisons every later link, and it is harder to locate which link started it. <strong>Anthropic official text</strong>: &quot;The autonomous nature of agents means higher costs, and the potential for compounding errors.&quot;</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>怎么选</span><span data-en>Choosing a shape</span></h2>
-        <p>一个够用的判断顺序：</p>
+        <span data-zh><p>一个够用的判断顺序：</p>
             <p>1. 单 agent 加工具能解决吗？能，就停在这里。 2. 任务能被清楚切成固定几步？能，走顺序流程（CrewAI sequential、Anthropic 的 prompt chaining）。 3. 输入有明确类别、各类差异大？走 Router / routing。 4. 子任务无法预先枚举、要动态拆？走 orchestrator-workers 或 Subagents。 5. 需要人审关键节点？在自定义工作流里加人工检查点。</p>
-            <p>拆错比不拆贵。拆之前先想清楚： 每个 agent 各自的上下文里应该有什么、不应该有什么。</p>
+            <p>拆错比不拆贵。拆之前先想清楚： 每个 agent 各自的上下文里应该有什么、不应该有什么。</p></span><span data-en><p>A decision order that is usually enough:</p>
+            <p>1. Can a single agent with tools solve it? If yes, stop here. 2. Can the task be cleanly cut into a fixed few steps? If yes, use a sequential flow (CrewAI sequential, Anthropic&#39;s prompt chaining). 3. Are the inputs clearly categorized with large per-category differences? Use Router / routing. 4. Are subtasks not enumerable in advance, needing dynamic decomposition? Use orchestrator-workers or Subagents. 5. Do humans need to review key nodes? Add human checkpoints inside a custom workflow.</p>
+            <p>Splitting wrong costs more than not splitting. Before splitting, think through: what each agent&#39;s own context should contain — and what it should not.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
         <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
-          <tr><td>LangGraph 官方文档 · Multi-agent（2026-10-20 直抓 200）</td><td><a href="https://docs.langchain.com/oss/python/langchain/multi-agent" target="_blank" rel="noopener">https://docs.langchain.com/oss/python/langchain/multi-agent</a></td></tr>
-          <tr><td>OpenAI Agents SDK 官方文档 · Handoffs（2026-10-20 直抓 200）</td><td><a href="https://openai.github.io/openai-agents-python/handoffs/" target="_blank" rel="noopener">https://openai.github.io/openai-agents-python/handoffs/</a></td></tr>
-          <tr><td>Google ADK 官方文档 · Collaborative workflows（2026-10-20 直抓 200）</td><td><a href="https://adk.dev/workflows/collaboration/" target="_blank" rel="noopener">https://adk.dev/workflows/collaboration/</a></td></tr>
-          <tr><td>CrewAI 官方文档 · Processes（2026-10-20 直抓 200）</td><td><a href="https://docs.crewai.com/en/concepts/processes" target="_blank" rel="noopener">https://docs.crewai.com/en/concepts/processes</a></td></tr>
-          <tr><td>Anthropic 工程博客 · Building effective agents（2026-10-20 WebFetch 核验官方页）</td><td><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">https://www.anthropic.com/engineering/building-effective-agents</a></td></tr>
+          <tr><td><span data-zh>LangGraph 官方文档 · Multi-agent（2026-10-20 直抓 200）</span><span data-en>LangGraph official docs · Multi-agent (direct fetch 200 on 2026-10-20)</span></td><td><a href="https://docs.langchain.com/oss/python/langchain/multi-agent" target="_blank" rel="noopener">https://docs.langchain.com/oss/python/langchain/multi-agent</a></td></tr>
+          <tr><td><span data-zh>OpenAI Agents SDK 官方文档 · Handoffs（2026-10-20 直抓 200）</span><span data-en>OpenAI Agents SDK official docs · Handoffs (direct fetch 200 on 2026-10-20)</span></td><td><a href="https://openai.github.io/openai-agents-python/handoffs/" target="_blank" rel="noopener">https://openai.github.io/openai-agents-python/handoffs/</a></td></tr>
+          <tr><td><span data-zh>Google ADK 官方文档 · Collaborative workflows（2026-10-20 直抓 200）</span><span data-en>Google ADK official docs · Collaborative workflows (direct fetch 200 on 2026-10-20)</span></td><td><a href="https://adk.dev/workflows/collaboration/" target="_blank" rel="noopener">https://adk.dev/workflows/collaboration/</a></td></tr>
+          <tr><td><span data-zh>CrewAI 官方文档 · Processes（2026-10-20 直抓 200）</span><span data-en>CrewAI official docs · Processes (direct fetch 200 on 2026-10-20)</span></td><td><a href="https://docs.crewai.com/en/concepts/processes" target="_blank" rel="noopener">https://docs.crewai.com/en/concepts/processes</a></td></tr>
+          <tr><td><span data-zh>Anthropic 工程博客 · Building effective agents（2026-10-20 WebFetch 核验官方页）</span><span data-en>Anthropic engineering blog · Building effective agents (official page verified via WebFetch on 2026-10-20)</span></td><td><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">https://www.anthropic.com/engineering/building-effective-agents</a></td></tr>
         </tbody></table></div>
         <p class="guide-foot"><span data-zh>核验快照：2026-10-20 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-10-20 · no benchmarks, no rankings — unknown stays unknown.</span></p>
       </div>

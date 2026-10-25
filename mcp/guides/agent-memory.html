@@ -91,52 +91,67 @@
         </div>
       </div>
       <div class="panel-lead"><span data-zh><p>会话内的状态、跨会话的持久事实、外部记忆库——三层记忆各自解决什么问题，以及共同的坑。</p></span><span data-en><p>In-session state, cross-session facts, and external stores — what each memory layer solves, and the pitfalls they share.</p></span></div>
+
       <div class="panel is-slim">
         <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
-        <p><strong>agent 记忆就是让下一次调用知道这次发生过什么。</strong> 没有记忆，每一轮都是初见；记忆太多，上下文又被撑爆。 工程上把它分成三层看：会话内状态、跨会话事实、外部记忆库。 三层的保存位置、存活时间、读写方式都不同，踩坑的方式也不同。</p>
+        <span data-zh><p><strong>agent 记忆就是让下一次调用知道这次发生过什么。</strong> 没有记忆，每一轮都是初见；记忆太多，上下文又被撑爆。 工程上把它分成三层看：会话内状态、跨会话事实、外部记忆库。 三层的保存位置、存活时间、读写方式都不同，踩坑的方式也不同。</p></span><span data-en><p><strong>Agent memory means letting the next call know what happened in this one.</strong> Without memory every turn is a first meeting; with too much memory the context bursts. In engineering, view it in three layers: in-session state, cross-session facts, external stores. The three layers differ in where they persist, how long they live, how they are read and written — and in how they go wrong.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>第一层：会话内状态</span><span data-en>Layer one: in-session state</span></h2>
-        <p>最常见需求：多轮对话别断片。 <strong>OpenAI 官方原文</strong>：sessions 提供 &quot;built-in session memory to automatically maintain conversation history across multiple agent runs&quot;。</p>
+        <span data-zh><p>最常见需求：多轮对话别断片。 <strong>OpenAI 官方原文</strong>：sessions 提供 &quot;built-in session memory to automatically maintain conversation history across multiple agent runs&quot;。</p>
             <p>机制很直白：每轮开始前自动取回历史并拼到输入前， 每轮结束后把新产生的条目（用户输入、回复、工具调用）存回会话。 底层实现是 SQLite 等本地 session，开箱即用。</p>
             <p><a href="/framework/langgraph.html">LangGraph</a> 把这类能力叫做 checkpointer（检查点）。 官方按作用域分了两类： checkpointer 管<strong>单线程</strong>的图状态快照， store 管<strong>跨线程</strong>的应用自定义数据。 前者管「这通电话别断」，后者管「这个用户的所有电话都记得」。</p>
             <p><strong>坑一：内存版不落地。</strong> LangGraph 官方 troubleshooting 明说： <code>MemorySaver</code> 和 <code>InMemorySaver</code> 把检查点存 RAM，进程一重启全丢。 生产要用 <code>PostgresSaver</code> / <code>SqliteSaver</code> 这类持久化后端。</p>
-            <p><strong>坑二：检查点无限增长。</strong> 长对话里检查点越攒越多， 官方建议定期清理或设保留策略——否则延迟和存储一起涨。</p>
+            <p><strong>坑二：检查点无限增长。</strong> 长对话里检查点越攒越多， 官方建议定期清理或设保留策略——否则延迟和存储一起涨。</p></span><span data-en><p>The most common need: multi-turn conversations must not lose the thread. <strong>OpenAI official text</strong>: sessions provide &quot;built-in session memory to automatically maintain conversation history across multiple agent runs&quot;.</p>
+            <p>The mechanism is plain: before each turn, history is fetched and prepended to the input; after each turn, newly produced entries (user input, replies, tool calls) are stored back into the session. Under the hood are local sessions such as SQLite, out of the box.</p>
+            <p><a href="/framework/langgraph.html">LangGraph</a> calls this kind of capability a checkpointer. The official docs split it into two by scope: the checkpointer manages the <strong>single-thread</strong> graph-state snapshot, the store manages <strong>cross-thread</strong> application-defined data. The first keeps &quot;this phone call from dropping&quot;, the second remembers &quot;all calls from this user&quot;.</p>
+            <p><strong>Pitfall one: the in-memory version does not persist.</strong> LangGraph&#39;s official troubleshooting says plainly: <code>MemorySaver</code> and <code>InMemorySaver</code> keep checkpoints in RAM — restart the process and everything is gone. Production should use persistent backends like <code>PostgresSaver</code> / <code>SqliteSaver</code>.</p>
+            <p><strong>Pitfall two: checkpoints grow without bound.</strong> In long conversations checkpoints pile up; the official advice is periodic cleanup or a retention policy — otherwise latency and storage rise together.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>第二层：跨会话事实</span><span data-en>Layer two: cross-session facts</span></h2>
-        <p>会话会结束，事实要留下：用户偏好、项目决定、常用设置。 Mem0 把这条路拆成两半：<strong>抽取</strong>和<strong>检索</strong>。</p>
+        <span data-zh><p>会话会结束，事实要留下：用户偏好、项目决定、常用设置。 Mem0 把这条路拆成两半：<strong>抽取</strong>和<strong>检索</strong>。</p>
             <p>调用 <code>add</code> 时，Mem0 从消息里抽出持久事实存起来。 默认存的是提炼后的事实，不是原始消息全文；要存原话得显式关掉推断。 下次模型调用前调 <code>search</code>，把最相关的几条塞进提示词。</p>
             <p>官方强调两个纪律： 检索要按 <code>user_id</code> / <code>agent_id</code> 等维度过滤，防止不同用户的记忆混在一起； 事实过时了要用 update / delete 显式改—— 自动抽取是只增不改的。</p>
             <p>Letta 走的是另一条路：让 agent 直接管一套记忆文件。 现行的 MemFS 是 git 支撑的记忆文件系统，agent 自己可读可写可整理， 记忆在它的多个对话间共享。</p>
             <p>还配了 dreaming：后台子 agent 定期回顾对话、 把有用的经验固化进记忆，全程不打断手头的活。 官方 CLI 里 <code>/remember</code> 显式教、<code>/memory</code> 查看、 <code>/doctor</code> 审计记忆结构和 token 占用。</p>
-            <p><strong>坑三：只增不改会攒出过期事实。</strong> 用户早就搬家了， 记忆里还同时住着两座城市。抽取式记忆要配纠错流程。</p>
+            <p><strong>坑三：只增不改会攒出过期事实。</strong> 用户早就搬家了， 记忆里还同时住着两座城市。抽取式记忆要配纠错流程。</p></span><span data-en><p>Sessions end, facts must remain: user preferences, project decisions, common settings. Mem0 splits this road in two: <strong>extraction</strong> and <strong>retrieval</strong>.</p>
+            <p>On <code>add</code>, Mem0 extracts durable facts from the messages and stores them. By default what is stored is distilled facts, not the raw message text; to keep verbatim text you must explicitly turn inference off. Before the next model call, <code>search</code> injects the most relevant few into the prompt.</p>
+            <p>The official docs stress two disciplines: retrieval must filter by dimensions like <code>user_id</code> / <code>agent_id</code> so different users&#39; memories do not mix; when a fact goes stale, update / delete it explicitly — automatic extraction only adds, never revises.</p>
+            <p>Letta takes another road: the agent directly manages a set of memory files. The current MemFS is a git-backed memory file system the agent can read, write, and reorganize, with memory shared across its conversations.</p>
+            <p>It also ships dreaming: a background sub-agent periodically reviews conversations and consolidates useful experience into memory, never interrupting the work at hand. In the official CLI, <code>/remember</code> teaches explicitly, <code>/memory</code> inspects, <code>/doctor</code> audits memory structure and token footprint.</p>
+            <p><strong>Pitfall three: add-only accumulation breeds stale facts.</strong> The user moved long ago, yet two cities still live in the memory at once. Extraction-based memory needs a correction process.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>第三层：外部记忆库</span><span data-en>Layer three: external stores</span></h2>
-        <p>上下文装不下的，别硬塞——外接。 <a href="/mcp/memory.html">MCP 官方 memory server</a> 用知识图谱存实体和关系， 按需查询；向量库、键值库也常被用来干这事。</p>
+        <span data-zh><p>上下文装不下的，别硬塞——外接。 <a href="/mcp/memory.html">MCP 官方 memory server</a> 用知识图谱存实体和关系， 按需查询；向量库、键值库也常被用来干这事。</p>
             <p>这一层的关键不是「存了多少」，是「召回得准不准」： 相关性、时效、实体匹配，哪个信号主导检索，直接决定召回质量。</p>
             <p>MemGPT 论文（arXiv 2310.08560）是这条路线的源头之一。 它提出 <strong>virtual context management</strong>：仿照操作系统的内存分级， 在有限的上下文窗口里换进换出，让模型看起来拥有超大记忆。 论文在文档分析和多会话聊天两个场景验证了效果。</p>
-            <p>Letta 的 memory blocks（human / persona 这类带标签的记忆块） 是这套思想的工程化：记忆分块、带标签、可编辑。 从论文到产品，记忆的形态从「内存分级」演化成了「agent 自己的文件系统」。</p>
+            <p>Letta 的 memory blocks（human / persona 这类带标签的记忆块） 是这套思想的工程化：记忆分块、带标签、可编辑。 从论文到产品，记忆的形态从「内存分级」演化成了「agent 自己的文件系统」。</p></span><span data-en><p>What does not fit in the context — do not force it in, attach it outside. The <a href="/mcp/memory.html">official MCP memory server</a> stores entities and relations in a knowledge graph, queried on demand; vector stores and key-value stores are also commonly used for this.</p>
+            <p>The key at this layer is not &quot;how much was stored&quot; but &quot;does recall hit&quot;: which signal dominates retrieval — relevance, recency, entity matching — directly decides recall quality.</p>
+            <p>The MemGPT paper (arXiv 2310.08560) is one origin of this route. It proposes <strong>virtual context management</strong>: imitating operating-system memory hierarchies, swapping content in and out of a finite context window so the model appears to have a huge memory. The paper validated this on document analysis and multi-session chat.</p>
+            <p>Letta&#39;s memory blocks (labeled blocks like human / persona) are the engineering version of the idea: memory chunked, labeled, editable. From paper to product, memory&#39;s shape evolved from &quot;memory hierarchy&quot; to &quot;the agent&#39;s own file system&quot;.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>三层的边界</span><span data-en>Where the layers end</span></h2>
-        <p>一个容易搞混的问题：summary 算记忆吗？ 把长对话压成摘要续下去，是<strong>压缩</strong>，不是<strong>记忆</strong>—— 它仍然只活在当前会话里，关掉就没了。</p>
-            <p>判断一件事归哪层，只问一句：<strong>进程重启之后，它还在吗？</strong> 还在 → 第二层或第三层；不在了 → 第一层。</p>
+        <span data-zh><p>一个容易搞混的问题：summary 算记忆吗？ 把长对话压成摘要续下去，是<strong>压缩</strong>，不是<strong>记忆</strong>—— 它仍然只活在当前会话里，关掉就没了。</p>
+            <p>判断一件事归哪层，只问一句：<strong>进程重启之后，它还在吗？</strong> 还在 → 第二层或第三层；不在了 → 第一层。</p></span><span data-en><p>An easy confusion: does a summary count as memory? Compressing a long conversation into a summary and continuing is <strong>compression</strong>, not <strong>memory</strong> — it still lives only in the current session and is gone when the session closes.</p>
+            <p>To decide which layer something belongs to, ask one question: <strong>after the process restarts, is it still there?</strong> Still there → layer two or three; gone → layer one.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>共同的坑</span><span data-en>Shared pitfalls</span></h2>
-        <p>1. 记忆泄漏：把敏感信息原样存进长期记忆，检索时又被带进上下文。 2. 串用户：不过滤 user_id，A 的记忆被 B 的会话召回。 3. 静默改写：自动更新覆盖了旧事实，却没人说得清改了什么。 4. token 静默膨胀：召回策略太松，每轮都塞一大堆「相关」记忆。</p>
-            <p>记忆系统的验收标准只有一条： <strong>该记得的找得回，不该记得的召不起。</strong></p>
+        <span data-zh><p>1. 记忆泄漏：把敏感信息原样存进长期记忆，检索时又被带进上下文。 2. 串用户：不过滤 user_id，A 的记忆被 B 的会话召回。 3. 静默改写：自动更新覆盖了旧事实，却没人说得清改了什么。 4. token 静默膨胀：召回策略太松，每轮都塞一大堆「相关」记忆。</p>
+            <p>记忆系统的验收标准只有一条： <strong>该记得的找得回，不该记得的召不起。</strong></p></span><span data-en><p>1. Memory leakage: sensitive information stored verbatim into long-term memory, then recalled back into context. 2. Crossed users: without user_id filtering, user A&#39;s memory is recalled in user B&#39;s session. 3. Silent rewriting: automatic updates overwrite old facts and nobody can say what changed. 4. Silent token bloat: a too-loose recall policy stuffs a pile of &quot;relevant&quot; memories into every turn.</p>
+            <p>The acceptance criterion for a memory system is a single line: <strong>what should be remembered can be found; what should not be cannot be recalled.</strong></p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
         <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
-          <tr><td>LangGraph 官方文档 · Persistence（2026-10-20 直抓 200）</td><td><a href="https://docs.langchain.com/oss/python/langgraph/persistence" target="_blank" rel="noopener">https://docs.langchain.com/oss/python/langgraph/persistence</a></td></tr>
-          <tr><td>OpenAI Agents SDK 官方文档 · Sessions（2026-10-20 直抓 200）</td><td><a href="https://openai.github.io/openai-agents-python/sessions/" target="_blank" rel="noopener">https://openai.github.io/openai-agents-python/sessions/</a></td></tr>
-          <tr><td>Mem0 官方文档 · How Mem0 Works（2026-10-20 直抓 200）</td><td><a href="https://docs.mem0.ai/core-concepts/how-it-works" target="_blank" rel="noopener">https://docs.mem0.ai/core-concepts/how-it-works</a></td></tr>
-          <tr><td>Letta 官方文档 · Memory &amp; dreaming（2026-10-20 直抓 200）</td><td><a href="https://docs.letta.com/configuration/memory/" target="_blank" rel="noopener">https://docs.letta.com/configuration/memory/</a></td></tr>
-          <tr><td>MemGPT 论文（arXiv 2310.08560，2026-10-20 直抓摘要页）</td><td><a href="https://arxiv.org/abs/2310.08560" target="_blank" rel="noopener">https://arxiv.org/abs/2310.08560</a></td></tr>
+          <tr><td><span data-zh>LangGraph 官方文档 · Persistence（2026-10-20 直抓 200）</span><span data-en>LangGraph official docs · Persistence (direct fetch 200 on 2026-10-20)</span></td><td><a href="https://docs.langchain.com/oss/python/langgraph/persistence" target="_blank" rel="noopener">https://docs.langchain.com/oss/python/langgraph/persistence</a></td></tr>
+          <tr><td><span data-zh>OpenAI Agents SDK 官方文档 · Sessions（2026-10-20 直抓 200）</span><span data-en>OpenAI Agents SDK official docs · Sessions (direct fetch 200 on 2026-10-20)</span></td><td><a href="https://openai.github.io/openai-agents-python/sessions/" target="_blank" rel="noopener">https://openai.github.io/openai-agents-python/sessions/</a></td></tr>
+          <tr><td><span data-zh>Mem0 官方文档 · How Mem0 Works（2026-10-20 直抓 200）</span><span data-en>Mem0 official docs · How Mem0 Works (direct fetch 200 on 2026-10-20)</span></td><td><a href="https://docs.mem0.ai/core-concepts/how-it-works" target="_blank" rel="noopener">https://docs.mem0.ai/core-concepts/how-it-works</a></td></tr>
+          <tr><td><span data-zh>Letta 官方文档 · Memory &amp; dreaming（2026-10-20 直抓 200）</span><span data-en>Letta official docs · Memory &amp; dreaming (direct fetch 200 on 2026-10-20)</span></td><td><a href="https://docs.letta.com/configuration/memory/" target="_blank" rel="noopener">https://docs.letta.com/configuration/memory/</a></td></tr>
+          <tr><td><span data-zh>MemGPT 论文（arXiv 2310.08560，2026-10-20 直抓摘要页）</span><span data-en>MemGPT paper (arXiv 2310.08560, abstract page direct-fetched 2026-10-20)</span></td><td><a href="https://arxiv.org/abs/2310.08560" target="_blank" rel="noopener">https://arxiv.org/abs/2310.08560</a></td></tr>
         </tbody></table></div>
         <p class="guide-foot"><span data-zh>核验快照：2026-10-20 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-10-20 · no benchmarks, no rankings — unknown stays unknown.</span></p>
       </div>
