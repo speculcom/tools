@@ -116,7 +116,7 @@
         <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-23</span>
       </div>
 
-            <p class="t-xs" data-en>English summaries and interface labels are available. Detailed source notes below are currently in Chinese.</p>
+            
       <div class="panel-lead"><span data-zh><p><strong>它是个自托管的 agent 控制中心</strong>。官方 README 现在管它叫 <strong>Agent Canvas</strong>。</p>
             <p>它带的是一整套栈：Web GUI、Terminal UI、CLI、REST API 都在里面。 它管的 agent 不止自家那一个。Codex、Claude Code、Gemini 都能挂上去跑。</p>
             <blockquote>官方定位原文：The self-hosted developer control center for coding agents and automations. Run OpenHands, Claude Code, Codex, Gemini, or <strong>any ACP-compatible agent</strong> across local, remote, and cloud backends.</blockquote></span><span data-en><p><strong>It is a self-hosted control centre for agents</strong> — the official README now calls it <strong>Agent Canvas</strong>.</p>
@@ -150,37 +150,55 @@
       <dl class="axes">
         <div class="axis">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
-          <dd><p><strong>官方口径：任何 LiteLLM 支持的模型都能接，它自己带 LiteLLM 网关层（已核验）。</strong></p>
+          <dd><span data-zh><p><strong>官方口径：任何 LiteLLM 支持的模型都能接，它自己带 LiteLLM 网关层（已核验）。</strong></p>
             <p><strong>已验证可用的 provider</strong>（Basic 设置下拉里能选）：</p>
             <ul><li>OpenHands provider</li><li>Anthropic</li><li>OpenAI</li><li>Mistral AI</li></ul>
             <p><strong>Custom Model 怎么写</strong>：用 provider 前缀指定，遵循 LiteLLM 的 provider 规范； 另有 <code>Base URL</code> 可自定义，本地与自托管模型由此接入。 官方说保存 local LLM profile 时会先向后端校验。</p>
             <p><strong>LLM profiles</strong>：最多 10 套配置并存。可在会话中或 <code>/model</code> 切换。 也可由内置 <code>SwitchLLMTool</code> 让 agent 动态选型。</p>
             <p>⚠ <strong>两处官方未给出</strong>。一是完整 provider 名单。二是「any LLM」的对齐度数据。 即它在工具调用与 structured output 上是否对齐。核验范围：llm-settings 页。</p>
             <p><strong>这一项对该对象尤其重要</strong>：它同时是别人的调度层。 <strong>「Codex / Claude Code 跑在它上面」</strong>这一情况比较特殊。能用哪些模型由那个 agent 决定。</p>
-            <p><strong>官方 LLM settings 页原文</strong>：&quot;This can be any model that is supported by litellm&quot;</p></dd>
+            <p><strong>官方 LLM settings 页原文</strong>：&quot;This can be any model that is supported by litellm&quot;</p></span><span data-en><p><strong>Official position: any model LiteLLM supports can connect, and it ships its own LiteLLM gateway layer (verified).</strong></p>
+            <p><strong>Providers verified working</strong> (selectable in the Basic settings dropdown):</p>
+            <ul><li>OpenHands provider</li><li>Anthropic</li><li>OpenAI</li><li>Mistral AI</li></ul>
+            <p><strong>How to write a Custom Model</strong>: specify a provider prefix following LiteLLM&#39;s provider conventions; there is also a customizable <code>Base URL</code>, through which local and self-hosted models connect. The official docs say saving a local LLM profile first validates against the backend.</p>
+            <p><strong>LLM profiles</strong>: up to 10 configurations coexist. Switch mid-session or via <code>/model</code>. The built-in <code>SwitchLLMTool</code> also lets the agent choose dynamically.</p>
+            <p>⚠ <strong>Two things the official docs do not give.</strong> One: a complete provider list. Two: alignment data for &quot;any LLM&quot; — i.e. whether tool calling and structured output align. Verification scope: the llm-settings page.</p>
+            <p><strong>This item matters especially for this object</strong>: it is simultaneously other agents&#39; scheduling layer. &quot;Codex / Claude Code run on top of it&quot; is a special case — which models are usable is decided by that agent.</p>
+            <p><strong>Official LLM settings page, verbatim</strong>: &quot;This can be any model that is supported by litellm&quot;</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
-          <dd><p><strong>它有四种官方部署形态</strong>。这是本对象最有实用价值的部分。README 四个 Option 全核验。</p>
+          <dd><span data-zh><p><strong>它有四种官方部署形态</strong>。这是本对象最有实用价值的部分。README 四个 Option 全核验。</p>
             <ul><li><strong>Option 1 无沙箱本地跑</strong>：<code>npm install -g @openhands/agent-canvas</code> 然后 <code>agent-canvas</code>，起完整本地栈，<strong>要 Node.js 24+ 与 uv</strong>； 可用 <code>--frontend-only</code> / <code>--backend-only</code> 拆开跑</li></ul>
             <ul><li><strong>Option 2 Docker 沙箱</strong>：<code>docker run</code> 官方镜像， 需预先准备 <code>PROJECTS_PATH</code> 宿主目录，agent 可访问该目录下的项目</li></ul>
             <ul><li><strong>Option 3 每会话独立容器</strong>：<code>OH_CONVERSATION_RUNTIME=docker agent-canvas</code>， 每次新会话起自己的容器与 Agent Server，适合并发跑多个 agent</li></ul>
             <ul><li><strong>Option 4 从源码跑</strong>：clone + <code>npm install</code> + <code>npm run dev</code></li></ul>
             <p><strong>入口地址</strong>：<code>http://localhost:8000</code>（Docker 镜像是 <code>/canvas</code>）。</p>
             <p><strong>后端可以远程切换</strong>，这是它作为调度层的核心能力：官方说 Agent Server 可跑在笔记本 / Mac Mini / 云上 VM / OpenHands Cloud， Canvas 前端可以在多个 Server 之间切换。</p>
-            <p>关于 Option 3 的官方说明。容器会挂载会话的 workspace 与持久化状态。 <strong>容器替换后文件与对话历史仍在</strong>。</p></dd>
+            <p>关于 Option 3 的官方说明。容器会挂载会话的 workspace 与持久化状态。 <strong>容器替换后文件与对话历史仍在</strong>。</p></span><span data-en><p><strong>It has four official deployment forms — the most practically valuable part of this object.</strong> All four README Options verified.</p>
+            <ul><li><strong>Option 1 local without sandbox</strong>: <code>npm install -g @openhands/agent-canvas</code> then <code>agent-canvas</code>, starts the full local stack, <strong>requires Node.js 24+ and uv</strong>; <code>--frontend-only</code> / <code>--backend-only</code> split it apart</li></ul>
+            <ul><li><strong>Option 2 Docker sandbox</strong>: <code>docker run</code> the official image, requires preparing a <code>PROJECTS_PATH</code> host directory beforehand; the agent can access projects under it</li></ul>
+            <ul><li><strong>Option 3 per-conversation containers</strong>: <code>OH_CONVERSATION_RUNTIME=docker agent-canvas</code>, each new conversation starts its own container and Agent Server — good for running multiple agents concurrently</li></ul>
+            <ul><li><strong>Option 4 from source</strong>: clone + <code>npm install</code> + <code>npm run dev</code></li></ul>
+            <p><strong>Entry URL</strong>: <code>http://localhost:8000</code> (the Docker image serves <code>/canvas</code>).</p>
+            <p><strong>Backends can be switched remotely</strong> — the core capability of its scheduling layer: officially the Agent Server can run on a laptop / Mac Mini / cloud VM / OpenHands Cloud, and the Canvas frontend switches between multiple Servers.</p>
+            <p>On Option 3 the official docs note containers mount the conversation&#39;s workspace and persisted state. <strong>Files and conversation history survive container replacement</strong>.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
-          <dd><p><strong>本地文件能碰多少，取决于你选哪种部署形态 —— 官方把这个变量讲得很清楚。</strong></p>
+          <dd><span data-zh><p><strong>本地文件能碰多少，取决于你选哪种部署形态 —— 官方把这个变量讲得很清楚。</strong></p>
             <ul><li><strong>无沙箱形态</strong>：agent 对文件系统有全量访问权限，官方两次打 WARNING</li><li><strong>Docker 形态</strong>：访问范围收敛到 <code>PROJECTS_PATH</code> 挂载的目录</li><li><strong>每会话容器形态</strong>：官方提示<strong>共享同一宿主工作区的会话仍会共用同一批文件</strong>， 建议用独立目录或 worktree 避免冲突编辑</li></ul>
             <ul><li><strong>后端远程时</strong>（云上 VM / Cloud backend）：agent 在远端 workspace 里跑， SDK 用 <code>Workspace(host=..., working_dir=&quot;workspace/project&quot;)</code> 指定远端工作目录， 文件与命令操作都在服务端执行</li></ul>
             <p><strong>官方未说明「把本地仓库自动同步到远程后端」的机制</strong>（已查 agent-server 与 runtime 页）—— 仓库需先位于远端，或自行搬运。</p>
-            <p><strong>官方 WARNING 原文</strong>：&quot;This runs the agent-server directly on the machine you&#39;re installing on — <strong>the agent will have full access to your filesystem!</strong>&quot;</p></dd>
+            <p><strong>官方 WARNING 原文</strong>：&quot;This runs the agent-server directly on the machine you&#39;re installing on — <strong>the agent will have full access to your filesystem!</strong>&quot;</p></span><span data-en><p><strong>How much of the local file system is reachable depends on which deployment form you choose — the official docs make this variable explicit.</strong></p>
+            <ul><li><strong>No-sandbox form</strong>: the agent has full file-system access; the official docs WARNING twice</li><li><strong>Docker form</strong>: access narrows to the directory mounted at <code>PROJECTS_PATH</code></li><li><strong>Per-conversation container form</strong>: the official docs caution that <strong>conversations sharing the same host workspace still share the same files</strong>; use separate directories or worktrees to avoid conflicting edits</li></ul>
+            <ul><li><strong>When the backend is remote</strong> (cloud VM / Cloud backend): the agent runs in a remote workspace; the SDK specifies the remote working directory with <code>Workspace(host=..., working_dir=&quot;workspace/project&quot;)</code>; file and command operations execute server-side</li></ul>
+            <p><strong>The official docs do not describe a mechanism for &quot;auto-syncing a local repo to a remote backend&quot;</strong> (agent-server and runtime pages checked) — the repo must already live remotely, or be moved by you.</p>
+            <p><strong>Official WARNING, verbatim</strong>: &quot;This runs the agent-server directly on the machine you&#39;re installing on — <strong>the agent will have full access to your filesystem!</strong>&quot;</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
-          <dd><p><strong>后台任务是它最突出的强项，也是它与其他 harness 站对象最大的差别。</strong></p>
+          <dd><span data-zh><p><strong>后台任务是它最突出的强项，也是它与其他 harness 站对象最大的差别。</strong></p>
             <p>把 agent 跑在云上服务器的最大好处有两个。一是关掉笔记本它还在跑。 二是更容易被第三方服务触发。比如 Slack、GitHub 或 Datadog。</p>
             <p>配套是独立仓 <code>OpenHands/automation</code>，提供两种触发方式：</p>
             <ul><li>定时（schedule）</li><li>webhook 事件</li></ul>
@@ -188,30 +206,49 @@
             <p><strong>对比本站其余对象</strong>：OpenAI Agents SDK、Deep Agents、Codex SDK 的 thread 状态 都在自己进程 / 自己机器上，关了就没了。 把「关掉笔记本后 agent 仍在跑」当卖点做的，只有这一个。</p>
             <p><strong>官方 README 原文</strong>：it &quot;allows your agents to <strong>continue running even when your laptop is shut</strong>&quot;</p>
             <p>同一页亦点名 Slack、GitHub、Datadog 是更容易接入的触发渠道。</p>
-            <p>核验 <code>OpenHands/automation</code>（2026-10-01）：Python，MIT，32★，活跃。</p></dd>
+            <p>核验 <code>OpenHands/automation</code>（2026-10-01）：Python，MIT，32★，活跃。</p></span><span data-en><p><strong>Background tasks are its most prominent strength and its biggest difference from other harness entries.</strong></p>
+            <p>The two biggest benefits of running agents on a cloud server: they keep running when you close the laptop, and they are easier to trigger from third-party services like Slack, GitHub, or Datadog.</p>
+            <p>The companion is the standalone repo <code>OpenHands/automation</code>, offering two trigger modes:</p>
+            <ul><li>schedules</li><li>webhook events</li></ul>
+            <p>The official feature table lists integrable third parties: Slack, GitHub, Linear, and Notion.</p>
+            <p><strong>Compared with our other objects</strong>: OpenAI Agents SDK, Deep Agents, and Codex SDK keep thread state in their own process / own machine — gone when closed. Only this one markets &quot;the agent keeps running after you close the laptop&quot;.</p>
+            <p><strong>Official README, verbatim</strong>: it &quot;allows your agents to <strong>continue running even when your laptop is shut</strong>&quot;</p>
+            <p>The same page names Slack, GitHub, and Datadog as easier trigger channels.</p>
+            <p>Verified <code>OpenHands/automation</code> (2026-10-01): Python, MIT, 32★, active.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
-          <dd><p><strong>它有两条接入线：自身工具集 + MCP；另有 ACP 用来调度第三方 agent。</strong></p>
+          <dd><span data-zh><p><strong>它有两条接入线：自身工具集 + MCP；另有 ACP 用来调度第三方 agent。</strong></p>
             <p>① <strong>自带 agent（CodeAct / software-agent-sdk）的默认工具集</strong>， 官方 start-conversation API 示例列出：</p>
             <ul><li><code>terminal</code></li><li><code>file_editor</code></li><li><code>task_tracker</code></li><li><code>browser_tool_set</code>（<code>cli_mode</code> 可关掉浏览器工具）</li></ul>
             <p>② <strong>MCP 支持已核验</strong>，官方有 MCP Servers 专页：</p>
             <ul><li>CLI 用 <code>openhands mcp</code>，Canvas 用 <code>Customize &gt; MCP Servers</code></li><li>传输覆盖 http / sse / stdio</li><li>认证支持 Bearer / API Key / OAuth</li><li>SDK 侧由 <code>mcp_config</code>（FastMCP 格式）注入 <code>mcpServers</code></li></ul>
             <p>③ 通过 <strong>ACP（Agent Client Protocol）</strong> 调度第三方 agent （Claude Code、Codex、Gemini 等）。</p>
-            <p><strong>⚠ 修正上一版档案</strong>：本对象<strong>并非只走 ACP</strong> —— MCP 同样是官方能力。</p></dd>
+            <p><strong>⚠ 修正上一版档案</strong>：本对象<strong>并非只走 ACP</strong> —— MCP 同样是官方能力。</p></span><span data-en><p><strong>It has two access lines: its own toolset + MCP; plus ACP for scheduling third-party agents.</strong></p>
+            <p>① <strong>The default toolset of its own agent (CodeAct / software-agent-sdk)</strong>, listed in the official start-conversation API example:</p>
+            <ul><li><code>terminal</code></li><li><code>file_editor</code></li><li><code>task_tracker</code></li><li><code>browser_tool_set</code> (<code>cli_mode</code> can disable browser tools)</li></ul>
+            <p>② <strong>MCP support verified</strong>, with an official MCP Servers page:</p>
+            <ul><li>CLI uses <code>openhands mcp</code>; Canvas uses <code>Customize &gt; MCP Servers</code></li><li>Transports cover http / sse / stdio</li><li>Auth supports Bearer / API Key / OAuth</li><li>On the SDK side, <code>mcp_config</code> (FastMCP format) injects <code>mcpServers</code></li></ul>
+            <p>③ Third-party agents (Claude Code, Codex, Gemini, etc.) are scheduled via <strong>ACP (Agent Client Protocol)</strong>.</p>
+            <p><strong>⚠ Correction to the previous version of this dossier</strong>: this object <strong>does not go ACP-only</strong> — MCP is equally an official capability.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
-          <dd><p><strong>上下文这一点，官方有明确机制：context condenser</strong>。本维度证据已补齐。</p>
+          <dd><span data-zh><p><strong>上下文这一点，官方有明确机制：context condenser</strong>。本维度证据已补齐。</p>
             <p>默认实现是 <code>LLMSummarizingCondenser</code>（继承 <code>RollingCondenser</code>）， 参数 <code>max_size</code> / <code>keep_first</code>。它超阈值时<strong>保留最近的消息不动，只摘要较早的内容</strong>。</p>
             <p>Canvas 侧的入口在 <code>Settings &gt; Condenser</code>； LLM settings 页有 &quot;Enable memory condensation&quot; 与 <strong>&quot;Memory condenser max history size&quot;</strong> 两个开关。</p>
             <p>官方还说明。配了 condenser 之后，超窗改为发 condensation 请求事件。 而不再抛 <code>LLMContextWindowExceedError</code>。agent 摘要旧历史后继续。</p>
             <p><strong>⚠ 按本站「状态 ≠ 上下文」的口径</strong>。run history 与容器可替换后的持久化属于状态侧。 上面的 condenser 才是上下文侧的官方手段。两者分开算。</p>
-            <p><strong>官方 SDK 指南原文</strong>：context condenser &quot;intelligently summarizing older parts of the conversation while preserving essential information&quot;； 超阈值时 &quot;Keeps recent messages intact&quot;、&quot;Summarizes older content&quot;。</p></dd>
+            <p><strong>官方 SDK 指南原文</strong>：context condenser &quot;intelligently summarizing older parts of the conversation while preserving essential information&quot;； 超阈值时 &quot;Keeps recent messages intact&quot;、&quot;Summarizes older content&quot;。</p></span><span data-en><p><strong>On context, the official docs have an explicit mechanism: the context condenser.</strong> Evidence for this dimension is complete.</p>
+            <p>The default implementation is <code>LLMSummarizingCondenser</code> (extends <code>RollingCondenser</code>), with parameters <code>max_size</code> / <code>keep_first</code>. Over threshold it <strong>keeps recent messages intact and only summarizes older content</strong>.</p>
+            <p>On the Canvas side the entry is <code>Settings &gt; Condenser</code>; the LLM settings page has &quot;Enable memory condensation&quot; and <strong>&quot;Memory condenser max history size&quot;</strong> toggles.</p>
+            <p>The official docs also explain: with a condenser configured, exceeding the window emits a condensation-request event instead of throwing <code>LLMContextWindowExceedError</code>. The agent summarizes old history and continues.</p>
+            <p><strong>⚠ Per our &quot;state ≠ context&quot; framing</strong>: run history and persistence across container replacement belong to the state side. The condenser above is the official context-side mechanism. Count them separately.</p>
+            <p><strong>Official SDK guide, verbatim</strong>: the context condenser &quot;intelligently summarizing older parts of the conversation while preserving essential information&quot;; over threshold it &quot;Keeps recent messages intact&quot;, &quot;Summarizes older content&quot;.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
-          <dd><p><strong>这一块官方做得最细，也是最需要认真读的部分。</strong></p>
+          <dd><span data-zh><p><strong>这一块官方做得最细，也是最需要认真读的部分。</strong></p>
             <p><strong>沙箱</strong>：官方给了两种收敛手段（见 local_files）。一是 Docker 沙箱，二是每会话独立容器。 但官方同时明确提供无沙箱形态，并两次挂 WARNING。</p>
             <p><strong>认证用的是 API key，不是用户体系</strong>：</p>
             <ul><li>生成 key：<code>openssl rand -base64 32</code>，赋给 <code>LOCAL_BACKEND_API_KEY</code></li><li><code>--public</code> 模式下 <strong>key 不烘进前端</strong>，用户首次打开 UI 要手动粘贴 key 才能用； 之后每个 <code>/api/*</code> 请求都要带 <code>X-Session-API-Key</code> 头</li></ul>
@@ -221,15 +258,29 @@
             <p><strong>⚠ 多用户与权限分级，官方把这一档划给 Enterprise。</strong> 官方部署对比表明示 Open Source 档「Users = 1」， <strong>Multi-user RBAC 与 SSO/SAML 只有 Enterprise 有</strong>（OSS 栏为「—」）。</p>
             <p>因此 OSS 自托管不含用户 / 角色 / 审计体系。上面那把会话 key 就是全部。 需要多用户分级与审计，须上 Enterprise。</p>
             <p><code>docs/SELF_HOSTING.md</code>（核验 286 行）给的就是这套 API key 机制。</p>
-            <p><strong>核验</strong>：已查 enterprise 页与部署对比表。</p></dd>
+            <p><strong>核验</strong>：已查 enterprise 页与部署对比表。</p></span><span data-en><p><strong>This is where the official docs are most thorough — and the part that most deserves careful reading.</strong></p>
+            <p><strong>Sandbox</strong>: the official docs give two containment measures (see local_files): the Docker sandbox and per-conversation containers. But the official docs also explicitly offer the no-sandbox form, WARNING twice.</p>
+            <p><strong>Authentication uses an API key, not a user system</strong>:</p>
+            <ul><li>generate a key: <code>openssl rand -base64 32</code>, assign to <code>LOCAL_BACKEND_API_KEY</code></li><li>in <code>--public</code> mode the <strong>key is not baked into the frontend</strong>; users must paste the key manually on first UI open; afterwards every <code>/api/*</code> request carries the <code>X-Session-API-Key</code> header</li></ul>
+            <ul><li><strong>loopback-only binding by default</strong> (127.0.0.1). The official rationale: keep the auto-injected session key from being reachable by other machines on the LAN</li></ul>
+            <ul><li>when listening on <code>0.0.0.0</code> the key is no longer injected; the same API-key input UI is used instead</li><li>the official docs advise <code>export</code> over command-line arguments for the key, to keep it out of <code>ps aux</code> process listings</li></ul>
+            <ul><li><strong>exposing to the public internet carries official firewall requirements</strong> (Cloud Firewall / AWS Security Group / GCP firewall rule)</li></ul>
+            <p><strong>⚠ Multi-user and permission tiers are assigned by the official docs to Enterprise.</strong> The official deployment comparison table shows the Open Source tier &quot;Users = 1&quot;; <strong>Multi-user RBAC and SSO/SAML exist only in Enterprise</strong> (the OSS column reads &quot;—&quot;).</p>
+            <p>So OSS self-hosting includes no user/role/audit system — that session key is all there is. Multi-user tiering and auditing require Enterprise.</p>
+            <p><code>docs/SELF_HOSTING.md</code> (verified, 286 lines) covers exactly this API-key mechanism.</p>
+            <p><strong>Verified</strong>: enterprise page and deployment comparison table checked.</p></span></dd>
         </div>
         <div class="axis">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
-          <dd><p><strong>能做的事</strong>：</p>
+          <dd><span data-zh><p><strong>能做的事</strong>：</p>
             <ul><li>把 agent 放到自己服务器上 7×24 跑</li><li>定时或 webhook 触发（Slack / GitHub / Linear / Notion）</li><li>用一个界面统管多种 agent（含 Codex、Claude Code、Gemini 等 ACP 兼容的）</li><li>需要 per-conversation 隔离容器</li><li>团队里前端 / 平台与 agent 运行时分离部署</li><li>长会话需要官方 condenser 控制上下文成本</li></ul>
             <p><strong>不适合做的事</strong>：</p>
             <ul><li>只想要一个轻量库，把 agent 嵌进自己的 Python 进程 （那种需求请用 software-agent-sdk 或 OpenAI Agents SDK）</li></ul>
-            <ul><li>单机临时用一下 —— 它是一整套栈，不是库</li><li>需要多用户与细粒度权限分级 —— 官方把 Multi-user RBAC 划给 Enterprise， OSS 自托管只有单 key</li></ul></dd>
+            <ul><li>单机临时用一下 —— 它是一整套栈，不是库</li><li>需要多用户与细粒度权限分级 —— 官方把 Multi-user RBAC 划给 Enterprise， OSS 自托管只有单 key</li></ul></span><span data-en><p><strong>What it can do</strong>:</p>
+            <ul><li>Put agents on your own server running 7×24</li><li>Trigger by schedule or webhook (Slack / GitHub / Linear / Notion)</li><li>Manage multiple agent kinds from one UI (including ACP-compatible Codex, Claude Code, Gemini)</li><li>You need per-conversation isolated containers</li><li>Your team deploys frontend/platform separately from the agent runtime</li><li>Long sessions need the official condenser to control context cost</li></ul>
+            <p><strong>What it is not for</strong>:</p>
+            <ul><li>You just want a lightweight library to embed agents in your own Python process (use software-agent-sdk or OpenAI Agents SDK for that need)</li></ul>
+            <ul><li>Ad-hoc single-machine use — it is a whole stack, not a library</li><li>You need multi-user fine-grained permission tiers — the official docs assign Multi-user RBAC to Enterprise; OSS self-hosting has a single key only</li></ul></span></dd>
         </div>
       </dl>
 
@@ -250,7 +301,7 @@
 
             <div class="panel is-slim">
         <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
-        
+        <span data-zh>
         <ul>
           <li>「any LLM」的 provider 能力对齐度（清单已核：原文 &quot;any model that is supported by litellm&quot;）</li>
           <li>对话上下文压缩的端到端效果（机制已有官方 condenser，压缩率待实测）</li>
@@ -261,7 +312,18 @@
           <li>后端远程部署时本地代码库的同步机制</li>
           <li><code>software-agent-sdk</code> 的 API 形态与版本独立节奏</li>
           <li>每会话容器在并发压测下的资源与稳定性</li>
-        </ul>
+        </ul></span><span data-en>
+        <ul>
+          <li>Provider capability alignment of &quot;any LLM&quot; (list verified: verbatim &quot;any model that is supported by litellm&quot;)</li>
+          <li>End-to-end effect of conversation-context compression (official condenser exists; compression ratio awaits testing)</li>
+          <li>Multi-user arrangements in the OSS tier (formal RBAC / SSO in Enterprise; OSS defaults to single user)</li>
+          <li>The positioning difference between ACP and MCP (both usable; the boundary is not systematically compared officially)</li>
+          <li><strong>The concrete contents of the Enterprise tier</strong> (official docs only mark Custom pricing / Contact Us; quotes not recorded per D9)</li>
+          <li>Behavior beyond Individual&#39;s daily 10 conversations (disabled / upgrade prompt / other — not written on the official page)</li>
+          <li>The sync mechanism for local codebases when the backend is deployed remotely</li>
+          <li>The API shape and independent versioning cadence of <code>software-agent-sdk</code></li>
+          <li>Resource usage and stability of per-conversation containers under concurrency stress</li>
+        </ul></span>
       </div>
 
 
@@ -271,36 +333,38 @@
         <table class="src">
           <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
           <tbody>
-            <tr><td>repo</td><td>OpenHands/OpenHands · 仓库（Agent Canvas 控制中心，91,593★，MIT，滚动核验 2026-10-23）</td><td><a href="https://github.com/OpenHands/OpenHands" target="_blank" rel="noopener">https://github.com/OpenHands/OpenHands</a></td></tr>
-            <tr><td>docs</td><td>主README（Agent Canvas 定位、四种部署形态、ACP 接入、Repository boundaries 表）</td><td><a href="https://github.com/OpenHands/OpenHands/blob/main/README.md" target="_blank" rel="noopener">https://github.com/OpenHands/OpenHands/blob/main/README.md</a></td></tr>
-            <tr><td>docs</td><td>docs/SELF_HOSTING.md（API key、--public 模式、loopback 默认、防火墙要求）</td><td><a href="https://github.com/OpenHands/OpenHands/blob/main/docs/SELF_HOSTING.md" target="_blank" rel="noopener">https://github.com/OpenHands/OpenHands/blob/main/docs/SELF_HOSTING.md</a></td></tr>
-            <tr><td>pricing</td><td>官方定价页（核验 2026-10-01：Open Source 与 Cloud Individual 均为免费档、Enterprise 定制；<strong>Individual Max Daily Conversations = 10</strong> 而 Open Source 为 Unlimited；BYOK 与 &quot;at cost, with no markup&quot;；Enterprise 可部署客户自有 VPC、SAML/SSO、RBAC、每用户无限并发）</td><td><a href="https://www.all-hands.dev/pricing" target="_blank" rel="noopener">https://www.all-hands.dev/pricing</a></td></tr>
-            <tr><td>repo</td><td>OpenHands/software-agent-sdk · 仓库（Python SDK 与 Agent Server 的真实所在，1,190★，MIT）</td><td><a href="https://github.com/OpenHands/software-agent-sdk" target="_blank" rel="noopener">https://github.com/OpenHands/software-agent-sdk</a></td></tr>
-            <tr><td>repo</td><td>OpenHands/automation · 仓库（定时与 webhook 分发，32★，MIT）</td><td><a href="https://github.com/OpenHands/automation" target="_blank" rel="noopener">https://github.com/OpenHands/automation</a></td></tr>
-            <tr><td>changelog</td><td>Releases（v1.31.0 @ 2026-10-22）</td><td><a href="https://github.com/OpenHands/OpenHands/releases" target="_blank" rel="noopener">https://github.com/OpenHands/OpenHands/releases</a></td></tr>
-            <tr><td>docs</td><td>官方文档 · LLM settings / LLM profiles（any model supported by litellm、已验证 provider、最多 10 profiles、memory condensation，核验 2026-10-08）</td><td><a href="https://docs.openhands.dev/openhands/usage/settings/llm-settings" target="_blank" rel="noopener">https://docs.openhands.dev/openhands/usage/settings/llm-settings</a></td></tr>
-            <tr><td>docs</td><td>官方文档 · Context Condenser（SDK 指南：LLMSummarizingCondenser / RollingCondenser，核验 2026-10-08）</td><td><a href="https://docs.openhands.dev/sdk/guides/context-condenser" target="_blank" rel="noopener">https://docs.openhands.dev/sdk/guides/context-condenser</a></td></tr>
-            <tr><td>docs</td><td>官方文档 · Runtime Architecture（Docker 沙箱、volume mounts、RemoteRuntime，核验 2026-10-08）</td><td><a href="https://docs.openhands.dev/openhands/usage/architecture/runtime" target="_blank" rel="noopener">https://docs.openhands.dev/openhands/usage/architecture/runtime</a></td></tr>
-            <tr><td>docs</td><td>官方文档 · MCP Servers（CLI/Canvas 配置、http/sse/stdio 传输与认证，核验 2026-10-08）</td><td><a href="https://docs.openhands.dev/openhands/usage/cli/mcp-servers" target="_blank" rel="noopener">https://docs.openhands.dev/openhands/usage/cli/mcp-servers</a></td></tr>
-            <tr><td>docs</td><td>官方文档 · Agent Server Package（远程 workspace、working_dir、session API key，核验 2026-10-08）</td><td><a href="https://docs.openhands.dev/sdk/arch/agent-server" target="_blank" rel="noopener">https://docs.openhands.dev/sdk/arch/agent-server</a></td></tr>
-            <tr><td>docs</td><td>官方文档 · OpenHands Enterprise vs OSS 部署对比表（Multi-user RBAC / SSO-SAML 仅 Enterprise，OSS Users = 1，核验 2026-10-08）</td><td><a href="https://docs.openhands.dev/enterprise" target="_blank" rel="noopener">https://docs.openhands.dev/enterprise</a></td></tr>
-            <tr><td>docs</td><td>官方文档 · ACP Agents（README 指向）</td><td><a href="https://docs.openhands.dev/openhands/usage/agent-canvas/acp-agents" target="_blank" rel="noopener">https://docs.openhands.dev/openhands/usage/agent-canvas/acp-agents</a></td></tr>
-            <tr><td>repo</td><td>npm 包@openhands/agent-canvas（README 安装入口）</td><td><a href="https://www.npmjs.com/package/@openhands/agent-canvas" target="_blank" rel="noopener">https://www.npmjs.com/package/@openhands/agent-canvas</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>OpenHands/OpenHands · 仓库（Agent Canvas 控制中心，91,593★，MIT，滚动核验 2026-10-23）</span><span data-en>OpenHands/OpenHands · repository (Agent Canvas control center, 91,593★, MIT, rolling verification 2026-10-23)</span></td><td><a href="https://github.com/OpenHands/OpenHands" target="_blank" rel="noopener">https://github.com/OpenHands/OpenHands</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>主README（Agent Canvas 定位、四种部署形态、ACP 接入、Repository boundaries 表）</span><span data-en>Main README (Agent Canvas positioning, four deployment forms, ACP access, Repository boundaries table)</span></td><td><a href="https://github.com/OpenHands/OpenHands/blob/main/README.md" target="_blank" rel="noopener">https://github.com/OpenHands/OpenHands/blob/main/README.md</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>docs/SELF_HOSTING.md（API key、--public 模式、loopback 默认、防火墙要求）</span><span data-en>docs/SELF_HOSTING.md (API key, --public mode, loopback default, firewall requirements)</span></td><td><a href="https://github.com/OpenHands/OpenHands/blob/main/docs/SELF_HOSTING.md" target="_blank" rel="noopener">https://github.com/OpenHands/OpenHands/blob/main/docs/SELF_HOSTING.md</a></td></tr>
+            <tr><td>pricing</td><td><span data-zh>官方定价页（核验 2026-10-01：Open Source 与 Cloud Individual 均为免费档、Enterprise 定制；<strong>Individual Max Daily Conversations = 10</strong> 而 Open Source 为 Unlimited；BYOK 与 &quot;at cost, with no markup&quot;；Enterprise 可部署客户自有 VPC、SAML/SSO、RBAC、每用户无限并发）</span><span data-en>Official pricing page (verified 2026-10-01: Open Source and Cloud Individual both free tiers, Enterprise custom; <strong>Individual Max Daily Conversations = 10</strong> while Open Source is Unlimited; BYOK and &quot;at cost, with no markup&quot;; Enterprise can deploy in the customer&#39;s own VPC, SAML/SSO, RBAC, unlimited per-user concurrency)</span></td><td><a href="https://www.all-hands.dev/pricing" target="_blank" rel="noopener">https://www.all-hands.dev/pricing</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>OpenHands/software-agent-sdk · 仓库（Python SDK 与 Agent Server 的真实所在，1,190★，MIT）</span><span data-en>OpenHands/software-agent-sdk · repository (where the Python SDK and Agent Server actually live, 1,190★, MIT)</span></td><td><a href="https://github.com/OpenHands/software-agent-sdk" target="_blank" rel="noopener">https://github.com/OpenHands/software-agent-sdk</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>OpenHands/automation · 仓库（定时与 webhook 分发，32★，MIT）</span><span data-en>OpenHands/automation · repository (schedule and webhook dispatch, 32★, MIT)</span></td><td><a href="https://github.com/OpenHands/automation" target="_blank" rel="noopener">https://github.com/OpenHands/automation</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>Releases（v1.31.0 @ 2026-10-22）</span><span data-en>Releases (v1.31.0 @ 2026-10-22)</span></td><td><a href="https://github.com/OpenHands/OpenHands/releases" target="_blank" rel="noopener">https://github.com/OpenHands/OpenHands/releases</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>官方文档 · LLM settings / LLM profiles（any model supported by litellm、已验证 provider、最多 10 profiles、memory condensation，核验 2026-10-08）</span><span data-en>Official docs · LLM settings / LLM profiles (any model supported by litellm, verified providers, up to 10 profiles, memory condensation, verified 2026-10-08)</span></td><td><a href="https://docs.openhands.dev/openhands/usage/settings/llm-settings" target="_blank" rel="noopener">https://docs.openhands.dev/openhands/usage/settings/llm-settings</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>官方文档 · Context Condenser（SDK 指南：LLMSummarizingCondenser / RollingCondenser，核验 2026-10-08）</span><span data-en>Official docs · Context Condenser (SDK guide: LLMSummarizingCondenser / RollingCondenser, verified 2026-10-08)</span></td><td><a href="https://docs.openhands.dev/sdk/guides/context-condenser" target="_blank" rel="noopener">https://docs.openhands.dev/sdk/guides/context-condenser</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>官方文档 · Runtime Architecture（Docker 沙箱、volume mounts、RemoteRuntime，核验 2026-10-08）</span><span data-en>Official docs · Runtime Architecture (Docker sandbox, volume mounts, RemoteRuntime, verified 2026-10-08)</span></td><td><a href="https://docs.openhands.dev/openhands/usage/architecture/runtime" target="_blank" rel="noopener">https://docs.openhands.dev/openhands/usage/architecture/runtime</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>官方文档 · MCP Servers（CLI/Canvas 配置、http/sse/stdio 传输与认证，核验 2026-10-08）</span><span data-en>Official docs · MCP Servers (CLI/Canvas configuration, http/sse/stdio transports and auth, verified 2026-10-08)</span></td><td><a href="https://docs.openhands.dev/openhands/usage/cli/mcp-servers" target="_blank" rel="noopener">https://docs.openhands.dev/openhands/usage/cli/mcp-servers</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>官方文档 · Agent Server Package（远程 workspace、working_dir、session API key，核验 2026-10-08）</span><span data-en>Official docs · Agent Server Package (remote workspace, working_dir, session API key, verified 2026-10-08)</span></td><td><a href="https://docs.openhands.dev/sdk/arch/agent-server" target="_blank" rel="noopener">https://docs.openhands.dev/sdk/arch/agent-server</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>官方文档 · OpenHands Enterprise vs OSS 部署对比表（Multi-user RBAC / SSO-SAML 仅 Enterprise，OSS Users = 1，核验 2026-10-08）</span><span data-en>Official docs · OpenHands Enterprise vs OSS deployment comparison table (Multi-user RBAC / SSO-SAML only in Enterprise, OSS Users = 1, verified 2026-10-08)</span></td><td><a href="https://docs.openhands.dev/enterprise" target="_blank" rel="noopener">https://docs.openhands.dev/enterprise</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>官方文档 · ACP Agents（README 指向）</span><span data-en>Official docs · ACP Agents (pointed to by the README)</span></td><td><a href="https://docs.openhands.dev/openhands/usage/agent-canvas/acp-agents" target="_blank" rel="noopener">https://docs.openhands.dev/openhands/usage/agent-canvas/acp-agents</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>npm 包@openhands/agent-canvas（README 安装入口）</span><span data-en>npm package @openhands/agent-canvas (the README&#39;s install entry)</span></td><td><a href="https://www.npmjs.com/package/@openhands/agent-canvas" target="_blank" rel="noopener">https://www.npmjs.com/package/@openhands/agent-canvas</a></td></tr>
           </tbody>
         </table>
       </div>
 
             <div class="panel is-slim">
         <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
-        <p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" target="_blank" rel="noopener">protocols/framework/_protocol.md</a>。</p>
+        <span data-zh><p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" target="_blank" rel="noopener">protocols/framework/_protocol.md</a>。</p>
             <p><strong>实测建议</strong>（按本对象形态定制）：</p>
-            <div class="tbl-wrap"><table><thead><tr><th>#</th><th>测什么</th><th>为什么值得测</th></tr></thead><tbody><tr><td>1</td><td><code>software-agent-sdk</code> 单独用（不启 Canvas）能不能跑最小 agent</td><td>决定你到底需不需要这一整套栈</td></tr><tr><td>2</td><td>长任务（跨天）condenser 的压缩效果与成本变化</td><td>机制已知（LLMSummarizingCondenser），压缩率需实测</td></tr><tr><td>3</td><td>每会话容器模式的<strong>真实隔离强度</strong>（同宿主工作区会共用文件这条要实测）</td><td>官方已提示冲突风险</td></tr><tr><td>4</td><td>Docker 形态下 agent 能否绕过 <code>PROJECTS_PATH</code> 触达宿主其他路径</td><td>沙箱有效性是选型前提</td></tr><tr><td>5</td><td>挂 Claude Code / Codex 作为 ACP agent 的实际接入成本</td><td>它最独特的卖点，值不值得取决于这个</td></tr><tr><td>6</td><td>webhook 触发的幂等性与重复触发处理</td><td>定时/webhook 是它的主打场景</td></tr></tbody></table></div>
+            <div class="tbl-wrap"><table><thead><tr><th>#</th><th>测什么</th><th>为什么值得测</th></tr></thead><tbody><tr><td>1</td><td><code>software-agent-sdk</code> 单独用（不启 Canvas）能不能跑最小 agent</td><td>决定你到底需不需要这一整套栈</td></tr><tr><td>2</td><td>长任务（跨天）condenser 的压缩效果与成本变化</td><td>机制已知（LLMSummarizingCondenser），压缩率需实测</td></tr><tr><td>3</td><td>每会话容器模式的<strong>真实隔离强度</strong>（同宿主工作区会共用文件这条要实测）</td><td>官方已提示冲突风险</td></tr><tr><td>4</td><td>Docker 形态下 agent 能否绕过 <code>PROJECTS_PATH</code> 触达宿主其他路径</td><td>沙箱有效性是选型前提</td></tr><tr><td>5</td><td>挂 Claude Code / Codex 作为 ACP agent 的实际接入成本</td><td>它最独特的卖点，值不值得取决于这个</td></tr><tr><td>6</td><td>webhook 触发的幂等性与重复触发处理</td><td>定时/webhook 是它的主打场景</td></tr></tbody></table></div></span><span data-en><p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" target="_blank" rel="noopener">protocols/framework/_protocol.md</a>.</p>
+            <p><strong>Suggested runs</strong> (tailored to this object&#39;s form):</p>
+            <div class="tbl-wrap"><table><thead><tr><th>#</th><th>What to test</th><th>Why it is worth testing</th></tr></thead><tbody><tr><td>1</td><td>Can <code>software-agent-sdk</code> alone (no Canvas) run a minimal agent</td><td>decides whether you need the whole stack at all</td></tr><tr><td>2</td><td>Condenser compression effect and cost change on long (multi-day) tasks</td><td>mechanism known (LLMSummarizingCondenser); compression ratio needs testing</td></tr><tr><td>3</td><td><strong>Real isolation strength of per-conversation containers</strong> (the shared-host-workspace caveat needs testing)</td><td>the official docs already flag the conflict risk</td></tr><tr><td>4</td><td>In Docker form, can the agent escape <code>PROJECTS_PATH</code> to reach other host paths</td><td>sandbox validity is a selection precondition</td></tr><tr><td>5</td><td>Real onboarding cost of attaching Claude Code / Codex as ACP agents</td><td>its most unique selling point; worth it depends on this</td></tr><tr><td>6</td><td>Idempotency and duplicate-trigger handling of webhook triggers</td><td>schedules/webhooks are its flagship scenario</td></tr></tbody></table></div></span>
       </div>
 
 
             <div class="panel is-slim">
-        <h2>形态澄清：这不是 SDK，是平台，而且它在别人之上</h2>
-        <p>本站三种编程底座形态里，它属于第 3 类 <strong>自带完整运行时</strong>， 而且是其中<strong>唯一带 Web UI 的一个</strong>。</p>
+        <h2><span data-zh>形态澄清：这不是 SDK，是平台，而且它在别人之上</span><span data-en>Form clarification: this is not an SDK, it is a platform — and it sits above others</span></h2>
+        <span data-zh><p>本站三种编程底座形态里，它属于第 3 类 <strong>自带完整运行时</strong>， 而且是其中<strong>唯一带 Web UI 的一个</strong>。</p>
             <h3 class="sub-h">三个容易踩的认知落差</h3>
             <p><strong>① 主品牌已改成 Agent Canvas，但仓库名没变。</strong></p>
             <p>它现在的定位是 <strong>control center（控制中心）</strong>。它不再写作「一个开发工具」。 仓库 description 却还是老样子。</p>
@@ -314,11 +378,25 @@
             <p>下面是官方给出的三仓分工，来源是这张表：</p>
             <blockquote>官方有一张 Repository boundaries 表，本档逐字记录。</blockquote>
             <div class="tbl-wrap"><table><thead><tr><th>仓库</th><th>职责</th><th>核验（2026-10-01）</th></tr></thead><tbody><tr><td><code>OpenHands/OpenHands</code></td><td>前端控制中心、后端选择、本地栈编排</td><td>91,593★ · MIT · TypeScript</td></tr><tr><td><code>OpenHands/software-agent-sdk</code></td><td><strong>Python SDK、Agent Server、agents、tools、conversations、workspaces、events</strong></td><td>1,190★ · MIT · Python</td></tr><tr><td><code>OpenHands/automation</code></td><td>定时调度、webhook、run history、分发</td><td>32★ · MIT · Python</td></tr></tbody></table></div>
-            <blockquote>⚠ <strong>91,593★ 是控制中心的星数，不是 SDK 的星数</strong>。 如果你要的是「嵌进自己 Python 进程的 SDK」，那对象是 <code>software-agent-sdk</code>（1,190★）， 不是本条目。 <strong>本站本次未单独收录它</strong> —— 见下方实测建议第 1 条。</blockquote>
+            <blockquote>⚠ <strong>91,593★ 是控制中心的星数，不是 SDK 的星数</strong>。 如果你要的是「嵌进自己 Python 进程的 SDK」，那对象是 <code>software-agent-sdk</code>（1,190★）， 不是本条目。 <strong>本站本次未单独收录它</strong> —— 见下方实测建议第 1 条。</blockquote></span><span data-en><p>Among our three coding-base forms, it belongs to form 3, <strong>ships a complete runtime</strong>, and is the <strong>only one of those with a Web UI</strong>.</p>
+            <h3 class="sub-h">Three perception gaps that are easy to trip on</h3>
+            <p><strong>① The main brand is now Agent Canvas, but the repo name hasn&#39;t changed.</strong></p>
+            <p>Its current positioning is a <strong>control center</strong>. It no longer writes itself as &quot;a development tool&quot;. The repo description is still the old one.</p>
+            <blockquote>Repo description, verbatim: &quot;🙌 OpenHands: AI-Driven Development&quot;; the README&#39;s first-screen title is already Agent Canvas.</blockquote>
+            <p><strong>② It runs more than OpenHands&#39; own agent.</strong></p>
+            <p>The official docs list four and leave an open condition.</p>
+            <blockquote>README, verbatim: &quot;OpenHands, Claude Code, Codex, Gemini, or any ACP-compatible agent&quot;</blockquote>
+            <p><strong>It is not a competitor of the Codex SDK or Claude Agent SDK we list</strong> — they are in a scheduler/scheduled relationship.</p>
+            <p>So the selection question is not &quot;this or Codex&quot; but &quot;do you want one UI to govern Codex / Claude Code / Gemini&quot;.</p>
+            <p><strong>③ The real programming entry is in another repo.</strong></p>
+            <p>The official three-repo division of labor, from this table:</p>
+            <blockquote>The official docs have a Repository boundaries table; this dossier records it verbatim.</blockquote>
+            <div class="tbl-wrap"><table><thead><tr><th>Repository</th><th>Responsibility</th><th>Verified (2026-10-01)</th></tr></thead><tbody><tr><td><code>OpenHands/OpenHands</code></td><td>frontend control center, backend selection, local-stack orchestration</td><td>91,593★ · MIT · TypeScript</td></tr><tr><td><code>OpenHands/software-agent-sdk</code></td><td><strong>Python SDK, Agent Server, agents, tools, conversations, workspaces, events</strong></td><td>1,190★ · MIT · Python</td></tr><tr><td><code>OpenHands/automation</code></td><td>schedule dispatch, webhooks, run history, delivery</td><td>32★ · MIT · Python</td></tr></tbody></table></div>
+            <blockquote>⚠ <strong>91,593★ is the control center&#39;s star count, not the SDK&#39;s</strong>. If what you want is &quot;an SDK embedded in your own Python process&quot;, that object is <code>software-agent-sdk</code> (1,190★), not this entry. <strong>We did not list it separately this time</strong> — see suggested run #1 below.</blockquote></span>
       </div>
       <div class="panel is-slim">
-        <h2>档位：三档里两档是免费档，但「免费」有个硬上限</h2>
-        <p>2026-10-01 核验官方定价页，结论可能与预期不同：<strong>没有「付费个人档」。</strong> （报价按 D9 口径不存，见官方定价页。）</p>
+        <h2><span data-zh>档位：三档里两档是免费档，但「免费」有个硬上限</span><span data-en>Tiers: two of three are free, but &quot;free&quot; has a hard cap</span></h2>
+        <span data-zh><p>2026-10-01 核验官方定价页，结论可能与预期不同：<strong>没有「付费个人档」。</strong> （报价按 D9 口径不存，见官方定价页。）</p>
             <div class="tbl-wrap"><table><thead><tr><th>档位</th><th>部署</th><th>用户</th><th>每日对话</th></tr></thead><tbody><tr><td><strong>Open Source</strong>（免费）</td><td>本地</td><td>1</td><td><strong>Unlimited</strong></td></tr><tr><td><strong>SaaS Individual</strong>（免费）</td><td>云端</td><td>1</td><td><strong>10</strong></td></tr><tr><td><strong>Enterprise</strong>（定制，Contact Us）</td><td>SaaS 或<strong>客户自有 VPC</strong></td><td>Unlimited</td><td>Unlimited</td></tr></tbody></table></div>
             <p><strong>① 最关键的一条落差：云端免费档每天只有 10 轮对话。</strong></p>
             <p>官方对比表同一栏：Open Source = <strong>Unlimited</strong>，Individual = <strong>10</strong>，Enterprise = Unlimited。 <strong>「免费」不等于「不限量」</strong>。想不限量只有两条路：本地跑，或者上 Enterprise。</p>
@@ -329,52 +407,84 @@
             <p><strong>③ Individual 还有一批 OSS 档没有的东西</strong>。 它们包括云端访问（桌面 + 移动端）与 Cloud API（用于自动化与脚本）。 还有 Jira 与 Slack 集成、Secrets、组织支持。</p>
             <p><strong>④ Enterprise 实际是另一套东西，不是「多几个用户」</strong>：</p>
             <ul><li>可部署在<strong>客户自有 VPC</strong></li><li>Enterprise SAML/SSO、多用户 RBAC</li><li>集中团队账单</li><li><strong>每用户无限并发会话</strong></li><li>Large Codebase SDK</li><li><strong>Named Customer Engineer + 共享 Slack 频道 + 优先支持</strong></li></ul>
-            <p>报价需联系销售。</p>
+            <p>报价需联系销售。</p></span><span data-en><p>The official pricing page verified 2026-10-01 leads to a conclusion that may differ from expectations: <strong>there is no paid individual tier.</strong> (Quotes not stored per our D9 rule; see the official pricing page.)</p>
+            <div class="tbl-wrap"><table><thead><tr><th>Tier</th><th>Deployment</th><th>Users</th><th>Daily conversations</th></tr></thead><tbody><tr><td><strong>Open Source</strong> (free)</td><td>local</td><td>1</td><td><strong>Unlimited</strong></td></tr><tr><td><strong>SaaS Individual</strong> (free)</td><td>cloud</td><td>1</td><td><strong>10</strong></td></tr><tr><td><strong>Enterprise</strong> (custom, Contact Us)</td><td>SaaS or <strong>customer&#39;s own VPC</strong></td><td>Unlimited</td><td>Unlimited</td></tr></tbody></table></div>
+            <p><strong>① The most critical gap: the free cloud tier caps at 10 conversations per day.</strong></p>
+            <p>The official comparison table&#39;s same column: Open Source = <strong>Unlimited</strong>, Individual = <strong>10</strong>, Enterprise = Unlimited. <strong>&quot;Free&quot; does not mean &quot;unlimited&quot;</strong>. Two roads to unlimited: run locally, or go Enterprise.</p>
+            <p><strong>② Individual supports bring-your-own-key (BYOK).</strong></p>
+            <p>Without a key you can use the OpenHands LLM provider; generate an API key under Settings &gt; API for the CLI / Local Web UI / Software Agent SDK. The official docs stress it is at cost, zero markup, pay-as-you-go.</p>
+            <p><strong>The official docs do not publish an actual unit-price table</strong>; only the no-markup claim is confirmable (we also store no quotes per D9).</p>
+            <blockquote>Official FAQ, verbatim: all Open Source and Cloud tiers support bringing your own LLM key; without a key you go through the OpenHands provider, officially emphasized &quot;<strong>at cost, with no markup</strong>&quot;.</blockquote>
+            <p><strong>③ Individual also has a batch of things the OSS tier lacks</strong>: cloud access (desktop + mobile) and the Cloud API (for automation and scripts), plus Jira and Slack integrations, Secrets, and organization support.</p>
+            <p><strong>④ Enterprise is actually a different thing, not &quot;a few more users&quot;</strong>:</p>
+            <ul><li>deployable in the <strong>customer&#39;s own VPC</strong></li><li>Enterprise SAML/SSO, multi-user RBAC</li><li>centralized team billing</li><li><strong>unlimited concurrent sessions per user</strong></li><li>Large Codebase SDK</li><li><strong>Named Customer Engineer + shared Slack channel + priority support</strong></li></ul>
+            <p>Pricing requires contacting sales.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>四种部署形态：这是本对象最实用的部分</h2>
-        <p>四个 Option 全部核验：</p>
+        <h2><span data-zh>四种部署形态：这是本对象最实用的部分</span><span data-en>Four deployment forms: the most practical part of this object</span></h2>
+        <span data-zh><p>四个 Option 全部核验：</p>
             <blockquote>核验来源：官方 README 的 Quickstart 四个 Option。</blockquote>
             <div class="tbl-wrap"><table><thead><tr><th>形态</th><th>命令要点</th><th>沙箱</th><th>要Node 24+/uv？</th></tr></thead><tbody><tr><td><strong>① 无沙箱本地</strong></td><td><code>npm i -g @openhands/agent-canvas</code> → <code>agent-canvas</code></td><td>❌ 无</td><td>是</td></tr><tr><td><strong>② Docker 沙箱</strong></td><td><code>docker run ... ghcr.io/openhands/agent-canvas:1.31.0</code></td><td>✅收敛到 <code>PROJECTS_PATH</code></td><td>否</td></tr><tr><td><strong>③ 每会话独立容器</strong></td><td><code>OH_CONVERSATION_RUNTIME=docker agent-canvas</code></td><td>✅每会话隔离</td><td>是 + Docker</td></tr><tr><td><strong>④ 从源码</strong></td><td>clone → <code>npm install</code> → <code>npm run dev</code></td><td>❌ 无</td><td>是</td></tr></tbody></table></div>
             <p><strong>① 和 ④ 官方都挂了同一条 WARNING。</strong></p>
             <blockquote>This runs the agent-server directly on the machine you&#39;re installing on — <strong>the agent will have full access to your filesystem!</strong></blockquote>
             <p><strong>③ 适合并发</strong>：每次新会话起自己的容器与 Agent Server。 官方特别说明容器会挂载会话的 workspace 与持久化状态。<strong>容器替换后文件与对话历史仍在</strong>。 这对本站关心的「可靠长期运行」是正面证据。</p>
-            <p>但官方也提醒：<strong>用同一宿主工作区的会话仍会共用同一批文件</strong>， 建议用独立目录或 worktree 避免冲突编辑。</p>
+            <p>但官方也提醒：<strong>用同一宿主工作区的会话仍会共用同一批文件</strong>， 建议用独立目录或 worktree 避免冲突编辑。</p></span><span data-en><p>All four Options verified:</p>
+            <blockquote>Verification source: the official README Quickstart&#39;s four Options.</blockquote>
+            <div class="tbl-wrap"><table><thead><tr><th>Form</th><th>Command essentials</th><th>Sandbox</th><th>Needs Node 24+/uv?</th></tr></thead><tbody><tr><td><strong>① local without sandbox</strong></td><td><code>npm i -g @openhands/agent-canvas</code> → <code>agent-canvas</code></td><td>❌ none</td><td>yes</td></tr><tr><td><strong>② Docker sandbox</strong></td><td><code>docker run ... ghcr.io/openhands/agent-canvas:1.31.0</code></td><td>✅ narrowed to <code>PROJECTS_PATH</code></td><td>no</td></tr><tr><td><strong>③ per-conversation containers</strong></td><td><code>OH_CONVERSATION_RUNTIME=docker agent-canvas</code></td><td>✅ per-conversation isolation</td><td>yes + Docker</td></tr><tr><td><strong>④ from source</strong></td><td>clone → <code>npm install</code> → <code>npm run dev</code></td><td>❌ none</td><td>yes</td></tr></tbody></table></div>
+            <p><strong>① and ④ carry the same WARNING officially.</strong></p>
+            <blockquote>This runs the agent-server directly on the machine you&#39;re installing on — <strong>the agent will have full access to your filesystem!</strong></blockquote>
+            <p><strong>③ suits concurrency</strong>: each new conversation starts its own container and Agent Server. The official docs specifically note containers mount the conversation&#39;s workspace and persisted state. <strong>Files and conversation history survive container replacement.</strong> This is positive evidence for our &quot;reliable long-running&quot; concern.</p>
+            <p>But the official docs also caution: <strong>conversations using the same host workspace still share the same files</strong> — use separate directories or worktrees to avoid conflicting edits.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>背景任务：这是它最突出的强项</h2>
-        <p>官方的说法很直接：</p>
+        <h2><span data-zh>背景任务：这是它最突出的强项</span><span data-en>Background tasks: its most prominent strength</span></h2>
+        <span data-zh><p>官方的说法很直接：</p>
             <blockquote>The most powerful way to run OpenHands is on a server in the cloud. This allows your agents to <strong>continue running even when your laptop is shut</strong>, and makes it easier to trigger your agents through third-party services like Slack, GitHub, and Datadog.</blockquote>
             <p>配套是独立仓 <code>OpenHands/automation</code>。它提供两种触发方式：<strong>定时</strong>与 <strong>webhook</strong>。 官方特性表列了可集成的第三方。它们是 <strong>Slack、GitHub、Linear、Notion</strong>。</p>
             <p><strong>对照本站其他对象</strong>：OpenAI Agents SDK 的 session、Codex SDK 的 thread 都活在你自己进程 / 自己机器上，关掉就没了。 <strong>把「关掉笔记本后 agent 仍在跑」当卖点做的，只有这个对象。</strong></p>
-            <blockquote>核验 <code>OpenHands/automation</code>（2026-10-01）：Python · MIT · 32★ · 活跃。</blockquote>
+            <blockquote>核验 <code>OpenHands/automation</code>（2026-10-01）：Python · MIT · 32★ · 活跃。</blockquote></span><span data-en><p>The official wording is direct:</p>
+            <blockquote>The most powerful way to run OpenHands is on a server in the cloud. This allows your agents to <strong>continue running even when your laptop is shut</strong>, and makes it easier to trigger your agents through third-party services like Slack, GitHub, and Datadog.</blockquote>
+            <p>The companion is the standalone repo <code>OpenHands/automation</code>, offering two trigger modes: <strong>schedules</strong> and <strong>webhooks</strong>. The official feature table lists integrable third parties: <strong>Slack, GitHub, Linear, Notion</strong>.</p>
+            <p><strong>Compared with our other objects</strong>: the OpenAI Agents SDK&#39;s session and the Codex SDK&#39;s thread live in your own process / own machine — gone when closed. <strong>Only this object markets &quot;the agent keeps running after you close the laptop&quot;.</strong></p>
+            <blockquote>Verified <code>OpenHands/automation</code> (2026-10-01): Python · MIT · 32★ · active.</blockquote></span>
       </div>
       <div class="panel is-slim">
-        <h2>权限与安全：官方做得细，但你要选对形态</h2>
-        <p>关键设计是<strong>API key 而非用户体系</strong>。</p>
+        <h2><span data-zh>权限与安全：官方做得细，但你要选对形态</span><span data-en>Permissions and security: thorough officially, but pick the right form</span></h2>
+        <span data-zh><p>关键设计是<strong>API key 而非用户体系</strong>。</p>
             <div class="tbl-wrap"><table><thead><tr><th>机制</th><th>官方原文 / 参数</th><th>作用</th></tr></thead><tbody><tr><td>key 生成</td><td><code>openssl rand -base64 32</code> → <code>LOCAL_BACKEND_API_KEY</code></td><td>256 位</td></tr><tr><td><code>--public</code> 模式</td><td>key <strong>不烘进前端</strong>，用户首次打开 UI 要粘贴 key</td><td>防止 key 被前端代码泄露</td></tr><tr><td>请求头</td><td>每个 <code>/api/*</code> 都要带 <code>X-Session-API-Key</code></td><td>会话级鉴权</td></tr><tr><td>默认绑定</td><td><strong>loopback-only（127.0.0.1）</strong></td><td>官方说明：为了不让自动注入的 session key 被局域网其他机器拿到</td></tr><tr><td>监听全网卡</td><td><code>--host 0.0.0.0</code> 或 <code>OH_BIND_HOST</code></td><td>此时 key 不再注入，改用同样的输入界面</td></tr><tr><td>传 key 的姿势</td><td>用 <code>export</code> 而非命令行参数</td><td><strong>避免出现在 <code>ps aux</code> 进程列表里</strong></td></tr><tr><td>公网暴露</td><td>官方要求另配防火墙（Cloud Firewall / AWS SG / GCP firewall rule）</td><td></td></tr></tbody></table></div>
             <p><strong>多用户与权限分级已核（2026-10-08）</strong>：正式的 RBAC / SSO 在 Enterprise 档， OSS 档默认单用户、单会话 key。 <strong>团队级使用需上 Enterprise，或自行在反代层做鉴权。</strong></p>
-            <blockquote><code>docs/SELF_HOSTING.md</code>（核验 286 行）只覆盖「保护单个 key」； 官方 enterprise 页给出 RBAC / SSO 的归档。</blockquote>
+            <blockquote><code>docs/SELF_HOSTING.md</code>（核验 286 行）只覆盖「保护单个 key」； 官方 enterprise 页给出 RBAC / SSO 的归档。</blockquote></span><span data-en><p>The key design is <strong>an API key, not a user system</strong>.</p>
+            <div class="tbl-wrap"><table><thead><tr><th>Mechanism</th><th>Official wording / parameter</th><th>Purpose</th></tr></thead><tbody><tr><td>key generation</td><td><code>openssl rand -base64 32</code> → <code>LOCAL_BACKEND_API_KEY</code></td><td>256-bit</td></tr><tr><td><code>--public</code> mode</td><td>key <strong>not baked into the frontend</strong>; users paste it on first UI open</td><td>prevents key leakage via frontend code</td></tr><tr><td>request header</td><td>every <code>/api/*</code> carries <code>X-Session-API-Key</code></td><td>session-level auth</td></tr><tr><td>default binding</td><td><strong>loopback-only (127.0.0.1)</strong></td><td>official rationale: keep the auto-injected session key off the LAN</td></tr><tr><td>listen on all interfaces</td><td><code>--host 0.0.0.0</code> or <code>OH_BIND_HOST</code></td><td>then the key is not injected; same input UI instead</td></tr><tr><td>passing the key</td><td>use <code>export</code>, not command-line arguments</td><td><strong>keeps it out of <code>ps aux</code> listings</strong></td></tr><tr><td>public exposure</td><td>official firewall requirements (Cloud Firewall / AWS SG / GCP firewall rule)</td><td></td></tr></tbody></table></div>
+            <p><strong>Multi-user and permission tiers verified (2026-10-08)</strong>: formal RBAC / SSO sit in the Enterprise tier; the OSS tier defaults to single user, single session key. <strong>Team-level use requires Enterprise, or do auth at your reverse-proxy layer.</strong></p>
+            <blockquote><code>docs/SELF_HOSTING.md</code> (verified, 286 lines) covers only &quot;protecting a single key&quot;; the official enterprise page documents RBAC / SSO.</blockquote></span>
       </div>
       <div class="panel is-slim">
-        <h2>上下文维度：官方给了 condenser（2026-10-08 更新）</h2>
-        <p>这档对象持久化做得很好 —— run history、容器可替换后历史仍在。 <strong>对话上下文长了之后的处理，也有官方机制</strong>。它在 SDK 侧：context condenser。</p>
+        <h2><span data-zh>上下文维度：官方给了 condenser（2026-10-08 更新）</span><span data-en>The context dimension: the official condenser (updated 2026-10-08)</span></h2>
+        <span data-zh><p>这档对象持久化做得很好 —— run history、容器可替换后历史仍在。 <strong>对话上下文长了之后的处理，也有官方机制</strong>。它在 SDK 侧：context condenser。</p>
             <p>按本站主张「<strong>状态 ≠ 上下文</strong>」：</p>
             <ul><li><strong>状态</strong> ✅ 有官方证据（定时/webhook 触发、run history、容器可替换后历史保留）</li><li><strong>上下文</strong> ✅ 有官方机制（condenser）；实际压缩效果待实测</li></ul>
             <p><strong>持久化 ≠ 上下文管理</strong> —— 两者仍是两件事；但本对象现在能给出后者。</p>
-            <blockquote>官方 sdk/guides 页给出 <code>LLMSummarizingCondenser</code> / <code>RollingCondenser</code>。</blockquote>
+            <blockquote>官方 sdk/guides 页给出 <code>LLMSummarizingCondenser</code> / <code>RollingCondenser</code>。</blockquote></span><span data-en><p>This kind of object does persistence well — run history, history surviving container replacement. <strong>Handling long conversation context also has an official mechanism</strong>. It is on the SDK side: the context condenser.</p>
+            <p>Per our claim &quot;<strong>state ≠ context</strong>&quot;:</p>
+            <ul><li><strong>state</strong> ✅ official evidence (schedule/webhook triggers, run history, history preserved across container replacement)</li><li><strong>context</strong> ✅ official mechanism (condenser); real compression effect awaits testing</li></ul>
+            <p><strong>Persistence ≠ context management</strong> — still two things; but this object can now deliver the latter.</p>
+            <blockquote>The official sdk/guides page gives <code>LLMSummarizingCondenser</code> / <code>RollingCondenser</code>.</blockquote></span>
       </div>
       <div class="panel is-slim">
-        <h2>协议：MCP 与 ACP 各管一条线</h2>
-        <p>两条线已核清（2026-10-08）。</p>
+        <h2><span data-zh>协议：MCP 与 ACP 各管一条线</span><span data-en>Protocols: MCP and ACP each run one line</span></h2>
+        <span data-zh><p>两条线已核清（2026-10-08）。</p>
             <p><strong>① MCP</strong> —— 官方有 MCP Servers 专页：</p>
             <ul><li>CLI 用 <code>openhands mcp</code>，Canvas 里也能配</li><li>传输覆盖 http / sse / stdio</li><li>认证支持 Bearer / API Key / OAuth</li><li>已有的 MCP server 生态可直接复用</li></ul>
             <p><strong>② ACP（Agent Client Protocol）</strong> —— README 用它来调度第三方 agent （&quot;Run OpenHands, Claude Code, Codex, Gemini, or any ACP-compatible agent&quot;）。</p>
-            <p><strong>修正上一版档案</strong>：本对象并非只走 ACP，MCP 同样是官方能力。</p>
+            <p><strong>修正上一版档案</strong>：本对象并非只走 ACP，MCP 同样是官方能力。</p></span><span data-en><p>Both lines sorted out (2026-10-08).</p>
+            <p><strong>① MCP</strong> — the official docs have an MCP Servers page:</p>
+            <ul><li>CLI uses <code>openhands mcp</code>; Canvas can configure it too</li><li>Transports cover http / sse / stdio</li><li>Auth supports Bearer / API Key / OAuth</li><li>The existing MCP server ecosystem is directly reusable</li></ul>
+            <p><strong>② ACP (Agent Client Protocol)</strong> — the README uses it to schedule third-party agents (&quot;Run OpenHands, Claude Code, Codex, Gemini, or any ACP-compatible agent&quot;).</p>
+            <p><strong>Correction to the previous version</strong>: this object is not ACP-only; MCP is equally an official capability.</p></span>
       </div>
       <div class="panel is-slim">
-        <h2>核验说明</h2>
-        <p><code>confidence: partial</code> 的依据：</p>
+        <h2><span data-zh>核验说明</span><span data-en>Verification notes</span></h2>
+        <span data-zh><p><code>confidence: partial</code> 的依据：</p>
             <p><strong>为什么不是 verified</strong>：并非缺轴。八维本轮均已核到官方机制（<code>context</code> 侧有官方 condenser，见 axes.context）。仍留 partial 是因为还存在<strong>官方确实没写、或需实测</strong>的项：</p>
             <ul><li>context 压缩的端到端效果</li><li>本地→远端工作区的同步机制（官方未说明）</li><li>ACP 与 MCP 的定位边界</li><li>Enterprise 档的具体内容（官方只写 Custom pricing / Contact Us）</li></ul>
             <p>按 v3 铁律「未知就说未知」，故仍标 partial。</p>
@@ -385,16 +495,27 @@
             <blockquote><code>software-agent-sdk</code>（1,190★ · MIT · Python）、<code>automation</code>（32★ · MIT · Python）。</blockquote>
             <p><strong>未核验</strong>：</p>
             <ul><li>对话上下文压缩的实测效果</li><li>本地→远端工作区的同步机制（官方未说明）</li><li><code>software-agent-sdk</code> 的 API 形态</li><li>LLM profiles 的完整配置格式（官方页有，细节未逐条录入）</li></ul>
-            <p><strong>本轮（2026-10-01）补上的</strong>：官方定价页三档已核实 —— Open Source 与 Cloud Individual 均为免费档、Enterprise 定制； <strong>Individual 每日 10 轮对话上限</strong>（对照 Open Source 的 Unlimited）； Individual 支持 BYOK、无 key 时走 OpenHands provider 且官方声明 <strong>at cost, no markup</strong>； Enterprise 可部署客户自有 VPC。还有 SAML/SSO、RBAC、每用户无限并发。 Enterprise 档的具体内容仍未核验（按 D9 口径本站也不存任何报价数字）。</p>
+            <p><strong>本轮（2026-10-01）补上的</strong>：官方定价页三档已核实 —— Open Source 与 Cloud Individual 均为免费档、Enterprise 定制； <strong>Individual 每日 10 轮对话上限</strong>（对照 Open Source 的 Unlimited）； Individual 支持 BYOK、无 key 时走 OpenHands provider 且官方声明 <strong>at cost, no markup</strong>； Enterprise 可部署客户自有 VPC。还有 SAML/SSO、RBAC、每用户无限并发。 Enterprise 档的具体内容仍未核验（按 D9 口径本站也不存任何报价数字）。</p></span><span data-en><p>Basis for <code>confidence: partial</code>:</p>
+            <p><strong>Why not verified</strong>: no axis is missing. All eight axes were verified to official mechanisms this round (the <code>context</code> side has the official condenser, see axes.context). It stays partial because items remain that <strong>the official docs genuinely don&#39;t state, or that need testing</strong>:</p>
+            <ul><li>end-to-end effect of context compression</li><li>the local→remote workspace sync mechanism (not stated officially)</li><li>the positioning boundary between ACP and MCP</li><li>the concrete contents of the Enterprise tier (official docs only say Custom pricing / Contact Us)</li></ul>
+            <p>Per the v3 rule &quot;say unknown when unknown&quot;, it stays partial.</p>
+            <p><strong>Verified (this part is solid)</strong>:</p>
+            <ul><li>Repository existence and star count (91,593 · rolling verification 2026-10-23), license (MIT, via license API)</li><li>Last push (2026-10-22, still active), latest release <strong>v1.31.0</strong> (releases @ 2026-10-22)</li><li>Full README nine sections (positioning, four-item feature table, Quickstart&#39;s four Options, Architecture and Repository boundaries table, More documentation)</li></ul>
+            <ul><li>Security-mechanism highlights of the 286-line <code>docs/SELF_HOSTING.md</code></li><li>Repo top-level directory structure (<code>helm/</code>, <code>vercel.json</code>, <code>electron-builder.config.mjs</code>, <code>.openhands/</code>, <code>docker/</code>, etc.)</li></ul>
+            <ul><li>Metadata of the <code>software-agent-sdk</code> and <code>automation</code> repos</li></ul>
+            <blockquote><code>software-agent-sdk</code> (1,190★ · MIT · Python), <code>automation</code> (32★ · MIT · Python).</blockquote>
+            <p><strong>Not verified</strong>:</p>
+            <ul><li>Measured effect of conversation-context compression</li><li>The local→remote workspace sync mechanism (not stated officially)</li><li>The API shape of <code>software-agent-sdk</code></li><li>The full configuration format of LLM profiles (the official page has it; details not entered item by item)</li></ul>
+            <p><strong>Added this round (2026-10-01)</strong>: the official pricing page&#39;s three tiers verified — Open Source and Cloud Individual both free tiers, Enterprise custom; <strong>Individual&#39;s 10-conversation daily cap</strong> (versus Open Source&#39;s Unlimited); Individual supports BYOK; without a key the OpenHands provider applies, officially <strong>at cost, no markup</strong>; Enterprise can deploy in the customer&#39;s own VPC, with SAML/SSO, RBAC, unlimited per-user concurrency. Enterprise tier specifics remain unverified (and we store no quote numbers per D9).</p></span>
       </div>
 
             <div class="panel is-slim">
         <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
         <ul class="rel-list">
-          <li><span class="rel-t"><a href="./codex-sdk.html"><span data-zh>Codex SDK</span><span data-en>Codex SDK</span></a></span><span class="rel-n"><strong>调度关系，不是竞争关系</strong>：README 明确 Agent Canvas 能跑 Codex。 本档案讲的是「谁给你调度」，codex-sdk 讲的是「被调度的是什么」。</span></li>
-          <li><span class="rel-t"><a href="./claude-agent-sdk.html"><span data-zh>Claude Agent SDK</span><span data-en>Claude Agent SDK</span></a></span><span class="rel-n">同上，Claude Code 也是它声明可调度的 agent 之一。</span></li>
-          <li><span class="rel-t"><a href="./deepagents.html"><span data-zh>Deep Agents</span><span data-en>Deep Agents</span></a></span><span class="rel-n">都是 batteries-included 那一档， 但 deepagents 是一个库、OpenHands 是一整套带 Web UI 的栈。</span></li>
-          <li><span class="rel-t"><a href="./langgraph.html"><span data-zh>LangGraph</span><span data-en>LangGraph</span></a></span><span class="rel-n">若要的是「用代码定义流程」而非「用界面调度 agent」， 编排框架才是对应层。</span></li>
+          <li><span class="rel-t"><a href="./codex-sdk.html"><span data-zh>Codex SDK</span><span data-en>Codex SDK</span></a></span><span class="rel-n"><span data-zh><strong>调度关系，不是竞争关系</strong>：README 明确 Agent Canvas 能跑 Codex。 本档案讲的是「谁给你调度」，codex-sdk 讲的是「被调度的是什么」。</span><span data-en><strong>A scheduling relationship, not a competitive one</strong>: the README states plainly that Agent Canvas can run Codex. This dossier is about &quot;who schedules for you&quot;; codex-sdk is about &quot;what gets scheduled&quot;.</span></span></li>
+          <li><span class="rel-t"><a href="./claude-agent-sdk.html"><span data-zh>Claude Agent SDK</span><span data-en>Claude Agent SDK</span></a></span><span class="rel-n"><span data-zh>同上，Claude Code 也是它声明可调度的 agent 之一。</span><span data-en>Same as above: Claude Code is also one of the agents it declares it can schedule.</span></span></li>
+          <li><span class="rel-t"><a href="./deepagents.html"><span data-zh>Deep Agents</span><span data-en>Deep Agents</span></a></span><span class="rel-n"><span data-zh>都是 batteries-included 那一档， 但 deepagents 是一个库、OpenHands 是一整套带 Web UI 的栈。</span><span data-en>Both in the batteries-included tier, but deepagents is a library while OpenHands is a whole stack with a Web UI.</span></span></li>
+          <li><span class="rel-t"><a href="./langgraph.html"><span data-zh>LangGraph</span><span data-en>LangGraph</span></a></span><span class="rel-n"><span data-zh>若要的是「用代码定义流程」而非「用界面调度 agent」， 编排框架才是对应层。</span><span data-en>If what you want is &quot;define flows in code&quot; rather than &quot;schedule agents through a UI&quot;, an orchestration framework is the matching layer.</span></span></li>
           <li><span class="rel-t"><a href="/coding/opencode.html"><span data-zh>OpenCode</span><span data-en>OpenCode</span></a></span><span class="rel-n"><span data-zh>另一层 · AI 编程</span><span data-en>Other layer · AI coding</span></span></li>
           <li><span class="rel-t"><a href="/mcp/filesystem.html"><span data-zh>Filesystem MCP Server</span><span data-en>Filesystem MCP Server</span></a></span><span class="rel-n"><span data-zh>另一层 · MCP 工具</span><span data-en>Other layer · MCP tools</span></span></li>
         </ul>
