@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>MaxKB — Automation | 投机取巧</title>
+  <meta name="description" content="MaxKB（飞致云（国产））：MaxKB 是飞致云出品的国产开源企业级智能体平台（官方博客当日口径：RAG 检索增强生成+工作流编排+技能 Skills+MCP 工具调用四能力）：GPL-3.0 开源自托管为主形态（★23,081 当日核验），深度合成服务算法备案双条目 在册（服务提供者+技术支持者，第十六批 2…" />
+  <link rel="canonical" href="https://tools.specul.com/automation/maxkb.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="MaxKB" />
+  <meta property="og:url" content="https://tools.specul.com/automation/maxkb.html" />
+  <meta property="og:title" content="MaxKB — Automation | 投机取巧" />
+  <meta property="og:description" content="MaxKB（飞致云（国产））：MaxKB 是飞致云出品的国产开源企业级智能体平台（官方博客当日口径：RAG 检索增强生成+工作流编排+技能 Skills+MCP 工具调用四能力）：GPL-3.0 开源自托管为主形态（★23,081 当日核验），深度合成服务算法备案双条目 在册（服务提供者+技术支持者，第十六批 2…" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"MaxKB","applicationCategory":"DeveloperApplication","sameAs":"https://maxkb.cn","description":"MaxKB 是飞致云出品的国产开源企业级智能体平台（官方博客当日口径：RAG 检索增强生成+工作流编排+技能 Skills+MCP 工具调用四能力）：GPL-3.0 开源自托管为主形态（★23,081 当日核验），深度合成服务算法备案双条目 在册（服务提供者+技术支持者，第十六批 2026-03-12）——企业内网「数据不出域」场景的国产合规叙事样本。","dateModified":"2026-10-30"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Automation</span>
+      </nav>
+      <a class="back" href="./">← Automation</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#a3e635" aria-hidden="true"><span data-zh>Ma</span><span data-en>MA</span></div>
+        <div>
+          <h1><span data-zh>MaxKB</span><span data-en>MaxKB</span></h1>
+          <div class="vendor is-caps"><span data-zh>飞致云（国产）</span><span data-en>Fit2Cloud (China-origin)</span></div>
+        </div>
+      </div>
+
+      <div class="badges">
+        <span class="tag on"><span data-zh>国产</span><span data-en>China-origin</span></span>
+        <span class="tag on"><span data-zh>低代码</span><span data-en>Low-code</span></span>
+        <span class="tag on"><span data-zh>RAG</span><span data-en>RAG</span></span>
+        <span class="tag on"><span data-zh>知识库</span><span data-en>Knowledge base</span></span>
+        <span class="tag on"><span data-zh>自托管</span><span data-en>Self-hosted</span></span>
+        <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
+        <span class="tag on"><span data-zh>GPL-3.0</span><span data-en>GPL-3.0</span></span>
+        <span class="tag on"><span data-zh>MCP</span><span data-en>MCP</span></span>
+        <span class="tag on"><span data-zh>企业向</span><span data-en>Enterprise-focused</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-30</span>
+      </div>
+
+            
+      <div class="panel-lead"><span data-zh><p><strong>MaxKB 是飞致云出品的国产开源企业级智能体平台</strong>（官方博客当日口径：RAG 检索增强生成+工作流编排+技能 Skills+MCP 工具调用四能力）：GPL-3.0 开源自托管为主形态（★23,081 当日核验），<strong>深度合成服务算法备案双条目 在册</strong>（服务提供者+技术支持者，第十六批 2026-03-12）——企业内网「数据不出域」场景的国产合规叙事样本。</p></span><span data-en><p><strong>MaxKB is Fit2Cloud&#39;s China-origin open-source enterprise agent platform</strong> (same-day official blog framing: four capabilities — RAG retrieval-augmented generation + workflow orchestration + Skills + MCP tool calling): GPL-3.0 open-source self-hosting is the main form (★23,081 verified same day), with <strong>two deep-synthesis algorithm filing entries on record</strong> (service provider + technology supporter, 16th batch, 2026-03-12) — a China-origin compliance narrative sample for &quot;data never leaves the intranet&quot; scenarios.</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+<span data-zh>        <div><p>适合：企业内网自托管知识库问答（数据不出域）、要 MCP+工作流的国产开源方案、要已备案合规叙事。 不适合：要宽松许可（GPL-3.0 copyleft）、要个人轻量上手（企业交付向）。</p></div></span><span data-en>        <div><p>Fits: intranet self-hosted KB Q&amp;A (data never leaves the domain), a China-origin open-source option with MCP + workflow orchestration, a filed-compliance narrative. Not a fit: permissive licensing (GPL-3.0 copyleft), casual personal use (enterprise-delivery oriented).</p></div></span>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-30</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国产</span><span data-en>domestic</span>　<span data-zh>杭州飞致云信息科技有限公司（备案清单当日解析在册）；开源项目 1Panel-dev/MaxKB。</span><span data-en>Hangzhou Fit2Cloud Information Technology Co., Ltd. (on record in the filing list parsed same day); open-source project 1Panel-dev/MaxKB.</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>GitHub 仓与 docs.fit2cloud.com/maxkb 大陆直连实测 200（2026-10-30）；maxkb.cn 官网直连 403（CF 类拦截非死链，代理可达）——获取路径以仓与文档域为准。</span><span data-en>the GitHub repo and docs.fit2cloud.com/maxkb measured 200 direct from mainland (2026-10-30); maxkb.cn measured 403 direct (Cloudflare-style block, not a dead link; reachable via proxy) — acquisition paths go by the repo and docs domains.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>已备案</span><span data-en>Filed</span>：<code>网信算备330106491701101260019号 / 网信算备330106491701101260027号</code>　·　<span data-zh>备案时间</span><span data-en>filed</span> 2026-03-12　·　<span data-zh>第十六批《境内深度合成服务算法备案清单》（2026-03-12 公示）当日下载官方文件解析双条目在册：</span><span data-en>the 16th &quot;Domestic Deep-Synthesis Service Algorithm Filing List&quot; (publicized 2026-03-12) was downloaded and parsed</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>平台不带自有模型——对接各种主流大语言模型（官方博客当日在册口径）；自托管形态可接本地模型 （配合 runner 类工具）；托管/商业发行的内置模型清单未逐条核验。</p></span><span data-en><p>The platform ships no in-house model — it connects to various mainstream LLMs (same-day official blog wording); the self-hosted form can attach local models (paired with runner-class tools); the hosted/commercial editions&#39; built-in model list not verified item by item.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>开源自托管为主形态（1Panel-dev/MaxKB 仓直连 200，当日推送 2026-10-30；releases v2.10.8-lts 2026-10-22）； 1Panel 应用商店一键部署路径在册（飞致云生态）；官方文档在 docs.fit2cloud.com/maxkb（直连 200）。</p></span><span data-en><p>Open-source self-hosting is the main current form (1Panel-dev/MaxKB repo direct 200, pushed same day 2026-10-30; releases v2.10.8-lts 2026-10-22); one-click deployment via the 1Panel app store is on record (Fit2Cloud ecosystem); official docs live at docs.fit2cloud.com/maxkb (direct 200).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>自托管形态数据在本机（部署文档在册）——这是与托管类产品的核心差异：知识库文件、对话记录全部落在自有部署内； 商业发行的数据面按合同形态未逐条核验。</p></span><span data-en><p>In the self-hosted form data lives on your own machines (deployment docs on record) — the core difference from hosted products: knowledge-base files and chat logs all stay inside your own deployment; the commercial editions&#39; data surface not verified item by item.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>产品主轴是企业知识库问答（RAG）+工作流编排+技能（Skills）+MCP 工具调用（官方博客当日在册四能力）； 定时与后台执行细节未逐条核验。</p></span><span data-en><p>The product&#39;s main axis is enterprise knowledge-base Q&amp;A (RAG) + workflow orchestration + Skills + MCP tool calling (four capabilities on record in the same-day official blog); scheduling and background-execution details not verified item by item.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>MCP 工具调用是官方明言能力（博客当日在册「支持 RAG、工作流编排、技能(Skills) 和 MCP 工具调用」）； 工作流编排节点面在 docs 在册；具体连接器清单未逐条核验。</p></span><span data-en><p>MCP tool calling is an officially stated capability (same-day blog: &quot;supports RAG, workflow orchestration, Skills and MCP tool calling&quot;); workflow node surfaces are on record in the docs; the concrete connector list not verified item by item.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>知识库（RAG）是核心持久知识面；多轮对话上下文在册；跨应用记忆机制细节未逐条核验。</p></span><span data-en><p>The knowledge base (RAG) is the core persistent knowledge surface; multi-turn context on record; cross-application memory details not verified item by item.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>GPL-3.0 强 copyleft——衍生分发义务与 Apache 家族不同（商用集成要评估传染面）；深度合成服务算法备案 双条目在册（见 cn 块：服务提供者+服务技术支持者两个角色都备了）；训练用途开关路径未逐条核验。</p></span><span data-en><p>GPL-3.0 strong copyleft — derivative-distribution obligations differ from the Apache family (embedding into closed-source products requires assessing the propagation surface); two deep-synthesis algorithm filing entries on record (see the cn block: both the service-provider and the technology-supporter roles are filed); training-use toggle path not verified item by item.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合：企业内网自托管知识库问答（数据不出域）、要 MCP 工具调用与工作流编排的国产开源方案、 要已备案的合规叙事（算法备案双条目在册）。 不适合：要宽松许可（GPL-3.0 copyleft）、要个人轻量上手（企业交付向）。</p></span><span data-en><p>Fits: intranet self-hosted KB Q&amp;A (data never leaves the domain), a China-origin open-source option with MCP tool calling and workflow orchestration, a filed-compliance narrative (two algorithm-filing entries on record). Not a fit: permissive licensing (GPL-3.0 copyleft), casual personal use (enterprise-delivery oriented).</p></span></dd>
+        </div>
+      </dl>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li><span data-zh><strong>备案类别要分清</strong>：MaxKB 通过的是<strong>深度合成服务算法备案</strong>（第十六批，2026-03-12 公示，服务提供者+技术支持者双条目）——不是生成式 AI 服务备案，两者是不同类别</span><span data-en><strong>Mind the filing category</strong>: MaxKB passed the <strong>deep-synthesis service algorithm filing</strong> (16th batch, publicized 2026-03-12, two entries: service provider + technology supporter) — not generative-AI service filing; the two are different categories</span></li>
+          <li><span data-zh>maxkb.cn 大陆直连 403（CF 类拦截非死链，代理可达）——判可达性别只看官网入口，仓与文档域（GitHub/docs.fit2cloud.com）直连 200</span><span data-en>maxkb.cn measures 403 direct from mainland (Cloudflare-style block, not a dead link; reachable via proxy) — don&#39;t judge reachability by the site entry alone; the repo and docs domains (GitHub/docs.fit2cloud.com) measure 200 direct</span></li>
+          <li><span data-zh>GPL-3.0 ≠ Apache 家族——把 MaxKB 嵌进闭源产品前必须评估 copyleft 分发义务，与 Dify/FastGPT 的 Apache+附加条件是完全不同的合规路径</span><span data-en>GPL-3.0 ≠ the Apache family — before embedding MaxKB into a closed-source product you must assess copyleft distribution obligations; a completely different compliance path from Dify/FastGPT&#39;s Apache + extra terms</span></li>
+        </ul>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
+        <span data-zh>
+        <ul>
+          <li>社区版与专业版/企业版功能切分（未在册）</li>
+          <li>连接器/插件清单（未逐条核验）</li>
+          <li>训练用途开关路径与默认态（未逐条核验）</li>
+          <li>托管 SaaS 形态是否存在（以自托管为主形态，托管面未核验）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>Community vs Professional/Enterprise feature split (not on record)</li>
+          <li>Connector/plugin list (not verified item by item)</li>
+          <li>Training-use toggle path and default state (not verified item by item)</li>
+          <li>Whether a hosted SaaS form exists (self-hosting is the main form; the hosted surface not verified)</li>
+        </ul></span>
+      </div>
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>判断可回到以下一手源复核。本站核验日</span><span data-en>Every judgement can be rechecked against the primary sources below. Verified on</span> 2026-10-30，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-30。</p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>repo</td><td><span data-zh>1Panel-dev/MaxKB · 官方仓（GPL-3.0，GitHub API 当日核验 ★23,081/pushed 2026-10-30；releases v2.10.8-lts 2026-10-22）</span><span data-en>1Panel-dev/MaxKB · official repo (GPL-3.0, GitHub API verified same day: ★23,081 / pushed 2026-10-30; releases v2.10.8-lts 2026-10-22)</span></td><td><a href="https://github.com/1Panel-dev/MaxKB" target="_blank" rel="noopener">https://github.com/1Panel-dev/MaxKB</a></td></tr>
+            <tr><td>filing</td><td><span data-zh>网信办 · 境内深度合成服务算法备案清单（2026年3月/第十六批，当日下载解析：MaxKB 服务提供者条目 605 网信算备330106491701101260019号、技术支持者条目 750 网信算备330106491701101260027号，主体杭州飞致云信息科技有限公司；公告入口 beian.cac.gov.cn）</span><span data-en>CAC · Domestic Deep-Synthesis Service Algorithm Filing List (March 2026 / 16th batch, downloaded and parsed same day: MaxKB service-provider entry 605, filing no. 网信算备330106491701101260019; technology-supporter entry 750, filing no. 网信算备330106491701101260027; entity Hangzhou Fit2Cloud Information Technology Co., Ltd.; announcement portal beian.cac.gov.cn)</span></td><td><a href="https://www.cac.gov.cn/cms/pub/interact/downloadfile.jsp?filepath=NUtqEIwGiCjGm2Bhl20cvBy2HA04djr0wEW/PdA55oAbv1GA808enWaX/u3kfDU0BMF2l/f0eo8c5GOkAvXc~jZS2/Bjnic3oqu3HpPj8kk=&amp;fText=%E5%A2%83%E5%86%85%E6%B7%B1%E5%BA%A6%E5%90%88%E6%88%90%E6%9C%8D%E5%8A%A1%E7%AE%97%E6%B3%95%E5%A4%87%E6%A1%88%E6%B8%85%E5%8D%95%EF%BC%882026%E5%B9%B43%E6%9C%88%EF%BC%89" target="_blank" rel="noopener">https://www.cac.gov.cn/cms/pub/interact/downloadfile.jsp?filepath=NUtqEIwGiCjGm2Bhl20cvBy2HA04djr0wEW/PdA55oAbv1GA808enWaX/u3kfDU0BMF2l/f0eo8c5GOkAvXc~jZS2/Bjnic3oqu3HpPj8kk=&amp;fText=%E5%A2%83%E5%86%85%E6%B7%B1%E5%BA%A6%E5%90%88%E6%88%90%E6%9C%8D%E5%8A%A1%E7%AE%97%E6%B3%95%E5%A4%87%E6%A1%88%E6%B8%85%E5%8D%95%EF%BC%882026%E5%B9%B43%E6%9C%88%EF%BC%89</a></td></tr>
+            <tr><td>official</td><td><span data-zh>飞致云官方博客 · MaxKB 通过深度合成服务算法备案（2026-03-12 批次口径+四能力定位，2026-10-30 检索在册）</span><span data-en>Fit2Cloud official blog · MaxKB passed the deep-synthesis algorithm filing (16th-batch framing + four-capability positioning, on record via same-day search)</span></td><td><a href="https://blog.fit2cloud.com?p=019d00c3-6400-7681-a025-e75e0318ee45/" target="_blank" rel="noopener">https://blog.fit2cloud.com?p=019d00c3-6400-7681-a025-e75e0318ee45/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>MaxKB · 官方文档（docs.fit2cloud.com/maxkb，2026-10-30 直抓 200）</span><span data-en>MaxKB · official docs (docs.fit2cloud.com/maxkb, direct-fetched 200 on 2026-10-30)</span></td><td><a href="https://docs.fit2cloud.com/maxkb/" target="_blank" rel="noopener">https://docs.fit2cloud.com/maxkb/</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
+        <span data-zh><p>本站尚未完成实测。编码向实测协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a>（agent 平台不适用编码任务集）。</p>
+            <p><strong>实测建议</strong>（三条，都指向官方可读页没给的东西）：</p>
+            <ul><li><strong>工作流编排节点与 Dify/FastGPT 的能力差</strong>（三家国产同类，差异面未横向在册）</li><li><strong>Skills/MCP 调用的现役边界</strong>（官方明言能力，具体清单与稳定性未逐条核验）</li><li><strong>社区版与专业版/企业版的功能切分</strong>（商业发行存在，切分面未在册）</li></ul></span><span data-en><p>This site has not completed measured runs. The coding-oriented test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a> (the coding task suite does not apply to agent platforms).</p>
+            <p><strong>Suggested measurements</strong> (three, all pointing at things the official readable pages do not give):</p>
+            <ul><li><strong>Workflow nodes vs Dify/FastGPT capability deltas</strong> (three China-origin peers; the cross-comparison surface is not on record)</li><li><strong>The live Skills/MCP calling boundaries</strong> (officially stated capability; the concrete list and stability not verified item by item)</li><li><strong>Feature split between Community and Professional/Enterprise editions</strong> (commercial editions exist; the split is not on record)</li></ul></span>
+      </div>
+
+
+      
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./fastgpt.html"><span data-zh>FastGPT</span><span data-en>FastGPT</span></a></span><span class="rel-n"><span data-zh>同为国产开源 RAG 问答平台：FastGPT Apache+附加条件、社区生态大；MaxKB GPL-3.0、企业交付+备案叙事。</span><span data-en>Also a China-origin open-source RAG Q&amp;A platform: FastGPT is Apache + extra terms with a big community ecosystem; MaxKB is GPL-3.0 with enterprise delivery and a filing narrative.</span></span></li>
+          <li><span class="rel-t"><a href="./dify.html"><span data-zh>Dify</span><span data-en>Dify</span></a></span><span class="rel-n"><span data-zh>国产开源 agent 平台对照：Dify 通用画布出海向；MaxKB 企业内网交付向。</span><span data-en>China-origin open-source agent platform contrast: Dify is the general canvas going global; MaxKB targets intranet enterprise delivery.</span></span></li>
+          <li><span class="rel-t"><a href="/runner/ollama.html"><span data-zh>Ollama</span><span data-en>Ollama</span></a></span><span class="rel-n"><span data-zh>本地模型层对照：MaxKB 自托管可接本地模型，模型运行器归 runner 类。</span><span data-en>The local-model layer contrast: self-hosted MaxKB can attach local models; model runners belong to the runner class.</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

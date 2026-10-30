@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>FastGPT — Automation | 投机取巧</title>
+  <meta name="description" content="FastGPT（labring（环际云，国产））：FastGPT 是国产开源的 RAG 知识库问答与应用构建平台（文档主轴：知识库问答+agent/工作流编排）： 开源仓自托管（★29,949 当日核验）+ 官方托管双入口——fastgpt.io 国际版、fastgpt.cn 大陆版（页脚主体 广州环际云计算有限…" />
+  <link rel="canonical" href="https://tools.specul.com/automation/fastgpt.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="FastGPT" />
+  <meta property="og:url" content="https://tools.specul.com/automation/fastgpt.html" />
+  <meta property="og:title" content="FastGPT — Automation | 投机取巧" />
+  <meta property="og:description" content="FastGPT（labring（环际云，国产））：FastGPT 是国产开源的 RAG 知识库问答与应用构建平台（文档主轴：知识库问答+agent/工作流编排）： 开源仓自托管（★29,949 当日核验）+ 官方托管双入口——fastgpt.io 国际版、fastgpt.cn 大陆版（页脚主体 广州环际云计算有限…" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"FastGPT","applicationCategory":"DeveloperApplication","sameAs":"https://fastgpt.io","description":"FastGPT 是国产开源的 RAG 知识库问答与应用构建平台（文档主轴：知识库问答+agent/工作流编排）： 开源仓自托管（★29,949 当日核验）+ 官方托管双入口——fastgpt.io 国际版、fastgpt.cn 大陆版（页脚主体 广州环际云计算有限公司，ICP 备案在册）；许可是 Apache 2.0 加两条附加条件（与 Dify 同款）。","dateModified":"2026-10-30"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Automation</span>
+      </nav>
+      <a class="back" href="./">← Automation</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#a3e635" aria-hidden="true"><span data-zh>Fa</span><span data-en>FA</span></div>
+        <div>
+          <h1><span data-zh>FastGPT</span><span data-en>FastGPT</span></h1>
+          <div class="vendor is-caps"><span data-zh>labring（环际云，国产）</span><span data-en>labring (Huanji Cloud, China-origin)</span></div>
+        </div>
+      </div>
+
+      <div class="badges">
+        <span class="tag on"><span data-zh>国产</span><span data-en>China-origin</span></span>
+        <span class="tag on"><span data-zh>低代码</span><span data-en>Low-code</span></span>
+        <span class="tag on"><span data-zh>RAG</span><span data-en>RAG</span></span>
+        <span class="tag on"><span data-zh>知识库</span><span data-en>Knowledge base</span></span>
+        <span class="tag on"><span data-zh>自托管</span><span data-en>Self-hosted</span></span>
+        <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
+        <span class="tag on"><span data-zh>Apache2.0附加条款</span><span data-en>Apache-2.0 extra terms</span></span>
+        <span class="tag on"><span data-zh>agentic工作流</span><span data-en>Agentic workflows</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-30</span>
+      </div>
+
+            
+      <div class="panel-lead"><span data-zh><p><strong>FastGPT 是国产开源的 RAG 知识库问答与应用构建平台</strong>（文档主轴：知识库问答+agent/工作流编排）： 开源仓自托管（★29,949 当日核验）+ 官方托管双入口——fastgpt.io 国际版、fastgpt.cn 大陆版（页脚主体 广州环际云计算有限公司，ICP 备案在册）；许可是 Apache 2.0 加两条附加条件（与 Dify 同款）。</p></span><span data-en><p><strong>FastGPT is a China-origin open-source RAG knowledge-base Q&amp;A and app-building platform</strong> (docs&#39; main axis: KB Q&amp;A + agent/workflow orchestration): open-source repo self-hosted (★29,949 verified same day) + official hosted with two entries — fastgpt.io international, fastgpt.cn mainland (footer entity Guangzhou Huanji Cloud Computing Co., Ltd., ICP registration on record); the license is Apache 2.0 plus two extra conditions (same pattern as Dify).</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+<span data-zh>        <div><p>适合：中文知识库问答/RAG 应用（自托管可控）、要大陆直连托管入口。 不适合：要纯 Apache 2.0 无附加条件（多租户 SaaS 受限）、要代码级 agent 框架。</p></div></span><span data-en>        <div><p>Fits: Chinese knowledge-base Q&amp;A / RAG apps (self-hosted and controllable), a direct-mainland hosted entry. Not a fit: pure Apache 2.0 without extra terms (multi-tenant SaaS restricted), code-level agent frameworks.</p></div></span>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-30</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国产</span><span data-en>domestic</span>　<span data-zh>labring 开源项目；大陆托管版页脚主体广州环际云计算有限公司（fastgpt.cn 当日直抓在册）。</span><span data-en>labring open-source project; the mainland hosted version&#39;s footer entity is Guangzhou Huanji Cloud Computing Co., Ltd. (fastgpt.cn direct-fetched same day).</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>fastgpt.io、fastgpt.cn、doc.fastgpt.io（307→200）、GitHub 仓大陆直连实测 200（2026-10-30）——开源+大陆托管版双获取路径。</span><span data-en>fastgpt.io, fastgpt.cn, doc.fastgpt.io (307→200) and the GitHub repo all measured 200 direct from mainland (2026-10-30) — open source plus a mainland hosted entry.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>未见于备案名单</span><span data-en>not in filing list</span>：<span data-zh>未见于生成式 AI 服务/深度合成算法备案公示名单（2026-10-30 检索百炼公示页与第十六批批次清单，未见 FastGPT 条目）；</span><span data-en>not in the generative-AI / deep-synthesis filing registries (Bailian disclosure page and the 16th batch list searched 2026-10-30; no FastGPT entry); the ICP number on fastgpt.cn&#39;s footer (ICP备2023048773号) is a website ICP registration, a different category from generative-AI service filing — not conflated.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>平台不带自有模型——对接各家大模型（OpenAI 兼容接口为主轴）；托管版（fastgpt.io/fastgpt.cn）内置模型 清单未逐条核验；自托管版可接本地模型（配合 runner 类工具）。</p></span><span data-en><p>The platform ships no in-house model — it connects to various LLMs (OpenAI-compatible interfaces are the main axis); the hosted versions&#39; (fastgpt.io/fastgpt.cn) built-in model list not verified item by item; the self-hosted version can attach local models (paired with runner-class tools).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>双形态：开源仓自托管（labring/FastGPT，GitHub 直连 200，当日推送 2026-10-30）+ 官方托管版 （fastgpt.io 国际版直连 200；fastgpt.cn 大陆版直连 200，页脚主体广州环际云计算有限公司+ICP备2023048773号在册）。</p></span><span data-en><p>Two forms: open-source repo self-hosted (labring/FastGPT, GitHub direct 200, pushed same day 2026-10-30) + official hosted versions (fastgpt.io international direct 200; fastgpt.cn mainland direct 200, footer entity Guangzhou Huanji Cloud Computing Co., Ltd. + an ICP website registration on record, number in the cn block).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>自托管形态数据在本机数据库（MongoDB/向量库——部署文档在册）；托管版数据在官方云端。 知识库文件上传后入库向量化，原始文件留存面未逐条核验。</p></span><span data-en><p>In the self-hosted form data lives in your own databases (MongoDB/vector store — deployment docs on record); the hosted version keeps data in the official cloud. Knowledge-base files are ingested and vectorized after upload; raw-file retention not verified item by item.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>产品主轴是 RAG 知识库问答与应用编排（doc.fastgpt.io 文档在册）；agent/工作流编排能力在册； 定时与后台执行细节未逐条核验。</p></span><span data-en><p>The product&#39;s main axis is RAG knowledge-base Q&amp;A and application orchestration (doc.fastgpt.io docs on record); agent/workflow orchestration is on record; scheduling and background-execution details not verified item by item.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>工作流节点生态在文档在册（知识库检索/HTTP 请求/代码执行等节点）；插件与工具扩展面文档在册； MCP 支持未逐条核验到官方声明，按未知处理。</p></span><span data-en><p>The workflow-node ecosystem is on record in the docs (knowledge retrieval / HTTP request / code-execution nodes etc.); plugin and tool-extension surfaces are on record in the docs; MCP support not verified item by item in official statements, treated as unknown.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>知识库（RAG）是核心持久知识面（产品主轴）；多轮对话上下文与变量存储在册； 跨应用记忆机制细节未逐条核验。</p></span><span data-en><p>The knowledge base (RAG) is the core persistent knowledge surface (the product&#39;s main axis); multi-turn context and variable storage on record; cross-application memory details not verified item by item.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>开源可审计（GPL 家族之外的 Apache+附加条件，见 license）；托管版按官方云端条款；大陆版 fastgpt.cn 有 ICP 备案在册；训练用途开关路径未逐条核验。</p></span><span data-en><p>Open source and auditable (Apache + extra terms rather than the GPL family, see license); hosted versions follow official cloud terms; the mainland version fastgpt.cn carries an ICP registration on record; training-use toggle path not verified item by item.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合：中文知识库问答/RAG 应用（自托管可控）、要大陆直连的托管入口（fastgpt.cn）。 不适合：要纯 Apache 2.0 无附加条件（多租户 SaaS 受限）、要代码级 agent 框架（画布/配置为主轴）。</p></span><span data-en><p>Fits: Chinese knowledge-base Q&amp;A / RAG apps (self-hosted and controllable), a direct-mainland hosted entry (fastgpt.cn). Not a fit: wanting pure Apache 2.0 without extra terms (multi-tenant SaaS restricted), code-level agent frameworks (canvas/configuration is the main axis).</p></span></dd>
+        </div>
+      </dl>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li><span data-zh><strong>两版两主体两入口</strong>：fastgpt.io（国际托管）与 fastgpt.cn（大陆托管，页脚广州环际云计算有限公司+ICP备2023048773号）——ICP 网站备案≠生成式 AI 服务备案，别混</span><span data-en><strong>Two versions, two entities, two entries</strong>: fastgpt.io (international hosted) vs fastgpt.cn (mainland hosted, footer entity Guangzhou Huanji Cloud Computing Co., Ltd. + an ICP website registration on record — number in the profile&#39;s cn block) — an ICP website registration ≠ generative-AI service filing; don&#39;t conflate them</span></li>
+          <li><span data-zh>license=NOASSERTION 不是「无许可」——LICENSE 实为 Apache 2.0+两条附加条件（多租户 SaaS 限制+LOGO 保留），与 Dify 同款</span><span data-en>license=NOASSERTION does not mean &quot;no license&quot; — the LICENSE is actually Apache 2.0 + two extra conditions (multi-tenant SaaS restriction + LOGO retention), the same pattern as Dify</span></li>
+          <li><span data-zh>文档域是 doc.fastgpt.io（直连 307→200）——主站路径 /en/introduction 404，别按主站路径判文档缺失</span><span data-en>The docs domain is doc.fastgpt.io (direct 307→200) — main-site paths like /en/introduction 404; don&#39;t judge the docs missing by probing main-site paths</span></li>
+        </ul>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
+        <span data-zh>
+        <ul>
+          <li>托管版内置模型清单（未逐条核验）</li>
+          <li>MCP 支持（未核验到官方声明）</li>
+          <li>训练用途开关路径与默认态（未逐条核验）</li>
+          <li>大陆托管版是否走生成式 AI 服务备案（公示名单未见条目，按未备案口径写）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>The hosted versions&#39; built-in model list (not verified item by item)</li>
+          <li>MCP support (no official statement verified)</li>
+          <li>Training-use toggle path and default state (not verified item by item)</li>
+          <li>Whether the mainland hosted version went through generative-AI service filing (no entry in the public registries; written as not-filed)</li>
+        </ul></span>
+      </div>
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>判断可回到以下一手源复核。本站核验日</span><span data-en>Every judgement can be rechecked against the primary sources below. Verified on</span> 2026-10-30，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-30。</p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>official</td><td><span data-zh>FastGPT · 国际版官网（2026-10-30 直抓 200）</span><span data-en>FastGPT · international site (direct-fetched 200 on 2026-10-30)</span></td><td><a href="https://fastgpt.io" target="_blank" rel="noopener">https://fastgpt.io</a></td></tr>
+            <tr><td>official</td><td><span data-zh>FastGPT · 大陆版（页脚主体+ICP 备案号在册，2026-10-30 直抓 200）</span><span data-en>FastGPT · mainland site (footer entity + ICP number on record, direct-fetched 200 on 2026-10-30)</span></td><td><a href="https://fastgpt.cn" target="_blank" rel="noopener">https://fastgpt.cn</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>FastGPT · 官方文档（doc.fastgpt.io，2026-10-30 直抓 307→200）</span><span data-en>FastGPT · official docs (doc.fastgpt.io, direct-fetched 307→200 on 2026-10-30)</span></td><td><a href="https://doc.fastgpt.io/docs/introduction/" target="_blank" rel="noopener">https://doc.fastgpt.io/docs/introduction/</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>labring/FastGPT · 官方仓（GitHub API 当日核验 ★29,949/pushed 2026-10-30；releases v4.17.2 2026-10-09）</span><span data-en>labring/FastGPT · official repo (GitHub API verified same day: ★29,949 / pushed 2026-10-30; releases v4.17.2 2026-10-09)</span></td><td><a href="https://github.com/labring/FastGPT" target="_blank" rel="noopener">https://github.com/labring/FastGPT</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
+        <span data-zh><p>本站尚未完成实测。编码向实测协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a>（agent 平台不适用编码任务集）。</p>
+            <p><strong>实测建议</strong>（三条，都指向官方可读页没给的东西）：</p>
+            <ul><li><strong>托管版与自托管版的能力差</strong>（两形态并行，功能面差异未在册）</li><li><strong>知识库检索质量与分块策略默认值</strong>（RAG 主轴产品的核心质量面，文档有参数但效果未实测）</li><li><strong>MCP/工具调用的现役支持面</strong>（未逐条核验到官方声明）</li></ul></span><span data-en><p>This site has not completed measured runs. The coding-oriented test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a> (the coding task suite does not apply to agent platforms).</p>
+            <p><strong>Suggested measurements</strong> (three, all pointing at things the official readable pages do not give):</p>
+            <ul><li><strong>Capability gap between the hosted and self-hosted versions</strong> (both forms run in parallel; the functional delta is not on record)</li><li><strong>Knowledge-base retrieval quality and default chunking strategy</strong> (the core quality surface of a RAG product — docs list parameters but the effect is unmeasured)</li><li><strong>The live MCP/tool-calling support surface</strong> (not verified item by item in official statements)</li></ul></span>
+      </div>
+
+
+      
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./dify.html"><span data-zh>Dify</span><span data-en>Dify</span></a></span><span class="rel-n"><span data-zh>同为国产开源 agent 搭建平台：Dify 通用 agent 画布；FastGPT 以 RAG 知识库问答为主轴。</span><span data-en>Also a China-origin open-source agent-building platform: Dify is the general agent canvas; FastGPT centers on RAG knowledge-base Q&amp;A.</span></span></li>
+          <li><span class="rel-t"><a href="./maxkb.html"><span data-zh>MaxKB</span><span data-en>MaxKB</span></a></span><span class="rel-n"><span data-zh>同为国产开源企业知识库问答：MaxKB GPL-3.0、飞致云企业交付向；FastGPT Apache+附加条件、社区生态大。</span><span data-en>Also a China-origin open-source enterprise KB Q&amp;A tool: MaxKB is GPL-3.0 with Fit2Cloud&#39;s enterprise delivery; FastGPT is Apache + extra terms with a larger community ecosystem.</span></span></li>
+          <li><span class="rel-t"><a href="/runner/ollama.html"><span data-zh>Ollama</span><span data-en>Ollama</span></a></span><span class="rel-n"><span data-zh>本地模型层对照：FastGPT 自托管版可接本地模型，模型运行器归 runner 类。</span><span data-en>The local-model layer contrast: the self-hosted FastGPT can attach local models; model runners belong to the runner class.</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>
