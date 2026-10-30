@@ -20,13 +20,13 @@
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
 | [智谱清言](./chatglm-chat.html) | 网页服务 | 智谱 AI | partial | 2026-10-22 |
-| [ChatGPT](./chatgpt.html) | 网页服务 | OpenAI | partial | 2026-10-21 |
-| [Claude（对话应用）](./claude-chat.html) | 网页服务 | Anthropic | verified | 2026-10-21 |
+| [ChatGPT](./chatgpt.html) | 网页服务 | OpenAI | partial | 2026-10-30 |
+| [Claude（对话应用）](./claude-chat.html) | 网页服务 | Anthropic | verified | 2026-10-30 |
 | [DeepSeek](./deepseek-chat.html) | 网页服务 | 深度求索 | partial | 2026-10-22 |
-| [豆包](./doubao-chat.html) | 网页服务 | 字节跳动 | partial | 2026-10-21 |
-| [Gemini（对话应用）](./gemini-chat.html) | 网页服务 | Google | partial | 2026-10-21 |
-| [Grok](./grok-chat.html) | 网页服务 | xAI | partial | 2026-10-21 |
-| [Kimi](./kimi-chat.html) | 网页服务 | 月之暗面 Moonshot AI | partial | 2026-10-21 |
+| [豆包](./doubao-chat.html) | 网页服务 | 字节跳动 | partial | 2026-10-30 |
+| [Gemini（对话应用）](./gemini-chat.html) | 网页服务 | Google | partial | 2026-10-30 |
+| [Grok](./grok-chat.html) | 网页服务 | xAI | partial | 2026-10-30 |
+| [Kimi](./kimi-chat.html) | 网页服务 | 月之暗面 Moonshot AI | partial | 2026-10-30 |
 | [Manus](./manus.html) | 网页服务 | Manus AI（Monica 团队） | partial | 2026-10-22 |
 | [Microsoft Copilot](./microsoft-copilot.html) | 网页服务 | 微软 | partial | 2026-10-22 |
 | [通义千问](./tongyi-qianwen.html) | 网页服务 | 阿里巴巴 | partial | 2026-10-22 |

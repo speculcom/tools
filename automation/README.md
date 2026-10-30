@@ -19,20 +19,20 @@
 
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
-| [Activepieces](./activepieces.html) | 网页服务 | Activepieces Inc. | partial | 2026-10-21 |
-| [Salesforce Agentforce](./agentforce.html) | 网页服务 | Salesforce | partial | 2026-10-21 |
-| [Bedrock Agents / AgentCore](./bedrock-agents.html) | 网页服务 | AWS | partial | 2026-10-21 |
-| [Microsoft Copilot Studio](./copilot-studio.html) | 网页服务 | Microsoft | partial | 2026-10-21 |
-| [扣子 / Coze](./coze.html) | 网页服务 | 字节跳动 | partial | 2026-10-21 |
-| [Dify](./dify.html) | 网页服务 | LangGenius（国产出海） | partial | 2026-10-21 |
-| [Flowise](./flowise.html) | 网页服务 | FlowiseAI, Inc. | partial | 2026-10-21 |
-| [Langflow](./langflow.html) | 网页服务 | DataStax（原 Langflow AI） | partial | 2026-10-21 |
-| [Make](./make.html) | 网页服务 | Make（原 Integromat） | partial | 2026-10-21 |
-| [n8n](./n8n.html) | 网页服务 | n8n GmbH | partial | 2026-10-21 |
-| [Pipedream（Connect / Workflows）](./pipedream.html) | 网页服务 | Pipedream | partial | 2026-10-21 |
-| [Relevance AI](./relevance-ai.html) | 网页服务 | Relevance AI（悉尼） | partial | 2026-10-21 |
-| [Vertex AI Agent Builder（Gemini Enterprise 平台线）](./vertex-agent-builder.html) | 网页服务 | Google | partial | 2026-10-21 |
-| [Zapier](./zapier.html) | 网页服务 | Zapier | partial | 2026-10-21 |
+| [Activepieces](./activepieces.html) | 网页服务 | Activepieces Inc. | partial | 2026-10-30 |
+| [Salesforce Agentforce](./agentforce.html) | 网页服务 | Salesforce | partial | 2026-10-30 |
+| [Bedrock Agents / AgentCore](./bedrock-agents.html) | 网页服务 | AWS | partial | 2026-10-30 |
+| [Microsoft Copilot Studio](./copilot-studio.html) | 网页服务 | Microsoft | partial | 2026-10-30 |
+| [扣子 / Coze](./coze.html) | 网页服务 | 字节跳动 | partial | 2026-10-30 |
+| [Dify](./dify.html) | 网页服务 | LangGenius（国产出海） | partial | 2026-10-30 |
+| [Flowise](./flowise.html) | 网页服务 | FlowiseAI, Inc. | partial | 2026-10-30 |
+| [Langflow](./langflow.html) | 网页服务 | DataStax（原 Langflow AI） | partial | 2026-10-30 |
+| [Make](./make.html) | 网页服务 | Make（原 Integromat） | partial | 2026-10-30 |
+| [n8n](./n8n.html) | 网页服务 | n8n GmbH | partial | 2026-10-30 |
+| [Pipedream（Connect / Workflows）](./pipedream.html) | 网页服务 | Pipedream | partial | 2026-10-30 |
+| [Relevance AI](./relevance-ai.html) | 网页服务 | Relevance AI（悉尼） | partial | 2026-10-30 |
+| [Vertex AI Agent Builder（Gemini Enterprise 平台线）](./vertex-agent-builder.html) | 网页服务 | Google | partial | 2026-10-30 |
+| [Zapier](./zapier.html) | 网页服务 | Zapier | partial | 2026-10-30 |
 
 ## 可信度标记
 

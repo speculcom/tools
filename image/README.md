@@ -21,16 +21,16 @@
 |---|---|---|---|---|
 | [Adobe Firefly](./adobe-firefly.html) | 网页服务 | Adobe | partial | 2026-10-22 |
 | [Clipdrop](./clipdrop.html) | 网页服务 | Jasper（原 InitML，2023 并入 Stability AI，2024-02 售予 Jasper） | partial | 2026-10-22 |
-| [FLUX（Black Forest Labs）](./flux.html) | 厂商云形态 | Black Forest Labs | partial | 2026-10-21 |
+| [FLUX（Black Forest Labs）](./flux.html) | 厂商云形态 | Black Forest Labs | partial | 2026-10-30 |
 | [Ideogram](./ideogram.html) | 网页服务 | Ideogram | partial | 2026-10-22 |
 | [即梦](./jimeng.html) | 网页服务 | 字节跳动（剪映团队） | partial | 2026-10-22 |
 | [Krea](./krea.html) | 网页服务 | Krea | partial | 2026-10-22 |
 | [Leonardo AI](./leonardo-ai.html) | 网页服务 | Leonardo（2024-07 被 Canva 收购） | partial | 2026-10-22 |
 | [Microsoft Designer](./microsoft-designer.html) | 网页服务 | 微软 | partial | 2026-10-22 |
-| [Midjourney](./midjourney.html) | 网页服务 | Midjourney, Inc. | partial | 2026-10-21 |
+| [Midjourney](./midjourney.html) | 网页服务 | Midjourney, Inc. | partial | 2026-10-30 |
 | [Recraft](./recraft.html) | 网页服务 | Recraft | partial | 2026-10-22 |
 | [SeaArt](./seaart.html) | 网页服务 | 海艺（成都海艺互娱） | partial | 2026-10-22 |
-| [Stability AI（Stable Image 平台）](./stability-ai.html) | 网页服务 | Stability AI | partial | 2026-10-21 |
+| [Stability AI（Stable Image 平台）](./stability-ai.html) | 网页服务 | Stability AI | partial | 2026-10-30 |
 | [通义万相](./tongyi-wanxiang.html) | 网页服务 | 阿里巴巴 | partial | 2026-10-22 |
 
 ## 可信度标记

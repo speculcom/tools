@@ -29,7 +29,7 @@
 | [Claude Code CLI](./claude-code-cli.html) | CLI 形态 | Anthropic | partial | 2026-10-23 |
 | [Claude Code IDE 扩展](./claude-code.html) | IDE 形态 | Anthropic | partial | 2026-10-23 |
 | [Cline](./cline.html) | IDE 形态 | Cline Bot | partial | 2026-10-23 |
-| [CodeBuddy](./codebuddy.html) | IDE 形态 | 腾讯云 | partial | 2026-10-21 |
+| [CodeBuddy](./codebuddy.html) | IDE 形态 | 腾讯云 | partial | 2026-10-30 |
 | [Codex CLI](./codex-cli.html) | CLI 形态 | OpenAI | partial | 2026-10-23 |
 | [Codex IDE 扩展](./codex-ide.html) | IDE 形态 | OpenAI | partial | 2026-10-23 |
 | [Continue](./continue.html) | IDE 形态 | Continue | partial | 2026-10-23 |
@@ -38,10 +38,10 @@
 | [Crush](./crush.html) | CLI 形态 | Charm | partial | 2026-10-23 |
 | [Cursor CLI](./cursor-cli.html) | CLI 形态 | Anysphere | partial | 2026-10-23 |
 | [Cursor](./cursor.html) | IDE 形态 | Anysphere | partial | 2026-10-23 |
-| [Devin](./devin.html) | 厂商云形态 | Cognition | partial | 2026-10-21 |
+| [Devin](./devin.html) | 厂商云形态 | Cognition | partial | 2026-10-30 |
 | [Droid](./factory-droid.html) | CLI 形态 | Factory AI | partial | 2026-10-23 |
 | [Gemini CLI](./gemini-cli.html) | CLI 形态 | Google | partial | 2026-10-23 |
-| [Google Antigravity](./google-antigravity.html) | IDE 形态 | Google | partial | 2026-10-21 |
+| [Google Antigravity](./google-antigravity.html) | IDE 形态 | Google | partial | 2026-10-30 |
 | [Goose](./goose.html) | CLI 形态 | Agentic AI Foundation | partial | 2026-10-23 |
 | [xAI Grok Bot](./grok-bot.html) | 厂商云形态 | xAI | partial | 2026-10-23 |
 | [Jules](./jules.html) | 厂商云形态 | Google | partial | 2026-10-23 |
@@ -54,8 +54,8 @@
 | [OpenCode](./opencode.html) | CLI 形态 | OpenCode | partial | 2026-10-23 |
 | [Qoder CN（原通义灵码）](./qoder-cn.html) | IDE 形态 | 阿里云 | partial | 2026-10-22 |
 | [Qoder](./qoder.html) | IDE 形态 | 阿里云 | partial | 2026-10-22 |
-| [Replit Agent](./replit-agent.html) | 厂商云形态 | Replit | partial | 2026-10-21 |
-| [Trae](./trae.html) | IDE 形态 | 字节跳动 | partial | 2026-10-21 |
+| [Replit Agent](./replit-agent.html) | 厂商云形态 | Replit | partial | 2026-10-30 |
+| [Trae](./trae.html) | IDE 形态 | 字节跳动 | partial | 2026-10-30 |
 | [v0](./v0.html) | 厂商云形态 | Vercel | partial | 2026-10-22 |
 | [Warp](./warp.html) | CLI 形态 | Warp | partial | 2026-10-23 |
 | [Windsurf / Devin Desktop](./windsurf.html) | IDE 形态 | Cognition | partial | 2026-10-23 |

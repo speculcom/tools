@@ -20,18 +20,18 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
 | [AG2](./ag2.html) | 框架 / SDK | ag2ai | partial | 2026-10-23 |
-| [AgentScope](./agentscope.html) | 框架 / SDK | 阿里巴巴（魔搭社区） | partial | 2026-10-21 |
+| [AgentScope](./agentscope.html) | 框架 / SDK | 阿里巴巴（魔搭社区） | partial | 2026-10-30 |
 | [Claude Agent SDK](./claude-agent-sdk.html) | 框架 / SDK | Anthropic | partial | 2026-10-23 |
 | [Codex SDK](./codex-sdk.html) | 框架 / SDK | OpenAI | partial | 2026-10-23 |
 | [CrewAI](./crewai.html) | 框架 / SDK | CrewAI Inc | partial | 2026-10-23 |
 | [Deep Agents](./deepagents.html) | 框架 / SDK | LangChain | partial | 2026-10-23 |
-| [DSPy](./dspy.html) | 框架 / SDK | Stanford NLP / Databricks | partial | 2026-10-21 |
+| [DSPy](./dspy.html) | 框架 / SDK | Stanford NLP / Databricks | partial | 2026-10-30 |
 | [Google ADK（Agent Development Kit）](./google-adk.html) | 框架 / SDK | Google | partial | 2026-10-23 |
-| [Haystack](./haystack.html) | 框架 / SDK | deepset | partial | 2026-10-21 |
+| [Haystack](./haystack.html) | 框架 / SDK | deepset | partial | 2026-10-30 |
 | [Hermes Agent](./hermes-agent.html) | 框架 / SDK | Nous Research | partial | 2026-10-23 |
-| [LangChain](./langchain.html) | 框架 / SDK | LangChain, Inc. | partial | 2026-10-21 |
+| [LangChain](./langchain.html) | 框架 / SDK | LangChain, Inc. | partial | 2026-10-30 |
 | [LangGraph](./langgraph.html) | 框架 / SDK | LangChain Inc | partial | 2026-10-23 |
-| [Letta / MemGPT](./letta.html) | 框架 / SDK | Letta, Inc. | partial | 2026-10-21 |
+| [Letta / MemGPT](./letta.html) | 框架 / SDK | Letta, Inc. | partial | 2026-10-30 |
 | [LlamaIndex Framework](./llamaindex.html) | 框架 / SDK | LlamaIndex（run-llama） | partial | 2026-10-23 |
 | [Mastra](./mastra.html) | 框架 / SDK | Mastra AI | partial | 2026-10-23 |
 | [Microsoft Agent Framework](./microsoft-agent-framework.html) | 框架 / SDK | Microsoft | partial | 2026-10-23 |
@@ -39,8 +39,8 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 | [OpenHands Agent Canvas](./openhands.html) | 框架 / SDK | OpenHands（All-Hands-AI） | partial | 2026-10-23 |
 | [Pydantic AI](./pydantic-ai.html) | 框架 / SDK | Pydantic | partial | 2026-10-23 |
 | [smolagents](./smolagents.html) | 框架 / SDK | Hugging Face | partial | 2026-10-23 |
-| [Strands Agents SDK](./strands-agents.html) | 框架 / SDK | AWS | partial | 2026-10-21 |
-| [SWE-agent](./swe-agent.html) | 框架 / SDK | Princeton / Stanford（学术团队） | partial | 2026-10-21 |
+| [Strands Agents SDK](./strands-agents.html) | 框架 / SDK | AWS | partial | 2026-10-30 |
+| [SWE-agent](./swe-agent.html) | 框架 / SDK | Princeton / Stanford（学术团队） | partial | 2026-10-30 |
 
 ## 可信度标记
 

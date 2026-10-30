@@ -21,12 +21,12 @@
 |---|---|---|---|---|
 | [AssemblyAI](./assemblyai.html) | 厂商云形态 | AssemblyAI | partial | 2026-10-22 |
 | [Deepgram](./deepgram.html) | 厂商云形态 | Deepgram | partial | 2026-10-22 |
-| [ElevenLabs](./elevenlabs.html) | 网页服务 | ElevenLabs | partial | 2026-10-21 |
+| [ElevenLabs](./elevenlabs.html) | 网页服务 | ElevenLabs | partial | 2026-10-30 |
 | [fish audio](./fish-audio.html) | 网页服务 | fish.audio | partial | 2026-10-22 |
 | [MiniMax Audio（海螺语音）](./minimax-audio.html) | 网页服务 | MiniMax（稀宇科技） | partial | 2026-10-22 |
 | [魔音工坊](./moyin.html) | 网页服务 | 出门问问 | partial | 2026-10-22 |
 | [Otter.ai](./otter.html) | 网页服务 | Otter.ai | partial | 2026-10-22 |
-| [Suno](./suno.html) | 网页服务 | Suno Inc. | partial | 2026-10-21 |
+| [Suno](./suno.html) | 网页服务 | Suno Inc. | partial | 2026-10-30 |
 | [Udio](./udio.html) | 网页服务 | Udio | partial | 2026-10-22 |
 | [Whisper](./whisper.html) | 本机应用 | OpenAI（开源） | partial | 2026-10-22 |
 

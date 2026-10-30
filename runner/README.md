@@ -19,18 +19,18 @@
 
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
-| [GPT4All](./gpt4all.html) | 本机应用 | Nomic AI | partial | 2026-10-21 |
-| [Jan](./jan.html) | 本机应用 | Menlo Research | partial | 2026-10-21 |
-| [KoboldCpp](./koboldcpp.html) | 本机应用 | LostRuins（KoboldAI 社区） | partial | 2026-10-21 |
-| [llama.cpp](./llama-cpp.html) | CLI 形态 | ggml-org | partial | 2026-10-21 |
-| [LM Studio](./lm-studio.html) | 本机应用 | Element Labs | partial | 2026-10-21 |
-| [LocalAI](./localai.html) | CLI 形态 | Mudler T.（mudler） | partial | 2026-10-21 |
-| [MLX（mlx-lm）](./mlx.html) | CLI 形态 | Apple | partial | 2026-10-21 |
-| [Ollama](./ollama.html) | CLI 形态 | Ollama Inc. | partial | 2026-10-21 |
-| [SGLang](./sglang.html) | CLI 形态 | LMSYS / sgl-project | partial | 2026-10-21 |
-| [text-generation-webui / textgen](./text-generation-webui.html) | 本机应用 | oobabooga | partial | 2026-10-21 |
-| [Text Generation Inference（TGI）](./tgi.html) | CLI 形态 | Hugging Face | partial | 2026-10-21 |
-| [vLLM](./vllm.html) | CLI 形态 | vLLM 项目（PyTorch 基金会） | partial | 2026-10-21 |
+| [GPT4All](./gpt4all.html) | 本机应用 | Nomic AI | partial | 2026-10-30 |
+| [Jan](./jan.html) | 本机应用 | Menlo Research | partial | 2026-10-30 |
+| [KoboldCpp](./koboldcpp.html) | 本机应用 | LostRuins（KoboldAI 社区） | partial | 2026-10-30 |
+| [llama.cpp](./llama-cpp.html) | CLI 形态 | ggml-org | partial | 2026-10-30 |
+| [LM Studio](./lm-studio.html) | 本机应用 | Element Labs | partial | 2026-10-30 |
+| [LocalAI](./localai.html) | CLI 形态 | Mudler T.（mudler） | partial | 2026-10-30 |
+| [MLX（mlx-lm）](./mlx.html) | CLI 形态 | Apple | partial | 2026-10-30 |
+| [Ollama](./ollama.html) | CLI 形态 | Ollama Inc. | partial | 2026-10-30 |
+| [SGLang](./sglang.html) | CLI 形态 | LMSYS / sgl-project | partial | 2026-10-30 |
+| [text-generation-webui / textgen](./text-generation-webui.html) | 本机应用 | oobabooga | partial | 2026-10-30 |
+| [Text Generation Inference（TGI）](./tgi.html) | CLI 形态 | Hugging Face | partial | 2026-10-30 |
+| [vLLM](./vllm.html) | CLI 形态 | vLLM 项目（PyTorch 基金会） | partial | 2026-10-30 |
 
 ## 可信度标记
 
