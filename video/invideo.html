@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>invideo AI — Video | 投机取巧</title>
+  <meta name="description" content="invideo AI（invideo）：invideo 把「给 agent 剪视频」做成产品：官方远程 MCP server 让 AI agent 按项目 URL 打开时间线、 导入素材、动手剪辑，改动实时落在真实编辑器里——人和 agent 编辑同一份工程。" />
+  <link rel="canonical" href="https://tools.specul.com/video/invideo.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="invideo AI" />
+  <meta property="og:url" content="https://tools.specul.com/video/invideo.html" />
+  <meta property="og:title" content="invideo AI — Video | 投机取巧" />
+  <meta property="og:description" content="invideo AI（invideo）：invideo 把「给 agent 剪视频」做成产品：官方远程 MCP server 让 AI agent 按项目 URL 打开时间线、 导入素材、动手剪辑，改动实时落在真实编辑器里——人和 agent 编辑同一份工程。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"invideo AI","applicationCategory":"DeveloperApplication","sameAs":"https://invideo.io","description":"invideo 把「给 agent 剪视频」做成产品：官方远程 MCP server 让 AI agent 按项目 URL 打开时间线、 导入素材、动手剪辑，改动实时落在真实编辑器里——人和 agent 编辑同一份工程。","dateModified":"2026-10-30"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Video</span>
+      </nav>
+      <a class="back" href="./">← Video</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#fb923c" aria-hidden="true"><span data-zh>in</span><span data-en>IN</span></div>
+        <div>
+          <h1><span data-zh>invideo AI</span><span data-en>invideo AI</span></h1>
+          <div class="vendor is-caps">invideo</div>
+        </div>
+      </div>
+
+      <div class="badges">
+        <span class="tag on"><span data-zh>免费+订阅</span><span data-en>Free + subscription</span></span>
+        <span class="tag on"><span data-zh>MCP支持</span><span data-en>MCP support</span></span>
+        <span class="tag on"><span data-zh>agentic剪辑</span><span data-en>Agentic editing</span></span>
+        <span class="tag on"><span data-zh>营销视频</span><span data-en>Marketing video</span></span>
+        <span class="tag on"><span data-zh>文字成片</span><span data-en>Script-to-video</span></span>
+        <span class="tag on"><span data-zh>需网络环境</span><span data-en>Network access required</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-30</span>
+      </div>
+
+            
+      <div class="panel-lead"><span data-zh><p><strong>invideo 把「给 agent 剪视频」做成产品</strong>：官方远程 MCP server 让 AI agent 按项目 URL 打开时间线、 导入素材、动手剪辑，改动实时落在真实编辑器里——人和 agent 编辑同一份工程。</p></span><span data-en><p><strong>invideo makes editing videos for agents its product</strong>: an official remote MCP server lets an AI agent open a project by URL, bring in media, and edit timelines, with every edit landing live in the real editor — human and agent work on the same project.</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+<span data-zh>        <div><p>适合：营销/口播成片流水线、把剪辑委托给 agent（官方 MCP 面）、小团队协作。 不适合：开放权重、影视级合成、大陆直连场景（实测 000）。</p></div></span><span data-en>        <div><p>Fits: marketing/talking-head video pipelines, delegating editing to an AI agent (official MCP surface), small-team collaboration. Not a fit: open weights, cinematic compositing, mainland direct-access scenarios (measures 000).</p></div></span>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-30</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>invideo（隐私页在册双主体：Invideo Inc.（美国特拉华）与 Invideo Innovation Pte. Ltd.（新加坡））。</span><span data-en>invideo (the privacy page carries two entities: Invideo Inc. (Delaware, US) and Invideo Innovation Pte. Ltd. (Singapore)).</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>直连不可达</span><span data-en>direct blocked</span>　<span data-zh>invideo.io 大陆直连实测 000（2026-10-30 两次复测；代理下 200 可达）——直连不可达，需网络环境。</span><span data-en>invideo.io measured 000 direct from mainland (2026-10-30, two retests; 200 via proxy) — unreachable without a network path.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>未见于备案名单</span><span data-en>not in filing list</span>：<span data-zh>未见于网信办公示名单（2026-10-30 检索）；该产品未面向大陆公众提供服务，备案不适用。</span><span data-en>not in the CAC public registry (searched 2026-10-30); the product does not serve the</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>不披露模型选择面——产品是「文字脚本→成片」管线，底层生成模型供应商未逐条核验。</p></span><span data-en><p>No disclosed model-selection surface — the product is a &quot;script-to-finished-video&quot; pipeline; underlying generation-model providers not verified item by item.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>网页云编辑器（invideo.io）；官方 agents.md 叙事：项目活在浏览器里、多人可同时编辑， 生成与渲染在厂商云端。未见官方离线客户端。</p></span><span data-en><p>Web cloud editor (invideo.io); the official agents.md narrative: projects live in the browser, several people can edit at once, generation and rendering on the vendor&#39;s cloud. No official offline client.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>作品存账户侧云端（agents.md 叙事：项目活在浏览器里、完整编辑历史随项目存云端）； 成片导出归本地。未见官方声明的本机数据面或离线工程文件格式。</p></span><span data-en><p>Works stored account-side in the cloud (agents.md narrative: projects live in the browser, full edit history stored cloud-side with the project); finished-video exports go local. No officially stated local data surface or offline project file format.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>云端渲染/排队（未逐条核验）；项目有时间线分支与完整编辑历史（agents.md 叙事）， 改动可先提议再合入——这是协作机制不是「关机续跑」。</p></span><span data-en><p>Cloud rendering/queuing (not verified item by item); projects have a main timeline, branches, and full edit history (agents.md narrative), changes can be proposed before merging — a collaboration mechanism, not &quot;keep-running-after-shutdown&quot;.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p><strong>远程 MCP server 是招牌差异</strong>（/mcp/ 页当日在册：agent 按项目 URL 打开项目、导入素材、 编辑时间线，改动实时落在真实编辑器里人可接手；invideo.io/agents.md 给 agent 连接指引）； 文字成片、营销视频模板线（首页「agentic video editor for serious creatives」在册）。</p></span><span data-en><p><strong>The remote MCP server is the signature difference</strong> (the /mcp/ page on record the same day: an agent opens a project by URL, brings media in, edits timelines, and edits land live in the real editor where a human can take over; invideo.io/agents.md gives agent connection instructions); script-to-video and marketing-template lines (homepage &quot;agentic video editor for serious creatives&quot; on record).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>项目=主时间线+分支+完整编辑历史（agents.md 的 GitHub-for-video 叙事）； 跨会话记忆未核验到官方声明——历史可回看是项目机制，不是模型记忆。</p></span><span data-en><p>Project = main timeline + branches + full edit history (the GitHub-for-video narrative in agents.md); cross-session memory — no official statement verified. Reviewable history is a project mechanism, not model memory.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>账号+订阅体系（/pricing 200，D9：价格不采）；MCP 连接要求用户经客户端登录授权（agents.md 在册）； 训练用途开关未逐条核验。</p></span><span data-en><p>Account + subscription system (/pricing 200, D9: prices not collected); MCP connection requires the user to sign in via the client (on record in agents.md); the training-use switch not verified line by line.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合：营销/口播成片流水线、把剪辑委托给 AI agent（官方 MCP 面）、小团队多人协作剪辑。 不适合：开放权重、影视级合成、大陆直连（实测 000）。</p></span><span data-en><p>Fits: marketing/talking-head video pipelines, delegating editing to an AI agent (official MCP surface), small-team collaborative editing. Does not fit: open weights, cinematic compositing, mainland direct access (measures 000).</p></span></dd>
+        </div>
+      </dl>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li><span data-zh>「agentic」是产品自称——真实能力面是官方 MCP server（/mcp/ 与 agents.md 在册），剪辑操作质量本站未实测</span><span data-en>&quot;agentic&quot; is the product&#39;s self-description — the real capability surface is the official MCP server (/mcp/ and agents.md on record); editing-operation quality has not been measured by this site</span></li>
+          <li><span data-zh>大陆直连实测 000（2026-10-30 两次复测，代理 200 可达）——不是死站，是可达性</span><span data-en>Mainland direct access measures 000 (2026-10-30, two retests; 200 via proxy) — reachability, not a dead site</span></li>
+          <li><span data-zh>条款双主体（Invideo Inc.·特拉华 + Invideo Innovation Pte. Ltd.·新加坡，隐私页在册）——签约主体按注册入口，未逐条核验</span><span data-en>Two signing entities (Invideo Inc., Delaware + Invideo Innovation Pte. Ltd., Singapore, on the privacy page) — which entity applies depends on the signup entry, not verified line by line</span></li>
+        </ul>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
+        <span data-zh>
+        <ul>
+          <li>底层生成模型供应商清单（未核验到官方声明）</li>
+          <li>MCP 工具清单的完整粒度（未逐条核验）</li>
+          <li>训练用途开关（未逐条核验）</li>
+          <li>不同注册入口对应的签约主体（双主体在册，未逐条核验）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>The underlying generation-model provider list (no official statement verified)</li>
+          <li>The full granularity of the MCP tool list (not verified item by item)</li>
+          <li>The training-use switch (not verified line by line)</li>
+          <li>Which signing entity corresponds to which signup entry (two entities on record, not verified line by line)</li>
+        </ul></span>
+      </div>
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>判断可回到以下一手源复核。本站核验日</span><span data-en>Every judgement can be rechecked against the primary sources below. Verified on</span> 2026-10-30，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-30。</p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>official</td><td><span data-zh>invideo · 官网（「agentic video editor for serious creatives」定位，2026-10-30 直抓在册）</span><span data-en>invideo · official site (&quot;agentic video editor for serious creatives&quot; positioning, direct-fetched 2026-10-30)</span></td><td><a href="https://invideo.io" target="_blank" rel="noopener">https://invideo.io</a></td></tr>
+            <tr><td>official</td><td><span data-zh>invideo · Privacy Policy（双主体 Invideo Inc. / Invideo Innovation Pte. Ltd. 在册）</span><span data-en>invideo · Privacy Policy (two entities on record: Invideo Inc. / Invideo Innovation Pte. Ltd.)</span></td><td><a href="https://invideo.io/privacy-policy/" target="_blank" rel="noopener">https://invideo.io/privacy-policy/</a></td></tr>
+            <tr><td>official</td><td><span data-zh>invideo · MCP server 页（远程 MCP：agent 编辑时间线，2026-10-30 直抓在册）</span><span data-en>invideo · MCP server page (remote MCP: agents editing timelines, direct-fetched 2026-10-30)</span></td><td><a href="https://invideo.io/mcp/" target="_blank" rel="noopener">https://invideo.io/mcp/</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>invideo · Blog（官方更新线，changelog）</span><span data-en>invideo · Blog (official update line, changelog)</span></td><td><a href="https://invideo.io/blog/" target="_blank" rel="noopener">https://invideo.io/blog/</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
+        <span data-zh><p>本站尚未完成实测。编码向实测协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a>（创作产品不适用编码任务集）。</p>
+            <p><strong>实测建议</strong>（三条，都指向官方可读页没给的东西）：</p>
+            <ul><li><strong>MCP 连接后 agent 剪辑操作的实际粒度与出错率（对照 agents.md 声明的工具面）</strong></li><li><strong>文字成片管线对中文脚本/素材的实际支持度</strong></li><li><strong>「分支+提议合入」协作机制在单人+agent 场景的实用性</strong></li></ul></span><span data-en><p>This site has not completed measured runs. The coding-oriented test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a> (the coding task suite does not apply to creative products).</p>
+            <p><strong>Suggested measurements</strong> (three, all pointing at things the official readable pages do not give):</p>
+            <ul><li><strong>The real granularity and error rate of agent editing over MCP (against the tool surface claimed in agents.md)</strong></li><li><strong>Actual support for Chinese scripts/materials in the script-to-video pipeline</strong></li><li><strong>How useful the &quot;branch + propose-to-merge&quot; collaboration mechanism is in a solo-plus-agent setup</strong></li></ul></span>
+      </div>
+
+
+      
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./runway.html"><span data-zh>Runway</span><span data-en>Runway</span></a></span><span class="rel-n"><span data-zh>同为视频编辑：Runway 是生成工具链自己调，invideo 是成片编辑器+agent 委托。</span><span data-en>Both video editing: Runway is a generation toolchain you operate yourself, invideo is a finished-video editor plus agent delegation.</span></span></li>
+          <li><span class="rel-t"><a href="./synthesia.html"><span data-zh>Synthesia</span><span data-en>Synthesia</span></a></span><span class="rel-n"><span data-zh>同为营销视频向：Synthesia 数字人培训片，invideo 素材+口播成片。</span><span data-en>Both marketing-video oriented: Synthesia does digital-human training videos, invideo does footage-plus-narration finished videos.</span></span></li>
+          <li><span class="rel-t"><a href="/mcp/figma-mcp.html"><span data-zh>Figma MCP</span><span data-en>Figma MCP Server</span></a></span><span class="rel-n"><span data-zh>同「专业工具暴露官方 MCP server」逻辑：Figma MCP 接设计，invideo MCP 接剪辑。</span><span data-en>Same &quot;professional tool exposing an official MCP server&quot; logic: Figma MCP connects design, invideo MCP connects editing.</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>
