@@ -10,7 +10,7 @@
 
 ## 这个大类提供什么
 
-- **12 个对象**，按固定 8 个维度记录
+- **17 个对象**，按固定 8 个维度记录
 - 每个维度都能回溯到官方一手源，附来源类型与核验日期
 - **不给总分排名**——缺少跨工具的统一实测，排名会误导
 - **「未知」是合法答案**——查不到就写未知并说明原因，不用推测填充
@@ -19,15 +19,20 @@
 
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
+| [AIVA](./aiva.html) | 网页服务 | AIVA Limited | partial | 2026-10-30 |
 | [AssemblyAI](./assemblyai.html) | 厂商云形态 | AssemblyAI | partial | 2026-10-22 |
+| [Cartesia](./cartesia.html) | 网页服务 | Cartesia AI, Inc. | partial | 2026-10-30 |
 | [CosyVoice](./cosyvoice.html) | 本机应用 | 阿里 FunAudioLLM（开源） | partial | 2026-10-30 |
 | [Deepgram](./deepgram.html) | 厂商云形态 | Deepgram | partial | 2026-10-22 |
 | [ElevenLabs](./elevenlabs.html) | 网页服务 | ElevenLabs | partial | 2026-10-30 |
+| [F5-TTS](./f5-tts.html) | 本机应用 | SWivid / 上交 X-LANCE 等（开源） | partial | 2026-10-30 |
 | [fish audio](./fish-audio.html) | 网页服务 | fish.audio | partial | 2026-10-22 |
 | [MiniMax Audio（海螺语音）](./minimax-audio.html) | 网页服务 | MiniMax（稀宇科技） | partial | 2026-10-22 |
 | [魔音工坊](./moyin.html) | 网页服务 | 出门问问 | partial | 2026-10-22 |
 | [Murf](./murf.html) | 网页服务 | Murf AI | partial | 2026-10-30 |
 | [Otter.ai](./otter.html) | 网页服务 | Otter.ai | partial | 2026-10-22 |
+| [Resemble AI](./resemble.html) | 网页服务 | Resemble AI | partial | 2026-10-30 |
+| [Soundraw](./soundraw.html) | 网页服务 | SOUNDRAW Inc. | partial | 2026-10-30 |
 | [Suno](./suno.html) | 网页服务 | Suno Inc. | partial | 2026-10-30 |
 | [Udio](./udio.html) | 网页服务 | Udio | partial | 2026-10-22 |
 | [Whisper](./whisper.html) | 本机应用 | OpenAI（开源） | partial | 2026-10-22 |
@@ -40,7 +45,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 12 个对象中，**0 个为 verified**。
+当前 17 个对象中，**0 个为 verified**。
 
 ## 数据来源
 
@@ -57,7 +62,7 @@
 | [AI 对话助手](/chat/) | 通用对话产品，含国产 | 20 |
 | [AI 图像创作](/image/) | 文生图与图像工作台 | 13 |
 | [AI 视频创作](/video/) | 文生视频与数字人 | 12 |
-| [AI 音频与语音](/audio/) | 音乐生成、语音合成与转写 | 12 |
+| [AI 音频与语音](/audio/) | 音乐生成、语音合成与转写 | 17 |
 | [AI 搜索与研究](/research/) | AI 搜索、学术检索与研究工作台 | 11 |
 | [AI 自动化与工作流](/automation/) | 可视化搭 AI 工作流与 agent | 15 |
 | [框架与运行时](/framework/) | 运行时、编排框架、SDK | 22 |

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>F5-TTS — Audio | 投机取巧</title>
+  <meta name="description" content="F5-TTS（SWivid / 上交 X-LANCE 等（开源））：F5-TTS 是中国学术团队（上交 X-LANCE 等）的开源 flow-matching TTS 模型（MIT，★15,487， 最近推送 2026-10-23 当日在册）：下载权重本机跑，中英文 zero-shot 克隆是主打用法，无官方托管…" />
+  <link rel="canonical" href="https://tools.specul.com/audio/f5-tts.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="F5-TTS" />
+  <meta property="og:url" content="https://tools.specul.com/audio/f5-tts.html" />
+  <meta property="og:title" content="F5-TTS — Audio | 投机取巧" />
+  <meta property="og:description" content="F5-TTS（SWivid / 上交 X-LANCE 等（开源））：F5-TTS 是中国学术团队（上交 X-LANCE 等）的开源 flow-matching TTS 模型（MIT，★15,487， 最近推送 2026-10-23 当日在册）：下载权重本机跑，中英文 zero-shot 克隆是主打用法，无官方托管…" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"F5-TTS","applicationCategory":"DeveloperApplication","sameAs":"https://github.com/SWivid/F5-TTS","description":"F5-TTS 是中国学术团队（上交 X-LANCE 等）的开源 flow-matching TTS 模型（MIT，★15,487， 最近推送 2026-10-23 当日在册）：下载权重本机跑，中英文 zero-shot 克隆是主打用法，无官方托管服务。","dateModified":"2026-10-30"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Audio</span>
+      </nav>
+      <a class="back" href="./">← Audio</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#34d399" aria-hidden="true"><span data-zh>F5</span><span data-en>F5</span></div>
+        <div>
+          <h1><span data-zh>F5-TTS</span><span data-en>F5-TTS</span></h1>
+          <div class="vendor is-caps"><span data-zh>SWivid / 上交 X-LANCE 等（开源）</span><span data-en>SWivid / SJTU X-LANCE et al. (open source)</span></div>
+        </div>
+      </div>
+
+      <div class="badges">
+        <span class="tag on"><span data-zh>开源MIT</span><span data-en>Open source, MIT</span></span>
+        <span class="tag on"><span data-zh>模型非产品</span><span data-en>Model, not a product</span></span>
+        <span class="tag on"><span data-zh>中文TTS</span><span data-en>Chinese TTS</span></span>
+        <span class="tag on"><span data-zh>zero-shot克隆</span><span data-en>Zero-shot cloning</span></span>
+        <span class="tag on"><span data-zh>自托管</span><span data-en>Self-hosted</span></span>
+        <span class="tag on"><span data-zh>多语言</span><span data-en>Multilingual</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-30</span>
+      </div>
+
+            
+      <div class="panel-lead"><span data-zh><p><strong>F5-TTS 是中国学术团队（上交 X-LANCE 等）的开源 flow-matching TTS 模型</strong>（MIT，★15,487， 最近推送 2026-10-23 当日在册）：下载权重本机跑，中英文 zero-shot 克隆是主打用法，无官方托管服务。</p></span><span data-en><p><strong>F5-TTS is an open-source flow-matching TTS model from Chinese academic teams (SJTU X-LANCE et al.)</strong> (MIT, ★15,487, last push 2026-10-23 on record): download the weights and run locally, Chinese + English zero-shot cloning is the lead use, no official hosted service.</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+<span data-zh>        <div><p>适合：本机/私有化中英文 TTS 与 zero-shot 克隆研究、MIT 商用基底、大陆经 ModelScope 获取权重。 不适合：要托管 API 开箱即用、要零运维、要 SLA。</p></div></span><span data-en>        <div><p>Fits: local/private Chinese + English TTS and zero-shot cloning research, an MIT commercial base, mainland weight acquisition via ModelScope. Not a fit: wanting an out-of-box hosted API, zero-ops setups, SLAs.</p></div></span>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-30</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国产</span><span data-en>domestic</span>　<span data-zh>中国学术团队开源项目——README 徽章当日在册 X-LANCE（上海交通大学）、SII、PCL 三实验室署名；</span><span data-en>open-source project of Chinese academic teams — README badges on record same day list</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>直连未核验</span><span data-en>direct unknown</span>　<span data-zh>官方入口 github.com 大陆直连当日实测 000（代理 200）——GitHub 大陆可达性长期波动，</span><span data-en>the official entry github.com measured 000 direct from mainland (200 via proxy) — GitHub&#39;s mainland</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>未见于备案名单</span><span data-en>not in filing list</span>：<span data-zh>开源模型不适用服务备案（不面向公众提供服务，同 Whisper/CosyVoice 先例口径）。</span><span data-en>an open-source model is not subject to service filing (it serves no public service, same wording as</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>开源权重线：F5-TTS（Diffusion Transformer + ConvNeXt V2）与 E2 TTS 复现两模型在册（README 当日核验）， v1 base 模型 2025-03-12 发布；下载权重本机推理，无官方托管服务。</p></span><span data-en><p>Open-weights line: two models on record (README verified same day) — F5-TTS (Diffusion Transformer + ConvNeXt V2) and an E2 TTS reproduction; the v1 base model released 2025-03-12; download the weights and run inference locally, no official hosted service.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>本机 Python 推理栈（conda + PyTorch，NVIDIA CUDA 与 AMD ROCm 安装路径 README 在册，ROCm 仅 Linux）； 社区 Gradio Space（E2-F5-TTS）可试跑但非官方托管产品。</p></span><span data-en><p>Local Python inference stack (conda + PyTorch; NVIDIA CUDA and AMD ROCm install paths on record in the README, ROCm Linux-only); community Gradio Spaces (E2-F5-TTS) exist for trying it out but are not an official hosted product.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>权重、代码、生成音频全在本机；ModelScope 权重页大陆直连 200（2026-10-30）——获取路径大陆可用； 无任何账户/云端数据面。</p></span><span data-en><p>Weights, code and generated audio all stay on your machine; the ModelScope weights page measured 200 direct from mainland (2026-10-30) — the acquisition path works from the mainland; no account or cloud data surface at all.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>本机批处理推理，无任务队列形态；推理耗时随硬件变化，官方未给统一延迟口径（未核验）。</p></span><span data-en><p>Local batch inference, no task-queue form; inference time varies with hardware and the official line gives no unified latency figure (not verified).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>命令行/库形态为主（README 用法示例）；zero-shot 克隆=给参考音频+文本即可合成（README 用法在册）； Sway Sampling 推理期采样策略在册。无托管 API。</p></span><span data-en><p>CLI/library usage is the main form (usage examples in the README); zero-shot cloning = give a reference clip + text and synthesize (usage on record); the Sway Sampling inference-time sampling strategy is on record. No hosted API.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>无会话概念——每次推理调用独立、互不携带状态；跨会话记忆不适用（本机模型形态， 上下文管理完全由调用方代码自理）。</p></span><span data-en><p>No session concept — every inference call is independent and carries no state between calls; cross-session memory does not apply (local-model form; context management is entirely up to the caller&#39;s own code).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>MIT 许可商用基底（GitHub 当日在册）；克隆授权面模型本身不做 consent 校验—— 平台侧拦截不存在（本机形态无平台），使用方自担授权责任（法律提示不在官方 README 在册，如实标未核验）。</p></span><span data-en><p>MIT gives a commercial base (on record via GitHub same day); the model itself performs no consent check on the cloning side — there is no platform-side blocking (a local form has no platform), users carry the consent responsibility themselves (no legal notice on record in the official README, honestly marked unverified).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合：本机/私有化中英文 TTS 与 zero-shot 克隆研究、MIT 商用基底、大陆经 ModelScope 获取权重。 不适合：要托管 API 开箱即用、要零运维、要 SLA。</p></span><span data-en><p>Fits: local/private Chinese + English TTS and zero-shot cloning research, an MIT commercial base, mainland weight acquisition via ModelScope. Not a fit: wanting an out-of-box hosted API, zero-ops setups, SLAs.</p></span></dd>
+        </div>
+      </dl>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li><span data-zh>它是模型不是产品——没有账号、控制台、SLA；「F5-TTS 服务」在官方口径里不存在（HF Space 是社区演示不是官方托管）</span><span data-en>It is a model, not a product — no account, no console, no SLA; an “F5-TTS service” does not exist in official terms (the HF Space is a community demo, not official hosting)</span></li>
+          <li><span data-zh>官方入口 github.com 大陆直连当日 000——权重经 ModelScope（AI-ModelScope/E2-F5-TTS studio 与 SWivid 权重页）直连 200，按获取路径判可达性而不是按仓库域</span><span data-en>The official entry github.com measured 000 direct from mainland on the day — weights via ModelScope (the AI-ModelScope/E2-F5-TTS studio and SWivid weight pages) measured 200 direct; judge reachability by the acquisition path, not the repo domain</span></li>
+          <li><span data-zh>README 的实验室署名（X-LANCE 上交、SII、PCL）是研究归属不是公司主体——商用集成时 MIT 无担保条款照常适用</span><span data-en>The lab signatures in the README (X-LANCE SJTU, SII, PCL) are research attribution, not a corporate entity — MIT&#39;s no-warranty terms apply as usual for commercial integration</span></li>
+        </ul>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
+        <span data-zh>
+        <ul>
+          <li>各分发页（HF/ModelScope/Wisemodel）权重许可细节是否一致（未逐条核验）</li>
+          <li>官方对克隆使用授权的具体法律提示（README 未在册，如实标未核验）</li>
+          <li>训练数据构成与许可（论文口径未逐条核验）</li>
+          <li>Apple Silicon 路径的当前可用性（README 安装段当日只细读 NVIDIA/AMD 两节）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>Whether weight-license details match across distributions (HF/ModelScope/Wisemodel, not verified item by item)</li>
+          <li>Official legal notices on cloning consent (not on record in the README, honestly marked unverified)</li>
+          <li>Training-data composition and licensing (the paper&#39;s account not verified item by item)</li>
+          <li>Current usability of the Apple Silicon path (the README install section read same day details only the NVIDIA/AMD sections)</li>
+        </ul></span>
+      </div>
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>判断可回到以下一手源复核。本站核验日</span><span data-en>Every judgement can be rechecked against the primary sources below. Verified on</span> 2026-10-30，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-30。</p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>repo</td><td><span data-zh>F5-TTS · GitHub 仓（MIT/★15,487/最近推送 2026-10-23，GitHub API 当日核验）</span><span data-en>F5-TTS · GitHub repo (MIT / ★15,487 / last push 2026-10-23, GitHub API verified same day)</span></td><td><a href="https://github.com/SWivid/F5-TTS" target="_blank" rel="noopener">https://github.com/SWivid/F5-TTS</a></td></tr>
+            <tr><td>paper</td><td><span data-zh>F5-TTS · arXiv 论文（2410.06885，仓 homepage 在册）</span><span data-en>F5-TTS · arXiv paper (2410.06885, on record as the repo homepage)</span></td><td><a href="https://arxiv.org/abs/2410.06885" target="_blank" rel="noopener">https://arxiv.org/abs/2410.06885</a></td></tr>
+            <tr><td>official</td><td><span data-zh>F5-TTS · 官方 demo 页（swivid.github.io，2026-10-30 直连 200）</span><span data-en>F5-TTS · official demo page (swivid.github.io, direct-fetched 200 on 2026-10-30)</span></td><td><a href="https://swivid.github.io/F5-TTS/" target="_blank" rel="noopener">https://swivid.github.io/F5-TTS/</a></td></tr>
+            <tr><td>official</td><td><span data-zh>F5-TTS · ModelScope 权重页（2026-10-30 大陆直连 200）</span><span data-en>F5-TTS · ModelScope weights page (direct-fetched 200 from mainland on 2026-10-30)</span></td><td><a href="https://www.modelscope.cn/models/SWivid/F5-TTS_Emilia-ZH-EN" target="_blank" rel="noopener">https://www.modelscope.cn/models/SWivid/F5-TTS_Emilia-ZH-EN</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>F5-TTS · Releases（变更记录，2026-10-30 代理抓 200；直连 000）</span><span data-en>F5-TTS · Releases (change log, proxy-fetched 200 on 2026-10-30; direct 000)</span></td><td><a href="https://github.com/SWivid/F5-TTS/releases" target="_blank" rel="noopener">https://github.com/SWivid/F5-TTS/releases</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
+        <span data-zh><p>本站尚未完成实测。编码向实测协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a>（音频产品不适用编码任务集）。</p>
+            <p><strong>实测建议</strong>（三条，都指向官方可读页没给的东西）：</p>
+            <ul><li><strong>中英文 zero-shot 克隆的说话人相似度与稳定性</strong>（论文有基准，第三方未复核；与 CosyVoice 3.0 同场景对测最有信息量）</li><li><strong>消费级显卡上的实时率</strong>（README 只给安装路径不给延迟口径）</li><li><strong>v1 base 与旧 base 的音质差</strong>（2025-03-12 News 只说 better，未给对比表）</li></ul></span><span data-en><p>This site has not completed measured runs. The coding-oriented test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a> (the coding task suite does not apply to audio products).</p>
+            <p><strong>Suggested measurements</strong> (three, all pointing at things the official readable pages do not give):</p>
+            <ul><li><strong>Speaker similarity and stability of Chinese/English zero-shot cloning</strong> (the paper has benchmarks, no third-party re-check; head-to-head against CosyVoice 3.0 in the same scenario is the most informative)</li><li><strong>Real-time factor on consumer GPUs</strong> (the README gives install paths but no latency figures)</li><li><strong>Audio-quality gap between the v1 base and the older base</strong> (the 2025-03-12 news says only &quot;better&quot;, no comparison table)</li></ul></span>
+      </div>
+
+
+      
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./cosyvoice.html"><span data-zh>CosyVoice</span><span data-en>CosyVoice</span></a></span><span class="rel-n"><span data-zh>同为开源中英文 TTS：CosyVoice 是阿里产业团队三代线带训练栈，F5-TTS 是学术团队单仓 flow-matching 路线。</span><span data-en>Also an open-source Chinese + English TTS: CosyVoice is Alibaba&#39;s industry-team three-generation line with a training stack; F5-TTS is an academic team&#39;s single-repo flow-matching route.</span></span></li>
+          <li><span class="rel-t"><a href="./fish-audio.html"><span data-zh>fish audio</span><span data-en>fish audio</span></a></span><span class="rel-n"><span data-zh>fish 有托管线+音色市场，F5-TTS 纯开源权重无托管。</span><span data-en>fish audio has a hosted line + voice marketplace; F5-TTS is pure open weights with no hosting.</span></span></li>
+          <li><span class="rel-t"><a href="/runner/ollama.html"><span data-zh>Ollama</span><span data-en>Ollama</span></a></span><span class="rel-n"><span data-zh>本机推理栈同形态参照：Ollama 管 LLM，F5-TTS 是 TTS 侧的手动等价物。</span><span data-en>Same local-inference form as a reference point: Ollama manages LLMs, F5-TTS is the manual equivalent on the TTS side.</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>
