@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>CosyVoice — Audio | 投机取巧</title>
+  <meta name="description" content="CosyVoice（阿里 FunAudioLLM（开源））：CosyVoice 是阿里语音团队（QwenAudio/原 FunAudioLLM）的开源 LLM-TTS 模型族（Apache-2.0， v1→v2→Fun-CosyVoice 3.0 三代线）：下载权重本机推理/训练/部署全栈，中文+方言覆盖与 ze…" />
+  <link rel="canonical" href="https://tools.specul.com/audio/cosyvoice.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="CosyVoice" />
+  <meta property="og:url" content="https://tools.specul.com/audio/cosyvoice.html" />
+  <meta property="og:title" content="CosyVoice — Audio | 投机取巧" />
+  <meta property="og:description" content="CosyVoice（阿里 FunAudioLLM（开源））：CosyVoice 是阿里语音团队（QwenAudio/原 FunAudioLLM）的开源 LLM-TTS 模型族（Apache-2.0， v1→v2→Fun-CosyVoice 3.0 三代线）：下载权重本机推理/训练/部署全栈，中文+方言覆盖与 ze…" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"CosyVoice","applicationCategory":"DeveloperApplication","sameAs":"https://github.com/FunAudioLLM/CosyVoice","description":"CosyVoice 是阿里语音团队（QwenAudio/原 FunAudioLLM）的开源 LLM-TTS 模型族（Apache-2.0， v1→v2→Fun-CosyVoice 3.0 三代线）：下载权重本机推理/训练/部署全栈，中文+方言覆盖与 zero-shot 克隆是主打—— 它是模型不是产品，官方不卖托管线。","dateModified":"2026-10-30"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Audio</span>
+      </nav>
+      <a class="back" href="./">← Audio</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#34d399" aria-hidden="true"><span data-zh>Co</span><span data-en>CO</span></div>
+        <div>
+          <h1><span data-zh>CosyVoice</span><span data-en>CosyVoice</span></h1>
+          <div class="vendor is-caps"><span data-zh>阿里 FunAudioLLM（开源）</span><span data-en>Alibaba FunAudioLLM (open source)</span></div>
+        </div>
+      </div>
+
+      <div class="badges">
+        <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
+        <span class="tag on"><span data-zh>Apache-2.0</span><span data-en>Apache-2.0</span></span>
+        <span class="tag on"><span data-zh>模型非产品</span><span data-en>Model, not a product</span></span>
+        <span class="tag on"><span data-zh>中文TTS</span><span data-en>Chinese TTS</span></span>
+        <span class="tag on"><span data-zh>声音克隆</span><span data-en>Voice cloning</span></span>
+        <span class="tag on"><span data-zh>自托管</span><span data-en>Self-hosted</span></span>
+        <span class="tag on"><span data-zh>多语言</span><span data-en>Multilingual</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-30</span>
+      </div>
+
+            
+      <div class="panel-lead"><span data-zh><p><strong>CosyVoice 是阿里语音团队（QwenAudio/原 FunAudioLLM）的开源 LLM-TTS 模型族</strong>（Apache-2.0， v1→v2→Fun-CosyVoice 3.0 三代线）：下载权重本机推理/训练/部署全栈，中文+方言覆盖与 zero-shot 克隆是主打—— 它是模型不是产品，官方不卖托管线。</p></span><span data-en><p><strong>CosyVoice is the Alibaba speech team&#39;s (QwenAudio, formerly FunAudioLLM) open-source LLM-TTS model family</strong> (Apache-2.0, three generations v1 → v2 → Fun-CosyVoice 3.0): download the weights and run inference/training/deployment locally — Chinese + dialect coverage and zero-shot cloning are the pitch; it is a model, not a product, and the official line sells no hosted service.</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+<span data-zh>        <div><p>适合：本机/私有部署中文+方言 TTS、zero-shot 克隆与微调全栈、Apache-2.0 商用底座。 不适合：要托管 API 开箱即用、要零运维。</p></div></span><span data-en>        <div><p>Fits: local/private Chinese + dialect TTS, zero-shot cloning with a full training stack, an Apache-2.0 commercial base. Not a fit: out-of-box hosted APIs (the official line sells none), zero-ops setups.</p></div></span>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-30</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国产</span><span data-en>domestic</span>　<span data-zh>阿里系语音团队开源项目（GitHub org 描述当日在册「QwenAudio Team（千问语音团队）」，</span><span data-en>open-source project of the Alibaba speech team (GitHub org description on record same day:</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>直连未核验</span><span data-en>direct unknown</span>　<span data-zh>官方入口 github.com 大陆直连当日实测 000（代理 200）——GitHub 大陆可达性长期波动，</span><span data-en>the official entry github.com measured 000 direct from mainland (200 via proxy) — GitHub&#39;s mainland</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>未见于备案名单</span><span data-en>not in filing list</span>：<span data-zh>开源模型不适用服务备案（不面向公众提供服务，同 Whisper 先例口径）；其托管形态（阿里云百炼语音合成线）</span><span data-en>an open-source model is not subject to service filing (it serves no public service, same wording as</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>本体是开源模型族：v1（CosyVoice-300M）→ v2（CosyVoice2-0.5B）→ Fun-CosyVoice 3.0 （Fun-CosyVoice3-0.5B-2512，README 当日在册三代线）；下载权重本地推理，不接托管 API。</p></span><span data-en><p>The core is an open-source model family: v1 (CosyVoice-300M) → v2 (CosyVoice2-0.5B) → Fun-CosyVoice 3.0 (Fun-CosyVoice3-0.5B-2512, the three-generation line on record in the README same day); download the weights and run inference locally, no hosted API.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>本机 Python 运行时（README 给 conda 安装+推理/训练/部署全栈，官方描述 inference, training and deployment full-stack ability）；仓已迁至 QwenAudio org（FunAudioLLM/CosyVoice 301→QwenAudio/CosyVoice， 当日核验）；README 克隆命令仍写旧 org 名。</p></span><span data-en><p>Local Python runtime (the README gives conda install + inference/training/deployment full stack, official description &quot;inference, training and deployment full-stack ability&quot;); the repo moved to the QwenAudio org (FunAudioLLM/CosyVoice 301 → QwenAudio/CosyVoice, verified same day); the README&#39;s clone command still writes the old org name.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>权重、代码、合成输出全在本机——开源模型仓没有账户侧数据面（这是它与托管 TTS 产品的结构性差别）。</p></span><span data-en><p>Weights, code and synthesized output all stay on your machine — an open-source model repo has no account-side data surface (the structural difference from hosted TTS products).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>本机批处理/流式推理：README 在册 Bi-Streaming（text-in/audio-out 双流，官方称延迟低至 150ms）； 无云端任务面。</p></span><span data-en><p>Local batch/streaming inference: Bi-Streaming is on record in the README (text-in/audio-out dual streams, official claim of latency as low as 150ms); no cloud task surface.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>发音控制面在册（README：中文拼音/英文 CMU 音素 pronunciation inpainting、文本正则化免传统前端、 Instruct 支持情感/语速/音量指令）；MCP 不适用（模型仓不是 agent 宿主）。</p></span><span data-en><p>Pronunciation-control surface on record (README: Chinese Pinyin / English CMU phoneme pronunciation inpainting, text normalization without a traditional frontend, Instruct support for emotion/speed/volume commands); MCP does not apply (a model repo is not an agent host).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>不适用对话上下文维度——TTS 模型按单次合成请求工作；zero-shot 克隆以参考音频为条件（README 在册 多语/跨语 zero-shot 克隆）。</p></span><span data-en><p>The conversational-context dimension does not apply — a TTS model works per synthesis request; zero-shot cloning conditions on reference audio (multilingual/cross-lingual zero-shot cloning on record in the README).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>Apache-2.0 代码许可（GitHub API 当日核验）；声音克隆涉人格权——官方 README 未给使用授权条款， 「官方未声明」按查过 README/仓根文件口径标注；9 语+18 中方言覆盖在 README 在册。</p></span><span data-en><p>Apache-2.0 code license (GitHub API verified same day); voice cloning touches personality rights — the official README carries no usage-consent clause, labeled as &quot;not declared by the official side&quot; per the pages checked (README/repo root files); 9 languages + 18 Chinese dialects coverage on record in the README.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合：本机/私有部署中文+方言 TTS、要 zero-shot 克隆与训练微调全栈、要 Apache-2.0 可商用底座。 不适合：要托管 API 开箱即用（官方不卖托管线）、要零运维。</p></span><span data-en><p>Fits: local/private Chinese + dialect TTS, zero-shot cloning with a full training/fine-tuning stack, an Apache-2.0 commercial base. Not a fit: out-of-box hosted APIs (the official line sells none), zero-ops setups.</p></span></dd>
+        </div>
+      </dl>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li><span data-zh>官方 org 已从 FunAudioLLM 更名 QwenAudio（当日 301 核验）——旧链接仍可达但新仓主在 QwenAudio；README 克隆命令仍写 FunAudioLLM 旧名，以 301 后地址为准</span><span data-en>The official org renamed from FunAudioLLM to QwenAudio (301 verified same day) — old links still resolve but the live repo is QwenAudio/CosyVoice; the README&#39;s clone command still writes the old org name, follow the post-301 address</span></li>
+          <li><span data-zh>它是模型不是产品——没有账号、没有控制台、没有 SLA；「CosyVoice 服务」在官方口径里不存在（百炼语音合成是另一条托管线，别混）</span><span data-en>It is a model, not a product — no account, no console, no SLA; a &quot;CosyVoice service&quot; does not exist in official terms (Bailian&#39;s TTS line is a separate hosted line, don&#39;t conflate)</span></li>
+          <li><span data-zh>官方 demo 页（funaudiollm.github.io/cosyvoice3）当日 404、新址 qwenaudio.github.io/cosyvoice3 直抓 200——README 内链仍指旧域，按新域核</span><span data-en>The official demo page (funaudiollm.github.io/cosyvoice3) 404s on the day; the new address qwenaudio.github.io/cosyvoice3 fetched 200 direct — README internal links still point to the old domain, verify against the new one</span></li>
+        </ul>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
+        <span data-zh>
+        <ul>
+          <li>各代权重页的许可细节（仓 LICENSE=Apache-2.0 已核，ModelScope/HF 权重页未逐张核验）</li>
+          <li>平台侧克隆使用授权条款（README 未声明——按查过 README/仓根文件口径标注）</li>
+          <li>官方托管服务是否存在（百炼语音合成线是否即 CosyVoice 底座未核验到官方对应声明）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>License details on each generation&#39;s weight pages (repo LICENSE=Apache-2.0 verified; ModelScope/HF weight pages not checked one by one)</li>
+          <li>Platform-side cloning usage-consent terms (not declared in the README — labeled per the pages checked)</li>
+          <li>Whether an official hosted service exists (no official statement verified mapping Bailian&#39;s TTS line to a CosyVoice base)</li>
+        </ul></span>
+      </div>
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>判断可回到以下一手源复核。本站核验日</span><span data-en>Every judgement can be rechecked against the primary sources below. Verified on</span> 2026-10-30，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-30。</p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>repo</td><td><span data-zh>CosyVoice · 官方仓（QwenAudio/CosyVoice，Apache-2.0，GitHub API 当日核验 ★24,192/pushed 2026-05-25）</span><span data-en>CosyVoice · official repo (QwenAudio/CosyVoice, Apache-2.0, GitHub API verified same day: ★24,192 / pushed 2026-05-25)</span></td><td><a href="https://github.com/QwenAudio/CosyVoice" target="_blank" rel="noopener">https://github.com/QwenAudio/CosyVoice</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>CosyVoice · README（三代模型线/评测表/安装路径，2026-10-30 代理抓 200）</span><span data-en>CosyVoice · README (three-generation model line / eval table / install path, proxy-fetched 200 on 2026-10-30)</span></td><td><a href="https://github.com/FunAudioLLM/CosyVoice" target="_blank" rel="noopener">https://github.com/FunAudioLLM/CosyVoice</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Fun-CosyVoice3-0.5B-2512 · ModelScope 权重页（2026-10-30 直抓 200）</span><span data-en>Fun-CosyVoice3-0.5B-2512 · ModelScope weights page (direct-fetched 200 on 2026-10-30)</span></td><td><a href="https://www.modelscope.cn/models/FunAudioLLM/Fun-CosyVoice3-0.5B-2512" target="_blank" rel="noopener">https://www.modelscope.cn/models/FunAudioLLM/Fun-CosyVoice3-0.5B-2512</a></td></tr>
+            <tr><td>paper</td><td><span data-zh>Fun-CosyVoice 3.0 · arXiv 论文（2505.17589，2026-10-30 直抓 200）</span><span data-en>Fun-CosyVoice 3.0 · arXiv paper (2505.17589, direct-fetched 200 on 2026-10-30)</span></td><td><a href="https://arxiv.org/abs/2505.17589" target="_blank" rel="noopener">https://arxiv.org/abs/2505.17589</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>CosyVoice · commits（变更记录——仓无正式 releases，README Roadmap 节在册，2026-10-30 代理抓 200）</span><span data-en>CosyVoice · commits (change log — the repo has no formal releases, README Roadmap section on record; proxy-fetched 200 on 2026-10-30)</span></td><td><a href="https://github.com/QwenAudio/CosyVoice/commits/main/" target="_blank" rel="noopener">https://github.com/QwenAudio/CosyVoice/commits/main/</a></td></tr>
+            <tr><td>official</td><td><span data-zh>QwenAudio · 官方 demo 页（cosyvoice3，2026-10-30 直抓 200；旧域 funaudiollm.github.io 当日 404）</span><span data-en>QwenAudio · official demo page (cosyvoice3, direct-fetched 200 on 2026-10-30; old domain funaudiollm.github.io 404 same day)</span></td><td><a href="https://qwenaudio.github.io/cosyvoice3/" target="_blank" rel="noopener">https://qwenaudio.github.io/cosyvoice3/</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
+        <span data-zh><p>本站尚未完成实测。编码向实测协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a>（音频模型不适用编码任务集）。</p>
+            <p><strong>实测建议</strong>（三条，都指向官方可读页没给的东西）：</p>
+            <ul><li><strong>官方评测表复现</strong>（README 评测表是作者自测口径——CER/SS 数字第三方未复核）</li><li><strong>消费级 GPU 上的实时流式延迟</strong>（官方称 150ms 是特定硬件口径）</li><li><strong>zero-shot 克隆的最低参考音频时长与质量门槛</strong>（README 未给硬指标）</li></ul></span><span data-en><p>This site has not completed measured runs. The coding-oriented test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a> (the coding task suite does not apply to audio models).</p>
+            <p><strong>Suggested measurements</strong> (three, all pointing at things the official readable pages do not give):</p>
+            <ul><li><strong>Reproducing the official evaluation table</strong> (the README&#39;s eval table is the authors&#39; self-reported numbers — CER/SS not third-party re-checked)</li><li><strong>Real-time streaming latency on consumer GPUs</strong> (the official 150ms claim is on specific hardware)</li><li><strong>Minimum reference-audio length/quality for zero-shot cloning</strong> (no hard spec in the README)</li></ul></span>
+      </div>
+
+
+      
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./whisper.html"><span data-zh>Whisper</span><span data-en>Whisper</span></a></span><span class="rel-n"><span data-zh>同为开源语音模型收仓口径：Whisper 管转写（听），CosyVoice 管合成（说）。</span><span data-en>Same open-source-speech-model-as-repo convention: Whisper handles transcription (listening), CosyVoice handles synthesis (speaking).</span></span></li>
+          <li><span class="rel-t"><a href="./fish-audio.html"><span data-zh>fish audio</span><span data-en>fish audio</span></a></span><span class="rel-n"><span data-zh>同为 zero-shot 克隆路线：fish 是托管产品+音色市场，CosyVoice 是开源权重本机跑。</span><span data-en>Also a zero-shot cloning route: fish audio is a hosted product + voice marketplace, CosyVoice is open weights run locally.</span></span></li>
+          <li><span class="rel-t"><a href="./elevenlabs.html"><span data-zh>ElevenLabs</span><span data-en>ElevenLabs</span></a></span><span class="rel-n"><span data-zh>商用托管 TTS 对照：ElevenLabs 卖服务，CosyVoice 给权重与全栈代码。</span><span data-en>Commercial hosted-TTS contrast: ElevenLabs sells a service, CosyVoice gives weights and the full-stack code.</span></span></li>
+          <li><span class="rel-t"><a href="/runner/ollama.html"><span data-zh>Ollama</span><span data-en>Ollama</span></a></span><span class="rel-n"><span data-zh>另一层 · 本地模型运行器</span><span data-en>Other layer · Local model runners</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>
