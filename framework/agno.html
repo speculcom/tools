@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Agno（原 Phidata） — Frameworks | 投机取巧</title>
+  <meta name="description" content="Agno（原 Phidata）（Agno Inc.）：Agno（原 Phidata）把「框架 + 控制平面」做成一体（Apache-2.0）：库侧定义 agent/team/workflow， AgentOS 控制平面侧跑起来、观测、调度（「self-driving agent platform」）。发版高频 （…" />
+  <link rel="canonical" href="https://tools.specul.com/framework/agno.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Agno（原 Phidata）" />
+  <meta property="og:url" content="https://tools.specul.com/framework/agno.html" />
+  <meta property="og:title" content="Agno（原 Phidata） — Frameworks | 投机取巧" />
+  <meta property="og:description" content="Agno（原 Phidata）（Agno Inc.）：Agno（原 Phidata）把「框架 + 控制平面」做成一体（Apache-2.0）：库侧定义 agent/team/workflow， AgentOS 控制平面侧跑起来、观测、调度（「self-driving agent platform」）。发版高频 （…" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Agno（原 Phidata）","applicationCategory":"DeveloperApplication","sameAs":"https://www.agno.com","description":"Agno（原 Phidata）把「框架 + 控制平面」做成一体（Apache-2.0）：库侧定义 agent/team/workflow， AgentOS 控制平面侧跑起来、观测、调度（「self-driving agent platform」）。发版高频 （v3.1.12，2026-10-29）、changelog 当日有条目——活跃线。","dateModified":"2026-10-31"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Frameworks</span>
+      </nav>
+      <a class="back" href="./">← Frameworks</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#3b82f6" aria-hidden="true"><span data-zh>Ag</span><span data-en>AG</span></div>
+        <div>
+          <h1><span data-zh>Agno（原 Phidata）</span><span data-en>Agno (formerly Phidata)</span></h1>
+          <div class="vendor is-caps">Agno Inc.</div>
+        </div>
+      </div>
+
+      <div class="badges">
+        <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
+        <span class="tag on"><span data-zh>Apache2.0</span><span data-en>Apache2.0</span></span>
+        <span class="tag on"><span data-zh>agent平台</span><span data-en>Agent platform</span></span>
+        <span class="tag on"><span data-zh>控制平面</span><span data-en>Control plane</span></span>
+        <span class="tag on"><span data-zh>记忆组件</span><span data-en>Memory components</span></span>
+        <span class="tag on"><span data-zh>改名史</span><span data-en>Name history</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-31</span>
+      </div>
+
+            
+      <div class="panel-lead"><span data-zh><p><strong>Agno（原 Phidata）把「框架 + 控制平面」做成一体</strong>（Apache-2.0）：库侧定义 agent/team/workflow， AgentOS 控制平面侧跑起来、观测、调度（「self-driving agent platform」）。发版高频 （v3.1.12，2026-10-29）、changelog 当日有条目——活跃线。</p></span><span data-en><p><strong>Agno (formerly Phidata) ships framework + control plane as one</strong>: define agents/teams/workflows in code, AgentOS runs, observes and schedules them (&quot;self-driving agent platform&quot;). Frequent releases (v3.1.12, 2026-10-29) — an active line.</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+<span data-zh>        <div><p>适合：框架+控制平面一体选型、Python 生态、要活跃维护。 不适合：只要薄库、TS 生态。</p></div></span><span data-en>        <div><p>Fits: framework + control plane as one (run/observe/schedule), Python ecosystem, active-maintenance selections. Not a fit: wanting only a thin library, the TS ecosystem.</p></div></span>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-31</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>Agno Inc.（页脚「Agno Inc. All rights reserved」在册；条款页挂 os.agno.com/legal/）。</span><span data-en>Agno Inc. (footer &quot;Agno Inc. All rights reserved&quot; on record; terms hosted at os.agno.com/legal/).</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>agno.com / docs.agno.com / os.agno.com/legal/tos 直连实测均 200（2026-10-31）；GitHub 仓大陆直连波动（同日代理可达）。</span><span data-en>agno.com, docs.agno.com and os.agno.com/legal/tos all measured 200 direct (2026-10-31); the GitHub repo&#39;s mainland reachability fluctuates (200 via proxy the same day).</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>未见于备案名单</span><span data-en>not in filing list</span>：<span data-zh>未见于网信办公示名单（2026-10-31 检索）；该产品未面向大陆公众提供服务，备案不适用。</span><span data-en>not in the CAC public registry (searched 2026-10-31); the product does not serve the mainland public, so filing does not apply.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>多模型接入（各家 API 与本地线，未逐条清点）；定位语「The self-driving agent platform」 （官方仓描述）——框架库 + 控制平面（AgentOS）两层。</p></span><span data-en><p>Multi-model access (each vendor&#39;s API and local lines, not itemized); the positioning line is &quot;The self-driving agent platform&quot; (official repo description) — two layers: a framework library + a control plane (AgentOS).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>Python 框架 + AgentOS 运行时：库侧定义 agent/team/workflow，控制平面侧跑与观测。 GitHub agno-agi/agno 42,981★、最近推送 2026-10-30（API 核验，高活跃）； releases 高频（v3.1.12，2026-10-29）；官网 changelog 最新条目 2026-10-30。</p></span><span data-en><p>A Python framework + the AgentOS runtime: the library side defines agents/teams/workflows, the control-plane side runs and observes them. GitHub agno-agi/agno 42,981 stars, last push 2026-10-30 (API verified, highly active); releases are frequent (v3.1.12, 2026-10-29); the site changelog&#39;s latest entry is 2026-10-30.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>库与 AgentOS 可自托管（「runs in your cloud」官方口径）；托管控制平面是另一产品面（os.agno.com）。</p></span><span data-en><p>The library and AgentOS can be self-hosted (&quot;runs in your cloud&quot;, official wording); the hosted control plane is a separate product surface (os.agno.com).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>AgentOS 控制平面自带常驻运行与观测语义（agent 跑在平面里、任务可调度）； 纯库用法则是普通进程内调用。</p></span><span data-en><p>The AgentOS control plane carries resident-running and observability semantics by itself (agents run inside the plane, tasks can be scheduled); pure library usage is ordinary in-process calls.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>工具/知识库/记忆组件线内置（框架自带 memory+knowledge 组件是卖点）；MCP 支持状态未逐条核验。</p></span><span data-en><p>Built-in tool / knowledge-base / memory component lines (framework-native memory + knowledge components are the selling point); MCP support status not itemized.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>内置记忆与知识组件（agent memory、knowledge/RAG 面）是产品叙事一部分；细节未逐条核验。</p></span><span data-en><p>Built-in memory and knowledge components (agent memory, knowledge/RAG surfaces) are part of the product narrative; details not itemized.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>控制平面持凭据跑 agent 与工具——自托管平面的鉴权与隔离是运维责任； 托管面（os.agno.com）数据在厂商侧。</p></span><span data-en><p>The control plane holds credentials and runs agents and tools — authentication and isolation of a self-hosted plane are operational duties; on the hosted surface (os.agno.com) data sits vendor-side.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合：要「框架+控制平面」一体（跑起来+观测+调度）、Python 生态、要高频发版的活跃选型。 不适合：只要薄库不要平面、TS 生态（Python 为主）。</p></span><span data-en><p>Fits: wanting &quot;framework + control plane&quot; as one (run + observe + schedule), the Python ecosystem, selections that need frequent releases and active maintenance. Does not fit: wanting only a thin library without a plane, the TS ecosystem (Python-first).</p></span></dd>
+        </div>
+      </dl>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li><span data-zh>改名史两段：Phidata → Agno（2025 年初改名）——旧教程/旧包名 phidata 与现 agno 是同一线，检索时两词都要查</span><span data-en>Two-stage rename history: Phidata → Agno (renamed early 2025) — old tutorials/the old package name phidata and the current agno are the same line; search both words</span></li>
+          <li><span data-zh>条款挂在 os.agno.com/legal/（tos+privacy 200 在册），主站 /terms /privacy 404——条款面在控制平面子域，不在营销主域</span><span data-en>Terms live on os.agno.com/legal/ (tos + privacy 200 on record); the main site&#39;s /terms /privacy are 404 — the terms surface sits on the control-plane subdomain, not the marketing domain</span></li>
+          <li><span data-zh>库/平面两分：Apache-2.0 是库仓许可；托管控制平面（os.agno.com）是商业服务面——许可与商用条款按面分开看</span><span data-en>Library/plane split: Apache-2.0 is the library repo&#39;s license; the hosted control plane (os.agno.com) is a commercial service surface — read license and commercial terms per surface</span></li>
+        </ul>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
+        <span data-zh>
+        <ul>
+          <li>MCP 支持状态（未逐条核验）</li>
+          <li>托管控制平面（os.agno.com）与自托管 AgentOS 的能力差异表（未逐条对照）</li>
+          <li>条款页主体行未在抓到的 HTML 明文解析出（页脚 Agno Inc. 在册；签约主体细节未逐字核）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>MCP support status (not itemized)</li>
+          <li>A capability-difference table between the hosted control plane (os.agno.com) and self-hosted AgentOS (not compared item by item)</li>
+          <li>The signing-entity line was not parsed in plain text from the fetched terms HTML (footer &quot;Agno Inc.&quot; on record; entity details not verified word by word)</li>
+        </ul></span>
+      </div>
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>判断可回到以下一手源复核。本站核验日</span><span data-en>Every judgement can be rechecked against the primary sources below. Verified on</span> 2026-10-31，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-31。</p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>repo</td><td><span data-zh>agno-agi/agno · 仓库（Apache-2.0；42,981★，最近推送 2026-10-30，GitHub API 核验）</span><span data-en>agno-agi/agno · repository (Apache-2.0; 42,981 stars, last push 2026-10-30, GitHub API verified)</span></td><td><a href="https://github.com/agno-agi/agno" target="_blank" rel="noopener">https://github.com/agno-agi/agno</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Agno · 官方文档（docs.agno.com，主站 /docs 308 目标）</span><span data-en>Agno · official docs (docs.agno.com, the 308 target of the main site&#39;s /docs)</span></td><td><a href="https://docs.agno.com/" target="_blank" rel="noopener">https://docs.agno.com/</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>Agno · 官方 changelog（最新条目 2026-10-30）</span><span data-en>Agno · official changelog (latest entry 2026-10-30)</span></td><td><a href="https://www.agno.com/changelog" target="_blank" rel="noopener">https://www.agno.com/changelog</a></td></tr>
+            <tr><td>terms</td><td><span data-zh>Agno · 条款（os.agno.com/legal/tos，主体 Agno Inc.）</span><span data-en>Agno · terms (os.agno.com/legal/tos, entity Agno Inc.)</span></td><td><a href="https://os.agno.com/legal/tos" target="_blank" rel="noopener">https://os.agno.com/legal/tos</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
+        <span data-zh><p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" target="_blank" rel="noopener">protocols/framework/_protocol.md</a>。</p></span><span data-en><p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" target="_blank" rel="noopener">protocols/framework/_protocol.md</a>.</p></span>
+      </div>
+
+
+      
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./langgraph.html"><span data-zh>LangGraph</span><span data-en>LangGraph</span></a></span><span class="rel-n"><span data-zh>同大类对照：LangGraph 给图与状态机制让你搭平面，Agno 把平面（AgentOS）直接给你——搭与给的分野。</span><span data-en>Same-category contrast: LangGraph gives you graphs and state mechanisms so you build the plane; Agno hands you the plane (AgentOS) directly — build vs. given.</span></span></li>
+          <li><span class="rel-t"><a href="./letta.html"><span data-zh>Letta</span><span data-en>Letta / MemGPT</span></a></span><span class="rel-n"><span data-zh>同大类对照：Letta 的记忆是 agent 自编辑本体（服务器形态），Agno 的记忆是框架内置组件（平面观测形态）。</span><span data-en>Same-category contrast: Letta&#39;s memory is the agent-self-edited core (server form); Agno&#39;s memory is a framework-built-in component (plane-observability form).</span></span></li>
+          <li><span class="rel-t"><a href="/automation/dify.html"><span data-zh>Dify</span><span data-en>Dify</span></a></span><span class="rel-n"><span data-zh>跨大类对照：Dify 低代码可视化搭 agent 应用，Agno 代码定义 agent 再交给平面跑——automation 与 framework 的边界样本。</span><span data-en>Cross-category contrast: Dify builds agent apps visually with low-code; Agno defines agents in code and hands them to a plane to run — a boundary sample between automation and framework.</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>
