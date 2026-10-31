@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Shopify Dev MCP Server — MCP | 投机取巧</title>
+  <meta name="description" content="Shopify Dev MCP Server（Shopify）：Shopify 官方 Dev MCP server（npm ISC，本地 stdio，无鉴权）：给编码 agent 补 Shopify 平台上下文—— 文档检索（search_dev_docs/fetch_docs_by_path）+ Admin G…" />
+  <link rel="canonical" href="https://tools.specul.com/mcp/shopify-mcp.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Shopify Dev MCP Server" />
+  <meta property="og:url" content="https://tools.specul.com/mcp/shopify-mcp.html" />
+  <meta property="og:title" content="Shopify Dev MCP Server — MCP | 投机取巧" />
+  <meta property="og:description" content="Shopify Dev MCP Server（Shopify）：Shopify 官方 Dev MCP server（npm ISC，本地 stdio，无鉴权）：给编码 agent 补 Shopify 平台上下文—— 文档检索（search_dev_docs/fetch_docs_by_path）+ Admin G…" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Shopify Dev MCP Server","applicationCategory":"DeveloperApplication","sameAs":"https://shopify.dev/docs/apps/build/ai-toolkit","description":"Shopify 官方 Dev MCP server（npm ISC，本地 stdio，无鉴权）：给编码 agent 补 Shopify 平台上下文—— 文档检索（search_dev_docs/fetch_docs_by_path）+ Admin GraphQL schema 探查（introspect_admin_schema）。 它是 Shopify AI Toolkit 三形态之一（插件 / agent skills / Dev MCP）； GitHub 无独立 dev-mcp 仓（代码随 npm 发布），inventory 旧 URL agents-of-change 已 404。 纯","dateModified":"2026-10-31"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">MCP</span>
+      </nav>
+      <a class="back" href="./">← MCP</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#22d3c5" aria-hidden="true"><span data-zh>Sh</span><span data-en>SH</span></div>
+        <div>
+          <h1><span data-zh>Shopify Dev MCP Server</span><span data-en>Shopify Dev MCP Server</span></h1>
+          <div class="vendor is-caps">Shopify</div>
+        </div>
+      </div>
+
+      <div class="badges">
+        <span class="tag on"><span data-zh>MCP</span><span data-en>MCP</span></span>
+        <span class="tag on"><span data-zh>Shopify</span><span data-en>Shopify</span></span>
+        <span class="tag on"><span data-zh>电商开发</span><span data-en>E-commerce development</span></span>
+        <span class="tag on"><span data-zh>schema</span><span data-en>schema</span></span>
+        <span class="tag on"><span data-zh>文档检索</span><span data-en>Docs retrieval</span></span>
+        <span class="tag on"><span data-zh>本地stdio</span><span data-en>Local stdio</span></span>
+        <span class="tag on"><span data-zh>无鉴权</span><span data-en>No auth</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-31</span>
+      </div>
+
+            
+      <div class="panel-lead"><span data-zh><p><strong>Shopify 官方 Dev MCP server</strong>（npm ISC，本地 stdio，无鉴权）：给编码 agent 补 Shopify 平台上下文—— 文档检索（search_dev_docs/fetch_docs_by_path）+ Admin GraphQL schema 探查（introspect_admin_schema）。 它是 <strong>Shopify AI Toolkit 三形态之一</strong>（插件 / agent skills / Dev MCP）； <strong>GitHub 无独立 dev-mcp 仓</strong>（代码随 npm 发布），inventory 旧 URL agents-of-change 已 404。 纯读面、不碰店铺数据——店铺操作走 Shopify CLI 线，别混。</p></span><span data-en><p><strong>Shopify official Dev MCP server</strong> (npm ISC, local stdio, no auth): gives your coding agent Shopify platform context — doc retrieval (search_dev_docs/fetch_docs_by_path) + Admin GraphQL schema probing (introspect_admin_schema). It is <strong>one of the three forms of the Shopify AI Toolkit</strong> (plugin / agent skills / Dev MCP); <strong>there is no standalone dev-mcp GitHub repo</strong> (code ships with npm), and the inventory&#39;s old agents-of-change URL is now 404. Pure read — it never touches store data; store operations go through the Shopify CLI line, don&#39;t mix them.</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+<span data-zh>        <div><p>适合：Shopify 开发者要 agent 写对 API 字段/schema/CLI；零鉴权零配置起步。 不适合：要 agent 直接操作店铺（无店铺面）；非 Shopify 生态。</p></div></span><span data-en>        <div><p>Fits: Shopify developers having agents write correct API fields/schema/CLI; zero-auth zero-config start. Not a fit: agents operating the store directly (no store surface); non-Shopify ecosystems.</p></div></span>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-31</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>Shopify Inc.（加拿大，上市电商 SaaS）。</span><span data-en>Shopify Inc. (Canada, publicly listed e-commerce SaaS).</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>shopify.dev 文档与 changelog 直连 200（www.shopify.dev 变体偶发 000，去 www 稳定）；npm registry 直连可达（2026-10-31）。</span><span data-en>shopify.dev docs and changelog returned 200 direct (the www.shopify.dev variant hit an occasional 000; dropping www is stable); the npm registry was reachable direct (2026-10-31).</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>未见于备案名单</span><span data-en>not in filing list</span>：<span data-zh>未见于网信办公示名单（2026-10-31 检索）；该产品未面向大陆公众提供服务，备案不适用。</span><span data-en>not in the CAC public registry (searched 2026-10-31); the product does not serve the mainland public, so filing does not apply.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">11 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p><strong>它自己不调模型</strong>——被 MCP 客户端调用的本地 server（stdio）。它把 shopify.dev 文档检索、 Admin GraphQL schema introspection 等「Shopify 平台上下文」喂给你的编码 agent。</p></span><span data-en><p><strong>It calls no model itself</strong> — a local server (stdio) called by MCP clients. It feeds your coding agent &quot;Shopify platform context&quot;: shopify.dev documentation retrieval, Admin GraphQL schema introspection, and the like.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p><strong>本地 npx 线</strong>（npx -y @shopify/dev-mcp@latest，Node 18+）；官方明写「server 本地跑、 不需要鉴权」。发版线在 npm（1.18.0，2026-10-27，143 个版本）；<strong>GitHub 无独立 dev-mcp 仓</strong> （Shopify/dev-mcp 404）——代码随 npm 包发布，插件/skills 线在 Shopify/Shopify-AI-Toolkit 仓 （MIT 621★，推送 2026-10-27）。官方另有 instrumentation 遥测（OPT_OUT_INSTRUMENTATION 可退出）。</p></span><span data-en><p>A <strong>local npx line</strong> (npx -y @shopify/dev-mcp@latest, Node 18+); the official docs state plainly &quot;the server runs locally and doesn&#39;t require authentication&quot;. The release line lives on npm (1.18.0, 2026-10-27, 143 versions); <strong>there is no standalone dev-mcp GitHub repo</strong> (Shopify/dev-mcp is 404) — the code ships with the npm package, while the plugin/skills line lives in the Shopify/Shopify-AI-Toolkit repo (MIT 621★, pushed 2026-10-27). The official package also ships instrumentation telemetry (opt out via OPT_OUT_INSTRUMENTATION).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>不读写本机文件——输出文档检索结果与 schema 结构；它服务的是「你写 Shopify 代码」的场景， 代码文件由你的 agent/编辑器落盘，不由它落盘。</p></span><span data-en><p>Reads and writes no local files — it outputs documentation search results and schema structures; it serves the scenario of &quot;you writing Shopify code&quot;, and the code files land on disk via your agent/editor, not through it.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>无常驻后台——stdio server 随 MCP 客户端拉起，进程生命周期跟客户端走。</p></span><span data-en><p>No persistent background — the stdio server is spawned by the MCP client; the process lifecycle follows the client.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>核心四工具（官方文档口径）：<strong>search_dev_docs</strong>（搜 shopify.dev 文档）/ <strong>introspect_admin_schema</strong>（访问与搜索 Admin GraphQL schema）/ <strong>fetch_docs_by_path</strong>（按路径取文档页）/ <strong>get_started</strong>（API 入门引导）； 内置 prompt：shopify_admin_graphql（帮你写 Admin API GraphQL 操作）。 Polaris Web Components 支持经 POLARIS_UNIFIED 环境变量 opt-in（实验性）。</p></span><span data-en><p>Four core tools (official docs wording): <strong>search_dev_docs</strong> (search shopify.dev docs) / <strong>introspect_admin_schema</strong> (access and search the Admin GraphQL schema) / <strong>fetch_docs_by_path</strong> (retrieve doc pages by path) / <strong>get_started</strong> (API onboarding guidance); built-in prompt: shopify_admin_graphql (helps you write Admin API GraphQL operations). Polaris Web Components support is opt-in via the POLARIS_UNIFIED env var (experimental).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>无 server 侧跨会话记忆；上下文由 MCP 客户端会话承载。schema 按 API 版本可查 （含字段级文档与弃用标注——官方文档线口径）。</p></span><span data-en><p>No server-side cross-session memory; context is carried by the MCP client session. The schema is queryable by API version (including field-level docs and deprecation notices — official docs wording).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p><strong>不需要鉴权</strong>（官方明写 server 本地跑无 auth）——它只读公开文档与 schema， 不碰你的店铺数据；要店铺操作（建 app/主题/跑 CLI）走 Shopify CLI 的认证上下文， 那是 AI Toolkit 的另一条线，不是这个 MCP server 的能力。 instrumentation 遥测默认开，OPT_OUT_INSTRUMENTATION=true 退出。</p></span><span data-en><p><strong>No authentication needed</strong> (the official docs state the local server needs no auth) — it only reads public docs and schemas, it never touches your store data; store operations (creating apps/themes, running the CLI) go through Shopify CLI&#39;s authenticated context, which is a different line of the AI Toolkit, not this MCP server&#39;s capability. Instrumentation telemetry is on by default; OPT_OUT_INSTRUMENTATION=true opts out.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合：Shopify 开发者给编码 agent 补「平台上下文」——文档检索+schema 探查免模型瞎猜 API 字段； 零鉴权零配置起步。 不适合：要 agent 直接操作店铺（它不碰店铺数据）；非 Shopify 生态（单厂商专用）。</p></span><span data-en><p>Fits: Shopify developers giving a coding agent &quot;platform context&quot; — doc retrieval + schema probing so the model stops guessing API fields; zero-auth zero-config onboarding. Not a fit: agents operating the store directly (it has no store surface); non-Shopify ecosystems (single-vendor only).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
+          <dd><span data-zh><p><strong>stdio</strong>（npx -y @shopify/dev-mcp@latest；claude mcp add --transport stdio 官方示例）。 核验：shopify.dev AI Toolkit 页与 Polaris using-mcp 页（2026-10-31 直连 200）。</p></span><span data-en><p><strong>stdio</strong> (npx -y @shopify/dev-mcp@latest; the official example is claude mcp add --transport stdio). Verified: the shopify.dev AI Toolkit page and the Polaris using-mcp page (200 direct on 2026-10-31).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
+          <dd><span data-zh><p>无鉴权（官方明写本地 server 不需要 auth）。instrumentation 遥测默认开， OPT_OUT_INSTRUMENTATION 环境变量退出；Polaris 支持 POLARIS_UNIFIED opt-in。</p></span><span data-en><p>No auth (the official docs state the local server requires no auth). Instrumentation telemetry is on by default, opt out via the OPT_OUT_INSTRUMENTATION env var; Polaris support is opt-in via POLARIS_UNIFIED.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
+          <dd><span data-zh><p>纯读面（公开文档+schema），无店铺数据面、无本机写面——权限面在 MCP server 里属最轻一档。</p></span><span data-en><p>Pure read (public docs + schema), no store-data surface, no local write surface — among the lightest permission surfaces in MCP servers.</p></span></dd>
+        </div>
+      </dl>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li><span data-zh>把 inventory 旧 URL（shopify.dev/docs/agents-of-change）当文档线——2026-10-31 实测 404；现役文档页是 docs/apps/build/ai-toolkit（Dev MCP 是 AI Toolkit 三形态之一）</span><span data-en>Treating the old inventory URL (shopify.dev/docs/agents-of-change) as the docs line — measured 404 on 2026-10-31; the current docs page is docs/apps/build/ai-toolkit (the Dev MCP is one of three AI Toolkit forms)</span></li>
+          <li><span data-zh>找 GitHub 源码仓——Shopify/dev-mcp 不存在（404），代码随 npm 发布；插件/skills 在 Shopify/Shopify-AI-Toolkit 仓，别混</span><span data-en>Looking for a GitHub source repo — Shopify/dev-mcp does not exist (404); the code ships with npm; plugins/skills live in the Shopify/Shopify-AI-Toolkit repo, don&#39;t mix</span></li>
+          <li><span data-zh>把它当「能操作店铺的 MCP」——它只读文档与 schema、无鉴权无店铺面；店铺操作走 Shopify CLI 线</span><span data-en>Treating it as &quot;an MCP that operates the store&quot; — it only reads docs and schema, no auth and no store surface; store operations go through the Shopify CLI line</span></li>
+          <li><span data-zh>忽略 instrumentation——默认有遥测，介意设 OPT_OUT_INSTRUMENTATION=true</span><span data-en>Ignoring instrumentation — telemetry is on by default; set OPT_OUT_INSTRUMENTATION=true if you mind</span></li>
+          <li><span data-zh>把早期「每面一个 skill」（shopify-admin/shopify-liquid 等 23 个）当现役——官方已弃用改单一 shopify skill（npx skills add Shopify/shopify-ai-toolkit）</span><span data-en>Treating the early per-surface skills (shopify-admin/shopify-liquid and 23 others) as current — the official line deprecated them for a single shopify skill (npx skills add Shopify/shopify-ai-toolkit)</span></li>
+        </ul>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
+        <span data-zh>
+        <ul>
+          <li>dev-mcp 源码是否随 npm 包附带可读（repo 字段空；未拆包核验）</li>
+          <li>introspect_admin_schema 覆盖的 API 版本范围与更新节奏（changelog 有 POS UI extensions 条目，全量未清点）</li>
+          <li>AI Toolkit 插件形态与 Dev MCP 形态的能力差集（官方说插件「bundles everything」，未逐项对照）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>Whether the dev-mcp source is readable as shipped in the npm package (the repo field is empty; the package was not unpacked to verify)</li>
+          <li>The API-version coverage and update cadence of introspect_admin_schema (the changelog has a POS UI extensions entry; the full range was not enumerated)</li>
+          <li>The capability delta between the AI Toolkit plugin form and the Dev MCP form (the official docs say the plugin &quot;bundles everything&quot;; not compared item by item)</li>
+        </ul></span>
+      </div>
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>判断可回到以下一手源复核。本站核验日</span><span data-en>Every judgement can be rechecked against the primary sources below. Verified on</span> 2026-10-31，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-31。</p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>docs</td><td><span data-zh>shopify.dev · AI Toolkit 官方页（Dev MCP 安装与定位；旧 agents-of-change 路径 404 后现役；直连 200）</span><span data-en>shopify.dev · AI Toolkit official page (Dev MCP install and positioning; the current docs page after the old agents-of-change path 404s; 200 direct)</span></td><td><a href="https://shopify.dev/docs/apps/build/ai-toolkit" target="_blank" rel="noopener">https://shopify.dev/docs/apps/build/ai-toolkit</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>shopify.dev · changelog「Dev MCP now supports POS UI extensions」（变更记录线；直连 200）</span><span data-en>shopify.dev · changelog &quot;Dev MCP now supports POS UI extensions&quot; (change-record line; 200 direct)</span></td><td><a href="https://shopify.dev/changelog/dev-mcp-now-supports-pos-ui-extensions" target="_blank" rel="noopener">https://shopify.dev/changelog/dev-mcp-now-supports-pos-ui-extensions</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>npm · @shopify/dev-mcp（发版线：1.18.0，2026-10-27，143 版本；ISC；repo 字段空=代码不独立开源）</span><span data-en>npm · @shopify/dev-mcp (release line: 1.18.0, 2026-10-27, 143 versions; ISC; empty repo field = code not independently open-sourced)</span></td><td><a href="https://www.npmjs.com/package/@shopify/dev-mcp" target="_blank" rel="noopener">https://www.npmjs.com/package/@shopify/dev-mcp</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>Shopify/Shopify-AI-Toolkit · 插件/skills 仓（MIT；621★，推送 2026-10-27，GitHub API 核验）</span><span data-en>Shopify/Shopify-AI-Toolkit · plugin/skills repo (MIT; 621★, pushed 2026-10-27, GitHub API verified)</span></td><td><a href="https://github.com/Shopify/Shopify-AI-Toolkit" target="_blank" rel="noopener">https://github.com/Shopify/Shopify-AI-Toolkit</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
+        <span data-zh><p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>。</p></span><span data-en><p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>.</p></span>
+      </div>
+
+
+      
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./firecrawl-mcp.html"><span data-zh>Firecrawl MCP Server</span><span data-en>Firecrawl MCP Server</span></a></span><span class="rel-n"><span data-zh>「领域专用文档+schema MCP」vs「通用 web 上下文 MCP」：Shopify 单厂商极窄极深，Firecrawl 全网极宽。</span><span data-en>&quot;Domain-specific docs+schema MCP&quot; vs &quot;general web-context MCP&quot;: Shopify is single-vendor, extremely narrow and deep; Firecrawl is web-wide and extremely broad.</span></span></li>
+          <li><span class="rel-t"><a href="./context7.html"><span data-zh>Context7</span><span data-en>Context7</span></a></span><span class="rel-n"><span data-zh>同类「给 agent 喂库/平台文档」路线：Context7 跨库通用，Shopify Dev MCP 单厂商官方一手。</span><span data-en>The same &quot;feed library/platform docs to agents&quot; route: Context7 is cross-library and general, Shopify Dev MCP is single-vendor official first-party.</span></span></li>
+          <li><span class="rel-t"><a href="/coding/cursor.html"><span data-zh>Cursor</span><span data-en>Cursor</span></a></span><span class="rel-n"><span data-zh>另一层 · AI 编程</span><span data-en>Other layer · AI coding</span></span></li>
+          <li><span class="rel-t"><a href="/coding/claude-code.html"><span data-zh>Claude Code IDE 扩展</span><span data-en>Claude Code (IDE extension)</span></a></span><span class="rel-n"><span data-zh>另一层 · AI 编程</span><span data-en>Other layer · AI coding</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

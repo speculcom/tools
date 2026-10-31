@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Browserbase MCP Server — MCP | 投机取巧</title>
+  <meta name="description" content="Browserbase MCP Server（Browserbase）：Browserbase 官方 MCP server：云端浏览器 + Stagehand 自然语言网页驱动，6 工具 （start/end/navigate/act/observe/extract）。本档案的核心两口径：GitHub 自托管仓已…" />
+  <link rel="canonical" href="https://tools.specul.com/mcp/browserbase-mcp.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Browserbase MCP Server" />
+  <meta property="og:url" content="https://tools.specul.com/mcp/browserbase-mcp.html" />
+  <meta property="og:title" content="Browserbase MCP Server — MCP | 投机取巧" />
+  <meta property="og:description" content="Browserbase MCP Server（Browserbase）：Browserbase 官方 MCP server：云端浏览器 + Stagehand 自然语言网页驱动，6 工具 （start/end/navigate/act/observe/extract）。本档案的核心两口径：GitHub 自托管仓已…" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Browserbase MCP Server","applicationCategory":"DeveloperApplication","sameAs":"https://docs.browserbase.com/integrations/mcp/introduction","description":"Browserbase 官方 MCP server：云端浏览器 + Stagehand 自然语言网页驱动，6 工具 （start/end/navigate/act/observe/extract）。本档案的核心两口径：GitHub 自托管仓已 archived （README 顶部明写「仅存档、不代表现役实现」）——现役是托管线 mcp.browserbase.com/mcp， 产品本身活跃（docs 在册、npm 3.0.0、底座 Stagehand 25,883★ 推送 2026-10-30）。 自托管线只是「server 进程在你机器上」，浏览器会话仍在 Browserbase 云端、A","dateModified":"2026-10-31"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">MCP</span>
+      </nav>
+      <a class="back" href="./">← MCP</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#22d3c5" aria-hidden="true"><span data-zh>Br</span><span data-en>BR</span></div>
+        <div>
+          <h1><span data-zh>Browserbase MCP Server</span><span data-en>Browserbase MCP Server</span></h1>
+          <div class="vendor is-caps">Browserbase</div>
+        </div>
+      </div>
+
+      <div class="badges">
+        <span class="tag on"><span data-zh>MCP</span><span data-en>MCP</span></span>
+        <span class="tag on"><span data-zh>浏览器自动化</span><span data-en>Browser automation</span></span>
+        <span class="tag on"><span data-zh>云端浏览器</span><span data-en>Cloud browser</span></span>
+        <span class="tag on"><span data-zh>Stagehand</span><span data-en>Stagehand</span></span>
+        <span class="tag on"><span data-zh>远程托管</span><span data-en>Remote-hosted</span></span>
+        <span class="tag on"><span data-zh>仓已归档</span><span data-en>Archived repo</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-31</span>
+      </div>
+
+            
+      <div class="panel-lead"><span data-zh><p><strong>Browserbase 官方 MCP server</strong>：云端浏览器 + Stagehand 自然语言网页驱动，6 工具 （start/end/navigate/act/observe/extract）。本档案的核心两口径：<strong>GitHub 自托管仓已 archived</strong> （README 顶部明写「仅存档、不代表现役实现」）——<strong>现役是托管线 mcp.browserbase.com/mcp</strong>， 产品本身活跃（docs 在册、npm 3.0.0、底座 Stagehand 25,883★ 推送 2026-10-30）。 自托管线只是「server 进程在你机器上」，浏览器会话仍在 Browserbase 云端、API key 照要。</p></span><span data-en><p><strong>Browserbase official MCP server</strong>: cloud browser + Stagehand natural-language page driving, 6 tools (start/end/navigate/act/observe/extract). The core two-wording of this dossier: <strong>the GitHub self-hosted repo is archived</strong> (the README top states plainly it is archival-only, not representative of the current implementation) — <strong>the current line is the hosted mcp.browserbase.com/mcp</strong>, and the product itself is active (docs live, npm 3.0.0, underlying Stagehand 25,883★ pushed 2026-10-30). Self-hosting only means &quot;the server process is on your machine&quot;; the browser session still lives on Browserbase cloud and the API key is still required.</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+<span data-zh>        <div><p>适合：要云端浏览器免本地环境、自然语言 act/observe/extract 三件套、托管省事（厂商包 Gemini 成本）。 不适合：要开源可审计完整实现（现役实现闭源在托管侧）；只要本地浏览器自动化（Playwright MCP 更直接）。</p></div></span><span data-en>        <div><p>Fits: cloud browser without local setup, natural-language act/observe/extract, hosted convenience (the vendor covers Gemini costs). Not a fit: wanting an open-source auditable full implementation (the current implementation is closed on the hosted side); local-only browser automation (Playwright MCP is more direct).</p></div></span>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-31</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>Browserbase, Inc.（美国，云端浏览器基础设施厂商）。</span><span data-en>Browserbase, Inc. (US, cloud browser infrastructure vendor).</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>browserbase.com 与 docs.browserbase.com 直连 200；mcp.browserbase.com/mcp 直连 400（端点存在需鉴权）；GitHub 仓与 raw README 直连可达（2026-10-31）。</span><span data-en>browserbase.com and docs.browserbase.com returned 200 direct; mcp.browserbase.com/mcp returned 400 direct (endpoint exists, auth required); the GitHub repo and raw README were reachable direct (2026-10-31).</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>未见于备案名单</span><span data-en>not in filing list</span>：<span data-zh>未见于网信办公示名单（2026-10-31 检索）；该产品未面向大陆公众提供服务，备案不适用。</span><span data-en>not in the CAC public registry (searched 2026-10-31); the product does not serve the mainland public, so filing does not apply.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">11 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p><strong>它自己需要外部模型跑 Stagehand</strong>——托管线由 Browserbase 侧提供 Gemini 的 LLM 成本 （官方 README 明写 hosted 版「provide the LLM costs for Gemini」）；自托管线要自备 GEMINI_API_KEY（可 --modelName 换其他模型并配对应 key）。它是「浏览器自动化 + 模型」的混合体， 不是纯接口包装。</p></span><span data-en><p><strong>It needs an external model to run Stagehand</strong> — on the hosted line Browserbase itself covers the LLM costs for Gemini (the official README states the hosted version &quot;provides the LLM costs for Gemini&quot;); the self-hosted line requires your own GEMINI_API_KEY (switch models with --modelName plus the matching key). It is a browser-automation-plus-model hybrid, not a pure interface wrapper.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>现役主推<strong>官方托管远程 server</strong>（https://mcp.browserbase.com/mcp，streamable-http）； 自托管线走 npm（@browserbasehq/mcp 3.0.0，2026-03-31）或克隆 GitHub 仓。 <strong>GitHub 仓 browserbase/mcp-server-browserbase 已 archived</strong>（API 核验 archived=true， 3,397★，推送停 2026-07-20）——README 顶部明写「不再维护、仅存档、不代表现役生产实现」； 底座 Stagehand 仓仍活跃（MIT 25,883★，推送 2026-10-30）。</p></span><span data-en><p>The current flagship is the <strong>official hosted remote server</strong> (https://mcp.browserbase.com/mcp, streamable-http); the self-hosted line goes through npm (@browserbasehq/mcp 3.0.0, 2026-03-31) or cloning the GitHub repo. <strong>The GitHub repo browserbase/mcp-server-browserbase is archived</strong> (API-verified archived=true, 3,397★, last push 2026-07-20) — the README top states plainly it is &quot;no longer maintained, kept for historical purposes, not representative of current production services&quot;; the underlying Stagehand repo remains active (MIT 25,883★, pushed 2026-10-30).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>不读写本机文件——产物是云端浏览器会话里的页面状态与抽取结果（文本/结构化数据）。 自托管线跑在你自己的机器上，但浏览器本身仍是 Browserbase 云端会话（要 BROWSERBASE_API_KEY）。</p></span><span data-en><p>Reads and writes no local files — the artifacts are page state and extraction results (text/structured data) inside a cloud browser session. The self-hosted line runs on your machine, but the browser itself is still a Browserbase cloud session (BROWSERBASE_API_KEY required).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>浏览器会话活在 Browserbase 云端（start 创建/复用会话、end 关闭）；无本机后台进程。 会话生命周期由工具调用显式管理，不是常驻。</p></span><span data-en><p>The browser session lives on Browserbase&#39;s cloud (start creates/reuses a session, end closes it); no local background process. The session lifecycle is managed explicitly by tool calls, not persistent.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p><strong>6 个工具</strong>（README 口径，托管与自托管同工具集）：start（创建/复用会话）/ end（关闭会话）/ navigate（导航到 URL）/ act（按自然语言指令对页面动手）/ observe（观察可操作元素）/ extract（按指令抽取页面数据）。act/observe/extract 三件套由 Stagehand 的 act-and-observe 范式驱动。</p></span><span data-en><p><strong>6 tools</strong> (README wording; hosted and self-hosted share the same set): start (create/reuse a session) / end (close the session) / navigate (go to a URL) / act (manipulate the page from a natural-language instruction) / observe (observe actionable elements) / extract (extract page data per instruction). The act/observe/extract trio is driven by Stagehand&#39;s act-and-observe paradigm.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>无 server 侧跨会话记忆；上下文=当前 Browserbase 浏览器会话（start 可复用既有会话）。 会话内页面状态自然连续，跨会话不保。</p></span><span data-en><p>No server-side cross-session memory; the context is the current Browserbase browser session (start can reuse an existing one). In-session page state is naturally continuous; nothing persists across sessions.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>托管线要 Browserbase 账户（API key + project id，配在客户端）；自托管线要 BROWSERBASE_API_KEY/BROWSERBASE_PROJECT_ID/GEMINI_API_KEY 三个环境变量。 <strong>act 能在真实网页上动手</strong>（点击/填表）——授权边界按目标站点把关；云端会话内容在 Browserbase 侧留存，敏感流程要自己评估。</p></span><span data-en><p>The hosted line needs a Browserbase account (API key + project id, configured in the client); the self-hosted line needs the BROWSERBASE_API_KEY/BROWSERBASE_PROJECT_ID/GEMINI_API_KEY environment variables. <strong>act manipulates real web pages</strong> (clicks/form filling) — gate the authorization boundary per target site; cloud session content is retained on Browserbase&#39;s side, so sensitive flows need your own assessment.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合：要「云端浏览器 + 自然语言驱动网页」的 agent（无需本地起浏览器）；要托管起步、 LLM 成本由厂商包的省事路线。 不适合：要开源可审计的完整实现（GitHub 仓已 archived，现役实现闭源在托管侧）； 只要本地浏览器自动化的场景（Playwright MCP 更直接）。</p></span><span data-en><p>Fits: agents wanting &quot;cloud browser + natural-language web driving&quot; (no local browser to set up); the hosted line for easy onboarding with the vendor covering LLM costs. Not a fit: wanting an open-source auditable full implementation (the GitHub repo is archived; the current implementation is closed on the hosted side); scenarios that only need local browser automation (Playwright MCP is more direct).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
+          <dd><span data-zh><p><strong>streamable-http</strong>（托管 https://mcp.browserbase.com/mcp，官方推荐）+ <strong>stdio</strong> （npx @browserbasehq/mcp 自托管）；README 明写支持 STDIO 与 SHTTP 两种传输，推荐 SHTTP 走托管线。 核验：仓 README（2026-10-31 经 GitHub API raw 直抓）+ docs.browserbase.com MCP 页（直连 200）。</p></span><span data-en><p><strong>streamable-http</strong> (hosted https://mcp.browserbase.com/mcp, officially recommended) + <strong>stdio</strong> (npx @browserbasehq/mcp self-hosted); the README states both STDIO and SHTTP transports are supported, recommending SHTTP via the hosted line. Verified: repo README (fetched via GitHub API raw 2026-10-31) + the docs.browserbase.com MCP page (200 direct).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
+          <dd><span data-zh><p>Browserbase 账户凭据（BROWSERBASE_API_KEY + BROWSERBASE_PROJECT_ID）；自托管线另加模型 key （默认 GEMINI_API_KEY）。托管端点直连实测 400（存在、需正确 MCP 握手与鉴权，非死链）。</p></span><span data-en><p>Browserbase account credentials (BROWSERBASE_API_KEY + BROWSERBASE_PROJECT_ID); the self-hosted line adds a model key (GEMINI_API_KEY by default). The hosted endpoint measured 400 direct (exists, requires a proper MCP handshake and auth — not a dead link).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
+          <dd><span data-zh><p>读面（navigate/observe/extract）+ <strong>网页写面（act 点击填表）</strong>；无本机文件写面。 云端浏览器会话可带登录态——「在网页上动手」的边界按目标站点授权把关。</p></span><span data-en><p>Read surface (navigate/observe/extract) + <strong>web write surface (act clicks and fills forms)</strong>; no local file write surface. Cloud browser sessions can carry login state — gate the &quot;touching things on a web page&quot; boundary per the target site&#39;s authorization.</p></span></dd>
+        </div>
+      </dl>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li><span data-zh>把 GitHub 仓当现役实现——仓已 archived（README 顶部明写），官方推荐托管线 mcp.browserbase.com/mcp；「仓 archived ≠ 产品停运」是本档案的核心两口径</span><span data-en>Treating the GitHub repo as the current implementation — the repo is archived (stated plainly at the README top); the official recommendation is the hosted line mcp.browserbase.com/mcp; &quot;repo archived != product discontinued&quot; is this dossier&#39;s core two-wording</span></li>
+          <li><span data-zh>以为自托管不需要 Browserbase 账户——自托管只是 server 进程在你机器上，浏览器会话仍在 Browserbase 云端，API key 照要</span><span data-en>Thinking self-hosting needs no Browserbase account — self-hosting only puts the server process on your machine; the browser session still lives on Browserbase cloud and the API key is still required</span></li>
+          <li><span data-zh>以为它完全不需要模型 key——自托管线要自备 GEMINI_API_KEY（或换模型配对应 key），托管线才由厂商包 Gemini 成本</span><span data-en>Thinking it needs no model key at all — the self-hosted line requires your own GEMINI_API_KEY (or a swapped model with its key); only the hosted line has the vendor covering Gemini costs</span></li>
+          <li><span data-zh>把 act 当安全动作——它能在真实网页点击填表，登录态与写操作风险按目标站点把关</span><span data-en>Treating act as a safe action — it clicks and fills forms on real web pages; login-state and write-operation risks are gated per target site</span></li>
+        </ul>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
+        <span data-zh>
+        <ul>
+          <li>托管线的速率/会话时长/并发配额（docs 有账户档位口径，未逐条清点；按 D9 与快照纪律不记数字）</li>
+          <li>自托管线换模型（--modelName）支持的模型清单与各家 key 要求（README 只给机制）</li>
+          <li>云端会话内容在 Browserbase 侧的留存时长与合规边界（ToS 面未逐条核验）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>Rate/session-duration/concurrency quotas on the hosted line (the docs have account-tier wording, not enumerated item by item; per D9 and snapshot discipline no numbers are recorded)</li>
+          <li>The model list supported by the self-hosted line&#39;s --modelName switch and each provider&#39;s key requirements (the README gives only the mechanism)</li>
+          <li>Retention period and compliance boundaries of cloud session content on Browserbase&#39;s side (the ToS surface was not verified item by item)</li>
+        </ul></span>
+      </div>
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>判断可回到以下一手源复核。本站核验日</span><span data-en>Every judgement can be rechecked against the primary sources below. Verified on</span> 2026-10-31，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-31。</p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>docs</td><td><span data-zh>Browserbase · 官方文档 MCP 集成页（托管端点与配置线；直连 200）</span><span data-en>Browserbase · official docs MCP integration page (hosted endpoint and configuration line; 200 direct)</span></td><td><a href="https://docs.browserbase.com/integrations/mcp/introduction" target="_blank" rel="noopener">https://docs.browserbase.com/integrations/mcp/introduction</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>browserbase/mcp-server-browserbase · 仓库（archived=true；Apache-2.0；3,397★，推送停 2026-07-20，GitHub API 核验；README 顶部归档声明+6 工具表+托管推荐）</span><span data-en>browserbase/mcp-server-browserbase · repository (archived=true; Apache-2.0; 3,397★, last push 2026-07-20, GitHub API verified; README-top archive notice + 6-tool table + hosted recommendation)</span></td><td><a href="https://github.com/browserbase/mcp-server-browserbase" target="_blank" rel="noopener">https://github.com/browserbase/mcp-server-browserbase</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>GitHub commits · mcp-server-browserbase（仓归档前的变更记录线）</span><span data-en>GitHub commits · mcp-server-browserbase (change-record line before the repo was archived)</span></td><td><a href="https://github.com/browserbase/mcp-server-browserbase/commits/main" target="_blank" rel="noopener">https://github.com/browserbase/mcp-server-browserbase/commits/main</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>npm · @browserbasehq/mcp（自托管发版线：3.0.0，2026-03-31）</span><span data-en>npm · @browserbasehq/mcp (self-hosted release line: 3.0.0, 2026-03-31)</span></td><td><a href="https://www.npmjs.com/package/@browserbasehq/mcp" target="_blank" rel="noopener">https://www.npmjs.com/package/@browserbasehq/mcp</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
+        <span data-zh><p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>。</p></span><span data-en><p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>.</p></span>
+      </div>
+
+
+      
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./playwright.html"><span data-zh>Playwright MCP</span><span data-en>Playwright MCP Server</span></a></span><span class="rel-n"><span data-zh>浏览器自动化对照：Playwright 驱动本地浏览器、纯接口无模型；Browserbase 是云端会话 + Stagehand 模型驱动。</span><span data-en>A browser-automation contrast: Playwright drives a local browser as a pure interface with no model; Browserbase is a cloud session plus Stagehand model-driving.</span></span></li>
+          <li><span class="rel-t"><a href="./firecrawl-mcp.html"><span data-zh>Firecrawl MCP Server</span><span data-en>Firecrawl MCP Server</span></a></span><span class="rel-n"><span data-zh>同为网页面官方 server：Firecrawl 重「读」（搜索/抓取/crawl/monitor），Browserbase 重「在网页上动手」。</span><span data-en>Both are official web-facing servers: Firecrawl leans &quot;read&quot; (search/fetch/crawl/monitor), Browserbase leans &quot;manipulate pages&quot;.</span></span></li>
+          <li><span class="rel-t"><a href="/coding/cursor.html"><span data-zh>Cursor</span><span data-en>Cursor</span></a></span><span class="rel-n"><span data-zh>另一层 · AI 编程</span><span data-en>Other layer · AI coding</span></span></li>
+          <li><span class="rel-t"><a href="/coding/claude-code.html"><span data-zh>Claude Code IDE 扩展</span><span data-en>Claude Code (IDE extension)</span></a></span><span class="rel-n"><span data-zh>另一层 · AI 编程</span><span data-en>Other layer · AI coding</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

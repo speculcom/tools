@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Intercom MCP Server — MCP | 投机取巧</title>
+  <meta name="description" content="Intercom MCP Server（Intercom）：Intercom 官方托管 MCP server（闭源 remote，streamable-http）：客服数据接进 AI 工具—— 14 工具：query-DSL search/fetch + conversations/contacts/compan…" />
+  <link rel="canonical" href="https://tools.specul.com/mcp/intercom-mcp.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Intercom MCP Server" />
+  <meta property="og:url" content="https://tools.specul.com/mcp/intercom-mcp.html" />
+  <meta property="og:title" content="Intercom MCP Server — MCP | 投机取巧" />
+  <meta property="og:description" content="Intercom MCP Server（Intercom）：Intercom 官方托管 MCP server（闭源 remote，streamable-http）：客服数据接进 AI 工具—— 14 工具：query-DSL search/fetch + conversations/contacts/compan…" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Intercom MCP Server","applicationCategory":"DeveloperApplication","sameAs":"https://developers.intercom.com/docs/guides/mcp","description":"Intercom 官方托管 MCP server（闭源 remote，streamable-http）：客服数据接进 AI 工具—— 14 工具：query-DSL search/fetch + conversations/contacts/companies 读 + Help Center articles 读写 + Fin Operator 五工具（apply_proposals 会真改线上配置；Bearer 连接拿不到 Operator 工具，要 OAuth）。 区域两口径：US/EU 端点分开（EU 数据在 EU 内处理）、AU 工作区不支持； 旧 SSE 端点已 deprecated","dateModified":"2026-10-31"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">MCP</span>
+      </nav>
+      <a class="back" href="./">← MCP</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#22d3c5" aria-hidden="true"><span data-zh>In</span><span data-en>IN</span></div>
+        <div>
+          <h1><span data-zh>Intercom MCP Server</span><span data-en>Intercom MCP Server</span></h1>
+          <div class="vendor is-caps">Intercom</div>
+        </div>
+      </div>
+
+      <div class="badges">
+        <span class="tag on"><span data-zh>MCP</span><span data-en>MCP</span></span>
+        <span class="tag on"><span data-zh>客服</span><span data-en>Customer support</span></span>
+        <span class="tag on"><span data-zh>CRM</span><span data-en>CRM</span></span>
+        <span class="tag on"><span data-zh>远程托管</span><span data-en>Remote-hosted</span></span>
+        <span class="tag on"><span data-zh>OAuth</span><span data-en>OAuth</span></span>
+        <span class="tag on"><span data-zh>区域端点</span><span data-en>Regional endpoints</span></span>
+        <span class="tag on"><span data-zh>Operator</span><span data-en>Operator</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-31</span>
+      </div>
+
+            
+      <div class="panel-lead"><span data-zh><p><strong>Intercom 官方托管 MCP server</strong>（闭源 remote，streamable-http）：客服数据接进 AI 工具—— 14 工具：query-DSL search/fetch + conversations/contacts/companies 读 + Help Center articles 读写 + <strong>Fin Operator 五工具</strong>（apply_proposals 会真改线上配置；<strong>Bearer 连接拿不到 Operator 工具，要 OAuth</strong>）。 区域两口径：US/EU 端点分开（EU 数据在 EU 内处理）、<strong>AU 工作区不支持</strong>； 旧 SSE 端点已 deprecated。GitHub 那个仓只是文档仓，别当源码。</p></span><span data-en><p><strong>Intercom official hosted MCP server</strong> (closed-source remote, streamable-http): customer-support data plugged into AI tools — 14 tools: query-DSL search/fetch + reading conversations/contacts/companies + reading and writing Help Center articles + <strong>the five Fin Operator tools</strong> (apply_proposals really changes live workspace configuration; <strong>Bearer connections do not get the Operator tools — use OAuth</strong>). Two regional wordings: separate US/EU endpoints (EU data processed in the EU), <strong>AU workspaces unsupported</strong>; the legacy SSE endpoint is deprecated. That GitHub repo is documentation-only — don&#39;t mistake it for source.</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+<span data-zh>        <div><p>适合：支持团队把 Intercom 接进 Claude/Cursor/VS Code 等官方在册客户端；EU 数据驻留需求。 不适合：AU 托管工作区；要自托管/开源；要 Bearer 简单接入还用 Operator。</p></div></span><span data-en>        <div><p>Fits: support teams plugging Intercom into Claude/Cursor/VS Code and other listed clients; EU data-residency needs. Not a fit: AU-hosted workspaces; self-hosted/open-source; Bearer simplicity while also using Operator.</p></div></span>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-31</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>Intercom Inc.（美国/爱尔兰双总部，客户消息平台）。</span><span data-en>Intercom Inc. (US/Ireland dual-headquartered customer messaging platform).</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>developers.intercom.com 与 intercom.com 直连 200；mcp.intercom.com/mcp 与 mcp.eu.intercom.com/mcp 直连 401（端点存在需鉴权）；mcp.intercom.com 首页直连 200（2026-10-31）。</span><span data-en>developers.intercom.com and intercom.com returned 200 direct; mcp.intercom.com/mcp and mcp.eu.intercom.com/mcp returned 401 direct (endpoints exist, auth required); the mcp.intercom.com landing page returned 200 direct (2026-10-31).</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>未见于备案名单</span><span data-en>not in filing list</span>：<span data-zh>未见于网信办公示名单（2026-10-31 检索）；该产品未面向大陆公众提供服务，备案不适用。</span><span data-en>not in the CAC public registry (searched 2026-10-31); the product does not serve the mainland public, so filing does not apply.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">11 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p><strong>它自己不调模型</strong>——官方托管远程 server，被 MCP 客户端调用。例外口径：<strong>Fin Operator 工具族</strong> 会驱动 Intercom 自家 AI（Operator）干活——send_operator_message 消耗 Operator credits （与在 Intercom 里开一轮对话同口径计费），其余四个 Operator 工具免费。</p></span><span data-en><p><strong>It calls no model itself</strong> — an official hosted remote server called by MCP clients. One exception wording: the <strong>Fin Operator tool family</strong> drives Intercom&#39;s own AI (Operator) to work — send_operator_message consumes Operator credits (billed the same way as starting a turn inside Intercom), while the other four Operator tools are free.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p><strong>官方托管 remote server</strong>（无自托管线）：US 端点 https://mcp.intercom.com/mcp、 EU 端点 https://mcp.eu.intercom.com/mcp（EU 请求在 EU 内处理，符合其 Regional Data Hosting 承诺）； <strong>AU 托管工作区暂不支持</strong>（官方明写）。端点直连实测 401（存在、需鉴权，非死链）。</p></span><span data-en><p>An <strong>official hosted remote server</strong> (no self-hosted line): the US endpoint https://mcp.intercom.com/mcp, the EU endpoint https://mcp.eu.intercom.com/mcp (EU requests are processed within the EU, in line with its Regional Data Hosting commitments); <strong>AU-hosted workspaces are not yet supported</strong> (stated plainly by the official docs). The endpoints measured 401 direct (they exist, auth required — not dead links).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>不读写本机文件——读写对象全在 Intercom 工作区侧（conversations/contacts/companies/ Help Center articles）。</p></span><span data-en><p>Reads and writes no local files — the read/write objects all live on the Intercom workspace side (conversations/contacts/companies/Help Center articles).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>无常驻本机后台；连接活在客户端与 Intercom 托管端点之间（官方：连接保持活跃以接收更新）。</p></span><span data-en><p>No persistent local background; the connection lives between the client and Intercom&#39;s hosted endpoint (official wording: the connection stays live to receive updates).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>官方文档现口径 <strong>14 个工具</strong>：通用族 <strong>search</strong>（query DSL：object_type:conversations/contacts、 字段操作符 eq/neq/gt/contains、分页 starting_after）+ <strong>fetch</strong>（按前缀 ID 取全量详情）； 直连 API 族 search_conversations / get_conversation / search_contacts / companies / Help Center articles（<strong>list/search/get 读 + create/update 写</strong>）； <strong>Fin Operator 五工具</strong>（send_operator_message / get_operator_response / get_proposal_details / apply_proposals / reject_proposals——apply 会改动工作区线上配置）。</p></span><span data-en><p>The current official-docs count is <strong>14 tools</strong>: the universal family <strong>search</strong> (query DSL: object_type:conversations/contacts, field operators eq/neq/gt/contains, pagination via starting_after) + <strong>fetch</strong> (full details by prefixed ID); the direct-API family search_conversations / get_conversation / search_contacts / companies / Help Center articles (<strong>list/search/get read + create/update write</strong>); and the <strong>five Fin Operator tools</strong> (send_operator_message / get_operator_response / get_proposal_details / apply_proposals / reject_proposals — apply changes your workspace&#39;s live configuration).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>无 server 侧跨会话记忆；上下文=你的 Intercom 工作区数据本身（官方叙事：AI 助手保持 对工作区的环境感知）。Operator 对话有服务端会话态（get_operator_response 稍后取答）。</p></span><span data-en><p>No server-side cross-session memory; the context is your Intercom workspace data itself (official narrative: AI assistants keep awareness of your workspace). Operator chats have server-side session state (get_operator_response collects the answer later).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p><strong>两种鉴权</strong>：OAuth（推荐；Dynamic Client Registration，但 redirect URI 过 allowlist—— localhost/127.0.0.1 任意端口已放行，其他回调要先申请加白）或 Bearer token（Intercom API token， 需 scopes：读 users/companies、读 conversations、读写 articles）。 <strong>Bearer 连接拿不到 Fin Operator 工具</strong>（官方明写）；Operator 权限上线前建立的旧连接需重连。 工具按「你本人在工作区的权限」授权——MCP 不扩权。</p></span><span data-en><p><strong>Two authentication modes</strong>: OAuth (recommended; Dynamic Client Registration, but every registered redirect URI passes an allowlist — localhost/127.0.0.1 on any port is already allowed, other callbacks must be requested first) or Bearer token (an Intercom API token, with scopes: read users/companies, read conversations, read+write articles). <strong>Bearer connections do not get the Fin Operator tools</strong> (stated plainly by the official docs); connections made before the Operator permission existed must reconnect. Tools are authorized as you — mirroring your own workspace permissions, MCP grants no extra rights.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合：客服/支持团队把 Intercom 数据接进 AI 工具（Claude/Cursor/VS Code 等官方在册客户端）—— 查会话、查联系人、读写帮助文档、驱动 Operator；EU 工作区有数据驻留线。 不适合：AU 托管工作区（不支持）；要自托管/开源实现（无）；要 Bearer 简单接入还用 Operator（拿不到）。</p></span><span data-en><p>Fits: support teams plugging Intercom data into AI tools (Claude/Cursor/VS Code and other officially listed clients) — querying conversations and contacts, reading and writing Help Center docs, driving Operator; EU workspaces get a data-residency line. Not a fit: AU-hosted workspaces (unsupported); wanting a self-hosted/open-source implementation (none); wanting Bearer simplicity while also using Operator (you won&#39;t get it).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
+          <dd><span data-zh><p><strong>streamable-http</strong>（推荐：US https://mcp.intercom.com/mcp、EU https://mcp.eu.intercom.com/mcp） + <strong>legacy SSE</strong>（/sse，官方标 deprecated、仅为向后兼容保留）。核验：mcp.intercom.com 首页与 developers.intercom.com/docs/guides/mcp（2026-10-31 直连 200；端点直连 401=存在需鉴权）。</p></span><span data-en><p><strong>streamable-http</strong> (recommended: US https://mcp.intercom.com/mcp, EU https://mcp.eu.intercom.com/mcp) + <strong>legacy SSE</strong> (/sse, marked deprecated by the official docs, kept only for backwards compatibility). Verified: the mcp.intercom.com landing page and developers.intercom.com/docs/guides/mcp (200 direct on 2026-10-31; endpoints 401 direct = exist, auth required).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
+          <dd><span data-zh><p>OAuth（推荐；DCR+redirect URI allowlist）或 Bearer token（API token+scopes：读 users/companies、 读 conversations、读写 articles）。工具授权=你本人工作区权限镜像，MCP 不扩权。</p></span><span data-en><p>OAuth (recommended; DCR + redirect-URI allowlist) or Bearer token (API token + scopes: read users/companies, read conversations, read+write articles). Tool authorization mirrors your own workspace permissions — MCP grants no extra rights.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
+          <dd><span data-zh><p>读面（conversations/contacts/companies/articles）+ <strong>写面</strong>（Help Center articles 创建/更新、 Operator apply_proposals 改线上配置）；无本机面。写面按工作区权限与提案审批把关。</p></span><span data-en><p>Read surface (conversations/contacts/companies/articles) + <strong>write surface</strong> (Help Center article create/update, Operator apply_proposals changing live workspace configuration); no local surface. The write surface is gated by workspace permissions and proposal approval.</p></span></dd>
+        </div>
+      </dl>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li><span data-zh>把 inventory 旧 URL（intercom.com/mcp）当文档线——2026-10-31 实测 404；现役是 developers.intercom.com/docs/guides/mcp + 端点本身</span><span data-en>Treating the old inventory URL (intercom.com/mcp) as the docs line — measured 404 on 2026-10-31; the current line is developers.intercom.com/docs/guides/mcp plus the endpoint itself</span></li>
+          <li><span data-zh>把 intercom/intercom-mcp-server 仓当源码——它是文档仓（无 license、推送停 2025-09）；server 闭源托管</span><span data-en>Treating the intercom/intercom-mcp-server repo as source — it is a documentation repo (no license, push stopped 2025-09); the server is closed-source hosted</span></li>
+          <li><span data-zh>用 Bearer token 却期待 Operator 工具——官方明写 Bearer 连接不含 Fin Operator 工具，要 OAuth</span><span data-en>Using a Bearer token yet expecting Operator tools — the official docs state Bearer connections exclude the Fin Operator tools; use OAuth</span></li>
+          <li><span data-zh>混 US/EU 端点——app.intercom.com=US 用 mcp.intercom.com，app.eu.intercom.com=EU 用 mcp.eu.intercom.com；AU 不支持</span><span data-en>Mixing US/EU endpoints — app.intercom.com is US (mcp.intercom.com), app.eu.intercom.com is EU (mcp.eu.intercom.com); AU is unsupported</span></li>
+          <li><span data-zh>旧连接（Operator 权限上线前建的）调 Operator 工具报错——重连即可（官方排障口径）</span><span data-en>Old connections (built before the Operator permission) erroring when calling Operator tools — reconnect (official troubleshooting wording)</span></li>
+          <li><span data-zh>自建 MCP 客户端 OAuth 回调不在 allowlist——注册与授权会失败，localhost 之外要先申请</span><span data-en>Self-built MCP client OAuth callbacks not on the allowlist — registration and authorization fail unless localhost; otherwise request allowlisting first</span></li>
+          <li><span data-zh>apply_proposals 会真改工作区线上配置——Operator 提案不是预览玩具</span><span data-en>apply_proposals really changes live workspace configuration — Operator proposals are not a preview toy</span></li>
+        </ul>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
+        <span data-zh>
+        <ul>
+          <li>14 工具的完整参数面与分页游标语义细节（文档详尽但未逐条清点）</li>
+          <li>Operator credits 的计费数值与配额（按 D9 与快照纪律不记数字）</li>
+          <li>AU 工作区支持时间表（官方只说 not yet supported）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>The full parameter surface of the 14 tools and the pagination-cursor semantics in detail (the docs are thorough; not enumerated item by item)</li>
+          <li>Operator credit pricing and quota numbers (per D9 and snapshot discipline no numbers are recorded)</li>
+          <li>The support timeline for AU-hosted workspaces (the official docs only say not yet supported)</li>
+        </ul></span>
+      </div>
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>判断可回到以下一手源复核。本站核验日</span><span data-en>Every judgement can be rechecked against the primary sources below. Verified on</span> 2026-10-31，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-31。</p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>docs</td><td><span data-zh>Intercom Developers · MCP 指南（14 工具清单/OAuth 与 Bearer/scopes/排障；直连 200）</span><span data-en>Intercom Developers · MCP guide (14-tool inventory / OAuth vs Bearer / scopes / troubleshooting; 200 direct)</span></td><td><a href="https://developers.intercom.com/docs/guides/mcp" target="_blank" rel="noopener">https://developers.intercom.com/docs/guides/mcp</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>mcp.intercom.com · 官方 MCP 首页（区域端点 US/EU、工具与分页口径；直连可达）</span><span data-en>mcp.intercom.com · official MCP landing page (regional US/EU endpoints, tool and pagination wording; reachable direct)</span></td><td><a href="https://mcp.intercom.com/" target="_blank" rel="noopener">https://mcp.intercom.com/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Intercom · 官方集成页「Intercom MCP Server integration」（OAuth 口径/US 托管可用面/客户端名单）</span><span data-en>Intercom · official integration page &quot;Intercom MCP Server integration&quot; (the OAuth wording / US-hosted availability / client list)</span></td><td><a href="https://www.intercom.com/integrations/connectors/intercom-mcp-server" target="_blank" rel="noopener">https://www.intercom.com/integrations/connectors/intercom-mcp-server</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>intercom/intercom-mcp-server · 文档仓（无 license；推送停 2025-09-22，GitHub API 核验；commits 作变更记录线）</span><span data-en>intercom/intercom-mcp-server · documentation-only repo (no license; last push 2025-09-22, GitHub API verified; commits as the change-record line)</span></td><td><a href="https://github.com/intercom/intercom-mcp-server" target="_blank" rel="noopener">https://github.com/intercom/intercom-mcp-server</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>GitHub commits · intercom-mcp-server（文档变更记录线）</span><span data-en>GitHub commits · intercom-mcp-server (documentation change-record line)</span></td><td><a href="https://github.com/intercom/intercom-mcp-server/commits/main" target="_blank" rel="noopener">https://github.com/intercom/intercom-mcp-server/commits/main</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
+        <span data-zh><p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>。</p></span><span data-en><p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>.</p></span>
+      </div>
+
+
+      
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./zapier-mcp.html"><span data-zh>Zapier MCP</span><span data-en>Zapier MCP</span></a></span><span class="rel-n"><span data-zh>客服垂直 vs 千应用枢纽：Intercom 官方单产品深集成，Zapier 是跨应用入口。</span><span data-en>A customer-support vertical vs a thousand-app hub: Intercom is an official single-product deep integration, Zapier is a cross-application entry point.</span></span></li>
+          <li><span class="rel-t"><a href="./atlassian-mcp.html"><span data-zh>Atlassian MCP</span><span data-en>Atlassian Remote MCP Server（Jira/Confluence）</span></a></span><span class="rel-n"><span data-zh>同为 SaaS 官方 remote server：Atlassian 管工单/知识，Intercom 管客户会话与帮助中心读写。</span><span data-en>Both are official SaaS remote servers: Atlassian covers tickets/knowledge, Intercom covers customer conversations plus Help Center read-and-write.</span></span></li>
+          <li><span class="rel-t"><a href="/coding/cursor.html"><span data-zh>Cursor</span><span data-en>Cursor</span></a></span><span class="rel-n"><span data-zh>另一层 · AI 编程</span><span data-en>Other layer · AI coding</span></span></li>
+          <li><span class="rel-t"><a href="/coding/claude-code.html"><span data-zh>Claude Code IDE 扩展</span><span data-en>Claude Code (IDE extension)</span></a></span><span class="rel-n"><span data-zh>另一层 · AI 编程</span><span data-en>Other layer · AI coding</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>
