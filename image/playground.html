@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Playground — Image | 投机取巧</title>
+  <meta name="description" content="Playground（AI Playground, Inc.）：Playground 是「设计成品」向的 AI 设计台：模板+Smart Layers 图层编辑把点子变成贴纸/T 恤/海报/logo， 生图用第三方模型（GPT Image 2/Nano Banana/Seedream）；自研模型时代已结束，公司…" />
+  <link rel="canonical" href="https://tools.specul.com/image/playground.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Playground" />
+  <meta property="og:url" content="https://tools.specul.com/image/playground.html" />
+  <meta property="og:title" content="Playground — Image | 投机取巧" />
+  <meta property="og:description" content="Playground（AI Playground, Inc.）：Playground 是「设计成品」向的 AI 设计台：模板+Smart Layers 图层编辑把点子变成贴纸/T 恤/海报/logo， 生图用第三方模型（GPT Image 2/Nano Banana/Seedream）；自研模型时代已结束，公司…" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Playground","applicationCategory":"DeveloperApplication","sameAs":"https://playground.com","description":"Playground 是「设计成品」向的 AI 设计台：模板+Smart Layers 图层编辑把点子变成贴纸/T 恤/海报/logo， 生图用第三方模型（GPT Image 2/Nano Banana/Seedream）；自研模型时代已结束，公司 2026-06 售出后由新团队运营。","dateModified":"2026-10-31"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Image</span>
+      </nav>
+      <a class="back" href="./">← Image</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#f472b6" aria-hidden="true"><span data-zh>Pl</span><span data-en>PL</span></div>
+        <div>
+          <h1><span data-zh>Playground</span><span data-en>Playground</span></h1>
+          <div class="vendor is-caps">AI Playground, Inc.</div>
+        </div>
+      </div>
+
+      <div class="badges">
+        <span class="tag on"><span data-zh>免费+订阅</span><span data-en>Free + subscription</span></span>
+        <span class="tag on"><span data-zh>设计工作台</span><span data-en>design workbench</span></span>
+        <span class="tag on"><span data-zh>模型聚合</span><span data-en>Model aggregation</span></span>
+        <span class="tag on"><span data-zh>模板+图层</span><span data-en>templates + layers</span></span>
+        <span class="tag on"><span data-zh>周边印刷</span><span data-en>print merch</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-31</span>
+      </div>
+
+            
+      <div class="panel-lead"><span data-zh><p><strong>Playground 是「设计成品」向的 AI 设计台</strong>：模板+Smart Layers 图层编辑把点子变成贴纸/T 恤/海报/logo， 生图用第三方模型（GPT Image 2/Nano Banana/Seedream）；自研模型时代已结束，公司 2026-06 售出后由新团队运营。</p></span><span data-en><p><strong>Playground is an AI design bench aimed at finished designs</strong>: templates + Smart Layers editing turn ideas into stickers, T-shirts, posters and logos, with third-party models (GPT Image 2 / Nano Banana / Seedream) doing the generation; the in-house model era is over, and since the June 2026 sale a new team runs it.</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+<span data-zh>        <div><p>适合：成品设计流（周边/海报/logo）、模板+非破坏性图层编辑、一界面多家模型对比。 不适合：要自研模型线、要输出版权确定性、企业合规叙事优先。</p></div></span><span data-en>        <div><p>Fits: finished-design flows (merch/posters/logos), template + non-destructive layer editing, comparing several models in one UI. Not a fit: needing an in-house model line, needing output-copyright certainty, enterprise compliance narratives.</p></div></span>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-31</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>AI Playground, Inc.（条款页在册：Dover, Delaware 通知地址、加州法域）；创始人 Suhail Doshi（前 Mixpanel CEO，Mighty Computing 之后创办本产品）。</span><span data-en>AI Playground, Inc. (per terms: Dover, Delaware notice address; California law); founder Suhail Doshi</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>直连不可达</span><span data-en>direct blocked</span>　<span data-zh>playground.com 大陆直连实测 403（2026-10-31 两次）；代理下 301→playgroundai.com 200——直连不可达，需网络环境。</span><span data-en>playground.com measured 403 direct from mainland (2026-10-31, two retests); via proxy 301→playgroundai.com 200 — unreachable without a network path.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>未见于备案名单</span><span data-en>not in filing list</span>：<span data-zh>未见于网信办公示名单（2026-10-31 检索）；该产品未面向大陆公众提供服务，备案不适用。</span><span data-en>not in the CAC public registry (searched 2026-10-31); the product does not serve the mainland public, so filing does not apply.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>第三方模型聚合是现状：首页点名 GPT Image 2、Nano Banana Pro、Nano Banana、Seedream（当日直抓在册）； 自研模型线（Playground v2/v2.5/v3）已停更——2025-01 官方砍掉 legacy 产品线（第三方评测口径）， 现售的主要是别家模型的存取权（credits 按模型消耗）。</p></span><span data-en><p>Third-party model aggregation is the current state: the homepage names GPT Image 2, Nano Banana Pro, Nano Banana and Seedream (direct-fetched today); the in-house model line (Playground v2/v2.5/v3) has been discontinued — the official 2025-01 cut of the legacy product line (third-party review account); what is sold now is mainly access to other companies&#39; models (credits consumed per model).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>网页（playground.com→playgroundai.com）+ iOS App（App Store 链接在册，4.9/5·5,400+ 评分）； 生成与设计编辑在厂商云端；无本地运行时面。</p></span><span data-en><p>Web (playground.com → playgroundai.com) + iOS app (App Store link on record, 4.9/5 across 5,400+ ratings); generation and design editing run on the vendor&#39;s cloud; no local runtime surface.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>设计稿与素材存账户侧云端；印刷周边（T 恤/贴纸等）走平台下单面； 未见官方声明的本机数据面或导出后本地编辑线（细节未逐条核验）。</p></span><span data-en><p>Designs and assets live on the account side in the cloud; print merch (T-shirts/stickers etc.) goes through the platform&#39;s ordering surface; no official statement found for a local data surface or an export-then-edit-locally line (details not verified line by line).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>即时生成+编辑器（Smart Layers 非破坏性编辑、Extract Text 转可编辑图层，首页在册）； 无常驻任务/关机续跑面（未核验到声明）；模板 24 类（首页在册）。</p></span><span data-en><p>Instant generation + editor (Smart Layers non-destructive editing, Extract Text into editable layers, homepage on record); no persistent-task / resume-when-off surface (no statement verified); templates across 24 categories (homepage on record).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>设计工作台是本体：模板定制、Smart Layers、换风格/移除物体/加 mockup 工具（首页在册）、周边印刷商店； 不是纯生图器——官方定位「The AI design studio for everyone」（首页在册），对标 Canva 一类设计台。</p></span><span data-en><p>The design workbench is the core: template customization, Smart Layers, swap-style/remove-object/add-mockup tools (homepage on record), a print-merch store; not a pure image generator — the official positioning is &quot;The AI design studio for everyone&quot; (homepage on record), competing with Canva-style design tools.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>以项目/设计稿组织；跨会话记忆未核验到官方声明。模板与图层体系是它的一致性机制，不是记忆。</p></span><span data-en><p>Organized around projects/design files; cross-session memory not verified in any official statement. The template + layer system is its consistency mechanism, not memory.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>免费+订阅（D9：价格不采）；条款明示输出不保证可版权、不保证唯一、商用需自行清权； 公开资产默认他人可 remix、许可协议终止后仍存续（条款在册）；DMCA 代理为第三方 JACO Product Development, LLC（条款在册）。</p></span><span data-en><p>Free + subscription (D9: prices not collected); the terms expressly disclaim copyrightability and uniqueness of outputs and put rights-clearing for commercial use on the user; public assets are viewable and remixable by others by default, and granted licenses survive termination (per terms); the DMCA agent is a third party, JACO Product Development, LLC (per terms).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合：贴纸/T 恤/海报/logo 一类成品设计流、模板+图层编辑工作流、一个界面用多家生图模型。 不适合：要自研模型线（已转向第三方聚合）、要输出版权确定性（条款明确不保证）、企业合规叙事优先。</p></span><span data-en><p>Fits: finished-design flows (stickers/T-shirts/posters/logos), template + layer editing workflows, several generation models behind one interface. Not a fit: wanting an in-house model line (it pivoted to third-party aggregation), wanting output-copyright certainty (the terms expressly disclaim it), enterprise compliance narratives.</p></span></dd>
+        </div>
+      </dl>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li><span data-zh><strong>产品史三段要分清</strong>：自研模型时代（2022–2024，v2/v2.5/v3）→砍线转向（2025-01 legacy 下线退款）→售出后新团队运营（2026-06 创始人确认售出、官方博客确认新团队）——「Playground 收摊了」与「Playground 没变」都不对，现役是设计台+第三方模型聚合</span><span data-en>Three product eras must be separated: in-house models (2022-2024, v2/v2.5/v3) -&gt; the 2025-01 legacy cut and refunds -&gt; the post-sale new team (founder confirmed the sale in 2026-06 via the official blog). Both &#39;Playground shut down&#39; and &#39;Playground never changed&#39; are wrong; today it is a design bench + third-party aggregation</span></li>
+          <li><span data-zh>条款主体 <strong>AI Playground, Inc.</strong>（Dover, Delaware 通知地址、加州法域）≠ 同名商标纠纷方 Playground AI LLC（另一家公司，2023 年起诉讼史）——引用主体按条款页在册名</span><span data-en>The terms entity AI Playground, Inc. (Dover, Delaware notice address; California law) is NOT the namesake trademark-dispute party Playground AI LLC (a different company, litigation history since 2023) — cite the entity exactly as the terms page records it</span></li>
+          <li><span data-zh>公开资产<strong>默认</strong>可被他人查看与 remix（条款在册）——商用向用户要主动检查可见性设置</span><span data-en>Public assets are viewable and remixable by others by default (per terms) — commercial users should actively check visibility settings</span></li>
+        </ul>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
+        <span data-zh>
+        <ul>
+          <li>收购方身份（创始人 2026-06 确认售出但未公开买家，第三方资料口径）</li>
+          <li>自研模型权重去向（v2/v2.5 曾按社区许可开放，现状未核验）</li>
+          <li>官方博客「Next Chapter」发布日期（当日未核验到具体日期）</li>
+          <li>跨会话记忆机制（未核验到官方声明）</li>
+          <li>旧免费档与新免费档的额度差异（第三方评测称 2025-01 旧付费档自动退款，未核验官方原文）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>The acquirer&#39;s identity (the founder confirmed the sale in 2026-06 without naming the buyer; third-party account)</li>
+          <li>Where the in-house model weights went (v2/v2.5 were once open under community licenses; current status unverified)</li>
+          <li>The publication date of the official blog post &quot;Next Chapter&quot; (specific date not verified today)</li>
+          <li>The cross-session memory mechanism (no official statement verified)</li>
+          <li>The quota gap between the old and new free tiers (third-party reviews say old paid plans were auto-refunded in 2025-01; official wording unverified)</li>
+        </ul></span>
+      </div>
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>判断可回到以下一手源复核。本站核验日</span><span data-en>Every judgement can be rechecked against the primary sources below. Verified on</span> 2026-10-31，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-31。</p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>official</td><td><span data-zh>Playground · 官网（定位语/模型清单/工具面，2026-10-31 经 WebFetch 核验）</span><span data-en>Playground · official site (positioning line/model list/tool surface, WebFetch-verified 2026-10-31)</span></td><td><a href="https://playgroundai.com" target="_blank" rel="noopener">https://playgroundai.com</a></td></tr>
+            <tr><td>official</td><td><span data-zh>Playground · Terms（AI Playground, Inc. 在册，2026-10-31 经 WebFetch 核验）</span><span data-en>Playground · Terms (AI Playground, Inc. on record, WebFetch-verified 2026-10-31)</span></td><td><a href="https://playgroundai.com/terms" target="_blank" rel="noopener">https://playgroundai.com/terms</a></td></tr>
+            <tr><td>official</td><td><span data-zh>Playground · Privacy（2026-10-31 curl 代理核验 200）</span><span data-en>Playground · Privacy (curl via proxy verified 200, 2026-10-31)</span></td><td><a href="https://playgroundai.com/privacy" target="_blank" rel="noopener">https://playgroundai.com/privacy</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>Playground · 官方博客「Playground&#39;s Next Chapter」（新团队确认收购，2026-10-31 经 WebFetch 核验）</span><span data-en>Playground · official blog &quot;Playground&#39;s Next Chapter&quot; (new team confirms the acquisition, WebFetch-verified 2026-10-31)</span></td><td><a href="https://playgroundai.com/blog/playgrounds-next-chapter" target="_blank" rel="noopener">https://playgroundai.com/blog/playgrounds-next-chapter</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
+        <span data-zh><p>本站尚未完成实测。编码向实测协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a>（创作产品不适用编码任务集）。</p>
+            <p><strong>实测建议</strong>（三条，都指向转型后官方页没给的东西）：</p>
+            <ul><li><strong>credits 在不同模型（GPT Image 2 vs Nano Banana vs Seedream）间的实际消耗差</strong></li><li><strong>Smart Layers 导出物的可编辑性</strong>（导出 PSD/SVG 还是仅位图）</li><li><strong>公开资产可见性设置的实际默认态</strong>（条款说默认公开可 remix）</li></ul></span><span data-en><p>This site has not completed measured runs. The coding-oriented test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a> (the coding task suite does not apply to creative products).</p>
+            <p><strong>Suggested measurements</strong> (three, all pointing at things the post-pivot official pages do not give):</p>
+            <ul><li><strong>Actual credit burn across models (GPT Image 2 vs Nano Banana vs Seedream)</strong></li><li><strong>Editability of Smart Layers exports</strong> (PSD/SVG or bitmap only)</li><li><strong>The actual default state of public-asset visibility</strong> (the terms say public and remixable by default)</li></ul></span>
+      </div>
+
+
+      
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./microsoft-designer.html"><span data-zh>Microsoft Designer</span><span data-en>Microsoft Designer</span></a></span><span class="rel-n"><span data-zh>同是大厂/聚合向「模板+生成」设计台：Designer 绑微软生态，Playground 绑第三方模型+印刷周边。</span><span data-en>Both are aggregator-style &quot;templates + generation&quot; design benches: Designer is tied to the Microsoft ecosystem, Playground to third-party models + print merch.</span></span></li>
+          <li><span class="rel-t"><a href="/chat/chatgpt.html"><span data-zh>ChatGPT</span><span data-en>ChatGPT</span></a></span><span class="rel-n"><span data-zh>跨大类对照：Playground 首页招牌模型 GPT Image 2 的母产品线。</span><span data-en>Cross-category contrast: the flagship model on Playground&#39;s homepage, GPT Image 2, sits in ChatGPT&#39;s parent product line.</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

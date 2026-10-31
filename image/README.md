@@ -10,7 +10,7 @@
 
 ## 这个大类提供什么
 
-- **13 个对象**，按固定 8 个维度记录
+- **15 个对象**，按固定 8 个维度记录
 - 每个维度都能回溯到官方一手源，附来源类型与核验日期
 - **不给总分排名**——缺少跨工具的统一实测，排名会误导
 - **「未知」是合法答案**——查不到就写未知并说明原因，不用推测填充
@@ -28,9 +28,11 @@
 | [Leonardo AI](./leonardo-ai.html) | 网页服务 | Leonardo（2024-07 被 Canva 收购） | partial | 2026-10-22 |
 | [Microsoft Designer](./microsoft-designer.html) | 网页服务 | 微软 | partial | 2026-10-22 |
 | [Midjourney](./midjourney.html) | 网页服务 | Midjourney, Inc. | partial | 2026-10-30 |
+| [Playground](./playground.html) | 网页服务 | AI Playground, Inc. | partial | 2026-10-31 |
 | [Recraft](./recraft.html) | 网页服务 | Recraft | partial | 2026-10-22 |
 | [SeaArt](./seaart.html) | 网页服务 | 海艺（成都海艺互娱） | partial | 2026-10-22 |
 | [Stability AI（Stable Image 平台）](./stability-ai.html) | 网页服务 | Stability AI | partial | 2026-10-30 |
+| [Tensor.Art](./tensor-art.html) | 网页服务 | ECHO INTERNATIONAL HK LIMITED（Tensor.Art） | partial | 2026-10-31 |
 | [通义万相](./tongyi-wanxiang.html) | 网页服务 | 阿里巴巴 | partial | 2026-10-22 |
 
 ## 可信度标记
@@ -41,7 +43,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 13 个对象中，**0 个为 verified**。
+当前 15 个对象中，**0 个为 verified**。
 
 ## 数据来源
 
@@ -56,7 +58,7 @@
 |---|---|---|
 | [AI 编程](/coding/) | 装在编辑器、终端，或厂商云里 | 41 |
 | [AI 对话助手](/chat/) | 通用对话产品，含国产 | 20 |
-| [AI 图像创作](/image/) | 文生图与图像工作台 | 13 |
+| [AI 图像创作](/image/) | 文生图与图像工作台 | 15 |
 | [AI 视频创作](/video/) | 文生视频与数字人 | 14 |
 | [AI 音频与语音](/audio/) | 音乐生成、语音合成与转写 | 17 |
 | [AI 搜索与研究](/research/) | AI 搜索、学术检索与研究工作台 | 11 |
