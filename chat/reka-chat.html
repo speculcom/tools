@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Reka Chat（Reka Playground / Edge Chat） — Chat | 投机取巧</title>
+  <meta name="description" content="Reka Chat（Reka Playground / Edge Chat）（Reka AI, Inc.）：Reka Chat 是一家已整体转向 physical AI 的研究室留下的对话入口（app.reka.ai「Edge Chat」）： 公司当日招牌是 omni 模型、Reka Cloud、视频与数据基础设…" />
+  <link rel="canonical" href="https://tools.specul.com/chat/reka-chat.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Reka Chat（Reka Playground / Edge Chat）" />
+  <meta property="og:url" content="https://tools.specul.com/chat/reka-chat.html" />
+  <meta property="og:title" content="Reka Chat（Reka Playground / Edge Chat） — Chat | 投机取巧" />
+  <meta property="og:description" content="Reka Chat（Reka Playground / Edge Chat）（Reka AI, Inc.）：Reka Chat 是一家已整体转向 physical AI 的研究室留下的对话入口（app.reka.ai「Edge Chat」）： 公司当日招牌是 omni 模型、Reka Cloud、视频与数据基础设…" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Reka Chat（Reka Playground / Edge Chat）","applicationCategory":"DeveloperApplication","sameAs":"https://app.reka.ai","description":"Reka Chat 是一家已整体转向 physical AI 的研究室留下的对话入口（app.reka.ai「Edge Chat」）： 公司当日招牌是 omni 模型、Reka Cloud、视频与数据基础设施；对话产品面薄，真正的可核验面在 API（OpenAI 兼容、自家 Edge/Flash+精选开源档）与 Reka Edge 开放权重本机路线。","dateModified":"2026-10-31"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Chat</span>
+      </nav>
+      <a class="back" href="./">← Chat</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#f5c542" aria-hidden="true"><span data-zh>Re</span><span data-en>RE</span></div>
+        <div>
+          <h1><span data-zh>Reka Chat（Reka Playground / Edge Chat）</span><span data-en>Reka Chat (Reka Playground / Edge Chat)</span></h1>
+          <div class="vendor is-caps">Reka AI, Inc.</div>
+        </div>
+      </div>
+
+      <div class="badges">
+        <span class="tag on"><span data-zh>多模态</span><span data-en>Multimodal</span></span>
+        <span class="tag on"><span data-zh>开源聚合</span><span data-en>Open-source aggregation</span></span>
+        <span class="tag on"><span data-zh>开源权重</span><span data-en>Open weights</span></span>
+        <span class="tag on"><span data-zh>OpenAI兼容</span><span data-en>OpenAI-compatible</span></span>
+        <span class="tag on"><span data-zh>闭源</span><span data-en>Closed source</span></span>
+        <span class="tag on"><span data-zh>未备案</span><span data-en>Not filed</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-31</span>
+      </div>
+
+            
+      <div class="panel-lead"><span data-zh><p><strong>Reka Chat 是一家已整体转向 physical AI 的研究室留下的对话入口</strong>（app.reka.ai「Edge Chat」）： 公司当日招牌是 omni 模型、Reka Cloud、视频与数据基础设施；对话产品面薄，真正的可核验面在 API（OpenAI 兼容、自家 Edge/Flash+精选开源档）与 Reka Edge 开放权重本机路线。</p></span><span data-en><p><strong>Reka Chat: a chat entry left behind by a lab that fully pivoted to physical AI</strong> — the homepage&#39;s marquee today is omni models, Reka Cloud, and video/data infrastructure; the chat surface (app.reka.ai &quot;Edge Chat&quot;) is thin, and the verifiable surface is the API (OpenAI-compatible; in-house reka-edge-2603/reka-flash-3 + curated open tiers deepseek4-flash/glm5.3/qwen3.8-27b/gemma4-26b) plus the Reka Edge open-weights local route. Key wording: <strong>the company&#39;s mainline is world-model research (news line: Rho-1 2026-10-05) — reading Reka as a &quot;chat product company&quot; misplaces it</strong>.</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+<span data-zh>        <div><p>适合：跟 Reka 模型线、经一家 API 横排精选开源档、要 Edge 开放权重本机路线。 不适合：要成熟 C 端对话产品、要大陆直连对话服务。</p></div></span><span data-en>        <div><p>Fits: following the Reka model line (Edge/Flash), lining up curated open tiers through one API, the Edge open-weights local route. Not a fit: mature consumer chat products; mainland-direct chat service (not filed).</p></div></span>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-31</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>国外主体（Reka AI, Inc.，美国；前 DeepMind 团队创立——nav 旧条目口径，官方页未自述创始背景，按 nav 交叉标注）。</span><span data-en>foreign entity (Reka AI, Inc., USA; founded by an ex-DeepMind team — carried from the older nav entry; the official pages do not state the founding background, noted as nav cross-reference).</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>reka.ai 大陆直连 200（2026-10-31 直抓核验，www 308→裸域）；app/docs 子域同直连可达。</span><span data-en>reka.ai measured 200 direct from mainland (fetched 2026-10-31, www 308 to apex); app/docs subdomains also reachable direct.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>未见于备案名单</span><span data-en>not in filing list</span>：<span data-zh>未见于网信办公示名单（2026-10-31 检索公示页与批次清单，未见 Reka 条目）；该产品未面向大陆公众提供服务，备案不适用。</span><span data-en>not in the CAC public registry (disclosure page and batch lists searched 2026-10-31; no Reka entry); the product does not serve the mainland public, so filing does not apply.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>自家模型+精选开源模型双池：Reka API 当日在册模型表含 reka-edge-2603（16k 上下文、文本/图像/视频输入）、 reka-flash-3（64k）与 deepseek4-flash/glm5.3/qwen3.8-27b/gemma4-26b 等开源档，全部经 api.reka.ai/v1 OpenAI 兼容端点调用；对话入口（app.reka.ai「Edge Chat」）与其 API 池的关系未逐条核验。</p></span><span data-en><p>Dual pool of in-house models + curated open models: the Reka API model table verified same day lists reka-edge-2603 (16k context, text/image/video input) and reka-flash-3 (64k) alongside open tiers such as deepseek4-flash/glm5.3/qwen3.8-27b/gemma4-26b, all called through the api.reka.ai/v1 OpenAI-compatible endpoint; how the chat entry (app.reka.ai &quot;Edge Chat&quot;) relates to the API pool was not verified item by item.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>网页入口 app.reka.ai（chat.reka.ai 307→app.reka.ai/chat，当日核验；页内标题「Reka Playground / Edge Chat」）； 另有 API（api.reka.ai/v1）与开放权重本机路线（docs「Run locally」：macOS Apple Silicon 32GB+ / Linux 服务化）。</p></span><span data-en><p>Web entry at app.reka.ai (chat.reka.ai 307→app.reka.ai/chat, verified same day; page title &quot;Reka Playground / Edge Chat&quot;); plus an API (api.reka.ai/v1) and an open-weights local route (docs &quot;Run locally&quot;: macOS Apple Silicon 32 GB+ / Linux serving).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>托管对话数据口径按官方隐私页（2026-06 版当日在册）管辖，未逐条核验；开放权重 Reka Edge 下载后 完全在本机运行（docs run-locally 页在册）——托管入口与本机权重是两条数据边界。</p></span><span data-en><p>Hosted chat data is governed by the official privacy policy (June 2026 version verified same day), not verified item by item; the open Reka Edge weights run entirely on your own machine once downloaded (docs run-locally page on record) — hosted entry and local weights are two data boundaries.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>对话即时返回；异步/代理任务形态未核验到官方声明。公司现行主线是 research/Reka Cloud/视频基础设施/数据基础设施 （官网首页当日四段自述），对话入口不在首页招牌区。</p></span><span data-en><p>Chat returns immediately; no official statement verified for async/agentic task forms. The company&#39;s current mainline is research/Reka Cloud/video infrastructure/data infrastructure (four self-described sections on the homepage verified same day); the chat entry is not in the homepage&#39;s marquee area.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>API 侧工具面在册：模型表标注 Tools/Structured outputs/Reasoning 三列（reka-edge-2603 三项全 Yes； reka-flash-3 Tools=No）；文档站自带 MCP server（docs.reka.ai/_mcp/server，llms.txt 在册）供 agent 接文档。</p></span><span data-en><p>API-side tooling surface on record: the model table carries Tools/Structured outputs/Reasoning columns (reka-edge-2603 Yes on all three; reka-flash-3 Tools=No); the docs site ships its own MCP server (docs.reka.ai/_mcp/server, on record in llms.txt) for agents to read the docs.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>会话按对话组织；跨会话记忆机制未核验到官方声明。API 侧上下文长度随模型不同（当日表：reka-edge-2603 16k、 reka-flash-3 64k、开源档 262k），对话入口实际生效值未核验。</p></span><span data-en><p>Conversations are organized per chat; no cross-session memory mechanism verified in official statements. On the API side context length varies by model (table same day: reka-edge-2603 16k, reka-flash-3 64k, open tiers 262k); the effective value in the chat entry was not verified.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>账号制（app.reka.ai 需登录）；条款主体 Reka AI, Inc.（Terms of Use 2026-09：合同约束 reka.ai 及 vision/creator/developer 子域与 Reka Labs/Cloud/Vision 服务）；隐私页 2026-06 版含 EEA/UK 专章。</p></span><span data-en><p>Account-gated (app.reka.ai requires login); contracting party Reka AI, Inc. (Terms of Use 2026-09: the contract covers reka.ai and its vision/creator/developer subdomains plus Reka Labs/Cloud/Vision services); the privacy page (June 2026) carries an EEA/UK section.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合：跟 Reka 自家模型线（Edge/Flash）+想经一家 API 横排精选开源档（DeepSeek/GLM/Qwen/Gemma）； 要 Reka Edge 开放权重本机路线。不适合：要成熟 C 端对话产品（入口面薄、公司重心已转向 physical AI）； 要大陆直连对话服务（未备案）。</p></span><span data-en><p>Fits: following the Reka in-house model line (Edge/Flash) + lining up curated open tiers (DeepSeek/GLM/Qwen/Gemma) through one API; wanting the Reka Edge open-weights local route. Not a fit: wanting a mature consumer chat product (thin entry surface, company focus has shifted to physical AI); wanting mainland-direct chat service (not filed).</p></span></dd>
+        </div>
+      </dl>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li><span data-zh>公司定位已整体转向——官网当日招牌是「models and infrastructure for the physical AI era」（omni 模型/Reka Cloud/视频基础设施/egocentric 数据），news 主线是 world model 研究（Rho-1 2026-10-05 等）；对话入口只是角落产品，按「对话产品公司」理解会错位</span><span data-en>The company positioning fully pivoted — the homepage marquee is &quot;models and infrastructure for the physical AI era&quot; (omni models/Reka Cloud/video infrastructure/egocentric data) and the news mainline is world-model research (Rho-1 2026-10-05 etc.); the chat entry is a corner product — understanding Reka as a &quot;chat product company&quot; misplaces it</span></li>
+          <li><span data-zh>API 池含精选开源模型（deepseek4-flash/glm5.3/qwen3.8-27b/gemma4-26b）——「Reka API」不等于「只用 Reka 模型」，各开源档按其自身权重许可使用</span><span data-en>The API pool includes curated open models (deepseek4-flash/glm5.3/qwen3.8-27b/gemma4-26b) — &quot;Reka API&quot; does not mean &quot;Reka models only&quot;; each open tier is used under its own weights license</span></li>
+          <li><span data-zh>Reka Edge 开放权重与闭源旗舰是两线——reka-edge-2603 可在本机跑（docs run-locally），reka-flash-3 仅 API；两线能力与数据边界不同</span><span data-en>Reka Edge open weights and the closed flagship are two lines — reka-edge-2603 runs locally (docs run-locally), reka-flash-3 is API-only; capabilities and data boundaries differ</span></li>
+          <li><span data-zh>对话入口功能面薄——app.reka.ai 为 JS 应用（当日仅见「Edge Chat」标题），模型选择/记忆/上传等功能未核验到官方文档；勿按 ChatGPT 类成熟度预期</span><span data-en>The chat entry&#39;s feature surface is thin — app.reka.ai is a JS app (only the &quot;Edge Chat&quot; title visible same day); model choice/memory/upload unverified in official docs; do not expect ChatGPT-class maturity</span></li>
+        </ul>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
+        <span data-zh>
+        <ul>
+          <li>Edge Chat 入口的模型选择、记忆、文件上传功能（未核验到官方声明）</li>
+          <li>托管版对话数据留存与训练口径（未逐条核验）</li>
+          <li>Reka Edge 权重页的具体许可条款（HF 页未逐字核验）</li>
+          <li>对话入口与 API 配额/计费的关系（pricing 页在 docs 在册，入口侧未核验）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>Model selection, memory, and file-upload features of the Edge Chat entry (no official statement verified)</li>
+          <li>Retention and training-use terms for hosted chat data (not verified item by item)</li>
+          <li>The exact license terms of the Reka Edge weights page (HF page not verified verbatim)</li>
+          <li>How the chat entry relates to API quota/billing (pricing page on record in docs; entry side not verified)</li>
+        </ul></span>
+      </div>
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>判断可回到以下一手源复核。本站核验日</span><span data-en>Every judgement can be rechecked against the primary sources below. Verified on</span> 2026-10-31，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-31。</p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>official</td><td><span data-zh>Reka · 官网首页（2026-10-31 直连 200；「physical AI era」四段自述+Reka Cloud/视频/数据基础设施当日在册）</span><span data-en>Reka · official homepage (2026-10-31 direct 200; &quot;physical AI era&quot; four-section self-description + Reka Cloud/video/data infrastructure on record same day)</span></td><td><a href="https://reka.ai" target="_blank" rel="noopener">https://reka.ai</a></td></tr>
+            <tr><td>official</td><td><span data-zh>Reka Chat · 产品入口（chat.reka.ai 307→app.reka.ai/chat 直连 200；页内标题 Reka Playground/Edge Chat）</span><span data-en>Reka Chat · product entry (chat.reka.ai 307→app.reka.ai/chat direct 200; page title Reka Playground/Edge Chat)</span></td><td><a href="https://app.reka.ai" target="_blank" rel="noopener">https://app.reka.ai</a></td></tr>
+            <tr><td>official</td><td><span data-zh>Reka · Terms of Use（2026-10-31 直连 200；Last Updated September 2026；主体 Reka AI, Inc.）</span><span data-en>Reka · Terms of Use (2026-10-31 direct 200; Last Updated September 2026; party Reka AI, Inc.)</span></td><td><a href="https://reka.ai/legal/terms-of-use" target="_blank" rel="noopener">https://reka.ai/legal/terms-of-use</a></td></tr>
+            <tr><td>official</td><td><span data-zh>Reka · Privacy Policy（2026-10-31 直连 200；Effective June 2026；含 EEA/UK 专章）</span><span data-en>Reka · Privacy Policy (2026-10-31 direct 200; Effective June 2026; carries an EEA/UK section)</span></td><td><a href="https://reka.ai/legal/privacy-policy" target="_blank" rel="noopener">https://reka.ai/legal/privacy-policy</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Reka API · 文档（2026-10-31 直连 200；api.reka.ai/v1 OpenAI 兼容；模型表/Run locally/MCP server 在册）</span><span data-en>Reka API · documentation (2026-10-31 direct 200; api.reka.ai/v1 OpenAI-compatible; model table/Run locally/MCP server on record)</span></td><td><a href="https://docs.reka.ai/overview" target="_blank" rel="noopener">https://docs.reka.ai/overview</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>Reka News（变更记录线，2026-10-31 直连 200；Rho-1 2026-10-05/Inverse Dynamics 2026-10-02/EdgeQ 2026-09-22 条目当日在册）</span><span data-en>Reka News (change-record line, 2026-10-31 direct 200; Rho-1 2026-10-05/Inverse Dynamics 2026-10-02/EdgeQ 2026-09-22 entries on record same day)</span></td><td><a href="https://reka.ai/news" target="_blank" rel="noopener">https://reka.ai/news</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
+        <span data-zh><p>本站尚未完成实测。编码向实测协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a>（对话产品不适用编码任务集）。</p>
+            <p><strong>实测建议</strong>（三条，都指向官方页没给的东西）：</p>
+            <ul><li><strong>Edge Chat 入口实际挂哪个模型、与 API 模型表是否一致</strong>（入口 JS 应用未核验）</li><li><strong>托管对话数据的留存与训练口径</strong>（隐私页 2026-06 版逐项看）</li><li><strong>Reka Edge 权重本机跑的硬件门槛体验</strong>（docs 写 Apple Silicon 32GB+，实操未测）</li></ul></span><span data-en><p>This site has not completed measured runs. The coding test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" target="_blank" rel="noopener">protocols/coding/_protocol.md</a> (the coding task set does not apply to chat products).</p>
+            <p><strong>Suggested runs</strong> (three, each pointing at what the official pages do not give):</p>
+            <ul><li><strong>Which model the Edge Chat entry actually serves, and whether it matches the API model table</strong> (the entry is a JS app, unverified)</li><li><strong>Retention and training-use terms for hosted chat data</strong> (read the June 2026 privacy policy item by item)</li><li><strong>Hands-on feel of the Reka Edge weights local hardware bar</strong> (docs say Apple Silicon 32 GB+, not actually tested)</li></ul></span>
+      </div>
+
+
+      
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./poe.html"><span data-zh>Poe</span><span data-en>Poe</span></a></span><span class="rel-n"><span data-zh>同为多模型聚合对话：Poe 以闭源 API 池为招牌，Reka 入口面薄、聚合面主要在 API 侧。</span><span data-en>Also multi-model aggregation chat: Poe headlines a closed-source API pool, while Reka&#39;s entry is thin and its aggregation surface sits mainly on the API side.</span></span></li>
+          <li><span class="rel-t"><a href="/runner/ollama.html"><span data-zh>Ollama</span><span data-en>Ollama</span></a></span><span class="rel-n"><span data-zh>开放权重本机路线对照：Reka Edge 权重下载后由本机 runner 栈承载，数据不出机器。</span><span data-en>Open-weights local route contrast: Reka Edge weights, once downloaded, are carried by a local runner stack — data never leaves the machine.</span></span></li>
+          <li><span class="rel-t"><a href="/coding/aider.html"><span data-zh>Aider</span><span data-en>Aider (Watch mode)</span></a></span><span class="rel-n"><span data-zh>OpenAI 兼容端点消费侧对照：api.reka.ai/v1 可直接挂进支持自定义端点的编码 agent。</span><span data-en>OpenAI-compatible endpoint consumer-side contrast: api.reka.ai/v1 can be plugged straight into coding agents that support custom endpoints.</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

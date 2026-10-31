@@ -10,7 +10,7 @@
 
 ## 这个大类提供什么
 
-- **20 个对象**，按固定 8 个维度记录
+- **21 个对象**，按固定 8 个维度记录
 - 每个维度都能回溯到官方一手源，附来源类型与核验日期
 - **不给总分排名**——缺少跨工具的统一实测，排名会误导
 - **「未知」是合法答案**——查不到就写未知并说明原因，不用推测填充
@@ -34,6 +34,7 @@
 | [Meta AI](./meta-ai.html) | 网页服务 | Meta | partial | 2026-10-30 |
 | [Microsoft Copilot](./microsoft-copilot.html) | 网页服务 | 微软 | partial | 2026-10-22 |
 | [Poe](./poe.html) | 网页服务 | Quora | partial | 2026-10-30 |
+| [Reka Chat（Reka Playground / Edge Chat）](./reka-chat.html) | 网页服务 | Reka AI, Inc. | partial | 2026-10-31 |
 | [阶跃AI](./stepfun.html) | 网页服务 | 阶跃星辰 | partial | 2026-10-30 |
 | [通义千问](./tongyi-qianwen.html) | 网页服务 | 阿里巴巴 | partial | 2026-10-22 |
 | [文心](./wenxin.html) | 网页服务 | 百度 | partial | 2026-10-22 |
@@ -48,7 +49,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 20 个对象中，**1 个为 verified**。
+当前 21 个对象中，**1 个为 verified**。
 
 ## 数据来源
 
@@ -62,7 +63,7 @@
 | 大类 | 主题 | 对象数 |
 |---|---|---|
 | [AI 编程](/coding/) | 装在编辑器、终端，或厂商云里 | 41 |
-| [AI 对话助手](/chat/) | 通用对话产品，含国产 | 20 |
+| [AI 对话助手](/chat/) | 通用对话产品，含国产 | 21 |
 | [AI 图像创作](/image/) | 文生图与图像工作台 | 15 |
 | [AI 视频创作](/video/) | 文生视频与数字人 | 14 |
 | [AI 音频与语音](/audio/) | 音乐生成、语音合成与转写 | 17 |
