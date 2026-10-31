@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>MLC LLM — Runners | 投机取巧</title>
+  <meta name="description" content="MLC LLM（MLCEngine（CMU 系，mlc-ai））：MLC LLM：编译式跨平台推理引擎（Apache-2.0，23,284★ 推送 2026-10-30）—— 「Universal LLM Deployment Engine with ML Compilation」：把模型编译成目标平台原生码…" />
+  <link rel="canonical" href="https://tools.specul.com/runner/mlc-llm.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="MLC LLM" />
+  <meta property="og:url" content="https://tools.specul.com/runner/mlc-llm.html" />
+  <meta property="og:title" content="MLC LLM — Runners | 投机取巧" />
+  <meta property="og:description" content="MLC LLM（MLCEngine（CMU 系，mlc-ai））：MLC LLM：编译式跨平台推理引擎（Apache-2.0，23,284★ 推送 2026-10-30）—— 「Universal LLM Deployment Engine with ML Compilation」：把模型编译成目标平台原生码…" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"MLC LLM","applicationCategory":"DeveloperApplication","sameAs":"https://llm.mlc.ai/docs/","description":"MLC LLM：编译式跨平台推理引擎（Apache-2.0，23,284★ 推送 2026-10-30）—— 「Universal LLM Deployment Engine with ML Compilation」：把模型编译成目标平台原生码， 一套 MLCEngine 覆盖 NVIDIA/AMD/Intel GPU、Apple Metal（含 iOS）、浏览器 WebGPU/WASM（WebLLM）、 Android OpenCL，全部走 OpenAI 兼容 API。两条根口径：safetensors 编译路线 ≠ GGUF 预量化路线； 发版线在 PyPI 不在 GitHub relea","dateModified":"2026-10-31"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Runners</span>
+      </nav>
+      <a class="back" href="./">← Runners</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#94a3b8" aria-hidden="true"><span data-zh>ML</span><span data-en>ML</span></div>
+        <div>
+          <h1><span data-zh>MLC LLM</span><span data-en>MLC LLM</span></h1>
+          <div class="vendor is-caps"><span data-zh>MLCEngine（CMU 系，mlc-ai）</span><span data-en>MLCEngine (CMU lineage, mlc-ai)</span></div>
+        </div>
+      </div>
+
+      <div class="badges">
+        <span class="tag on"><span data-zh>本地推理</span><span data-en>Local inference</span></span>
+        <span class="tag on"><span data-zh>推理引擎</span><span data-en>Inference engine</span></span>
+        <span class="tag on"><span data-zh>编译</span><span data-en>Compilation</span></span>
+        <span class="tag on"><span data-zh>跨平台</span><span data-en>Cross-platform</span></span>
+        <span class="tag on"><span data-zh>OpenAI兼容</span><span data-en>OpenAI-compatible</span></span>
+        <span class="tag on"><span data-zh>Apache-2.0</span><span data-en>Apache-2.0</span></span>
+        <span class="tag on"><span data-zh>移动</span><span data-en>Mobile</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-31</span>
+      </div>
+
+            
+      <div class="panel-lead"><span data-zh><p><strong>MLC LLM：编译式跨平台推理引擎</strong>（Apache-2.0，23,284★ 推送 2026-10-30）—— 「Universal LLM Deployment Engine with ML Compilation」：把模型编译成目标平台原生码， 一套 MLCEngine 覆盖 NVIDIA/AMD/Intel GPU、Apple Metal（含 iOS）、浏览器 WebGPU/WASM（WebLLM）、 Android OpenCL，全部走 OpenAI 兼容 API。两条根口径：<strong>safetensors 编译路线 ≠ GGUF 预量化路线</strong>； <strong>发版线在 PyPI 不在 GitHub releases</strong>（名义 v0.20.0/dev 标签 v0.26.dev0）。</p></span><span data-en><p><strong>MLC LLM: a compile-to-native cross-platform inference engine</strong> (Apache-2.0, 23,284 stars, pushed 2026-10-30) — &quot;Universal LLM Deployment Engine with ML Compilation&quot;: compile models into platform-native code, one MLCEngine covering NVIDIA/AMD/Intel GPUs, Apple Metal (incl. iOS), browser WebGPU/WASM (WebLLM) and Android OpenCL, all behind an OpenAI-compatible API. Two root wordings: <strong>the safetensors-compile route ≠ the GGUF pre-quantization route</strong>; <strong>the release line is on PyPI, not GitHub releases</strong> (nominally v0.20.0 / dev tag v0.26.dev0).</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+<span data-zh>        <div><p>适合：一套引擎多平台部署（尤其移动端与浏览器端）；编译期优化换性能的工程路线。 不适合：GGUF 即下即跑的省事路线（llama.cpp/Ollama）；不想碰编译步骤的用户。</p></div></span><span data-en>        <div><p>Fits: one engine deployed across platforms (especially mobile and browser ends); an engineering route trading compile-time optimization for performance. Not a fit: the GGUF download-and-run convenience route (llama.cpp/Ollama); users who do not want to touch a compile step.</p></div></span>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-31</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>MLCEngine / mlc-ai（CMU 系开源社区，LMSYS/MLC 生态）。</span><span data-en>MLCEngine / mlc-ai (CMU-lineage open-source community, LMSYS/MLC ecosystem).</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>直连不可达</span><span data-en>direct blocked</span>　<span data-zh>llm.mlc.ai 直连 000（网络受限，非死链）；GitHub 仓与 raw README 直连 200（2026-10-31）。</span><span data-en>llm.mlc.ai measured 000 direct (network restricted, not dead); the GitHub repo and raw README returned 200 direct (2026-10-31).</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>未见于备案名单</span><span data-en>not in filing list</span>：<span data-zh>未见于网信办公示名单（2026-10-31 检索）；开源项目未面向大陆公众提供服务，备案不适用。</span><span data-en>not in the CAC public registry (searched 2026-10-31); an open-source project not serving the mainland public, so filing does not apply.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p><strong>自带编译式推理引擎（MLCEngine）</strong>——不是调外部模型的服务，是把模型编译成目标平台的原生执行码 （「Universal LLM Deployment Engine with ML Compilation」官方定位）。模型侧吃 safetensors 系 （HF 权重编译路线），与 llama.cpp 的 GGUF 预量化路线是两条根。</p></span><span data-en><p><strong>Ships its own compiled inference engine (MLCEngine)</strong> — not a service calling an external model; it compiles models into native executables for the target platform (the official positioning: &quot;Universal LLM Deployment Engine with ML Compilation&quot;). On the model side it takes the safetensors family (the HF-weights-compile route), a different root from llama.cpp&#39;s pre-quantized GGUF route.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p><strong>编译-部署型 CLI/库</strong>（pip mlc-llm / mlc_llm 命令）；覆盖平台矩阵是它的主打面： NVIDIA/AMD/Intel GPU（CUDA/Vulkan/ROCm/OpenCL）、Apple Metal（含 iOS/iPadOS）、 Web 浏览器（WebGPU+WASM，姊妹项目 WebLLM）、Android（OpenCL）——README 平台表逐格标注。 GitHub mlc-ai/mlc-llm Apache-2.0 23,284★ 推送 2026-10-30（API 核验）； <strong>GitHub releases 名义停 v0.20.0（dev 标签 v0.26.dev0）——发版线在 PyPI（mlc-llm 包）</strong>。</p></span><span data-en><p>A <strong>compile-and-deploy CLI/library</strong> (pip mlc-llm / the mlc_llm command); the platform matrix is its headline surface: NVIDIA/AMD/Intel GPUs (CUDA/Vulkan/ROCm/OpenCL), Apple Metal (incl. iOS/iPadOS), web browsers (WebGPU+WASM, the sister project WebLLM), Android (OpenCL) — the README platform table marks cell by cell. GitHub mlc-ai/mlc-llm Apache-2.0 23,284 stars, pushed 2026-10-30 (API verified); <strong>GitHub releases nominally stop at v0.20.0 (dev tag v0.26.dev0) — the release line is on PyPI (the mlc-llm package)</strong>.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>读写本机文件——模型权重（编译产物缓存在本地）、编译配置 JSON；REST server 跑在本机端口。 编译步骤本身产出平台特定产物（这是它与「下载即跑」型 runner 的操作差）。</p></span><span data-en><p>Reads and writes local files — model weights (compiled artifacts cached locally), compile-config JSON; the REST server runs on a local port. The compile step itself produces platform-specific artifacts (its operational difference from &quot;download-and-run&quot; runners).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>REST server 是常驻本机进程（OpenAI 兼容 API）；无常驻云面——纯本地/自托管。</p></span><span data-en><p>The REST server is a persistent local process (OpenAI-compatible API); no persistent cloud surface — purely local/self-hosted.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>不是 agent 工具面——它的「工具」是命令行与 API：mlc_llm generate/generate-config/compile 子命令 + MLCEngine 的 <strong>OpenAI 兼容 REST API</strong>（REST server/python/javascript/iOS/Android 同一引擎同一编译器背书——README 口径）。</p></span><span data-en><p>Not an agent-tool surface — its &quot;tools&quot; are the command line and the API: the mlc_llm generate/generate-config/compile subcommands + MLCEngine&#39;s <strong>OpenAI-compatible REST API</strong> (REST server/python/javascript/iOS/Android backed by the same engine and same compiler — README wording).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>无跨会话记忆（推理服务面）——上下文长度按编译时模型配置与运行时参数决定； 对话状态由客户端携带，服务端不存会话。</p></span><span data-en><p>No cross-session memory (it is an inference-serving surface) — context length follows the compile-time model config and runtime parameters; conversation state is carried by the client, the server stores no sessions.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>本机运行无鉴权默认（REST server 本地端口）；权限面=本机文件与 GPU 访问。无云账户、无遥测声明面。</p></span><span data-en><p>Local runs are unauthenticated by default (REST server on a local port); the permission surface = local files and GPU access. No cloud account, no telemetry disclosure surface.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合：要「一套引擎多平台部署」——尤其移动端（iOS/Android 原生 Metal/OpenCL）与浏览器（WebLLM） 这类 llama.cpp/Ollama 不覆盖的端；要编译期优化换运行性能的工程路线。 不适合：要 GGUF 即下即跑的省事路线（llama.cpp/Ollama）；不想碰编译步骤的用户。</p></span><span data-en><p>Fits: &quot;one engine, multi-platform deployment&quot; — especially mobile (iOS/Android native Metal/OpenCL) and browser (WebLLM) ends that llama.cpp/Ollama do not cover; an engineering route that trades compile-time optimization for runtime performance. Does not fit: the convenience route of GGUF download-and-run (llama.cpp/Ollama); users who do not want to touch a compile step.</p></span></dd>
+        </div>
+      </dl>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li><span data-zh>把 GitHub releases 当发版线——releases 名义停 v0.20.0（标签有 v0.26.dev0），实际发版在 PyPI；看 PyPI</span><span data-en>Treating GitHub releases as the release line — releases nominally stop at v0.20.0 (tag v0.26.dev0); actual releases happen on PyPI — watch PyPI</span></li>
+          <li><span data-zh>把它当 GGUF 生态——MLC 走 safetensors 编译路线，GGUF 预量化是 llama.cpp 根；模型准备步骤不同</span><span data-en>Treating it as part of the GGUF ecosystem — MLC follows the safetensors compile route; pre-quantized GGUF is the llama.cpp root; the model-preparation step differs</span></li>
+          <li><span data-zh>把 llm.mlc.ai 直连 000 当死站——网络受限非停运（GitHub 仓与文档线经代理可达）</span><span data-en>Reading llm.mlc.ai&#39;s 000 direct measurement as a dead site — network restriction, not retirement (the GitHub repo and docs are reachable via proxy)</span></li>
+          <li><span data-zh>忽略编译步骤——「编译-部署」是它的操作模型，第一次跑要先编译/取编译产物，不是 pull 即跑</span><span data-en>Ignoring the compile step — &quot;compile then deploy&quot; is its operational model: the first run compiles or fetches compiled artifacts, it is not pull-and-run</span></li>
+        </ul>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
+        <span data-zh>
+        <ul>
+          <li>PyPI 当前版本号与上传日期（pypi.org 直连 000 未达，按快照纪律不记未核验数字）</li>
+          <li>支持模型清单的完整面（文档有列表，未逐条清点）</li>
+          <li>编译产物在各端的分发方式（预编译 vs 用户自编译的边界，文档口径未逐条核验）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>The current PyPI version number and upload date (pypi.org measured 000 direct and unreachable; per snapshot discipline no unverified numbers are recorded)</li>
+          <li>The complete supported-model list (the docs have a list; not enumerated item by item)</li>
+          <li>How compiled artifacts are distributed per platform (precompiled vs user-compiled boundary; the docs wording not verified item by item)</li>
+        </ul></span>
+      </div>
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>判断可回到以下一手源复核。本站核验日</span><span data-en>Every judgement can be rechecked against the primary sources below. Verified on</span> 2026-10-31，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-31。</p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>repo</td><td><span data-zh>mlc-ai/mlc-llm · 仓库（Apache-2.0；23,284★，推送 2026-10-30，GitHub API 核验；README 平台矩阵+MLCEngine 口径）</span><span data-en>mlc-ai/mlc-llm · repository (Apache-2.0; 23,284 stars, pushed 2026-10-30, GitHub API verified; README platform matrix + MLCEngine positioning)</span></td><td><a href="https://github.com/mlc-ai/mlc-llm" target="_blank" rel="noopener">https://github.com/mlc-ai/mlc-llm</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>GitHub releases/tags · mlc-llm（变更记录线：releases 名义 v0.20.0、标签 v0.26.dev0——发版线在 PyPI）</span><span data-en>GitHub releases/tags · mlc-llm (change-record line: releases nominally v0.20.0, tag v0.26.dev0 — the release line is on PyPI)</span></td><td><a href="https://github.com/mlc-ai/mlc-llm/releases" target="_blank" rel="noopener">https://github.com/mlc-ai/mlc-llm/releases</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>MLC LLM · 官方文档站（安装/quick start/引擎口径；llm.mlc.ai 直连 000 网络受限，经代理 200）</span><span data-en>MLC LLM · official docs site (install/quick start/engine positioning; llm.mlc.ai measured 000 direct due to network restriction, 200 via proxy)</span></td><td><a href="https://llm.mlc.ai/docs/" target="_blank" rel="noopener">https://llm.mlc.ai/docs/</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
+        <span data-zh><p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/runner/_protocol.md" target="_blank" rel="noopener">protocols/runner/_protocol.md</a>。</p></span><span data-en><p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/runner/_protocol.md" target="_blank" rel="noopener">protocols/runner/_protocol.md</a>.</p></span>
+      </div>
+
+
+      
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./ollama.html"><span data-zh>Ollama</span><span data-en>Ollama</span></a></span><span class="rel-n"><span data-zh>对照：Ollama 是 GGUF pull 即跑的产品化封装；MLC 是编译-部署引擎，端覆盖（手机/浏览器）是 Ollama 没有的。</span><span data-en>Contrast: Ollama is a productized GGUF pull-and-run wrapper; MLC is a compile-and-deploy engine, and its end coverage (phones/browsers) is what Ollama lacks.</span></span></li>
+          <li><span class="rel-t"><a href="./llama-cpp.html"><span data-zh>llama.cpp</span><span data-en>llama.cpp</span></a></span><span class="rel-n"><span data-zh>两条根对照：llama.cpp 预量化 GGUF 直接跑；MLC 编译 safetensors 出平台原生码。</span><span data-en>Two roots contrasted: llama.cpp runs pre-quantized GGUF directly; MLC compiles safetensors into platform-native code.</span></span></li>
+          <li><span class="rel-t"><a href="/chat/chatgpt.html"><span data-zh>ChatGPT</span><span data-en>ChatGPT</span></a></span><span class="rel-n"><span data-zh>边界对照：云端对话入口（数据在对方侧）vs 本机编译部署引擎（数据不出本机）——OpenAI 兼容 API 让两者对客户端可互换，数据边界完全不同。</span><span data-en>Boundary contrast: a cloud chat entry (data on their side) vs a local compile-and-deploy engine (data never leaves the machine) — the OpenAI-compatible API makes them interchangeable for clients, while the data boundaries are completely different.</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

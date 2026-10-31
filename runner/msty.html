@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Msty — Runners | 投机取巧</title>
+  <meta name="description" content="Msty（Msty（CloudStack, LLC））：Msty：本地+云端混合的桌面 LLM 应用（闭源，CloudStack, LLC）—— Studio 桌面应用跑本地 GGUF（llama.cpp 系底座）也接云端 API，产品线四线 Studio/Go/Nexus/Stack。 口径要点：现役域 mst…" />
+  <link rel="canonical" href="https://tools.specul.com/runner/msty.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Msty" />
+  <meta property="og:url" content="https://tools.specul.com/runner/msty.html" />
+  <meta property="og:title" content="Msty — Runners | 投机取巧" />
+  <meta property="og:description" content="Msty（Msty（CloudStack, LLC））：Msty：本地+云端混合的桌面 LLM 应用（闭源，CloudStack, LLC）—— Studio 桌面应用跑本地 GGUF（llama.cpp 系底座）也接云端 API，产品线四线 Studio/Go/Nexus/Stack。 口径要点：现役域 mst…" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Msty","applicationCategory":"DeveloperApplication","sameAs":"https://msty.ai","description":"Msty：本地+云端混合的桌面 LLM 应用（闭源，CloudStack, LLC）—— Studio 桌面应用跑本地 GGUF（llama.cpp 系底座）也接云端 API，产品线四线 Studio/Go/Nexus/Stack。 口径要点：现役域 msty.ai（旧域 msty.app 301、www.msty.app 直连 000）； 闭源——隐私与能力口径按官网自述，不可代码核验。","dateModified":"2026-10-31"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Runners</span>
+      </nav>
+      <a class="back" href="./">← Runners</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#94a3b8" aria-hidden="true"><span data-zh>Ms</span><span data-en>MS</span></div>
+        <div>
+          <h1><span data-zh>Msty</span><span data-en>Msty</span></h1>
+          <div class="vendor is-caps">Msty（CloudStack, LLC）</div>
+        </div>
+      </div>
+
+      <div class="badges">
+        <span class="tag on"><span data-zh>本地推理</span><span data-en>Local inference</span></span>
+        <span class="tag on"><span data-zh>桌面应用</span><span data-en>Desktop application</span></span>
+        <span class="tag on"><span data-zh>混合</span><span data-en>Hybrid</span></span>
+        <span class="tag on"><span data-zh>闭源</span><span data-en>Closed source</span></span>
+        <span class="tag on"><span data-zh>RAG</span><span data-en>RAG</span></span>
+        <span class="tag on"><span data-zh>私有化</span><span data-en>Private deployment</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-31</span>
+      </div>
+
+            
+      <div class="panel-lead"><span data-zh><p><strong>Msty：本地+云端混合的桌面 LLM 应用</strong>（闭源，CloudStack, LLC）—— Studio 桌面应用跑本地 GGUF（llama.cpp 系底座）也接云端 API，产品线四线 Studio/Go/Nexus/Stack。 口径要点：<strong>现役域 msty.ai（旧域 msty.app 301、www.msty.app 直连 000）</strong>； 闭源——隐私与能力口径按官网自述，不可代码核验。</p></span><span data-en><p><strong>Msty: a hybrid local+cloud desktop LLM app</strong> (closed-source, CloudStack, LLC) — the Studio desktop app runs local GGUF (llama.cpp-lineage backend) and also connects cloud APIs, with four product lines Studio/Go/Nexus/Stack. Key wordings: <strong>the live domain is msty.ai (legacy msty.app 301-redirects; www.msty.app measured 000 direct)</strong>; closed-source — privacy and capability claims follow the official site&#39;s self-description and cannot be code-verified.</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+<span data-zh>        <div><p>适合：本地+云端一个应用混合使用；企业私有 LLM（Nexus）。 不适合：要开源可审计栈；纯 CLI 服务化路线。</p></div></span><span data-en>        <div><p>Fits: hybrid local+cloud use in one app; private enterprise LLMs (Nexus). Not a fit: open-source auditable stacks; pure CLI serving routes.</p></div></span>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-31</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>Msty（CloudStack, LLC，美国厂商，官网口径）。</span><span data-en>Msty (CloudStack, LLC, a US vendor per the official site).</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>msty.ai 直连 200；旧域 msty.app 301→msty.ai、www.msty.app 直连 000（2026-10-31）。</span><span data-en>msty.ai returned 200 direct; the legacy msty.app 301-redirects to msty.ai and www.msty.app measured 000 direct (2026-10-31).</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>未见于备案名单</span><span data-en>not in filing list</span>：<span data-zh>未见于网信办公示名单（2026-10-31 检索）。</span><span data-en>not in the CAC public registry (searched 2026-10-31).</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p><strong>混合面</strong>——本地模型（GGUF 下载/管理，llama.cpp 系底座）+ 云端模型接入（OpenAI/Anthropic 等 API key 接入）；产品矩阵四线：Studio（桌面主应用）/Go（移动端）/Nexus（企业私有 LLM 平台）/Stack（云端托管）。</p></span><span data-en><p><strong>A hybrid surface</strong> — local models (GGUF download/management, llama.cpp-lineage backend) + cloud-model access (OpenAI/Anthropic and similar API keys); four product lines: Studio (the desktop flagship) / Go (mobile) / Nexus (private enterprise LLM platform) / Stack (cloud-hosted).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p><strong>桌面 GUI 应用</strong>（Windows/macOS）+ 移动端 Go；本地推理走内置 llama.cpp 系底座。 现役官网 msty.ai（msty.app 301→msty.ai，www.msty.app 直连 000——2026-10-31 三通道核验）； 厂商实体 CloudStack, LLC（官网口径）。</p></span><span data-en><p>A <strong>desktop GUI app</strong> (Windows/macOS) + the Go mobile app; local inference runs on the built-in llama.cpp-lineage backend. The live site is msty.ai (msty.app 301-redirects to msty.ai; www.msty.app measured 000 direct — three-channel verification 2026-10-31); the vendor entity is CloudStack, LLC (official-site wording).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>读写本机文件——本地模型文件、对话历史（本地存储是它主打的隐私口径）。</p></span><span data-en><p>Reads and writes local files — local model files, chat history (local storage is its headline privacy positioning).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>桌面应用常驻；云端线（Stack/Nexus）涉云账户。混合架构：本地推理不依赖云，云模型接入需账户/key。</p></span><span data-en><p>The desktop app is persistent; the cloud lines (Stack/Nexus) involve a cloud account. Hybrid architecture: local inference does not depend on the cloud; cloud-model access needs an account/key.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>应用内 RAG/知识库（文档问答）、MCP 接入面（官网产品线口径）；不是给 agent 挂工具的面，是消费级/企业桌面应用。</p></span><span data-en><p>In-app RAG/knowledge bases (document Q&amp;A), an MCP access surface (per the official product-line wording); not a tool-plugging surface for agents — it is a consumer/enterprise desktop app.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>应用内对话历史持久化（本机存储）；知识库（RAG 文档库）跨会话复用。 上下文长度随所选模型与配置变化（本地模型受 llama.cpp 系底座参数约束）。</p></span><span data-en><p>In-app chat history persists locally; knowledge bases (RAG document libraries) are reused across sessions. Context length varies with the chosen model and configuration (local models are bound by the llama.cpp-lineage backend&#39;s parameters).</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>桌面应用权限=本机文件+网络；云线要账户与订阅。闭源——代码审计面不可得，隐私口径按官网自述。</p></span><span data-en><p>Desktop-app permissions = local files + network; the cloud lines need an account and subscription. Closed-source — no code-audit surface; privacy positioning follows the official site&#39;s self-description.</p></span></dd>
+        </div>
+        <div class="axis">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合：要「本地+云端一个桌面应用」的混合使用；企业私有 LLM（Nexus 线）。 不适合：要开源可审计栈（闭源）；只要纯 CLI 服务化（vLLM/TGI 那条线）。</p></span><span data-en><p>Fits: wanting &quot;one desktop app for local + cloud&quot; hybrid use; private enterprise LLMs (the Nexus line). Does not fit: open-source auditable stacks (closed-source); CLI-only serving routes (the vLLM/TGI line).</p></span></dd>
+        </div>
+      </dl>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li><span data-zh>用旧域 msty.app——301→msty.ai（www.msty.app 直连 000）；现役域是 msty.ai（2026-10-31 核验）</span><span data-en>Using the legacy domain msty.app — it 301-redirects to msty.ai (www.msty.app measured 000 direct); the live domain is msty.ai (verified 2026-10-31)</span></li>
+          <li><span data-zh>把四产品线混为一谈——Studio（桌面）/Go（移动）/Nexus（企业私有）/Stack（云托管）是不同产品，能力与计费面不同</span><span data-en>Conflating the four product lines — Studio (desktop) / Go (mobile) / Nexus (private enterprise) / Stack (cloud-hosted) are different products with different capability and billing surfaces</span></li>
+          <li><span data-zh>闭源当开源用——无公开源码许可；隐私/遥测口径只能按官网自述，不可代码核验</span><span data-en>Treating closed-source as open-source — no published source license; privacy/telemetry claims can only follow the official site&#39;s self-description, not code audit</span></li>
+        </ul>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
+        <span data-zh>
+        <ul>
+          <li>各产品线免费/付费边界与配额（官网定价页未逐条核验）</li>
+          <li>内置 llama.cpp 底座版本与量化档支持面（闭源，版本随应用捆绑）</li>
+          <li>MCP 接入面的具体能力与配置方式（官网产品线口径提及，未实测）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>Free/paid boundaries and quotas per product line (the pricing page not verified item by item)</li>
+          <li>The bundled llama.cpp backend version and quant-tier support (closed-source; the version ships with the app)</li>
+          <li>What the MCP access surface actually supports and how it is configured (mentioned in official product-line wording, not measured)</li>
+        </ul></span>
+      </div>
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>判断可回到以下一手源复核。本站核验日</span><span data-en>Every judgement can be rechecked against the primary sources below. Verified on</span> 2026-10-31，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-31。</p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>homepage</td><td><span data-zh>Msty · 官网（现役域 msty.ai 直连 200；产品矩阵 Studio/Go/Nexus/Stack；CloudStack, LLC）</span><span data-en>Msty · official site (live domain msty.ai returned 200 direct; product matrix Studio/Go/Nexus/Stack; CloudStack, LLC)</span></td><td><a href="https://msty.ai" target="_blank" rel="noopener">https://msty.ai</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>Msty · 文档站 changelog（docs.msty.app/getting-started/changelog；docs.msty.app 307→onboarding）</span><span data-en>Msty · docs-site changelog (docs.msty.app/getting-started/changelog; docs.msty.app 307-redirects to onboarding)</span></td><td><a href="https://docs.msty.app/getting-started/changelog" target="_blank" rel="noopener">https://docs.msty.app/getting-started/changelog</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Msty · 文档站（onboarding/产品口径）</span><span data-en>Msty · docs site (onboarding / product positioning)</span></td><td><a href="https://docs.msty.app/getting-started/onboarding" target="_blank" rel="noopener">https://docs.msty.app/getting-started/onboarding</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
+        <span data-zh><p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/runner/_protocol.md" target="_blank" rel="noopener">protocols/runner/_protocol.md</a>。</p></span><span data-en><p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/runner/_protocol.md" target="_blank" rel="noopener">protocols/runner/_protocol.md</a>.</p></span>
+      </div>
+
+
+      
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./lm-studio.html"><span data-zh>LM Studio</span><span data-en>LM Studio</span></a></span><span class="rel-n"><span data-zh>同类：桌面 GUI 本地模型应用；LM Studio 免费闭源、Msty 混合云端+企业线更重。</span><span data-en>Same family: desktop GUI local-model apps; LM Studio is free closed-source, Msty leans heavier on hybrid cloud + enterprise lines.</span></span></li>
+          <li><span class="rel-t"><a href="./jan.html"><span data-zh>Jan</span><span data-en>Jan</span></a></span><span class="rel-n"><span data-zh>同类：开源桌面 GUI 对照 Msty 闭源桌面 GUI。</span><span data-en>Same family: the open-source desktop GUI Jan contrasted with the closed-source desktop GUI Msty.</span></span></li>
+          <li><span class="rel-t"><a href="./ollama.html"><span data-zh>Ollama</span><span data-en>Ollama</span></a></span><span class="rel-n"><span data-zh>底座对照：桌面 GUI 类应用多挂 llama.cpp/Ollama 式本地推理底座。</span><span data-en>Backend contrast: desktop GUI apps mostly ride a llama.cpp/Ollama-style local inference backend.</span></span></li>
+          <li><span class="rel-t"><a href="/chat/chatgpt.html"><span data-zh>ChatGPT</span><span data-en>ChatGPT</span></a></span><span class="rel-n"><span data-zh>混合面对照：Msty 一个应用同时接本地与云端模型；ChatGPT 只有云端线——混合架构的取舍（一个入口两种数据边界）正是它的产品主张。</span><span data-en>Hybrid-surface contrast: Msty connects local and cloud models in one app; ChatGPT has only the cloud line — the hybrid trade-off (one entry, two data boundaries) is exactly its product claim.</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

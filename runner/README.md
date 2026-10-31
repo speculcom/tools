@@ -10,7 +10,7 @@
 
 ## 这个大类提供什么
 
-- **12 个对象**，按固定 8 个维度记录
+- **16 个对象**，按固定 8 个维度记录
 - 每个维度都能回溯到官方一手源，附来源类型与核验日期
 - **不给总分排名**——缺少跨工具的统一实测，排名会误导
 - **「未知」是合法答案**——查不到就写未知并说明原因，不用推测填充
@@ -23,11 +23,15 @@
 | [Jan](./jan.html) | 本机应用 | Menlo Research | partial | 2026-10-30 |
 | [KoboldCpp](./koboldcpp.html) | 本机应用 | LostRuins（KoboldAI 社区） | partial | 2026-10-30 |
 | [llama.cpp](./llama-cpp.html) | CLI 形态 | ggml-org | partial | 2026-10-30 |
+| [LlamaEdge](./llamaedge.html) | CLI 形态 | LlamaEdge 社区（WasmEdge / Second State 生态） | partial | 2026-10-31 |
 | [LM Studio](./lm-studio.html) | 本机应用 | Element Labs | partial | 2026-10-30 |
 | [LocalAI](./localai.html) | CLI 形态 | Mudler T.（mudler） | partial | 2026-10-30 |
+| [MLC LLM](./mlc-llm.html) | CLI 形态 | MLCEngine（CMU 系，mlc-ai） | partial | 2026-10-31 |
 | [MLX（mlx-lm）](./mlx.html) | CLI 形态 | Apple | partial | 2026-10-30 |
+| [Msty](./msty.html) | 本机应用 | Msty（CloudStack, LLC） | partial | 2026-10-31 |
 | [Ollama](./ollama.html) | CLI 形态 | Ollama Inc. | partial | 2026-10-30 |
 | [SGLang](./sglang.html) | CLI 形态 | LMSYS / sgl-project | partial | 2026-10-30 |
+| [TabbyAPI](./tabbyapi.html) | CLI 形态 | Royal Lab（theroyallab） | partial | 2026-10-31 |
 | [text-generation-webui / textgen](./text-generation-webui.html) | 本机应用 | oobabooga | partial | 2026-10-30 |
 | [Text Generation Inference（TGI）](./tgi.html) | CLI 形态 | Hugging Face | partial | 2026-10-30 |
 | [vLLM](./vllm.html) | CLI 形态 | vLLM 项目（PyTorch 基金会） | partial | 2026-10-30 |
@@ -40,7 +44,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 12 个对象中，**0 个为 verified**。
+当前 16 个对象中，**0 个为 verified**。
 
 ## 数据来源
 
@@ -62,7 +66,7 @@
 | [AI 自动化与工作流](/automation/) | 可视化搭 AI 工作流与 agent | 22 |
 | [框架与运行时](/framework/) | 运行时、编排框架、SDK | 27 |
 | [MCP 工具](/mcp/) | 缺什么，装什么 —— 给 agent 装的 MCP 工具 | 32 |
-| [本地模型运行器](/runner/) | 在自己机器上跑开源模型 | 12 |
+| [本地模型运行器](/runner/) | 在自己机器上跑开源模型 | 16 |
 
 ---
 
