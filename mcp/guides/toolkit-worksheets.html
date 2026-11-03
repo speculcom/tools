@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Toolkit: four worksheets — 深水指南 | 投机取巧</title>
+  <meta name="description" content="工具箱：四张工作表（立项、发布、迁移、泄露）：四个可直接复制的检查表：项目立项、内容发布前、模型迁移评估、数据泄露路径排查。" />
+  <link rel="canonical" href="https://tools.specul.com/mcp/guides/toolkit-worksheets.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Toolkit: four worksheets" />
+  <meta property="og:url" content="https://tools.specul.com/mcp/guides/toolkit-worksheets.html" />
+  <meta property="og:title" content="Toolkit: four worksheets — 深水指南 | 投机取巧" />
+  <meta property="og:description" content="工具箱：四张工作表（立项、发布、迁移、泄露）：四个可直接复制的检查表：项目立项、内容发布前、模型迁移评估、数据泄露路径排查。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Toolkit: four worksheets","description":"Four copyable checklists: project kickoff, pre-publish, model migration assessment and data-leak path review.","dateModified":"2026-11-03"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
+      <div class="detail-head">
+        <div>
+          <h1><span data-zh>工具箱：四张工作表（立项、发布、迁移、泄露）</span><span data-en>Toolkit: four worksheets</span></h1>
+          <div class="vendor is-caps"><span data-zh>规划</span><span data-en>Planning</span></div>
+        </div>
+      </div>
+      <div class="panel-lead"><span data-zh><p>四个可直接复制的检查表：项目立项、内容发布前、模型迁移评估、数据泄露路径排查。</p></span><span data-en><p>Four copyable checklists: project kickoff, pre-publish, model migration assessment and data-leak path review.</p></span></div>
+      <p class="t-xs" data-en>English summaries and interface labels are available. The guide body below is currently in Chinese.</p>
+      <div class="panel is-slim">
+        <h2><span data-zh>怎么用这页</span><span data-en>How to use</span></h2>
+        <p>四张表用于评审会与上线前检查；复制到你的仓库，按项目填。</p>
+            <h3 class="sub-h">13. 项目立项检查表</h3>
+            <pre class="code"><code>- [ ] 目标一句话：要解决谁的什么问题
+- [ ] 不做清单：明确不做什么
+- [ ] 数据来源与许可：能否使用、能否留存
+- [ ] 模型与工具：主选、备选、许可证
+- [ ] 成本上限：月调用/硬件/人力
+- [ ] 验收指标：三条可量化
+- [ ] 失败回滚：谁负责、怎么退
+- [ ] 时间盒：到哪天必须评审</code></pre>
+            <h3 class="sub-h">14. 内容发布前检查表</h3>
+            <pre class="code"><code>- [ ] 事实：每条结论有来源与日期
+- [ ] 引文：单条不超过 100 字符或一句
+- [ ] 权利：图片/音乐/字体/数字人许可已登记
+- [ ] 隐私：无客户姓名、订单号、密钥
+- [ ] 标注：需要 AI 生成标注的平台已标注
+- [ ] 版本：模型版本与生成参数已存档
+- [ ] 可访问性：字幕、对比度、替代文本
+- [ ] 回滚：发布后 24 小时内可撤</code></pre>
+            <h3 class="sub-h">15. 模型迁移评估表</h3>
+            <pre class="code"><code>| 项目 | 旧模型 | 新模型 | 结论 |
+|------|--------|--------|------|
+| 上下文窗口 | | | |
+| 工具调用 schema | | | |
+| 流式与错误码 | | | |
+| 中文质量（20 条） | | | |
+| 代码/结构化输出（20 条） | | | |
+| 幻觉率（20 条） | | | |
+| 单价与配额 | | | |
+| 许可证与商用 | | | |
+| 回滚方案 | | | |
+
+规则：任一项无数据，迁移不算完成。</code></pre>
+            <h3 class="sub-h">16. 数据泄露路径排查表</h3>
+            <pre class="code"><code>| 路径 | 是否出网 | 留存多久 | 是否训练 | 控制措施 |
+|------|----------|----------|----------|----------|
+| 聊天输入 | | | | |
+| 上传文件 | | | | |
+| 工具调用参数 | | | | |
+| 日志与追踪 | | | | |
+| 缓存与索引 | | | | |
+| 备份 | | | | |
+| 第三方子处理者 | | | | |
+
+规则：每条路径都要有「谁负责、怎么删、多久审计」。</code></pre>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>常见误用</span><span data-en>Common misuses</span></h2>
+        <ul><li>立项表只写目标：不写不做清单，范围一定蔓延。</li><li>发布表只查事实：不查权利，最容易返工。</li><li>迁移表只测一条：样本太少，结论不可用。</li><li>泄露表只填一半：第三方子处理者最常被漏。</li></ul>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
+        <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
+          <tr><td>NIST · Cybersecurity Framework（风险管理框架，检查表结构参考）</td><td><a href="https://www.nist.gov/cyberframework" target="_blank" rel="noopener">https://www.nist.gov/cyberframework</a></td></tr>
+          <tr><td>Creative Commons · 许可说明（发布前权利核对参考）</td><td><a href="https://creativecommons.org/licenses/" target="_blank" rel="noopener">https://creativecommons.org/licenses/</a></td></tr>
+        </tbody></table></div>
+        <p class="guide-foot"><span data-zh>核验快照：2026-11-03 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-11-03 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

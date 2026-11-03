@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Image and video pipelines — 深水指南 | 投机取巧</title>
+  <meta name="description" content="图像与视频：一条内容该用哪条工具链：先分图像与视频两条链，再按输入模态、权利条款与工作流位置选；每个候选写明适用条件与替代路线。" />
+  <link rel="canonical" href="https://tools.specul.com/mcp/guides/compare-media-tools.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Image and video pipelines" />
+  <meta property="og:url" content="https://tools.specul.com/mcp/guides/compare-media-tools.html" />
+  <meta property="og:title" content="Image and video pipelines — 深水指南 | 投机取巧" />
+  <meta property="og:description" content="图像与视频：一条内容该用哪条工具链：先分图像与视频两条链，再按输入模态、权利条款与工作流位置选；每个候选写明适用条件与替代路线。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Image and video pipelines","description":"Split image and video into two chains, then choose by input modality, rights terms and workflow position; each candidate gets its conditions and an alternative.","dateModified":"2026-11-03"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
+      <div class="detail-head">
+        <div>
+          <h1><span data-zh>图像与视频：一条内容该用哪条工具链</span><span data-en>Image and video pipelines</span></h1>
+          <div class="vendor is-caps"><span data-zh>规划</span><span data-en>Planning</span></div>
+        </div>
+      </div>
+      <div class="panel-lead"><span data-zh><p>先分图像与视频两条链，再按输入模态、权利条款与工作流位置选；每个候选写明适用条件与替代路线。</p></span><span data-en><p>Split image and video into two chains, then choose by input modality, rights terms and workflow position; each candidate gets its conditions and an alternative.</p></span></div>
+      <p class="t-xs" data-en>English summaries and interface labels are available. The guide body below is currently in Chinese.</p>
+      <div class="panel is-slim">
+        <h2><span data-zh>先分两条链</span><span data-en>Two separate chains</span></h2>
+        <p>图像与视频不是同一张表能选完的：</p>
+            <div class="tbl-wrap"><table><thead><tr><th>链</th><th>关键决策</th><th>代表</th></tr></thead><tbody><tr><td>图像</td><td>风格一致性、图内文字、权重可否自托管</td><td>Midjourney、FLUX、Ideogram</td></tr><tr><td>视频</td><td>时长、参考素材、镜头控制、来源溯源</td><td>Kling、Veo、Runway</td></tr></tbody></table></div>
+            <p><strong>先问产出是什么</strong>：一张主视觉、一套商品图，还是一条 30 秒片。跨链比较会得出错误结论。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>图像三选一</span><span data-en>Image: three paths</span></h2>
+        <div class="tbl-wrap"><table><thead><tr><th>维度</th><th>Midjourney</th><th>FLUX</th><th>Ideogram</th></tr></thead><tbody><tr><td>交付形态</td><td>网页 + Discord，闭源托管</td><td>托管 API / playground + 部分开源自托管</td><td>4.0 开放量化权重；4.5 闭源托管</td></tr><tr><td>权利要点</td><td>付费拥有 Assets，但高营收公司要更高档位；社区默认公开可 Remix</td><td>允许商用，禁止用输出训练其他模型</td><td>4.0 权重非商用免费，商用自托管需许可</td></tr><tr><td>强项</td><td>风格质量与社区审美</td><td>双路线：托管或自托管，可进端侧</td><td>图内排版文字、precise edit</td></tr><tr><td>弱项</td><td>默认公开，不适合保密项目</td><td>条款最锋利的一刀在「禁训练」</td><td>商用自托管要另谈许可</td></tr></tbody></table></div>
+            <p><strong>Midjourney</strong>：适合重风格、接受社区公开形态的创作者。<strong>什么情况下选另一个</strong>：作品不能公开，选 FLUX 自托管或 Ideogram 商用许可线。</p>
+            <p><strong>FLUX</strong>：适合要托管与自托管双路线、或要把模型放进端侧流水线的人。<strong>什么情况下选另一个</strong>：主要做海报文字排版，Ideogram 更对口。</p>
+            <p><strong>Ideogram</strong>：适合图内文字、商品图与 precise edit。<strong>什么情况下选另一个</strong>：只要风格探索与社区灵感，Midjourney 更成熟。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>视频三选一</span><span data-en>Video: three paths</span></h2>
+        <div class="tbl-wrap"><table><thead><tr><th>维度</th><th>Kling 4.0</th><th>Veo</th><th>Runway</th></tr></thead><tbody><tr><td>交付</td><td>官方站，国产直连</td><td>Gemini API / Vertex AI / Google AI 计划</td><td>官方平台 + API / MCP / 剪辑插件</td></tr><tr><td>单次时长</td><td>原生 30 秒</td><td>以官方模型页为准</td><td>以官方模型页为准</td></tr><tr><td>参考素材</td><td>全能参考 15 项</td><td>以官方模型页为准</td><td>第三方模型聚合</td></tr><tr><td>溯源/条款</td><td>所有权归用户，商用过会员线</td><td>输出带 SynthID；免费配额训练、付费不训练</td><td>训练许可不可撤销、无退出开关</td></tr><tr><td>大陆可达</td><td>可用（已备案）</td><td>需自备网络路径</td><td>需自备网络路径</td></tr></tbody></table></div>
+            <p><strong>Kling</strong>：适合国产、要长单段与多参考素材的团队。<strong>什么情况下选另一个</strong>：要 SynthID 溯源与 Google 生态，选 Veo。</p>
+            <p><strong>Veo</strong>：适合要 API 交付、溯源标记与 Google 云集成的团队。<strong>什么情况下选另一个</strong>：主要在国内交付、要直连，选 Kling。</p>
+            <p><strong>Runway</strong>：适合要平台化工作流、MCP / 插件与团队管控的人。<strong>什么情况下选另一个</strong>：只生成单条短片、不要平台绑定，选 Kling 或 Veo。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>核验事实</span><span data-en>Dated facts</span></h2>
+        <p>1. Kling 4.0 单次原生 30 秒、全能参考支持 15 项素材（官方站，2026-10 档案核验）。 2. Veo 输出带 SynthID 溯源；免费配额数据用于训练、付费不训练（官方条款，2026-10 档案核验）。 3. Ideogram 4.0 开放量化权重，非商用免费、商用自托管需许可；4.5 为闭源托管（官方站，2026-10 档案核验）。 4. FLUX 条款允许商用，但禁止用输出训练其他模型（官方条款，2026-10 档案核验）。 5. Runway 的训练许可不可撤销、无退出开关（官方条款，2026-10 档案核验）。</p>
+            <p>以上日期为本站档案核验快照日；产品版本与配额以官方页面当日为准。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>一条内容链的顺序</span><span data-en>Pipeline order</span></h2>
+        <p>1. <strong>定用途与权利</strong>：商用 / 非商用、是否可公开、是否需要溯源。 2. <strong>定输入模态</strong>：纯文字、参考图、首尾帧、还是多素材参考。 3. <strong>定工具位</strong>：图像定主视觉，视频定分镜；不要把图像模型硬拉去做 30 秒叙事。 4. <strong>定交付</strong>：平台内下载、API、还是自托管流水线。 5. <strong>留证据</strong>：保存生成参数、模型版本、许可页面截图与日期。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>常见误判</span><span data-en>Common misreads</span></h2>
+        <ul><li>把「付费」当成「商用许可」：订阅只解决使用门槛，商用还要看条款分层。</li><li>把「开放权重」当成「随便商用」：Ideogram 4.0 的非商用免费与商用许可是两档。</li><li>把「带水印」当成「不能用」：SynthID 是溯源标记，不等于版权归属。</li><li>把「平台聚合」当成「自研模型」：Runway 同时聚合第三方模型，条款按模型分线。</li></ul>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
+        <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
+          <tr><td>Midjourney · 官方文档（订阅、默认公开与 Remix；2026-10 快照）</td><td><a href="https://docs.midjourney.com" target="_blank" rel="noopener">https://docs.midjourney.com</a></td></tr>
+          <tr><td>Black Forest Labs · FLUX 官方站（托管与开源自托管；2026-10 快照）</td><td><a href="https://bfl.ai/" target="_blank" rel="noopener">https://bfl.ai/</a></td></tr>
+          <tr><td>Ideogram · 官方站（4.0 权重许可分层、4.5 precise edit；2026-10 快照）</td><td><a href="https://ideogram.ai" target="_blank" rel="noopener">https://ideogram.ai</a></td></tr>
+          <tr><td>可灵 Kling AI · 官方站（Kling 4.0 原生 30 秒、15 项参考；2026-10 快照）</td><td><a href="https://klingai.com/global/" target="_blank" rel="noopener">https://klingai.com/global/</a></td></tr>
+          <tr><td>Google DeepMind · Veo 官方页（Gemini API / Vertex 交付、SynthID；2026-10 快照）</td><td><a href="https://deepmind.google/technologies/veo/" target="_blank" rel="noopener">https://deepmind.google/technologies/veo/</a></td></tr>
+          <tr><td>Runway · 官方站与文档（Gen 系模型与第三方聚合；2026-10 快照）</td><td><a href="https://runwayml.com/" target="_blank" rel="noopener">https://runwayml.com/</a></td></tr>
+        </tbody></table></div>
+        <p class="guide-foot"><span data-zh>核验快照：2026-11-03 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-11-03 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

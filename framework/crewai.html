@@ -420,8 +420,16 @@
       <div class="panel is-slim">
         <h2><span data-zh>状态：Flow 的 state management 是显式且结构化的</span><span data-en>State: Flow&#39;s state management is explicit and structured</span></h2>
         <span data-zh><p>README 示例代码（<code>Using Crews and Flows Together</code> 段）把状态做成了 Pydantic 模型：</p>
-            <p>```python class MarketState(BaseModel): ...</p>
-            <p>class AdvancedAnalysisFlow(Flow[MarketState]): def run(self): self.state.sentiment = &quot;analyzing&quot; if self.state.confidence &gt; 0.8: ... elif self.state.confidence &gt; 0.5: ... ```</p>
+            <pre class="code"><code>class MarketState(BaseModel):
+    ...
+
+class AdvancedAnalysisFlow(Flow[MarketState]):
+    def run(self):
+        self.state.sentiment = &quot;analyzing&quot;
+        if self.state.confidence &gt; 0.8:
+            ...
+        elif self.state.confidence &gt; 0.5:
+            ...</code></pre>
             <p><strong>这就是本站要找的「状态」</strong> —— 显式、结构化、可按数值阈值分支。</p>
             <p><strong>落盘与跨进程恢复本轮已核到</strong>（官方 <code>concepts/checkpointing</code>、<code>concepts/flows</code> 页）。 README 把 checkpointing 写成<strong>按需添加</strong>。两处原话都加了限定语：</p>
             <ul><li>&quot;Add tools, memory, <strong>checkpointing</strong>, and async execution <strong>as your system grows</strong>&quot;</li><li>&quot;Add deterministic steps, human input, structured outputs, and <strong>checkpointing as your system grows</strong>&quot;</li></ul>
@@ -430,8 +438,16 @@
             <ul><li><strong>CLI</strong>：<code>crewai checkpoint</code> 提供 resume / fork 的 TUI。</li></ul>
             <p><strong>这与 <a href="./langgraph.html">LangGraph</a> 形成本站编排家族里最值得看的一组对照</strong>：</p>
             <div class="tbl-wrap"><table><thead><tr><th></th><th>LangGraph</th><th>CrewAI</th></tr></thead><tbody><tr><td>状态落盘</td><td>✅ <strong>每 superstep 落盘</strong>（官方明文：save graph state at every superstep）</td><td>✅ 每 task 完成落盘（事件驱动，默认 <code>task_completed</code>）</td></tr><tr><td>落盘粒度</td><td>superstep（图的一个步进）</td><td>task（或自定义事件，如 <code>method_execution_finished</code>）</td></tr><tr><td>持久化后端</td><td>有独立子包（SQLite / Postgres）</td><td><code>JsonProvider</code> / <code>SqliteProvider</code>，Flow 用 <code>SQLiteFlowPersistence</code></td></tr><tr><td>跨进程恢复</td><td>官方承诺 &quot;resuming from exactly where they left off&quot;</td><td>从 checkpoint 恢复 / fork，CLI 可 resume</td></tr></tbody></table></div></span><span data-en><p>The README example code (the <code>Using Crews and Flows Together</code> section) makes state a Pydantic model:</p>
-            <p>```python class MarketState(BaseModel): ...</p>
-            <p>class AdvancedAnalysisFlow(Flow[MarketState]): def run(self): self.state.sentiment = &quot;analyzing&quot; if self.state.confidence &gt; 0.8: ... elif self.state.confidence &gt; 0.5: ... ```</p>
+            <pre class="code"><code>class MarketState(BaseModel):
+    ...
+
+class AdvancedAnalysisFlow(Flow[MarketState]):
+    def run(self):
+        self.state.sentiment = &quot;analyzing&quot;
+        if self.state.confidence &gt; 0.8:
+            ...
+        elif self.state.confidence &gt; 0.5:
+            ...</code></pre>
             <p><strong>This is the &quot;state&quot; this site looks for</strong> — explicit, structured, branchable on numeric thresholds.</p>
             <p><strong>Persistence and cross-process recovery verified this round</strong> (official <code>concepts/checkpointing</code>, <code>concepts/flows</code> pages). The README writes checkpointing as <strong>add-on as needed</strong>. Both quotes carry the qualifier:</p>
             <ul><li>&quot;Add tools, memory, <strong>checkpointing</strong>, and async execution <strong>as your system grows</strong>&quot;</li><li>&quot;Add deterministic steps, human input, structured outputs, and <strong>checkpointing as your system grows</strong>&quot;</li></ul>

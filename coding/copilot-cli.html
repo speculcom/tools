@@ -357,12 +357,12 @@
       <div class="panel is-slim">
         <h2><span data-zh>程序化与安装</span><span data-en>Programmatic use and installation</span></h2>
         <span data-zh><p>安装以 npm 包为主。官方前置条件是 <code>Node.js 22 or later</code>：</p>
-            <p>``<code> npm install -g @github/copilot </code>``</p>
+            <pre class="code"><code>npm install -g @github/copilot</code></pre>
             <p>另有 WinGet（<code>winget install GitHub.Copilot</code>）、Homebrew（<code>brew install --cask copilot-cli</code>）与安装脚本。</p>
             <p>认证除 <code>/login</code> 外，支持<strong>细粒度 PAT + 「Copilot Requests」权限</strong>，放进 <code>GH_TOKEN</code> 或 <code>GITHUB_TOKEN</code>。</p>
             <p><strong>官方示例</strong>：<code>copilot -p &quot;Show me this week&#39;s commits and summarize them&quot; --allow-tool=&#39;shell(git)&#39;</code></p>
             <p>加 <code>-s</code> 只输出回答、省去用量信息。</p></span><span data-en><p>Installation is primarily via the npm package. The official prerequisite is <code>Node.js 22 or later</code>:</p>
-            <p>``<code> npm install -g @github/copilot </code>``</p>
+            <pre class="code"><code>npm install -g @github/copilot</code></pre>
             <p>There are also WinGet (<code>winget install GitHub.Copilot</code>), Homebrew (<code>brew install --cask copilot-cli</code>) and an install script.</p>
             <p>Besides <code>/login</code>, authentication supports a <strong>fine-grained PAT with the &quot;Copilot Requests&quot; permission</strong>, placed in <code>GH_TOKEN</code> or <code>GITHUB_TOKEN</code>.</p>
             <p><strong>Official example</strong>: <code>copilot -p &quot;Show me this week&#39;s commits and summarize them&quot; --allow-tool=&#39;shell(git)&#39;</code></p>
@@ -371,7 +371,9 @@
       <div class="panel is-slim">
         <h2><span data-zh>权限与审批（本条目最值得记的一维）</span><span data-en>Permissions and approvals (the axis most worth remembering)</span></h2>
         <span data-zh><p>三选项审批（官方原文）：</p>
-            <p>``<code> 1. Yes 2. Yes, and approve TOOL for the rest of the running session 3. No, and tell Copilot what to do differently (Esc) </code>``</p>
+            <pre class="code"><code>1. Yes
+2. Yes, and approve TOOL for the rest of the running session
+3. No, and tell Copilot what to do differently (Esc)</code></pre>
             <p><strong>选项 2 的含义比字面更大</strong>。官方举例：批准 <code>rm ./this-file.txt</code> 后，本会话可跑任意 <code>rm</code>（如 <code>rm -rf ./*</code>）。这是「按工具类别放行」，不是逐条命令放行。</p>
             <p>无人值守用三个开关，且 <strong>deny 优先</strong>：</p>
             <div class="tbl-wrap"><table><thead><tr><th>开关</th><th>作用</th></tr></thead><tbody><tr><td><code>--allow-all-tools</code></td><td>任何工具都不问</td></tr><tr><td><code>--allow-tool</code></td><td>放行指定工具</td></tr><tr><td><code>--deny-tool</code></td><td><strong>禁止指定工具，优先级最高</strong></td></tr></tbody></table></div>
@@ -381,7 +383,9 @@
             <p>官方建议在 VM / 容器 / 无网环境里使用，以限制影响面。</p>
             <p><strong>信任目录不是强沙箱</strong>。官方明写其边界</p>
             <blockquote>「is heuristic and GitHub does not guarantee that all files outside trusted directories will be protected」</blockquote></span><span data-en><p>The three-option approval prompt (official wording):</p>
-            <p>``<code> 1. Yes 2. Yes, and approve TOOL for the rest of the running session 3. No, and tell Copilot what to do differently (Esc) </code>``</p>
+            <pre class="code"><code>1. Yes
+2. Yes, and approve TOOL for the rest of the running session
+3. No, and tell Copilot what to do differently (Esc)</code></pre>
             <p><strong>Option 2 means more than it reads.</strong> Official example: after approving <code>rm ./this-file.txt</code>, any <code>rm</code> (e.g. <code>rm -rf ./*</code>) can run in the session. This is &quot;allow by tool class&quot;, not per-command approval.</p>
             <p>Unattended mode uses three switches, and <strong>deny wins</strong>:</p>
             <div class="tbl-wrap"><table><thead><tr><th>Switch</th><th>Effect</th></tr></thead><tbody><tr><td><code>--allow-all-tools</code></td><td>never ask for any tool</td></tr><tr><td><code>--allow-tool</code></td><td>allow specified tools</td></tr><tr><td><code>--deny-tool</code></td><td><strong>forbid specified tools, highest priority</strong></td></tr></tbody></table></div>

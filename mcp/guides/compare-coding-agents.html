@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Coding agents: terminal vs IDE vs cloud — 深水指南 | 投机取巧</title>
+  <meta name="description" content="写代码：终端 / IDE / 云端 Agent 怎么选：先定执行面（终端 / IDE / 云端），再比权限模型、后台续跑与仓库上下文；给每个候选写明适用条件与一句「什么情况下选另一个」。" />
+  <link rel="canonical" href="https://tools.specul.com/mcp/guides/compare-coding-agents.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Coding agents: terminal vs IDE vs cloud" />
+  <meta property="og:url" content="https://tools.specul.com/mcp/guides/compare-coding-agents.html" />
+  <meta property="og:title" content="Coding agents: terminal vs IDE vs cloud — 深水指南 | 投机取巧" />
+  <meta property="og:description" content="写代码：终端 / IDE / 云端 Agent 怎么选：先定执行面（终端 / IDE / 云端），再比权限模型、后台续跑与仓库上下文；给每个候选写明适用条件与一句「什么情况下选另一个」。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Coding agents: terminal vs IDE vs cloud","description":"Fix the execution surface first (terminal, IDE, cloud), then compare permission models, background continuation and repo context; each candidate gets its conditions and one line on when to pick another.","dateModified":"2026-11-03"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
+      <div class="detail-head">
+        <div>
+          <h1><span data-zh>写代码：终端 / IDE / 云端 Agent 怎么选</span><span data-en>Coding agents: terminal vs IDE vs cloud</span></h1>
+          <div class="vendor is-caps"><span data-zh>规划</span><span data-en>Planning</span></div>
+        </div>
+      </div>
+      <div class="panel-lead"><span data-zh><p>先定执行面（终端 / IDE / 云端），再比权限模型、后台续跑与仓库上下文；给每个候选写明适用条件与一句「什么情况下选另一个」。</p></span><span data-en><p>Fix the execution surface first (terminal, IDE, cloud), then compare permission models, background continuation and repo context; each candidate gets its conditions and one line on when to pick another.</p></span></div>
+      <p class="t-xs" data-en>English summaries and interface labels are available. The guide body below is currently in Chinese.</p>
+      <div class="panel is-slim">
+        <h2><span data-zh>先定执行面，再挑产品</span><span data-en>Pick the surface first</span></h2>
+        <p>写代码的 Agent 先分三类执行面，价格和模型都不是第一决策点：</p>
+            <div class="tbl-wrap"><table><thead><tr><th>执行面</th><th>代表</th><th>运行位置</th><th>适合的活</th></tr></thead><tbody><tr><td>终端</td><td>Claude Code CLI、Codex CLI、Gemini CLI</td><td>你的 shell 与仓库</td><td>已有仓库、要脚本化、要看清每条命令</td></tr><tr><td>IDE</td><td>Cursor、GitHub Copilot、Antigravity</td><td>编辑器进程或厂商云</td><td>边写边看、要补全与内联 diff</td></tr><tr><td>云端</td><td>Devin、Cursor 云端 Agent</td><td>厂商工作区</td><td>工单批量委派、合上笔记本还要继续跑</td></tr></tbody></table></div>
+            <p><strong>先问一句：改动是在你机器上跑，还是交给厂商云跑？</strong> 这一步会直接排除一半候选。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>六项对照</span><span data-en>Six dimensions</span></h2>
+        <div class="tbl-wrap"><table><thead><tr><th>维度</th><th>Claude Code CLI</th><th>Codex CLI</th><th>Gemini CLI</th><th>Cursor</th><th>Devin</th><th>Antigravity</th></tr></thead><tbody><tr><td>执行面</td><td>终端</td><td>终端</td><td>终端</td><td>IDE + 云端</td><td>云端工作区</td><td>桌面 / CLI / IDE / SDK</td></tr><tr><td>权限控制</td><td>权限粒度可配置（官方文档与 CHANGELOG 记录）</td><td>命令执行需确认，app server 架构</td><td>非交互脚本模式，适合 CI</td><td>编辑器内确认 + 云端</td><td>云端沙箱，工单派单</td><td>官方三档命令执行策略</td></tr><tr><td>后台续跑</td><td>本地进程</td><td>线程续接</td><td>脚本模式</td><td>合上笔记本仍继续（官方 2026 架构更新）</td><td>原生异步</td><td>harness 常驻</td></tr><tr><td>模型选择</td><td>Anthropic 模型线</td><td>OpenAI 模型线</td><td>Gemini 模型线</td><td>多模型可切</td><td>厂商托管</td><td>Gemini 线</td></tr><tr><td>许可/源代码</td><td>源码可见，All rights reserved</td><td>仓库可见</td><td>Apache-2.0</td><td>闭源</td><td>闭源</td><td>闭源</td></tr><tr><td>价格档位</td><td>订阅或 API，档位见官方定价页</td><td>ChatGPT 档位或 API key</td><td>免费配额 + 付费 API</td><td>Hobby / Pro / Teams / Enterprise</td><td>团队报价</td><td>随 Google AI 计划</td></tr></tbody></table></div>
+            <p>价格不写数字（本站纪律 D9）；档位名与配额以各官方定价页为准。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>每个候选的适用条件</span><span data-en>When each fits</span></h2>
+        <p><strong>Claude Code CLI</strong>：适合已有仓库、想把每一步命令摊在终端里看的人；权限粒度是它最细的一面。能力边界是模型线固定在 Anthropic，要多模型得另配。<strong>什么情况下选另一个</strong>：要 IDE 内联补全就选 Cursor 或 Copilot；要完全开源可改的 CLI 就选 Gemini CLI。</p>
+            <p><strong>Codex CLI</strong>：适合 OpenAI 生态、要线程续接与脚本化的人；Rust 实现、app server 是它的架构特征。<strong>什么情况下选另一个</strong>：团队已经押注 Anthropic，就选 Claude Code CLI。</p>
+            <p><strong>Gemini CLI</strong>：Apache-2.0、npx 免安装、支持 MCP 与非交互脚本，适合 CI 与教学。<strong>什么情况下选另一个</strong>：要最强的权限控制与变更记录，就选 Claude Code CLI。</p>
+            <p><strong>Cursor</strong>：适合要 IDE 体验、又要云端 Agent 续跑的人；2026-09-02 官方加入自托管，代码不出网是它的差异点。<strong>什么情况下选另一个</strong>：只要终端、不想装编辑器，就选三家 CLI 之一。</p>
+            <p><strong>Devin</strong>：适合把工单批量丢给云端、拿草稿 PR 再接管的人；Slack / Linear / Jira 可直接派单。<strong>什么情况下选另一个</strong>：改动必须在你本机、不能出网，就选终端或 IDE。</p>
+            <p><strong>Antigravity</strong>：适合要在桌面指挥中心、CLI、IDE 扩展与 Python SDK 之间共用一套 harness 的团队；官方给了三档命令执行策略。<strong>什么情况下选另一个</strong>：只想要一个成熟 IDE，Cursor 更直接。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>核验事实</span><span data-en>Dated facts</span></h2>
+        <p>1. Gemini CLI 采用 Apache-2.0，支持 <code>npx</code> 启动与 MCP（仓库 README，2026-10 快照）。 2. Cursor 官方在 2026-09-02 发布自托管能力；云端 Agent 可在地器关闭后继续运行（官方文档）。 3. Antigravity 的命令执行策略为官方显式三档（2026-10-13 release notes 核验）。 4. Claude Code CLI 有独立 CHANGELOG 与 Atom feed；源码可见但许可证为 All rights reserved（仓库页）。 5. Codex CLI 为 Rust 实现，架构以 app server 与线程续接为核心（仓库与 releases）。</p>
+            <p>以上日期均为本站档案的核验快照日，不是厂商发布日；发布日以各仓库 releases 为准。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>常见误判</span><span data-en>Common misreads</span></h2>
+        <ul><li>把「能跑终端」当成「能安全跑终端」：权限模型不同，默认确认与白名单是两回事。</li><li>把「云端续跑」当成「不用看」：草稿 PR 仍要人审，云端只省等待时间。</li><li>把「开源 CLI」当成「模型也开源」：CLI 的许可证与模型权重许可是两份文件。</li><li>把「支持 MCP」当成「工具即插即用」：server 的权限与数据范围仍要逐条看。</li></ul>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
+        <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
+          <tr><td>Anthropic · Claude Code 仓库与 CHANGELOG（源码可见、All rights reserved；2026-10 快照）</td><td><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">https://github.com/anthropics/claude-code</a></td></tr>
+          <tr><td>OpenAI · Codex CLI 仓库与 releases（Rust 实现、app server；2026-10 快照）</td><td><a href="https://github.com/openai/codex" target="_blank" rel="noopener">https://github.com/openai/codex</a></td></tr>
+          <tr><td>Google · Gemini CLI 仓库（Apache-2.0、npx 启动、MCP；2026-10 快照）</td><td><a href="https://github.com/google-gemini/gemini-cli" target="_blank" rel="noopener">https://github.com/google-gemini/gemini-cli</a></td></tr>
+          <tr><td>Cursor · 官方文档（云端 Agent、自托管 2026-09-02）</td><td><a href="https://cursor.com/docs" target="_blank" rel="noopener">https://cursor.com/docs</a></td></tr>
+          <tr><td>Devin · 官方文档（云端工作区、工单到草稿 PR）</td><td><a href="https://docs.devin.ai" target="_blank" rel="noopener">https://docs.devin.ai</a></td></tr>
+          <tr><td>Google Antigravity · 官方站（桌面/CLI/IDE/SDK 四面共用 harness，2026-10-13 核验）</td><td><a href="https://antigravity.google" target="_blank" rel="noopener">https://antigravity.google</a></td></tr>
+        </tbody></table></div>
+        <p class="guide-foot"><span data-zh>核验快照：2026-11-03 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-11-03 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

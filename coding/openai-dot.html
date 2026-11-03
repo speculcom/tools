@@ -322,10 +322,17 @@
       <div class="panel is-slim">
         <h2><span data-zh>后台自主 ≠ 后台可改（这一条最容易被误读）</span><span data-en>Background autonomy ≠ background write access (the easiest point to misread)</span></h2>
         <span data-zh><p>官方有整节讲后台行为，值得原样引用：</p>
-            <p>``<code> 即使你没有直接与 Dot 互动，它也会在后台寻找能帮上忙的地方。 我们将其称之&quot;主动研究&quot;。在此过程中，它会通过仅具备只读权限的工具 访问你已连接的应用。这意味着这些工具无法发送消息、更改应用内容， 也无法控制你的浏览器或计算机。 </code>``</p>
+            <pre class="code"><code>即使你没有直接与 Dot 互动，它也会在后台寻找能帮上忙的地方。
+我们将其称之&quot;主动研究&quot;。在此过程中，它会通过仅具备只读权限的工具
+访问你已连接的应用。这意味着这些工具无法发送消息、更改应用内容，
+也无法控制你的浏览器或计算机。</code></pre>
             <p><strong>限定条件写得很清楚</strong>：后台自主动作拿到的是<strong>只读</strong>工具。</p>
             <p><strong>换句话说</strong>：「它在我不在时自己干活」成立；「它在我不在时替我发消息、改内容」不成立。 本站此前若把它理解成后者，那是把官方那一行限定读漏了。</p></span><span data-en><p>The official pages devote a whole section to background behavior, worth quoting in full (the source quotes it as a Chinese translation of the official English; rendered back with the (translated) marker):</p>
-            <p>``<code> Even when you are not directly interacting with a Dot, it looks in the background for ways to help. We call this &quot;proactive research&quot;. In doing so, it accesses your connected apps through tools with read-only permissions. That means these tools cannot send messages, change app content, or control your browser or computer. (translated) </code>``</p>
+            <pre class="code"><code>Even when you are not directly interacting with a Dot, it looks in the background
+for ways to help. We call this &quot;proactive research&quot;. In doing so, it accesses your
+connected apps through tools with read-only permissions. That means these tools
+cannot send messages, change app content, or control your browser or computer.
+(translated)</code></pre>
             <p><strong>The qualifier is stated clearly</strong>: background autonomous actions get <strong>read-only</strong> tools.</p>
             <p><strong>Put differently</strong>: &quot;it works on its own while I am away&quot; holds; &quot;it sends messages or changes content on my behalf while I am away&quot; does not. If this site previously understood it as the latter, that was reading past the official one-line qualifier.</p></span>
       </div>
@@ -334,26 +341,28 @@
         <span data-zh><p>官方把权限拆成明确的三块，这对做选型很有用（可逐层对照，不用猜）：</p>
             <div class="tbl-wrap"><table><thead><tr><th>层</th><th>官方原文要点</th><th>你能收紧到多紧</th></tr></thead><tbody><tr><td>自定义规则</td><td>「你可以允许特定操作、要求先获批准，或禁止这些操作」</td><td>完全由你定</td></tr><tr><td>内置安全要求</td><td>「内置安全要求始终有效」</td><td><strong>底线，你的规则只能在这之上收紧</strong></td></tr><tr><td>自动审核</td><td>「通过自动审核，检查其是否符合你的指令、自定义规则和安全要求」</td><td>判定依据含上述三者</td></tr></tbody></table></div>
             <p>以及一条硬边界：</p>
-            <p>``<code> 更改密码等特定敏感任务始终需要由你亲自完成。 </code>``</p>
+            <pre class="code"><code>更改密码等特定敏感任务始终需要由你亲自完成。</code></pre>
             <p><strong>「自定义规则只能在官方底线之上收紧，不能放松」是这一层里最有价值的信息</strong> —— 意味着配规则时不必担心自己配松了，官方有兜底。</p></span><span data-en><p>The official pages split permissions into three explicit blocks, which is useful for selection (compare layer by layer, no guessing):</p>
             <div class="tbl-wrap"><table><thead><tr><th>Layer</th><th>Key official wording (translated)</th><th>How tight can you set it</th></tr></thead><tbody><tr><td>Custom rules</td><td>&quot;you can allow specific actions, require approval first, or block them&quot;</td><td>entirely yours</td></tr><tr><td>Built-in safety requirements</td><td>&quot;built-in safety requirements always apply&quot;</td><td><strong>the floor; your rules can only tighten above it</strong></td></tr><tr><td>Automated review</td><td>&quot;automated review checks whether it matches your instructions, custom rules and safety requirements&quot;</td><td>criteria include all three above</td></tr></tbody></table></div>
             <p>Plus one hard boundary:</p>
-            <p>``<code> Certain sensitive tasks like changing passwords always require you personally. (translated) </code>``</p>
+            <pre class="code"><code>Certain sensitive tasks like changing passwords always require you personally. (translated)</code></pre>
             <p><strong>&quot;Custom rules can only tighten above the official floor, never loosen it&quot; is the most valuable information in this layer</strong> — it means when configuring rules you need not worry about setting them too loose; the vendor has a backstop.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>凭据：不向模型暴露密码</span><span data-en>Credentials: passwords never exposed to the model</span></h2>
-        <span data-zh><p>``<code> 登录受支持的网站时，Dot 可以使用已保存的密码， 而无需向模型透露这些密码。 </code>``</p>
-            <p>这与 Meta Muse 的 Secure Credentials Store 是同一类设计： <strong>凭据交给「保管处」，模型只拿到「用凭据做完这件事的权限」</strong>。 两边都独立地采用了这个模式，值得单独记一笔—— 厂商对agent 凭据的共识正在收敛。</p></span><span data-en><p>``<code> When logging into supported sites, Dot can use saved passwords without revealing them to the model. (translated) </code>``</p>
+        <span data-zh><pre class="code"><code>登录受支持的网站时，Dot 可以使用已保存的密码，
+而无需向模型透露这些密码。</code></pre>
+            <p>这与 Meta Muse 的 Secure Credentials Store 是同一类设计： <strong>凭据交给「保管处」，模型只拿到「用凭据做完这件事的权限」</strong>。 两边都独立地采用了这个模式，值得单独记一笔—— 厂商对agent 凭据的共识正在收敛。</p></span><span data-en><pre class="code"><code>When logging into supported sites, Dot can use saved passwords
+without revealing them to the model. (translated)</code></pre>
             <p>This is the same design family as Meta Muse&#39;s Secure Credentials Store: <strong>credentials go to a &quot;vault&quot;; the model only gets &quot;permission to finish this task with the credentials&quot;</strong>. Both vendors independently adopted this pattern, worth noting — vendor consensus on agent credentials is converging.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>计费：一句话，但有个坑</span><span data-en>Billing: one sentence, but with a trap</span></h2>
-        <span data-zh><p>``<code> Pro 或 Business Premium 套餐已包含你的首个 Dot，无需额外付费。 </code>``</p>
+        <span data-zh><pre class="code"><code>Pro 或 Business Premium 套餐已包含你的首个 Dot，无需额外付费。</code></pre>
             <p><strong>但</strong>同一页有两条容易漏的限定：</p>
             <div class="tbl-wrap"><table><thead><tr><th>场景</th><th>是否计入 ChatGPT 使用额度</th></tr></thead><tbody><tr><td>与 Dot 自己的对话</td><td><strong>不计入</strong>（官方原文：「与 Dot 的对话不会占用你的 ChatGPT 使用额度」）</td></tr><tr><td>Dot 在 Codex / ChatGPT 工作中启动或管理的任务</td><td><strong>照常计入</strong></td></tr></tbody></table></div>
             <p>即：<strong>Dot 自己跟你聊天免费，但它替你派出去的活儿照常算钱。</strong></p>
-            <p>另外 Enterprise（含 Edu / Healthcare）默认关闭，需工作空间管理员启用 beta。</p></span><span data-en><p>``<code> Your first Dot is included with Pro or Business Premium plans, at no extra cost. (translated) </code>``</p>
+            <p>另外 Enterprise（含 Edu / Healthcare）默认关闭，需工作空间管理员启用 beta。</p></span><span data-en><pre class="code"><code>Your first Dot is included with Pro or Business Premium plans, at no extra cost. (translated)</code></pre>
             <p><strong>But</strong> the same page has two easy-to-miss qualifiers:</p>
             <div class="tbl-wrap"><table><thead><tr><th>Scenario</th><th>Counted against ChatGPT usage quota?</th></tr></thead><tbody><tr><td>Chats with the Dot itself</td><td><strong>not counted</strong> (official wording translated: &quot;conversations with Dot do not use your ChatGPT usage limits&quot;)</td></tr><tr><td>Tasks a Dot starts or manages inside Codex / ChatGPT work</td><td><strong>counted as usual</strong></td></tr></tbody></table></div>
             <p>i.e.: <strong>chatting with your Dot is free, but the work it dispatches on your behalf is billed as usual.</strong></p>

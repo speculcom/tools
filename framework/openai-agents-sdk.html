@@ -376,13 +376,23 @@
         <span data-zh><p>普通 <code>Agent</code> 不带本地工作区。官方为此单独提供 <strong><code>SandboxAgent</code></strong>：</p>
             <blockquote>Use a <code>SandboxAgent</code> when the agent needs to inspect files, run commands, apply patches, or <strong>preserve workspace state across longer tasks</strong>.</blockquote>
             <p>它的 <code>default_manifest</code> 可以声明要检出的仓库：</p>
-            <p>``<code>python agent = SandboxAgent( name=&quot;Workspace Assistant&quot;, default_manifest=Manifest( entries={&quot;repo&quot;: GitRepo(repo=&quot;openai/openai-agents-python&quot;, ref=&quot;main&quot;)} ), ) </code>``</p>
+            <pre class="code"><code>agent = SandboxAgent(
+    name=&quot;Workspace Assistant&quot;,
+    default_manifest=Manifest(
+        entries={&quot;repo&quot;: GitRepo(repo=&quot;openai/openai-agents-python&quot;, ref=&quot;main&quot;)}
+    ),
+)</code></pre>
             <p>⚠ <strong>平台差异是选型时必须知道的</strong>：</p>
             <div class="tbl-wrap"><table><thead><tr><th>客户端</th><th>支持平台</th><th>说明</th></tr></thead><tbody><tr><td><code>UnixLocalSandboxClient</code></td><td>macOS / Linux</td><td>README 示例用的就是它</td></tr><tr><td><code>DockerSandboxClient</code></td><td>Windows 等</td><td>需 <code>openai-agents[docker]</code> extra</td></tr><tr><td>hosted sandbox client</td><td>依赖 OpenAI 侧服务</td><td>官方提到可用</td></tr></tbody></table></div>
             <p><strong>Windows 用户不能直接走本地 Unix 沙箱路径。</strong></p></span><span data-en><p>A plain <code>Agent</code> carries no local workspace. For this the official docs provide <strong><code>SandboxAgent</code></strong>:</p>
             <blockquote>Use a <code>SandboxAgent</code> when the agent needs to inspect files, run commands, apply patches, or <strong>preserve workspace state across longer tasks</strong>.</blockquote>
             <p>Its <code>default_manifest</code> can declare repositories to check out:</p>
-            <p>``<code>python agent = SandboxAgent( name=&quot;Workspace Assistant&quot;, default_manifest=Manifest( entries={&quot;repo&quot;: GitRepo(repo=&quot;openai/openai-agents-python&quot;, ref=&quot;main&quot;)} ), ) </code>``</p>
+            <pre class="code"><code>agent = SandboxAgent(
+    name=&quot;Workspace Assistant&quot;,
+    default_manifest=Manifest(
+        entries={&quot;repo&quot;: GitRepo(repo=&quot;openai/openai-agents-python&quot;, ref=&quot;main&quot;)}
+    ),
+)</code></pre>
             <p>⚠ <strong>Platform differences are selection-critical</strong>:</p>
             <div class="tbl-wrap"><table><thead><tr><th>Client</th><th>Supported platforms</th><th>Note</th></tr></thead><tbody><tr><td><code>UnixLocalSandboxClient</code></td><td>macOS / Linux</td><td>the README example uses it</td></tr><tr><td><code>DockerSandboxClient</code></td><td>Windows etc.</td><td>requires the <code>openai-agents[docker]</code> extra</td></tr><tr><td>hosted sandbox client</td><td>depends on OpenAI-side services</td><td>officially mentioned as available</td></tr></tbody></table></div>
             <p><strong>Windows users cannot take the local Unix sandbox path directly.</strong></p></span>

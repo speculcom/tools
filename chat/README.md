@@ -24,7 +24,7 @@
 | [Claude（对话应用）](./claude-chat.html) | 网页服务 | Anthropic | verified | 2026-10-30 |
 | [DeepSeek](./deepseek-chat.html) | 网页服务 | 深度求索 | partial | 2026-10-22 |
 | [豆包](./doubao-chat.html) | 网页服务 | 字节跳动 | partial | 2026-10-30 |
-| [Gemini（对话应用）](./gemini-chat.html) | 网页服务 | Google | partial | 2026-11-03 |
+| [Gemini（对话应用）](./gemini-chat.html) | 网页服务 | Google | partial | 2026-10-21 |
 | [Grok](./grok-chat.html) | 网页服务 | xAI | partial | 2026-10-30 |
 | [海螺AI](./hailuo-chat.html) | 网页服务 | MiniMax（稀宇科技） | partial | 2026-10-30 |
 | [HuggingChat](./huggingchat.html) | 网页服务 | Hugging Face | partial | 2026-10-30 |
@@ -32,7 +32,7 @@
 | [Le Chat](./le-chat.html) | 网页服务 | Mistral AI | partial | 2026-10-30 |
 | [Manus](./manus.html) | 网页服务 | Manus AI（Monica 团队） | partial | 2026-10-22 |
 | [Meta AI](./meta-ai.html) | 网页服务 | Meta | partial | 2026-10-30 |
-| [Microsoft Copilot](./microsoft-copilot.html) | 网页服务 | 微软 | partial | 2026-11-03 |
+| [Microsoft Copilot](./microsoft-copilot.html) | 网页服务 | 微软 | partial | 2026-10-22 |
 | [Poe](./poe.html) | 网页服务 | Quora | partial | 2026-10-30 |
 | [Reka Chat（Reka Playground / Edge Chat）](./reka-chat.html) | 网页服务 | Reka AI, Inc. | partial | 2026-10-31 |
 | [阶跃AI](./stepfun.html) | 网页服务 | 阶跃星辰 | partial | 2026-10-30 |

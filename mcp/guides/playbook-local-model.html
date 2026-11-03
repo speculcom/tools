@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Playbook: running a model on your own machine — 深水指南 | 投机取巧</title>
+  <meta name="description" content="任务：在自己的机器上跑一个模型：显存、量化档、runtime、评估、监控五步；含体积算式、量化索引、失败模式与验收单。" />
+  <link rel="canonical" href="https://tools.specul.com/mcp/guides/playbook-local-model.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Playbook: running a model on your own machine" />
+  <meta property="og:url" content="https://tools.specul.com/mcp/guides/playbook-local-model.html" />
+  <meta property="og:title" content="Playbook: running a model on your own machine — 深水指南 | 投机取巧" />
+  <meta property="og:description" content="任务：在自己的机器上跑一个模型：显存、量化档、runtime、评估、监控五步；含体积算式、量化索引、失败模式与验收单。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Playbook: running a model on your own machine","description":"Five steps — VRAM, quantization tier, runtime, evaluation, monitoring — with a size formula, the quantization index, failure modes and an acceptance list.","dateModified":"2026-11-03"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
+      <div class="detail-head">
+        <div>
+          <h1><span data-zh>任务：在自己的机器上跑一个模型</span><span data-en>Playbook: running a model on your own machine</span></h1>
+          <div class="vendor is-caps"><span data-zh>规划</span><span data-en>Planning</span></div>
+        </div>
+      </div>
+      <div class="panel-lead"><span data-zh><p>显存、量化档、runtime、评估、监控五步；含体积算式、量化索引、失败模式与验收单。</p></span><span data-en><p>Five steps — VRAM, quantization tier, runtime, evaluation, monitoring — with a size formula, the quantization index, failure modes and an acceptance list.</p></span></div>
+      <p class="t-xs" data-en>English summaries and interface labels are available. The guide body below is currently in Chinese.</p>
+      <div class="panel is-slim">
+        <h2><span data-zh>显存：先算再下</span><span data-en>VRAM: calculate before downloading</span></h2>
+        <pre class="code"><code>权重体积 GB ≈ 参数量(B) × bpw / 8
+KV 缓存 ≈ 2 × 层数 × 注意力头 × 头维度 × 上下文长度 × 字节数
+总显存 ≈ 权重 + KV 缓存 + 运行时开销(约 10–20%)</code></pre>
+            <ul><li>7B 模型 Q4 约 3.5–4 GB 权重；上下文越长，KV 缓存越吃显存。</li><li>先定上下文长度，再定量化档；只按参数量算会低估。</li><li>留出 10–20% 余量给运行时与碎片。</li></ul>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>量化档：按索引选</span><span data-en>Quantization: use the index</span></h2>
+        <p>本站 models 站快照（2026-10-30）：<strong>129 个量化仓、1,262 个量化档、1,337 个 GGUF 文件</strong>。</p>
+            <p>1. 按显存选档位：Q4 附近通常是平衡点。 2. 按量化者选仓：同模型不同人做的档，质量差别很大。 3. 按文件核对：同档多文件时看 bpw 与体积。 4. 不确定就下两个档，实测后再删。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>Runtime：按硬件选</span><span data-en>Runtime: match the hardware</span></h2>
+        <div class="tbl-wrap"><table><thead><tr><th>硬件</th><th>首选</th><th>备选</th></tr></thead><tbody><tr><td>Apple 硅</td><td>LM Studio（MLX）或 mlx-lm</td><td>llama.cpp</td></tr><tr><td>单张 NVIDIA</td><td>LM Studio 或 llama.cpp</td><td>ExLlamaV3（EXL3）</td></tr><tr><td>多卡 / 并发</td><td>vLLM</td><td>TensorRT-LLM</td></tr><tr><td>CPU / 边缘</td><td>llama.cpp</td><td>OpenVINO</td></tr></tbody></table></div>
+            <ul><li>桌面自用优先图形化；服务化优先 vLLM。</li><li>注意工具许可证与权重许可证是两份文件。</li></ul>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>评估：三类任务各 20 条</span><span data-en>Evaluate: 20 cases per task</span></h2>
+        <p>1. <strong>准备 60 条真实任务</strong>：问答、摘要、代码各 20 条，带标准答案。 2. <strong>跑三档</strong>：Q4、Q5、Q8（或模型提供的相邻档），记录质量与速度。 3. <strong>看四个指标</strong>：正确率、幻觉率、首 token 延迟、tokens/s。 4. <strong>选档结论</strong>：写清「为什么这个档够用」，不要只写「感觉不错」。</p>
+            <p><strong>失败模式</strong>：只测一个 prompt；真实任务一上就崩。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>监控：上线后看什么</span><span data-en>Monitor after launch</span></h2>
+        <ul><li>显存峰值、tokens/s、首 token 延迟、错误率。</li><li>日志不要存原文输入；存哈希与长度，避免隐私风险。</li><li>模型或量化档更新时，重跑评估集再切换。</li></ul>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>成本算式</span><span data-en>Cost formula</span></h2>
+        <pre class="code"><code>一次性：硬件 + 下载流量 + 调试时间
+持续：电费 + 维护 + 评估复跑
+对比云端：月调用量 × 云端单价</code></pre>
+            <p>不写具体电价与单价；按本地电价与官方定价页计算。调用量小的时候，云端通常更省。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>验收单</span><span data-en>Acceptance checklist</span></h2>
+        <ul><li>[ ] 显存算式写清，含 KV 缓存与 10–20% 余量</li><li>[ ] 量化档与量化仓有版本记录</li><li>[ ] runtime 许可证与模型许可证分别核对</li><li>[ ] 60 条评估集跑完，四指标有记录</li><li>[ ] 选定档位写出理由</li><li>[ ] 监控指标与告警阈值就绪</li><li>[ ] 更新模型时的回滚方案就绪</li></ul>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>常见失败模式</span><span data-en>Failure modes</span></h2>
+        <ul><li><strong>只算权重</strong>：忘了 KV 缓存，长上下文直接 OOM。</li><li><strong>只看参数量</strong>：没看激活参数与 MoE 结构，速度判断错。</li><li><strong>许可混淆</strong>：工具 MIT，权重却是非商用。</li><li><strong>无评估集</strong>：换档后质量下降没人发现。</li><li><strong>无监控</strong>：上线后显存峰值把机器拖死。</li></ul>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
+        <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
+          <tr><td>models.specul.com · 量化索引（129 量化仓 / 1,262 量化档 / 1,337 GGUF，2026-10-30 快照）</td><td><a href="https://models.specul.com/" target="_blank" rel="noopener">https://models.specul.com/</a></td></tr>
+          <tr><td>llama.cpp · 官方仓库（GGUF 与 llama-server；2026-10 快照）</td><td><a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">https://github.com/ggml-org/llama.cpp</a></td></tr>
+          <tr><td>vLLM · 官方文档（PagedAttention、OpenAI 兼容；2026-10 快照）</td><td><a href="https://docs.vllm.ai" target="_blank" rel="noopener">https://docs.vllm.ai</a></td></tr>
+          <tr><td>LM Studio · 官方站（MLX + llama.cpp 双运行时；2026-10 快照）</td><td><a href="https://lmstudio.ai" target="_blank" rel="noopener">https://lmstudio.ai</a></td></tr>
+          <tr><td>PyPI · exllamav3 1.4.8（2026-10-25）</td><td><a href="https://pypi.org/project/exllamav3/" target="_blank" rel="noopener">https://pypi.org/project/exllamav3/</a></td></tr>
+        </tbody></table></div>
+        <p class="guide-foot"><span data-zh>核验快照：2026-11-03 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-11-03 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>
