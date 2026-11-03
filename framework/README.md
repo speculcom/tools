@@ -10,7 +10,7 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 
 ## 这个大类提供什么
 
-- **27 个对象**，按固定 8 个维度记录
+- **30 个对象**，按固定 8 个维度记录
 - 每个维度都能回溯到官方一手源，附来源类型与核验日期
 - **不给总分排名**——缺少跨工具的统一实测，排名会误导
 - **「未知」是合法答案**——查不到就写未知并说明原因，不用推测填充
@@ -32,6 +32,7 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 | [Haystack](./haystack.html) | 框架 / SDK | deepset | partial | 2026-10-30 |
 | [Hermes Agent](./hermes-agent.html) | 框架 / SDK | Nous Research | partial | 2026-10-23 |
 | [LangChain](./langchain.html) | 框架 / SDK | LangChain, Inc. | partial | 2026-10-30 |
+| [LangChain4j](./langchain4j.html) | 框架 / SDK | LangChain4j 社区 | partial | 2026-11-03 |
 | [LangGraph](./langgraph.html) | 框架 / SDK | LangChain Inc | partial | 2026-10-23 |
 | [Letta / MemGPT](./letta.html) | 框架 / SDK | Letta, Inc. | partial | 2026-10-30 |
 | [LlamaIndex Framework](./llamaindex.html) | 框架 / SDK | LlamaIndex（run-llama） | partial | 2026-10-23 |
@@ -44,8 +45,10 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 | [Pydantic AI](./pydantic-ai.html) | 框架 / SDK | Pydantic | partial | 2026-10-23 |
 | [Semantic Kernel（SK）](./semantic-kernel.html) | 框架 / SDK | Microsoft | partial | 2026-10-31 |
 | [smolagents](./smolagents.html) | 框架 / SDK | Hugging Face | partial | 2026-10-23 |
+| [Spring AI](./spring-ai.html) | 框架 / SDK | Spring（VMware/Broadcom） | partial | 2026-11-03 |
 | [Strands Agents SDK](./strands-agents.html) | 框架 / SDK | AWS | partial | 2026-10-30 |
 | [SWE-agent](./swe-agent.html) | 框架 / SDK | Princeton / Stanford（学术团队） | partial | 2026-10-30 |
+| [Vercel AI SDK 7](./vercel-ai-sdk.html) | 框架 / SDK | Vercel | partial | 2026-11-03 |
 
 ## 可信度标记
 
@@ -55,7 +58,7 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 27 个对象中，**0 个为 verified**。
+当前 30 个对象中，**0 个为 verified**。
 
 ## 数据来源
 
@@ -74,10 +77,10 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 | [AI 视频创作](/video/) | 文生视频与数字人 | 14 |
 | [AI 音频与语音](/audio/) | 音乐生成、语音合成与转写 | 17 |
 | [AI 搜索与研究](/research/) | AI 搜索、学术检索与研究工作台 | 11 |
-| [AI 自动化与工作流](/automation/) | 可视化搭 AI 工作流与 agent | 22 |
-| [框架与运行时](/framework/) | 运行时、编排框架、SDK | 27 |
+| [AI 自动化与工作流](/automation/) | 可视化搭 AI 工作流与 agent | 23 |
+| [框架与运行时](/framework/) | 运行时、编排框架、SDK | 30 |
 | [MCP 工具](/mcp/) | 缺什么，装什么 —— 给 agent 装的 MCP 工具 | 32 |
-| [本地模型运行器](/runner/) | 在自己机器上跑开源模型 | 16 |
+| [本地模型运行器](/runner/) | 在自己机器上跑开源模型 | 21 |
 
 ---
 

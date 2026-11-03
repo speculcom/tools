@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>How to choose a chat assistant — 深水指南 | 投机取巧</title>
+  <meta name="description" content="聊天助手怎么选：不排名、不报价格：先定中文、数据、价格、生态四个约束，再按场景缩小到 2–3 个候选。" />
+  <link rel="canonical" href="https://tools.specul.com/mcp/guides/chat-selection.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="How to choose a chat assistant" />
+  <meta property="og:url" content="https://tools.specul.com/mcp/guides/chat-selection.html" />
+  <meta property="og:title" content="How to choose a chat assistant — 深水指南 | 投机取巧" />
+  <meta property="og:description" content="聊天助手怎么选：不排名、不报价格：先定中文、数据、价格、生态四个约束，再按场景缩小到 2–3 个候选。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to choose a chat assistant","description":"No rankings and no prices: fix four constraints — Chinese, data, price, ecosystem — then narrow to 2–3 candidates by scenario.","dateModified":"2026-11-03"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
+      <div class="detail-head">
+        <div>
+          <h1><span data-zh>聊天助手怎么选</span><span data-en>How to choose a chat assistant</span></h1>
+          <div class="vendor is-caps"><span data-zh>规划</span><span data-en>Planning</span></div>
+        </div>
+      </div>
+      <div class="panel-lead"><span data-zh><p>不排名、不报价格：先定中文、数据、价格、生态四个约束，再按场景缩小到 2–3 个候选。</p></span><span data-en><p>No rankings and no prices: fix four constraints — Chinese, data, price, ecosystem — then narrow to 2–3 candidates by scenario.</p></span></div>
+
+      <div class="panel is-slim">
+        <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
+        <span data-zh><p>选聊天助手不是选「最强模型」，而是先定四个约束：<strong>中文、数据、价格、生态</strong>。 四个约束会先排除一批候选，剩下的再按场景看。 本篇不排名、不报价格；价格与档位以官方定价页为准。</p>
+            <p>&lt;!-- EN --&gt;</p>
+            <blockquote>Choosing a chat assistant is not about picking &quot;the strongest model&quot;. Fix four constraints first: <strong>Chinese, data, price, ecosystem</strong>. Those constraints eliminate a batch of candidates; only then look at scenario. This guide ranks nothing and quotes no prices; pricing and tiers follow the official pages.</blockquote></span><span data-en><p>Choosing a chat assistant is not about picking &quot;the strongest model&quot;. Fix four constraints first: <strong>Chinese, data, price, ecosystem</strong>. Those constraints eliminate a batch of candidates; only then look at scenario. This guide ranks nothing and quotes no prices; pricing and tiers follow the official pages.</p></span>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>先定四个约束</span><span data-en>Four constraints first</span></h2>
+        <span data-zh><div class="tbl-wrap"><table><thead><tr><th>约束</th><th>要问的问题</th><th>常见排除结果</th></tr></thead><tbody><tr><td>中文</td><td>中文回答质量够不够？国内直连能不能用？</td><td>大陆直连超时的产品先出局，除非你有稳定网络路径</td></tr><tr><td>数据</td><td>对话会不会用于训练？能不能关？企业数据走哪条线？</td><td>不能关训练且要处理敏感内容的，排除</td></tr><tr><td>价格</td><td>免费档够不够？付费档按人头还是按用量？</td><td>团队人数多时，按人头计费的档位会迅速变贵</td></tr><tr><td>生态</td><td>要不要接邮箱、日历、网盘、代码仓？</td><td>生态绑定越深，迁移成本越高</td></tr></tbody></table></div>
+            <p>&lt;!-- EN --&gt;</p>
+            <blockquote>| Constraint | Question to ask | Typical elimination | |---|---|---| | Chinese | Is the Chinese output good enough? Can it be reached from mainland China? | Products that time out from the mainland drop out unless you have a stable network path | | Data | Are chats used for training? Can it be turned off? Which line do enterprise data go through? | If training cannot be disabled and you handle sensitive content, exclude it | | Price | Is the free tier enough? Is the paid tier per seat or usage-based? | Per-seat pricing gets expensive quickly for larger teams | | Ecosystem | Do you need mail, calendar, drive or code-repo connections? | Deeper ecosystem lock-in means higher migration cost |</blockquote></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Constraint</th><th>Question to ask</th><th>Typical elimination</th></tr></thead><tbody><tr><td>Chinese</td><td>Is the Chinese output good enough? Can it be reached from mainland China?</td><td>Products that time out from the mainland drop out unless you have a stable network path</td></tr><tr><td>Data</td><td>Are chats used for training? Can it be turned off? Which line do enterprise data go through?</td><td>If training cannot be disabled and you handle sensitive content, exclude it</td></tr><tr><td>Price</td><td>Is the free tier enough? Is the paid tier per seat or usage-based?</td><td>Per-seat pricing gets expensive quickly for larger teams</td></tr><tr><td>Ecosystem</td><td>Do you need mail, calendar, drive or code-repo connections?</td><td>Deeper ecosystem lock-in means higher migration cost</td></tr></tbody></table></div></span>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>按场景缩小</span><span data-en>Narrow by scenario</span></h2>
+        <span data-zh><ul><li><strong>通用问答与写作</strong>：看免费档是否够用、导出是否方便、是否支持文件上传。</li><li><strong>长文与研究</strong>：看 Deep Research 类功能、引用来源、能否中断补充（ChatGPT 官方 2026-02-10 更新了这些能力）。</li><li><strong>中文与国内直连</strong>：优先有国内镜像或直连可达的产品；备案与数据出境单独核对。</li><li><strong>企业数据</strong>：看 Team/Enterprise 线的默认训练策略、权限与审计，而不是消费档。</li><li><strong>要浏览器/电脑操作</strong>：看 Agent 类功能是否有官方文档与权限边界；Atlas 浏览器已于 2026-08-09 停运，能力并入 ChatGPT/Codex。</li></ul>
+            <p>&lt;!-- EN --&gt;</p>
+            <blockquote>- <strong>General Q&amp;A and writing</strong>: check whether the free tier is enough, whether export is easy, and whether file upload is supported. - <strong>Long documents and research</strong>: check Deep Research-style features, source citations and whether you can interrupt and add material (OpenAI updated these on 2026-02-10). - <strong>Chinese and mainland access</strong>: prefer products with a domestic mirror or direct reachability; check filing and cross-border data separately. - <strong>Enterprise data</strong>: look at the Team/Enterprise line&#39;s default training policy, permissions and audit, not the consumer tier. - <strong>Browser/computer actions</strong>: check whether agent features have official docs and permission boundaries; the Atlas browser was retired on 2026-08-09 and its capabilities moved into ChatGPT/Codex.</blockquote></span><span data-en><ul><li><strong>General Q&amp;A and writing</strong>: check whether the free tier is enough, whether export is easy, and whether file upload is supported.</li><li><strong>Long documents and research</strong>: check Deep Research-style features, source citations and whether you can interrupt and add material (OpenAI updated these on 2026-02-10).</li><li><strong>Chinese and mainland access</strong>: prefer products with a domestic mirror or direct reachability; check filing and cross-border data separately.</li><li><strong>Enterprise data</strong>: look at the Team/Enterprise line&#39;s default training policy, permissions and audit, not the consumer tier.</li><li><strong>Browser/computer actions</strong>: check whether agent features have official docs and permission boundaries; the Atlas browser was retired on 2026-08-09 and its capabilities moved into ChatGPT/Codex.</li></ul></span>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>免费与付费的边界</span><span data-en>The free/paid boundary</span></h2>
+        <span data-zh><p>不报价格，只给判断方法：</p>
+            <p>1. <strong>看限额单位</strong>：按消息数、按 token、按任务数，还是按席位？单位不同，重度使用者的成本差别很大。 2. <strong>看能力差</strong>：免费档是否缺长上下文、文件上传、深度研究、图像生成或团队权限。 3. <strong>看导出</strong>：聊天记录与生成内容能否导出；不能导出就等于锁定。 4. <strong>看团队功能</strong>：共享空间、权限、审计日志通常只在付费档。</p>
+            <p>&lt;!-- EN --&gt;</p>
+            <blockquote>No prices here, only a method:  1. <strong>Check the unit</strong>: messages, tokens, tasks or seats? The unit changes the cost dramatically for heavy users. 2. <strong>Check the capability gap</strong>: does the free tier lack long context, file upload, deep research, image generation or team permissions? 3. <strong>Check export</strong>: can chats and generated content be exported? If not, you are locked in. 4. <strong>Check team features</strong>: shared spaces, permissions and audit logs usually exist only on paid tiers.</blockquote></span><span data-en><p>No prices here, only a method:</p>
+            <p>1. <strong>Check the unit</strong>: messages, tokens, tasks or seats? The unit changes the cost dramatically for heavy users. 2. <strong>Check the capability gap</strong>: does the free tier lack long context, file upload, deep research, image generation or team permissions? 3. <strong>Check export</strong>: can chats and generated content be exported? If not, you are locked in. 4. <strong>Check team features</strong>: shared spaces, permissions and audit logs usually exist only on paid tiers.</p></span>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>常见误判</span><span data-en>Common misreads</span></h2>
+        <span data-zh><ul><li><strong>把「模型最强」当成「最适合」</strong>：中文、数据条款、生态绑定都可能比模型分数更影响日常使用。</li><li><strong>把「免费」当成「零成本」</strong>：时间、隐私与迁移成本也是成本。</li><li><strong>把「能关训练」当成「默认不训练」</strong>：多数消费产品默认可能训练，要手动关。</li><li><strong>把消费档条款套到企业档</strong>：两条线的数据条款与权限不同。</li></ul>
+            <p>&lt;!-- EN --&gt;</p>
+            <blockquote>- <strong>Mistaking &quot;strongest model&quot; for &quot;best fit&quot;</strong>: Chinese quality, data terms and ecosystem lock-in often matter more than benchmark scores. - <strong>Mistaking &quot;free&quot; for &quot;zero cost&quot;</strong>: time, privacy and migration costs are costs too. - <strong>Mistaking &quot;can opt out&quot; for &quot;does not train by default&quot;</strong>: most consumer products may train by default and require manual opt-out. - <strong>Applying consumer terms to enterprise tiers</strong>: the two lines differ in data terms and permissions.</blockquote></span><span data-en><ul><li><strong>Mistaking &quot;strongest model&quot; for &quot;best fit&quot;</strong>: Chinese quality, data terms and ecosystem lock-in often matter more than benchmark scores.</li><li><strong>Mistaking &quot;free&quot; for &quot;zero cost&quot;</strong>: time, privacy and migration costs are costs too.</li><li><strong>Mistaking &quot;can opt out&quot; for &quot;does not train by default&quot;</strong>: most consumer products may train by default and require manual opt-out.</li><li><strong>Applying consumer terms to enterprise tiers</strong>: the two lines differ in data terms and permissions.</li></ul></span>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
+        <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
+          <tr><td><span data-zh>OpenAI · ChatGPT Pricing（定价页指针，D9：本站不采价格数字）</span><span data-en>OpenAI · ChatGPT Pricing (pricing page pointer, D9: this site does not collect price numbers)</span></td><td><a href="https://openai.com/chatgpt/pricing/" target="_blank" rel="noopener">https://openai.com/chatgpt/pricing/</a></td></tr>
+          <tr><td><span data-zh>Google · Google AI plans（Gemini 订阅档位指针）</span><span data-en>Google · Google AI plans (Gemini subscription tier pointer)</span></td><td><a href="https://one.google.com/about/google-ai-plans" target="_blank" rel="noopener">https://one.google.com/about/google-ai-plans</a></td></tr>
+          <tr><td><span data-zh>Microsoft Copilot 官网（C 端入口与能力叙事）</span><span data-en>Microsoft Copilot official site (consumer entry and capability narrative)</span></td><td><a href="https://copilot.microsoft.com" target="_blank" rel="noopener">https://copilot.microsoft.com</a></td></tr>
+          <tr><td><span data-zh>Anthropic · Claude Pricing（定价页指针）</span><span data-en>Anthropic · Claude Pricing (pricing page pointer)</span></td><td><a href="https://www.anthropic.com/pricing" target="_blank" rel="noopener">https://www.anthropic.com/pricing</a></td></tr>
+          <tr><td><span data-zh>DeepSeek 官网（国产对话入口）</span><span data-en>DeepSeek official site (Chinese chat entry)</span></td><td><a href="https://www.deepseek.com" target="_blank" rel="noopener">https://www.deepseek.com</a></td></tr>
+          <tr><td><span data-zh>OpenAI · ChatGPT release notes（官方更新日志，能力边界核验）</span><span data-en>OpenAI · ChatGPT release notes (official changelog, capability-boundary check)</span></td><td><a href="https://help.openai.com/zh-hans-cn/articles/6825453-chatgpt-%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E" target="_blank" rel="noopener">https://help.openai.com/zh-hans-cn/articles/6825453-chatgpt-%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E</a></td></tr>
+        </tbody></table></div>
+        <p class="guide-foot"><span data-zh>核验快照：2026-11-03 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-11-03 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

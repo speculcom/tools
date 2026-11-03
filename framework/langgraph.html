@@ -355,7 +355,7 @@
 
             <div class="panel is-slim">
         <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
-        <span data-zh><p>本站尚未完成实测。测试协议见 <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" target="_blank" rel="noopener">protocols/framework/_protocol.md</a>。</p>
+        <span data-zh><p>本档未跑集成与性能实测；结论只覆盖 API 与官方文档披露的能力面。</p>
             <p><strong>实测建议</strong>（按编排框架 + 持久化维度定制）：</p>
             <div class="tbl-wrap"><table><thead><tr><th>#</th><th>测什么</th><th>为什么值得测</th></tr></thead><tbody><tr><td>1</td><td>长流程跑到一半 kill 进程，恢复后是否真的从中断点继续</td><td>「exactly where they left off」是官方明文承诺，必须验证</td></tr><tr><td>2</td><td><strong>superstep 粒度落盘在长任务下的写入开销</strong></td><td>官方说每个 superstep 都存，step 多时 I/O 成本未知</td></tr><tr><td>3</td><td>Postgres checkpointer 在多进程并发下的冲突行为</td><td>本站最担心的点，未核验</td></tr><tr><td>4</td><td>interrupts 中途修改状态后，图的重入行为</td><td>官方说可 modify agent state，边界未核验</td></tr><tr><td>5</td><td>短期记忆裁剪（Trim / Delete / Summarize）在长会话下的实际成本</td><td>官方给了手段，成本未核验</td></tr><tr><td>6</td><td>用 LangGraph 最小示例 vs Deep Agents 同等需求的代码量差</td><td>量化「低层」这个自评到底多低层</td></tr></tbody></table></div></span><span data-en><p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" target="_blank" rel="noopener">protocols/framework/_protocol.md</a>.</p>
             <p><strong>Suggested runs</strong> (tailored to orchestration framework + persistence dimensions):</p>

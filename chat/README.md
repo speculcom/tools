@@ -20,11 +20,11 @@
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
 | [智谱清言](./chatglm-chat.html) | 网页服务 | 智谱 AI | partial | 2026-10-22 |
-| [ChatGPT](./chatgpt.html) | 网页服务 | OpenAI | partial | 2026-10-30 |
+| [ChatGPT](./chatgpt.html) | 网页服务 | OpenAI | partial | 2026-11-03 |
 | [Claude（对话应用）](./claude-chat.html) | 网页服务 | Anthropic | verified | 2026-10-30 |
 | [DeepSeek](./deepseek-chat.html) | 网页服务 | 深度求索 | partial | 2026-10-22 |
 | [豆包](./doubao-chat.html) | 网页服务 | 字节跳动 | partial | 2026-10-30 |
-| [Gemini（对话应用）](./gemini-chat.html) | 网页服务 | Google | partial | 2026-10-30 |
+| [Gemini（对话应用）](./gemini-chat.html) | 网页服务 | Google | partial | 2026-11-03 |
 | [Grok](./grok-chat.html) | 网页服务 | xAI | partial | 2026-10-30 |
 | [海螺AI](./hailuo-chat.html) | 网页服务 | MiniMax（稀宇科技） | partial | 2026-10-30 |
 | [HuggingChat](./huggingchat.html) | 网页服务 | Hugging Face | partial | 2026-10-30 |
@@ -32,7 +32,7 @@
 | [Le Chat](./le-chat.html) | 网页服务 | Mistral AI | partial | 2026-10-30 |
 | [Manus](./manus.html) | 网页服务 | Manus AI（Monica 团队） | partial | 2026-10-22 |
 | [Meta AI](./meta-ai.html) | 网页服务 | Meta | partial | 2026-10-30 |
-| [Microsoft Copilot](./microsoft-copilot.html) | 网页服务 | 微软 | partial | 2026-10-22 |
+| [Microsoft Copilot](./microsoft-copilot.html) | 网页服务 | 微软 | partial | 2026-11-03 |
 | [Poe](./poe.html) | 网页服务 | Quora | partial | 2026-10-30 |
 | [Reka Chat（Reka Playground / Edge Chat）](./reka-chat.html) | 网页服务 | Reka AI, Inc. | partial | 2026-10-31 |
 | [阶跃AI](./stepfun.html) | 网页服务 | 阶跃星辰 | partial | 2026-10-30 |
@@ -68,10 +68,10 @@
 | [AI 视频创作](/video/) | 文生视频与数字人 | 14 |
 | [AI 音频与语音](/audio/) | 音乐生成、语音合成与转写 | 17 |
 | [AI 搜索与研究](/research/) | AI 搜索、学术检索与研究工作台 | 11 |
-| [AI 自动化与工作流](/automation/) | 可视化搭 AI 工作流与 agent | 22 |
-| [框架与运行时](/framework/) | 运行时、编排框架、SDK | 27 |
+| [AI 自动化与工作流](/automation/) | 可视化搭 AI 工作流与 agent | 23 |
+| [框架与运行时](/framework/) | 运行时、编排框架、SDK | 30 |
 | [MCP 工具](/mcp/) | 缺什么，装什么 —— 给 agent 装的 MCP 工具 | 32 |
-| [本地模型运行器](/runner/) | 在自己机器上跑开源模型 | 16 |
+| [本地模型运行器](/runner/) | 在自己机器上跑开源模型 | 21 |
 
 ---
 

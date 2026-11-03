@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>How to choose image, video and audio tools — 深水指南 | 投机取巧</title>
+  <meta name="description" content="图像 / 视频 / 音频工具怎么选：商用许可先过筛，再看输入输出与编辑链、本地还是云端、中文与区域可用；最后按产量估算成本。" />
+  <link rel="canonical" href="https://tools.specul.com/mcp/guides/media-selection.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="How to choose image, video and audio tools" />
+  <meta property="og:url" content="https://tools.specul.com/mcp/guides/media-selection.html" />
+  <meta property="og:title" content="How to choose image, video and audio tools — 深水指南 | 投机取巧" />
+  <meta property="og:description" content="图像 / 视频 / 音频工具怎么选：商用许可先过筛，再看输入输出与编辑链、本地还是云端、中文与区域可用；最后按产量估算成本。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to choose image, video and audio tools","description":"Screen for commercial licensing first, then input/output and edit chains, local vs cloud, Chinese and regional access; finally estimate cost by volume.","dateModified":"2026-11-03"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
+      <div class="detail-head">
+        <div>
+          <h1><span data-zh>图像 / 视频 / 音频工具怎么选</span><span data-en>How to choose image, video and audio tools</span></h1>
+          <div class="vendor is-caps"><span data-zh>规划</span><span data-en>Planning</span></div>
+        </div>
+      </div>
+      <div class="panel-lead"><span data-zh><p>商用许可先过筛，再看输入输出与编辑链、本地还是云端、中文与区域可用；最后按产量估算成本。</p></span><span data-en><p>Screen for commercial licensing first, then input/output and edit chains, local vs cloud, Chinese and regional access; finally estimate cost by volume.</p></span></div>
+
+      <div class="panel is-slim">
+        <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
+        <span data-zh><p>图像、视频、音频工具的第一道筛子不是「效果好不好」，而是<strong>商用许可</strong>。 第二道是输入输出与编辑链，第三道是本地还是云端，最后才是价格。 本篇不排名、不报价格；许可原文与定价以官方页为准。</p>
+            <p>&lt;!-- EN --&gt;</p>
+            <blockquote>The first screen for image, video and audio tools is not &quot;does it look good&quot; but <strong>commercial licensing</strong>. The second is input/output and edit chains, the third is local vs cloud, and price comes last. This guide ranks nothing and quotes no prices; licence text and pricing follow the official pages.</blockquote></span><span data-en><p>The first screen for image, video and audio tools is not &quot;does it look good&quot; but <strong>commercial licensing</strong>. The second is input/output and edit chains, the third is local vs cloud, and price comes last. This guide ranks nothing and quotes no prices; licence text and pricing follow the official pages.</p></span>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>第一道：商用许可</span><span data-en>First: commercial licensing</span></h2>
+        <span data-zh><div class="tbl-wrap"><table><thead><tr><th>要核对的</th><th>为什么</th><th>去哪里看</th></tr></thead><tbody><tr><td>生成内容能否商用</td><td>免费档常只允许个人使用</td><td>官方 terms / pricing 页</td></tr><tr><td>训练数据来源</td><td>部分工具宣称「商用安全」，依据是训练数据授权</td><td>官方 trust/legal 页</td></tr><tr><td>语音克隆与肖像</td><td>需要被克隆者的授权；平台可能要求额外验证</td><td>官方 voice/face cloning 条款</td></tr><tr><td>字体与素材嵌入</td><td>字体许可按嵌入方式分档，游戏/App 内嵌常需商用授权</td><td>字体官方许可页</td></tr></tbody></table></div>
+            <p>&lt;!-- EN --&gt;</p>
+            <blockquote>| What to check | Why | Where | |---|---|---| | Commercial use of output | Free tiers often allow personal use only | official terms / pricing pages | | Training-data provenance | Some tools claim &quot;commercially safe&quot; based on licensed training data | official trust/legal pages | | Voice cloning and likeness | You need consent from the person cloned; platforms may require extra verification | official voice/face cloning terms | | Font and asset embedding | Font licences differ by embedding method; game/App embedding often needs a commercial licence | the font&#39;s official licence page |</blockquote></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>What to check</th><th>Why</th><th>Where</th></tr></thead><tbody><tr><td>Commercial use of output</td><td>Free tiers often allow personal use only</td><td>official terms / pricing pages</td></tr><tr><td>Training-data provenance</td><td>Some tools claim &quot;commercially safe&quot; based on licensed training data</td><td>official trust/legal pages</td></tr><tr><td>Voice cloning and likeness</td><td>You need consent from the person cloned; platforms may require extra verification</td><td>official voice/face cloning terms</td></tr><tr><td>Font and asset embedding</td><td>Font licences differ by embedding method; game/App embedding often needs a commercial licence</td><td>the font&#39;s official licence page</td></tr></tbody></table></div></span>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>第二道：输入输出与编辑链</span><span data-en>Second: input/output and edit chain</span></h2>
+        <span data-zh><ul><li><strong>输入</strong>：文生图、图生图、视频生视频、音频驱动口型，支持的输入类型决定工作流。</li><li><strong>输出</strong>：分辨率、时长、水印、文件格式；能否导出无损或分层文件。</li><li><strong>编辑链</strong>：能否局部重绘、扩图、替换主体、保持角色一致性；是否支持时间线或分镜。</li><li><strong>批量与 API</strong>：要量产就看是否有官方 API、并发限制与商用条款，而不是只看网页版。</li></ul>
+            <p>&lt;!-- EN --&gt;</p>
+            <blockquote>- <strong>Input</strong>: text-to-image, image-to-image, video-to-video, audio-driven lip sync; supported inputs determine the workflow. - <strong>Output</strong>: resolution, duration, watermark, file format; whether lossless or layered files can be exported. - <strong>Edit chain</strong>: inpainting, outpainting, subject replacement, character consistency; timeline or storyboard support. - <strong>Batch and API</strong>: for volume, check official APIs, concurrency limits and commercial terms, not just the web UI.</blockquote></span><span data-en><ul><li><strong>Input</strong>: text-to-image, image-to-image, video-to-video, audio-driven lip sync; supported inputs determine the workflow.</li><li><strong>Output</strong>: resolution, duration, watermark, file format; whether lossless or layered files can be exported.</li><li><strong>Edit chain</strong>: inpainting, outpainting, subject replacement, character consistency; timeline or storyboard support.</li><li><strong>Batch and API</strong>: for volume, check official APIs, concurrency limits and commercial terms, not just the web UI.</li></ul></span>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>第三道：本地还是云端</span><span data-en>Third: local vs cloud</span></h2>
+        <span data-zh><ul><li><strong>本地</strong>：模型权重与算力在你手里，适合隐私敏感、离线、长期高频；代价是显卡、部署与运维。</li><li><strong>云端</strong>：开箱即用、模型更新快；代价是按量计费、数据出境与网络依赖。</li><li><strong>混合</strong>：本地跑批量、云端做难例，是常见折中；要确认两端产出的格式与许可一致。</li></ul>
+            <p>&lt;!-- EN --&gt;</p>
+            <blockquote>- <strong>Local</strong>: weights and compute stay with you — good for privacy, offline use and high long-term volume; the cost is GPUs, deployment and operations. - <strong>Cloud</strong>: ready to use and fast to update; the cost is metered billing, cross-border data and network dependency. - <strong>Hybrid</strong>: local for batches, cloud for hard cases — a common compromise; confirm both sides produce compatible formats and licences.</blockquote></span><span data-en><ul><li><strong>Local</strong>: weights and compute stay with you — good for privacy, offline use and high long-term volume; the cost is GPUs, deployment and operations.</li><li><strong>Cloud</strong>: ready to use and fast to update; the cost is metered billing, cross-border data and network dependency.</li><li><strong>Hybrid</strong>: local for batches, cloud for hard cases — a common compromise; confirm both sides produce compatible formats and licences.</li></ul></span>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>第四道：中文与区域可用</span><span data-en>Fourth: Chinese and regional access</span></h2>
+        <span data-zh><ul><li>中文提示词的遵循度、中文文字渲染、中文语音的自然度，都要用你自己的样本测。</li><li>国内直连、备案与数据出境是独立约束；海外工具在大陆可能直连超时。</li><li>商用发布还要看平台对 AI 生成内容的标识要求（水印、内容凭证）。</li></ul>
+            <p>&lt;!-- EN --&gt;</p>
+            <blockquote>- Test Chinese prompt adherence, Chinese text rendering and Chinese speech naturalness with your own samples. - Mainland reachability, filing and cross-border data are separate constraints; overseas tools may time out from the mainland. - Commercial publishing also depends on AI-content labelling rules (watermarks, content credentials).</blockquote></span><span data-en><ul><li>Test Chinese prompt adherence, Chinese text rendering and Chinese speech naturalness with your own samples.</li><li>Mainland reachability, filing and cross-border data are separate constraints; overseas tools may time out from the mainland.</li><li>Commercial publishing also depends on AI-content labelling rules (watermarks, content credentials).</li></ul></span>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>常见误判</span><span data-en>Common misreads</span></h2>
+        <span data-zh><ul><li><strong>把「免费可用」当成「可商用」</strong>：免费档通常不含商用授权。</li><li><strong>把「生成效果好」当成「工作流可用」</strong>：不能局部修改或保持一致性，产量一大会返工。</li><li><strong>把「有网页版」当成「有 API」</strong>：量产要看官方 API 与并发限制。</li><li><strong>忽略字体与音乐</strong>：生成画面之外的字体、配乐、音效仍受各自许可约束。</li></ul>
+            <p>&lt;!-- EN --&gt;</p>
+            <blockquote>- <strong>Mistaking &quot;free to use&quot; for &quot;licensed for commercial use&quot;</strong>: free tiers usually exclude commercial rights. - <strong>Mistaking &quot;good output&quot; for &quot;usable workflow&quot;</strong>: without local editing or consistency, volume creates rework. - <strong>Mistaking &quot;has a web UI&quot; for &quot;has an API&quot;</strong>: volume depends on official APIs and concurrency limits. - <strong>Ignoring fonts and music</strong>: fonts, scores and sound effects outside the generated image keep their own licences.</blockquote></span><span data-en><ul><li><strong>Mistaking &quot;free to use&quot; for &quot;licensed for commercial use&quot;</strong>: free tiers usually exclude commercial rights.</li><li><strong>Mistaking &quot;good output&quot; for &quot;usable workflow&quot;</strong>: without local editing or consistency, volume creates rework.</li><li><strong>Mistaking &quot;has a web UI&quot; for &quot;has an API&quot;</strong>: volume depends on official APIs and concurrency limits.</li><li><strong>Ignoring fonts and music</strong>: fonts, scores and sound effects outside the generated image keep their own licences.</li></ul></span>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
+        <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
+          <tr><td><span data-zh>Adobe · Firefly 官方页（商用安全与生成模型说明）</span><span data-en>Adobe · Firefly official page (commercially safe positioning and model notes)</span></td><td><a href="https://www.adobe.com/products/firefly.html" target="_blank" rel="noopener">https://www.adobe.com/products/firefly.html</a></td></tr>
+          <tr><td><span data-zh>Runway · 官方定价与许可入口</span><span data-en>Runway · official pricing and licence entry</span></td><td><a href="https://runwayml.com/pricing" target="_blank" rel="noopener">https://runwayml.com/pricing</a></td></tr>
+          <tr><td><span data-zh>ElevenLabs · 官方定价与语音克隆条款</span><span data-en>ElevenLabs · official pricing and voice-cloning terms</span></td><td><a href="https://elevenlabs.io/pricing" target="_blank" rel="noopener">https://elevenlabs.io/pricing</a></td></tr>
+          <tr><td><span data-zh>OpenAI · Terms of Use（生成内容归属与使用条款）</span><span data-en>OpenAI · Terms of Use (output ownership and usage terms)</span></td><td><a href="https://openai.com/policies/row-terms-of-use/" target="_blank" rel="noopener">https://openai.com/policies/row-terms-of-use/</a></td></tr>
+          <tr><td><span data-zh>Google · Gemini API Additional Terms（生成内容与 SynthID 口径）</span><span data-en>Google · Gemini API Additional Terms (generated content and SynthID terms)</span></td><td><a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener">https://ai.google.dev/gemini-api/terms</a></td></tr>
+        </tbody></table></div>
+        <p class="guide-foot"><span data-zh>核验快照：2026-11-03 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-11-03 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>
