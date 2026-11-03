@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>A 90-day team rollout playbook: pilot to permission closeout — 深水指南 | 投机取巧</title>
+  <meta name="description" content="团队 90 天落地 playbook：从试点到权限收口：把团队引入 AI 拆成 0–30、31–60、61–90 三段，每段给目标、动作、验收点与负责人；权限矩阵与审计项按厂商官方 admin 文档落地，不写空泛口号。" />
+  <link rel="canonical" href="https://tools.specul.com/mcp/guides/playbook-team-90days.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="A 90-day team rollout playbook: pilot to permission closeout" />
+  <meta property="og:url" content="https://tools.specul.com/mcp/guides/playbook-team-90days.html" />
+  <meta property="og:title" content="A 90-day team rollout playbook: pilot to permission closeout — 深水指南 | 投机取巧" />
+  <meta property="og:description" content="团队 90 天落地 playbook：从试点到权限收口：把团队引入 AI 拆成 0–30、31–60、61–90 三段，每段给目标、动作、验收点与负责人；权限矩阵与审计项按厂商官方 admin 文档落地，不写空泛口号。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../../brand.js?v=6a580ac0420e"></script>
+  <link rel="stylesheet" href="../../brand.css?v=6a580ac0420e" />
+  <link rel="stylesheet" href="../../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"A 90-day team rollout playbook: pilot to permission closeout","description":"A 0–30, 31–60, 61–90 rollout with goals, actions, acceptance points and owners per phase; the permission matrix and audit items follow vendor admin documentation rather than slogans.","dateModified":"2026-11-03"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
+      <div class="detail-head">
+        <div>
+          <h1><span data-zh>团队 90 天落地 playbook：从试点到权限收口</span><span data-en>A 90-day team rollout playbook: pilot to permission closeout</span></h1>
+          <div class="vendor is-caps"><span data-zh>规划</span><span data-en>Planning</span></div>
+        </div>
+      </div>
+      <div class="panel-lead"><span data-zh><p>把团队引入 AI 拆成 0–30、31–60、61–90 三段，每段给目标、动作、验收点与负责人；权限矩阵与审计项按厂商官方 admin 文档落地，不写空泛口号。</p></span><span data-en><p>A 0–30, 31–60, 61–90 rollout with goals, actions, acceptance points and owners per phase; the permission matrix and audit items follow vendor admin documentation rather than slogans.</p></span></div>
+      <p class="t-xs" data-en>English summaries and interface labels are available. The guide body below is currently in Chinese.</p>
+      <div class="panel is-slim">
+        <h2><span data-zh>适用前提</span><span data-en>Preconditions</span></h2>
+        <p>这套流程适用于 10–200 人的团队，且满足三条：</p>
+            <p>1. 有一个能拍板预算与采购的人。 2. 有一个 IT/安全负责人能配 SSO、SCIM 与审计导出。 3. 团队愿意先选一个真实业务流做试点，而不是先全员开账号。</p>
+            <p>不满足就先补人，不要用「先买了再说」推进。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>第 0–30 天：试点</span><span data-en>Days 0–30: pilot</span></h2>
+        <p><strong>目标</strong>：用一个小团队验证「工具有用、权限可控、成本可算」。</p>
+            <p>动作：</p>
+            <p>1. 选 5–8 人试点，覆盖一个真实流程（如客服周报、代码评审、合同摘要）。 2. 只开一个主工具 + 一个备份；不要同时上三个平台。 3. 建立账号基线：企业邮箱、SSO 登录、个人账号不许接公司数据。 4. 定义「红线任务」：生产密钥、客户个人信息、未公开财务数据，试点期一律不进 AI。 5. 每周记录三类数据：完成任务数、人工返工次数、权限申请次数。</p>
+            <p>验收点：</p>
+            <ul><li>[ ] 试点流程的产出能被非试点同事复用</li><li>[ ] 所有账号走 SSO，无个人账号混用</li><li>[ ] 三类数据连续记录 4 周</li><li>[ ] 至少写出 3 条「这个工具不适合做的事」</li></ul>
+            <p>负责人：业务负责人 + IT 安全。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>第 31–60 天：扩面</span><span data-en>Days 31–60: expand</span></h2>
+        <p><strong>目标</strong>：从试点扩到相邻团队，同时把权限与审计接上。</p>
+            <p>动作：</p>
+            <p>1. 扩到 2–3 个团队，按角色开不同席位，不做全员同权。 2. 接 SCIM：入职自动开通、离职自动停用；停用当天生效。 3. 打开审计日志：确认管理员能看到登录、席位变更、策略变更三类事件。 4. 定「谁能改策略」：一般成员不能改组织级设置与数据保留。 5. 成本按席位 + 用量两条线记：席位是固定项，API/Agent 调用是变动项。</p>
+            <p>验收点：</p>
+            <ul><li>[ ] SCIM 离职停用在 24 小时内生效</li><li>[ ] 审计日志能导出到 SIEM 或 CSV</li><li>[ ] 权限变更全部有审批记录</li><li>[ ] 月度成本能拆成席位与用量两行</li></ul>
+            <p>负责人：IT 安全 + 财务。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>第 61–90 天：收口</span><span data-en>Days 61–90: closeout</span></h2>
+        <p><strong>目标</strong>：把试点经验变成组织规则，留下可审计的证据。</p>
+            <p>动作：</p>
+            <p>1. 写一页《AI 使用规则》：可用工具、禁止数据、审批路径、事故上报。 2. 建季度复核：账号、席位、策略、审计各查一次。 3. 做一次退出演练：导出数据、迁到备选工具、确认旧账号停用。 4. 把采购问题清单（见 <code>checklist-procurement-access</code>）发给候选厂商。 5. 给新员工一条 30 分钟的入门路径，不要求读完所有文档。</p>
+            <p>验收点：</p>
+            <ul><li>[ ] 规则页已发布，且全员确认</li><li>[ ] 季度复核有日历与负责人</li><li>[ ] 退出演练留下记录与耗时</li><li>[ ] 新员工能在 30 分钟内完成首次合规使用</li></ul>
+            <p>负责人：业务负责人 + 法务/合规。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>权限矩阵</span><span data-en>Permission matrix</span></h2>
+        <p>按「角色 × 能力」定，不按人头拍脑袋。厂商侧的角色名不同，映射如下：</p>
+            <div class="tbl-wrap"><table><thead><tr><th>能力</th><th>成员</th><th>团队管理员</th><th>组织管理员</th><th>安全/审计</th></tr></thead><tbody><tr><td>日常使用</td><td>可</td><td>可</td><td>可</td><td>可</td></tr><tr><td>邀请/停用成员</td><td>不可</td><td>可</td><td>可</td><td>只读</td></tr><tr><td>改组织策略</td><td>不可</td><td>不可</td><td>可</td><td>只读</td></tr><tr><td>查看审计日志</td><td>不可</td><td>可（本团队）</td><td>可（全组织）</td><td>可</td></tr><tr><td>导出审计日志</td><td>不可</td><td>不可</td><td>可</td><td>可</td></tr><tr><td>改计费/席位</td><td>不可</td><td>不可</td><td>可</td><td>只读</td></tr></tbody></table></div>
+            <p>依据：</p>
+            <ul><li>Claude 的组织角色为 Primary Owner / Owner / Member，审计与数据保留由 Compliance API 与 Audit Logs 提供。</li><li>OpenAI 租户有全局管理员与工作空间管理员两层，审计日志在安全设置下，按角色与功能可用性显示。</li><li>Cursor 的审计日志需要 Enterprise 计划与管理员权限，可用 Admin API <code>GET /teams/audit-logs</code> 拉取。</li><li>Google Gemini Enterprise 的审计走 Cloud Logging，数据访问审计需在 IAM 管理里开启。</li><li>Microsoft 365 Copilot 的交互进入统一审计日志，eDiscovery 与保留走 Purview。</li></ul>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>审计清单</span><span data-en>Audit checklist</span></h2>
+        <p>每季度按这 6 项查一次，留记录：</p>
+            <p>1. <strong>账号</strong>：离职名单与停用名单逐条对上；无个人账号接公司数据。 2. <strong>席位</strong>：付费席位与活跃账号一致；休眠席位当月回收。 3. <strong>策略</strong>：数据保留、训练开关、外发限制三项有变更记录。 4. <strong>日志</strong>：能导出最近 90 天的登录、权限与策略事件。 5. <strong>集成</strong>：已授权的第三方应用与 MCP server 列表可查，未用的是否已撤。 6. <strong>事故</strong>：过去一季度有无数据外发或误操作；有就写复盘，没有就写「无」。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>常见失败</span><span data-en>Common failures</span></h2>
+        <ul><li><strong>先买后试</strong>：没有试点流程，续费时无法证明价值。</li><li><strong>全员同权</strong>：管理员太多，策略与审计形同虚设。</li><li><strong>只开不关</strong>：离职账号与休眠席位长期留着。</li><li><strong>审计不看</strong>：日志开了但没人读，出事时才发现没导出。</li><li><strong>把预览版当生产</strong>：预览功能随时变，关键流程要有备选。</li></ul>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>核验事实与限额</span><span data-en>Dated facts</span></h2>
+        <p>1. OpenAI 租户审计日志在「全局设置 → 安全性 → 审核日志」，工作空间审计日志面向符合条件的工作空间所有者或管理员（Help Center，2026-11-03 复核）。 2. Claude Enterprise 的角色为 Primary Owner / Owner / Member；审计日志与数据保留由 Compliance API 提供（官方管理员指南，2026-11-03 复核）。 3. Cursor 审计日志为 Enterprise 专属，Admin API <code>GET /teams/audit-logs</code> 限每团队每分钟 20 次请求（官方文档，2026-11-03 复核）。 4. Google Gemini Enterprise 的提示与响应日志默认关闭，需管理员开启；数据访问审计在 Cloud Logging 配置（官方文档，2026-11-03 复核）。 5. Microsoft 365 Copilot 的每次交互生成审计条目，可用 Purview 做 eDiscovery 与保留（Microsoft Learn，2026-11-03 复核）。 6. 各家席位价格与限额随档位变化，以官方定价页当日为准；本站不采价格数字。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
+        <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
+          <tr><td>OpenAI Help Center · 在管理控制台中管理你的租户（全局设置与审计日志，2026-11-03 直抓）</td><td><a href="https://help.openai.com/zh-hans-cn/articles/12289294" target="_blank" rel="noopener">https://help.openai.com/zh-hans-cn/articles/12289294</a></td></tr>
+          <tr><td>Claude · Enterprise Administrator Guide（角色、审计、数据保留）</td><td><a href="https://claude.com/resources/tutorials/claude-enterprise-administrator-guide" target="_blank" rel="noopener">https://claude.com/resources/tutorials/claude-enterprise-administrator-guide</a></td></tr>
+          <tr><td>Claude Code · Set up for your organization（SSO、SCIM、席位）</td><td><a href="https://code.claude.com/docs/en/admin-setup" target="_blank" rel="noopener">https://code.claude.com/docs/en/admin-setup</a></td></tr>
+          <tr><td>Cursor · Compliance and Monitoring（审计日志与 Admin API）</td><td><a href="https://cursor.com/docs/enterprise/compliance-and-monitoring" target="_blank" rel="noopener">https://cursor.com/docs/enterprise/compliance-and-monitoring</a></td></tr>
+          <tr><td>Google Cloud · Gemini Enterprise usage audit logs</td><td><a href="https://docs.cloud.google.com/gemini/enterprise/docs/set-up-usage-audit-logs" target="_blank" rel="noopener">https://docs.cloud.google.com/gemini/enterprise/docs/set-up-usage-audit-logs</a></td></tr>
+          <tr><td>Microsoft Learn · Microsoft Copilot data protection architecture（审计与 eDiscovery）</td><td><a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/architecture-data-protection-auditing" target="_blank" rel="noopener">https://learn.microsoft.com/en-us/microsoft-365/copilot/architecture-data-protection-auditing</a></td></tr>
+        </tbody></table></div>
+        <p class="guide-foot"><span data-zh>核验快照：2026-11-03 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-11-03 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>
