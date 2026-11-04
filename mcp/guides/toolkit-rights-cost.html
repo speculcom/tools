@@ -91,11 +91,13 @@
         </div>
       </div>
       <div class="panel-lead"><span data-zh><p>四个可直接复制的文本块：Agent 权限矩阵、模型许可检查表、视频版权登记表、成本算式模板。</p></span><span data-en><p>Four copyable text blocks: an agent permission matrix, a model licence checklist, a video rights log and a cost formula template.</p></span></div>
-      <p class="t-xs" data-en>English summaries and interface labels are available. The guide body below is currently in Chinese.</p>
-      <div class="panel is-slim">
+
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>怎么用这页</span><span data-en>How to use</span></a></li><li><a href="#guide-section-1"><span data-zh>常见误用</span><span data-en>Common misuses</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>怎么用这页</span><span data-en>How to use</span></h2>
-        <p>四个块用于采购评审与项目归档；括号里替换成你的项目值。</p>
-            <h3 class="sub-h">9. Agent 权限矩阵</h3>
+        <span data-zh><p>模板内的比例、样本数、阈值和权限策略是示例。请按任务、授权与风险确定实际条件；填完表格不等于已经通过验收。</p>
+            <p>四个块用于采购评审与项目归档；括号里替换成你的项目值。</p>
+            <h3 class="sub-h">1. Agent 权限矩阵</h3>
             <pre class="code"><code>| 操作             | 读 | 写 | 删除 | 需要确认 | 审计 |
 |------------------|----|----|------|----------|------|
 | 读仓库文件       | ✓  |    |      | 否       | 否   |
@@ -108,7 +110,7 @@
 | 改生产数据库     |    | ✓  |      | 双人复核 | 是   |
 
 原则：默认只读；写操作逐条确认；删除与生产写操作双人复核。</code></pre>
-            <h3 class="sub-h">10. 模型许可检查表</h3>
+            <h3 class="sub-h">2. 模型许可检查表</h3>
             <pre class="code"><code>- [ ] 权重许可证（MIT / Apache-2.0 / CC-BY / 自定义）
 - [ ] 是否允许商用
 - [ ] 是否允许自托管
@@ -118,7 +120,7 @@
 - [ ] 量化版是否沿用原模型许可
 - [ ] 工具许可证与权重许可证分开核对
 - [ ] 许可页 URL 与核验日期已存档</code></pre>
-            <h3 class="sub-h">11. 视频权利登记表</h3>
+            <h3 class="sub-h">3. 视频权利登记表</h3>
             <pre class="code"><code>| 素材 | 来源 | 许可 | 日期 | 证据 |
 |------|------|------|------|------|
 | 生成片段 | 模型名+版本 | 平台条款 | | 条款截图 |
@@ -129,7 +131,7 @@
 | 参考图 | 来源 | 授权 | | |
 
 规则：没有证据的素材不入片；换素材要更新表。</code></pre>
-            <h3 class="sub-h">12. 成本算式模板</h3>
+            <h3 class="sub-h">4. 成本算式模板</h3>
             <pre class="code"><code>一、模型调用
 输入 tokens：____ × 单价 ____ = ____
 输出 tokens：____ × 单价 ____ = ____
@@ -149,19 +151,59 @@
 下载流量：____
 
 合计：____ / 月
-口径：单价写官方定价页日期；汇率写当日中间价。</code></pre>
+口径：单价写官方定价页日期；汇率写当日中间价。</code></pre></span><span data-en><p>Copy these four blocks for procurement and project records. Replace project fields. The permission matrix is an example risk policy, not a universal approval requirement.</p>
+            <h3 class="sub-h">1. Agent permissions</h3>
+            <pre class="code"><code>Operation | Example access | Approval | Record
+Read repo files | Read | As authorized | As needed
+Edit code | Write | As authorized | Yes
+Run tests | Read/write test output | As authorized | Yes
+Install dependencies | Write | Check project scope | Yes
+Push remote | Write | Explicit authorization | Yes
+Delete files | Delete | Appropriate authorization | Yes
+Read production DB | Read | Restricted | Yes
+Write production DB | Write | Higher-risk review | Yes
+
+Use least privilege and define approval/recovery from actual risk and authority.</code></pre>
+            <h3 class="sub-h">2. Model licensing</h3>
+            <pre class="code"><code>- [ ] Actual weight license: MIT/Apache-2.0/CC-BY/custom/etc.
+- [ ] Commercial use and self-hosting
+- [ ] Attribution and derivative obligations
+- [ ] Restrictions on training other models with outputs
+- [ ] User/revenue thresholds
+- [ ] Terms inherited by quantized variants
+- [ ] Tool license and weight license checked separately
+- [ ] Source URL, version and checking date recorded</code></pre>
+            <h3 class="sub-h">3. Video rights</h3>
+            <pre class="code"><code>Asset | Source | Permission | Date | Evidence
+Generated clip | Model/version | Platform terms | | Saved terms
+Music | Library | Track license | | Receipt
+Sound effect | Library/self-created | | |
+Font | Font name | Intended-use terms | | License
+Digital likeness | Platform/person | Authorization | | Consent
+Reference image | Origin | Permission | | Evidence
+
+Resolve missing evidence before using an asset; update the record when replacing it.</code></pre>
+            <h3 class="sub-h">4. Cost calculation</h3>
+            <pre class="code"><code>Model: input tokens × input rate + output tokens × output rate
+Retrieval: queries × query rate
+Tools: calls × applicable fee
+Labor: labeling/review/maintenance hours × relevant rates
+Local deployment if applicable: hardware, kWh × electricity rate, transfer
+Total: [ ] per month
+
+Record source dates for rates and the exchange-rate basis.</code></pre></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-1">
         <h2><span data-zh>常见误用</span><span data-en>Common misuses</span></h2>
-        <ul><li>权限矩阵只写「允许」：没有确认与审计列，等于没控制。</li><li>许可只看工具：权重许可才是商用与否的关键。</li><li>权利表事后补：素材来源记不清，只能重做。</li><li>成本只算 token：检索、人工与维护通常占大头。</li></ul>
+        <span data-zh><ul><li>权限矩阵还应写明执行条件、确认方式和记录要求；只写“允许”不足以说明边界。</li><li>许可只看工具：权重许可才是商用与否的关键。</li><li>权利表事后补：素材来源记不清，只能重做。</li><li>成本还需纳入检索、复核与维护；各项占比取决于实际项目。</li></ul></span><span data-en><ul><li>“Allowed” alone leaves execution conditions and records unspecified.</li><li>Check actual weight terms as well as tool licensing.</li><li>Keep asset provenance while working; reconstructing it later is harder.</li><li>Calculate retrieval, review and maintenance alongside tokens; their shares vary by project.</li></ul></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
         <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
-          <tr><td>本站 · 深水指南（授权与成本方法；2026-11-03）</td><td><a href="https://tools.specul.com/mcp/guides/cost-control.html" target="_blank" rel="noopener">https://tools.specul.com/mcp/guides/cost-control.html</a></td></tr>
-          <tr><td>Creative Commons · 许可说明（CC 许可条款；2026-10 快照）</td><td><a href="https://creativecommons.org/licenses/" target="_blank" rel="noopener">https://creativecommons.org/licenses/</a></td></tr>
+          <tr><td><span data-zh>本站 · 深水指南（授权与成本方法；2026-11-03）</span><span data-en>This site: rights and cost methods (2026-11-03)</span></td><td><a href="https://tools.specul.com/mcp/guides/cost-control.html" target="_blank" rel="noopener">https://tools.specul.com/mcp/guides/cost-control.html</a></td></tr>
+          <tr><td><span data-zh>Creative Commons · 许可说明（CC 许可条款；2026-10 快照）</span><span data-en>Creative Commons license terms (2026-10 snapshot)</span></td><td><a href="https://creativecommons.org/licenses/" target="_blank" rel="noopener">https://creativecommons.org/licenses/</a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>核验快照：2026-11-03 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-11-03 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+        <p class="guide-foot"><span data-zh>资料核验日期：2026-11-03。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-11-03. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>

@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>Python</span><span data-en>Python</span></span>
         <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
@@ -153,7 +154,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>能接的模型 provider 最多，官方给了完整目录，换模型就是一个字符串。</strong></p>
             <p>官方第一卖点就是 model-agnostic。<strong>官方 overview 原文</strong>：</p>
@@ -183,7 +184,7 @@
             <p><strong>Official wording</strong>: &quot;Feature support depends on the model and API you select, even when two services use the same API format.&quot;</p>
             <p>Full behavioral equivalence after switching providers is not guaranteed by the official docs. The official position: the same agent is portable, but per-vendor behavioral consistency needs testing.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>纯 Python 库，不是一个服务</strong> —— 安装后由你自己决定把它跑在哪。</p>
             <p>安装是 <code>uv add pydantic-ai</code>（或 slim 变体）。它<strong>不启动 server</strong>。 官方口径是「同一个 agent 到处运行」。<strong>官方 README 原文</strong>：</p>
@@ -199,7 +200,7 @@
             <p><strong>Who runs the agent loop</strong>: you. Two optional official components — the <strong>Pydantic AI Gateway</strong> (self-hostable) for model routing, and <strong>Logfire</strong> for observability. Both optional; neither changes the fact that &quot;the library is run by you&quot;.</p>
             <p>The official docs also provide GitHub Agentic Workflows, running headless on issues / PRs. There is also a built-in web chat entry. Both are built on the same library.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>核心 agent 不带文件系统；官方 Harness 给了成套的本地文件能力。</strong></p>
             <p>普通 <code>Agent</code> 没有本地工作区概念。 文件能力在 <strong>Pydantic AI Harness</strong> 里。<strong>官方 README 原文</strong>（Coding agent 段）：</p>
@@ -221,7 +222,7 @@
             <p>There is also <strong>Monty</strong>, officially &quot;a sandboxed Python interpreter that runs model-written code&quot;. It runs code written by the model.</p>
             <p><strong>Unknown: the default file-access boundary at the core-SDK level (without Harness) is not stated by the official docs</strong> <strong>Verified</strong>: overview and harness pages checked.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>这是它最硬的差异点：durable execution 官方列出八种引擎，</strong> 且「每个模型与工具调用都成为一个 <strong>durable</strong> 单元」。</p>
             <p><strong>官方 durable execution 页原文</strong>：</p>
@@ -247,7 +248,7 @@
             <p>Meaning: the durable engine only guarantees one run survives crashes. It <strong>does not store your conversation threads</strong> — that is a separate Persistence module.</p>
             <p>Two more limits: <code>run_sync()</code> / <code>run_stream_sync()</code> cannot be used inside tools; use <code>async def</code>. <strong>Each agent can attach only one durable engine</strong>; attaching a second throws <code>UserError</code>.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>工具面有「函数工具 + MCP + A2A + capabilities 组合」四层。MCP 是核心能力。</strong></p>
             <p>函数工具用 <code>@agent.tool</code> 注册。<strong>官方原文</strong>：</p>
@@ -273,7 +274,7 @@
             <ul><li><code>Agent.to_a2a()</code> and <code>pydantic-ai-slim[a2a]</code> are &quot;<strong>deprecated and will be removed in 2.0</strong>&quot;</li><li><code>fasta2a</code> has moved to <code>datalayer/fasta2a</code>, with a Pydantic AI bridge</li></ul>
             <p><strong>UI/interfaces</strong>: AG-UI, Vercel AI event streams, CLI, built-in web chat, voice. There is also the <strong>capabilities</strong> composition mechanism. And <strong>YAML/JSON agent specs</strong> for defining agents without code.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>它把「持久化」和「durability」明确分成两件事，这是本维度的核心口径。</strong></p>
             <p><strong>官方 durable execution 页原文</strong>：</p>
@@ -291,7 +292,7 @@
             <p>So our &quot;state ≠ context&quot; is split by the official docs into three: the durable run (engine), the chat thread (Persistence), context compaction.</p>
             <p><strong>Unknown: the concrete trimming strategy and thresholds of compaction — the official docs give no defaults</strong> <strong>Verified</strong>: README and durable page checked.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>人工介入是「工具级审批」，沙箱在 Harness / Monty，凭据默认本地。</strong></p>
             <p><strong>HITL 工具审批</strong>是官方 overview 第 8 条：</p>
@@ -309,7 +310,7 @@
             <p><strong>Credentials</strong>: MCP runs locally by default; officially &quot;keeping credentials, hooks, and tracing under your control&quot;.</p>
             <p><strong>Unknown: whether the core SDK has process/network-level sandboxing and built-in auth/permission boundaries is not stated by the official docs</strong> <strong>Verified</strong>: overview, durable, and mcp pages checked. Enterprise-grade permissions and auditing are handled on the Logfire / Gateway side.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p><strong>适合：需要类型安全的 Python 团队，以及要把 agent run 变成 durable 的人。</strong></p>
             <ul><li><strong>Python 团队</strong>要做「类型安全的结构化输出 + 依赖注入」的 agent</li><li>需要把 agent run 变成 <strong>durable</strong>（跨重启、长等待、HITL）， 且想用自己已有的引擎，如 Temporal / DBOS / Prefect</li></ul>
@@ -344,7 +345,7 @@
           <li>核心 SDK 不经 Harness 时的文件访问默认边界（官方未说明，已查 overview 与 harness 页）</li>
           <li>核心 SDK 是否有进程/网络级沙箱与内置权限边界（官方未说明，沙箱在 Harness / Monty）</li>
           <li>Harness compaction 的默认裁剪策略与阈值（官方未说明）</li>
-          <li>Pydantic AI Gateway 的计费细节（官方定价页未单列；费率按 D9 口径本站不采）</li>
+          <li>Pydantic AI Gateway 的计费细节（官方定价页未单列；费率按本站的报价记录约定本站不采）</li>
           <li>八种 durable 引擎之间的功能对齐度（官方未说明）</li>
           <li>不同 provider 之间行为完全等价性（官方已声明「取决于所选模型与 API」）</li>
           <li>A2A 移除后官方在 2.0 的替代路线（官方指向 datalayer/fasta2a）</li>
@@ -378,7 +379,7 @@
             <tr><td>docs</td><td><span data-zh>官方文档 · Dependencies（类型安全依赖注入、RunContext、可覆盖以便测试）</span><span data-en>Official docs · Dependencies (type-safe dependency injection, RunContext, overridable for testing)</span></td><td><a href="https://pydantic.dev/docs/ai/core-concepts/dependencies/" target="_blank" rel="noopener">https://pydantic.dev/docs/ai/core-concepts/dependencies/</a></td></tr>
             <tr><td>docs</td><td><span data-zh>官方文档 · Multi-agent Applications（五个复杂度层级：单 agent、delegation、hand-off、graph、Deep Agents）</span><span data-en>Official docs · Multi-agent Applications (five complexity tiers: single agent, delegation, hand-off, graph, Deep Agents)</span></td><td><a href="https://pydantic.dev/docs/ai/guides/multi-agent-applications/" target="_blank" rel="noopener">https://pydantic.dev/docs/ai/guides/multi-agent-applications/</a></td></tr>
             <tr><td>docs</td><td><span data-zh>官方文档 · Agent2Agent (A2A)（to_a2a 1.x 弃用、2.0 移除；fasta2a 迁至 datalayer/fasta2a）</span><span data-en>Official docs · Agent2Agent (A2A) (to_a2a deprecated in 1.x, removed in 2.0; fasta2a moved to datalayer/fasta2a)</span></td><td><a href="https://pydantic.dev/docs/ai/integrations/a2a/" target="_blank" rel="noopener">https://pydantic.dev/docs/ai/integrations/a2a/</a></td></tr>
-            <tr><td>pricing</td><td><span data-zh>官方定价页（核验 2026-10-08：Pydantic 库永久 MIT 免费；Logfire 免费档含 1,000 万 spans/月、另有 Pro 档；报价按 D9 口径不存）</span><span data-en>Official pricing page (verified 2026-10-08: Pydantic libraries permanently MIT and free; Logfire free tier includes 10M spans/month, plus a Pro tier; quotes not stored per D9)</span></td><td><a href="https://pydantic.dev/pricing/" target="_blank" rel="noopener">https://pydantic.dev/pricing/</a></td></tr>
+            <tr><td>pricing</td><td><span data-zh>官方定价页（核验 2026-10-08：Pydantic 库永久 MIT 免费；Logfire 免费档含 1,000 万 spans/月、另有 Pro 档；报价按本站的报价记录约定不存）</span><span data-en>Official pricing page (verified 2026-10-08: Pydantic libraries permanently MIT and free; Logfire free tier includes 10M spans/month, plus a Pro tier; quotes not stored per D9)</span></td><td><a href="https://pydantic.dev/pricing/" target="_blank" rel="noopener">https://pydantic.dev/pricing/</a></td></tr>
             <tr><td>changelog</td><td><span data-zh>Releases（v2.54.0 @ 2026-10-02）</span><span data-en>Releases (v2.54.0 @ 2026-10-02)</span></td><td><a href="https://github.com/pydantic/pydantic-ai/releases" target="_blank" rel="noopener">https://github.com/pydantic/pydantic-ai/releases</a></td></tr>
           </tbody>
         </table>

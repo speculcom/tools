@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>编程</span><span data-en>Coding</span></span>
         <span class="tag on"><span data-zh>IDE</span><span data-en>IDE</span></span>
@@ -132,7 +133,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p>与 CLI 形态相同：Anthropic 自家 Claude 系列。</p>
             <p><strong>v2.1.284（2026-09-28）新增 Claude Sonnet 5.5（<code>claude-sonnet-5-5</code>）， 1M 上下文。</strong>（API 报价见官方定价页，本站不存。）</p>
@@ -140,7 +141,7 @@
             <p><strong>v2.1.284 (2026-09-28) added Claude Sonnet 5.5 (<code>claude-sonnet-5-5</code>), 1M context.</strong> (API pricing on the official pricing page; not stored by this site.)</p>
             <p>This model update comes from the CHANGELOG — the only subject in this collection whose default-model spec was verified from a changelog.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>一个进程、三种用法</strong>（README 原文）：</p>
             <p>&quot;Use it in your terminal, <strong>IDE</strong>, or tag @claude on Github.&quot;</p>
@@ -148,7 +149,7 @@
             <p>&quot;Use it in your terminal, <strong>IDE</strong>, or tag @claude on Github.&quot;</p>
             <p>That is: terminal, IDE, and triggering via an <code>@claude</code> mention on GitHub. <strong>These three are different entry points of the same tool, not three implementations</strong> — unlike <a href="/coding/cline.html">Cline&#39;s three forms</a> (three independent forms).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>权限模型与工作目录强绑定</strong>（官方 security 页「Working directory boundary」）： Manual 模式下，文件工具读/写启动目录及其子目录之外的内容前会先询问。</p>
             <p>要免询问读某目录可把它加为 additional directory （<code>--add-dir</code> / <code>/add-dir</code> / <code>additionalDirectories</code>）。</p>
@@ -164,7 +165,7 @@
             <p>with <code>sandbox.enabled</code>, writes default to the working directory + temp directory + added directories, reads default to the whole machine (including credential files like <code>~/.ssh</code>, tightenable via <code>denyRead</code>).</p>
             <p>1M context. <strong>These three mechanisms are read from the same settings files by the VS Code / JetBrains extensions and the terminal</strong> (official settings page), so the IDE form applies the same boundaries.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>IDE 扩展本身是本地进程</strong>，退出即停（本地会话可用 Remote Control 从手机/浏览器远程操控，但执行仍在你的机器上）。</p>
             <p><strong>但同一工具提供「真后台」</strong>：云会话（<code>claude --cloud</code> / claude.ai/code） 跑在 Anthropic 托管的云基础设施上。</p>
@@ -176,7 +177,7 @@
             <p>They can be started and viewed from browser, phone, desktop or terminal; there is also GitHub Actions (<code>@claude</code>, <code>prompt</code> automations, <code>schedule</code> timed runs) plus Routines scheduled/triggered runs — each execution counts as one cloud session.</p>
             <p><strong>Cloud sessions being available does not mean local IDE sessions can run in the background</strong> — the execution environments differ.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>内置工具 + MCP + 扩展机制都齐</strong>。</p>
             <p>内置文件与网络工具（Read / Edit / Write / WebFetch / WebSearch）、 Bash、LSP 等（官方 tools-reference）。</p>
@@ -194,7 +195,7 @@
             <ul><li>Hooks (ConfigChange / PreToolUse etc.)</li><li>Subagents (each with its own context and optional persistent memory)</li><li>Plugins</li><li>Skills</li><li><code>.claude/rules/</code> rules</li></ul>
             <p>The three entry points (terminal / IDE / GitHub) share the same set.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>跨会话记忆有明确层级</strong>（官方 memory 页）：</p>
             <p>CLAUDE.md 按 托管策略 / 用户（<code>~/.claude/CLAUDE.md</code>）/ 项目（<code>./CLAUDE.md</code> 或 <code>./.claude/CLAUDE.md</code>）/ 本地 （<code>CLAUDE.local.md</code>）四级，从宽到窄依次加载并拼接。</p>
@@ -212,7 +213,7 @@
             <p>Models supporting 1M context have a separate <code>[1m]</code> variant.</p>
             <p><strong>The three entry points read the same CLAUDE.md set and use the same compaction strategy, so IDE and CLI are consistent.</strong></p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>本分区里权限设计最细的一个</strong>，且多态共用：</p>
             <p>settings 用 <code>allow</code> / <code>ask</code> / <code>deny</code> 三类规则按工具与内容放行， 官方示例 <code>&quot;allow&quot;: [&quot;Bash(npm run lint)&quot;]</code>、<code>&quot;deny&quot;: [&quot;Read(./.env)&quot;]</code>。</p>
@@ -234,7 +235,7 @@
             <p>once enabled, filesystem and network are doubly isolated (no network egress by default; a local proxy with a domain allowlist). Supported on macOS / Linux / WSL2; not supported on native Windows. Credential storage: macOS uses Keychain, Linux uses a 0600 file.</p>
             <p><strong>The VS Code and JetBrains extensions read the same settings files</strong> (official settings page), so the permission mechanisms above apply to the IDE form.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>已在用 IDE 且希望不切换工具就能用 Claude 的人。 需要在终端、IDE、GitHub 三处用同一工具的人。 重视权限可控性与 MCP 生态的人。</p></span><span data-en><p>People already using an IDE who want Claude without switching tools. People who need the same tool across terminal, IDE and GitHub. People who value controllable permissions and the MCP ecosystem.</p></span></dd>
         </div>
@@ -325,7 +326,7 @@ before a read outside the working directories</code></pre>
             <h3 class="sub-h">② 托管策略控制可用模型</h3>
             <p>企业场景下 <code>availableModels</code> 控制可用模型， <code>enforceAvailableModels</code> 决定是否强制， <strong>不匹配时启动即警告</strong>，不静默降级。</p>
             <h3 class="sub-h">③ 额度显示具体金额</h3>
-            <p>CHANGELOG 原文（节选，金额示例按 D9 口径不摘录）：</p>
+            <p>CHANGELOG 原文（节选，金额示例按本站的报价记录约定不摘录）：</p>
             <pre class="code"><code>Added dollar amounts to the Claude apps gateway spend limit in /usage
 and the status line</code></pre>
             <p><code>/usage</code> 与状态栏显示金额而非抽象百分比。</p></span><span data-en><p>This is the most valuable part of Claude Code, <strong>and because it is shared across forms, understanding it once applies everywhere</strong>:</p>

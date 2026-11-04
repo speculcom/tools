@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a> · <a href="#dimension-transport"><span data-zh>传输方式</span><span data-en>Transport</span></a> · <a href="#dimension-auth"><span data-zh>认证机制</span><span data-en>Authentication</span></a> · <a href="#dimension-scope"><span data-zh>权限范围</span><span data-en>Permission scope</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>MCP</span><span data-en>MCP</span></span>
         <span class="tag on"><span data-zh>议题管理</span><span data-en>Issue management</span></span>
@@ -132,47 +133,47 @@
         <p class="t-section-lead">11 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>它自己不调模型</strong>——被 MCP 客户端调用的接口实现。它把 Linear 议题管理 （搜 issue、建/改 issue、项目与团队查询）包装成工具给 agent 用。</p></span><span data-en><p><strong>It calls no model itself</strong> — an interface implementation called by MCP clients. It wraps Linear issue management (searching issues, creating/updating issues, querying projects and teams) as tools for agents.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p>官方托管远程 server（mcp.linear.app/mcp——直抓 401=存在需鉴权；旧 /sse 端点 404—— 传输线已换代，直抓核验 2026-10-21）。</p></span><span data-en><p>Official hosted remote server (mcp.linear.app/mcp — direct fetch 401 = exists but needs auth; the old /sse endpoint 404 — the transport line has changed generations, direct-fetched and verified 2026-10-21).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p>不碰本机文件系统——作用域是 Linear 云端工作区（issues/projects/teams）。</p></span><span data-en><p>Never touches the local file system — the scope is the Linear cloud workspace (issues/projects/teams).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p>服务在 Linear 侧；请求-响应语义，无后台任务。</p></span><span data-en><p>The service lives on Linear&#39;s side; request-response semantics, no background tasks.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p>搜/读/建/改 issue、查项目与团队、评论等；写能力齐全（建 issue、改状态）。 完整清单以官方文档为准，未逐条清点。</p></span><span data-en><p>Search/read/create/update issues, query projects and teams, comments, etc.; write capabilities are complete (create issues, change status). The complete inventory follows the official docs; it has not been enumerated item by item.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p>无 server 侧跨会话记忆——状态在 Linear 工作区本身。</p></span><span data-en><p>No server-side cross-session memory — state lives in the Linear workspace itself.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p>OAuth 用户鉴权：agent 可见面=所连 Linear 账号权限；写操作直接生效， 无工具级审批机制的官方说明——接 agent 前按「它能替你建改 issue」设防。</p></span><span data-en><p>OAuth user auth: the agent-visible surface = the connected Linear account&#39;s permissions; write operations take effect directly, and there is no official docs for a tool-level approval mechanism — before hooking up an agent, defend on the assumption &quot;it can create and edit issues for you&quot;.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>适合：编码 agent 干完活顺手建/更新 issue、从 Linear 拉「这个需求当时怎么说的」。 不适合：要审批流的严格写管控；非 Linear 栈。</p></span><span data-en><p>Fits: coding agents creating/updating issues as they finish work, pulling &quot;what did this requirement say back then&quot; from Linear. Not a fit: strict write control needing approval flows; non-Linear stacks.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-transport">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
           <dd><span data-zh><p><strong>Streamable HTTP</strong>（mcp.linear.app/mcp）；旧 SSE 端点已下线（直抓 404 核验）。 核验：linear.app/docs/mcp 200、端点 401（2026-10-21）。</p></span><span data-en><p><strong>Streamable HTTP</strong> (mcp.linear.app/mcp); the old SSE endpoint is retired (direct fetch 404 verified). Verified: linear.app/docs/mcp 200, endpoint 401 (2026-10-21).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-auth">
           <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
           <dd><span data-zh><p>OAuth 浏览器授权流（首次连接登录 Linear 账号）；无 PAT 明文配置路线的官方说明。 授权粒度与令牌吊销细节未逐条核验。</p></span><span data-en><p>OAuth browser authorization flow (log into the Linear account on first connection); no official docs for a plaintext-PAT configuration route. Authorization granularity and token-revocation details not verified item by item.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-scope">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
           <dd><span data-zh><p>读面：issue 搜索/读取、项目与团队查询；写面：建/改 issue、评论。 跟着账号权限走；无独立审批层。</p></span><span data-en><p>Read surface: issue search/read, project and team queries; write surface: create/update issues, comments. It follows the account&#39;s permissions; there is no separate approval layer.</p></span></dd>
         </div>

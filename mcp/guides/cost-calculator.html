@@ -92,42 +92,43 @@
       </div>
       <div class="panel-lead"><span data-zh><p>不给价格数字，只给四条可复算的算式与口径：token、席位、显存电费、视频秒数；每条附官方定价页指针。</p></span><span data-en><p>No price figures, only four reproducible formulas and conventions — tokens, seats, local power, video seconds — each with an official pricing pointer.</p></span></div>
       <p class="t-xs" data-en>English summaries and interface labels are available. The guide body below is currently in Chinese.</p>
-      <div class="panel is-slim">
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>口径先说清</span><span data-en>Conventions first</span></a></li><li><a href="#guide-section-1"><span data-zh>1. 云端对话</span><span data-en>Cloud chat</span></a></li><li><a href="#guide-section-2"><span data-zh>2. Agent 任务</span><span data-en>Agent tasks</span></a></li><li><a href="#guide-section-3"><span data-zh>3. 本地模型</span><span data-en>Local model</span></a></li><li><a href="#guide-section-4"><span data-zh>4. 视频生成</span><span data-en>Video generation</span></a></li><li><a href="#guide-section-5"><span data-zh>四个判断</span><span data-en>Four decisions</span></a></li><li><a href="#guide-section-6"><span data-zh>常见误判</span><span data-en>Common misreads</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>口径先说清</span><span data-en>Conventions first</span></h2>
         <ul><li>所有单价查官方定价页当日价，不写死在文档里。</li><li>token 数按输入与输出分开；缓存命中与批量折扣单独列。</li><li>汇率写当日中间价；电费写当地阶梯价。</li><li>估算留 20% 余量；返工与人工复核必须计入。</li></ul>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-1">
         <h2><span data-zh>1. 云端对话</span><span data-en>Cloud chat</span></h2>
         <pre class="code"><code>月成本 = 会话数 × 平均轮次 × (输入 tokens × 输入单价 + 输出 tokens × 输出单价)
 输入 tokens ≈ 系统提示 + 历史 + 检索资料 + 用户输入
 输出 tokens ≈ 平均回答长度</code></pre>
             <p>控制点：限制历史轮次、压缩检索资料、把长任务拆会话。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-2">
         <h2><span data-zh>2. Agent 任务</span><span data-en>Agent tasks</span></h2>
         <pre class="code"><code>单任务成本 = 规划轮 × 模型单价 + 工具调用次数 × 单次工具成本 + 重试次数 × 单次成本
 月成本 = 任务数 × 单任务成本 + 人工审批时间 × 时薪</code></pre>
             <p>控制点：工具白名单、失败重试上限、审批点前移。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-3">
         <h2><span data-zh>3. 本地模型</span><span data-en>Local model</span></h2>
         <pre class="code"><code>一次性 = 硬件 + 下载流量 + 调试时间
 月成本 = 电费 + 维护 + 评估复跑
 电费 = 功耗 kW × 每日小时 × 30 × 电价</code></pre>
             <p>控制点：量化档、上下文长度、并发数；调用量小时云端通常更省。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-4">
         <h2><span data-zh>4. 视频生成</span><span data-en>Video generation</span></h2>
         <pre class="code"><code>单条成本 = 单段秒数 × 单价 × 尝试次数
 总成本 = 单条成本 × 镜头数 + 剪辑人力 + 音乐/字体许可
 尝试次数按 2–3 倍估</code></pre>
             <p>控制点：分镜一次写清、单段只放一个主体、失败片段及时停。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-5">
         <h2><span data-zh>四个判断</span><span data-en>Four decisions</span></h2>
         <p>1. <strong>调用量小</strong>：云端按量更省，本地先不算。 2. <strong>数据不能出网</strong>：本地成本要加上运维与评估。 3. <strong>长任务多</strong>：Agent 的重试与审批比模型单价更影响总成本。 4. <strong>视频返工高</strong>：把尝试次数写进预算，不要按一次过估。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-6">
         <h2><span data-zh>常见误判</span><span data-en>Common misreads</span></h2>
         <ul><li>只算 token：检索、工具、人工与返工常占大头。</li><li>只算单价：配额与限流会改变实际可用量。</li><li>只算硬件：电费、维护与升级周期没进表。</li><li>只算一次：视频与 Agent 都要按尝试次数估。</li></ul>
       </div>
@@ -139,7 +140,7 @@
           <tr><td>Google · Google AI plans（Gemini 订阅档位指针）</td><td><a href="https://one.google.com/about/google-ai-plans" target="_blank" rel="noopener">https://one.google.com/about/google-ai-plans</a></td></tr>
           <tr><td>本站 · 成本控制指南（口径与陷阱）</td><td><a href="https://tools.specul.com/mcp/guides/cost-control.html" target="_blank" rel="noopener">https://tools.specul.com/mcp/guides/cost-control.html</a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>核验快照：2026-11-03 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-11-03 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+        <p class="guide-foot"><span data-zh>资料核验日期：2026-11-03。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-11-03. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>

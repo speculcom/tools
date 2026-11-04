@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a> · <a href="#dimension-transport"><span data-zh>传输方式</span><span data-en>Transport</span></a> · <a href="#dimension-auth"><span data-zh>认证机制</span><span data-en>Authentication</span></a> · <a href="#dimension-scope"><span data-zh>权限范围</span><span data-en>Permission scope</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>文件</span><span data-en>Files</span></span>
         <span class="tag on"><span data-zh>本地</span><span data-en>Local</span></span>
@@ -133,24 +134,24 @@
         <p class="t-section-lead">11 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p>本身不调用模型，是被客户端调用的接口实现。</p>
             <p>依赖 @modelcontextprotocol/sdk（npm 2026.8.31 实测 ^1.30.0）； 协议版本在 initialize 握手时由 SDK 与客户端协商，不绑定单一版本。</p></span><span data-en><p>It calls no model itself; it is an interface implementation called by clients. It depends on @modelcontextprotocol/sdk (npm measured 2026.8.31: ^1.30.0); the protocol version is negotiated between SDK and client at the initialize handshake, not pinned to a single version.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p>本地 Node.js 子进程，通过 stdio 与客户端通信。 生命周期绑定客户端进程，客户端退出即停止。</p></span><span data-en><p>A local Node.js child process communicating with the client over stdio. Its lifecycle is bound to the client process — it stops when the client exits.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p>核心能力。<strong>默认不支持无限制访问</strong>： 必须通过命令行参数指定允许目录，或客户端支持 Roots 协议动态下发。 <strong>若无参数启动且客户端不支持 roots，server 在初始化阶段直接报错。</strong></p></span><span data-en><p>The core capability. <strong>Unrestricted access is not the default</strong>: allowed directories must be given via command-line arguments, or delivered dynamically if the client supports the Roots protocol. <strong>If started with no arguments and the client does not support roots, the server errors out directly at initialization.</strong></p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p>不支持。本地 stdio 进程随客户端生死， 无独立守护或云端执行形态。</p></span><span data-en><p>Not supported. A local stdio process lives and dies with the client; there is no standalone daemon or cloud-execution form.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p>提供 11 个工具：read_text_file、read_media_file、read_multiple_files、</p>
             <p>write_file、edit_file、create_directory、list_directory、</p>
@@ -159,30 +160,30 @@
             <p>write_file, edit_file, create_directory, list_directory,</p>
             <p>list_directory_with_sizes, move_file, search_files, directory_tree. Output is structured content, ready for direct consumption.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p>无状态。每次调用独立，不保留会话记忆。 list_allowed_directories 可查询当前生效目录。</p></span><span data-en><p>Stateless. Each call is independent; no session memory is kept. list_allowed_directories can query the currently effective directories.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>无独立审批机制</strong>，权限边界完全由允许目录决定。 全部文件操作限制在允许目录内，越界会被拒绝。</p>
             <p><strong>注意：提供 write_file / edit_file / move_file / create_directory， 属可写但无删除工具的组合。</strong></p></span><span data-en><p><strong>No separate approval mechanism</strong>; the permission boundary is defined entirely by the allowed directories. All file operations are confined to the allowed directories; anything outside is rejected.</p>
             <p><strong>Note: it provides write_file / edit_file / move_file / create_directory — a combination that is writable but has no delete tool.</strong></p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>让 Agent 安全读写指定目录内的文本与媒体文件。 不适合需要删除操作或需要跨目录聚合的场景。</p></span><span data-en><p>Lets an Agent safely read and write text and media files inside specified directories. Not a fit for scenarios needing delete operations or cross-directory aggregation.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-transport">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
           <dd><span data-zh><p>仅 stdio。本地 Node.js 进程，通过标准输入输出通信。</p>
             <p>官方 README（2026-10-08 全文核验）只给两种本地启动方式。 即 npx 与 Docker。它没有远程传输的官方配置。 目录控制走命令行参数或 MCP Roots（可动态更新）。</p></span><span data-en><p>stdio only. A local Node.js process communicating over standard input/output. The official README (full-text verified 2026-10-08) gives only two local launch methods: npx and Docker. There is no official configuration for a remote transport. Directory control goes through command-line arguments or MCP Roots (dynamically updatable).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-auth">
           <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
           <dd><span data-zh><p>无独立认证层。stdio 形态继承启动它的客户端用户的全部文件权限。 权限边界靠目录白名单实现，不靠认证机制。</p></span><span data-en><p>No separate authentication layer. In stdio form it inherits all file permissions of the client user that launches it. The permission boundary is not an auth mechanism but a directory allowlist.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-scope">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
           <dd><span data-zh><p><strong>默认范围窄且强制显式</strong>：必须通过命令行参数指定允许目录， 或客户端支持 Roots 协议动态下发。 无参数且客户端不支持 roots 时，server 初始化即报错。</p>
             <p><strong>不提供删除工具</strong>；提供写入、编辑、移动、建目录。 可用 list_allowed_directories 查询当前生效目录。</p></span><span data-en><p><strong>The default scope is narrow and explicitly forced</strong>: allowed directories must be given via command-line arguments, or delivered dynamically if the client supports the Roots protocol. With no arguments and no client roots support, the server errors out at initialization.</p>

@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a> · <a href="#dimension-transport"><span data-zh>传输方式</span><span data-en>Transport</span></a> · <a href="#dimension-auth"><span data-zh>认证机制</span><span data-en>Authentication</span></a> · <a href="#dimension-scope"><span data-zh>权限范围</span><span data-en>Permission scope</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>MCP</span><span data-en>MCP</span></span>
         <span class="tag on"><span data-zh>协作</span><span data-en>Collaboration</span></span>
@@ -133,47 +134,47 @@
         <p class="t-section-lead">11 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>它自己不调模型</strong>——被 MCP 客户端调用的接口实现。它把 Slack 工作区能力 （搜索、读消息/线程、发消息、canvases、Lists）包装成工具给 agent 用。</p></span><span data-en><p><strong>It calls no model itself</strong> — an interface implementation called by MCP clients. It wraps Slack workspace capabilities (search, read messages/threads, send messages, canvases, Lists) as tools for agents.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p>官方托管远程 server（mcp.slack.com/mcp——直抓 401=存在需鉴权）； Streamable HTTP + JSON-RPC 2.0（官方文档口径）。旧 slackapi/slack-mcp-server 仓已 404（2026-10-21 直抓）。</p></span><span data-en><p>Official hosted remote server (mcp.slack.com/mcp — direct fetch 401 = exists but needs auth); Streamable HTTP + JSON-RPC 2.0 (official docs wording). The old slackapi/slack-mcp-server repo is now 404 (direct fetch 2026-10-21).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p>不碰本机文件系统——作用域是 Slack 云端工作区（消息、文件、canvases、Lists）。</p></span><span data-en><p>Never touches the local file system — the scope is the Slack cloud workspace (messages, files, canvases, Lists).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p>服务在 Slack 侧；会话请求-响应，无后台监听语义——「agent 不监视 Slack，等你问」。</p></span><span data-en><p>The service lives on Slack&#39;s side; session request-response, no background-listening semantics — &quot;the agent does not watch Slack, it waits for you to ask&quot;.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p>搜索（消息/文件/用户/频道）、读频道与线程、发消息、建会话、reaction、 canvas 读写、用户档案、Lists 增删改查、文件上传（官方 changelog 2026-05 有新增工具记录）； 完整清单以 docs.slack.dev 为准。</p></span><span data-en><p>Search (messages/files/users/channels), read channels and threads, send messages, create conversations, reactions, canvas read/write, user profiles, Lists CRUD, file uploads (the official changelog has new-tool records for 2026-05); the complete inventory follows docs.slack.dev.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p>无 server 侧跨会话记忆——状态在 Slack 工作区本身；搜索工具是它的「取上下文」主手段。</p></span><span data-en><p>No server-side cross-session memory — state lives in the Slack workspace itself; the search tools are its main means of &quot;fetching context&quot;.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>权限面是这条目的核心</strong>：OAuth user-token scopes 逐工具映射（search:read、chat:write、 canvases:write 等）+ <strong>工作区管理员审批</strong>（admin 决定哪些 MCP 客户端可连）—— 未发布 Marketplace/内部 app 连不上。写动作（发消息/建会话）跟着授权 scope 走。</p></span><span data-en><p><strong>The permission surface is the core of this entry</strong>: OAuth user-token scopes mapped per tool (search:read, chat:write, canvases:write etc.) + <strong>workspace admin approval</strong> (admins decide which MCP clients may connect) — unpublished Marketplace/internal apps cannot connect. Write actions (sending messages/creating conversations) follow the granted scopes.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>适合：编码/研究 agent 取「团队在 Slack 里的决策与上下文」、总结频道、代拟消息。 不适合：要事件触发自动化（MCP 不是触发器——要自动化走 Workflow/automation 线）； 要 bot-token 无 OAuth 路线（官方走 user-token OAuth）。</p></span><span data-en><p>Fits: coding/research agents fetching &quot;the team&#39;s decisions and context in Slack&quot;, summarizing channels, drafting messages on your behalf. Not a fit: event-triggered automation (MCP is not a trigger — automation goes through the Workflow/automation line); bot-token routes without OAuth (the official line uses user-token OAuth).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-transport">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
           <dd><span data-zh><p><strong>Streamable HTTP</strong>（JSON-RPC 2.0），端点 mcp.slack.com/mcp。 官方明写 <strong>SSE 与 Dynamic Client Registration 暂不支持</strong>（第三方核验页转述官方 docs）—— 客户端要走现行 remote MCP/OAuth 路径。核验：docs.slack.dev 200、端点 401（2026-10-21 直抓）。</p></span><span data-en><p><strong>Streamable HTTP</strong> (JSON-RPC 2.0), endpoint mcp.slack.com/mcp. The official docs state plainly that <strong>SSE and Dynamic Client Registration are not supported for now</strong> (third-party verification page paraphrasing the official docs) — clients must take the current remote MCP/OAuth path. Verified: docs.slack.dev 200, endpoint 401 (direct fetch 2026-10-21).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-auth">
           <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
           <dd><span data-zh><p>OAuth 2.0 user-token 流（slack.com OAuth 端点授权）；工具逐一对应 scope。 <strong>管理员审批是前置门</strong>：工作区 admin 批准 MCP 客户端集成才能连。</p></span><span data-en><p>OAuth 2.0 user-token flow (authorization at the slack.com OAuth endpoints); tools map one-to-one to scopes. <strong>Admin approval is a front gate</strong>: the workspace admin must approve the MCP client integration before it can connect.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-scope">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
           <dd><span data-zh><p>读面：搜索/历史/用户档案/canvas 读；写面：发消息、建会话、reaction、canvas 写、 Lists 写、文件上传。全部跟着 OAuth scope 与 admin 策略走；无工具级独立审批机制的官方说明。</p></span><span data-en><p>Read surface: search/history/user profiles/canvas reads; write surface: send messages, create conversations, reactions, canvas writes, Lists writes, file uploads. All of it follows OAuth scopes and admin policy; no official docs for a tool-level separate approval mechanism.</p></span></dd>
         </div>

@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>Python</span><span data-en>Python</span></span>
         <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
@@ -148,7 +149,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>LangGraph 完全不碰模型 —— 这是它作为低层框架的设计取向。</strong></p>
             <p>官方自述的五项能力是 durable execution / HITL / memory / LangSmith 调试 / 生产部署。 这五项全部与模型无关，没有一处列出 provider。 官方 overview 把「models」归到 LangChain 那侧：</p>
@@ -170,7 +171,7 @@
             <p><strong>The official docs provide no provider list — models are simply outside its remit.</strong> Neither the overview nor the official homepage lists one.</p>
             <p>⚠ <strong>Our judgment</strong>: it is not model-bound, and the official homepage has no provider list.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>OSS 形态是纯库，没有运行时服务。</strong></p>
             <p>安装就是 <code>pip install -U langgraph</code>。 没有 CLI 启服务、没有容器编排、没有 Web UI（Web UI 在 Deep Agents / LangSmith 那侧）。</p>
@@ -184,7 +185,7 @@
             <p>It comes with <code>langgraph deploy</code>. Environments come in four tiers: Cloud / Hybrid / self-hosted K8s / Standalone Agent Server. Cloud requires <strong>the Plus tier or above</strong>.</p>
             <p><strong>In other words, hosted execution sits at the commercial-platform layer; OSS itself only covers &quot;you run the process yourself&quot;.</strong></p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>⚠ 文件系统不在 LangGraph 的职责范围内。</strong></p>
             <p>官方首页讲文件系统的唯一位置，是把 Deep Agents 作为高层包推荐：</p>
@@ -198,7 +199,7 @@
             <p>What LangGraph itself provides is a <strong>state container</strong> — checkpoints store graph state. Whether the agent reads/writes disks, and with which tools, is not its business.</p>
             <p><strong>Our judgment (inference)</strong>: if you want a file system, wire your own tools. Or go up to the Deep Agents layer.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>这是它证据最完整的一维，且有官方明文。</strong></p>
             <p>第一条特性 <strong>Durable execution</strong> 官方原文是：</p>
@@ -228,7 +229,7 @@
             <p><code>langgraph&gt;=1.2</code> also adds SIGTERM graceful shutdown (drain, then persist a resumable checkpoint).</p>
             <p><strong>Unknown: conflict semantics of multiple processes writing the same thread concurrently — the official docs do not state it.</strong> ⚠ Neither the persistence nor the checkpointers pages cover this.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>LangGraph 核心不含工具系统，但官方生态有统一 MCP 接入包。</strong></p>
             <p>官方自述的五项能力里没有一项是工具系统。 工具接入经 LangChain 生态，或你自己的函数 —— LangGraph 负责图与状态，工具由 LangChain 或你的函数提供。</p>
@@ -244,7 +245,7 @@
             <p>Multiple MCP servers can be connected. <strong>This is the LangChain ecosystem&#39;s unified MCP access layer.</strong></p>
             <p>Note it is a standalone package (<code>pip install langchain-mcp-adapters</code>), not part of the langgraph core.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>LangGraph 把「状态」和「记忆」分成两套机制，两套都有官方原文。</strong></p>
             <p>第三条特性 <strong>Comprehensive memory</strong> 官方原文是：</p>
@@ -264,7 +265,7 @@
             <p>It can recall across threads.</p>
             <p><strong>Unknown: &quot;large tool outputs spilled to disk&quot; — the official docs do not say LangGraph provides it.</strong> ⚠ Neither the memory nor add-memory pages do — that is the higher-level Deep Agents&#39; context-management capability.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>官方给的是 human-in-the-loop。</strong> 它是「检查并修改状态」级别，不只是确认。</p>
             <p>第二条特性 <strong>Human-in-the-loop</strong> 官方原文是：</p>
@@ -280,7 +281,7 @@
             <ul><li><a href="./openai-agents-sdk.html">OpenAI Agents SDK</a> guardrails <strong>validate content</strong> (are inputs/outputs compliant)</li><li><a href="./google-adk.html">Google ADK</a> Tool Confirmation <strong>intercepts execution</strong> (should this tool run)</li><li><strong>LangGraph interrupts modify state</strong> (inspect and modify graph state at any execution point)</li></ul>
             <p>⚠ <strong>But say clearly: what it explicitly does not give is a sandbox or permission boundary.</strong> The official docs mention no file-system permission model, network access control, or tool-level allowlist. Contrast with OpenHands on our site, which has an explicit Docker sandbox + API-key mechanism. Also contrast with the Codex SDK (three SandboxMode enum values in source). <strong>On this dimension, no official mechanism can currently be found for LangGraph.</strong></p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p><strong>适合四类场景。</strong></p>
             <ul><li>agent 流程要跑很久，且必须能从中断处精确恢复</li><li>需要人工在流程中间介入并修改状态</li><li>要把「工作记忆」与「跨会话长期记忆」分开管理</li><li>需要显式图结构（分支、循环、子图）；团队用 Python</li></ul>
@@ -314,7 +315,7 @@
           <li>superstep 级落盘的性能与写入量代价</li>
           <li>长期记忆的具体存储后端（官方只给 store 抽象，未指明后端）</li>
           <li>interrupts 修改状态后的重入边界</li>
-          <li>LangSmith 配套的免费额度与商业条款（报价按 D9 口径本站不采），以及不用它时 LangGraph 是否完整可用</li>
+          <li>LangSmith 配套的免费额度与商业条款（报价按本站的报价记录约定本站不采），以及不用它时 LangGraph 是否完整可用</li>
           <li>Python 与 JS/TS 版的能力对齐度</li>
         </ul></span><span data-en>
         <ul>
@@ -322,7 +323,7 @@
           <li>Performance and write-volume cost of superstep-level persistence</li>
           <li>The concrete storage backend of long-term memory (the official docs give only the store abstraction, no named backend)</li>
           <li>The re-entry boundary after interrupts modify state</li>
-          <li>Free quota and commercial terms of the LangSmith companion (quotes not recorded per our D9 rule), and whether LangGraph is fully usable without it</li>
+          <li>Free quota and commercial terms of the LangSmith companion (quotes not recorded per our price-recording policy), and whether LangGraph is fully usable without it</li>
           <li>Capability parity between the Python and JS/TS versions</li>
         </ul></span>
       </div>

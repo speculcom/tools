@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a> · <a href="#dimension-transport"><span data-zh>传输方式</span><span data-en>Transport</span></a> · <a href="#dimension-auth"><span data-zh>认证机制</span><span data-en>Authentication</span></a> · <a href="#dimension-scope"><span data-zh>权限范围</span><span data-en>Permission scope</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>推理</span><span data-en>Inference</span></span>
         <span class="tag on"><span data-zh>本地</span><span data-en>Local</span></span>
@@ -132,23 +133,23 @@
         <p class="t-section-lead">11 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p>本身不调用模型，是被客户端调用的接口实现。 <strong>本 server 不产生智能，只提供结构</strong>—— 它约束的是 Agent 调用它的方式（逐步思考并允许修订）， 真正的推理仍由客户端背后的模型完成。</p></span><span data-en><p>It calls no model itself; it is an interface implementation called by clients. <strong>This server produces no intelligence, only structure</strong> — what it constrains is how the Agent calls it (step-by-step thinking with revisions allowed); the actual reasoning is still done by the model behind the client.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p>本地 Node.js 进程，通过 stdio 通信。无文件与网络访问需求。</p></span><span data-en><p>A local Node.js process communicating over stdio. No file or network access needed.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>无任何文件访问能力</strong>。不提供读写工具，是本分区权限最窄的一类。</p></span><span data-en><p><strong>No file-access capability whatsoever.</strong> It provides no read/write tools — one of the narrowest-permission entries in this section.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p>不支持。纯计算型工具，无状态，无需后台。</p></span><span data-en><p>Not supported. A pure-computation tool: stateless, no background needed.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>仅 1 个工具</strong> <code>sequential_thinking</code>，</p>
             <p>参数包含：</p>
@@ -160,27 +161,27 @@
             <p>plus revision (isRevision / revisesThought) and branching (branchFromThought / branchId) controls.</p>
             <p>Output is a structured object.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p>无跨会话记忆。每次调用接收完整的思考文本， 修订与分支通过参数显式传递，不依赖服务端存储。</p></span><span data-en><p>No cross-session memory. Each call receives the full thinking text; revisions and branches are passed explicitly via parameters, with no reliance on server-side storage.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>无任何权限风险</strong>：不访问文件、不访问网络、不写任何状态。 全部权限就是「能调用一个纯函数」。</p></span><span data-en><p><strong>No permission risk at all</strong>: no file access, no network access, writes no state. Its entire permission set is &quot;being able to call one pure function&quot;.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>让 Agent 用结构化、可修订、可分支的方式推进复杂问题的分析。 不适合简单任务（增加调用轮次无收益）。</p></span><span data-en><p>Lets an Agent advance complex problems in a structured, revisable, branchable way. Not a fit for simple tasks (extra call rounds bring no benefit).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-transport">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
           <dd><span data-zh><p>仅 stdio。npx / Docker 本地进程（2026-10-08 README 全文核验）； 没有远程传输的官方启动方式。Docker 镜像为 mcp/sequentialthinking。</p></span><span data-en><p>stdio only. npx / Docker local process (full README verification 2026-10-08); there is no official launch method for a remote transport. The Docker image is mcp/sequentialthinking.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-auth">
           <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
           <dd><span data-zh><p>无独立认证层，但<strong>这是本分区唯一无实质权限边界的 server</strong>—— 无文件、无网络、无状态，认证与否不影响安全。</p></span><span data-en><p>No separate authentication layer, but <strong>this is the only server in this section with no substantive permission boundary</strong> — no files, no network, no state; whether auth exists makes no security difference.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-scope">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
           <dd><span data-zh><p><strong>无文件与网络访问，不读不写任何外部资源</strong>。 权限范围为空，是 MCP server 里权限风险最低的一类。 可放心在敏感环境使用。</p></span><span data-en><p><strong>No file or network access; reads and writes no external resources.</strong> Its permission scope is empty — the lowest permission-risk class among MCP servers. Safe to use in sensitive environments.</p></span></dd>
         </div>

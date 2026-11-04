@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>编程</span><span data-en>Coding</span></span>
         <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
@@ -136,7 +137,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>模型完全自配，这是它最核心的定位。</strong></p>
             <p>官方 model providers 页列出的 provider：</p>
@@ -154,7 +155,7 @@
             <p>Contrast with <code>./cursor.md</code>: Cursor can only use models in its catalog; Continue can point at any provider.</p>
             <p><strong>Tool-calling quality after switching across providers: the official pages give no comparison.</strong></p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>IDE 扩展形态，不是独立编辑器。</strong></p>
             <p>官方列出的形态有 VS Code 扩展、JetBrains 插件， 另有 <strong>CLI（<code>cn</code>）</strong>。</p>
@@ -168,7 +169,7 @@
             <p>The three forms share the same agent core. <strong>Official CLI page wording</strong>: &quot;the same agent that powers the Continue IDE extensions&quot;. The CLI needs Node.js 20+ or a bundled runtime.</p>
             <p><strong>This entry covers only the extension form</strong>; the terminal form&#39;s capabilities are in tools and background.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>在 IDE 工作区内读写，改动以 diff 形式呈现。</strong></p>
             <p><strong>上下文靠显式引用，不靠隐式全量索引。</strong> 官方 Chat 上下文页列出 <code>@Files</code>、<code>@Terminal</code>、<code>@Git Diff</code> 等 context providers， 以及高亮代码（VS Code <code>cmd/ctrl+L</code>、JetBrains <code>cmd/ctrl+J</code>）与当前活动文件。</p>
@@ -178,7 +179,7 @@
             <p>Two config directories: MCP at <code>.continue/mcpServers/</code>, rules at <code>.continue/rules</code>.</p>
             <p><strong>How the codebase semantic index is implemented is not stated by the official side</strong> (checked the docs.continue.dev homepage and the Chat context-selection pages).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>扩展形态无「关机续跑」能力。</strong></p>
             <p>它就是编辑器 / IDE 插件，随 IDE 进程存活，IDE 关掉即结束。</p>
@@ -190,7 +191,7 @@
             <p><strong>The only async form is the CLI&#39;s headless mode.</strong> <code>cn -p &quot;...&quot;</code> runs once and outputs to stdout.</p>
             <p><strong>Official wording</strong>: &quot;Use this in scripts, CI/CD, and git hooks&quot;</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>工具面是「三档模式 + MCP」。</strong></p>
             <p>官方 Agent 页写模式切换下有三个选项：</p>
@@ -210,7 +211,7 @@
             <p><strong>The official stresses</strong>: &quot;MCP can only be used in the <strong>agent</strong> mode&quot;</p>
             <p>The CLI side additionally has <code>--mcp &lt;slug&gt;</code>, <code>--agent &lt;slug&gt;</code>, <code>--rule</code>. Extension mechanisms also include context providers, rules and custom prompts.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>上下文是显式选择式，不是自动索引式</strong>（见 local_files）。</p>
             <p>会话层面：CLI 支持 <code>--resume</code> 重放， 官方 CLI headless 页写 <code>cn -p --resume</code> 会</p>
@@ -222,7 +223,7 @@
             <p><strong>Cross-session long-term memory</strong> is carried by rules, context providers and assistant configuration; <code>config.yaml</code> has a <code>data</code> field.</p>
             <p><strong>Context-window size follows the chosen model</strong>; the official gives no unified number on the pages checked (checked the Agent quick-start and config.yaml reference pages).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>默认逐工具询问，可策略化放开。</strong></p>
             <p>IDE 侧，<strong>官方 Agent quick-start 原文</strong>：&quot;By default, Agent mode will ask permission when it wants to use a tool&quot;</p>
@@ -236,7 +237,7 @@
             <p><strong>telemetry</strong>: the repository README says the final 2.0.0 release came &quot;removing anonymous telemetry&quot;.</p>
             <p><strong>Whether data is used for training: not stated on the official pages checked.</strong></p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p><strong>适合三类人：</strong></p>
             <ul><li>需要模型自由（多 provider，含 Ollama 本地模型）而不想被单一厂商锁定的人。</li><li>已在 VS Code / JetBrains 里工作、希望用开源可审计扩展的人。</li><li>需要把同一 agent 用到终端与 CI（<code>cn -p</code>）的人。</li></ul>
@@ -355,7 +356,7 @@
         <h2><span data-zh>商业线：Continuous AI（与开源扩展分开读）</span><span data-en>Commercial line: Continuous AI (read separately from the open-source extension)</span></h2>
         <span data-zh><p>hub.continue.dev（2026-10-08 取到）现为 <strong>Continuous AI</strong> 的商业线，三档：</p>
             <div class="tbl-wrap"><table><thead><tr><th>档位</th><th>要点</th></tr></thead><tbody><tr><td>Starter</td><td>按量计费（pay-as-you-go）：创建并运行 agent，接 Slack / Sentry / Snyk</td></tr><tr><td>Team</td><td>按席位订阅（含每席 credits）：团队内共享私有 agent，Gmail/GitHub SSO</td></tr><tr><td>Company</td><td>定制：SAML/OIDC、BYOK、承诺用量 / 发票 / SLA</td></tr></tbody></table></div>
-            <p>报价数字按 D9 口径不存，见 hub.continue.dev/pricing。</p>
+            <p>报价数字按本站的报价记录约定不存，见 hub.continue.dev/pricing。</p>
             <p><strong>注意这不是 IDE 扩展的订阅</strong> —— 扩展本身免费开源。</p>
             <p>这一商业线已转向 PR 检查为主的 Continuous AI， 不再是「Continue Hub」。</p></span><span data-en><p>hub.continue.dev (fetched 2026-10-08) is now the commercial line <strong>Continuous AI</strong>, three tiers:</p>
             <div class="tbl-wrap"><table><thead><tr><th>Tier</th><th>Highlights</th></tr></thead><tbody><tr><td>Starter</td><td>pay-as-you-go: create and run agents, hook up Slack / Sentry / Snyk</td></tr><tr><td>Team</td><td>per-seat subscription (credits per seat): share private agents across the team, Gmail/GitHub SSO</td></tr><tr><td>Company</td><td>custom: SAML/OIDC, BYOK, committed usage / invoicing / SLA</td></tr></tbody></table></div>

@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>Python</span><span data-en>Python</span></span>
         <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
@@ -140,7 +141,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>官方自述 provider-agnostic。</strong> 官方的接入口径是一句话： 支持 OpenAI 两套 API，也支持 100+ 其他 LLM。</p>
             <p><strong>官方原文</strong>：&quot;It is provider-agnostic, supporting the OpenAI Responses and Chat Completions APIs, as well as <strong>100+ other LLMs</strong>.&quot;</p>
@@ -174,7 +175,7 @@
             <p><strong>Switching providers = change the <code>model</code></strong> (a string name / <code>LitellmModel(...)</code> / provider prefix).</p>
             <p>⚠ But the official docs make <strong>no &quot;zero-change&quot; quantitative promise</strong>; per-vendor capability alignment needs testing.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>你自己运营进程 —— 它是库，不是服务。</strong></p>
             <p>README 的四种运行方式全部是本地代码调用：</p>
@@ -186,7 +187,7 @@
             <p>The only exception is <strong>SandboxAgent&#39;s hosted sandbox client</strong> — the official docs mention a hosted sandbox is available.</p>
             <p>⚠ But that depends on OpenAI-side container services; it is not &quot;the whole agent hosted&quot;.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>本地文件能力明确存在，但不在默认 agent 里。</strong></p>
             <p>官方为「需要检查文件、跑命令、打补丁，或在长任务间保留工作区状态」 的场景单独提供了 <strong><code>SandboxAgent</code></strong>。</p>
@@ -202,7 +203,7 @@
             <ul><li><code>UnixLocalSandboxClient</code> — macOS / Linux.</li><li>Windows must use <code>DockerSandboxClient</code> (requires the <code>openai-agents[docker]</code> extra).</li><li>Windows can also use the hosted sandbox client.</li></ul>
             <p>⚠ <strong>A practical selection note: Windows users cannot use the local Unix sandbox path directly.</strong></p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>自托管 = 关了就停。</strong> README 没有托管执行选项 （Realtime 是长连接，但进程仍在自己手里）。</p>
             <p><strong>断点续跑有官方支撑。</strong> Sessions 章节写明 <strong>官方原文</strong>：&quot;Automatic conversation history management across agent runs&quot;。</p>
@@ -212,7 +213,7 @@
             <p>Optional backends include SQLite (SQLAlchemy dependency) and Redis (<code>openai-agents[redis]</code>).</p>
             <p>SandboxAgent&#39;s default_manifest also targets <strong>Official wording</strong>: &quot;preserve workspace state across longer tasks&quot;.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>工具面是官方列出的四类</strong>：functions、MCP、hosted tools， 以及 <strong>agents as tools</strong>（把别的 agent 当工具调）。</p>
             <p>后两类与 handoffs 并列，都是核心委派机制。</p>
@@ -224,7 +225,7 @@
             <ul><li><code>mcp&gt;=1.19.0,&lt;3</code> is in <code>dependencies</code>.</li><li>It is not in optional-dependencies — a first-class capability.</li></ul>
             <p><strong>Guardrails are configurable.</strong> The official list includes &quot;Configurable safety checks for input and output validation&quot;, split into input and output directions.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>官方原文只有 Sessions。</strong></p>
             <p><strong>官方原文</strong>：&quot;Automatic conversation history management across agent runs&quot;</p>
@@ -240,7 +241,7 @@
             <p>In our &quot;state ≠ context&quot; claim, measures like <strong>spilling large tool outputs to disk</strong> are user-built in this SDK.</p>
             <p>SandboxAgent&#39;s sandbox workspace can play that role, but the official docs do not market it as a context-management layer.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>内建 Guardrails（输入 + 输出双向校验）+ Human in the loop（工具级审批）。</strong></p>
             <p>这是本站目前见到的<strong>权限面最完整</strong>的内建方案。两句官方原文：</p>
@@ -272,7 +273,7 @@
             <p>(guardrails, human_in_the_loop, and Sandbox agents pages checked.)</p>
             <p>This contrasts sharply with Deep Agents&#39; <strong>&quot;trust the LLM, boundary responsibility is yours&quot;</strong>.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p><strong>适合</strong>：</p>
             <ul><li>想要「薄 harness」，agent loop 原语之外的自己挑。</li><li>需要 guardrails 与 human-in-the-loop 是内建的。</li><li>需要 MCP 一等支持，团队是 Python 栈。</li></ul>
@@ -303,13 +304,13 @@
         <span data-zh>
         <ul>
           <li>100+ provider 各自的能力对齐度矩阵</li>
-          <li>hosted sandbox client 的可用区域、配额与计费方式（报价按 D9 口径本站不采）</li>
+          <li>hosted sandbox client 的可用区域、配额与计费方式（报价按本站的报价记录约定本站不采）</li>
           <li>Sessions 后端在多进程/多机下的并发写语义</li>
           <li>litellm / any-llm extra 的实际依赖体积与升级冲突</li>
         </ul></span><span data-en>
         <ul>
           <li>A capability-alignment matrix across the 100+ providers</li>
-          <li>Regions, quotas, and billing of the hosted sandbox client (quotes not recorded per our D9 rule)</li>
+          <li>Regions, quotas, and billing of the hosted sandbox client (quotes not recorded per our price-recording policy)</li>
           <li>Concurrent-write semantics of Sessions backends across multi-process/multi-machine</li>
           <li>The real dependency footprint and upgrade conflicts of the litellm / any-llm extras</li>
         </ul></span>
@@ -451,13 +452,13 @@
             <ul><li>仓库存在与星数（30,233 · 滚动核验 2026-10-23）、许可（MIT，经 license API）。</li><li>最近推送（2026-10-22，仍活跃）。</li><li>最新版本 <strong>0.24.0</strong>（releases @ 2026-10-15）。</li><li><code>pyproject.toml</code> 全文关键项（<code>requires-python &gt;=3.10</code>、<code>mcp&gt;=1.19.0,&lt;3</code> 是核心依赖、 litellm/any-llm/sqlalchemy 均为可选 extra）。</li></ul>
             <ul><li>README 全文十项核心概念、四种运行方式代码示例。</li><li>SandboxAgent 段落与平台差异、JS 版仓元数据。</li></ul>
             <p>❌ 未核验清单：</p>
-            <ul><li>100+ provider 的实际能力对齐度。</li><li>hosted sandbox client 的可用性与计费方式（报价按 D9 口径本站不采）。</li><li>Sessions 的具体后端语义。</li><li>Realtime/Voice 路径的成本。</li></ul></span><span data-en><p>Basis for <code>confidence: partial</code> (downgraded from verified on 2026-10-03):</p>
+            <ul><li>100+ provider 的实际能力对齐度。</li><li>hosted sandbox client 的可用性与计费方式（报价按本站的报价记录约定本站不采）。</li><li>Sessions 的具体后端语义。</li><li>Realtime/Voice 路径的成本。</li></ul></span><span data-en><p>Basis for <code>confidence: partial</code> (downgraded from verified on 2026-10-03):</p>
             <blockquote><strong>Why downgraded</strong>: the ❌ items below are <strong>our evidence gaps</strong>, not &quot;the official docs don&#39;t provide it&quot;. Per the v3 rule &quot;say unknown when unknown&quot;, marking verified while these exist would be inflated — downgraded to partial. Main gap: the real capability alignment of the 100+ providers (2026-10-08 additions: the three guardrail mechanisms and tool-level approval are verified).</blockquote>
             <p>✅ Verified list:</p>
             <ul><li>Repository existence and star count (30,233 · rolling verification 2026-10-23), license (MIT, via license API).</li><li>Last push (2026-10-22, still active).</li><li>Latest version <strong>0.24.0</strong> (releases @ 2026-10-15).</li><li>Key items of the full <code>pyproject.toml</code> (<code>requires-python &gt;=3.10</code>, <code>mcp&gt;=1.19.0,&lt;3</code> is a core dependency, litellm/any-llm/sqlalchemy all optional extras).</li></ul>
             <ul><li>Full README: ten core concepts, code examples of the four run modes.</li><li>The SandboxAgent section with platform differences, and the JS-version repo metadata.</li></ul>
             <p>❌ Not verified:</p>
-            <ul><li>The real capability alignment of the 100+ providers.</li><li>Availability and billing of the hosted sandbox client (quotes not recorded per our D9 rule).</li><li>The concrete backend semantics of Sessions.</li><li>Costs of the Realtime/Voice paths.</li></ul></span>
+            <ul><li>The real capability alignment of the 100+ providers.</li><li>Availability and billing of the hosted sandbox client (quotes not recorded per our price-recording policy).</li><li>The concrete backend semantics of Sessions.</li><li>Costs of the Realtime/Voice paths.</li></ul></span>
       </div>
 
             <div class="panel is-slim">

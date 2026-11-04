@@ -92,13 +92,14 @@
       </div>
       <div class="panel-lead"><span data-zh><p>多个 agent 怎么分工、怎么交接、怎么收拢结果，以及什么时候根本不该上多 agent。</p></span><span data-en><p>How multiple agents divide work, hand off, and merge results — and when not to go multi-agent at all.</p></span></div>
 
-      <div class="panel is-slim">
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></a></li><li><a href="#guide-section-1"><span data-zh>先问一句：要不要多 agent</span><span data-en>First, do you need multi-agent?</span></a></li><li><a href="#guide-section-2"><span data-zh>四种主流形态</span><span data-en>Four common shapes</span></a></li><li><a href="#guide-section-3"><span data-zh>交接时，上下文跟着谁走</span><span data-en>Whose context follows a handoff</span></a></li><li><a href="#guide-section-4"><span data-zh>失败模式</span><span data-en>Failure modes</span></a></li><li><a href="#guide-section-5"><span data-zh>怎么选</span><span data-en>Choosing a shape</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
         <span data-zh><p><strong>多 agent 编排就是让多个 agent 分工干同一件事。</strong> 分工的理由通常有三个：上下文装不下、任务能并行、不同环节要不同专业知识。 编排的核心问题只有一个：<strong>下一步交给谁，上下文跟着谁走。</strong></p>
             <p>本站讲机制，不排名。文中提到的产品都链到各自的档案页——档案是事实源，这篇是视角。</p></span><span data-en><p><strong>Multi-agent orchestration means having several agents divide up one job.</strong> The usual reasons to divide are three: the context does not fit, tasks can run in parallel, different stages need different expertise. The core question of orchestration is a single one: <strong>who takes the next step, and whose context travels with it.</strong></p>
             <p>This site explains mechanisms, not rankings. Every product mentioned links to its own dossier — the dossiers are the source of facts, this guide is the lens.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-1">
         <h2><span data-zh>先问一句：要不要多 agent</span><span data-en>First, do you need multi-agent?</span></h2>
         <span data-zh><p>多数「想上多 agent」的需求，单 agent 加对工具和提示词就能满足。 LangGraph 官方文档把这句话放在多 agent 篇的开头：</p>
             <blockquote>&quot;However, not every complex task requires this approach— a single agent with the right (sometimes dynamic) tools and prompt can often achieve similar results.&quot;</blockquote>
@@ -106,7 +107,7 @@
             <blockquote>&quot;However, not every complex task requires this approach— a single agent with the right (sometimes dynamic) tools and prompt can often achieve similar results.&quot;</blockquote>
             <p>When developers want multi-agent, what they usually really want is one of three capabilities: context management, parallelism, or multiple people developing separately. The latter two are good reasons; for the first, first confirm &quot;the context genuinely does not fit&quot;, because the cost of splitting wrong is bigger than the cost of not splitting.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-2">
         <h2><span data-zh>四种主流形态</span><span data-en>Four common shapes</span></h2>
         <span data-zh><p>LangGraph 把市面上的多 agent 实现归成四类模式。</p>
             <p><strong>Subagents（子 agent 当工具）</strong>：主 agent 把子 agent 当工具调用， 路由全部经过主 agent，由它决定何时调用哪个。 <a href="/framework/langgraph.html">LangGraph</a> 与 <a href="/framework/google-adk.html">Google ADK</a> 都属这一形态。</p>
@@ -126,7 +127,7 @@
             <p>The four shapes compared:</p>
             <div class="tbl-wrap"><table><thead><tr><th>Shape</th><th>Who decides the next step</th><th>Context</th><th>Typical scenario</th></tr></thead><tbody><tr><td>Subagents</td><td>The main agent</td><td>Each sub-agent sees only its assigned slice</td><td>Tasks enumerable, want parallelism</td></tr><tr><td>Handoffs</td><td>The model chooses</td><td>The full history follows by default</td><td>Customer-service triage, specialization</td></tr><tr><td>Router</td><td>A classifier</td><td>Each path separate, merged at the end</td><td>Input categories are clear</td></tr><tr><td>Custom workflow</td><td>Code</td><td>Passed explicitly per the graph</td><td>The flow needs hard constraints</td></tr></tbody></table></div></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-3">
         <h2><span data-zh>交接时，上下文跟着谁走</span><span data-en>Whose context follows a handoff</span></h2>
         <span data-zh><p>这是编排里最容易被忽略、出事最多的一点。</p>
             <p><strong>OpenAI 官方原文</strong>：&quot;the new agent takes over the conversation, and gets to see the entire previous conversation history&quot;。 也就是说，交接发生时默认全量历史跟走。 要改，用 <code>input_filter</code> 过滤，或用运行配置控制交接历史的嵌套方式。</p>
@@ -140,7 +141,7 @@
             <p>The official docs specifically remind: this mode is for sub-agents only; do not set it on the root agent.</p>
             <p>CrewAI&#39;s sequential process is the other pole: tasks run in list order, the previous task&#39;s output becomes the next one&#39;s context. Controllable, but not flexible enough.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-4">
         <h2><span data-zh>失败模式</span><span data-en>Failure modes</span></h2>
         <span data-zh><p><strong>上下文逐级膨胀。</strong> 每交接一次默认带上全量历史， 多跳之后提示词被历史撑爆，成本和延迟一起涨。 拆 agent 的初衷（省上下文）反而没了。</p>
             <p><strong>职责重叠或留空。</strong> 两个 agent 都以为某件事归对方， 或者某件事谁都不接。 Anthropic 的建议是从简单做起：先优化单次调用，不够再叠加多步系统。</p>
@@ -148,7 +149,7 @@
             <p><strong>Overlapping or empty responsibilities.</strong> Two agents each assume the other owns something, or nobody picks something up. Anthropic&#39;s advice is to start simple: optimize the single call first, add multi-step systems only if it is not enough.</p>
             <p><strong>Errors compound.</strong> A single agent can retry in place; in multi-agent one wrong link poisons every later link, and it is harder to locate which link started it. <strong>Anthropic official text</strong>: &quot;The autonomous nature of agents means higher costs, and the potential for compounding errors.&quot;</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-5">
         <h2><span data-zh>怎么选</span><span data-en>Choosing a shape</span></h2>
         <span data-zh><p>一个够用的判断顺序：</p>
             <p>1. 单 agent 加工具能解决吗？能，就停在这里。 2. 任务能被清楚切成固定几步？能，走顺序流程（CrewAI sequential、Anthropic 的 prompt chaining）。 3. 输入有明确类别、各类差异大？走 Router / routing。 4. 子任务无法预先枚举、要动态拆？走 orchestrator-workers 或 Subagents。 5. 需要人审关键节点？在自定义工作流里加人工检查点。</p>
@@ -165,7 +166,7 @@
           <tr><td><span data-zh>CrewAI 官方文档 · Processes（2026-10-30 直抓 200）</span><span data-en>CrewAI official docs · Processes (direct fetch 200 on 2026-10-30)</span></td><td><a href="https://docs.crewai.com/en/concepts/processes" target="_blank" rel="noopener">https://docs.crewai.com/en/concepts/processes</a></td></tr>
           <tr><td><span data-zh>Anthropic 工程博客 · Building effective agents（2026-10-30 直抓 200）</span><span data-en>Anthropic engineering blog · Building effective agents (official page verified via WebFetch on 2026-10-30)</span></td><td><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">https://www.anthropic.com/engineering/building-effective-agents</a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>核验快照：2026-10-30 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-10-30 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+        <p class="guide-foot"><span data-zh>资料核验日期：2026-10-30。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-10-30. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>

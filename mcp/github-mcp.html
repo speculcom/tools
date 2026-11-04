@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a> · <a href="#dimension-transport"><span data-zh>传输方式</span><span data-en>Transport</span></a> · <a href="#dimension-auth"><span data-zh>认证机制</span><span data-en>Authentication</span></a> · <a href="#dimension-scope"><span data-zh>权限范围</span><span data-en>Permission scope</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>版本控制</span><span data-en>Version control</span></span>
         <span class="tag on"><span data-zh>API</span><span data-en>API</span></span>
@@ -138,7 +139,7 @@
         <p class="t-section-lead">11 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>它自己不调模型。</strong> 它是被客户端调用的接口实现 —— <strong>选哪个模型是客户端的事。</strong></p>
             <p>它把 GitHub 平台能力包装成 MCP 工具：仓库、issue、PR、Actions、code scanning 等。</p>
@@ -149,7 +150,7 @@
             <ul><li>Tool schemas return typed <code>structuredContent</code> on protocol version <code>2026-07-28</code> and later; older clients fall back to plain text</li></ul>
             <ul><li>Tool descriptions can be overridden via <code>github-mcp-server-config.json</code> or <code>GITHUB_MCP_*</code> environment variables (useful for localization)</li></ul></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>两种运行形态：远程托管，或本地进程。</strong></p>
             <p><strong>远程托管</strong>由 GitHub 自己运营，端点 <code>https://api.githubcopilot.com/mcp/</code>。</p>
@@ -163,7 +164,7 @@
             <p>⚠ <strong>GitHub Enterprise Server does not support remote hosting</strong> (stated explicitly by the official docs). Only the local form works. <code>ghe.com</code> can use remote hosting, but on a separate endpoint.</p>
             <p><strong>The official wording on the remote form</strong>: &quot;the easiest method for getting up and running&quot; &quot;no local setup or runtime required&quot;</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>不碰你本机的文件系统。</strong></p>
             <p>它操作的是 GitHub 平台：远程仓库、issue、PR。它跟你本地的 git 仓库没有直接关系。 本地 git 操作见本站的 git 条目。</p>
@@ -175,7 +176,7 @@
             <ul><li><code>get_file_contents</code> — read a file or directory</li><li><code>create_or_update_file</code> / <code>push_files</code> — write files</li><li><code>delete_file</code> — delete a file</li></ul>
             <p>The scope is repos/branches on GitHub. <strong>The container form needs no local repository mount either.</strong></p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>远程托管形态与你的客户端进程无关</strong>。服务在 GitHub 那边，你关机它还在线。</p>
             <p><strong>本地形态随客户端生死</strong> —— stdio 子进程退出就停。 自托管 HTTP 模式则是你自己运营的常驻服务。即 <code>github-mcp-server http</code> 加反向代理。</p>
@@ -183,7 +184,7 @@
             <p><strong>The local form lives and dies with the client</strong> — the stdio child process stops on exit. The self-hosted HTTP mode is a resident service you operate yourself, i.e. <code>github-mcp-server http</code> behind a reverse proxy.</p>
             <p>⚠ <strong>It offers no &quot;background task resumption&quot; semantics.</strong> Its modes are stateful HTTP / stdio sessions; there is no official checkpoint-resume mechanism. &quot;Always on&quot; refers to the availability of the remotely hosted form — and that availability depends on GitHub&#39;s service status.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>工具集（toolsets）是这条目的核心机制。</strong></p>
             <p>裁剪能力有四层手段：</p>
@@ -197,7 +198,7 @@
             <p>Another 20+ groups can be enabled: actions · code_security · dependabot · discussions · gists · git · governance · labels · notifications · orgs · projects · secret_protection · security_advisories · stargazers · code_quality · copilot, etc.</p>
             <p>The remote form also has exclusive toolsets, e.g. Copilot Spaces and GitHub Support Docs Search.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>没有跨会话记忆。</strong> 每次会话独立。状态在 GitHub 平台本身（仓库、issue、PR 的持久状态）， 不在 server 里。</p>
             <p>有一条官方特有的上下文控制。Insiders 模式下 <code>list_*</code> 工具可以返回 CSV （<code>csv_output</code> 特性标志），用来压缩列表类响应。</p>
@@ -209,7 +210,7 @@
             <p><strong>The official wording</strong>: &quot;reduce response context for agents&quot;</p>
             <p>The README provides no built-in memory or retrieval layer.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>权限由 GitHub token 决定，官方另给三层收紧手段。</strong></p>
             <ul><li><strong>① read-only 模式</strong> —— <code>--read-only</code> / <code>GITHUB_READ_ONLY</code> / <code>X-MCP-Readonly</code></li><li><strong>② lockdown 模式</strong> —— <code>--lockdown-mode</code> / <code>X-MCP-Lockdown</code></li><li><strong>③ scope filtering</strong> —— 经典 PAT 在启动时按 token scope 隐藏无权限工具； OAuth 走按需 scope challenge</li></ul>
@@ -224,7 +225,7 @@
             <p><strong>Write and delete capabilities are complete</strong>: create / update / delete file, <code>push_files</code>, <code>merge_pull_request</code>, <code>create_repository</code>, <code>delete_repository</code>, etc. High-risk tools require on-demand authorization (e.g. the <code>delete_repo</code> scope).</p>
             <p>The official docs call read-only a <strong>&quot;strict security filter&quot;</strong></p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p><strong>一句话：让任意 MCP 客户端用自然语言操作 GitHub。</strong></p>
             <p>客户端包括 VS Code、Claude Desktop、Cursor、Windsurf、Codex、Gemini CLI 等。</p>
@@ -235,7 +236,7 @@
             <p><strong>The remotely hosted form suits people who do not want to operate it themselves.</strong> <strong>The local Docker form suits</strong>: GitHub Enterprise Server users · people who need self-hosted HTTP · people who want offline control.</p>
             <p><strong>Not a fit</strong> for two kinds of scenarios. First, operating the local file system — that is the filesystem / git server&#39;s job. Second, scenarios needing cross-session memory.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-transport">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
           <dd><span data-zh><p><strong>两种形态：本地 stdio，或远程托管 HTTP。</strong></p>
             <p>本地形态走 <strong>stdio</strong>，两种跑法：Docker 镜像 <code>ghcr.io/github/github-mcp-server</code>，或 <code>github-mcp-server stdio</code> 二进制。</p>
@@ -253,7 +254,7 @@
             <p><strong>⚠ The permission boundary differs between forms and must be configured separately.</strong></p>
             <p><strong>Verified against</strong>: the official README and remote-server.md (2026-10-08)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-auth">
           <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
           <dd><span data-zh><p><strong>本地 stdio 有三种认证方式。</strong></p>
             <ul><li><strong>浏览器 OAuth</strong> —— github.com 上官方镜像自带 app 凭据，token 只存内存</li><li><strong>PAT</strong> —— 环境变量 <code>GITHUB_PERSONAL_ACCESS_TOKEN</code>，<strong>优先级高于 OAuth</strong></li><li><strong>GitHub App</strong> —— 给非交互式的 stdio 用</li></ul>
@@ -269,7 +270,7 @@
             <ul><li>Only <strong>classic PATs (<code>ghp_</code>)</strong> hide tools by scope at startup</li></ul>
             <p>GitHub Enterprise Server / ghe.com require your own OAuth App or GitHub App.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-scope">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
           <dd><span data-zh><p><strong>作用域就是 GitHub token 的权限范围 —— 能读，也能写和删。</strong></p>
             <p>可以收紧的有三层：<strong>read-only 模式</strong>强制只读（优先级最高）· <strong>toolsets 裁剪</strong>缩小暴露面 · <strong>lockdown 模式</strong>过滤不可信内容 （⚠ 官方强调它<strong>不是授权边界</strong>）。</p>

@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>编程</span><span data-en>Coding</span></span>
         <span class="tag on"><span data-zh>终端</span><span data-en>Terminal</span></span>
@@ -139,7 +140,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>用 Google 自家的 Gemini 系列</strong>，模型可以换。 上下文上限明确标了 1M token。</p>
             <p><strong>README 首屏原文</strong>：「Powerful Gemini 3 models: Access to improved reasoning and 1M token context window」</p>
@@ -157,7 +158,7 @@
             <p><strong>Model routing</strong>: Plan Mode can use <code>general.plan.modelRouting</code>. It switches automatically between Pro (planning) and Flash (implementation). There is also experimental Local Model Routing (Gemma).</p>
             <p><strong>The exact list of switchable models on the CLI side and their version mapping: the official docs do not give a complete list.</strong> (Repository docs and the reference/configuration page both checked.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>本地进程，在终端里跑，靠 npx 免安装启动。</strong></p>
             <p>官方把「免安装」写成仓库首屏的卖点，这是它降低上手门槛的地方。</p>
@@ -165,7 +166,7 @@
             <p>The official docs make &quot;no installation&quot; a first-screen selling point of the repository — this is how it lowers the entry barrier.</p>
             <p><strong>README wording</strong>: &quot;Using npx (no installation required)&quot;</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>内置文件工具默认以工作区为根，边界明确。</strong></p>
             <p><strong>官方「File system tools」页原文</strong>：All file system tools operate within a <code>rootDirectory</code> (the current working directory or workspace root) for security</p>
@@ -191,7 +192,7 @@
             <p><strong>Original wording</strong>: &quot;It does <strong>not</strong> interfere with your own project&#39;s Git repository&quot;</p>
             <p><strong>The semantic-indexing (Code Customization / RAG) algorithm and large-repo time cost are not stated officially.</strong> (file-system and configuration pages checked; only debug switches like <code>general.logRagSnippets</code> exist.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>本地 CLI，不支持关机续跑。</strong></p>
             <p><strong>非交互 / headless 是脚本化，不是后台。</strong> 它仍跑在你自己的机器上。</p>
@@ -211,7 +212,7 @@
             <p><strong>Interruption is recoverable</strong>: checkpointing and <code>/chat save</code> / <code>/resume</code> can save and restore sessions. The switch is <code>general.checkpointing.enabled</code>. <code>general.sessionRetention</code> defaults to 30 days. Expired sessions are cleaned up automatically.</p>
             <p><strong>Quota</strong> is exactly the daily request ceilings in the official usage policy. The official docs set no separate cloud quota.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>明确支持 MCP，而且是它标注的核心特性。</strong></p>
             <p><strong>README 原文</strong>：「🔌 Extensible: MCP (Model Context Protocol) support for custom capabilities」</p>
@@ -229,7 +230,7 @@
             <ul><li><strong>Google Search grounding</strong></li><li><strong>shell</strong></li></ul>
             <p>There is also <strong>non-interactive mode for script automation</strong>. The official docs have a dedicated section <strong>&quot;Non-interactive mode for scripts&quot;</strong>.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>1M token 上下文 + GEMINI.md 分层上下文 + 自动历史压缩，三项都有官方专页。</strong></p>
             <p><strong>上下文窗口</strong>：README 首屏写 Gemini 3 models with 1M token context window。</p>
@@ -251,7 +252,7 @@
             <p>The threshold is controlled by <code>model.compressionThreshold</code>. The default is 0.5. You can also <code>/compress</code> to manually replace the whole context with a summary.</p>
             <p><strong>Cross-session memory</strong>: the official Memory tool writes durable facts into <code>GEMINI.md</code> (project / global two levels), injected into later sessions via the layered context. Token caching is only available to API key / Vertex users.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>沙箱、审批、信任目录三层官方都有专页，是本分区里权限面写得最细的一条。</strong></p>
             <p><strong>沙箱</strong>：官方「Sandboxing」页给了这些方式。</p>
@@ -281,7 +282,7 @@
             <ul><li><code>--skip-trust</code></li><li><code>GEMINI_CLI_TRUST_WORKSPACE=true</code></li></ul>
             <p>The configuration page also has an environment-variable redaction section.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>适合三类场景：</p>
             <ul><li>想免安装快速试用（npx，不留安装痕迹）</li><li>需要 MCP 扩展，尤其是把 Gemini 的多模态生成能力（Imagen / Veo / Lyria）接进 Agent 工作流</li><li>需要脚本化非交互运行，比如接进 CI</li></ul>

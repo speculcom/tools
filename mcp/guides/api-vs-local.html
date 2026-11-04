@@ -92,13 +92,14 @@
       </div>
       <div class="panel-lead"><span data-zh><p>四条轴决定：成本结构、数据与合规、延迟与吞吐、模型能力与更新；用一张决策表缩小到一条路线。</p></span><span data-en><p>Four axes decide it — cost structure, data and compliance, latency and throughput, model capability and updates. A decision table narrows it to one route.</p></span></div>
 
-      <div class="panel is-slim">
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></a></li><li><a href="#guide-section-1"><span data-zh>第一条：成本结构</span><span data-en>One: cost structure</span></a></li><li><a href="#guide-section-2"><span data-zh>第二条：数据与合规</span><span data-en>Two: data and compliance</span></a></li><li><a href="#guide-section-3"><span data-zh>第三条：延迟与吞吐</span><span data-en>Three: latency and throughput</span></a></li><li><a href="#guide-section-4"><span data-zh>第四条：模型能力与更新</span><span data-en>Four: model capability and updates</span></a></li><li><a href="#guide-section-5"><span data-zh>决策表</span><span data-en>Decision table</span></a></li><li><a href="#guide-section-6"><span data-zh>常见误判</span><span data-en>Common misreads</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
         <span data-zh><p>「API 还是本地跑」不是技术偏好，是四个约束的取舍：<strong>成本结构、数据与合规、延迟与吞吐、模型能力与更新</strong>。 四条轴里只要有一条是硬约束，路线基本就定了。 本篇不报具体价格；token 单价与硬件价格以官方页为准。</p>
             <p>&lt;!-- EN --&gt;</p>
             <blockquote>&quot;API or local&quot; is not a technical preference but a trade-off across four constraints: <strong>cost structure, data and compliance, latency and throughput, model capability and updates</strong>. If any one of them is a hard constraint, the route is largely decided. This guide quotes no specific prices; per-token and hardware prices follow the official pages.</blockquote></span><span data-en><p>&quot;API or local&quot; is not a technical preference but a trade-off across four constraints: <strong>cost structure, data and compliance, latency and throughput, model capability and updates</strong>. If any one of them is a hard constraint, the route is largely decided. This guide quotes no specific prices; per-token and hardware prices follow the official pages.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-1">
         <h2><span data-zh>第一条：成本结构</span><span data-en>One: cost structure</span></h2>
         <span data-zh><div class="tbl-wrap"><table><thead><tr><th>路线</th><th>主要成本</th><th>什么情况下更省</th></tr></thead><tbody><tr><td>API</td><td>按 token / 按次计费，随用量线性增长</td><td>低频、波动大、不想买卡</td></tr><tr><td>本地</td><td>显卡 / 内存 / 电费 / 运维，前期固定</td><td>高频、长期、已有硬件</td></tr><tr><td>混合</td><td>本地兜底 + API 峰值</td><td>有明显波峰波谷，且数据可分流</td></tr></tbody></table></div>
             <p><strong>判断方法</strong>：把「每月输入 token + 输出 token」估出来，乘官方单价；再和「显卡折旧 + 电费 + 运维时间」比。 不要只比单价，要把闲置率算进去——本地显卡在低负载时也在折旧。</p>
@@ -106,31 +107,31 @@
             <blockquote>| Route | Main cost | Cheaper when | |---|---|---| | API | per token / per call, linear with usage | low or spiky volume; no GPU purchase | | Local | GPU / memory / power / operations, fixed upfront | high long-term volume; hardware already owned | | Hybrid | local baseline + API for peaks | clear peaks and troughs, with data that can be split |  <strong>Method</strong>: estimate monthly input + output tokens, multiply by official unit prices, then compare with GPU depreciation + power + operations time. Do not compare unit prices alone — include idle time; a local GPU depreciates even when idle.</blockquote></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Route</th><th>Main cost</th><th>Cheaper when</th></tr></thead><tbody><tr><td>API</td><td>per token / per call, linear with usage</td><td>low or spiky volume; no GPU purchase</td></tr><tr><td>Local</td><td>GPU / memory / power / operations, fixed upfront</td><td>high long-term volume; hardware already owned</td></tr><tr><td>Hybrid</td><td>local baseline + API for peaks</td><td>clear peaks and troughs, with data that can be split</td></tr></tbody></table></div>
             <p><strong>Method</strong>: estimate monthly input + output tokens, multiply by official unit prices, then compare with GPU depreciation + power + operations time. Do not compare unit prices alone — include idle time; a local GPU depreciates even when idle.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-2">
         <h2><span data-zh>第二条：数据与合规</span><span data-en>Two: data and compliance</span></h2>
         <span data-zh><ul><li><strong>数据不出域</strong>：本地或私有部署是唯一能承诺「原始数据不离开」的路线。</li><li><strong>API 的数据条款</strong>：要读训练用途、留存周期、跨境传输与子处理者清单，不只看「不训练」一句。</li><li><strong>合规义务</strong>：面向公众提供服务时，备案、内容标识、生成内容安全评估可能是独立义务；本地跑不等于免除。</li></ul>
             <p>&lt;!-- EN --&gt;</p>
             <blockquote>- <strong>Data stays in-domain</strong>: local or private deployment is the only route that can promise raw data never leaves. - <strong>API data terms</strong>: read training use, retention, cross-border transfer and sub-processor lists, not just the &quot;no training&quot; line. - <strong>Compliance duties</strong>: serving the public may trigger filing, content labelling and safety evaluation duties; running locally does not exempt you.</blockquote></span><span data-en><ul><li><strong>Data stays in-domain</strong>: local or private deployment is the only route that can promise raw data never leaves.</li><li><strong>API data terms</strong>: read training use, retention, cross-border transfer and sub-processor lists, not just the &quot;no training&quot; line.</li><li><strong>Compliance duties</strong>: serving the public may trigger filing, content labelling and safety evaluation duties; running locally does not exempt you.</li></ul></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-3">
         <h2><span data-zh>第三条：延迟与吞吐</span><span data-en>Three: latency and throughput</span></h2>
         <span data-zh><ul><li><strong>API</strong>：延迟由网络与供应商排队决定；高峰期可能限流。</li><li><strong>本地</strong>：延迟由显卡、量化档与并发决定；吞吐可以用批处理与张量并行提高。</li><li><strong>交互式</strong>：首 token 延迟比总吞吐更重要。</li><li><strong>批处理</strong>：总吞吐与单位成本更重要，可以排队。</li></ul>
             <p>&lt;!-- EN --&gt;</p>
             <blockquote>- <strong>API</strong>: latency depends on the network and provider queues; peak hours may be rate-limited. - <strong>Local</strong>: latency depends on the GPU, quantisation tier and concurrency; throughput improves with batching and tensor parallelism. - <strong>Interactive</strong>: time-to-first-token matters more than total throughput. - <strong>Batch</strong>: total throughput and unit cost matter more; queuing is acceptable.</blockquote></span><span data-en><ul><li><strong>API</strong>: latency depends on the network and provider queues; peak hours may be rate-limited.</li><li><strong>Local</strong>: latency depends on the GPU, quantisation tier and concurrency; throughput improves with batching and tensor parallelism.</li><li><strong>Interactive</strong>: time-to-first-token matters more than total throughput.</li><li><strong>Batch</strong>: total throughput and unit cost matter more; queuing is acceptable.</li></ul></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-4">
         <h2><span data-zh>第四条：模型能力与更新</span><span data-en>Four: model capability and updates</span></h2>
         <span data-zh><ul><li><strong>前沿能力</strong>：闭源 API 通常先拿到新模型与新产品面（Deep Research、Agent、图像线等）。</li><li><strong>可控与可复现</strong>：本地权重可以固定版本、固定量化档，适合回归测试与离线环境。</li><li><strong>更新成本</strong>：API 升级通常无感；本地升级要重新下载、重新量化、重新测显存。</li></ul>
             <p>&lt;!-- EN --&gt;</p>
             <blockquote>- <strong>Frontier capability</strong>: closed APIs usually get new models and product surfaces first (Deep Research, agents, image lines). - <strong>Control and reproducibility</strong>: local weights can pin a version and quantisation tier, which suits regression tests and offline environments. - <strong>Upgrade cost</strong>: API upgrades are usually invisible; local upgrades mean re-downloading, re-quantising and re-testing VRAM.</blockquote></span><span data-en><ul><li><strong>Frontier capability</strong>: closed APIs usually get new models and product surfaces first (Deep Research, agents, image lines).</li><li><strong>Control and reproducibility</strong>: local weights can pin a version and quantisation tier, which suits regression tests and offline environments.</li><li><strong>Upgrade cost</strong>: API upgrades are usually invisible; local upgrades mean re-downloading, re-quantising and re-testing VRAM.</li></ul></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-5">
         <h2><span data-zh>决策表</span><span data-en>Decision table</span></h2>
         <span data-zh><div class="tbl-wrap"><table><thead><tr><th>你的硬约束</th><th>选</th></tr></thead><tbody><tr><td>原始数据绝不能出内网</td><td>本地 / 私有部署</td></tr><tr><td>要最新前沿能力、不想买卡</td><td>API</td></tr><tr><td>高频长期、已有显卡</td><td>本地</td></tr><tr><td>有明显波峰、数据可分流</td><td>混合</td></tr><tr><td>要固定版本做回归</td><td>本地</td></tr><tr><td>团队没有运维</td><td>API 优先</td></tr></tbody></table></div>
             <p>&lt;!-- EN --&gt;</p>
             <blockquote>| Your hard constraint | Choose | |---|---| | Raw data must never leave the intranet | local / private deployment | | Need the newest frontier capability without buying GPUs | API | | High long-term volume with GPUs already owned | local | | Clear peaks with splittable data | hybrid | | Need pinned versions for regression | local | | No operations team | API first |</blockquote></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Your hard constraint</th><th>Choose</th></tr></thead><tbody><tr><td>Raw data must never leave the intranet</td><td>local / private deployment</td></tr><tr><td>Need the newest frontier capability without buying GPUs</td><td>API</td></tr><tr><td>High long-term volume with GPUs already owned</td><td>local</td></tr><tr><td>Clear peaks with splittable data</td><td>hybrid</td></tr><tr><td>Need pinned versions for regression</td><td>local</td></tr><tr><td>No operations team</td><td>API first</td></tr></tbody></table></div></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-6">
         <h2><span data-zh>常见误判</span><span data-en>Common misreads</span></h2>
         <span data-zh><ul><li><strong>把「本地」当成「便宜」</strong>：低频场景下，显卡折旧与运维通常比 API 贵。</li><li><strong>把「API 不训练」当成「数据不出境」</strong>：训练与跨境传输是两条条款。</li><li><strong>把「能跑」当成「能扛并发」</strong>：单机 demo 与生产吞吐是两件事。</li><li><strong>忽略量化损失</strong>：本地为了装下显卡常降档，质量与上下文长度都会变。</li></ul>
             <p>&lt;!-- EN --&gt;</p>
@@ -145,7 +146,7 @@
           <tr><td><span data-zh>llama.cpp 官方仓库（本地 GGUF 推理）</span><span data-en>llama.cpp official repository (local GGUF inference)</span></td><td><a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">https://github.com/ggml-org/llama.cpp</a></td></tr>
           <tr><td><span data-zh>Ollama 官方文档（本地模型运行器）</span><span data-en>Ollama official docs (local model runner)</span></td><td><a href="https://docs.ollama.com/" target="_blank" rel="noopener">https://docs.ollama.com/</a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>核验快照：2026-11-03 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-11-03 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+        <p class="guide-foot"><span data-zh>资料核验日期：2026-11-03。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-11-03. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>

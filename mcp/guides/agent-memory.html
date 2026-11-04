@@ -92,11 +92,12 @@
       </div>
       <div class="panel-lead"><span data-zh><p>会话内的状态、跨会话的持久事实、外部记忆库——三层记忆各自解决什么问题，以及共同的坑。</p></span><span data-en><p>In-session state, cross-session facts, and external stores — what each memory layer solves, and the pitfalls they share.</p></span></div>
 
-      <div class="panel is-slim">
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></a></li><li><a href="#guide-section-1"><span data-zh>第一层：会话内状态</span><span data-en>Layer one: in-session state</span></a></li><li><a href="#guide-section-2"><span data-zh>第二层：跨会话事实</span><span data-en>Layer two: cross-session facts</span></a></li><li><a href="#guide-section-3"><span data-zh>第三层：外部记忆库</span><span data-en>Layer three: external stores</span></a></li><li><a href="#guide-section-4"><span data-zh>三层的边界</span><span data-en>Where the layers end</span></a></li><li><a href="#guide-section-5"><span data-zh>共同的坑</span><span data-en>Shared pitfalls</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
         <span data-zh><p><strong>agent 记忆就是让下一次调用知道这次发生过什么。</strong> 没有记忆，每一轮都是初见；记忆太多，上下文又被撑爆。 工程上把它分成三层看：会话内状态、跨会话事实、外部记忆库。 三层的保存位置、存活时间、读写方式都不同，踩坑的方式也不同。</p></span><span data-en><p><strong>Agent memory means letting the next call know what happened in this one.</strong> Without memory every turn is a first meeting; with too much memory the context bursts. In engineering, view it in three layers: in-session state, cross-session facts, external stores. The three layers differ in where they persist, how long they live, how they are read and written — and in how they go wrong.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-1">
         <h2><span data-zh>第一层：会话内状态</span><span data-en>Layer one: in-session state</span></h2>
         <span data-zh><p>最常见需求：多轮对话别断片。 <strong>OpenAI 官方原文</strong>：sessions 提供 &quot;built-in session memory to automatically maintain conversation history across multiple agent runs&quot;。</p>
             <p>机制很直白：每轮开始前自动取回历史并拼到输入前， 每轮结束后把新产生的条目（用户输入、回复、工具调用）存回会话。 底层实现是 SQLite 等本地 session，开箱即用。</p>
@@ -108,7 +109,7 @@
             <p><strong>Pitfall one: the in-memory version does not persist.</strong> LangGraph&#39;s official troubleshooting says plainly: <code>MemorySaver</code> and <code>InMemorySaver</code> keep checkpoints in RAM — restart the process and everything is gone. Production should use persistent backends like <code>PostgresSaver</code> / <code>SqliteSaver</code>.</p>
             <p><strong>Pitfall two: checkpoints grow without bound.</strong> In long conversations checkpoints pile up; the official advice is periodic cleanup or a retention policy — otherwise latency and storage rise together.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-2">
         <h2><span data-zh>第二层：跨会话事实</span><span data-en>Layer two: cross-session facts</span></h2>
         <span data-zh><p>会话会结束，事实要留下：用户偏好、项目决定、常用设置。 Mem0 把这条路拆成两半：<strong>抽取</strong>和<strong>检索</strong>。</p>
             <p>调用 <code>add</code> 时，Mem0 从消息里抽出持久事实存起来。 默认存的是提炼后的事实，不是原始消息全文；要存原话得显式关掉推断。 下次模型调用前调 <code>search</code>，把最相关的几条塞进提示词。</p>
@@ -122,7 +123,7 @@
             <p>It also ships dreaming: a background sub-agent periodically reviews conversations and consolidates useful experience into memory, never interrupting the work at hand. In the official CLI, <code>/remember</code> teaches explicitly, <code>/memory</code> inspects, <code>/doctor</code> audits memory structure and token footprint.</p>
             <p><strong>Pitfall three: add-only accumulation breeds stale facts.</strong> The user moved long ago, yet two cities still live in the memory at once. Extraction-based memory needs a correction process.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-3">
         <h2><span data-zh>第三层：外部记忆库</span><span data-en>Layer three: external stores</span></h2>
         <span data-zh><p>上下文装不下的，别硬塞——外接。 <a href="/mcp/memory.html">MCP 官方 memory server</a> 用知识图谱存实体和关系， 按需查询；向量库、键值库也常被用来干这事。</p>
             <p>这一层的关键不是「存了多少」，是「召回得准不准」： 相关性、时效、实体匹配，哪个信号主导检索，直接决定召回质量。</p>
@@ -132,13 +133,13 @@
             <p>The MemGPT paper (arXiv 2310.08560) is one origin of this route. It proposes <strong>virtual context management</strong>: imitating operating-system memory hierarchies, swapping content in and out of a finite context window so the model appears to have a huge memory. The paper validated this on document analysis and multi-session chat.</p>
             <p>Letta&#39;s memory blocks (labeled blocks like human / persona) are the engineering version of the idea: memory chunked, labeled, editable. From paper to product, memory&#39;s shape evolved from &quot;memory hierarchy&quot; to &quot;the agent&#39;s own file system&quot;.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-4">
         <h2><span data-zh>三层的边界</span><span data-en>Where the layers end</span></h2>
         <span data-zh><p>一个容易搞混的问题：summary 算记忆吗？ 把长对话压成摘要续下去，是<strong>压缩</strong>，不是<strong>记忆</strong>—— 它仍然只活在当前会话里，关掉就没了。</p>
             <p>判断一件事归哪层，只问一句：<strong>进程重启之后，它还在吗？</strong> 还在 → 第二层或第三层；不在了 → 第一层。</p></span><span data-en><p>An easy confusion: does a summary count as memory? Compressing a long conversation into a summary and continuing is <strong>compression</strong>, not <strong>memory</strong> — it still lives only in the current session and is gone when the session closes.</p>
             <p>To decide which layer something belongs to, ask one question: <strong>after the process restarts, is it still there?</strong> Still there → layer two or three; gone → layer one.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-5">
         <h2><span data-zh>共同的坑</span><span data-en>Shared pitfalls</span></h2>
         <span data-zh><p>1. 记忆泄漏：把敏感信息原样存进长期记忆，检索时又被带进上下文。 2. 串用户：不过滤 user_id，A 的记忆被 B 的会话召回。 3. 静默改写：自动更新覆盖了旧事实，却没人说得清改了什么。 4. token 静默膨胀：召回策略太松，每轮都塞一大堆「相关」记忆。</p>
             <p>记忆系统的验收标准只有一条： <strong>该记得的找得回，不该记得的召不起。</strong></p></span><span data-en><p>1. Memory leakage: sensitive information stored verbatim into long-term memory, then recalled back into context. 2. Crossed users: without user_id filtering, user A&#39;s memory is recalled in user B&#39;s session. 3. Silent rewriting: automatic updates overwrite old facts and nobody can say what changed. 4. Silent token bloat: a too-loose recall policy stuffs a pile of &quot;relevant&quot; memories into every turn.</p>
@@ -153,7 +154,7 @@
           <tr><td><span data-zh>Letta 官方文档 · Memory &amp; dreaming（2026-10-30 直抓 200）</span><span data-en>Letta official docs · Memory &amp; dreaming (direct fetch 200 on 2026-10-30)</span></td><td><a href="https://docs.letta.com/configuration/memory/" target="_blank" rel="noopener">https://docs.letta.com/configuration/memory/</a></td></tr>
           <tr><td><span data-zh>MemGPT 论文（arXiv 2310.08560，2026-10-30 直抓摘要页）</span><span data-en>MemGPT paper (arXiv 2310.08560, abstract page direct-fetched 2026-10-30)</span></td><td><a href="https://arxiv.org/abs/2310.08560" target="_blank" rel="noopener">https://arxiv.org/abs/2310.08560</a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>核验快照：2026-10-30 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-10-30 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+        <p class="guide-foot"><span data-zh>资料核验日期：2026-10-30。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-10-30. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>

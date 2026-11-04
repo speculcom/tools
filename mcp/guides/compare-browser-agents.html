@@ -92,15 +92,16 @@
       </div>
       <div class="panel-lead"><span data-zh><p>三个浏览器 MCP 的适用条件、能力边界与价格档位；按「本地还是云端、要不要模型、要不要性能分析」给出一句选择，并写明什么情况下换另一个。</p></span><span data-en><p>Applicability, capability limits and plan tiers for three browser MCP servers; a one-line choice based on local vs cloud, whether a model is needed and whether performance analysis is required, plus when to switch.</p></span></div>
       <p class="t-xs" data-en>English summaries and interface labels are available. The guide body below is currently in Chinese.</p>
-      <div class="panel is-slim">
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>一句话选择</span><span data-en>One-line choice</span></a></li><li><a href="#guide-section-1"><span data-zh>适用条件</span><span data-en>When each fits</span></a></li><li><a href="#guide-section-2"><span data-zh>能力边界</span><span data-en>Capability limits</span></a></li><li><a href="#guide-section-3"><span data-zh>价格档位</span><span data-en>Plan tiers</span></a></li><li><a href="#guide-section-4"><span data-zh>什么情况选另一个</span><span data-en>When to switch</span></a></li><li><a href="#guide-section-5"><span data-zh>核验事实</span><span data-en>Dated facts</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>一句话选择</span><span data-en>One-line choice</span></h2>
         <ul><li><strong>本机浏览器 + 稳定 selector + 不要模型</strong>：选 Playwright MCP。</li><li><strong>不想在本机起浏览器 + 要自然语言驱动网页</strong>：选 Browserbase MCP。</li><li><strong>给编码 Agent 看页面、抓性能与 console</strong>：选 Chrome DevTools MCP。</li></ul>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-1">
         <h2><span data-zh>适用条件</span><span data-en>When each fits</span></h2>
         <div class="tbl-wrap"><table><thead><tr><th>问题</th><th>Playwright MCP</th><th>Browserbase MCP</th><th>Chrome DevTools MCP</th></tr></thead><tbody><tr><td>跑在哪</td><td>本机 Node.js 进程</td><td>Browserbase 云端浏览器</td><td>本机进程，驱动本机 Chrome</td></tr><tr><td>怎么连</td><td>stdio；也提供 HTTP endpoint</td><td>托管 <code>streamable-http</code> 端点</td><td>stdio（<code>npx chrome-devtools-mcp@latest</code>）</td></tr><tr><td>要不要模型</td><td>不需要；用无障碍树快照</td><td>需要；Stagehand 驱动 act/observe/extract</td><td>不需要；包装 CDP</td></tr><tr><td>适合谁</td><td>写 E2E、表单与固定流程</td><td>云端跑批量网页任务、不想管浏览器</td><td>编码 Agent 的调试与性能分析</td></tr><tr><td>工具面</td><td>72 个（2026-10-08 核对）</td><td>6 个（start / end / navigate / act / observe / extract）</td><td>导航、交互、截图、trace、网络与 console</td></tr></tbody></table></div>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-2">
         <h2><span data-zh>能力边界</span><span data-en>Capability limits</span></h2>
         <p><strong>Playwright MCP</strong></p>
             <ul><li>默认有头模式，<code>--headless</code> 可切；headless 默认空闲 1 小时关闭，headed 默认不自动关闭。</li><li>用户 profile 默认落盘在 Playwright 缓存目录（按 workspace hash 隔离），<code>--isolated</code> 可改为仅存内存。</li><li>没有本地文件访问能力；核心是浏览器控制。</li><li>版本仍是 <code>0.0.x</code>（v0.0.83 于 2026-09-28），工具名可能继续变。</li></ul>
@@ -109,17 +110,17 @@
             <p><strong>Chrome DevTools MCP</strong></p>
             <ul><li>驱动真实浏览器：客户端让它访问什么就访问什么，server 本身没有 URL 白名单的官方说明。</li><li>能力集中在运行时：页面、网络、console、performance trace、CPU/网络节流。</li><li>不读写项目源码；那是 filesystem server 的职责。</li><li>随客户端生死（stdio 子进程），无后台任务语义。</li></ul>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-3">
         <h2><span data-zh>价格档位</span><span data-en>Plan tiers</span></h2>
         <p>只列档位名，不写价格数字（单价与额度查官方定价页当日值）：</p>
             <div class="tbl-wrap"><table><thead><tr><th>产品</th><th>档位</th></tr></thead><tbody><tr><td>Playwright MCP</td><td>开源仓库，无付费档位</td></tr><tr><td>Browserbase MCP</td><td>Free / Developer / Startup / Scale（Scale 为定制）</td></tr><tr><td>Chrome DevTools MCP</td><td>开源仓库（Apache-2.0），无付费档位</td></tr></tbody></table></div>
             <p>Browserbase 的免费档有并发浏览器的上限，付费档按并发与浏览器小时递增；具体数字以定价页为准。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-4">
         <h2><span data-zh>什么情况选另一个</span><span data-en>When to switch</span></h2>
         <ul><li>选 Playwright 后，如果不想在本机维护浏览器与依赖：换 Browserbase。</li><li>选 Browserbase 后，如果要开源可审计的完整实现：换 Playwright 或 Chrome DevTools（Browserbase 现役实现闭源在托管侧）。</li><li>选 Chrome DevTools 后，如果要脱离本机、批量跑多会话：换 Browserbase。</li><li>选 Chrome DevTools 后，如果只要稳定的固定流程、不要调试面：换 Playwright。</li><li>选 Playwright 后，如果目标是性能 trace 与 console 取证：换 Chrome DevTools。</li></ul>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-5">
         <h2><span data-zh>核验事实</span><span data-en>Dated facts</span></h2>
         <p>1. Playwright MCP 由 Microsoft 维护，本地 Node.js 18+、stdio 通信，工具数 72（2026-10-08 核对），最新记录版本 v0.0.83（2026-09-28）。 2. Browserbase MCP 托管端点为 <code>https://mcp.browserbase.com/mcp</code>（streamable-http），工具 6 个；GitHub 仓 archived（2026-07-20 停推）。 3. Browserbase 定价页档位为 Free / Developer / Startup / Scale（2026-11-03 直抓）；D9 口径不采价格数字。 4. Chrome DevTools MCP 为 Apache-2.0，v1.12.0 于 2026-10-22 发布；仓库 54,460★、最近推送 2026-10-29（GitHub API 核验）。</p>
       </div>
@@ -131,7 +132,7 @@
           <tr><td>Browserbase · Pricing（档位名称与并发口径，2026-11-03 直抓）</td><td><a href="https://www.browserbase.com/pricing" target="_blank" rel="noopener">https://www.browserbase.com/pricing</a></td></tr>
           <tr><td>ChromeDevTools · chrome-devtools-mcp 仓库（Apache-2.0、v1.12.0 2026-10-22）</td><td><a href="https://github.com/ChromeDevTools/chrome-devtools-mcp" target="_blank" rel="noopener">https://github.com/ChromeDevTools/chrome-devtools-mcp</a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>核验快照：2026-11-03 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-11-03 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+        <p class="guide-foot"><span data-zh>资料核验日期：2026-11-03。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-11-03. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>

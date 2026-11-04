@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>Python</span><span data-en>Python</span></span>
         <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
@@ -144,7 +145,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>官方自述 model-agnostic：&quot;supports any LLM&quot;</strong>（README 原文）。</p>
             <p>实现是多套 Model 类，各管一端：</p>
@@ -160,7 +161,7 @@
             <p><strong>Switching providers = swap one Model class.</strong> A <code>provider=</code> parameter also works. The code structure stays the same.</p>
             <p><strong>Unknown: after switching providers, the reliability alignment of tool calling / structured output is not stated by the official docs.</strong> (guided_tour and the models reference page checked.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>纯 Python 库。agent loop 由你自己在本地进程里跑。官方无托管执行服务。</strong></p>
             <p>官方定位原话（README）：</p>
@@ -176,7 +177,7 @@
             <p>The whole agent can also be shared to HF Hub as a Gradio Space via <code>agent.push_to_hub()</code> (README, verbatim: &quot;share your agent to the Hub, as a Space repository&quot;).</p>
             <p>But that is only a <strong>share / load form</strong> — <strong>not a vendor-hosted resident runtime</strong> — the process stays in your hands.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>框架本身不预置文件系统工具。</strong></p>
             <p>官方 default toolbox（<code>smolagents[toolkit]</code>）只有三项：DuckDuckGo/WebSearch、 Python 代码解释器、Whisper 转写 —— <strong>没有专门的文件读写工具</strong>。</p>
@@ -188,7 +189,7 @@
             <p>So <strong>the file boundary comes from the execution environment, not the framework</strong>. Locally it is constrained by <code>LocalPythonExecutor</code>&#39;s import allowlist. In a remote sandbox it is confined to the sandbox container. The two sandbox modes are on the secure_code_execution page.</p>
             <p><strong>Unknown: the default file-access scope allowed for CodeAgent is not stated by the official docs.</strong> (secure_code_execution and guided_tour pages checked; no file-permission section.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>自托管 = 进程关了就停，无托管后台选项。</strong></p>
             <p>README 的运行方式全是本地代码调用。形式是 Python API / CLI / 沙箱。它没有云端常驻或定时执行形态。</p>
@@ -202,7 +203,7 @@
             <p><strong>Unknown: the official docs provide no built-in way to persist this memory and restore it in a new process</strong> (tutorials/memory and guided_tour pages checked).</p>
             <p>So resuming after interruption means serializing steps yourself.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>工具面很宽，而且 MCP 是一等接入。</strong> README 自述 &quot;Tool-agnostic&quot;，工具共四个来源：</p>
             <ul><li>① 自定义工具 —— <code>@tool</code> 装饰器或继承 <code>Tool</code> 类</li><li>② <strong>MCP</strong> —— <code>ToolCollection.from_mcp(...)</code> 可读任意 MCP server（装 <code>smolagents[mcp]</code>）</li><li>③ LangChain 工具 —— <code>Tool.from_langchain</code></li><li>④ <strong>把 HF Hub Space 当工具</strong> —— <code>Tool.from_space</code></li></ul>
@@ -212,7 +213,7 @@
             <p>The default toolbox (<code>smolagents[toolkit]</code>) = DuckDuckGo/WebSearch, Python code interpreter, Whisper transcription.</p>
             <p>Multi-agent systems use <code>managed_agents=</code> to treat sub-agents as callable units. There are also <code>final_answer_checks</code> for custom termination validation.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>上下文 = 步历史（AgentMemory），没有跨会话持久化。</strong></p>
             <p>官方 tutorials/memory 页的说法是：</p>
@@ -231,7 +232,7 @@
             <p><strong>The official docs position this axis as &quot;inspect / rewrite memory&quot;, not compression.</strong></p>
             <p><strong>Unknown: deep context management like spilling large tool outputs to disk is not stated by the official docs.</strong> (tutorials/memory and guided_tour pages checked.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>官方对执行安全说得非常直白。默认的 <code>LocalPythonExecutor</code> 不是安全沙箱。</strong></p>
             <p>README 原文：</p>
@@ -251,7 +252,7 @@
             <p>There is also a Human-in-the-Loop example (examples/plan_customization), but <strong>it is not a built-in approval mechanism</strong>.</p>
             <p><strong>Unknown: network access control is not stated by the official docs.</strong></p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p><strong>适合这四类场景。</strong></p>
             <ul><li>认同 code-as-action（官方称比 JSON 工具调用少 30% 步数），并愿意给 LLM 生成代码上沙箱</li><li>要 model-agnostic、能接本地模型（transformers / Ollama / mlx-lm）</li><li>要薄而可 hack 的库；Python 栈</li><li>要 MCP / LangChain / Hub Space 工具生态</li></ul>
@@ -283,7 +284,7 @@
           <li>把大工具输出落盘的深上下文管理（官方未说明）</li>
           <li>内建网络访问控制机制（官方未说明）</li>
           <li>进程间持久化 / 断点续跑的内建方案（官方未提供，得自己序列化 steps）</li>
-          <li>hosted 沙箱（Blaxel / E2B / Modal）的配额与计费口径（各由服务商页决定；报价按 D9 口径本站不存）</li>
+          <li>hosted 沙箱（Blaxel / E2B / Modal）的配额与计费口径（各由服务商页决定；报价按本站的报价记录约定本站不存）</li>
         </ul></span><span data-en>
         <ul>
           <li>After switching providers, the reliability alignment of tool calling / structured output (not stated officially; guided_tour and models reference pages checked)</li>
@@ -291,7 +292,7 @@
           <li>Deep context management spilling large tool outputs to disk (not stated officially)</li>
           <li>Built-in network access control mechanisms (not stated officially)</li>
           <li>A built-in cross-process persistence / checkpoint-resume solution (not provided officially; serialize steps yourself)</li>
-          <li>Quotas and billing of the hosted sandboxes (Blaxel / E2B / Modal) (each decided by the provider&#39;s own pages; quotes not stored per our D9 rule)</li>
+          <li>Quotas and billing of the hosted sandboxes (Blaxel / E2B / Modal) (each decided by the provider&#39;s own pages; quotes not stored per our price-recording policy)</li>
         </ul></span>
       </div>
 

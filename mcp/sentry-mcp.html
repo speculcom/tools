@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a> · <a href="#dimension-transport"><span data-zh>传输方式</span><span data-en>Transport</span></a> · <a href="#dimension-auth"><span data-zh>认证机制</span><span data-en>Authentication</span></a> · <a href="#dimension-scope"><span data-zh>权限范围</span><span data-en>Permission scope</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>MCP</span><span data-en>MCP</span></span>
         <span class="tag on"><span data-zh>监控诊断</span><span data-en>Monitoring and diagnostics</span></span>
@@ -132,47 +133,47 @@
         <p class="t-section-lead">11 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>它自己不调模型</strong>——它是被 MCP 客户端调用的接口实现，选模型是客户端的事。 它把 Sentry 平台能力（issue、事件、release、告警）包装成 MCP 工具供 agent 查询与诊断。</p></span><span data-en><p><strong>It calls no model itself</strong> — an interface implementation called by MCP clients; choosing the model is the client&#39;s business. It wraps Sentry platform capabilities (issues, events, releases, alerts) as MCP tools for agents to query and diagnose.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p>官方托管远程 server 为主（mcp.sentry.dev 直抓 200）；仓 getsentry/toolkit 是官方工具线 （949★，最近推送 2026-10-30，GitHub API 核验）。旧仓名 getsentry/sentry-mcp 已 redirect（直抓所见）。</p></span><span data-en><p>Mainly the official hosted remote server (mcp.sentry.dev direct fetch 200); the getsentry/toolkit repo is the official tooling line (949★, last push 2026-10-30, GitHub API verified). The old repo name getsentry/sentry-mcp now redirects (seen in the direct fetch).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p>不碰本机文件系统——它操作的是 Sentry 云端数据（issue/事件/release）。 本地日志与源码不在它作用域内；要读本地文件得配 filesystem server。</p></span><span data-en><p>Never touches the local file system — it operates on Sentry cloud data (issues/events/releases). Local logs and source code are outside its scope; reading local files requires pairing a filesystem server.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p>远程托管形态与客户端进程无关，服务在 Sentry 侧；无断点续跑语义—— MCP 会话模式是请求-响应，官方未提供后台任务机制。</p></span><span data-en><p>The hosted form is independent of the client process; the service lives on Sentry&#39;s side; no resume-from-checkpoint semantics — the MCP session model is request-response, the official side provides no background-task mechanism.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p>面向「agent 查崩溃/诊断线上问题」的工具集：whoami、找 issue、看 issue 详情、 事件与堆栈、release 对比等；完整工具清单以官方文档为准，未逐条清点。</p></span><span data-en><p>A toolset aimed at &quot;agents checking crashes/diagnosing production issues&quot;: whoami, find issues, view issue details, events and stacks, release comparisons, etc.; the complete tool inventory follows the official docs, not enumerated item by item.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p>无跨会话记忆——每次会话独立，状态在 Sentry 平台本身。 官方未提供 server 侧记忆或检索层（未核验到≠没有，已查文档未见）。</p></span><span data-en><p>No cross-session memory — each session is independent, state lives in the Sentry platform itself. The official side provides no server-side memory or retrieval layer (not verified ≠ absent; docs checked showed none).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p>权限由 Sentry 账号鉴权决定（OAuth 登录流）；能读 issue 与事件数据， 写操作面（如解决 issue）以官方工具清单为准——未逐条核验写能力边界。</p></span><span data-en><p>Permissions are determined by Sentry account auth (OAuth login flow); it can read issue and event data, the write surface (e.g. resolving issues) follows the official tool inventory — write-capability boundaries not verified item by item.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>适合：编码 agent 直接查「这个报错在 Sentry 里有没有」、线上事故诊断接 agent 工作流。 不适合：要本地日志分析（不在作用域）；要 FSL 限制期内的闭源商用集成（先读许可条款）。</p></span><span data-en><p>Fits: coding agents directly asking &quot;does this error exist in Sentry&quot;, hooking production-incident diagnosis into agent workflows. Not a fit: local log analysis (out of scope); closed-source commercial integrations during the FSL restriction window (read the license terms first).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-transport">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
           <dd><span data-zh><p>官方主推 <strong>Streamable HTTP 远程托管</strong>（mcp.sentry.dev）； 客户端配置以官方文档为准。SSE 老传输的支持状态未逐条核验。 核验：官方文档页与 mcp.sentry.dev 直抓 200（2026-10-21）。</p></span><span data-en><p>Officially primary <strong>Streamable HTTP remote hosting</strong> (mcp.sentry.dev); client configuration follows the official docs. Support status of the older SSE transport not verified item by item. Verified: official docs page and mcp.sentry.dev direct fetch 200 (2026-10-21).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-auth">
           <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
           <dd><span data-zh><p>走 Sentry 账号 OAuth 登录流（浏览器授权）；无 PAT 明文配置路线的官方说明—— 未逐条核验。凭据存储与轮换细节官方未展开。</p></span><span data-en><p>Goes through the Sentry account OAuth login flow (browser authorization); no official docs for a plaintext-PAT configuration route — not verified item by item. Credential storage and rotation details are not expanded in the official docs.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-scope">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
           <dd><span data-zh><p>作用域 = Sentry 账号可见的 org/project 数据面；读 issue/事件为主。 写操作与高危工具清单未逐条核验；无独立审批机制的官方说明。</p></span><span data-en><p>Scope = the org/project data visible to the Sentry account; reading issues/events is primary. The write operations and high-risk tool inventory not verified item by item; no official docs for a separate approval mechanism.</p></span></dd>
         </div>

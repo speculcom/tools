@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>编排框架</span><span data-en>Orchestration framework</span></span>
         <span class="tag on"><span data-zh>Python</span><span data-en>Python</span></span>
@@ -168,7 +169,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>它的 provider 很全，而且每种都能在官方样例目录里逐个核到。</strong></p>
             <p><strong>官方给的是「provider 灵活 + 多语言一致 API」的组合。</strong></p>
@@ -192,7 +193,7 @@
             <p>Self-built providers extend <code>BaseAgent</code> / <code>BaseChatClient</code>.</p>
             <p><strong>⚠ Unknown: after switching providers, a reliability comparison of tool calling / structured output is not stated by the official docs.</strong> (Overview page and providers sample README both checked.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>它是双语言的库（SDK），但官方额外配了三条「托管与持久化」通道。</strong></p>
             <p>安装形态两条：</p>
@@ -218,7 +219,7 @@
             <p><strong>Responsibility boundary</strong>: the framework itself does not run the agent loop. Hosting is either Foundry&#39;s or your own deployment.</p>
             <p>Like CrewAI it is a &quot;library&quot;, but MAF&#39;s official hosting path is written more front-and-center than CrewAI&#39;s.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>框架核心不内置文件读写工具，文件能力来自 provider 与工具层。</strong></p>
             <p><strong>默认边界官方未系统化定义。</strong></p>
@@ -242,7 +243,7 @@
             <p>That is &quot;harden it yourself with middleware&quot;, not a file sandbox.</p>
             <p><strong>⚠ Unknown: a framework-level default file-system permission model and process/container sandbox are not stated by the official docs.</strong> (Overview page and providers sample README both checked.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>「关机后还能跑」在本站是靠官方 Durable 扩展兑现的，粒度是 superstep。</strong></p>
             <p><strong>① 状态落盘</strong>（官方 <code>workflows/checkpoints</code> 页原文）：</p>
@@ -268,7 +269,7 @@
             <p><strong>Official wording</strong> (when waiting on a human): &quot;Pause for human input or external events <strong>without consuming compute or model tokens</strong>&quot;</p>
             <p><strong>The pure SDK does not host background</strong>: without the Durable extension, you must keep the process resident yourself.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>工具生态是它对标 ADK 的强项：MCP 与 A2A 都是官方点名的一等能力。</strong></p>
             <p>官方公告页「<strong>Four Pillars</strong>」第一条列出三项开放标准。</p>
@@ -298,7 +299,7 @@
             <p>Plus the experimental <strong>AF Labs</strong> package.</p>
             <p><strong>⚠ Unknown: MCP/A2A transport-matrix details are not given in one place by the official docs.</strong> (Overview and a2a pages checked.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>官方把「会话状态」与「记忆」拆成两组原语。</strong></p>
             <p><strong>workflow 另有 superstep 级 checkpoint。</strong></p>
@@ -326,7 +327,7 @@
             <p><strong>The two mechanisms are described in separate official sections and must not be conflated.</strong></p>
             <p><strong>⚠ Unknown: how long histories get compacted into the window — the official docs give no unified mechanism at the overview level.</strong> (Overview and checkpoints pages checked; no dedicated chapter like ADK&#39;s Context Compaction found.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>官方明确的机制是「HITL 请求/响应 + 工具级人工审批」。</strong></p>
             <p>两者都属拦执行，不是边界划定。</p>
@@ -350,7 +351,7 @@
             <ul><li><code>SecureAgentConfig</code> + <code>quarantined_llm</code> for prompt-injection defense</li><li><code>SecureMCPToolProxy</code> hardening external MCP tools</li><li>cross-tool confidential-data exfiltration protection</li></ul>
             <p><strong>⚠ Unknown: framework-level process/container sandbox defaults are not stated by the official docs.</strong> (Overview, checkpoints, and a2a pages checked.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p><strong>它是「图工作流」式的编排框架，适合五类场景。</strong></p>
             <ul><li>要把多 agent 组织成有分支、有人工介入、可 checkpoint 恢复的<strong>确定性图工作流</strong></li><li>需要 .NET 与 Python 一致 API 双语言落地</li><li>团队在 Azure / Microsoft Foundry 生态内</li><li>要求可观测性（内建 OpenTelemetry）、durability、governance 与 provider 灵活性</li><li>需要 MCP 与 A2A 跨运行时互通，或要从 Semantic Kernel / AutoGen 迁移</li></ul>

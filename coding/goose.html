@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>编程</span><span data-en>Coding</span></span>
         <span class="tag on"><span data-zh>终端</span><span data-en>Terminal</span></span>
@@ -149,7 +150,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>能用多家模型，也能接本地模型。</strong></p>
             <p>官方 README 列了 15+ 家 provider：</p>
@@ -177,7 +178,7 @@
             <p>The official docs flag one thing: <code>goose configure</code> does not support entering custom model names. In that case set <code>GOOSE_MODEL</code>, or use Desktop.</p>
             <p>The official docs also state that tool calling currently performs best with Claude 4. They also recommend consulting the BFCL leaderboard.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>本地优先，三种形态都有。</strong></p>
             <ul><li>桌面应用：macOS / Linux / Windows</li><li>完整 CLI：面向终端工作流</li><li>可嵌入的 API：GDK / SDK</li></ul>
@@ -195,7 +196,7 @@
             <p>There is also <code>goose serve</code>. Desktop starts it in the background by default; it is a local ACP server.</p>
             <p>You can also run <code>goose serve</code> standalone on a remote VM and have Desktop connect to it.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>靠内置的 Developer 扩展读写文件、执行命令，默认权限很宽。</strong></p>
             <p>Developer 扩展页列出的工具：</p>
@@ -213,7 +214,7 @@
             <ul><li>MCP Roots shares the current working directory with roots-capable extensions</li><li>extensions can run inside Docker containers (<code>--container</code> and the goose-in-docker tutorial)</li></ul>
             <p>There is also a separate Analyze extension for <strong>semantic analysis and call graphs</strong>.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>本地进程，不支持关机续跑。</strong></p>
             <p>CLI 会话随终端结束。</p>
@@ -229,7 +230,7 @@
             <ul><li>Recipes&#39; scheduled runs (schedules)</li><li>the <code>goose serve</code> ACP server</li><li>pointing Desktop at a remote goose server</li><li>Roaming Agents (connecting from another machine to a running goose)</li></ul>
             <p>When the host shuts down, tasks are interrupted.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>MCP 是一等公民</strong>：extensions 就是 MCP server。</p>
             <p>官方 README 原文：</p>
@@ -253,7 +254,7 @@
             <p><strong>Non-interactive command <code>goose run</code></strong> arguments:</p>
             <ul><li><code>-t &quot;text&quot;</code> / <code>-i file</code> / <code>-i -</code> (stdin)</li><li><code>--output-format json|stream-json</code></li><li><code>--no-session</code></li><li><code>-s</code> to switch to interactive</li></ul></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>会话落本地 SQLite，可续接、可分叉。</strong></p>
             <p>官方 CLI Commands 页记了一条变化：</p>
@@ -273,7 +274,7 @@
             <p><strong>Memory</strong>: the built-in Memory extension provides durable context, i.e. cross-session information storage.</p>
             <p>Top of Mind injects durable instructions each turn. The official docs also have goosehints-style context-engineering techniques.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>默认就是最宽松的一档，值得单独记。</strong></p>
             <p>官方 Developer 扩展页原文：</p>
@@ -301,7 +302,7 @@
             <p>The diagnostics bundle <code>goose session diagnostics</code> includes session messages and configuration. The official docs advise checking before sharing.</p>
             <p><strong>Where model-inference data flows depends on the provider you choose</strong>. goose itself is an Apache-2.0 local program.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>四类人适合用：</p>
             <ul><li>想要一个<strong>本地优先、可换任意 provider（含本地模型）的通用 agent</strong>，而不止写代码的人</li><li>需要桌面应用 + CLI 双形态的人</li><li>需要以 MCP 扩展能力为中心、可白名单管控的企业</li><li>需要把 agent 接进脚本或 CI 的人（<code>goose run --output-format json</code>）</li></ul></span><span data-en><p>Four kinds of people fit:</p>

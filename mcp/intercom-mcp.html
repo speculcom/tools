@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a> · <a href="#dimension-transport"><span data-zh>传输方式</span><span data-en>Transport</span></a> · <a href="#dimension-auth"><span data-zh>认证机制</span><span data-en>Authentication</span></a> · <a href="#dimension-scope"><span data-zh>权限范围</span><span data-en>Permission scope</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>MCP</span><span data-en>MCP</span></span>
         <span class="tag on"><span data-zh>客服</span><span data-en>Customer support</span></span>
@@ -134,47 +135,47 @@
         <p class="t-section-lead">11 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>它自己不调模型</strong>——官方托管远程 server，被 MCP 客户端调用。例外口径：<strong>Fin Operator 工具族</strong> 会驱动 Intercom 自家 AI（Operator）干活——send_operator_message 消耗 Operator credits （与在 Intercom 里开一轮对话同口径计费），其余四个 Operator 工具免费。</p></span><span data-en><p><strong>It calls no model itself</strong> — an official hosted remote server called by MCP clients. One exception wording: the <strong>Fin Operator tool family</strong> drives Intercom&#39;s own AI (Operator) to work — send_operator_message consumes Operator credits (billed the same way as starting a turn inside Intercom), while the other four Operator tools are free.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>官方托管 remote server</strong>（无自托管线）：US 端点 https://mcp.intercom.com/mcp、 EU 端点 https://mcp.eu.intercom.com/mcp（EU 请求在 EU 内处理，符合其 Regional Data Hosting 承诺）； <strong>AU 托管工作区暂不支持</strong>（官方明写）。端点直连实测 401（存在、需鉴权，非死链）。</p></span><span data-en><p>An <strong>official hosted remote server</strong> (no self-hosted line): the US endpoint https://mcp.intercom.com/mcp, the EU endpoint https://mcp.eu.intercom.com/mcp (EU requests are processed within the EU, in line with its Regional Data Hosting commitments); <strong>AU-hosted workspaces are not yet supported</strong> (stated plainly by the official docs). The endpoints measured 401 direct (they exist, auth required — not dead links).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p>不读写本机文件——读写对象全在 Intercom 工作区侧（conversations/contacts/companies/ Help Center articles）。</p></span><span data-en><p>Reads and writes no local files — the read/write objects all live on the Intercom workspace side (conversations/contacts/companies/Help Center articles).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p>无常驻本机后台；连接活在客户端与 Intercom 托管端点之间（官方：连接保持活跃以接收更新）。</p></span><span data-en><p>No persistent local background; the connection lives between the client and Intercom&#39;s hosted endpoint (official wording: the connection stays live to receive updates).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p>官方文档现口径 <strong>14 个工具</strong>：通用族 <strong>search</strong>（query DSL：object_type:conversations/contacts、 字段操作符 eq/neq/gt/contains、分页 starting_after）+ <strong>fetch</strong>（按前缀 ID 取全量详情）； 直连 API 族 search_conversations / get_conversation / search_contacts / companies / Help Center articles（<strong>list/search/get 读 + create/update 写</strong>）； <strong>Fin Operator 五工具</strong>（send_operator_message / get_operator_response / get_proposal_details / apply_proposals / reject_proposals——apply 会改动工作区线上配置）。</p></span><span data-en><p>The current official-docs count is <strong>14 tools</strong>: the universal family <strong>search</strong> (query DSL: object_type:conversations/contacts, field operators eq/neq/gt/contains, pagination via starting_after) + <strong>fetch</strong> (full details by prefixed ID); the direct-API family search_conversations / get_conversation / search_contacts / companies / Help Center articles (<strong>list/search/get read + create/update write</strong>); and the <strong>five Fin Operator tools</strong> (send_operator_message / get_operator_response / get_proposal_details / apply_proposals / reject_proposals — apply changes your workspace&#39;s live configuration).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p>无 server 侧跨会话记忆；上下文=你的 Intercom 工作区数据本身（官方叙事：AI 助手保持 对工作区的环境感知）。Operator 对话有服务端会话态（get_operator_response 稍后取答）。</p></span><span data-en><p>No server-side cross-session memory; the context is your Intercom workspace data itself (official narrative: AI assistants keep awareness of your workspace). Operator chats have server-side session state (get_operator_response collects the answer later).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>两种鉴权</strong>：OAuth（推荐；Dynamic Client Registration，但 redirect URI 过 allowlist—— localhost/127.0.0.1 任意端口已放行，其他回调要先申请加白）或 Bearer token（Intercom API token， 需 scopes：读 users/companies、读 conversations、读写 articles）。 <strong>Bearer 连接拿不到 Fin Operator 工具</strong>（官方明写）；Operator 权限上线前建立的旧连接需重连。 工具按「你本人在工作区的权限」授权——MCP 不扩权。</p></span><span data-en><p><strong>Two authentication modes</strong>: OAuth (recommended; Dynamic Client Registration, but every registered redirect URI passes an allowlist — localhost/127.0.0.1 on any port is already allowed, other callbacks must be requested first) or Bearer token (an Intercom API token, with scopes: read users/companies, read conversations, read+write articles). <strong>Bearer connections do not get the Fin Operator tools</strong> (stated plainly by the official docs); connections made before the Operator permission existed must reconnect. Tools are authorized as you — mirroring your own workspace permissions, MCP grants no extra rights.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>适合：客服/支持团队把 Intercom 数据接进 AI 工具（Claude/Cursor/VS Code 等官方在册客户端）—— 查会话、查联系人、读写帮助文档、驱动 Operator；EU 工作区有数据驻留线。 不适合：AU 托管工作区（不支持）；要自托管/开源实现（无）；要 Bearer 简单接入还用 Operator（拿不到）。</p></span><span data-en><p>Fits: support teams plugging Intercom data into AI tools (Claude/Cursor/VS Code and other officially listed clients) — querying conversations and contacts, reading and writing Help Center docs, driving Operator; EU workspaces get a data-residency line. Not a fit: AU-hosted workspaces (unsupported); wanting a self-hosted/open-source implementation (none); wanting Bearer simplicity while also using Operator (you won&#39;t get it).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-transport">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
           <dd><span data-zh><p><strong>streamable-http</strong>（推荐：US https://mcp.intercom.com/mcp、EU https://mcp.eu.intercom.com/mcp） + <strong>legacy SSE</strong>（/sse，官方标 deprecated、仅为向后兼容保留）。核验：mcp.intercom.com 首页与 developers.intercom.com/docs/guides/mcp（2026-10-31 直连 200；端点直连 401=存在需鉴权）。</p></span><span data-en><p><strong>streamable-http</strong> (recommended: US https://mcp.intercom.com/mcp, EU https://mcp.eu.intercom.com/mcp) + <strong>legacy SSE</strong> (/sse, marked deprecated by the official docs, kept only for backwards compatibility). Verified: the mcp.intercom.com landing page and developers.intercom.com/docs/guides/mcp (200 direct on 2026-10-31; endpoints 401 direct = exist, auth required).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-auth">
           <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
           <dd><span data-zh><p>OAuth（推荐；DCR+redirect URI allowlist）或 Bearer token（API token+scopes：读 users/companies、 读 conversations、读写 articles）。工具授权=你本人工作区权限镜像，MCP 不扩权。</p></span><span data-en><p>OAuth (recommended; DCR + redirect-URI allowlist) or Bearer token (API token + scopes: read users/companies, read conversations, read+write articles). Tool authorization mirrors your own workspace permissions — MCP grants no extra rights.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-scope">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
           <dd><span data-zh><p>读面（conversations/contacts/companies/articles）+ <strong>写面</strong>（Help Center articles 创建/更新、 Operator apply_proposals 改线上配置）；无本机面。写面按工作区权限与提案审批把关。</p></span><span data-en><p>Read surface (conversations/contacts/companies/articles) + <strong>write surface</strong> (Help Center article create/update, Operator apply_proposals changing live workspace configuration); no local surface. The write surface is gated by workspace permissions and proposal approval.</p></span></dd>
         </div>

@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>编程</span><span data-en>Coding</span></span>
         <span class="tag on"><span data-zh>IDE</span><span data-en>IDE</span></span>
@@ -136,7 +137,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>结论：不锁模型，能自带 API Key，也能接本地模型。</strong></p>
             <p>官方把自己定位成 LLM-agnostic。 Junie CLI 的发布博客把这句话写得很直白：</p>
@@ -154,7 +155,7 @@
             <p><strong>The local-inference story also changed over time.</strong> The help page then said &quot;local models cannot be used in offline mode yet&quot;. Junie Local from 2026-08 supports running Qwen3.6-27B on your own machine.</p>
             <p><strong>The concrete model list and per-tier availability are not given in full on any single official page.</strong> (help Models page and the AI pricing page checked.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>它是插件，不是独立编辑器；另有独立的 Junie CLI。</strong></p>
             <p>官方 Install 页的原话：</p>
@@ -170,7 +171,7 @@
             <p>The official pages also give per-IDE minimum versions. E.g. IDEA Ultimate / PyCharm Pro / WebStorm / GoLand need 2024.3.2+.</p>
             <p><strong>The second leg is Junie CLI</strong> (entered Beta in 2026-03). It runs in terminals, any IDE, CI/CD and GitHub / GitLab. ReSharper 2026.2 brings it into Visual Studio (Preview). Since 2026-08 there is also Junie Local with on-device inference.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>它只动你当前项目的文件；出项目要单独批准。</strong></p>
             <p>每轮执行后，Junie 会列出本次新增与修改的文件。 每个文件都有 diff 查看链接。 在 Done 面板里，你能<strong>逐文件选择性回滚</strong>。 然后再决定接受还是拒绝整次执行。 它执行的命令输出，可以在 Junie 的终端里看。</p>
@@ -184,7 +185,7 @@
             <p>To limit which files and directories it handles, use <code>.aiignore</code>. Its syntax is the same as gitignore. The official pages warn: <strong>it protects content only; file names and directory names remain visible.</strong></p>
             <p><strong>Implementation details of the IDE semantic index are not broken out officially.</strong> (the aiignore and diffs-and-review pages checked.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>没有厂商托管的后台：任务跑在你打开的那个环境里。</strong></p>
             <p>IDE 形态依赖 IDE 进程常驻。 本形态下，官方没有描述「厂商托管、关机续跑」的后台环境。 它在 Code mode 下能自主跑多步任务、测试与构建。 但这些动作都在你打开的 IDE 与本机上进行。</p>
@@ -200,7 +201,7 @@
             <p>But no background concurrency or duration quota is given officially.</p>
             <p><strong>A vendor-hosted background execution environment: not stated officially.</strong> (the modes, licensing and CLI launch blog checked.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>能力按模式分层，招牌是用真调试器。</strong></p>
             <p>四种模式：</p>
@@ -218,7 +219,7 @@
             <p><strong>MCP is officially supported, but currently only the stdio transport.</strong> <code>mcp.json</code> comes in two levels: global <code>~/.junie/mcp.json</code>, project <code>.junie/mcp</code>. It can auto-recommend relevant servers.</p>
             <p><strong>Official wording</strong>: &quot;Only MCP servers that use the Standard Input/Output (stdio) transport type are currently supported&quot;</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>计划是可提交的工件，Guidelines 是持久上下文。</strong></p>
             <p>Plan mode 的计划不是一次性对话。 计划文档存在 <code>.junie/plans</code>，可以提交进版本库。 它按产品需求、技术设计、交付阶段（可选测试策略）分页。 需求含糊时，Junie 会先反问，确认之后才实现。</p>
@@ -230,7 +231,7 @@
             <p>The official pages also call Junie <strong>context-aware by default</strong> and say it does next-task prediction. Connected to a JetBrains IDE, it adds semantic refactoring and smart search.</p>
             <p><strong>Context window and compaction strategy — no numbers given officially.</strong> (customize-guidelines and the out-of-beta blog checked.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>默认每个动作都要审批。</strong> <strong>Brave Mode 能一次放开，但官方不建议。</strong></p>
             <p>官方把动作分成 safe 与 sensitive 两类。</p>
@@ -250,7 +251,7 @@
             <p><code>ls</code> / <code>cd</code> / <code>pwd</code> need no confirmation by default.</p>
             <p><code>.aiignore</code> protects file content. But the official pages note: Brave Mode, or commands matching the allowlist, can bypass it.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p><strong>适合三类人，不适合另外三类。</strong></p>
             <p>适合：</p>

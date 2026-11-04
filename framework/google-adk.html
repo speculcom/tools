@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>Python</span><span data-en>Python</span></span>
         <span class="tag on"><span data-zh>TypeScript</span><span data-en>TypeScript</span></span>
@@ -148,7 +149,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>官方口径：为 Gemini 优化，但它同时是 model-agnostic。</strong></p>
             <p>README <strong>原文</strong>：&quot;While optimized for Gemini, ADK is <strong>model-agnostic</strong>, deployment-agnostic, and compatible with other frameworks.&quot;</p>
@@ -166,7 +167,7 @@
             <p>⚠ <strong>Not stated officially</strong>: what &quot;optimized for Gemini&quot; actually optimizes.</p>
             <p>⚠ Nor is there a reliability comparison of tool calling and structured output under non-Gemini models. <strong>Checked</strong>: the Models page and the LiteLLM page.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>四种运行形态，全部由 <code>adk</code> CLI 或容器提供（README 核验）。</strong></p>
             <ul><li><strong>① 交互式 CLI</strong> —— <code>adk run &lt;agent-folder&gt;</code></li><li><strong>② 内建 Web UI</strong> —— <code>adk web &lt;agent-folder&gt;</code>。官方说明支持 multi-agent directories 或直接指向单个 agent 文件夹</li></ul>
@@ -180,7 +181,7 @@
             <p>⚠ All four are <strong>your local or your cloud processes</strong>. ADK itself provides no hosted service.</p>
             <p>Hosting requires Vertex AI Agent Engine or Cloud Run — those are Google products, not this framework&#39;s.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>官方对「文件」的答案是抽象层 Artifacts，不是裸文件系统（已核验）。</strong> 换句话说，它自己不读写磁盘。</p>
             <p>官方 Artifacts 页 <strong>原文</strong>：</p>
@@ -198,7 +199,7 @@
             <p><strong>ADK is a library; it does not ship Read/Write/Bash style file tools.</strong> Disk access means writing your own function tool, or connecting MCP. The official MCP page example is exactly a filesystem MCP server.</p>
             <p>⚠ <strong>Not provided officially</strong>: any sandbox mechanism or filesystem permission model (Artifacts, tools, deploy pages checked). The default access boundary depends on whatever tools you connect.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>它不托管后台。官方有两条明确证据：会话 / 状态持久化，以及中断续跑（Resume）。</strong></p>
             <p><strong>① 持久化</strong> —— SessionService 分三档：</p>
@@ -224,7 +225,7 @@
             <p>⚠ Two official boundaries:</p>
             <ul><li>Resume is currently &quot;not currently supported&quot; triggered from the Web UI / CLI</li><li>tools may be re-executed (the official docs remind: side-effectful tools need your own dedup)</li></ul></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>工具生态是它最强调的部分，MCP 在官方文档里是一等能力。</strong></p>
             <p>README <strong>原文</strong>：</p>
@@ -244,7 +245,7 @@
             <p>Corresponding doc <code>tools/confirmation</code>. Mechanism details in the permissions axis.</p>
             <p><strong>This is a rare &quot;tool-level human confirmation&quot; among objects collected on this site.</strong> It is a different layer from the OpenAI Agents SDK&#39;s input/output guardrail.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>官方对 session / memory 有清晰区分，且有专门的上下文压缩特性。</strong></p>
             <p>官方 sessions 页三句 <strong>官方原文</strong>：<code>Session</code> 是 &quot;single, ongoing interaction&quot;， <code>State</code> 是 &quot;data within the current conversation&quot;， <code>Memory</code> 是 &quot;searchable, cross-session information&quot;</p>
@@ -260,7 +261,7 @@
             <ul><li>configure <code>EventsCompactionConfig(compaction_interval, overlap_size)</code></li><li>at the threshold, earlier events get summarized</li><li><code>summarizer</code> can swap models</li></ul>
             <p>⚠ Per this site&#39;s &quot;state ≠ context&quot;: <code>state</code> governs flow data. Compaction governs history compression. These are two mechanisms, and the official docs describe them separately.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>官方明确的机制是「工具级人工确认」Tool Confirmation（HITL）。</strong></p>
             <p>文档 <code>tools/confirmation</code>（v1.14.0 起，标注 <strong>Experimental</strong>）<strong>官方原文</strong>：&quot;allows an ADK Tool to pause its execution and interact with a user or other system for confirmation&quot;</p>
@@ -278,7 +279,7 @@
             <p><strong>This is only &quot;ask before executing&quot;, not boundary-setting.</strong> The official docs provide no sandbox or filesystem permission model. <strong>Checked</strong>: confirmation, Artifacts, deploy pages.</p>
             <p>⚠ Official known limitation: DatabaseSessionService and VertexAiSessionService do not support this feature.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p><strong>适合这些情况。</strong></p>
             <ul><li>要把多个 agent 组织成<strong>有分支、有循环、有人工介入的确定性流程</strong></li><li>要用代码优先（code-first）定义 agent 与工具，便于测试与版本管理</li><li>团队在 Google 生态内（Cloud Run / Vertex / Gemini）</li><li>需要内建 eval 与开发 UI</li><li>希望用同一套框架覆盖 Python 与 TypeScript</li><li>需要工具级人工确认、会话持久化与中断续跑</li></ul>

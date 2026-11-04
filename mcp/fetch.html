@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a> · <a href="#dimension-transport"><span data-zh>传输方式</span><span data-en>Transport</span></a> · <a href="#dimension-auth"><span data-zh>认证机制</span><span data-en>Authentication</span></a> · <a href="#dimension-scope"><span data-zh>权限范围</span><span data-en>Permission scope</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>检索</span><span data-en>Retrieval</span></span>
         <span class="tag on"><span data-zh>网络</span><span data-en>Network</span></span>
@@ -132,51 +133,51 @@
         <p class="t-section-lead">11 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p>本身不调用模型，是被客户端调用的接口实现。 核心是把网页 HTML 转换为 Markdown，便于 LLM 消费。</p></span><span data-en><p>It calls no model itself; it is an interface implementation called by clients. Its core is converting web-page HTML into Markdown for LLM consumption.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p>本地 <strong>Python</strong> 进程，通过 stdio 通信。 依赖 Python MCP SDK 1.x（要求 mcp<strong>=1.29.0,</strong>2），SDK 2.0 重命名了该 server 使用的 API。</p>
             <p>2026-08-30 修复了容器 bind mount 在 Docker / Podman / SELinux 下的安全与兼容问题。</p></span><span data-en><p>A local <strong>Python</strong> process communicating over stdio. It depends on the Python MCP SDK 1.x (requires mcp<strong>=1.29.0,</strong>2); SDK 2.0 renamed the APIs this server uses.</p>
             <p>A 2026-08-30 fix addressed security and compatibility issues of container bind mounts under Docker / Podman / SELinux.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>无文件读写工具</strong>。核心能力是网络抓取，不涉及本地文件。</p></span><span data-en><p><strong>No file read/write tools.</strong> The core capability is web fetching; local files are not involved.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p>不支持。单次抓取为同步操作，随客户端进程结束。</p></span><span data-en><p>Not supported. A single fetch is a synchronous operation, ending with the client process.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p>提供 fetch 工具获取网页内容并转换为 Markdown。 输出为转换后的文本，<strong>结构化程度取决于目标页面本身</strong>。</p></span><span data-en><p>It provides the fetch tool to retrieve web content and convert it to Markdown. Output is converted text; <strong>its degree of structure depends on the target page itself</strong>.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p>无状态。每次调用独立，不保留历史抓取记录。</p></span><span data-en><p>Stateless. Each call is independent; no fetch history is kept.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>官方明确警告安全风险</strong>：README 声明本 server <strong>可访问本地与内网 IP 地址，可能构成安全风险</strong>。 需谨慎使用，确保不会暴露敏感数据。 无独立审批机制，无法限制目标地址范围。</p></span><span data-en><p><strong>The official docs warn explicitly about the security risk</strong>: the README states this server <strong>can access local/internal IP addresses and may represent a security risk</strong>. Use with caution and make sure no sensitive data is exposed. There is no separate approval mechanism, and the target-address range cannot be restricted.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>把公开网页内容转成 Markdown 供 Agent 读取。 <strong>不适合在能访问内网的环境中使用</strong>， 也不适合需要登录态的页面。</p></span><span data-en><p>Converts public web content to Markdown for an Agent to read. <strong>Not a fit for environments with intranet access</strong>, nor for pages requiring login state.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-transport">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
           <dd><span data-zh><p>支持 stdio，<strong>并提供容器部署方式（Docker / Podman）</strong>。 2026-08-30 修复了 bind mount 的安全与兼容问题（含 SELinux）。</p>
             <p>官方 README（2026-10-08 全文核验）只给本地进程接入： uvx / pip / Docker；没有远程传输的官方启动方式。</p></span><span data-en><p>Supports stdio, <strong>and offers container deployment (Docker / Podman)</strong>. The 2026-08-30 fix addressed bind-mount security and compatibility (including SELinux).</p>
             <p>The official README (full-text verification 2026-10-08) gives only local-process integration: uvx / pip / Docker; there is no official launch method for a remote transport.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-auth">
           <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
           <dd><span data-zh><p>无独立认证层。stdio 形态继承客户端用户权限。 <strong>容器形态的认证配置仓库未说明。</strong></p></span><span data-en><p>No separate authentication layer. In stdio form it inherits the client user&#39;s permissions. <strong>Authentication configuration for the container form is not stated in the repo.</strong></p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-scope">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
           <dd><span data-zh><p><strong>风险最高的一类</strong>：文件范围无限制（不涉及文件）， 但<strong>网络范围无法收敛</strong>—— 官方警告它可访问本地与内网 IP。 无地址白名单、无审批机制。 在生产或含内网服务的环境中使用前必须评估。</p></span><span data-en><p><strong>The highest-risk class</strong>: no file scope (files are not involved), but <strong>the network range cannot be narrowed</strong> — the official warning says it can access local/internal IPs. No address allowlist, no approval mechanism. An assessment is mandatory before using it in production or in environments hosting intranet services.</p></span></dd>
         </div>

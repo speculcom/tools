@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a> · <a href="#dimension-transport"><span data-zh>传输方式</span><span data-en>Transport</span></a> · <a href="#dimension-auth"><span data-zh>认证机制</span><span data-en>Authentication</span></a> · <a href="#dimension-scope"><span data-zh>权限范围</span><span data-en>Permission scope</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>MCP</span><span data-en>MCP</span></span>
         <span class="tag on"><span data-zh>搜索</span><span data-en>Search</span></span>
@@ -132,47 +133,47 @@
         <p class="t-section-lead">11 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>它自己不调模型</strong>——被 MCP 客户端调用的接口实现。它把 Brave Search API （web 搜索、新闻、图像、local 地点）包装成工具给 agent 用。</p></span><span data-en><p><strong>It calls no model itself</strong> — an interface implementation called by MCP clients. It wraps the Brave Search API (web search, news, images, local places) as tools for agents.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p>本地进程（npx stdio）+ 远程托管线（官方有 remote 端点说明）；GitHub 1,544★， 最近推送 2026-10-27（API 核验）。</p></span><span data-en><p>A local process (npx stdio) plus a remote-hosted line (the official docs describe a remote endpoint); GitHub 1,544★, last push 2026-10-27 (API verified).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p>不读写本机文件——它输出搜索结果文本/链接；抓取网页内容不在它范围（那是 fetch server 的活）。</p></span><span data-en><p>Reads and writes no local files — it outputs search-result text/links; fetching page content is out of its scope (that is the fetch server&#39;s job).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p>stdio 随客户端生死；无后台任务语义。</p></span><span data-en><p>stdio lives and dies with the client; no background-task semantics.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p>web_search / news_search / image_search / video_search / local_search 等按 API 族分组， 可按配置裁剪启用；完整清单以仓 README 为准。</p></span><span data-en><p>web_search / news_search / image_search / video_search / local_search etc., grouped by API family, trimmable via configuration; the complete inventory follows the repo README.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p>无跨会话记忆——每次搜索独立。</p></span><span data-en><p>No cross-session memory — each search is independent.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p>Brave Search API key（免费层/付费层按 Brave API 账户走）；纯读面—— 它不能写任何系统，风险面主要是查询内容外发与配额消耗。</p></span><span data-en><p>A Brave Search API key (free/paid tiers follow the Brave API account); a pure read surface — it cannot write to any system; the risk surface is mainly query egress and quota consumption.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>适合：给 agent 补「现役搜索」能力（reference 的 Brave 版归档后，官方 @brave 包接替）、 要独立于大模型内置搜索的检索源。 不适合：要深度抓取正文（fetch/firecrawl 线）；无 API key 的零配置场景。</p></span><span data-en><p>Fits: giving an agent a &quot;live search&quot; capability (after the archived Brave reference in the MCP repo, the official @brave package took over), a retrieval source independent of the LLM&#39;s built-in search. Not a fit: deep content fetching (the fetch/firecrawl line); zero-configuration scenarios without an API key.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-transport">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
           <dd><span data-zh><p><strong>stdio</strong>（npx @brave/brave-search-mcp-server）为主；官方另有远程线说明——未逐条核验。 核验：仓 README（2026-10-21 直抓）。</p></span><span data-en><p><strong>stdio</strong> (npx @brave/brave-search-mcp-server) is primary; the official docs also describe a remote line — not verified item by item. Verified against: the repo README (direct-fetched 2026-10-21).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-auth">
           <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
-          <dd><span data-zh><p>BRAVE_API_KEY 环境变量；key 的配额/套餐层按 Brave API 账户（D9 不采价格）。</p></span><span data-en><p>The BRAVE_API_KEY environment variable; the key&#39;s quota/plan tiers follow the Brave API account (prices not collected per our D9 rule).</p></span></dd>
+          <dd><span data-zh><p>BRAVE_API_KEY 环境变量；key 的配额/套餐层按 Brave API 账户（D9 不采价格）。</p></span><span data-en><p>The BRAVE_API_KEY environment variable; the key&#39;s quota/plan tiers follow the Brave API account (prices not collected per our price-recording policy).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-scope">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
           <dd><span data-zh><p>纯读：搜索族工具（web/news/image/video/local）。无写面；无审批需求。</p></span><span data-en><p>Pure read: the search-family tools (web/news/image/video/local). No write surface; no approval needed.</p></span></dd>
         </div>
@@ -184,7 +185,7 @@
 
           <li><span data-zh>用 modelcontextprotocol 仓里的旧 Brave reference——已归档，现役是官方 @brave/brave-search-mcp-server（官方 README 明写接替关系）</span><span data-en>Using the archived Brave reference in the modelcontextprotocol repo — it is archived; the live line is the official @brave/brave-search-mcp-server (the official README states the replacement)</span></li>
           <li><span data-zh>把「搜索」当「抓取」——它返回结果摘要与链接，不抓正文</span><span data-en>Reading &#39;search&#39; as &#39;scrape&#39; — it returns result summaries and links, not page bodies</span></li>
-          <li><span data-zh>API key 配额与计费层按 Brave 账户走——D9 口径：本站不记价格数字</span><span data-en>Quota and billing follow the Brave API account — this site records no price figures (rule D9)</span></li>
+          <li><span data-zh>API key 配额与计费层按 Brave 账户走——报价记录约定：本站不记价格数字</span><span data-en>Quota and billing follow the Brave API account — this site records no price figures (rule D9)</span></li>
         </ul>
       </div>
 

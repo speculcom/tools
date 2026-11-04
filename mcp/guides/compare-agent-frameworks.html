@@ -92,27 +92,28 @@
       </div>
       <div class="panel-lead"><span data-zh><p>按状态与持久化、人在回路、模型绑定与部署形态四面选；低层编排与开箱 harness 是两类东西。</p></span><span data-en><p>Choose by state and persistence, human-in-the-loop, model binding and deployment; low-level orchestration and batteries-included harnesses are different classes.</p></span></div>
       <p class="t-xs" data-en>English summaries and interface labels are available. The guide body below is currently in Chinese.</p>
-      <div class="panel is-slim">
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>先分清两类</span><span data-en>Two classes</span></a></li><li><a href="#guide-section-1"><span data-zh>四行对照</span><span data-en>Four frameworks</span></a></li><li><a href="#guide-section-2"><span data-zh>逐个适用条件</span><span data-en>When each fits</span></a></li><li><a href="#guide-section-3"><span data-zh>核验事实</span><span data-en>Dated facts</span></a></li><li><a href="#guide-section-4"><span data-zh>常见误判</span><span data-en>Common misreads</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>先分清两类</span><span data-en>Two classes</span></h2>
         <div class="tbl-wrap"><table><thead><tr><th>类别</th><th>代表</th><th>它替你做什么</th><th>不管什么</th></tr></thead><tbody><tr><td>低层编排</td><td>LangGraph</td><td>状态、图、持久化钩子</td><td>文件系统、规划、记忆策略</td></tr><tr><td>多 agent harness</td><td>OpenAI Agents SDK</td><td>多 agent 原语、handoff</td><td>不替你做规划与记忆</td></tr><tr><td>图执行引擎</td><td>Google ADK</td><td>路由、扇出、循环、重试、状态、HITL</td><td>不替你跑单个 agent</td></tr><tr><td>进程内 SDK</td><td>Claude Agent SDK</td><td>工具调用无 IPC、类型安全</td><td>不绑定某个模型家族外的能力</td></tr></tbody></table></div>
             <p>一句话：<strong>要自己定流程，选低层；要少写胶水，选 harness；要图执行，选 ADK。</strong></p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-1">
         <h2><span data-zh>四行对照</span><span data-en>Four frameworks</span></h2>
         <div class="tbl-wrap"><table><thead><tr><th>维度</th><th>LangGraph</th><th>OpenAI Agents SDK</th><th>Google ADK</th><th>Claude Agent SDK</th></tr></thead><tbody><tr><td>官方定位</td><td>低层、有状态编排</td><td>lightweight、provider-agnostic</td><td>code-first、图执行引擎</td><td>进程内工具与 MCP</td></tr><tr><td>状态/持久化</td><td>显式状态与 checkpoint 钩子</td><td>由开发者管理</td><td>state management 内建</td><td>由应用进程管理</td></tr><tr><td>人在回路</td><td>由开发者接</td><td>由开发者接</td><td>官方列 HITL</td><td>由应用接</td></tr><tr><td>模型绑定</td><td>多 provider</td><td>OpenAI + 100+ LLMs</td><td>Gemini 为主</td><td>Claude 模型线</td></tr><tr><td>部署</td><td>自托管 Python/JS</td><td>自托管</td><td>自托管</td><td>同进程，无子进程</td></tr></tbody></table></div>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-2">
         <h2><span data-zh>逐个适用条件</span><span data-en>When each fits</span></h2>
         <p><strong>LangGraph</strong>：适合流程明确、要自己控制状态与中断恢复的团队；官方自述是 low-level orchestration，不替你做开箱封装。<strong>什么情况下选另一个</strong>：不想自己写状态机，选 OpenAI Agents SDK 或 ADK。</p>
             <p><strong>OpenAI Agents SDK</strong>：适合要多 agent 协作、又要 provider-agnostic 的团队；官方首段写明支持 OpenAI Responses / Chat Completions 与 100+ 其他 LLM。<strong>什么情况下选另一个</strong>：全栈在 Gemini 或 Claude，选对应 SDK 更少摩擦。</p>
             <p><strong>Google ADK</strong>：适合要图执行引擎、路由、扇出、循环、重试与 HITL 的团队；这些是官方 README 明列的第一项特性。<strong>什么情况下选另一个</strong>：只要轻量多 agent 原语，选 OpenAI Agents SDK。</p>
             <p><strong>Claude Agent SDK</strong>：适合要进程内工具、类型提示、少 IPC 开销的 Python 应用；外部 MCP server 照样支持，两者可混用。<strong>什么情况下选另一个</strong>：要跨模型供应商，选 LangGraph 或 OpenAI Agents SDK。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-3">
         <h2><span data-zh>核验事实</span><span data-en>Dated facts</span></h2>
         <p>1. LangGraph 官方自述为 low-level orchestration framework for stateful agents（官方文档，2026-10 快照）。 2. OpenAI Agents SDK 官方首段写明 provider-agnostic，支持 100+ LLMs（官方文档，2026-10 快照）。 3. Google ADK 的图执行引擎支持 routing、fan-out/fan-in、loops、retry、state management 与 HITL（官方文档，2026-10 快照）。 4. Claude Agent SDK 的工具与应用同进程，无子进程管理，带类型提示；外部 MCP server 可混用（官方文档，2026-10 快照）。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-4">
         <h2><span data-zh>常见误判</span><span data-en>Common misreads</span></h2>
         <ul><li>把「低层编排」当成「功能少」：它把决定权留给你，代价是你要写状态与持久化。</li><li>把「provider-agnostic」当成「零成本换模型」：提示词、工具 schema 与评测都要重跑。</li><li>把「有 HITL」当成「自动安全」：审批点设计错，照样会放过危险操作。</li><li>把「SDK 同进程」当成「不用沙箱」：工具权限与文件边界仍要自己划。</li></ul>
       </div>
@@ -124,7 +125,7 @@
           <tr><td>Google · ADK 官方文档（graph-based execution engine、routing / fan-out / loops / retry / HITL；2026-10 快照）</td><td><a href="https://google.github.io/adk-docs/" target="_blank" rel="noopener">https://google.github.io/adk-docs/</a></td></tr>
           <tr><td>Anthropic · Claude Agent SDK 官方文档（进程内工具、类型提示、MCP；2026-10 快照）</td><td><a href="https://platform.claude.com/docs/en/agent-sdk/python" target="_blank" rel="noopener">https://platform.claude.com/docs/en/agent-sdk/python</a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>核验快照：2026-11-03 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-11-03 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+        <p class="guide-foot"><span data-zh>资料核验日期：2026-11-03。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-11-03. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>

@@ -92,22 +92,23 @@
       </div>
       <div class="panel-lead"><span data-zh><p>一个可独立完成的 RAG 练习：选 10 篇站内页面做语料，产出 10 题答案、引用表、评测表与失败记录；附评分标准与参考答案结构。</p></span><span data-en><p>A self-contained RAG exercise: use 10 site pages as a corpus and produce 10 answers, a citation table, an evaluation sheet and a failure log, with a rubric and a model-answer outline.</p></span></div>
       <p class="t-xs" data-en>English summaries and interface labels are available. The guide body below is currently in Chinese.</p>
-      <div class="panel is-slim">
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>任务</span><span data-en>The task</span></a></li><li><a href="#guide-section-1"><span data-zh>交付物</span><span data-en>Deliverables</span></a></li><li><a href="#guide-section-2"><span data-zh>评分标准</span><span data-en>Rubric</span></a></li><li><a href="#guide-section-3"><span data-zh>参考答案结构</span><span data-en>Model answer outline</span></a></li><li><a href="#guide-section-4"><span data-zh>常见失分</span><span data-en>Common misses</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>任务</span><span data-en>The task</span></h2>
         <p>用 10 篇站内页面做唯一语料，搭一个能回答问题的问答流程。不允许接外部搜索，不允许凭记忆补充。</p>
             <p>1. 从 learn 站任选 10 个词条页，主题集中在一个领域（如 RAG 或本地部署）。 2. 把它们切成可检索的片段，记录切分规则（按段、按标题、固定长度）。 3. 写 10 个问题，其中 3 个的答案不在语料里，用来测拒答。 4. 每次回答必须带引用：页面标题 + 链接 + 命中的原文句子。 5. 记录每次失败：答错、答偏、编造、引用错页。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-1">
         <h2><span data-zh>交付物</span><span data-en>Deliverables</span></h2>
         <div class="tbl-wrap"><table><thead><tr><th>文件</th><th>内容</th><th>检查点</th></tr></thead><tbody><tr><td><code>answers.md</code></td><td>10 题答案，逐题带引用</td><td>每条引用能点回原文并找到该句</td></tr><tr><td><code>citations.csv</code></td><td>题目 / 引用页 / 原文句 / 是否命中</td><td>10 行，无空行</td></tr><tr><td><code>eval.csv</code></td><td>题目 / 判定（对/错/拒答）/ 原因</td><td>判定可被第二人复核</td></tr><tr><td><code>failures.md</code></td><td>失败记录与改法</td><td>至少 3 条，写清触发条件</td></tr></tbody></table></div>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-2">
         <h2><span data-zh>评分标准</span><span data-en>Rubric</span></h2>
         <p>每项 0–2 分，共 10 分：</p>
             <div class="tbl-wrap"><table><thead><tr><th>维度</th><th>0 分</th><th>1 分</th><th>2 分</th></tr></thead><tbody><tr><td>引用准确</td><td>引用页与答案无关</td><td>引用页相关但句子对不上</td><td>每条都能点回并找到原句</td></tr><tr><td>拒答</td><td>不会的题也硬答</td><td>拒答了但没说缺什么</td><td>3 道无答案题全部拒答并说明缺口</td></tr><tr><td>评测可复核</td><td>只有「感觉对」</td><td>有判定但无原因</td><td>每题有判定与可复核原因</td></tr><tr><td>失败记录</td><td>没记录</td><td>记了现象</td><td>记了触发条件与改法</td></tr><tr><td>可复现</td><td>别人跑不出同样结果</td><td>步骤缺一环</td><td>切分、检索、提示词三步可照做</td></tr></tbody></table></div>
             <p>8 分及格；6 分以下回到「怎么评测 RAG 的效果」重做。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-3">
         <h2><span data-zh>参考答案结构</span><span data-en>Model answer outline</span></h2>
         <p>不提供逐题答案（语料由你选），提供合格答案的结构：</p>
             <pre class="code"><code>问题：RAG 的分块为什么要按标题切？
@@ -119,16 +120,16 @@
 答案：语料里没有该日期的评测数据，无法回答。需要补充官方评测页或自建评测。
 判定：拒答；原因：语料中无对应事实。</code></pre>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-4">
         <h2><span data-zh>常见失分</span><span data-en>Common misses</span></h2>
-        <ul><li>引用整页而不是句子：读者无法核对。</li><li>把「语义相近」当「原文支持」：答案超出引用句。</li><li>无答案题也答：宁可拒答，不要补记忆。</li><li>只测 happy path：没有失败记录，等于没做评测。</li></ul>
+        <ul><li>引用整页而不是句子：读者无法核对。</li><li>把「语义相近」当「原文支持」：答案超出引用句。</li><li>无答案题也答：宁可拒答，不要补记忆。</li><li>只测正常输入会漏掉边界问题；补充无答案、缺字段和不符合格式的样本。</li></ul>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
         <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
           <tr><td>本站 · 怎么给文档做分块</td><td><a href="https://learn.specul.com/guide/怎么给文档做分块/" target="_blank" rel="noopener">https://learn.specul.com/guide/怎么给文档做分块/</a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>核验快照：2026-11-03 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-11-03 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+        <p class="guide-foot"><span data-zh>资料核验日期：2026-11-03。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-11-03. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>

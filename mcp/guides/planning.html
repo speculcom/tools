@@ -92,11 +92,12 @@
       </div>
       <div class="panel-lead"><span data-zh><p>先想清楚步骤再动手，还是边做边定——规划模式怎么选，以及规划为什么会失效、失效了怎么救。</p></span><span data-en><p>Plan first or decide as you go — how to choose a planning pattern, and why plans fail.</p></span></div>
 
-      <div class="panel is-slim">
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></a></li><li><a href="#guide-section-1"><span data-zh>第一种：固定流程</span><span data-en>Pattern one: fixed paths</span></a></li><li><a href="#guide-section-2"><span data-zh>第二种：边做边定</span><span data-en>Pattern two: decide as you go</span></a></li><li><a href="#guide-section-3"><span data-zh>人工检查点：规划的安全绳</span><span data-en>Human checkpoints</span></a></li><li><a href="#guide-section-4"><span data-zh>规划为什么会失效</span><span data-en>Why plans fail</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
         <span data-zh><p><strong>规划就是先决定步骤序列，再逐步执行。</strong> 与之相对的是边做边定：模型每一轮只看当前局面决定下一步。 两种范式没有高下，只有适不适合—— 判断依据是：<strong>步骤数能不能预先说清。</strong></p></span><span data-en><p><strong>Planning means deciding the step sequence first, then executing step by step.</strong> The opposite is deciding as you go: each round the model looks only at the current situation and picks the next step. The two paradigms have no superiority — only fit — and the criterion is: <strong>can the number of steps be stated in advance.</strong></p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-1">
         <h2><span data-zh>第一种：固定流程</span><span data-en>Pattern one: fixed paths</span></h2>
         <span data-zh><p>Anthropic 把「流程可预定义」的系统叫 workflow。 <strong>Anthropic 官方原文</strong>：&quot;Workflows are systems where LLMs and tools are orchestrated through predefined code paths.&quot;</p>
             <p><strong>Anthropic 官方原文</strong>：与之相对的 agent 是 &quot;LLMs dynamically direct their own processes and tool usage&quot;。 对应的三种规划模式：</p>
@@ -108,7 +109,7 @@
             <p><strong>Routing</strong>: classify first, then branch. Fits &quot;inputs have clear categories, each category handled differently&quot; scenarios.</p>
             <p><strong>Orchestrator-workers</strong>: a central LLM dynamically decomposes tasks, dispatches workers, then synthesizes results. Fits cases where <strong>subtasks cannot be enumerated in advance</strong> — like changing code: how many files to touch and how to change each one only becomes clear after seeing the task. The official docs draw the key difference from parallelization: <strong>Anthropic official text</strong>: &quot;the key difference from parallelization is its flexibility— subtasks aren&#39;t pre-defined, but determined by the orchestrator based on the specific input.&quot;</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-2">
         <h2><span data-zh>第二种：边做边定</span><span data-en>Pattern two: decide as you go</span></h2>
         <span data-zh><p>什么时候必须放弃固定流程？官方给了判据：</p>
             <blockquote>&quot;Agents can be used for open-ended problems where it&#39;s difficult or impossible to predict the required number of steps, and where you can&#39;t hardcode a fixed path.&quot;</blockquote>
@@ -120,13 +121,13 @@
             <p>Anthropic&#39;s evaluator-optimizer is one LLM generating, another LLM evaluating and giving feedback, polishing in a loop. The two fit signals the official docs give: feedback can materially improve the output; the model can produce that feedback itself.</p>
             <p>The Reflexion paper (arXiv 2303.11366) systematizes feedback. The agent verbally reviews task feedback, stores the reflection text in an episodic memory buffer, and reads the lessons before attempting a similar task next time. The paper reports 91% pass@1 on the HumanEval coding benchmark, beating GPT-4&#39;s 80% at the time. Note these are paper results on a specific benchmark, not a general promise.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-3">
         <h2><span data-zh>人工检查点：规划的安全绳</span><span data-en>Human checkpoints</span></h2>
         <span data-zh><p>让流程可中断、可恢复，是规划里最实用的工程投资。 <a href="/framework/langgraph.html">LangGraph</a> 的官方文档把 human-in-the-loop 和 fault tolerance、time travel 并列为 checkpointer 的用途： 状态有快照，才能在某一步停下等人批，再从原点继续。</p>
             <p>关键步骤交给流程，危险步骤还给人。 判断哪步危险：不可逆、要花钱、会发出去。</p></span><span data-en><p>Making the flow interruptible and resumable is the most practical engineering investment in planning. <a href="/framework/langgraph.html">LangGraph</a>&#39;s official docs list human-in-the-loop alongside fault tolerance and time travel as checkpointer uses: only with state snapshots can you pause at a step for human approval and continue from the origin.</p>
             <p>Key steps go to the flow, dangerous steps stay with humans. How to judge a dangerous step: irreversible, costs money, or goes outbound.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-4">
         <h2><span data-zh>规划为什么会失效</span><span data-en>Why plans fail</span></h2>
         <span data-zh><p>1. 计划过期：环境变了，旧计划照跑到底。 2. 过度规划：为五分钟能做的小事先写五千字计划。 3. 假反馈：评估者只会说「很好」，优化循环原地打转。 4. 无恢复点：跑到一半崩了，只能从头再来。</p>
             <p><strong>通用原则来自 Anthropic 官方原文</strong>： &quot;Success in the LLM space isn&#39;t about building the most sophisticated system. It&#39;s about building the right system for your needs.&quot; 从最简单的提示词开始，配上扎实的评测， 简单方案不够用了，再加多步系统。</p></span><span data-en><p>1. Stale plans: the environment changed, the old plan runs to the end anyway. 2. Over-planning: writing a five-thousand-word plan for something doable in five minutes. 3. Fake feedback: the evaluator only says &quot;looks good&quot;, the optimization loop spins in place. 4. No recovery point: it crashes halfway and you can only start over.</p>
@@ -139,7 +140,7 @@
           <tr><td><span data-zh>Reflexion 论文（arXiv 2303.11366，2026-10-30 直抓摘要页）</span><span data-en>Reflexion paper (arXiv 2303.11366, abstract page direct-fetched 2026-10-30)</span></td><td><a href="https://arxiv.org/abs/2303.11366" target="_blank" rel="noopener">https://arxiv.org/abs/2303.11366</a></td></tr>
           <tr><td><span data-zh>LangGraph 官方文档 · Persistence（2026-10-30 直抓 200）</span><span data-en>LangGraph official docs · Persistence (direct fetch 200 on 2026-10-30)</span></td><td><a href="https://docs.langchain.com/oss/python/langgraph/persistence" target="_blank" rel="noopener">https://docs.langchain.com/oss/python/langgraph/persistence</a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>核验快照：2026-10-30 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-10-30 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+        <p class="guide-foot"><span data-zh>资料核验日期：2026-10-30。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-10-30. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>

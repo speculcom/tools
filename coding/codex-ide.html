@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>编程</span><span data-en>Coding</span></span>
         <span class="tag on"><span data-zh>IDE</span><span data-en>IDE</span></span>
@@ -137,7 +138,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>用的是 CLI 那套 agent 和配置，模型可以换。</strong></p>
             <p><strong>官方 IDE 页原文</strong>：&quot;It uses the same agent as the Codex CLI and shares the same configuration&quot;</p>
@@ -153,7 +154,7 @@
             <p><strong>The default model is set in the shared <code>config.toml</code></strong> (<code>model = &quot;...&quot;</code>), shared by IDE and CLI, so custom providers go through the same <code>model_providers</code> configuration (see the CLI / SDK dossiers).</p>
             <p><strong>BYOK works</strong>: the official supports logging in with an API key; the JetBrains integration can also ride a JetBrains AI subscription. On the API-key path, the usable model range follows that key&#39;s API models.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>它是扩展，不是独立编辑器。</strong></p>
             <p><strong>官方 README 原文</strong>：&quot;If you want Codex in your code editor (VS Code, Cursor, Windsurf), install in your IDE.&quot;</p>
@@ -163,7 +164,7 @@
             <p>That is: <strong>install into an existing editor such as VS Code / Cursor / Windsurf</strong>.</p>
             <p>This is a different form from Zed (standalone editor) and Cline Desktop (native app).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p>通过宿主编辑器访问工作区文件。</p>
             <p>上下文来自打开的文件、选区与 <code>@file</code> 引用。 另有 <strong>Auto Context</strong>：自动带入最近文件与 IDE 上下文 （见 <code>/auto-context</code>）。</p>
@@ -177,7 +178,7 @@
             <p><strong>The official IDE docs describe no standalone semantic index</strong> — local file retrieval is done by the same agent&#39;s tools.</p>
             <p><strong>Verification</strong>: checked the official features and settings pages.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>有云端形态：官方称可以从 IDE 委派任务到 Codex Cloud。</strong></p>
             <p><strong>IDE 页原文</strong>：&quot;delegate tasks to Codex Cloud&quot;</p>
@@ -191,7 +192,7 @@
             <p>Cloud tasks run in the background (including in parallel) inside <strong>OpenAI-managed containers</strong>, so <strong>cloud tasks keep going after the local editor is closed</strong>. <strong>Local tasks depend on the host editor process — close it and they stop.</strong></p>
             <p>Cloud tasks and local messages share plan usage (the official pricing page says a shared 5-hour window).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>内置第一方工具与命令都已核验。</strong></p>
             <p>工具：</p>
@@ -207,7 +208,7 @@
             <p>STDIO and Streamable HTTP supported; CLI and IDE share <code>[mcp_servers.&lt;name&gt;]</code> in <code>config.toml</code> (including <code>enabled_tools</code>, and per-server, per-tool <code>approval_mode</code>).</p>
             <p><strong>Original wording</strong>: &quot;Codex supports MCP servers in both the CLI and the IDE extension&quot;</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>app server 架构仍是关键设计</strong> —— 线程可以启动、续接与恢复， IDE 与 CLI 共享同一套会话机制和同一份配置。</p>
             <p>官方另外补了三点：</p>
@@ -221,7 +222,7 @@
             <p>Compaction on the CLI / SDK side goes through config keys such as <code>compact_prompt</code>;</p>
             <p><strong>Verification</strong>: checked the official features and slash-commands pages.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>IDE 与 CLI 共用同一套沙箱与审批。</strong></p>
             <p><strong>官方 settings 页原文</strong>：&quot;The Codex IDE extension uses the Codex CLI&quot;</p>
@@ -237,7 +238,7 @@
             <p>Official security page stance (covering the IDE extension): by default <strong>no network + writes limited to the current workspace</strong>; <code>.git</code> / <code>.agents</code> / <code>.codex</code> recursively read-only.</p>
             <p>Approval and sandbox keys are the same as the CLI: <code>approval_policy</code> / <code>sandbox_mode</code> / <code>[sandbox_workspace_write] network_access</code> and the <code>network_proxy</code> domain list. The Windows native sandbox defaults to <code>elevated</code>.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>适合两类人：</p>
             <ul><li>已在用 VS Code / Cursor / Windsurf 等编辑器，希望在同一环境里用 Codex 而不切换工具的人</li><li>需要 IDE 与 CLI 共享会话的人（app server 架构）</li></ul></span><span data-en><p>Fits two kinds of people:</p>

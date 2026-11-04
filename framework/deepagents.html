@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>Python</span><span data-en>Python</span></span>
         <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
@@ -142,7 +143,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>官方自述 model-agnostic</strong>，README 列为四条原则之一。</p>
             <p><strong>官方原文</strong>： &quot;Model-agnostic — works with any LLM that supports tool calling: frontier, open-weight, or local&quot;</p>
@@ -154,7 +155,7 @@
             <ul><li>frontier APIs (OpenAI / Anthropic / Google)</li><li>provider-hosted open weights (Baseten / Fireworks)</li><li>models <strong>self-hosted via Ollama / vLLM / llama.cpp</strong></li></ul>
             <p>The integration path is any LangChain chat model. <strong>Switching providers requires no agent-code changes.</strong></p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>它是库，不是服务 —— 进程由你自己运营。</strong></p>
             <p>README 明确 built on LangGraph（streaming, persistence, checkpointing）。 另可配 LangSmith 做 tracing/evaluation/deployment。</p>
@@ -164,7 +165,7 @@
             <p><strong>Responsibility split of the agent loop</strong>:</p>
             <ul><li>model decisions and tool calls run on the LangGraph runtime</li><li>Deep Agents presets planning, context management, sub-agent delegation</li></ul></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>Filesystem 能力是核心卖点</strong>：read / write / edit / search。</p>
             <p>它的后端<strong>可插拔</strong>（pluggable local, sandboxed, or remote backends）。 官方另设独立 Sandboxes 页，讲隔离执行环境与 <code>execute</code> 工具 （<code>SandboxBackendProtocolV2</code>，仅 sandbox 后端暴露 shell）。</p>
@@ -176,7 +177,7 @@
             <p>That is, the official docs explicitly do not provide a permission-guardrail layer; boundaries must be implemented by you at the tool/sandbox layer.</p>
             <p><strong>Not stated officially</strong>: conflict handling when multiple agents concurrently write the same file (overview / backends pages checked).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p>自托管 = <strong>关了就停</strong>，没有托管执行选项（README 无相关承诺）。</p>
             <p><strong>但断点续跑有官方支撑</strong>：</p>
@@ -186,7 +187,7 @@
             <ul><li>built on LangGraph&#39;s persistence + checkpointing</li><li>persistent memory (pluggable state and store backends for cross-session recall)</li></ul>
             <p>LangSmith separately provides deployment officially.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>工具链是 &quot;batteries-included&quot; 定位。</strong> 官方列出的能力：</p>
             <ul><li>Sub-agents —— 隔离子上下文的委派</li><li>Filesystem</li><li>Shell access（run commands in your sandbox of choice）</li><li>Skills —— 按需加载的可复用行为</li><li>Tools —— 自带函数或<strong>任意 MCP server</strong></li></ul>
@@ -196,7 +197,7 @@
             <p><strong>MCP support is explicit</strong>: the official docs list &quot;bring your own functions or any MCP server&quot;.</p>
             <p>Human-in-the-loop: tool calls can be approved / edited / rejected, happening <strong>before execution</strong>.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>本分区&quot;状态 ≠ 上下文&quot;分野的教科书案例。</strong></p>
             <ul><li>Context management = summarize long threads and <strong>offload tool outputs to disk</strong>（卸载，不是丢）</li><li>Persistent memory = pluggable state and store backends，<strong>支持跨会话召回</strong></li></ul>
@@ -206,7 +207,7 @@
             <p>The official description: defaults are tuned for <strong>long-horizon, multi-step work</strong>.</p>
             <p>Two practices coexist: compressing history + landing large tool outputs on disk + cross-session memory.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>官方明确不设防模型越界。</strong> Security 章节原文：</p>
             <p><strong>官方原文</strong>（三句连引）：&quot;Deep Agents follows a &quot;trust the LLM&quot; model.&quot; &quot;The agent can do anything its tools allow.&quot; &quot;Enforce boundaries at the tool/sandbox level, not by expecting the model to self-police.&quot;</p>
@@ -220,7 +221,7 @@
             <p>human-in-the-loop tool-call approval (approve/edit/reject).</p>
             <p>This means: after installing Deep Agents, the permission model is <strong>your responsibility</strong>.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p><strong>适合</strong>三类场景。</p>
             <p>要一个开箱即用、默认调优好、面向长任务多步流程的通用 Agent。 不想自己拼 filesystem / 记忆 / 子代理。已经在 LangChain 生态里。</p>
@@ -248,14 +249,14 @@
         <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
         <span data-zh>
         <ul>
-          <li>LangSmith 配套（README 推荐搭配，但商业条款未核验；报价按 D9 口径本站不采）</li>
+          <li>LangSmith 配套（README 推荐搭配，但商业条款未核验；报价按本站的报价记录约定本站不采）</li>
           <li>sandbox backend 的具体可选项与隔离强度</li>
           <li>interrupt / 补充询问机制在 Deep Agents 上的暴露方式</li>
           <li>Deep Agents Code 是否与本仓同许可</li>
           <li>多 agent 并发时的文件锁策略</li>
         </ul></span><span data-en>
         <ul>
-          <li>LangSmith accompaniment (the README recommends pairing with it, but commercial terms unverified; quotes not collected by this site per the D9 rule)</li>
+          <li>LangSmith accompaniment (the README recommends pairing with it, but commercial terms unverified; quotes not collected by this site per the price-recording policy)</li>
           <li>The concrete options and isolation strength of sandbox backends</li>
           <li>How the interrupt / follow-up-question mechanism is exposed on Deep Agents</li>
           <li>Whether Deep Agents Code shares this repository&#39;s license</li>
@@ -367,11 +368,11 @@
         <h2><span data-zh>核验说明</span><span data-en>Verification notes</span></h2>
         <span data-zh><p><code>confidence: partial</code> 的依据（2026-10-03 由 verified 降级）：</p>
             <blockquote><strong>为什么降级</strong>：下方 ❌ 项的主语是<strong>本站的取证缺口</strong>，不是 &quot;官方未提供&quot;。 按 v3 铁律「未知就说未知」，这些条目存在时标 verified 属于虚高，故降为 partial。 主要缺口：LangSmith 配套的商业条款、LangGraph interrupt 细节、多 agent 并发文件冲突。</blockquote>
-            <ul><li>✅ 已核验：</li><li>仓库存在与星数（30,517 · 滚动核验 2026-10-23）</li><li><strong>许可原文（MIT，经 license API）</strong></li><li>最新版本 <strong>0.7.30</strong>（2026-10-22 releases）</li><li>仓库描述原文、README 全文四条原则与九条特性清单</li><li>FAQ 三层关系原文、Security 声明原文、provider 支持范围原文、Quickstart 代码示例</li><li>❌ 未核验：</li><li>LangSmith 配套的商业条款（报价按 D9 口径本站不采）</li><li>LangGraph interrupt 的细节</li><li>sandbox backend 的具体实现与可选项清单</li><li><code>CompiledStateGraph</code> 作为 sub-agent 的具体 API 形态</li><li>Deep Agents Code 的许可（它可能是另一个仓）</li></ul>
+            <ul><li>✅ 已核验：</li><li>仓库存在与星数（30,517 · 滚动核验 2026-10-23）</li><li><strong>许可原文（MIT，经 license API）</strong></li><li>最新版本 <strong>0.7.30</strong>（2026-10-22 releases）</li><li>仓库描述原文、README 全文四条原则与九条特性清单</li><li>FAQ 三层关系原文、Security 声明原文、provider 支持范围原文、Quickstart 代码示例</li><li>❌ 未核验：</li><li>LangSmith 配套的商业条款（报价按本站的报价记录约定本站不采）</li><li>LangGraph interrupt 的细节</li><li>sandbox backend 的具体实现与可选项清单</li><li><code>CompiledStateGraph</code> 作为 sub-agent 的具体 API 形态</li><li>Deep Agents Code 的许可（它可能是另一个仓）</li></ul>
             <p><strong>特别记录一处二手资料偏差</strong>：竞品站（aiagentclash.com）2026-09-28 快照记 Deep Agents 为 <strong>0.7.0</strong>， 而 GitHub releases 实际为 <strong>0.7.20</strong>（2026-09-29）。</p>
             <p><strong>这印证了 v3 计划 &quot;竞品研究只作方法论参考、不作数据来源&quot; 这条规矩是必要的。</strong></p></span><span data-en><p>Basis for <code>confidence: partial</code> (downgraded from verified on 2026-10-03):</p>
             <blockquote><strong>Why downgraded</strong>: the subject of the ❌ items below is <strong>this site&#39;s evidence gap</strong>, not &quot;not provided officially&quot;. Per the v3 rule &quot;say unknown when unknown&quot;, marking verified while these items exist would be inflated, hence partial. Main gaps: LangSmith&#39;s accompanying commercial terms, LangGraph interrupt details, multi-agent concurrent file conflicts.</blockquote>
-            <ul><li>✅ Verified:</li><li>repository exists and star count (30,517 · rolling check 2026-10-23)</li><li><strong>license verbatim (MIT, via the license API)</strong></li><li>latest version <strong>0.7.30</strong> (2026-10-22 releases)</li><li>repository description verbatim, full README four principles and nine-feature list</li><li>FAQ three-layer relationship verbatim, Security statement verbatim, provider-support scope verbatim, Quickstart code example</li><li>❌ Not verified:</li><li>LangSmith&#39;s accompanying commercial terms (quotes not collected by this site per the D9 rule)</li><li>LangGraph interrupt details</li><li>the concrete implementations and option list of sandbox backends</li><li>the concrete API shape of <code>CompiledStateGraph</code> as a sub-agent</li><li>Deep Agents Code&#39;s license (it may be another repository)</li></ul>
+            <ul><li>✅ Verified:</li><li>repository exists and star count (30,517 · rolling check 2026-10-23)</li><li><strong>license verbatim (MIT, via the license API)</strong></li><li>latest version <strong>0.7.30</strong> (2026-10-22 releases)</li><li>repository description verbatim, full README four principles and nine-feature list</li><li>FAQ three-layer relationship verbatim, Security statement verbatim, provider-support scope verbatim, Quickstart code example</li><li>❌ Not verified:</li><li>LangSmith&#39;s accompanying commercial terms (quotes not collected by this site per the price-recording policy)</li><li>LangGraph interrupt details</li><li>the concrete implementations and option list of sandbox backends</li><li>the concrete API shape of <code>CompiledStateGraph</code> as a sub-agent</li><li>Deep Agents Code&#39;s license (it may be another repository)</li></ul>
             <p><strong>One secondhand-source deviation recorded specially</strong>: the competitor site (aiagentclash.com) 2026-09-28 snapshot recorded Deep Agents as <strong>0.7.0</strong>, while GitHub releases actually had <strong>0.7.20</strong> (2026-09-29).</p>
             <p><strong>This confirms the v3 plan&#39;s rule &quot;competitor research is methodology reference only, not a data source&quot; is necessary.</strong></p></span>
       </div>

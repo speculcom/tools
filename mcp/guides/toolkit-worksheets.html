@@ -91,11 +91,13 @@
         </div>
       </div>
       <div class="panel-lead"><span data-zh><p>四个可直接复制的检查表：项目立项、内容发布前、模型迁移评估、数据泄露路径排查。</p></span><span data-en><p>Four copyable checklists: project kickoff, pre-publish, model migration assessment and data-leak path review.</p></span></div>
-      <p class="t-xs" data-en>English summaries and interface labels are available. The guide body below is currently in Chinese.</p>
-      <div class="panel is-slim">
+
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>怎么用这页</span><span data-en>How to use</span></a></li><li><a href="#guide-section-1"><span data-zh>常见误用</span><span data-en>Common misuses</span></a></li><li><a href="#guide-section-2"><span data-zh>已填示例：内部资料问答的立项记录</span><span data-en>Filled example: an internal document-Q&amp;A project</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>怎么用这页</span><span data-en>How to use</span></h2>
-        <p>四张表用于评审会与上线前检查；复制到你的仓库，按项目填。</p>
-            <h3 class="sub-h">13. 项目立项检查表</h3>
+        <span data-zh><p>模板内的比例、样本数、阈值和权限策略是示例。请按任务、授权与风险确定实际条件；填完表格不等于已经通过验收。</p>
+            <p>四张表用于评审会与上线前检查；复制到你的仓库，按项目填。</p>
+            <h3 class="sub-h">1. 项目立项检查表</h3>
             <pre class="code"><code>- [ ] 目标一句话：要解决谁的什么问题
 - [ ] 不做清单：明确不做什么
 - [ ] 数据来源与许可：能否使用、能否留存
@@ -104,7 +106,7 @@
 - [ ] 验收指标：三条可量化
 - [ ] 失败回滚：谁负责、怎么退
 - [ ] 时间盒：到哪天必须评审</code></pre>
-            <h3 class="sub-h">14. 内容发布前检查表</h3>
+            <h3 class="sub-h">2. 内容发布前检查表</h3>
             <pre class="code"><code>- [ ] 事实：每条结论有来源与日期
 - [ ] 引文：单条不超过 100 字符或一句
 - [ ] 权利：图片/音乐/字体/数字人许可已登记
@@ -113,7 +115,7 @@
 - [ ] 版本：模型版本与生成参数已存档
 - [ ] 可访问性：字幕、对比度、替代文本
 - [ ] 回滚：发布后 24 小时内可撤</code></pre>
-            <h3 class="sub-h">15. 模型迁移评估表</h3>
+            <h3 class="sub-h">3. 模型迁移评估表</h3>
             <pre class="code"><code>| 项目 | 旧模型 | 新模型 | 结论 |
 |------|--------|--------|------|
 | 上下文窗口 | | | |
@@ -126,8 +128,8 @@
 | 许可证与商用 | | | |
 | 回滚方案 | | | |
 
-规则：任一项无数据，迁移不算完成。</code></pre>
-            <h3 class="sub-h">16. 数据泄露路径排查表</h3>
+缺少证据的项目保留为未确认项；样本数量按任务范围确定。</code></pre>
+            <h3 class="sub-h">4. 数据泄露路径排查表</h3>
             <pre class="code"><code>| 路径 | 是否出网 | 留存多久 | 是否训练 | 控制措施 |
 |------|----------|----------|----------|----------|
 | 聊天输入 | | | | |
@@ -138,19 +140,71 @@
 | 备份 | | | | |
 | 第三方子处理者 | | | | |
 
-规则：每条路径都要有「谁负责、怎么删、多久审计」。</code></pre>
+规则：每条路径都要有「谁负责、怎么删、多久审计」。</code></pre></span><span data-en><p>Copy these worksheets for project review and pre-release checks. Fill them for the actual project; their sample counts and thresholds are not universal standards.</p>
+            <h3 class="sub-h">1. Project kickoff</h3>
+            <pre class="code"><code>- [ ] One-sentence goal: whose problem is being solved
+- [ ] Excluded work: explicit scope
+- [ ] Data sources and rights to use/retain
+- [ ] Model/tool primary, fallback and licenses
+- [ ] Cost ceiling: calls, hardware and labor
+- [ ] Three measurable acceptance conditions
+- [ ] Failure recovery: owner and method
+- [ ] Review date</code></pre>
+            <h3 class="sub-h">2. Before publishing</h3>
+            <pre class="code"><code>- [ ] Facts have sources and dates
+- [ ] Quotations respect this site&#39;s short-excerpt rule
+- [ ] Image/music/font/likeness permissions recorded
+- [ ] No customer names, order IDs or secrets exposed
+- [ ] Required AI-content labels checked for the platform
+- [ ] Model version and generation settings recorded
+- [ ] Captions, contrast and alternative text checked
+- [ ] Withdrawal/recovery procedure defined for the release</code></pre>
+            <h3 class="sub-h">3. Model migration</h3>
+            <pre class="code"><code>Item | Old | New | Conclusion
+Context window | | |
+Tool schema | | |
+Streaming/errors | | |
+Chinese tasks (example: 20 cases) | | |
+Code/structured output (example: 20) | | |
+Unsupported claims (example: 20) | | |
+Rates/allowances | | |
+License/commercial use | | |
+Rollback | | |
+
+Record missing evidence; sample size must fit the task, not just this form.</code></pre>
+            <h3 class="sub-h">4. Data-flow review</h3>
+            <pre class="code"><code>Path | Outbound? | Retention | Training use | Controls
+Chat input | | | |
+Uploaded files | | | |
+Tool arguments | | | |
+Logs/traces | | | |
+Cache/index | | | |
+Backups | | | |
+Subprocessors | | | |
+
+Record the owner, deletion method and review schedule for every path.</code></pre></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-1">
         <h2><span data-zh>常见误用</span><span data-en>Common misuses</span></h2>
-        <ul><li>立项表只写目标：不写不做清单，范围一定蔓延。</li><li>发布表只查事实：不查权利，最容易返工。</li><li>迁移表只测一条：样本太少，结论不可用。</li><li>泄露表只填一半：第三方子处理者最常被漏。</li></ul>
+        <span data-zh><ul><li>目标之外也要写明不做什么，避免范围含糊。</li><li>发布表只查事实：不查权利，最容易返工。</li><li>单条迁移样本不足以覆盖多种任务，应按实际范围补充。</li><li>泄露表只填一半：第三方子处理者最常被漏。</li></ul></span><span data-en><ul><li>A goal without exclusions can leave scope unclear.</li><li>Check rights as well as factual accuracy before release.</li><li>A single migration example does not cover a varied workload.</li><li>Include subprocessors and all data paths, not just the chat interface.</li></ul></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-2">
+        <h2 id="worked-example"><span data-zh>已填示例：内部资料问答的立项记录</span><span data-en>Filled example: an internal document-Q&amp;A project</span></h2>
+        <span data-zh><p>这是虚构项目，用来演示如何填写，不是产品推荐或已完成部署。</p>
+            <div class="tbl-wrap"><table><thead><tr><th>字段</th><th>已填内容</th></tr></thead><tbody><tr><td>目标</td><td>从已批准的内部说明中回答报销问题，并标出依据段落</td></tr><tr><td>范围</td><td>不接生产系统，不修改订单，不替员工审批</td></tr><tr><td>数据</td><td>先用虚构政策与问题；真实文档另核权限与使用范围</td></tr><tr><td>工具约束</td><td>只能读取指定资料；不能执行材料中的指令</td></tr><tr><td>验收</td><td>答案有依据；规则例外不漏；无答案时明确说明</td></tr><tr><td>失败处理</td><td>引用不支持答案时停止发布该回答，保留问题与证据记录</td></tr><tr><td>成本</td><td>分别记录输入、输出、检索、重试和维护；单价由负责人填当前来源</td></tr></tbody></table></div>
+            <p>验收问题至少覆盖正常报销、例外条款和资料中没有答案三类。样本数量按任务范围确定，不能因为表格已填满就判断项目可以上线。</p>
+            <p>接着使用本页的泄露路径表，逐项记录应用、模型接口、日志与备份分别保存什么。</p></span><span data-en><p>This fictional project demonstrates the worksheet; it is neither a product recommendation nor a completed deployment.</p>
+            <div class="tbl-wrap"><table><thead><tr><th>Field</th><th>Filled entry</th></tr></thead><tbody><tr><td>Goal</td><td>Answer reimbursement questions from approved documents, citing paragraphs</td></tr><tr><td>Scope</td><td>No production-system access, order edits or employee approvals</td></tr><tr><td>Data</td><td>Start with fictional policies/questions; authorize actual documents separately</td></tr><tr><td>Tool limits</td><td>Read specified material only; do not execute instructions embedded in it</td></tr><tr><td>Acceptance</td><td>Supported answers, preserved exceptions and explicit no-answer handling</td></tr><tr><td>Failure handling</td><td>Withhold an unsupported answer and retain the question/evidence record</td></tr><tr><td>Cost</td><td>Track input, output, retrieval, retries and maintenance separately; obtain current rates from their sources</td></tr></tbody></table></div>
+            <p>Cover normal reimbursement, exceptions and absent answers. Select sample size from task scope; a completed form is not launch approval.</p>
+            <p>Then use the data-flow worksheet to record what the application, model API, logs and backups retain.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
         <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
-          <tr><td>NIST · Cybersecurity Framework（风险管理框架，检查表结构参考）</td><td><a href="https://www.nist.gov/cyberframework" target="_blank" rel="noopener">https://www.nist.gov/cyberframework</a></td></tr>
-          <tr><td>Creative Commons · 许可说明（发布前权利核对参考）</td><td><a href="https://creativecommons.org/licenses/" target="_blank" rel="noopener">https://creativecommons.org/licenses/</a></td></tr>
+          <tr><td><span data-zh>NIST · Cybersecurity Framework（风险管理框架，检查表结构参考）</span><span data-en>NIST Cybersecurity Framework (worksheet structure reference)</span></td><td><a href="https://www.nist.gov/cyberframework" target="_blank" rel="noopener">https://www.nist.gov/cyberframework</a></td></tr>
+          <tr><td><span data-zh>Creative Commons · 许可说明（发布前权利核对参考）</span><span data-en>Creative Commons licenses (pre-publication rights reference)</span></td><td><a href="https://creativecommons.org/licenses/" target="_blank" rel="noopener">https://creativecommons.org/licenses/</a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>核验快照：2026-11-03 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-11-03 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+        <p class="guide-foot"><span data-zh>资料核验日期：2026-11-03。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-11-03. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>

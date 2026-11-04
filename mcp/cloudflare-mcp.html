@@ -4,19 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Cloudflare MCP Server — MCP | 投机取巧</title>
-  <meta name="description" content="Cloudflare MCP Server（Cloudflare）：Cloudflare 官方 MCP server（Apache-2.0）：agent 写 Worker、部署、管 D1/R2/DNS、查官方 docs。 同类里受限 token 粒度做得最细——但记住「能部署=能跑任意代码」，token 要按最小…" />
+  <meta name="description" content="Cloudflare MCP Server（Cloudflare）：Cloudflare 官方 MCP server（Apache-2.0）：agent 写 Worker、部署、管 D1/R2/DNS、查官方 docs。 提供受限 token——但记住「能部署=能跑任意代码」，token 要按最小面配。" />
   <link rel="canonical" href="https://tools.specul.com/mcp/cloudflare-mcp.html" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Cloudflare MCP Server" />
   <meta property="og:url" content="https://tools.specul.com/mcp/cloudflare-mcp.html" />
   <meta property="og:title" content="Cloudflare MCP Server — MCP | 投机取巧" />
-  <meta property="og:description" content="Cloudflare MCP Server（Cloudflare）：Cloudflare 官方 MCP server（Apache-2.0）：agent 写 Worker、部署、管 D1/R2/DNS、查官方 docs。 同类里受限 token 粒度做得最细——但记住「能部署=能跑任意代码」，token 要按最小…" />
+  <meta property="og:description" content="Cloudflare MCP Server（Cloudflare）：Cloudflare 官方 MCP server（Apache-2.0）：agent 写 Worker、部署、管 D1/R2/DNS、查官方 docs。 提供受限 token——但记住「能部署=能跑任意代码」，token 要按最小面配。" />
   <meta name="theme-color" content="#16121f" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
   <script src="../brand.js?v=6a580ac0420e"></script>
   <link rel="stylesheet" href="../brand.css?v=6a580ac0420e" />
   <link rel="stylesheet" href="../site.css" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Cloudflare MCP Server","applicationCategory":"DeveloperApplication","sameAs":"https://github.com/cloudflare/mcp-server-cloudflare","description":"Cloudflare 官方 MCP server（Apache-2.0）：agent 写 Worker、部署、管 D1/R2/DNS、查官方 docs。 同类里受限 token 粒度做得最细——但记住「能部署=能跑任意代码」，token 要按最小面配。","dateModified":"2026-10-30"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Cloudflare MCP Server","applicationCategory":"DeveloperApplication","sameAs":"https://github.com/cloudflare/mcp-server-cloudflare","description":"Cloudflare 官方 MCP server（Apache-2.0）：agent 写 Worker、部署、管 D1/R2/DNS、查官方 docs。 提供受限 token——但记住「能部署=能跑任意代码」，token 要按最小面配。","dateModified":"2026-10-30"}</script>
 </head>
 <!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
      同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a> · <a href="#dimension-transport"><span data-zh>传输方式</span><span data-en>Transport</span></a> · <a href="#dimension-auth"><span data-zh>认证机制</span><span data-en>Authentication</span></a> · <a href="#dimension-scope"><span data-zh>权限范围</span><span data-en>Permission scope</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>MCP</span><span data-en>MCP</span></span>
         <span class="tag on"><span data-zh>云平台</span><span data-en>Cloud platform</span></span>
@@ -110,7 +111,7 @@
       </div>
 
             
-      <div class="panel-lead"><span data-zh><p><strong>Cloudflare 官方 MCP server</strong>（Apache-2.0）：agent 写 Worker、部署、管 D1/R2/DNS、查官方 docs。 同类里<strong>受限 token 粒度做得最细</strong>——但记住「能部署=能跑任意代码」，token 要按最小面配。</p></span><span data-en><p><strong>Cloudflare&#39;s official MCP server</strong> (Apache-2.0): agents write Workers, deploy, manage D1/R2/DNS, search official docs. It has <strong>the finest restricted-token granularity in its class</strong> — but remember &#39;can deploy = can run arbitrary code&#39;; scope tokens to the minimum.</p></span></div>
+      <div class="panel-lead"><span data-zh><p><strong>Cloudflare 官方 MCP server</strong>（Apache-2.0）：agent 写 Worker、部署、管 D1/R2/DNS、查官方 docs。 提供<strong>受限 token</strong>——但记住「能部署=能跑任意代码」，token 要按最小面配。</p></span><span data-en><p><strong>Cloudflare&#39;s official MCP server</strong> (Apache-2.0): agents write Workers, deploy, manage D1/R2/DNS, search official docs. It has <strong>the finest restricted-token granularity in its class</strong> — but remember &#39;can deploy = can run arbitrary code&#39;; scope tokens to the minimum.</p></span></div>
 
             <div class="panel is-slim">
         <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
@@ -133,47 +134,47 @@
         <p class="t-section-lead">11 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>它自己不调模型</strong>——被 MCP 客户端调用的接口实现。它把 Cloudflare 平台 （Workers、Pages、D1、R2、DNS、docs 检索等）包装成工具给 agent 用。</p></span><span data-en><p><strong>It calls no model itself</strong> — an interface implementation called by MCP clients. It wraps the Cloudflare platform (Workers, Pages, D1, R2, DNS, docs retrieval, etc.) as tools for agents.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p>官方托管远程 server 为主（docs 有远程端点线）+ 本地可跑；GitHub 4,431★， 最近推送 2026-10-22（API 核验）。</p></span><span data-en><p>Primarily an official hosted remote server (the docs carry a remote-endpoint line) + runnable locally; GitHub 4,431★, last push 2026-10-22 (API verified).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p>不读写本机项目文件——作用域是 Cloudflare 账户资源（部署 Workers、写 D1/R2 等）。</p></span><span data-en><p>Reads and writes no local project files — the scope is Cloudflare account resources (deploying Workers, writing D1/R2, etc.).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p>远程形态在 Cloudflare 侧；无后台任务语义（部署动作即时完成）。</p></span><span data-en><p>The remote form lives on Cloudflare&#39;s side; no background-task semantics (deploy actions complete immediately).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p>按产品分组（Workers/Pages/D1/R2/DNS/Docs…）可裁剪启用；写能力齐全 （部署 Worker、建 KV/D1 库、改 DNS 记录）。完整分组以仓 README 为准。</p></span><span data-en><p>Grouped by product (Workers/Pages/D1/R2/DNS/Docs…), trimmable via configuration; write capability is complete (deploying Workers, creating KV/D1 databases, changing DNS records). The complete grouping follows the repo README.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p>无跨会话记忆——状态在 Cloudflare 账户资源本身。</p></span><span data-en><p>No cross-session memory — state lives in the Cloudflare account resources themselves.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>API token 权限=agent 权限</strong>：Cloudflare token 可细粒度限定资源与操作面—— 官方推荐用受限 token 接 MCP。这是同类里凭据粒度做得最细的一条线， 但「能部署代码到 Workers」意味着能跑任意代码——按此最坏面设防。</p></span><span data-en><p><strong>API-token permissions = agent permissions</strong>: Cloudflare tokens can narrowly restrict resources and operation surfaces — the official recommendation is to connect MCP with a restricted token. This is the finest-grained credential line among its peers, but &quot;able to deploy code to Workers&quot; means able to run arbitrary code — defend against that worst case.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>适合：Cloudflare 栈的 agent 部署流（写 Worker→部署→查日志）、docs 检索。 不适合：要「只配置不部署」的硬边界（token 粒度能收窄但要仔细配）。</p></span><span data-en><p>Fits: the agent deployment flow on the Cloudflare stack (write Worker → deploy → check logs), docs retrieval. Not a fit: a hard &quot;configure but never deploy&quot; boundary (token granularity can narrow it, but must be configured carefully).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-transport">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
           <dd><span data-zh><p>远程 <strong>Streamable HTTP</strong>（官方托管端点）+ 本地 stdio 两线； 端点矩阵按产品分组（每产品一个远程 server URL）——以仓 README 为准。 核验：仓与 developers.cloudflare.com/changelog（2026-10-21）。</p></span><span data-en><p>Remote <strong>Streamable HTTP</strong> (official hosted endpoints) + a local stdio line; the endpoint matrix is grouped by product (one remote server URL per product) — follows the repo README. Verified against: the repository and developers.cloudflare.com/changelog (2026-10-21).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-auth">
           <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
           <dd><span data-zh><p>Cloudflare API token（建议受限 token：限定账户/资源/操作）； OAuth 线支持状态未逐条核验。</p></span><span data-en><p>A Cloudflare API token (a restricted token is recommended: limit account/resources/operations); OAuth-line support status not verified item by item.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-scope">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
           <dd><span data-zh><p>读面：docs 检索、资源查询；写面：部署 Workers、建/改 D1/R2/KV、DNS 记录变更。 token 粒度是主收紧手段；无工具级审批机制的官方说明。</p></span><span data-en><p>Read surface: docs retrieval, resource queries; write surface: deploying Workers, creating/modifying D1/R2/KV, DNS record changes. Token granularity is the primary tightening control; no official statement of a tool-level approval mechanism.</p></span></dd>
         </div>

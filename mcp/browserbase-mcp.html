@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a> · <a href="#dimension-transport"><span data-zh>传输方式</span><span data-en>Transport</span></a> · <a href="#dimension-auth"><span data-zh>认证机制</span><span data-en>Authentication</span></a> · <a href="#dimension-scope"><span data-zh>权限范围</span><span data-en>Permission scope</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>MCP</span><span data-en>MCP</span></span>
         <span class="tag on"><span data-zh>浏览器自动化</span><span data-en>Browser automation</span></span>
@@ -133,47 +134,47 @@
         <p class="t-section-lead">11 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>它自己需要外部模型跑 Stagehand</strong>——托管线由 Browserbase 侧提供 Gemini 的 LLM 成本 （官方 README 明写 hosted 版「provide the LLM costs for Gemini」）；自托管线要自备 GEMINI_API_KEY（可 --modelName 换其他模型并配对应 key）。它是「浏览器自动化 + 模型」的混合体， 不是纯接口包装。</p></span><span data-en><p><strong>It needs an external model to run Stagehand</strong> — on the hosted line Browserbase itself covers the LLM costs for Gemini (the official README states the hosted version &quot;provides the LLM costs for Gemini&quot;); the self-hosted line requires your own GEMINI_API_KEY (switch models with --modelName plus the matching key). It is a browser-automation-plus-model hybrid, not a pure interface wrapper.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p>现役主推<strong>官方托管远程 server</strong>（https://mcp.browserbase.com/mcp，streamable-http）； 自托管线走 npm（@browserbasehq/mcp 3.0.0，2026-03-31）或克隆 GitHub 仓。 <strong>GitHub 仓 browserbase/mcp-server-browserbase 已 archived</strong>（API 核验 archived=true， 3,397★，推送停 2026-07-20）——README 顶部明写「不再维护、仅存档、不代表现役生产实现」； 底座 Stagehand 仓仍活跃（MIT 25,883★，推送 2026-10-30）。</p></span><span data-en><p>The current flagship is the <strong>official hosted remote server</strong> (https://mcp.browserbase.com/mcp, streamable-http); the self-hosted line goes through npm (@browserbasehq/mcp 3.0.0, 2026-03-31) or cloning the GitHub repo. <strong>The GitHub repo browserbase/mcp-server-browserbase is archived</strong> (API-verified archived=true, 3,397★, last push 2026-07-20) — the README top states plainly it is &quot;no longer maintained, kept for historical purposes, not representative of current production services&quot;; the underlying Stagehand repo remains active (MIT 25,883★, pushed 2026-10-30).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p>不读写本机文件——产物是云端浏览器会话里的页面状态与抽取结果（文本/结构化数据）。 自托管线跑在你自己的机器上，但浏览器本身仍是 Browserbase 云端会话（要 BROWSERBASE_API_KEY）。</p></span><span data-en><p>Reads and writes no local files — the artifacts are page state and extraction results (text/structured data) inside a cloud browser session. The self-hosted line runs on your machine, but the browser itself is still a Browserbase cloud session (BROWSERBASE_API_KEY required).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p>浏览器会话活在 Browserbase 云端（start 创建/复用会话、end 关闭）；无本机后台进程。 会话生命周期由工具调用显式管理，不是常驻。</p></span><span data-en><p>The browser session lives on Browserbase&#39;s cloud (start creates/reuses a session, end closes it); no local background process. The session lifecycle is managed explicitly by tool calls, not persistent.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>6 个工具</strong>（README 口径，托管与自托管同工具集）：start（创建/复用会话）/ end（关闭会话）/ navigate（导航到 URL）/ act（按自然语言指令对页面动手）/ observe（观察可操作元素）/ extract（按指令抽取页面数据）。act/observe/extract 三件套由 Stagehand 的 act-and-observe 范式驱动。</p></span><span data-en><p><strong>6 tools</strong> (README wording; hosted and self-hosted share the same set): start (create/reuse a session) / end (close the session) / navigate (go to a URL) / act (manipulate the page from a natural-language instruction) / observe (observe actionable elements) / extract (extract page data per instruction). The act/observe/extract trio is driven by Stagehand&#39;s act-and-observe paradigm.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p>无 server 侧跨会话记忆；上下文=当前 Browserbase 浏览器会话（start 可复用既有会话）。 会话内页面状态自然连续，跨会话不保。</p></span><span data-en><p>No server-side cross-session memory; the context is the current Browserbase browser session (start can reuse an existing one). In-session page state is naturally continuous; nothing persists across sessions.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p>托管线要 Browserbase 账户（API key + project id，配在客户端）；自托管线要 BROWSERBASE_API_KEY/BROWSERBASE_PROJECT_ID/GEMINI_API_KEY 三个环境变量。 <strong>act 能在真实网页上动手</strong>（点击/填表）——授权边界按目标站点把关；云端会话内容在 Browserbase 侧留存，敏感流程要自己评估。</p></span><span data-en><p>The hosted line needs a Browserbase account (API key + project id, configured in the client); the self-hosted line needs the BROWSERBASE_API_KEY/BROWSERBASE_PROJECT_ID/GEMINI_API_KEY environment variables. <strong>act manipulates real web pages</strong> (clicks/form filling) — gate the authorization boundary per target site; cloud session content is retained on Browserbase&#39;s side, so sensitive flows need your own assessment.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>适合：要「云端浏览器 + 自然语言驱动网页」的 agent（无需本地起浏览器）；要托管起步、 LLM 成本由厂商包的省事路线。 不适合：要开源可审计的完整实现（GitHub 仓已 archived，现役实现闭源在托管侧）； 只要本地浏览器自动化的场景（Playwright MCP 更直接）。</p></span><span data-en><p>Fits: agents wanting &quot;cloud browser + natural-language web driving&quot; (no local browser to set up); the hosted line for easy onboarding with the vendor covering LLM costs. Not a fit: wanting an open-source auditable full implementation (the GitHub repo is archived; the current implementation is closed on the hosted side); scenarios that only need local browser automation (Playwright MCP is more direct).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-transport">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
           <dd><span data-zh><p><strong>streamable-http</strong>（托管 https://mcp.browserbase.com/mcp，官方推荐）+ <strong>stdio</strong> （npx @browserbasehq/mcp 自托管）；README 明写支持 STDIO 与 SHTTP 两种传输，推荐 SHTTP 走托管线。 核验：仓 README（2026-10-31 经 GitHub API raw 直抓）+ docs.browserbase.com MCP 页（直连 200）。</p></span><span data-en><p><strong>streamable-http</strong> (hosted https://mcp.browserbase.com/mcp, officially recommended) + <strong>stdio</strong> (npx @browserbasehq/mcp self-hosted); the README states both STDIO and SHTTP transports are supported, recommending SHTTP via the hosted line. Verified: repo README (fetched via GitHub API raw 2026-10-31) + the docs.browserbase.com MCP page (200 direct).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-auth">
           <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
           <dd><span data-zh><p>Browserbase 账户凭据（BROWSERBASE_API_KEY + BROWSERBASE_PROJECT_ID）；自托管线另加模型 key （默认 GEMINI_API_KEY）。托管端点直连实测 400（存在、需正确 MCP 握手与鉴权，非死链）。</p></span><span data-en><p>Browserbase account credentials (BROWSERBASE_API_KEY + BROWSERBASE_PROJECT_ID); the self-hosted line adds a model key (GEMINI_API_KEY by default). The hosted endpoint measured 400 direct (exists, requires a proper MCP handshake and auth — not a dead link).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-scope">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
           <dd><span data-zh><p>读面（navigate/observe/extract）+ <strong>网页写面（act 点击填表）</strong>；无本机文件写面。 云端浏览器会话可带登录态——「在网页上动手」的边界按目标站点授权把关。</p></span><span data-en><p>Read surface (navigate/observe/extract) + <strong>web write surface (act clicks and fills forms)</strong>; no local file write surface. Cloud browser sessions can carry login state — gate the &quot;touching things on a web page&quot; boundary per the target site&#39;s authorization.</p></span></dd>
         </div>

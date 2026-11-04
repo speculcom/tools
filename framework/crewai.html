@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>Python</span><span data-en>Python</span></span>
         <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
@@ -149,7 +150,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>它的模型接入路径最具体。默认走 OpenAI API，本地模型官方点名了 Ollama 工具。</strong></p>
             <p>README 按这个顺序写。默认 OpenAI，另有多种连接方式，例如本地模型走 Ollama 工具。</p>
@@ -179,7 +180,7 @@
             <p><strong>Official example</strong>: <code>LLM(model=&quot;ollama/llama3.2&quot;, base_url=&quot;http://localhost:11434&quot;)</code></p>
             <p><strong>Unknown: tool calling / structured output reliability after switching providers, not stated officially.</strong> (<code>learn/llm-connections</code> and <code>concepts/llms</code> pages checked; no cross-provider reliability comparison.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>它是纯库，官方口径是「从原型到生产不用换框架」。</strong></p>
             <p>安装是 pip 包（README Getting Started 走 pip install + crewai CLI），没有托管服务。</p>
@@ -205,7 +206,7 @@
             <ul><li><strong>switches</strong>: <code>Crew</code> / <code>Flow</code> / <code>Agent</code> all accept <code>checkpoint</code>; children inherit parents by default, and can pass <code>False</code> to opt out</li></ul>
             <p>The granularity is &quot;each completed task / method&quot; — exactly the checkpoint granularity this site looks for.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>框架本身不内置文件系统能力，文件读写靠工具提供 —— 但工具的默认边界清楚。</strong></p>
             <p><strong>默认边界已核到</strong>（官方 FileReadTool 页）。运行时传入的路径<strong>必须落在 <code>base_dir</code> 内</strong>。 <code>base_dir</code> 默认是当前工作目录。<code>..</code> 与符号链接都会先解析再校验，</p>
@@ -229,7 +230,7 @@
             <p>There is also a set of <strong>multimodal file inputs</strong> (<code>crewai[file-processing]</code> extra, <code>Files</code> page, <strong>early access</strong>). Images / PDFs / audio / video / text can be passed.</p>
             <p><strong>Unknown: default permissions under container deployment, not stated officially.</strong> (Files page and FileReadTool page checked.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>它不托管后台。</strong> 库本身不提供厂商托管的执行环境 —— 要「电脑关了还能跑」， 得自己把进程跑在自有服务器 / VPC 上。AMP 商业侧另给 Cron scheduling。</p>
             <p><strong>Flow 的 state management 是官方明文。</strong> README 把 Flow 描述成 &quot;event-driven workflows with <strong>state, branching, routing</strong>&quot;， FAQ 说 Flow 适合 &quot;detailed execution paths and <strong>secure state management</strong>&quot;。</p>
@@ -247,7 +248,7 @@
             <ul><li><strong>Flow&#39;s <code>@persist</code> decorator</strong>: officially &quot;automatically persists all flow method states&quot;, default backend <code>SQLiteFlowPersistence</code></li></ul>
             <ul><li><strong>resume</strong>: <code>kickoff(inputs={&quot;id&quot;: &lt;uuid&gt;})</code> — same <code>flow_uuid</code> continues the history</li><li><strong>fork</strong>: <code>kickoff(restore_from_state_id=&lt;uuid&gt;)</code> — new <code>state.id</code>, original history untouched</li><li><strong>checkpoint restore</strong>: crew / flow / agent checkpoints can be restored from <code>./.checkpoints/</code>; the <code>crewai checkpoint</code> CLI provides resume / fork</li></ul></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>官方明确列了 MCP 与 A2A 两项，这是它的一个强项。</strong></p>
             <p>&quot;Use tools, <strong>memory, knowledge, checkpointing</strong>, async execution, and <strong>MCP/A2A support</strong> for more capable production agents.&quot;</p>
@@ -265,7 +266,7 @@
             <p>Additionally, CrewAI hosts its own documentation MCP server (<code>docs.crewai.com/mcp</code>), queryable by AI coding assistants for its API details (the <code>ask-docs</code> mentioned in the README&#39;s &quot;Build with AI&quot; section).</p>
             <p><strong>The A2A (Agent-to-Agent) specification and ecosystem remain an external protocol</strong>: this site only records <strong>&quot;the official docs have an <code>a2a</code> extra and a batch of A2A events&quot;</strong>; the protocol spec is outside this site&#39;s research scope.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>它给了一套统一 memory 系统，外加独立的 knowledge。机制已核到。</strong></p>
             <p>README 里与记忆相关的表述有两处：</p>
@@ -291,7 +292,7 @@
             <ul><li><strong>pruning is not simple truncation</strong>: retrieval uses a composite <code>semantic + recency + importance</code> score. Writes go through LLM extraction of atomic facts + consolidation/dedup (when similarity crosses the threshold, the LLM decides keep / update / delete)</li></ul>
             <ul><li><strong>knowledge vs memory</strong>: knowledge is a RAG fact base (separate collection, agent/crew two levels). Memory is the unified cross-task record store. The two share vector storage but serve different purposes.</li></ul></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>guardrails 是「任务输出校验」，不是权限边界 —— 这一点与旧判断不同。</strong></p>
             <p>官方 <code>concepts/tasks</code> 页「Task Guardrails」原文：</p>
@@ -313,7 +314,7 @@
             <p><strong>Sandbox: OSS has no process / container-level sandbox.</strong> The boundary comes from the tools themselves — file tools restrict paths to <code>base_dir</code> by default. Default is cwd, see the local_files axis. MCP security is officially stated as a matter of &quot;trust&quot;, with no built-in protection.</p>
             <p><strong>Unknown: network access control has no official mechanism</strong> (tasks page and <code>mcp/security</code> page checked). RBAC / SSO / PII redaction belong to the AMP commercial side; the open-source version does not have them.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p><strong>适合三类场景。</strong></p>
             <ul><li>任务能被表述成「一支有角色分工的团队」（Crews）</li><li>需要业务逻辑留在普通 Python 里、并显式控制执行路径（Flows）</li><li>想在本地模型上跑（官方点名 Ollama / LM Studio）；需要 MCP 与 A2A 接入；Python 栈</li></ul>
@@ -523,7 +524,7 @@ class AdvancedAnalysisFlow(Flow[MarketState]):
             <ul><li>Tracing &amp; Observability（实时指标、日志、trace）</li><li>Unified Control Plane（集中管控与扩缩）</li><li>Seamless Integrations（企业系统集成）</li><li><strong>Advanced Security</strong>（官方原文：&quot;Built-in robust security and compliance measures&quot;）</li><li>24/7 Support（专属企业支持）</li><li><strong>On-premise and Cloud Deployment Options</strong>（CrewAI AMP 两种部署形态）</li></ul>
             <p><strong>注意其中「Advanced Security」这一条</strong> —— 如果你用 CrewAI 的理由之一是权限边界，<strong>开源版并没有这一项</strong>。</p>
             <h3 class="sub-h">AMP 档位：官方页只有两档，且这本身是个坑</h3>
-            <p>2026-10-01 核验官方定价页，<strong>只有两档</strong>（报价按 D9 口径不存，见官方页）：</p>
+            <p>2026-10-01 核验官方定价页，<strong>只有两档</strong>（报价按本站的报价记录约定不存，见官方页）：</p>
             <div class="tbl-wrap"><table><thead><tr><th>档位</th><th>执行次数</th><th>席位</th></tr></thead><tbody><tr><td><strong>Basic</strong>（免费档）</td><td><strong>50 次/月，上限就是 50</strong></td><td>1</td></tr><tr><td><strong>Enterprise</strong>（定制）</td><td>&quot;Sized to workflow&quot; + Flexible overage</td><td>不限</td></tr></tbody></table></div>
             <p><strong>Basic 包含</strong>：</p>
             <ul><li>Visual editor + AI copilot、GitHub 集成、<strong>Export as MCP server</strong>、Export as UI component</li><li>Guardrails、Human-in-the-loop input、Cron scheduling</li><li>Tracing、OpenTelemetry、LLM testing、AI agent training</li><li>Usage dashboard、Token count、自动扩缩、社区支持</li></ul>
@@ -538,11 +539,11 @@ class AdvancedAnalysisFlow(Flow[MarketState]):
             <blockquote>On-premise and Cloud Deployment Options</blockquote>
             <p><strong>官方页也没有任何强制联网授权的表述。</strong></p>
             <p><strong>结论三：第三方报价站不可信。</strong></p>
-            <p>核验时多个第三方来源给出的档位与报价，<strong>官方定价页上根本没有这些档位</strong> （有来源自己都标注「那一档来自第三方聚合站，不在官方页上」）。 <strong>本站只采官方页面读得到的事实</strong>——按 D9 口径，本站连官方报价也不存，只给官方页链接。</p></span><span data-en><p>The README has a standalone Crew Control Plane Key Features section; all seven items are commercial-product features:</p>
+            <p>核验时多个第三方来源给出的档位与报价，<strong>官方定价页上根本没有这些档位</strong> （有来源自己都标注「那一档来自第三方聚合站，不在官方页上」）。 <strong>本站只采官方页面读得到的事实</strong>——按本站的报价记录约定，本站连官方报价也不存，只给官方页链接。</p></span><span data-en><p>The README has a standalone Crew Control Plane Key Features section; all seven items are commercial-product features:</p>
             <ul><li>Tracing &amp; Observability (live metrics, logs, traces)</li><li>Unified Control Plane (centralized management and scaling)</li><li>Seamless Integrations (enterprise system integration)</li><li><strong>Advanced Security</strong> (official wording: &quot;Built-in robust security and compliance measures&quot;)</li><li>24/7 Support (dedicated enterprise support)</li><li><strong>On-premise and Cloud Deployment Options</strong> (CrewAI AMP&#39;s two deployment forms)</li></ul>
             <p><strong>Note the &quot;Advanced Security&quot; item</strong> — if one of your reasons for using CrewAI is permission boundaries, <strong>the open-source version does not have this item</strong>.</p>
             <h3 class="sub-h">AMP tiers: the official page has only two tiers, and that itself is a pitfall</h3>
-            <p>Verified on the official pricing page 2026-10-01: <strong>only two tiers</strong> (quotes not stored per the D9 rule; see the official page):</p>
+            <p>Verified on the official pricing page 2026-10-01: <strong>only two tiers</strong> (quotes not stored per the price-recording policy; see the official page):</p>
             <div class="tbl-wrap"><table><thead><tr><th>Tier</th><th>Executions</th><th>Seats</th></tr></thead><tbody><tr><td><strong>Basic</strong> (free tier)</td><td><strong>50/month, the cap is 50</strong></td><td>1</td></tr><tr><td><strong>Enterprise</strong> (custom)</td><td>&quot;Sized to workflow&quot; + Flexible overage</td><td>unlimited</td></tr></tbody></table></div>
             <p><strong>Basic includes</strong>:</p>
             <ul><li>Visual editor + AI copilot, GitHub integration, <strong>Export as MCP server</strong>, Export as UI component</li><li>Guardrails, Human-in-the-loop input, Cron scheduling</li><li>Tracing, OpenTelemetry, LLM testing, AI agent training</li><li>Usage dashboard, Token count, auto-scaling, community support</li></ul>
@@ -557,7 +558,7 @@ class AdvancedAnalysisFlow(Flow[MarketState]):
             <blockquote>On-premise and Cloud Deployment Options</blockquote>
             <p><strong>The official page also contains no forced-online-authorization wording.</strong></p>
             <p><strong>Conclusion three: third-party quote sites are untrustworthy.</strong></p>
-            <p>During verification, several third-party sources gave tiers and quotes that <strong>do not exist on the official pricing page at all</strong> (one source itself notes &quot;that tier comes from a third-party aggregator, not on the official page&quot;). <strong>This site collects only facts readable on official pages</strong> — per the D9 rule, this site does not even store official quotes, only links to the official page.</p></span>
+            <p>During verification, several third-party sources gave tiers and quotes that <strong>do not exist on the official pricing page at all</strong> (one source itself notes &quot;that tier comes from a third-party aggregator, not on the official page&quot;). <strong>This site collects only facts readable on official pages</strong> — per the price-recording policy, this site does not even store official quotes, only links to the official page.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>核验说明</span><span data-en>Verification notes</span></h2>

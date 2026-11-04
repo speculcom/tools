@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
         <span class="tag on"><span data-zh>TypeScript</span><span data-en>TypeScript</span></span>
@@ -133,35 +134,35 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p>通过 provider 包接多家模型供应商；模型切换在应用代码里完成。 AI SDK 7 新增 HarnessAgent，可把既有 agent harness 当成可切换运行时（官方 changelog）。</p></span><span data-en><p>Connects to multiple model providers through provider packages; model switching happens in application code. AI SDK 7 adds HarnessAgent, which treats existing agent harnesses as switchable runtimes (official changelog).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p>TypeScript/JavaScript 库，运行在你的 Node/边缘/浏览器应用里；harness adapters 负责驱动 Claude Code、Codex、Pi 等外部 agent 运行时，sandbox 由适配器提供（官方示例用 Vercel Sandbox）。</p></span><span data-en><p>A TypeScript/JavaScript library running inside your Node, edge or browser app; harness adapters drive external agent runtimes such as Claude Code, Codex and Pi, with sandboxes supplied by the adapter (the official example uses Vercel Sandbox).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p>文件访问取决于 harness 与 sandbox：官方示例通过 createVercelSandbox 提供隔离文件系统； 本地文件访问能力未逐条核验。</p></span><span data-en><p>File access depends on the harness and sandbox: the official example uses createVercelSandbox for an isolated filesystem; local-file access not verified item by item.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p>库本身不提供任务队列；长任务是否能在后台继续，取决于所选 harness 与 sandbox 的运行时。</p></span><span data-en><p>The library ships no task queue; whether long tasks continue in the background depends on the chosen harness and sandbox runtime.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p>工具调用是核心抽象；官方 changelog 展示 HarnessAgent 与 sandbox 组合。 MCP 接入未逐条核验。</p></span><span data-en><p>Tool calling is a core abstraction; the official changelog shows HarnessAgent combined with sandboxes. MCP integration not verified item by item.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p>消息历史由应用管理；库本身不内建持久化，需要自己接数据库或会话存储。</p></span><span data-en><p>Message history is managed by the application; the library has no built-in persistence, so you attach a database or session store yourself.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p>BYOK 为主，密钥在应用侧；sandbox 边界由 harness 适配器决定， 官方示例把 Vercel Sandbox 作为隔离层。多租户隔离需自行设计。</p></span><span data-en><p>Mostly BYOK with keys on the application side; sandbox boundaries come from the harness adapter, and the official example uses Vercel Sandbox as the isolation layer. Multi-tenant isolation is your design.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>适合：TypeScript/JS 团队自建 agent 应用，想在不改业务代码的前提下切换模型或 harness。 不适合：要开箱即用的成品 agent（看 coding/chat 类产品）；要 Python 生态（看 LangGraph/Agno）。</p></span><span data-en><p>Fits TypeScript/JS teams building agent apps who want to switch models or harnesses without rewriting business code. Does not fit turnkey agents (see coding/chat products) or Python ecosystems (see LangGraph/Agno).</p></span></dd>
         </div>

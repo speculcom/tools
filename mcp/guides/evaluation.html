@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Evaluating agents — 深水指南 | 投机取巧</title>
-  <meta name="description" content="agent 评测：没有评测就没有迭代：上线前用数据集测回归，上线后盯住真实流量，以及评测器自己会犯的坑。" />
+  <meta name="description" content="agent 评测：先定义任务和成功条件，再用固定样本检查改动、记录实际失败；评测器的判断也需要核对。" />
   <link rel="canonical" href="https://tools.specul.com/mcp/guides/evaluation.html" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Evaluating agents" />
   <meta property="og:url" content="https://tools.specul.com/mcp/guides/evaluation.html" />
   <meta property="og:title" content="Evaluating agents — 深水指南 | 投机取巧" />
-  <meta property="og:description" content="agent 评测：没有评测就没有迭代：上线前用数据集测回归，上线后盯住真实流量，以及评测器自己会犯的坑。" />
+  <meta property="og:description" content="agent 评测：先定义任务和成功条件，再用固定样本检查改动、记录实际失败；评测器的判断也需要核对。" />
   <meta name="theme-color" content="#16121f" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
   <script src="../../brand.js?v=6a580ac0420e"></script>
@@ -90,13 +90,14 @@
           <div class="vendor is-caps"><span data-zh>评测</span><span data-en>Evaluation</span></div>
         </div>
       </div>
-      <div class="panel-lead"><span data-zh><p>没有评测就没有迭代：上线前用数据集测回归，上线后盯住真实流量，以及评测器自己会犯的坑。</p></span><span data-en><p>No evaluation, no iteration — offline regression testing, live monitoring, and the pitfalls of evaluators themselves.</p></span></div>
+      <div class="panel-lead"><span data-zh><p>先定义任务和成功条件，再用固定样本检查改动、记录实际失败；评测器的判断也需要核对。</p></span><span data-en><p>No evaluation, no iteration — offline regression testing, live monitoring, and the pitfalls of evaluators themselves.</p></span></div>
 
-      <div class="panel is-slim">
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></a></li><li><a href="#guide-section-1"><span data-zh>两个战场</span><span data-en>Two battlefields</span></a></li><li><a href="#guide-section-2"><span data-zh>四类评分器</span><span data-en>Four kinds of evaluators</span></a></li><li><a href="#guide-section-3"><span data-zh>一次完整评测长什么样</span><span data-en>One full workflow</span></a></li><li><a href="#guide-section-4"><span data-zh>评测自己的坑</span><span data-en>Pitfalls of evaluation</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
         <span data-zh><p><strong>agent 评测就是用数据集和评分器量化「改完是变好还是变坏」。</strong> 没有它，「优化提示词」只是手感；有了它，每次改动才有账可查。 评测分两个战场：上线前测回归，上线后盯真实流量。</p></span><span data-en><p><strong>Agent evaluation means quantifying &quot;did the change make it better or worse&quot; with datasets and graders.</strong> Without it, &quot;optimizing the prompt&quot; is just feel; with it, every change has an auditable ledger. Evaluation has two battlefields: regression testing before shipping, watching real traffic after.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-1">
         <h2><span data-zh>两个战场</span><span data-en>Two battlefields</span></h2>
         <span data-zh><p>LangSmith 官方文档把评测按运行时机分成两类。</p>
             <p><strong>离线评测</strong>：在开发时用整理好的数据集跑， 目的是比较版本、基准测试、抓回归。 <strong>官方一句话</strong>：&quot;Test before you ship&quot;。</p>
@@ -106,7 +107,7 @@
             <p><strong>Online evaluation</strong>: score real production interactions in real time, for safety screening, format validation, quality heuristics. <strong>Official one-liner</strong>: &quot;Monitor in production&quot;.</p>
             <p>The two share data: failures seen in production should become a test case in the dataset. <strong>LangSmith official text</strong>: &quot;Add failing production traces to your dataset, create targeted evaluators, validate fixes with offline experiments, and redeploy.&quot; This loop is what keeps an evaluation system alive long-term.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-2">
         <h2><span data-zh>四类评分器</span><span data-en>Four kinds of evaluators</span></h2>
         <span data-zh><p>官方列出四类评分方式：</p>
             <div class="tbl-wrap"><table><thead><tr><th>评分器</th><th>怎么工作</th><th>适合</th></tr></thead><tbody><tr><td>人工评审</td><td>人直接看</td><td>高质量金标准，贵</td></tr><tr><td>代码规则</td><td>正则、断言、确定性检查</td><td>格式、必含字段</td></tr><tr><td>LLM 当裁判</td><td>用模型给输出打分</td><td>主观质量，规模化</td></tr><tr><td>两两对比</td><td>同一个问题比两个版本</td><td>二选一的迭代</td></tr></tbody></table></div>
@@ -114,7 +115,7 @@
             <div class="tbl-wrap"><table><thead><tr><th>Grader</th><th>How it works</th><th>Fits</th></tr></thead><tbody><tr><td>Human review</td><td>People look directly</td><td>High-quality gold standard, expensive</td></tr><tr><td>Code rules</td><td>Regex, assertions, deterministic checks</td><td>Format, required fields</td></tr><tr><td>LLM-as-judge</td><td>A model scores the output</td><td>Subjective quality, at scale</td></tr><tr><td>Pairwise comparison</td><td>Compare two versions on the same question</td><td>Either-or iteration</td></tr></tbody></table></div>
             <p>Code rules are the cheapest and most trustworthy — if it can be computed, don&#39;t ask the model. LLM-as-judge goes on subjective dimensions, but the judge itself errs; its rubric must be written as reusable instructions, not improvised each time.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-3">
         <h2><span data-zh>一次完整评测长什么样</span><span data-en>One full workflow</span></h2>
         <span data-zh><p>官方给出的四步：</p>
             <p>1. 建数据集：手工用例、历史 trace、或合成生成。 2. 定评分器：按上面四类选。 3. 跑实验：整个应用在数据集上跑一遍，可配置重复次数和并发。 4. 分析结果：比较实验，做基准、单测、回归、回测。</p>
@@ -122,7 +123,7 @@
             <p>1. Build the dataset: handcrafted cases, historical traces, or synthetic generation. 2. Define graders: pick from the four kinds above. 3. Run experiments: run the whole application over the dataset, configurable repeats and concurrency. 4. Analyze results: compare experiments — benchmarks, unit tests, regressions, backtests.</p>
             <p>Evaluating an agent adds one layer over single-turn QA: <strong>the process must be checked too</strong>. The final answer may be right, but if it called the wrong tools or looped ten times, the cost is completely different. This is why traces are indispensable in agent evaluation.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-4">
         <h2><span data-zh>评测自己的坑</span><span data-en>Pitfalls of evaluation</span></h2>
         <span data-zh><p>1. 数据集漂移：用例停留在三个月前的场景，线上早就没人那么问了。 2. 裁判偏见：LLM 偏好长答案、偏好自己熟悉的格式， 用 LLM 评 LLM 要定期和人工抽检对齐。 3. 过拟合数据集：为刷分优化，泛化反而降——留一份从没用来调过参数的数据。 4. 只看通过率：80% 到 85% 可能全挤在简单用例上，要看分类目、分难度的细分。</p>
             <p>Reflexion 论文展示的是另一个方向：<strong>用反馈信号本身当评测</strong>。 它的 verbal reinforcement 把环境反馈转成语言反思存起来， 本质上是被动反馈驱动、自我执行的评测循环。 思路可借，但报告的数字（91% pass@1）是特定基准上的结果， 换任务不保证复现。</p>
@@ -137,7 +138,7 @@
           <tr><td><span data-zh>Anthropic 工程博客 · Building effective agents（2026-10-30 直抓 200）</span><span data-en>Anthropic engineering blog · Building effective agents (official page verified via WebFetch on 2026-10-30)</span></td><td><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">https://www.anthropic.com/engineering/building-effective-agents</a></td></tr>
           <tr><td><span data-zh>Reflexion 论文（arXiv 2303.11366，2026-10-30 直抓摘要页）</span><span data-en>Reflexion paper (arXiv 2303.11366, abstract page direct-fetched 2026-10-30)</span></td><td><a href="https://arxiv.org/abs/2303.11366" target="_blank" rel="noopener">https://arxiv.org/abs/2303.11366</a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>核验快照：2026-10-30 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-10-30 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+        <p class="guide-foot"><span data-zh>资料核验日期：2026-10-30。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-10-30. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>

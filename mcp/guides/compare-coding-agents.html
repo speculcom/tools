@@ -92,18 +92,19 @@
       </div>
       <div class="panel-lead"><span data-zh><p>先定执行面（终端 / IDE / 云端），再比权限模型、后台续跑与仓库上下文；给每个候选写明适用条件与一句「什么情况下选另一个」。</p></span><span data-en><p>Fix the execution surface first (terminal, IDE, cloud), then compare permission models, background continuation and repo context; each candidate gets its conditions and one line on when to pick another.</p></span></div>
       <p class="t-xs" data-en>English summaries and interface labels are available. The guide body below is currently in Chinese.</p>
-      <div class="panel is-slim">
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>先定执行面，再挑产品</span><span data-en>Pick the surface first</span></a></li><li><a href="#guide-section-1"><span data-zh>六项对照</span><span data-en>Six dimensions</span></a></li><li><a href="#guide-section-2"><span data-zh>每个候选的适用条件</span><span data-en>When each fits</span></a></li><li><a href="#guide-section-3"><span data-zh>核验事实</span><span data-en>Dated facts</span></a></li><li><a href="#guide-section-4"><span data-zh>常见误判</span><span data-en>Common misreads</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>先定执行面，再挑产品</span><span data-en>Pick the surface first</span></h2>
         <p>写代码的 Agent 先分三类执行面，价格和模型都不是第一决策点：</p>
             <div class="tbl-wrap"><table><thead><tr><th>执行面</th><th>代表</th><th>运行位置</th><th>适合的活</th></tr></thead><tbody><tr><td>终端</td><td>Claude Code CLI、Codex CLI、Gemini CLI</td><td>你的 shell 与仓库</td><td>已有仓库、要脚本化、要看清每条命令</td></tr><tr><td>IDE</td><td>Cursor、GitHub Copilot、Antigravity</td><td>编辑器进程或厂商云</td><td>边写边看、要补全与内联 diff</td></tr><tr><td>云端</td><td>Devin、Cursor 云端 Agent</td><td>厂商工作区</td><td>工单批量委派、合上笔记本还要继续跑</td></tr></tbody></table></div>
             <p><strong>先问一句：改动是在你机器上跑，还是交给厂商云跑？</strong> 这一步会直接排除一半候选。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-1">
         <h2><span data-zh>六项对照</span><span data-en>Six dimensions</span></h2>
         <div class="tbl-wrap"><table><thead><tr><th>维度</th><th>Claude Code CLI</th><th>Codex CLI</th><th>Gemini CLI</th><th>Cursor</th><th>Devin</th><th>Antigravity</th></tr></thead><tbody><tr><td>执行面</td><td>终端</td><td>终端</td><td>终端</td><td>IDE + 云端</td><td>云端工作区</td><td>桌面 / CLI / IDE / SDK</td></tr><tr><td>权限控制</td><td>权限粒度可配置（官方文档与 CHANGELOG 记录）</td><td>命令执行需确认，app server 架构</td><td>非交互脚本模式，适合 CI</td><td>编辑器内确认 + 云端</td><td>云端沙箱，工单派单</td><td>官方三档命令执行策略</td></tr><tr><td>后台续跑</td><td>本地进程</td><td>线程续接</td><td>脚本模式</td><td>合上笔记本仍继续（官方 2026 架构更新）</td><td>原生异步</td><td>harness 常驻</td></tr><tr><td>模型选择</td><td>Anthropic 模型线</td><td>OpenAI 模型线</td><td>Gemini 模型线</td><td>多模型可切</td><td>厂商托管</td><td>Gemini 线</td></tr><tr><td>许可/源代码</td><td>源码可见，All rights reserved</td><td>仓库可见</td><td>Apache-2.0</td><td>闭源</td><td>闭源</td><td>闭源</td></tr><tr><td>价格档位</td><td>订阅或 API，档位见官方定价页</td><td>ChatGPT 档位或 API key</td><td>免费配额 + 付费 API</td><td>Hobby / Pro / Teams / Enterprise</td><td>团队报价</td><td>随 Google AI 计划</td></tr></tbody></table></div>
             <p>价格不写数字（本站纪律 D9）；档位名与配额以各官方定价页为准。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-2">
         <h2><span data-zh>每个候选的适用条件</span><span data-en>When each fits</span></h2>
         <p><strong>Claude Code CLI</strong>：适合已有仓库、想把每一步命令摊在终端里看的人；权限粒度是它最细的一面。能力边界是模型线固定在 Anthropic，要多模型得另配。<strong>什么情况下选另一个</strong>：要 IDE 内联补全就选 Cursor 或 Copilot；要完全开源可改的 CLI 就选 Gemini CLI。</p>
             <p><strong>Codex CLI</strong>：适合 OpenAI 生态、要线程续接与脚本化的人；Rust 实现、app server 是它的架构特征。<strong>什么情况下选另一个</strong>：团队已经押注 Anthropic，就选 Claude Code CLI。</p>
@@ -112,12 +113,12 @@
             <p><strong>Devin</strong>：适合把工单批量丢给云端、拿草稿 PR 再接管的人；Slack / Linear / Jira 可直接派单。<strong>什么情况下选另一个</strong>：改动必须在你本机、不能出网，就选终端或 IDE。</p>
             <p><strong>Antigravity</strong>：适合要在桌面指挥中心、CLI、IDE 扩展与 Python SDK 之间共用一套 harness 的团队；官方给了三档命令执行策略。<strong>什么情况下选另一个</strong>：只想要一个成熟 IDE，Cursor 更直接。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-3">
         <h2><span data-zh>核验事实</span><span data-en>Dated facts</span></h2>
         <p>1. Gemini CLI 采用 Apache-2.0，支持 <code>npx</code> 启动与 MCP（仓库 README，2026-10 快照）。 2. Cursor 官方在 2026-09-02 发布自托管能力；云端 Agent 可在地器关闭后继续运行（官方文档）。 3. Antigravity 的命令执行策略为官方显式三档（2026-10-13 release notes 核验）。 4. Claude Code CLI 有独立 CHANGELOG 与 Atom feed；源码可见但许可证为 All rights reserved（仓库页）。 5. Codex CLI 为 Rust 实现，架构以 app server 与线程续接为核心（仓库与 releases）。</p>
             <p>以上日期均为本站档案的核验快照日，不是厂商发布日；发布日以各仓库 releases 为准。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-4">
         <h2><span data-zh>常见误判</span><span data-en>Common misreads</span></h2>
         <ul><li>把「能跑终端」当成「能安全跑终端」：权限模型不同，默认确认与白名单是两回事。</li><li>把「云端续跑」当成「不用看」：草稿 PR 仍要人审，云端只省等待时间。</li><li>把「开源 CLI」当成「模型也开源」：CLI 的许可证与模型权重许可是两份文件。</li><li>把「支持 MCP」当成「工具即插即用」：server 的权限与数据范围仍要逐条看。</li></ul>
       </div>
@@ -131,7 +132,7 @@
           <tr><td>Devin · 官方文档（云端工作区、工单到草稿 PR）</td><td><a href="https://docs.devin.ai" target="_blank" rel="noopener">https://docs.devin.ai</a></td></tr>
           <tr><td>Google Antigravity · 官方站（桌面/CLI/IDE/SDK 四面共用 harness，2026-10-13 核验）</td><td><a href="https://antigravity.google" target="_blank" rel="noopener">https://antigravity.google</a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>核验快照：2026-11-03 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-11-03 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+        <p class="guide-foot"><span data-zh>资料核验日期：2026-11-03。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-11-03. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>

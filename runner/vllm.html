@@ -4,19 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>vLLM — Runners | 投机取巧</title>
-  <meta name="description" content="vLLM（vLLM 项目（PyTorch 基金会））：vLLM 是开源模型「服务化」的标杆：PagedAttention 把显存管理做成核心竞争力，OpenAI 兼容 server 直接对接现有客户端。 Apache-2.0、PyTorch 基金会生态。数字口径：官方自报性能数字在 models 站 guides…" />
+  <meta name="description" content="vLLM（vLLM 项目（PyTorch 基金会））：vLLM 是开源模型的推理与服务化引擎：PagedAttention 把显存管理做成核心竞争力，OpenAI 兼容 server 直接对接现有客户端。 Apache-2.0、PyTorch 基金会生态。数字口径：官方自报性能数字在 models 站 guide…" />
   <link rel="canonical" href="https://tools.specul.com/runner/vllm.html" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="vLLM" />
   <meta property="og:url" content="https://tools.specul.com/runner/vllm.html" />
   <meta property="og:title" content="vLLM — Runners | 投机取巧" />
-  <meta property="og:description" content="vLLM（vLLM 项目（PyTorch 基金会））：vLLM 是开源模型「服务化」的标杆：PagedAttention 把显存管理做成核心竞争力，OpenAI 兼容 server 直接对接现有客户端。 Apache-2.0、PyTorch 基金会生态。数字口径：官方自报性能数字在 models 站 guides…" />
+  <meta property="og:description" content="vLLM（vLLM 项目（PyTorch 基金会））：vLLM 是开源模型的推理与服务化引擎：PagedAttention 把显存管理做成核心竞争力，OpenAI 兼容 server 直接对接现有客户端。 Apache-2.0、PyTorch 基金会生态。数字口径：官方自报性能数字在 models 站 guide…" />
   <meta name="theme-color" content="#16121f" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
   <script src="../brand.js?v=6a580ac0420e"></script>
   <link rel="stylesheet" href="../brand.css?v=6a580ac0420e" />
   <link rel="stylesheet" href="../site.css" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"vLLM","applicationCategory":"DeveloperApplication","sameAs":"https://docs.vllm.ai","description":"vLLM 是开源模型「服务化」的标杆：PagedAttention 把显存管理做成核心竞争力，OpenAI 兼容 server 直接对接现有客户端。 Apache-2.0、PyTorch 基金会生态。数字口径：官方自报性能数字在 models 站 guides 已核验快照，本站不实测。","dateModified":"2026-10-30"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"vLLM","applicationCategory":"DeveloperApplication","sameAs":"https://docs.vllm.ai","description":"vLLM 是开源模型的推理与服务化引擎：PagedAttention 把显存管理做成核心竞争力，OpenAI 兼容 server 直接对接现有客户端。 Apache-2.0、PyTorch 基金会生态。数字口径：官方自报性能数字在 models 站 guides 已核验快照，本站不实测。","dateModified":"2026-10-30"}</script>
 </head>
 <!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
      同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
         <span class="tag on"><span data-zh>Apache2.0</span><span data-en>Apache2.0</span></span>
@@ -109,7 +110,7 @@
       </div>
 
             <p class="t-xs" data-en>English summaries and interface labels are available. Detailed source notes below are currently in Chinese.</p>
-      <div class="panel-lead"><span data-zh><p><strong>vLLM 是开源模型「服务化」的标杆</strong>：PagedAttention 把显存管理做成核心竞争力，OpenAI 兼容 server 直接对接现有客户端。 Apache-2.0、PyTorch 基金会生态。数字口径：官方自报性能数字在 models 站 guides 已核验快照，本站不实测。</p></span><span data-en><p><strong>vLLM is the benchmark for serving open models</strong>: PagedAttention makes memory management its core strength, and the OpenAI-compatible server plugs straight into existing clients. Apache-2.0, PyTorch Foundation umbrella. Numbers: vendor-claimed performance figures live in the models-site guides snapshot; this site does not benchmark.</p></span></div>
+      <div class="panel-lead"><span data-zh><p><strong>vLLM 是开源模型的推理与服务化引擎</strong>：PagedAttention 把显存管理做成核心竞争力，OpenAI 兼容 server 直接对接现有客户端。 Apache-2.0、PyTorch 基金会生态。数字口径：官方自报性能数字在 models 站 guides 已核验快照，本站不实测。</p></span><span data-en><p><strong>vLLM is an inference and serving engine for open models</strong>: PagedAttention makes memory management its core strength, and the OpenAI-compatible server plugs straight into existing clients. Apache-2.0, PyTorch Foundation umbrella. Numbers: vendor-claimed performance figures live in the models-site guides snapshot; this site does not benchmark.</p></span></div>
 
             <div class="panel is-slim">
         <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
@@ -132,35 +133,35 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p>safetensors/HF 系权重为主（GGUF 支持有限——models 站口径：量化服务化首选仍是 llama.cpp 路线）； 支持模型清单以官方 docs 为准，未逐条清点。</p></span><span data-en><p>safetensors/HF-line weights are the mainstay (GGUF support is limited — models-site framing: the first choice for quantized serving remains the llama.cpp route); the supported-model list follows the official docs, not inventoried item by item.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p>服务化推理引擎：PagedAttention 显存管理是官方招牌（自报数字在 models 站 guides serving-deep-dive.md 已核验快照，出处同源）；GitHub 95,878★（API 核验 2026-10-21）。</p></span><span data-en><p>A serving inference engine: PagedAttention memory management is the official signature (the self-reported figures were verified as a snapshot in the models-site guides serving-deep-dive.md, same source); GitHub 95,878★ (API verified 2026-10-21).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p>自托管部署，数据在自有环境；无官方托管云线（第三方云托管不算官方）。</p></span><span data-en><p>Self-hosted deployment, data in your own environment; no official managed cloud line (third-party cloud hosting does not count as official).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p>产品形态就是常驻服务（OpenAI 兼容 server）；并发/批处理调度是主轴。</p></span><span data-en><p>The product form is a resident service (an OpenAI-compatible server); concurrency/batch scheduling is the main axis.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p>OpenAI 兼容 API 含 tool calling；MCP 支持状态未逐条核验。</p></span><span data-en><p>The OpenAI-compatible API includes tool calling; MCP support status not verified item by item.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p>长上下文按模型与显存配置；前缀缓存等优化在官方文档线，细节未逐条核验。</p></span><span data-en><p>Long context depends on model and GPU-memory configuration; optimizations like prefix caching are in the official docs line, details not verified item by item.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p>自托管无账号体系；API 鉴权由部署方自配；多租户隔离与配额面未逐条核验。</p></span><span data-en><p>Self-hosted with no account system; API authentication configured by the deploying party; multi-tenant isolation and quota surfaces not verified item by item.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>适合：多模型/多请求的服务化部署、要吞吐与显存效率、生产环境 OpenAI 兼容端点。 不适合：单机开箱跑量化档（llama.cpp/Ollama 更省事）；GGUF 深度依赖场景。</p></span><span data-en><p>Fits: multi-model/multi-request serving deployment, wanting throughput and GPU-memory efficiency, production OpenAI-compatible endpoints. Does not fit: single-machine out-of-the-box quantized tiers (llama.cpp/Ollama are less hassle); scenarios deeply dependent on GGUF.</p></span></dd>
         </div>

@@ -91,10 +91,12 @@
         </div>
       </div>
       <div class="panel-lead"><span data-zh><p>四个可直接复制的文本块：提示词结构、上下文预算表、RAG 分块与重排清单、模型选型工作表。</p></span><span data-en><p>Four copyable text blocks: a prompt structure, a context budget table, a RAG chunking/reranking checklist and a model selection worksheet.</p></span></div>
-      <p class="t-xs" data-en>English summaries and interface labels are available. The guide body below is currently in Chinese.</p>
-      <div class="panel is-slim">
+
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>怎么用这页</span><span data-en>How to use</span></a></li><li><a href="#guide-section-1"><span data-zh>常见误用</span><span data-en>Common misuses</span></a></li><li><a href="#guide-section-2"><span data-zh>已填示例：把活动资料写成通知</span><span data-en>Filled example: turn event notes into a notice</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>怎么用这页</span><span data-en>How to use</span></h2>
-        <p>四个块都是纯文本，复制到你的文档或仓库里改。括号里是占位，不是可直接运行的代码。</p>
+        <span data-zh><p>模板内的比例、样本数、阈值和权限策略是示例。请按任务、授权与风险确定实际条件；填完表格不等于已经通过验收。</p>
+            <p>四个块都是纯文本，复制到你的文档或仓库里改。括号里是占位，不是可直接运行的代码。</p>
             <h3 class="sub-h">1. 提示词结构模板</h3>
             <pre class="code"><code>角色：你是【角色】，只负责【任务范围】。
 输入：用户给出【输入类型】；缺失信息请先问，不要猜。
@@ -116,13 +118,13 @@
 | 对话历史        | 10%      | 最近 3–5 轮，摘要化          |
 | 保留余量        | 10%      | 给输出与重试                 |
 
-规则：先砍历史，再砍示例，最后才砍检索资料；系统指令不砍。</code></pre>
+按任务调整：先移除无关历史与重复内容，保留必要证据和边界，并为输出留空间。</code></pre>
             <h3 class="sub-h">3. RAG 分块与重排清单</h3>
             <pre class="code"><code>- [ ] 分块按语义，不按固定字数；每块保留原文标题与 URL
 - [ ] 每块不超过【N】字，超长再拆，不截断句子
 - [ ] 表格与代码单独成块，不混进段落
 - [ ] 元数据至少含：来源、日期、版本、章节
-- [ ] 检索先粗排（BM25/向量），再重排（交叉编码器）
+- [ ] 用 BM25/向量取回候选，再根据质量与延迟评估是否重排
 - [ ] 重排后只留 top【K】块，按来源去重
 - [ ] 冲突来源同时保留，标红，不合并
 - [ ] 回答必须引用块编号；无命中写「未找到」
@@ -139,18 +141,76 @@
 | 中文/多语言要求  |          |            |
 | 必须接的生态     |          |            |
 
-结论：主选【 】，备选【 】；理由写三条，不写「综合最强」。</code></pre>
+结论：主选【 】，备选【 】；理由写三条，不写「综合最强」。</code></pre></span><span data-en><p>Copy these four plain-text blocks into your document or repository and replace bracketed fields. They are templates, not runnable code. Budget percentages are illustrative, not universal settings.</p>
+            <h3 class="sub-h">1. Prompt structure</h3>
+            <pre class="code"><code>Role: [role], limited to [task scope].
+Input: [input type]; ask about missing information rather than guessing.
+Constraints:
+- Cite [permitted sources]; write “not found” if unsupported.
+- Do not invent numbers, dates, licenses or authors.
+- Return conclusion, evidence, then unresolved items.
+Output:
+1) Conclusion (up to three sentences)
+2) Evidence (source and date for each)
+3) Unknowns (or “none”)
+Refusal conditions: [questions outside scope]</code></pre>
+            <h3 class="sub-h">2. Context budget</h3>
+            <pre class="code"><code>Slot | Illustrative share | Content
+System instructions | 10% | Role, constraints, format
+Task/examples | 30% | Current task and 1–3 contrasting examples
+Retrieved material | 40% | Passages with source IDs
+Conversation history | 10% | Recent, summarized turns
+Headroom | 10% | Output and retries
+
+Adjust to the task: remove unrelated history and repetition first;
+preserve necessary evidence and boundaries, and reserve output space.</code></pre>
+            <h3 class="sub-h">3. Chunking/reranking checklist</h3>
+            <pre class="code"><code>- [ ] Preserve meaning, titles and source URLs when chunking
+- [ ] Split long chunks at sentence boundaries; set [N] for the task
+- [ ] Keep tables/code intact where their meaning requires it
+- [ ] Keep source, date, version and section metadata
+- [ ] Retrieve with BM25/vectors; assess whether reranking is needed
+- [ ] Select top [K] supported passages and remove redundant copies
+- [ ] Preserve conflicting sources separately
+- [ ] Cite passage IDs; say “not found” without evidence
+- [ ] Recheck fixed questions after document updates</code></pre>
+            <h3 class="sub-h">4. Model-selection worksheet</h3>
+            <pre class="code"><code>Constraint | Your answer | Excluded products
+Hardware/VRAM/platform | |
+Outbound data allowed | |
+Commercial/self-hosted licensing | |
+Context requirement | |
+Concurrency/latency | |
+Seat/usage budget | |
+Chinese/multilingual needs | |
+Required integrations | |
+
+Primary: [ ]; fallback: [ ]; give three specific reasons, not “best overall”.</code></pre></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-1">
         <h2><span data-zh>常见误用</span><span data-en>Common misuses</span></h2>
-        <ul><li>把模板当提示词直接跑：占位符没填，模型会自由发挥。</li><li>预算表只算输入：输出与重试也要留余量。</li><li>RAG 只调 topK：不重排、不去重，噪声会挤掉正确块。</li><li>选型表只填一半：未填的约束会在上线后变成返工。</li></ul>
+        <span data-zh><ul><li>把模板当提示词直接跑：占位符没填，模型会自由发挥。</li><li>预算表只算输入：输出与重试也要留余量。</li><li>RAG 只调 topK：不重排、不去重，噪声会挤掉正确块。</li><li>选型表只填一半：未填的约束会在上线后变成返工。</li></ul></span><span data-en><ul><li>Leaving placeholders unfilled does not give a model a concrete task.</li><li>Budget output and retries as well as input.</li><li>Adjusting top-K alone may leave ranking, duplication or evidence problems unresolved.</li><li>Unresolved selection constraints should remain visible rather than becoming hidden launch assumptions.</li></ul></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-2">
+        <h2 id="worked-example"><span data-zh>已填示例：把活动资料写成通知</span><span data-en>Filled example: turn event notes into a notice</span></h2>
+        <span data-zh><p>以下为虚构教学材料，不是模型运行记录。</p>
+            <p><strong>输入</strong>：周六 14:00，社区阅览室，旧书交换。未提供费用、电话、报名链接。</p>
+            <p><strong>完整提示</strong>：仅依据上面三项资料，写一段不超过 100 字的通知。不要新增事实；未提供的报名信息不写。输出标题和两句正文。</p>
+            <p><strong>可接受的示例</strong>：旧书交换活动。周六 14:00，欢迎到社区阅览室参加旧书交换。</p>
+            <p><strong>检查</strong>：时间、地点、活动名称各核对一次；出现“免费”“扫码报名”或电话号码，先删除或补来源。材料没有给出这些信息。</p>
+            <p><strong>交接记录</strong>：已确认三项事实；未确认费用与联系方式；下一步是核对排版和发布渠道。若需要补充报名信息，先取得真实资料，再改提示。</p></span><span data-en><p>This is a fictional teaching example, not a model execution record.</p>
+            <p><strong>Input</strong>: Saturday 14:00, community reading room, used-book exchange. No fee, contact number or registration URL was supplied.</p>
+            <p><strong>Complete prompt</strong>: Use only those facts to write a notice under 100 Chinese characters. Add no facts and omit unspecified registration details. Return a title and two sentences.</p>
+            <p><strong>Acceptable example</strong>: Used-book exchange. Join the exchange at the community reading room on Saturday at 14:00.</p>
+            <p><strong>Check</strong> time, venue and event name. Remove or substantiate “free,” a signup link or a telephone number: none was supplied.</p>
+            <p><strong>Handoff</strong>: three facts confirmed; fees and contacts unresolved; next check layout and publication channel. Obtain actual registration details before adding them.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
         <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
-          <tr><td>本站 · 深水指南（上下文工程、RAG 全链路、选型方法；2026-11-03）</td><td><a href="https://tools.specul.com/mcp/guides/planning.html" target="_blank" rel="noopener">https://tools.specul.com/mcp/guides/planning.html</a></td></tr>
+          <tr><td><span data-zh>本站 · 深水指南（上下文工程、RAG 全链路、选型方法；2026-11-03）</span><span data-en>This site: context, retrieval and selection methods (2026-11-03)</span></td><td><a href="https://tools.specul.com/mcp/guides/planning.html" target="_blank" rel="noopener">https://tools.specul.com/mcp/guides/planning.html</a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>核验快照：2026-11-03 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-11-03 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+        <p class="guide-foot"><span data-zh>资料核验日期：2026-11-03。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-11-03. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>

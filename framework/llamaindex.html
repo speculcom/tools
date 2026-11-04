@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>Python</span><span data-en>Python</span></span>
         <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
@@ -162,7 +163,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>接入方式是「300+ 分散的集成包」，不是统一网关。</strong></p>
             <ul><li>官方在 integrations 页统称它们 &quot;community integrations&quot;（社区集成）</li><li>也就是说，多数由社区维护，不是官方自己一个个养</li></ul>
@@ -180,7 +181,7 @@
             <p><strong>The README states</strong>: &quot;some integrations may be declined&quot;.</p>
             <p><strong>Unknown: the official docs publish no quality tiering or maintenance-activity grading for the integration packages.</strong> (<strong>Checked</strong> — README and the integrations page.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>OSS 形态是纯库，有两个安装档位；托管运行在商业平台那一侧。</strong></p>
             <p><strong>安装档位有两个</strong>（README Getting Started）：</p>
@@ -200,7 +201,7 @@
             <p>LlamaCloud also offers hosted Indexing.</p>
             <ul><li><strong>Hosting is the LlamaCloud / LlamaAgents layer (commercial)</strong></li><li>It is not a run form that ships with the OSS framework</li></ul></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>它读本地文件是为了建索引，不是给 agent 一个工作区。</strong></p>
             <p>官方 <code>SimpleDirectoryReader</code> 文档把这句说得很直白：</p>
@@ -222,7 +223,7 @@
             <p>It is not an &quot;agent workspace&quot; file system. It is local file reading at the &quot;data-source ingestion + indexing&quot; layer.</p>
             <p>It reads disk to turn documents into retrievable indexes. That is not the same thing as Deep Agents&#39; &quot;agent editing files in a workspace&quot;.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>它没有「关机后继续跑」的托管执行。</strong> 但编排（Workflows）确实还在 OSS 里。</p>
             <p><strong>有一处容易被 README 误导。</strong> README 把 Workflows 列在 LlamaParse 平台的 Agents 节，官方框架文档却说得很清楚：</p>
@@ -240,7 +241,7 @@
             <p>&quot;deploy them to LlamaCloud or your own infrastructure&quot;</p>
             <p>and that is the platform side.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>工具层两件事：社区 ToolSpec，加一个官方的 MCP 接入包。</strong></p>
             <p>官方 tools 文档给了 <code>FunctionTool</code>。 还有 <code>QueryEngineTool</code>。</p>
@@ -257,7 +258,7 @@
             <p>Its MCP surface:</p>
             <ul><li>All three transports supported: SSE / Streamable HTTP / stdio</li><li>A Workflow can be re-published as an MCP server</li><li>The vendor also hosts <code>mcp.llamaindex.ai</code> (a docs-retrieval / LlamaParse MCP service)</li></ul></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>这一维度官方有具体机制，不是空白。</strong></p>
             <p>官方把框架叫 &quot;data framework&quot;。</p>
@@ -273,7 +274,7 @@
             <ul><li><code>compact</code> (default) — &quot;stuff as many text ... that can fit within the context window&quot;</li><li><code>refine</code> — refine chunk by chunk</li><li><code>tree_summarize</code> — recursive summarization</li><li><code>simple_summarize</code> — truncate to a single prompt</li></ul>
             <p>That is its context-trimming and summarization mechanism: pack to the window first, split into chunks when it does not fit, compress via the summarize-style modes.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>⚠ 这是一个明确的重大信息缺口，选型前必须自己确认。</strong></p>
             <p><strong>官方 README 全文没写的东西</strong>：沙箱、文件权限模型、 网络访问控制、人工确认机制 —— 一个都没有。</p>
@@ -289,7 +290,7 @@
             <p>That is a different class of risk from &quot;an agent touching your local files&quot; (data-leakage surface vs host-operation surface).</p>
             <p>But <strong>the README does not discuss data permissions or isolation</strong>.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p><strong>适合：把外部数据接进来做检索问答。</strong></p>
             <ul><li>核心任务是把外部数据源（API / PDF / 文档 / SQL）接进来做检索与问答</li><li>需要 300+ 现成集成里的某一个</li><li>团队是 Python 栈</li><li>明确要用 LlamaParse 的解析能力（那走商业平台）</li></ul>
@@ -348,7 +349,7 @@
             <tr><td>docs</td><td><span data-zh>官方文档 · LlamaIndex Framework（README 指向）</span><span data-en>Official docs · LlamaIndex Framework (pointed to by the README)</span></td><td><a href="https://developers.llamaindex.ai/python/framework/" target="_blank" rel="noopener">https://developers.llamaindex.ai/python/framework/</a></td></tr>
             <tr><td>docs</td><td><span data-zh>官方文档 · LlamaAgents（Workflows / Agent Builder，<strong>商业平台侧</strong>）</span><span data-en>Official docs · LlamaAgents (Workflows / Agent Builder, <strong>commercial-platform side</strong>)</span></td><td><a href="https://developers.llamaindex.ai/python/llamaagents/overview/" target="_blank" rel="noopener">https://developers.llamaindex.ai/python/llamaagents/overview/</a></td></tr>
             <tr><td>docs</td><td><span data-zh>LlamaParse 商业平台（README 称其为 enterprise platform）</span><span data-en>LlamaParse commercial platform (the README calls it an enterprise platform)</span></td><td><a href="https://cloud.llamaindex.ai" target="_blank" rel="noopener">https://cloud.llamaindex.ai</a></td></tr>
-            <tr><td>pricing</td><td><span data-zh>LlamaParse 官方定价页（Free/Starter/Pro 三档 credits 额度与加购上限；报价按 D9 口径不存；LiteParse 免费 OSS，核验 2026-10-01）</span><span data-en>LlamaParse official pricing page (Free/Starter/Pro credit quotas and add-on caps; prices not stored per our D9 rule; LiteParse is free OSS, verified 2026-10-01)</span></td><td><a href="https://www.llamaindex.ai/pricing" target="_blank" rel="noopener">https://www.llamaindex.ai/pricing</a></td></tr>
+            <tr><td>pricing</td><td><span data-zh>LlamaParse 官方定价页（Free/Starter/Pro 三档 credits 额度与加购上限；报价按本站的报价记录约定不存；LiteParse 免费 OSS，核验 2026-10-01）</span><span data-en>LlamaParse official pricing page (Free/Starter/Pro credit quotas and add-on caps; prices not stored per our price-recording policy; LiteParse is free OSS, verified 2026-10-01)</span></td><td><a href="https://www.llamaindex.ai/pricing" target="_blank" rel="noopener">https://www.llamaindex.ai/pricing</a></td></tr>
             <tr><td>repo</td><td><span data-zh>run-llama/liteparse · 免费快速文本解析器（官方另立项目）</span><span data-en>run-llama/liteparse · free fast text parser (a separate official project)</span></td><td><a href="https://github.com/run-llama/liteparse" target="_blank" rel="noopener">https://github.com/run-llama/liteparse</a></td></tr>
             <tr><td>changelog</td><td><span data-zh>Releases（v0.14.25 @ 2026-09-21）</span><span data-en>Releases (v0.14.25 @ 2026-09-21)</span></td><td><a href="https://github.com/run-llama/llama_index/releases" target="_blank" rel="noopener">https://github.com/run-llama/llama_index/releases</a></td></tr>
             <tr><td>docs</td><td><span data-zh>官方文档 · Workflows（<code>llama_index.core.workflow</code> 仍在 OSS core，核验 2026-10-08）</span><span data-en>Official docs · Workflows (<code>llama_index.core.workflow</code> still in OSS core, verified 2026-10-08)</span></td><td><a href="https://developers.llamaindex.ai/python/framework/module_guides/workflow/" target="_blank" rel="noopener">https://developers.llamaindex.ai/python/framework/module_guides/workflow/</a></td></tr>

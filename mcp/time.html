@@ -4,19 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Time MCP Server — MCP | 投机取巧</title>
-  <meta name="description" content="Time MCP Server（Model Context Protocol）：只做两件事：查当前时间、换时区。无文件无网络，是权限风险最低的一类 server。" />
+  <meta name="description" content="Time MCP Server（Model Context Protocol）：只做两件事：查当前时间、换时区。不读写项目文件；仍应核对所用 server 的实现与权限。" />
   <link rel="canonical" href="https://tools.specul.com/mcp/time.html" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Time MCP Server" />
   <meta property="og:url" content="https://tools.specul.com/mcp/time.html" />
   <meta property="og:title" content="Time MCP Server — MCP | 投机取巧" />
-  <meta property="og:description" content="Time MCP Server（Model Context Protocol）：只做两件事：查当前时间、换时区。无文件无网络，是权限风险最低的一类 server。" />
+  <meta property="og:description" content="Time MCP Server（Model Context Protocol）：只做两件事：查当前时间、换时区。不读写项目文件；仍应核对所用 server 的实现与权限。" />
   <meta name="theme-color" content="#16121f" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
   <script src="../brand.js?v=6a580ac0420e"></script>
   <link rel="stylesheet" href="../brand.css?v=6a580ac0420e" />
   <link rel="stylesheet" href="../site.css" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Time MCP Server","applicationCategory":"DeveloperApplication","url":"https://github.com/modelcontextprotocol/servers/tree/main/src/time","sameAs":"https://github.com/modelcontextprotocol/servers/tree/main/src/time","description":"只做两件事：查当前时间、换时区。无文件无网络，是权限风险最低的一类 server。","dateModified":"2026-10-23"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Time MCP Server","applicationCategory":"DeveloperApplication","url":"https://github.com/modelcontextprotocol/servers/tree/main/src/time","sameAs":"https://github.com/modelcontextprotocol/servers/tree/main/src/time","description":"只做两件事：查当前时间、换时区。不读写项目文件；仍应核对所用 server 的实现与权限。","dateModified":"2026-10-23"}</script>
 </head>
 <!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
      同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a> · <a href="#dimension-transport"><span data-zh>传输方式</span><span data-en>Transport</span></a> · <a href="#dimension-auth"><span data-zh>认证机制</span><span data-en>Authentication</span></a> · <a href="#dimension-scope"><span data-zh>权限范围</span><span data-en>Permission scope</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>本地</span><span data-en>Local</span></span>
         <span class="tag on"><span data-zh>只读</span><span data-en>Read-only</span></span>
@@ -106,7 +107,7 @@
       </div>
 
             
-      <div class="panel-lead"><span data-zh><p>只做两件事：查当前时间、换时区。<strong>无文件无网络，是权限风险最低的一类 server。</strong></p></span><span data-en><p>Does two things only: report the current time and convert time zones. <strong>No files, no network — the lowest-risk category of server.</strong></p></span></div>
+      <div class="panel-lead"><span data-zh><p>只做两件事：查当前时间、换时区。<strong>不读写项目文件；仍应核对所用 server 的实现与权限。</strong></p></span><span data-en><p>Does two things only: report the current time and convert time zones. <strong>No files, no network — the lowest-risk category of server.</strong></p></span></div>
 
             <div class="panel is-slim">
         <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
@@ -131,11 +132,11 @@
         <p class="t-section-lead">11 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p>本身不调用模型，是被客户端调用的接口实现。 使用 IANA 时区名，支持系统时区自动检测。</p></span><span data-en><p>It calls no model itself; it is an interface implementation called by clients. It uses IANA timezone names and supports automatic system-timezone detection.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p>本地 <strong>Python</strong> 进程，通过 stdio 通信。</p>
             <p>依赖 Python MCP SDK 1.x（要求 mcp<strong>=1.29.0,</strong>2），SDK 2.0 重命名了该 server 使用的 API。</p>
@@ -145,31 +146,31 @@
             <p>A 2026-08-30 fix addressed security and compatibility issues of container bind mounts under Docker / Podman / SELinux.</p>
             <p>Running directly with uvx, no pre-install needed, is recommended.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>无任何文件访问能力</strong>。不涉及文件读写。</p></span><span data-en><p><strong>No file-access capability whatsoever.</strong> No file reads or writes involved.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p>不支持。单次时间查询为同步操作，随客户端进程结束。</p></span><span data-en><p>Not supported. A single time query is a synchronous operation, ending with the client process.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p>提供 2 个工具：<code>get_current_time</code>（按指定时区取当前时间） 与 <code>convert_time</code>（时区间转换）。 输出为结构化时间数据，可直接消费。</p></span><span data-en><p>It provides 2 tools: <code>get_current_time</code> (current time in a given timezone) and <code>convert_time</code> (conversion between timezones). Output is structured time data, ready for direct consumption.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p>无状态。每次调用独立，不保留历史。</p></span><span data-en><p>Stateless. Each call is independent; no history is kept.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>无实质权限风险</strong>：不访问文件、不访问网络、不写任何状态。 全部权限是「能查询当前时间和做时区换算」。</p></span><span data-en><p><strong>No substantive permission risk</strong>: no file access, no network access, writes no state. Its entire permission set is &quot;being able to query the current time and convert timezones&quot;.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>给 Agent 提供可靠的时间与时区换算能力。 适合需要避免模型猜时间的场景（如日程、跨时区协作）。</p></span><span data-en><p>Gives an Agent reliable time and timezone-conversion capability. Suits scenarios where the model should not guess the time (scheduling, cross-timezone collaboration).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-transport">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
           <dd><span data-zh><p>支持 stdio，<strong>并提供容器部署方式（Docker / Podman）</strong>。</p>
             <p>2026-08-30 修复 bind mount 安全与兼容问题（含 SELinux），与 fetch、git 属同一条修复 commit（#2205）。</p>
@@ -177,11 +178,11 @@
             <p>The 2026-08-30 bind-mount security/compatibility fix (including SELinux) is the same commit (#2205) as for fetch and git.</p>
             <p>The official README (full-text verification 2026-10-08) gives only local-process integration (uvx / pip / Docker); there is no official launch method for a remote transport.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-auth">
           <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
           <dd><span data-zh><p>无独立认证层，但<strong>本 server 无任何外部资源访问</strong>， 认证与否不影响安全。</p></span><span data-en><p>No separate authentication layer, but <strong>this server accesses no external resources</strong>; whether auth exists makes no security difference.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-scope">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
           <dd><span data-zh><p><strong>无文件与网络访问，不读不写任何外部资源</strong>。 与 sequential-thinking 同属权限风险最低的一类，可放心在敏感环境使用。</p></span><span data-en><p><strong>No file or network access; reads and writes no external resources.</strong> Together with sequential-thinking it is the lowest permission-risk class; safe in sensitive environments.</p></span></dd>
         </div>

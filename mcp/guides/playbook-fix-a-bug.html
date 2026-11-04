@@ -92,64 +92,79 @@
       </div>
       <div class="panel-lead"><span data-zh><p>从仓库上下文、复现、计划、改动、测试到审查的六步流程；含权限设置、成本算式、失败模式与验收单。</p></span><span data-en><p>A six-step flow from repo context and reproduction through planning, editing and testing to review, with permission settings, a cost formula, failure modes and an acceptance list.</p></span></div>
       <p class="t-xs" data-en>English summaries and interface labels are available. The guide body below is currently in Chinese.</p>
-      <div class="panel is-slim">
-        <h2><span data-zh>准备：先把范围钉死</span><span data-en>Prepare: fix the scope</span></h2>
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>准备：明确问题与范围</span><span data-en>Prepare: fix the scope</span></a></li><li><a href="#guide-section-1"><span data-zh>复现：让 Agent 先看到失败</span><span data-en>Reproduce first</span></a></li><li><a href="#guide-section-2"><span data-zh>计划：三段式</span><span data-en>Plan in three parts</span></a></li><li><a href="#guide-section-3"><span data-zh>改动：小步与权限</span><span data-en>Edit with permissions</span></a></li><li><a href="#guide-section-4"><span data-zh>测试：三段证据</span><span data-en>Three pieces of evidence</span></a></li><li><a href="#guide-section-5"><span data-zh>审查：让另一个视角看</span><span data-en>Review with a second pass</span></a></li><li><a href="#guide-section-6"><span data-zh>成本算式</span><span data-en>Cost formula</span></a></li><li><a href="#guide-section-7"><span data-zh>核验事实与限额</span><span data-en>Dated facts and limits</span></a></li><li><a href="#guide-section-8"><span data-zh>验收单</span><span data-en>Acceptance checklist</span></a></li><li><a href="#guide-section-9"><span data-zh>常见失败模式</span><span data-en>Failure modes</span></a></li><li><a href="#guide-section-10"><span data-zh>贯穿案例：空列表导致页面报错</span><span data-en>Worked example: an empty list crashes a page</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
+        <h2><span data-zh>准备：明确问题与范围</span><span data-en>Prepare: fix the scope</span></h2>
         <p>1. <strong>选一个可复现的 bug</strong>：有明确复现步骤、预期行为与实际行为。 2. <strong>给仓库边界</strong>：只开这个仓库，不开家目录；密钥文件排除在工具可读范围外。 3. <strong>写清不许做什么</strong>：不许改无关模块、不许升级依赖、不许动 CI 配置。 4. <strong>先跑一次基线测试</strong>：记录失败用例与通过用例，作为改动后的对照。</p>
-            <p><strong>决策点</strong>：改动范围超过 3 个文件，先停下来拆任务；不要一边改一边扩大范围。</p>
+            <p><strong>决策点</strong>：改动涉及多个模块或难以一次审查时，先按原因和影响拆分；文件数量可以提示范围变化，但不是统一的停止标准。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-1">
         <h2><span data-zh>复现：让 Agent 先看到失败</span><span data-en>Reproduce first</span></h2>
         <ul><li>把复现命令、日志、相关文件路径贴给 Agent。</li><li>要求它先输出「失败原因假设 + 验证方法」，不要直接改代码。</li><li>有两个以上假设时，让它按成本排序，先验最便宜的那个。</li></ul>
             <p><strong>失败模式</strong>：Agent 跳过复现，直接给「可能的修复」。这种改动能通过代码审查，却可能没修到根因。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-2">
         <h2><span data-zh>计划：三段式</span><span data-en>Plan in three parts</span></h2>
         <p>要求输出三段：</p>
             <div class="tbl-wrap"><table><thead><tr><th>段</th><th>内容</th><th>验收</th></tr></thead><tbody><tr><td>根因</td><td>哪个文件、哪一行、为什么错</td><td>能被复现命令证实</td></tr><tr><td>改法</td><td>改什么、不改什么、影响面</td><td>列出受影响测试</td></tr><tr><td>回滚</td><td>出问题怎么退回</td><td>有明确命令或补丁</td></tr></tbody></table></div>
             <p>计划里出现「重构一下」「顺手优化」就删掉；修 bug 不是重构。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-3">
         <h2><span data-zh>改动：小步与权限</span><span data-en>Edit with permissions</span></h2>
         <ul><li><strong>终端 Agent</strong>：用权限确认模式，逐条看它要跑的命令；能白名单就白名单到具体命令，不要整个 shell。</li><li><strong>IDE Agent</strong>：用内联 diff，逐块接受；不要一次接受整文件。</li><li><strong>云端 Agent</strong>：让它产出草稿 PR，人在本地接管后再跑测试。</li></ul>
             <p><strong>权限红线</strong>：删除文件、改数据库、推远端、装全局包，四类操作必须人工确认。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-4">
         <h2><span data-zh>测试：三段证据</span><span data-en>Three pieces of evidence</span></h2>
         <p>1. <strong>复现用例转绿</strong>：原来失败的测试现在通过。 2. <strong>回归测试不红</strong>：原有测试集合仍通过。 3. <strong>手工验收</strong>：按 bug 报告的步骤再走一遍。</p>
-            <p>只交「单元测试通过」不够；缺回归与手工验收，等于没验。</p>
+            <p>单元测试之外，还应根据改动风险补充回归与原始复现步骤的验收；记录哪些检查没有执行。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-5">
         <h2><span data-zh>审查：让另一个视角看</span><span data-en>Review with a second pass</span></h2>
         <ul><li>让 Agent 生成「改动摘要 + 风险点 + 未覆盖场景」，人再审 diff。</li><li>重点看：错误处理、边界条件、日志与隐私、是否引入新依赖。</li><li>大改动拆成两个 PR：一个修根因，一个清理；不要把清理混进修复。</li></ul>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-6">
         <h2><span data-zh>成本算式</span><span data-en>Cost formula</span></h2>
         <p>不写单价，只给算式（单价查官方定价页）：</p>
             <pre class="code"><code>总成本 ≈ (输入 tokens × 输入单价) + (输出 tokens × 输出单价) + 工具调用费
 输入 tokens ≈ 仓库上下文 + 日志 + 对话历史</code></pre>
             <p>控制成本的三条：只开必要文件、限制日志长度、把长对话拆成新会话。订阅档位与配额以官方定价页为准。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-7">
         <h2><span data-zh>核验事实与限额</span><span data-en>Dated facts and limits</span></h2>
         <p>1. Claude Code CLI 有独立 CHANGELOG 与 Atom feed，权限粒度可配置；源码可见但 All rights reserved（仓库，2026-10 快照）。 2. Codex CLI 为 Rust 实现，强调 app server 与线程续接（仓库与 releases，2026-10 快照）。 3. Gemini CLI 支持非交互脚本模式与 MCP，适合把修复流程放进 CI（仓库，2026-10 快照）。 4. 三家的上下文窗口与单次任务限额随档位变化，以官方文档当日为准；不要把某次界面快照当承诺。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-8">
         <h2><span data-zh>验收单</span><span data-en>Acceptance checklist</span></h2>
         <ul><li>[ ] 复现步骤已记录，改动前能稳定失败</li><li>[ ] 根因写在计划里，且被复现命令证实</li><li>[ ] 改动只触及计划内文件</li><li>[ ] 复现用例转绿，回归测试全绿</li><li>[ ] 手工按原步骤验收通过</li><li>[ ] 无新增密钥、无无关依赖、无 CI 配置改动</li><li>[ ] diff 已由第二视角审查，风险点有记录</li><li>[ ] 回滚方式写在 PR 描述里</li></ul>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-9">
         <h2><span data-zh>常见失败模式</span><span data-en>Failure modes</span></h2>
         <ul><li><strong>范围蔓延</strong>：修 A 顺手改 B，review 成本翻倍。</li><li><strong>假复现</strong>：Agent 没跑失败用例，直接给修复。</li><li><strong>测试替换</strong>：改测试让它通过，而不是修代码。</li><li><strong>权限过宽</strong>：整个 shell 白名单，命令注入面变大。</li><li><strong>上下文污染</strong>：把密钥、生产日志贴进对话。</li></ul>
+      </div>
+      <div class="panel is-slim" id="guide-section-10">
+        <h2 id="worked-example"><span data-zh>贯穿案例：空列表导致页面报错</span><span data-en>Worked example: an empty list crashes a page</span></h2>
+        <span data-zh><p>以下是虚构的最小案例，演示修复记录应包含什么，不声称本站运行过该项目。</p>
+            <p><strong>输入与现象</strong>：页面直接读取 items[0].title，当 items=[] 时出错。预期显示“暂无条目”；有内容时仍显示第一条标题。</p>
+            <p><strong>先复现</strong>：准备空列表、单条、多条三种输入。先确认空列表失败，并记录其他两种输入的原行为。</p>
+            <p><strong>修改范围</strong>：在读取第一项之前处理空列表。若接口约定还允许缺失字段或 null，另列对应输入；不要默默扩大数据契约。</p>
+            <p><strong>验收记录示例</strong>：空列表显示空状态；单条与多条保持原规则；原报错不再出现。这里列的是应取得的证据，不是本页的测试结果。</p>
+            <p><strong>如果仍失败</strong>：查看真实输入形状和错误位置，不只追加更多默认值。交付物是复现输入、改动、验证结果和未覆盖情况。</p></span><span data-en><p>This fictional minimal case illustrates a repair record; it is not a project executed by this site.</p>
+            <p><strong>Input and failure</strong>: a page reads items[0].title; items=[] fails. Expected behavior is an empty state, while populated lists still show the first title.</p>
+            <p><strong>Reproduce</strong> with empty, single-item and multi-item lists. Establish the original failure and baseline behavior.</p>
+            <p><strong>Scope</strong>: handle the empty list before reading its first item. If the interface also permits null or missing fields, document those inputs separately instead of silently widening the contract.</p>
+            <p><strong>Required evidence</strong>: an empty state for no items, unchanged rules for populated lists and absence of the original error. These are acceptance requirements, not reported test results.</p>
+            <p><strong>If failure remains</strong>, inspect the actual input and error location rather than piling on defaults. Deliver reproduction inputs, changes, validation results and uncovered cases.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
         <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
-          <tr><td>Anthropic · Claude Code 仓库（权限与 CHANGELOG；2026-10 快照）</td><td><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">https://github.com/anthropics/claude-code</a></td></tr>
-          <tr><td>OpenAI · Codex CLI 仓库（线程续接与 app server；2026-10 快照）</td><td><a href="https://github.com/openai/codex" target="_blank" rel="noopener">https://github.com/openai/codex</a></td></tr>
-          <tr><td>Google · Gemini CLI 仓库（非交互脚本模式、MCP；2026-10 快照）</td><td><a href="https://github.com/google-gemini/gemini-cli" target="_blank" rel="noopener">https://github.com/google-gemini/gemini-cli</a></td></tr>
-          <tr><td>Anthropic · Claude Code 官方文档（权限与工作流；2026-10 快照）</td><td><a href="https://code.claude.com/docs/en/overview" target="_blank" rel="noopener">https://code.claude.com/docs/en/overview</a></td></tr>
+          <tr><td><span data-zh>Anthropic · Claude Code 仓库（权限与 CHANGELOG；2026-10 快照）</span><span data-en>Anthropic · Claude Code 仓库（权限与 CHANGELOG；2026-10 快照）</span></td><td><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">https://github.com/anthropics/claude-code</a></td></tr>
+          <tr><td><span data-zh>OpenAI · Codex CLI 仓库（线程续接与 app server；2026-10 快照）</span><span data-en>OpenAI · Codex CLI 仓库（线程续接与 app server；2026-10 快照）</span></td><td><a href="https://github.com/openai/codex" target="_blank" rel="noopener">https://github.com/openai/codex</a></td></tr>
+          <tr><td><span data-zh>Google · Gemini CLI 仓库（非交互脚本模式、MCP；2026-10 快照）</span><span data-en>Google · Gemini CLI 仓库（非交互脚本模式、MCP；2026-10 快照）</span></td><td><a href="https://github.com/google-gemini/gemini-cli" target="_blank" rel="noopener">https://github.com/google-gemini/gemini-cli</a></td></tr>
+          <tr><td><span data-zh>Anthropic · Claude Code 官方文档（权限与工作流；2026-10 快照）</span><span data-en>Anthropic · Claude Code 官方文档（权限与工作流；2026-10 快照）</span></td><td><a href="https://code.claude.com/docs/en/overview" target="_blank" rel="noopener">https://code.claude.com/docs/en/overview</a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>核验快照：2026-11-03 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-11-03 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+        <p class="guide-foot"><span data-zh>资料核验日期：2026-11-03。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-11-03. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>

@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>Python</span><span data-en>Python</span></span>
         <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
@@ -157,7 +158,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>官方给了四种路径，并且强调没有锁定。</strong></p>
             <p>这是本站收录对象里，对模型自由度表述最直白的一个。</p>
@@ -189,7 +190,7 @@
             <p>We have not run measured tests either.</p>
             <p><strong>Verified</strong>: providers page and configuration page both checked.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>这是它证据最完整的一维：六种终端后端加插件后端，再加两个入口。</strong></p>
             <p><strong>README 原文列举</strong>（2026-10-23 滚动核验版）：</p>
@@ -200,7 +201,7 @@
             <p><strong>入口有两个。</strong> README 有一张专门的 CLI vs Messaging 对照表：</p>
             <ul><li>终端 TUI：启动 <code>hermes</code></li><li>消息平台：先跑 gateway，再从 Telegram / Discord / Slack / WhatsApp / Signal / Email，以及 Home Assistant 聊天</li></ul>
             <p>⚠ <strong>这是本站最有价值的一格。</strong> 它是唯一明确说「agent 可以跑在云 VM 上、 你从 Telegram 指挥它」的收录对象。</p>
-            <p>这和 OpenHands 的「关掉笔记本后 agent 仍在跑」是同一类诉求。 区别是：OpenHands 把它做成可选部署项，Hermes 把它做成了默认形态。</p></span><span data-en><p><strong>This is its strongest dimension: six terminal backends plus plugin backends, plus two entry points.</strong></p>
+            <p>这和 OpenHands 的「关掉笔记本后 agent 仍在跑」是同一类诉求。 区别是：OpenHands 把它做成可选部署项，Hermes 把它做成了默认形态。</p></span><span data-en><p><strong>It provides six terminal backends, plugin backends and two entry points.</strong></p>
             <p><strong>README original list</strong> (2026-10-23 rolling-verification edition):</p>
             <p>&quot;<strong>terminal backends</strong> — <strong>local, Docker, SSH, Modal, Daytona, and Vercel Sandbox</strong> — <strong>plus plugin backends such as Singularity/Apptainer</strong>.&quot;</p>
             <p>⚠ The older README (verified 2026-10-01) said &quot;<strong>Seven terminal backends</strong> — local, Docker, SSH, Singularity, Modal, Daytona, and Vercel Sandbox&quot; — <strong>Singularity has since been moved by the official docs into plugin backends</strong>; we record the current wording.</p>
@@ -211,7 +212,7 @@
             <p>⚠ <strong>This is the most valuable cell on our site.</strong> It is the only listed product that explicitly says &quot;the agent can run on a cloud VM while you direct it from Telegram&quot;.</p>
             <p>That is the same need as OpenHands&#39; &quot;the agent keeps running after you close the laptop&quot;. The difference: OpenHands makes it an optional deployment, Hermes makes it the default form.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>本地文件能力是间接获得的：它靠终端后端，而不是框架自己。</strong></p>
             <p>隔离机制见 permissions 维度。</p>
@@ -243,9 +244,9 @@
             <p><strong>Official wording</strong>: &quot;validated against an allowlist to prevent shell injection&quot;</p>
             <p>Layer 3 of the security page says <code>write_file</code> and <code>patch</code> have a denylist. There is also an optional write sandbox.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
-          <dd><span data-zh><p><strong>这一维它的机制最厚，官方给了三重机制。</strong></p>
+          <dd><span data-zh><p><strong>官方列出了三种后台任务机制。</strong></p>
             <p><strong>① 内建 cron 调度器。</strong> 官方特性表原文：</p>
             <p>&quot;Built-in <strong>cron scheduler</strong> with delivery to any platform. Daily reports, nightly backups, weekly audits — all in natural language, <strong>running unattended</strong>.&quot;</p>
             <p>（文档 <code>features/cron</code>）</p>
@@ -256,7 +257,7 @@
             <ul><li>官方称 &quot;nothing is lost: due work catches up on the first tick&quot;</li><li>运行中的任务 &quot;never killed&quot;</li></ul>
             <p>网关侧还有 <strong>event-loop liveness watchdog</strong>。 它连续 3 次探针无响应就以 code 75 退出，由 supervisor 重启。 另有 60s 心跳。</p>
             <p>⚠ <strong>未知：跨休眠 / 唤醒的状态一致性，官方未说明。</strong></p>
-            <p><strong>核验</strong>：已查 <code>features/cron</code>、<code>features/tools</code>、<code>user-guide/messaging</code> 三页。</p></span><span data-en><p><strong>Its mechanism is thickest on this dimension: the official docs give three layers.</strong></p>
+            <p><strong>核验</strong>：已查 <code>features/cron</code>、<code>features/tools</code>、<code>user-guide/messaging</code> 三页。</p></span><span data-en><p><strong>The official docs describe three background-task mechanisms.</strong></p>
             <p><strong>① Built-in cron scheduler.</strong> Official feature-table wording:</p>
             <p>&quot;Built-in <strong>cron scheduler</strong> with delivery to any platform. Daily reports, nightly backups, weekly audits — all in natural language, <strong>running unattended</strong>.&quot;</p>
             <p>(docs <code>features/cron</code>)</p>
@@ -269,7 +270,7 @@
             <p>⚠ <strong>Unknown: state consistency across hibernate/wake — the official docs do not state it.</strong></p>
             <p><strong>Verified</strong>: <code>features/cron</code>, <code>features/tools</code>, <code>user-guide/messaging</code> — three pages checked.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>官方说它有 40+ 工具，并且明确支持 MCP。</strong></p>
             <p>文档目录里有独立的 &quot;<strong>Tools &amp; Toolsets</strong>&quot; 页，副标题原文：</p>
@@ -295,7 +296,7 @@
             <p>The community also maintains an MCP server for controlling the Linux desktop, named <code>computer-use-linux</code>. It uses the AT-SPI accessibility tree + Wayland/X11 input + screenshots.</p>
             <p>The README explicitly says it is for <strong>&quot;Hermes and other MCP hosts&quot;</strong>.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>⚠ 这一维是本站最看重的，也恰好是本对象宣传力度最大的，必须分开核实。</strong></p>
             <p>先看官方声明。</p>
@@ -317,7 +318,7 @@
             <ul><li><code>SOUL.md</code> — persona</li><li><code>MEMORY.md</code> and <code>USER.md</code> — memory entries</li><li><code>AGENTS.md</code> — workspace instructions</li><li><code>~/.hermes/skills/openclaw-imports/</code> — skills directory</li></ul>
             <p><strong>This shows memory is plaintext markdown files — readable and portable.</strong> For our readers this is an important advantage.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>官方文档里有一节独立的 &quot;Security&quot;，把权限面拆成了八层。</strong></p>
             <p><strong>八层原文列的是</strong>：</p>
@@ -369,7 +370,7 @@
             <p>⚠ <strong>Unknown: gateway port security — the official docs have no dedicated section.</strong></p>
             <p>The dashboard side has OAuth / self-hosted OIDC authentication.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p><strong>适合这六类场景。</strong></p>
             <ul><li>想要一个<strong>常驻的跨平台个人助手</strong> （六个平台：Telegram / Discord / Slack / WhatsApp / Signal / Email）</li></ul>
@@ -624,7 +625,7 @@ hermes claw migrate --preset user-data     # do not import keys</code></pre>
             <ul><li>仓库存在与星数（256,242 · 滚动核验 2026-10-23，<strong>本站收录对象里最高</strong>）</li><li>许可（MIT，经 license API）、最近推送（2026-10-22，仍活跃）</li><li>最新版 <strong>v0.22.4</strong>（releases @ 2026-10-21）——⚠ 版本命名已从日期式（v2026.9.24）换成 semver（v0.22.x），换轨发生在 2026-10-08 至 2026-10-12 之间（v2026.9.24 之后直接是 v0.21.6）</li><li>README 全文 243 行。它含定位段、六项特性表与终端后端原文（现口径：六种主列表 + plugin backends）</li><li>它还有完整的 CLI vs Messaging 对照表</li><li>十四节文档目录、OpenClaw 迁移清单、社区与许可段</li><li>仓库有中文与西语等 README 分支、Nous Portal 入口</li></ul>
             <p><strong>未核验：</strong></p>
             <ul><li>换模型后的能力对齐度与本地模型可靠性</li><li>休眠唤醒延迟与跨休眠状态一致性</li><li>「zero-context-cost」的量化值</li><li>Honcho 用户建模与 skills 自改进的实际效果</li><li>Hermes 与 OpenClaw 的确切关系</li></ul>
-            <p><strong>2026-10-01 补充</strong>：Nous Portal 计费的<strong>官网状态</strong>已核验 —— <strong>官网不公开定价</strong>（首页只有定性描述、无一个数字；<code>/pricing</code> 返 404）。 第三方口径流传但<strong>未获官方确认</strong>——按 D9 口径本站不记录这些数字。</p>
+            <p><strong>2026-10-01 补充</strong>：Nous Portal 计费的<strong>官网状态</strong>已核验 —— <strong>官网不公开定价</strong>（首页只有定性描述、无一个数字；<code>/pricing</code> 返 404）。 第三方口径流传但<strong>未获官方确认</strong>——按本站的报价记录约定本站不记录这些数字。</p>
             <p><strong>这条的状态：</strong> 从「完全未核验」变成「已核验到官网不公开」。</p></span><span data-en><p>Basis for <code>confidence: partial</code>:</p>
             <p><strong>Why not verified.</strong></p>
             <ul><li><code>model_access</code>: capability alignment after switching models not verified</li><li><code>background</code>: hibernate/wake latency and cross-hibernation state consistency not stated by the official docs</li><li>&quot;zero-context-cost&quot; and the real-world effect of Honcho / skills not verified</li></ul>
@@ -633,7 +634,7 @@ hermes claw migrate --preset user-data     # do not import keys</code></pre>
             <ul><li>Repository existence and star count (256,242 · rolling verification 2026-10-23, <strong>the highest among everything we list</strong>)</li><li>License (MIT, via the license API), last push (2026-10-22, still active)</li><li>Latest release <strong>v0.22.4</strong> (releases @ 2026-10-21) — ⚠ version naming has switched from date-style (v2026.9.24) to semver (v0.22.x); the switch happened between 2026-10-08 and 2026-10-12 (v2026.9.24 is followed directly by v0.21.6)</li><li>README full text 243 lines. It contains the positioning paragraph, the six-item feature table with terminal-backend wording (current wording: six in the main list + plugin backends)</li><li>It also has a full CLI vs Messaging comparison table</li><li>A fourteen-section docs directory, the OpenClaw migration list, community and license sections</li><li>The repo has Chinese and Spanish README variants, and a Nous Portal entry</li></ul>
             <p><strong>Not verified:</strong></p>
             <ul><li>Capability alignment after switching models, and local-model reliability</li><li>Hibernate/wake latency and cross-hibernation state consistency</li><li>The quantified value of &quot;zero-context-cost&quot;</li><li>The real-world effect of Honcho user modeling and skill self-improvement</li><li>The exact relationship between Hermes and OpenClaw</li></ul>
-            <p><strong>Added the 2026-10-08 check (2026-10-01)</strong>: the <strong>official-site status</strong> of Nous Portal billing is verified — <strong>the official site does not publish pricing</strong> (the homepage has only qualitative wording, not a single number; <code>/pricing</code> returns 404). Third-party figures circulate but are <strong>not confirmed by the official docs</strong> — per our D9 rule we do not record those numbers.</p>
+            <p><strong>Added the 2026-10-08 check (2026-10-01)</strong>: the <strong>official-site status</strong> of Nous Portal billing is verified — <strong>the official site does not publish pricing</strong> (the homepage has only qualitative wording, not a single number; <code>/pricing</code> returns 404). Third-party figures circulate but are <strong>not confirmed by the official docs</strong> — per our price-recording policy we do not record those numbers.</p>
             <p><strong>Status of this item</strong>: moved from &quot;entirely unverified&quot; to &quot;verified that the official site does not publish pricing&quot;.</p></span>
       </div>
 

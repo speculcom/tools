@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>TypeScript</span><span data-en>TypeScript</span></span>
         <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
@@ -159,7 +160,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>它的答案是 model routing，规格写得最狠。</strong> 官方 /models 目录页原文：</p>
             <p>&quot;giving you access to <strong>7815 models from 213 providers</strong> through a single API.&quot;</p>
@@ -195,7 +196,7 @@
             <p><strong>Old wording</strong>: we take the catalog page as authoritative; the README&#39;s 40+ is treated as outdated.</p>
             <p><strong>After switching providers, the alignment of each vendor&#39;s tool calling / structured output is not stated by the official docs</strong> (/models page checked).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>纯库起步，但官方把「独立 server」和「托管平台」两条路都铺好了。</strong></p>
             <p>形态是 npm 包（<code>@mastra/core</code>，官方 <code>.npmrc</code> 要求 Node.js <code>&gt;=22.13.0</code>）。</p>
@@ -215,7 +216,7 @@
             <p><strong>Multi-agent concurrent scheduling</strong>: via workflows (built-in execution engine), or deploy to workflow runners like Inngest. Production can run orchestration and cron in separate worker processes (official Workers page).</p>
             <p>In short: &quot;where the code lives&quot; = your process; &quot;whether to host&quot; = an optional platform.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>核心框架不内置文件系统，文件能力要显式加装。</strong></p>
             <p>Mastra 的定位是 AI 应用/agent 框架。官方文档<strong>没有把文件读写当成默认 agent 能力</strong>。</p>
@@ -239,7 +240,7 @@
             <p><strong>The default boundary of file access in the core framework itself (restricted to the project directory? out-of-bounds intercepted?) is not stated by the official docs.</strong></p>
             <p><strong>Verified</strong>: agents page, harness page, deployment page checked. The host permission model sits on the platform Workspace side, not in the OSS core.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>这是它非常强的一维：durable agents + 可跨重启的 snapshot 都是可查证的核心机制。</strong> 官方 suspend-and-resume 页原文：</p>
             <p>&quot;Suspension saves the current execution state as a <strong>snapshot</strong>. Later, resume from a specific step ID to restore the exact captured state. Snapshots are stored in your configured storage provider and <strong>persist across deployments and application restarts</strong>.&quot;</p>
@@ -255,7 +256,7 @@
             <ul><li>Durable Agents: &quot;Persist run state and let clients reconnect to its stream&quot;</li><li>Background Tasks: &quot;Run slow tools, workflows, or subagents without blocking&quot;</li><li>Schedules: cron starts runs</li></ul>
             <p><strong>Hosted background</strong>: the Mastra platform Server provides 24/7 residency (Persistent Server billed per project; unit price on the official page). OSS self-hosting is &quot;you run the process yourself&quot; — stop it and it&#39;s gone.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>工具面是三件套：自定义工具 + MCP 一等支持 + 可作 MCP server。官方文档给得很全。</strong></p>
             <p>自定义工具必须用 <code>createTool()</code>。</p>
@@ -275,7 +276,7 @@
             <p>It also distinguishes two tool kinds: <strong>static tools (<code>getTools()</code>, fixed config)</strong> and <strong>dynamic tools (<code>getToolsets()</code>)</strong>: per-user/per-request credentials. Very useful for multi-tenant SaaS.</p>
             <p>There are also <strong>A2A</strong> (<code>@mastra/core</code> exposes the <code>./a2a</code> subpath) and <strong>skills</strong> (<code>./skills</code>) submodules. Subagent/multi-agent delegation is officially called supervisor + subagents (see the delegation notes on the memory page).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>它把「记忆」拆成多层，且有「状态 ≠ 上下文」的两套机制。</strong></p>
             <p>官方 memory 页：默认存 <strong>message history</strong>，可另开三样：</p>
@@ -293,7 +294,7 @@
             <p><strong>RAG is a standalone system</strong> (<code>@mastra/rag</code>): MDocument chunking (recursive / sliding window), embedding, then into a vector store (officially named: <strong>pgvector, Pinecone, Qdrant, MongoDB</strong>).</p>
             <p>In short: snapshots store flow state. Memory stores conversation and long-term user information. RAG stores external knowledge. The three serve different purposes.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>认证是「可选、多 provider」，HITL 是完整的暂停/恢复，沙箱只落在平台侧。</strong> 官方 auth 页原文：</p>
             <p>&quot;<strong>Authentication is optional.</strong> If no auth is configured, all routes and Studio are <strong>publicly accessible</strong>.&quot;</p>
@@ -313,7 +314,7 @@
             <p><strong>Enterprise permissions</strong> (RBAC, SSO, IAM, network policy) belong to the <code>ee/</code> enterprise license (Self-Hosted Enterprise selling points on the official pricing page).</p>
             <p><strong>Network access control in the core framework is not stated by the official docs</strong> (auth page and pricing page checked).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p><strong>适合</strong>：</p>
             <ul><li><strong>TypeScript / Node 团队</strong>要一套「开箱即用」的 agent 框架 —— Agents + 图 Workflows + Memory + RAG + Evals + MCP + 内置 server + Studio 全在一个包里</li></ul>
@@ -473,13 +474,13 @@
             <p>GitHub 的 license API 对整仓返回 <strong>NOASSERTION</strong>。 它与这段双许可声明一致：不是「无许可」，是「非标准双许可」。</p>
             <p>另一条线是 <strong>Mastra 平台</strong>（YC W25）。官方定价页（核验 2026-10-08）分两处：</p>
             <ul><li><strong>平台三档</strong>：Starter（免费档）、Teams（付费档）、Enterprise（定制）</li><li><strong>自托管两档</strong>：Free 与 Enterprise</li></ul>
-            <p><strong>Studio、Observability、托管 Server 与 24/7 常驻都是平台产品</strong>（常驻托管按项目计费，单价见官方页）。它们不是框架自带。报价按 D9 口径不存。</p></span><span data-en><p><strong>Conclusion first: the core framework is Apache-2.0. The <code>ee/</code> directory is source-available. Production use requires an enterprise license.</strong></p>
+            <p><strong>Studio、Observability、托管 Server 与 24/7 常驻都是平台产品</strong>（常驻托管按项目计费，单价见官方页）。它们不是框架自带。报价按本站的报价记录约定不存。</p></span><span data-en><p><strong>Conclusion first: the core framework is Apache-2.0. The <code>ee/</code> directory is source-available. Production use requires an enterprise license.</strong></p>
             <p>The repo README&#39;s Licensing section is clear — it is a <strong>dual license</strong>:</p>
             <blockquote><strong>Apache License 2.0</strong>: The core framework and the vast majority of this codebase is open source under Apache-2.0. <strong>Mastra Enterprise License</strong>: Code in any directory named <code>ee/</code> ... is source-available ... require a valid enterprise license for production use.</blockquote>
             <p>GitHub&#39;s license API returns <strong>NOASSERTION</strong> for the whole repo. That is consistent with the dual-license statement: not &quot;no license&quot;, but &quot;non-standard dual license&quot;.</p>
             <p>The other line is the <strong>Mastra platform</strong> (YC W25). The official pricing page (verified 2026-10-08) splits into two places:</p>
             <ul><li><strong>Platform three tiers</strong>: Starter (free), Teams (paid), Enterprise (custom)</li><li><strong>Self-hosted two tiers</strong>: Free and Enterprise</li></ul>
-            <p><strong>Studio, Observability, hosted Server, and 24/7 residency are all platform products</strong> (hosted residency billed per project; unit price on the official page). They are not shipped with the framework. Quotes not stored per our D9 rule.</p></span>
+            <p><strong>Studio, Observability, hosted Server, and 24/7 residency are all platform products</strong> (hosted residency billed per project; unit price on the official page). They are not shipped with the framework. Quotes not stored per our price-recording policy.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>核验说明</span><span data-en>Verification notes</span></h2>

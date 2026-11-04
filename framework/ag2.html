@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>编排框架</span><span data-en>Orchestration framework</span></span>
         <span class="tag on"><span data-zh>Python</span><span data-en>Python</span></span>
@@ -159,7 +160,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>provider 清单是显式的、类型安全的配置类，覆盖云端与本地两条路。</strong></p>
             <p>官方 <code>beta/model_configuration</code> 页原文：</p>
@@ -179,7 +180,7 @@
             <p><strong>Bedrock switched to the native async client</strong> aiobotocore in v1.1.1. The official release marks it breaking.</p>
             <p><strong>Unknown</strong> — how tool calling / structured output reliability compares across providers, not stated officially (<code>beta/model_configuration</code> and the Grok compatibility page checked).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>纯 Python 库，异步贯穿，不提供托管服务。</strong></p>
             <p>README 原文：</p>
@@ -211,7 +212,7 @@
             <p><strong>It does not operate an agent loop.</strong></p>
             <p>Everything in the library runs on your own process / host; the official docs offer no hosted offering.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>框架不内置通用文件工具。文件能力来自 KnowledgeStore 与沙箱 shell 工具。</strong></p>
             <p>后者的边界写得比多数同类清楚，这是本对象最值得记的一处。</p>
@@ -241,7 +242,7 @@
             <p>&quot;remains <strong>best-effort</strong>. It is <strong>not</strong> a security boundary.&quot;</p>
             <p><strong>Unknown</strong> — framework-level default file-access boundaries and container-level isolation, not stated officially (<code>network/overview</code>, <code>agent_harness</code> and the release page checked).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>「关机后还能跑」在本站是纯库形态 —— 没有托管后台。</strong></p>
             <p>但 durable messaging 机制官方给了明确实现。<code>network/overview</code> 页列出的 Network 能力包含：</p>
@@ -267,7 +268,7 @@
             <p>Processes must run on your own servers; a true background needs your own containers / K8s.</p>
             <p><strong>Unknown</strong> — hosting options and the exact semantics of resume-after-crash, not stated officially (<code>network/overview</code> page checked).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>工具、MCP、AG-UI 三项都能在官方源核到；A2A 仅见仓库 topics。</strong></p>
             <p><strong>① 原生工具。</strong></p>
@@ -301,7 +302,7 @@
             <p>This pass did not capture the body of a v1.0 A2A dedicated page, so it is not expanded.</p>
             <p>Subtask delegation has separately auto-injected <code>run_subtask</code> / <code>run_subtasks</code> tools (see the context axis).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>这是 AG2 最贴合本站「状态 ≠ 上下文」主张的设计。</strong></p>
             <p>它把 harness 显式拆成三组 opt-in 原语。</p>
@@ -325,7 +326,7 @@
             <p><strong>The boundary is clear</strong>: <code>compact=</code> governs window compaction.</p>
             <p><code>KnowledgeStore</code> governs cross-process persistent memory — the official docs describe the two separately.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>官方机制分两层：HITL 人审 + 受限 shell 工具。两层都不等于容器沙箱。</strong></p>
             <p><strong>① HITL。</strong></p>
@@ -358,7 +359,7 @@
             <p>The advice is to use only fully trusted Redis; JSON is the default.</p>
             <p><strong>Unknown</strong> — framework-level process / container sandbox defaults, not stated officially (<code>agent_harness</code> and release pages checked).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p><strong>适合。</strong></p>
             <ul><li>要用 Python 编排<strong>多 agent 会话 / 协议化网络</strong>（Hub + channel，含咨询、讨论、工作流适配器）</li><li>需要可审计的 durable messaging（write-ahead log、audit trail）与跨进程部署（WsLink）</li><li>要在本地模型上跑（Ollama / vLLM / LM Studio）</li><li>要 HITL 与受限 shell 工具</li><li>需要 MCP 与 AG-UI 对接</li><li>偏好 opt-in、可组合的 harness 原语</li></ul>

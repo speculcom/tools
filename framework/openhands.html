@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>TypeScript</span><span data-en>TypeScript</span></span>
         <span class="tag on"><span data-zh>Python</span><span data-en>Python</span></span>
@@ -148,7 +149,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>官方口径：任何 LiteLLM 支持的模型都能接，它自己带 LiteLLM 网关层（已核验）。</strong></p>
             <p><strong>已验证可用的 provider</strong>（Basic 设置下拉里能选）：</p>
@@ -166,7 +167,7 @@
             <p><strong>This item matters especially for this object</strong>: it is simultaneously other agents&#39; scheduling layer. &quot;Codex / Claude Code run on top of it&quot; is a special case — which models are usable is decided by that agent.</p>
             <p><strong>Official LLM settings page, verbatim</strong>: &quot;This can be any model that is supported by litellm&quot;</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>它有四种官方部署形态</strong>。这是本对象最有实用价值的部分。README 四个 Option 全核验。</p>
             <ul><li><strong>Option 1 无沙箱本地跑</strong>：<code>npm install -g @openhands/agent-canvas</code> 然后 <code>agent-canvas</code>，起完整本地栈，<strong>要 Node.js 24+ 与 uv</strong>； 可用 <code>--frontend-only</code> / <code>--backend-only</code> 拆开跑</li></ul>
@@ -184,7 +185,7 @@
             <p><strong>Backends can be switched remotely</strong> — the core capability of its scheduling layer: officially the Agent Server can run on a laptop / Mac Mini / cloud VM / OpenHands Cloud, and the Canvas frontend switches between multiple Servers.</p>
             <p>On Option 3 the official docs note containers mount the conversation&#39;s workspace and persisted state. <strong>Files and conversation history survive container replacement</strong>.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>本地文件能碰多少，取决于你选哪种部署形态 —— 官方把这个变量讲得很清楚。</strong></p>
             <ul><li><strong>无沙箱形态</strong>：agent 对文件系统有全量访问权限，官方两次打 WARNING</li><li><strong>Docker 形态</strong>：访问范围收敛到 <code>PROJECTS_PATH</code> 挂载的目录</li><li><strong>每会话容器形态</strong>：官方提示<strong>共享同一宿主工作区的会话仍会共用同一批文件</strong>， 建议用独立目录或 worktree 避免冲突编辑</li></ul>
@@ -196,7 +197,7 @@
             <p><strong>The official docs do not describe a mechanism for &quot;auto-syncing a local repo to a remote backend&quot;</strong> (agent-server and runtime pages checked) — the repo must already live remotely, or be moved by you.</p>
             <p><strong>Official WARNING, verbatim</strong>: &quot;This runs the agent-server directly on the machine you&#39;re installing on — <strong>the agent will have full access to your filesystem!</strong>&quot;</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>后台任务是它最突出的强项，也是它与其他 harness 站对象最大的差别。</strong></p>
             <p>把 agent 跑在云上服务器的最大好处有两个。一是关掉笔记本它还在跑。 二是更容易被第三方服务触发。比如 Slack、GitHub 或 Datadog。</p>
@@ -216,7 +217,7 @@
             <p>The same page names Slack, GitHub, and Datadog as easier trigger channels.</p>
             <p>Verified <code>OpenHands/automation</code> (2026-10-01): Python, MIT, 32★, active.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>它有两条接入线：自身工具集 + MCP；另有 ACP 用来调度第三方 agent。</strong></p>
             <p>① <strong>自带 agent（CodeAct / software-agent-sdk）的默认工具集</strong>， 官方 start-conversation API 示例列出：</p>
@@ -232,7 +233,7 @@
             <p>③ Third-party agents (Claude Code, Codex, Gemini, etc.) are scheduled via <strong>ACP (Agent Client Protocol)</strong>.</p>
             <p><strong>⚠ Correction to the previous version of this dossier</strong>: this object <strong>does not go ACP-only</strong> — MCP is equally an official capability.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>上下文这一点，官方有明确机制：context condenser</strong>。本维度证据已补齐。</p>
             <p>默认实现是 <code>LLMSummarizingCondenser</code>（继承 <code>RollingCondenser</code>）， 参数 <code>max_size</code> / <code>keep_first</code>。它超阈值时<strong>保留最近的消息不动，只摘要较早的内容</strong>。</p>
@@ -246,7 +247,7 @@
             <p><strong>⚠ Per our &quot;state ≠ context&quot; framing</strong>: run history and persistence across container replacement belong to the state side. The condenser above is the official context-side mechanism. Count them separately.</p>
             <p><strong>Official SDK guide, verbatim</strong>: the context condenser &quot;intelligently summarizing older parts of the conversation while preserving essential information&quot;; over threshold it &quot;Keeps recent messages intact&quot;, &quot;Summarizes older content&quot;.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>这一块官方做得最细，也是最需要认真读的部分。</strong></p>
             <p><strong>沙箱</strong>：官方给了两种收敛手段（见 local_files）。一是 Docker 沙箱，二是每会话独立容器。 但官方同时明确提供无沙箱形态，并两次挂 WARNING。</p>
@@ -270,7 +271,7 @@
             <p><code>docs/SELF_HOSTING.md</code> (verified, 286 lines) covers exactly this API-key mechanism.</p>
             <p><strong>Verified</strong>: enterprise page and deployment comparison table checked.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p><strong>能做的事</strong>：</p>
             <ul><li>把 agent 放到自己服务器上 7×24 跑</li><li>定时或 webhook 触发（Slack / GitHub / Linear / Notion）</li><li>用一个界面统管多种 agent（含 Codex、Claude Code、Gemini 等 ACP 兼容的）</li><li>需要 per-conversation 隔离容器</li><li>团队里前端 / 平台与 agent 运行时分离部署</li><li>长会话需要官方 condenser 控制上下文成本</li></ul>
@@ -307,7 +308,7 @@
           <li>对话上下文压缩的端到端效果（机制已有官方 condenser，压缩率待实测）</li>
           <li>OSS 档多用户方式（正式 RBAC / SSO 在 Enterprise，OSS 默认单用户）</li>
           <li>ACP 与 MCP 的定位差异（两者都可用；边界官方未系统对比）</li>
-          <li><strong>Enterprise 档的具体内容</strong>（官方仅标 Custom pricing / Contact Us；报价按 D9 口径本站不采）</li>
+          <li><strong>Enterprise 档的具体内容</strong>（官方仅标 Custom pricing / Contact Us；报价按本站的报价记录约定本站不采）</li>
           <li>Individual 每日 10 轮之外，超出后的行为（停用 / 提示升级 / 其它，官方页未写）</li>
           <li>后端远程部署时本地代码库的同步机制</li>
           <li><code>software-agent-sdk</code> 的 API 形态与版本独立节奏</li>
@@ -396,18 +397,18 @@
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>档位：三档里两档是免费档，但「免费」有个硬上限</span><span data-en>Tiers: two of three are free, but &quot;free&quot; has a hard cap</span></h2>
-        <span data-zh><p>2026-10-01 核验官方定价页，结论可能与预期不同：<strong>没有「付费个人档」。</strong> （报价按 D9 口径不存，见官方定价页。）</p>
+        <span data-zh><p>2026-10-01 核验官方定价页，结论可能与预期不同：<strong>没有「付费个人档」。</strong> （报价按本站的报价记录约定不存，见官方定价页。）</p>
             <div class="tbl-wrap"><table><thead><tr><th>档位</th><th>部署</th><th>用户</th><th>每日对话</th></tr></thead><tbody><tr><td><strong>Open Source</strong>（免费）</td><td>本地</td><td>1</td><td><strong>Unlimited</strong></td></tr><tr><td><strong>SaaS Individual</strong>（免费）</td><td>云端</td><td>1</td><td><strong>10</strong></td></tr><tr><td><strong>Enterprise</strong>（定制，Contact Us）</td><td>SaaS 或<strong>客户自有 VPC</strong></td><td>Unlimited</td><td>Unlimited</td></tr></tbody></table></div>
             <p><strong>① 最关键的一条落差：云端免费档每天只有 10 轮对话。</strong></p>
             <p>官方对比表同一栏：Open Source = <strong>Unlimited</strong>，Individual = <strong>10</strong>，Enterprise = Unlimited。 <strong>「免费」不等于「不限量」</strong>。想不限量只有两条路：本地跑，或者上 Enterprise。</p>
             <p><strong>② Individual 支持自带 key（BYOK）。</strong></p>
             <p>没有 key 时可用 OpenHands LLM provider，可在 Settings &gt; API 生成 API key， 供 CLI / Local Web UI / Software Agent SDK 使用。 官方强调它按成本价、零加价、按量付费。</p>
-            <p><strong>官方没有公开实际单价表</strong>，只能确认官方声明不加价（本站按 D9 口径也不存报价）。</p>
+            <p><strong>官方没有公开实际单价表</strong>，只能确认官方声明不加价（本站按本站的报价记录约定也不存报价）。</p>
             <blockquote>官方 FAQ 原文：Open Source 与 Cloud 各档都支持自带 LLM key； 无 key 时走 OpenHands provider，官方强调 &quot;<strong>at cost, with no markup</strong>&quot;。</blockquote>
             <p><strong>③ Individual 还有一批 OSS 档没有的东西</strong>。 它们包括云端访问（桌面 + 移动端）与 Cloud API（用于自动化与脚本）。 还有 Jira 与 Slack 集成、Secrets、组织支持。</p>
             <p><strong>④ Enterprise 实际是另一套东西，不是「多几个用户」</strong>：</p>
             <ul><li>可部署在<strong>客户自有 VPC</strong></li><li>Enterprise SAML/SSO、多用户 RBAC</li><li>集中团队账单</li><li><strong>每用户无限并发会话</strong></li><li>Large Codebase SDK</li><li><strong>Named Customer Engineer + 共享 Slack 频道 + 优先支持</strong></li></ul>
-            <p>报价需联系销售。</p></span><span data-en><p>The official pricing page verified 2026-10-01 leads to a conclusion that may differ from expectations: <strong>there is no paid individual tier.</strong> (Quotes not stored per our D9 rule; see the official pricing page.)</p>
+            <p>报价需联系销售。</p></span><span data-en><p>The official pricing page verified 2026-10-01 leads to a conclusion that may differ from expectations: <strong>there is no paid individual tier.</strong> (Quotes not stored per our price-recording policy; see the official pricing page.)</p>
             <div class="tbl-wrap"><table><thead><tr><th>Tier</th><th>Deployment</th><th>Users</th><th>Daily conversations</th></tr></thead><tbody><tr><td><strong>Open Source</strong> (free)</td><td>local</td><td>1</td><td><strong>Unlimited</strong></td></tr><tr><td><strong>SaaS Individual</strong> (free)</td><td>cloud</td><td>1</td><td><strong>10</strong></td></tr><tr><td><strong>Enterprise</strong> (custom, Contact Us)</td><td>SaaS or <strong>customer&#39;s own VPC</strong></td><td>Unlimited</td><td>Unlimited</td></tr></tbody></table></div>
             <p><strong>① The most critical gap: the free cloud tier caps at 10 conversations per day.</strong></p>
             <p>The official comparison table&#39;s same column: Open Source = <strong>Unlimited</strong>, Individual = <strong>10</strong>, Enterprise = Unlimited. <strong>&quot;Free&quot; does not mean &quot;unlimited&quot;</strong>. Two roads to unlimited: run locally, or go Enterprise.</p>
@@ -495,7 +496,7 @@
             <blockquote><code>software-agent-sdk</code>（1,190★ · MIT · Python）、<code>automation</code>（32★ · MIT · Python）。</blockquote>
             <p><strong>未核验</strong>：</p>
             <ul><li>对话上下文压缩的实测效果</li><li>本地→远端工作区的同步机制（官方未说明）</li><li><code>software-agent-sdk</code> 的 API 形态</li><li>LLM profiles 的完整配置格式（官方页有，细节未逐条录入）</li></ul>
-            <p><strong>2026-10-01 补充</strong>：官方定价页三档已核实 —— Open Source 与 Cloud Individual 均为免费档、Enterprise 定制； <strong>Individual 每日 10 轮对话上限</strong>（对照 Open Source 的 Unlimited）； Individual 支持 BYOK、无 key 时走 OpenHands provider 且官方声明 <strong>at cost, no markup</strong>； Enterprise 可部署客户自有 VPC。还有 SAML/SSO、RBAC、每用户无限并发。 Enterprise 档的具体内容仍未核验（按 D9 口径本站也不存任何报价数字）。</p></span><span data-en><p>Basis for <code>confidence: partial</code>:</p>
+            <p><strong>2026-10-01 补充</strong>：官方定价页三档已核实 —— Open Source 与 Cloud Individual 均为免费档、Enterprise 定制； <strong>Individual 每日 10 轮对话上限</strong>（对照 Open Source 的 Unlimited）； Individual 支持 BYOK、无 key 时走 OpenHands provider 且官方声明 <strong>at cost, no markup</strong>； Enterprise 可部署客户自有 VPC。还有 SAML/SSO、RBAC、每用户无限并发。 Enterprise 档的具体内容仍未核验（按本站的报价记录约定本站也不存任何报价数字）。</p></span><span data-en><p>Basis for <code>confidence: partial</code>:</p>
             <p><strong>Why not verified</strong>: no axis is missing. All eight axes were verified to official mechanisms in the 2026-10-08 check (the <code>context</code> side has the official condenser, see axes.context). It stays partial because items remain that <strong>the official docs genuinely don&#39;t state, or that need testing</strong>:</p>
             <ul><li>end-to-end effect of context compression</li><li>the local→remote workspace sync mechanism (not stated officially)</li><li>the positioning boundary between ACP and MCP</li><li>the concrete contents of the Enterprise tier (official docs only say Custom pricing / Contact Us)</li></ul>
             <p>Per the v3 rule &quot;say unknown when unknown&quot;, it stays partial.</p>

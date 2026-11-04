@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>编程</span><span data-en>Coding</span></span>
         <span class="tag on"><span data-zh>终端</span><span data-en>Terminal</span></span>
@@ -142,7 +143,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>和 Cursor 编辑器同源：模型清单跟着账户走。</strong></p>
             <p>官方 CLI 落地页给出的可选模型示例：</p>
@@ -170,7 +171,7 @@
             <p>v2026.09.28 fixed a pitfall. <code>--model</code> could previously silently run a shorter base model.</p>
             <p><strong>The only difference from <code>./cursor.md</code> is the entry point.</strong> The model catalog does not change by form factor.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>本地终端进程，命令名是 <code>agent</code>。</strong></p>
             <p>官方安装脚本把它装到 <code>~/.local/bin</code>，Windows 原生用 PowerShell。 默认自动更新，<code>agent update</code> 手动升级。</p>
@@ -180,7 +181,7 @@
             <p>The lifecycle is mainly bound to the terminal session. But the official docs offer several &quot;detach from the terminal&quot; paths (see background).</p>
             <p><strong>Compared with the IDE form in <code>./cursor.md</code>, there are three differences.</strong> One is the interaction surface: here it is the terminal. Two is scriptability. Three is integration: <code>agent acp</code> can run the CLI as an ACP server, on stdio, for custom clients to connect.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>在仓库/工作区内操作，可用 Git worktree 隔离改动。</strong></p>
             <p>用 <code>--workspace &lt;path&gt;</code> 指定工作区。 用 <code>-w/--worktree [name]</code> 在 <code>~/.cursor/worktrees/&lt;reponame&gt;/&lt;name&gt;</code> 建新 worktree（与编辑器共用保留规则）。</p>
@@ -196,7 +197,7 @@
             <p><strong>Official parameters-page wording</strong>: &quot;Has access to all tools, including write and shell&quot;</p>
             <p>Rules are read from <code>.cursor/rules</code> and <code>AGENTS.md</code> / <code>CLAUDE.md</code> at the project root. Read/write scope is precisely controlled by permissions <code>Read(...)</code> / <code>Write(...)</code>.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>终端进程随会话结束，但官方提供三条「脱离终端」的路径。</strong></p>
             <p>一是 Cloud Agent handoff。 在会话里给消息前加 <code>&amp;</code>，就能在 web 或移动端 cursor.com/agents 取回。</p>
@@ -214,7 +215,7 @@
             <p><strong>Official wording</strong>: &quot;a private cloud worker that runs agents in your environment&quot;</p>
             <p><strong>The execution-environment ownership and quota limits of each of the three paths are not spelled out separately on the official pages.</strong></p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>工具面分三层，三层都已核到。</strong></p>
             <p><strong>第一层是内置工具面。</strong> 官方 using 页的英文原文：</p>
@@ -234,7 +235,7 @@
             <p><strong>Layer three: ACP.</strong> <code>agent acp</code> exposes an ACP server over stdio + JSON-RPC.</p>
             <p>Extension mechanisms additionally include plugins (<code>--plugin-dir</code>, <code>/plugin</code>), skills (pasteable as a custom mode) and <code>.cursor/rules</code>.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>会话可恢复、可分叉、有压缩。</strong></p>
             <p>继续会话用 <code>--resume [chatId]</code>、<code>--continue</code>、<code>agent resume</code>、<code>agent ls</code>、<code>/resume</code>。 <code>/fork</code> 把当前会话分叉成新会话，<code>/rewind</code> 跳回先前消息。 上下文压缩用 <code>/summarize</code>（<code>/compress</code> 为别名）。</p>
@@ -246,7 +247,7 @@
             <p>Long-term context relies on rules and skills. <code>.cursor/rules</code> and <code>AGENTS.md</code> / <code>CLAUDE.md</code> load automatically. <code>/goal</code> can set a long-term goal, officially marked &quot;Rolling out&quot;.</p>
             <p><strong>Where cross-session memory is stored is not explained on this page by the official docs.</strong></p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>权限设计是本形态最细的一块，另有 sudo 凭据保护。</strong></p>
             <p>配置文件有两个：全局 <code>~/.cursor/cli-config.json</code>，项目级 <code>&lt;project&gt;/.cursor/cli.json</code>。</p>
@@ -270,7 +271,7 @@
             <p><strong>Official wording</strong>: &quot;The AI model never sees it&quot;</p>
             <p>For CI, the official docs recommend <strong>restricted autonomy + permission-based restrictions</strong>, writing instructions into <code>permissions.json</code> alongside Auto-review.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>适合三类人：</p>
             <ul><li>在终端里做工程任务、写脚本、或进 CI/CD 的人（官方 GitHub Actions 文档与 cookbook）</li><li>已用 Cursor，希望编辑器与终端共用账户 / 模型 / MCP 配置的人</li><li>需要把会话交给 Cloud Agent 或持久会话继续跑的人</li></ul>

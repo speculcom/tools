@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>编程</span><span data-en>Coding</span></span>
         <span class="tag on"><span data-zh>终端</span><span data-en>Terminal</span></span>
@@ -131,7 +132,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>默认可跑 OpenAI 自家模型，架构上也允许换成别的 provider。</strong></p>
             <p>官方 config-basic 的「Default model」示例是 <code>model = &quot;gpt-5.5&quot;</code>。 CLI 另有 <code>--model</code> / <code>-m</code> 可以覆盖（示例给的是 <code>gpt-5.4</code>）。</p>
@@ -157,7 +158,7 @@
             <p>Local models go through <strong>OSS mode</strong>: <code>--oss</code> + <code>oss_provider = &quot;ollama&quot; | &quot;lmstudio&quot;</code>. To change the built-in OpenAI provider&#39;s address, use <code>openai_base_url</code>.</p>
             <p><strong>After switching to third-party models, the official gives no quantified conclusion on tool-calling quality.</strong></p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>它是一个本地跑着的终端进程。</strong></p>
             <p>代码用 Rust 写。releases 的版本标签是 <code>rust-v*</code>。</p>
@@ -165,7 +166,7 @@
             <p>The code is written in Rust. Release version tags are <code>rust-v*</code>.</p>
             <p>Its lifetime is bound to the terminal session: quit and it ends.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>它在你的工作目录里动手，默认只写工作区，而且要求那里是 Git 仓库。</strong></p>
             <p>官方 agent-approvals-security 的原文是下面这一句：</p>
@@ -191,7 +192,7 @@
             <p><strong>Official wording</strong>: &quot;Codex requires commands to run inside a Git repository&quot;</p>
             <p>To skip this check, use <code>--skip-git-repo-check</code>.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>本地这个终端进程随会话结束，但官方还另有一层云端任务形态，已核到。</strong></p>
             <p>官方 Codex cloud 页原文说，Codex cloud 让 Codex 在自己的云环境里干活：</p>
@@ -213,7 +214,7 @@
             <p>Cloud access follows ChatGPT plans (Plus / Pro / Business / Edu / Enterprise).</p>
             <p><strong>Cloud-task concurrency and duration quotas: the official gives no concrete numbers, only &quot;follows the plan&quot;.</strong></p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>内置工具面和 MCP 都已核到。</strong></p>
             <p>内置能力分散在 config 的能力开关里，一共六类：</p>
@@ -237,7 +238,7 @@
             <p>Tool-level switches include <code>enabled_tools</code> / <code>disabled_tools</code> and per-tool <code>approval_mode</code>.</p>
             <p>The reverse also works: <code>codex mcp-server</code> exposes Codex itself as an MCP server to other agents.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>会话续接 + 自动压缩 + 可选 memories，三轮机制都已核到。</strong></p>
             <p><strong>续接</strong>：交互式用 <code>codex resume</code>，非交互用 <code>codex exec resume</code> （<code>--last</code> 或 <code>&lt;SESSION_ID&gt;</code>）。<code>codex fork</code> 能把会话分叉成新线程。</p>
@@ -255,7 +256,7 @@
             <p>In the TUI, <code>/memories</code> controls per thread; parameters go through <code>memories.*</code>. The official says memories &quot;redacts secrets&quot;.</p>
             <p><strong>Note memories are off by default.</strong></p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p>沙箱与审批边界跟随运行环境。</p>
             <p><strong>API key 计费与订阅不是同一额度</strong>（此点已在官方用量说明中确认）。</p>
@@ -287,7 +288,7 @@
             <p>But <strong>the official does not expand per-platform implementation details by platform</strong> (checked config-basic and agent-approvals-security; not listed per platform).</p>
             <p>See the <a href="/framework/codex-sdk.html">Codex SDK dossier</a>.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p><strong>适合在终端里做工程任务，要接 CI 或要自建客户端的场景。</strong></p>
             <p>它有个别人少有的证据：<strong>非交互模式有官方文档支持</strong>。 <code>docs/exec.md</code> 的标题就是 Non-interactive mode（正文为外链）。</p>

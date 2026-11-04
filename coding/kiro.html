@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>编程</span><span data-en>Coding</span></span>
         <span class="tag on"><span data-zh>IDE</span><span data-en>IDE</span></span>
@@ -135,7 +136,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>模型由 Amazon Bedrock 提供，可选多家，但要看你买哪档。</strong></p>
             <p>免费档只能用开放权重模型和 Claude Sonnet 4.5。 付费档才有 premium 模型（含 Auto、Sonnet 5、Opus 5）。</p>
@@ -154,11 +155,11 @@
             <p><strong>Whether you can bring your own API key (BYOK): not stated officially.</strong></p>
             <p>(models and pricing pages checked.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>独立桌面 IDE，官方原文明说「a desktop development environment built on a VS Code foundation」</strong>， 不是装进别人编辑器的扩展。但官方把它定位为「one agent, every surface」： IDE / CLI / Web / Mobile 都是同一个 unified agent harness 的前端，本地客户端经 stdio 走 <strong>Agent Client Protocol（ACP）</strong>，Web / Mobile 经 WebSocket 连云端沙箱。 <strong>IDE 与 CLI 默认在本机运行 harness</strong>。工具操作本地文件与 shell。 两者也可创建并接入云端 sandbox 里的 Cloud Session。 因为边界是标准 ACP。官方称 JetBrains IDE 与 Zed 也能把 Kiro 当 agent 用。</p></span><span data-en><p><strong>A standalone desktop IDE; the official wording explicitly says &quot;a desktop development environment built on a VS Code foundation&quot;</strong> — not an extension inside someone else&#39;s editor. But the official positioning is &quot;one agent, every surface&quot;: IDE / CLI / Web / Mobile are all front ends of one unified agent harness; local clients go over stdio via the <strong>Agent Client Protocol (ACP)</strong>, while Web / Mobile connect over WebSocket to cloud sandboxes. <strong>The IDE and CLI run the harness locally by default</strong>, with tools operating on local files and shell. Both can also create and attach Cloud Sessions inside cloud sandboxes. Because the boundary is standard ACP, the official pages say JetBrains IDEs and Zed can also use Kiro as their agent.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p>它通过 IDE 访问你的工作区文件。</p>
             <p><strong>代码理解分两层。</strong> 第一层是内置的 Tree-sitter，覆盖 18 种语言， 提供符号模糊搜索、文档大纲、AST 结构搜索与改写、代码库概览。 这些能力跨 surface 都能用。 第二层是 <strong>LSP（可选）</strong>，能做查引用、跳定义、重命名、诊断、悬停文档 —— 但只在 IDE 与 CLI 里，而且要自己装语言服务器。</p>
@@ -169,7 +170,7 @@
             <p><strong>Whether the index is uploaded to the cloud: not stated officially.</strong></p>
             <p>(codebase indexing and how-kiro-works pages checked.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p><strong>关掉笔记本，任务还在跑 —— 这是它最特别的一点。</strong></p>
             <p>会话跑在厂商托管的云端 sandbox 里，属于<strong>账号</strong>而不是某个 app。 所以 IDE / CLI / Web / Mobile 都能接入同一个会话， 你合上电脑、改用手机或终端回来接着看都行。</p>
@@ -183,7 +184,7 @@
             <p>However, the harness running <strong>locally</strong> still depends on your own machine and stops when you exit.</p>
             <p><strong>Official Cloud sessions page wording</strong>: &quot;The agent keeps working in the sandbox whether or not you&#39;re connected&quot;</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p>内置四类工具：文件、shell、web、code。</p>
             <p><strong>扩展机制成体系</strong>，一共六种：</p>
@@ -199,7 +200,7 @@
             <p>The CLI also has headless mode (<code>--no-interactive</code>, with an API key) for CI/CD.</p>
             <p><strong>⚠ The Mobile surface does not support MCP or local file tools.</strong></p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>Specs 是它的招牌。</strong> 每个 spec 生成三份文件，走「需求 → 设计 → 任务」：</p>
             <ul><li><code>requirements.md</code>（或 <code>bugfix.md</code>）</li><li><code>design.md</code></li><li><code>tasks.md</code> —— 支持按依赖图分波并行执行</li></ul>
@@ -211,7 +212,7 @@
             <p>Other context-related capabilities: subagents (each with its own context window). There is also compaction (auto-summarizing older history, <strong>one-way and not reversible</strong>) · checkpoints / rewind · <code>/sessions</code> for session management. The CLI additionally has an experimental knowledge base (semantic retrieval).</p>
             <p><strong>Concrete context-window numbers are not broken out in the official docs.</strong> (compaction and models pages checked.)</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>它是能力制权限，不是「信任 / 不信任」两档。</strong> 规则写 YAML， 按 capability 配 match / exclude，effect 取 <code>deny</code> / <code>ask</code> / <code>allow</code>， 优先级 <strong>deny &gt; ask &gt; allow</strong>。</p>
             <p>官方列出的 capability：</p>
@@ -225,7 +226,7 @@
             <p>The IDE additionally has Agent Autonomy with Autopilot / Supervised tiers. <strong>Workspaces are untrusted by default.</strong> Before trust, repo-local agents, steering, MCP and Skills are not loaded. <strong>In headless mode, every <code>ask</code> is treated as <code>deny</code>.</strong></p>
             <p><strong>Official permissions page wording</strong>: capability-based, &quot;replacing older binary trust models&quot;</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>适合三类人：</p>
             <ul><li>在 AWS 生态里做正式工程交付、要「先出 spec 再实现」的团队</li><li><strong>需要云端会话在关机后继续跑的人</strong>（Cloud sessions，最多 10 并发）</li><li>想把 steering 与权限规则<strong>随仓库分发</strong>的团队（<code>.kiro/</code> 可提交，跨 surface 一致）</li></ul>

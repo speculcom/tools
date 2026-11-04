@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>编程</span><span data-en>Coding</span></span>
         <span class="tag on"><span data-zh>IDE</span><span data-en>IDE</span></span>
@@ -135,7 +136,7 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>官方列出 5 条模型接入路径</strong>（docs/src/ai/llm-providers.md）：</p>
             <ul><li>Zed-Hosted Models —— 经 Zed 计费</li><li>API Access —— 用自己的 provider 额度，含 Anthropic 兼容与 OpenAI 兼容两种</li><li>Existing Subscription —— 复用已付费的 ChatGPT / Claude / Copilot 等</li><li>Gateway —— 经 OpenRouter / Bedrock / Vercel 等网关路由</li><li><strong>Local Model</strong> —— 本地运行或自托管</li></ul>
@@ -143,7 +144,7 @@
             <ul><li>Zed-Hosted Models — billed through Zed</li><li>API Access — your own provider quota, including Anthropic-compatible and OpenAI-compatible</li><li>Existing Subscription — reuse a paid ChatGPT / Claude / Copilot etc.</li><li>Gateway — routed via gateways like OpenRouter / Bedrock / Vercel</li><li><strong>Local Model</strong> — running locally or self-hosted</li></ul>
             <p><strong>Path choice is up to the user, not a bound single provider.</strong> <code>llm-providers.md</code> lists these five item by item.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>本地桌面应用，用 Rust 写。</strong></p>
             <p>官方自述来自 Atom 与 Tree-sitter 的创造者，主打性能与多人协作。</p>
@@ -153,7 +154,7 @@
             <p><strong>Verification record</strong>: the docs include <code>dev-containers.md</code> (dev containers). There is also a <code>toolchains.md</code> (toolchain management) page.</p>
             <p>Closing the app stops it.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p>直接读写工作区，<strong>支持多根目录（multi-root）</strong>。</p>
             <p>也可经 SSH / WSL 打开远端文件夹，即 remote development。</p>
@@ -167,7 +168,7 @@
             <p><strong>No codebase vectorized semantic index found officially</strong> (Tools page checked).</p>
             <p><strong>The official docs state the large-repo limit explicitly</strong>: huge directories with &gt;100,000 files open at once perform poorly. The official advice is to open only specific projects or subdirectories (remote development page).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p>本地桌面应用。agent 线程在本地进程内跑。 远端主机可以是自建的 SSH / WSL 主机。</p>
             <p><strong>绑定客户端在线。</strong> 线程运行时，Zed 会请求系统不要休眠。 这样可以保住长回合（<code>agent.prevent_idle_sleep</code>）。</p>
@@ -177,7 +178,7 @@
             <p>Remote development puts language servers, tasks and terminals on <strong>your own remote server</strong>. The official docs note <strong>since v0.157 it no longer relays through Zed servers</strong>.</p>
             <p><strong>No &quot;keeps running after shutdown / vendor-hosted background task&quot; capability found officially</strong> (Agent Panel page checked).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p><strong>明确支持 MCP。</strong></p>
             <p>官方文档 <code>mcp.md</code> 列明当前支持 <strong>Tools 与 Prompts</strong> 两类特性。 Discovery / Sampling / Elicitation 尚未覆盖，官方欢迎贡献。</p>
@@ -191,7 +192,7 @@
             <ul><li>install as an extension</li><li>add local / remote servers under Settings → AI → MCP Servers</li></ul>
             <p>Popular extension servers listed officially: Context7, GitHub, Puppeteer, Gem, Brave Search, Framelink Figma, Resend and more.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>Zed Agent 的上下文由 instructions + skills + MCP 组合而成</strong>（见 agents.md 的 Zed Agent 行）。</p>
             <p><strong>压缩策略</strong>：官方称线程接近阈值时自动 compact。 默认 90% 触发（<code>agent.auto_compact</code>）。 它把较早消息摘要后替换进模型上下文。 线程显示 &quot;Context Compacted&quot;，可展开。</p>
@@ -205,7 +206,7 @@
             <p>@-mention can add files, directories, symbols, past threads, skills, diagnostics, branch diffs and URLs.</p>
             <p>Parallel multi-threads (each with its own context window) and Checkpoints per-message rollback are also supported.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>工具权限由 Zed 官方配置控制</strong>（<code>tool-permissions</code> 页，v0.224.0+ 起由 <code>agent.tool_permissions.default</code> 控制）。</p>
             <p>三档取值是 <code>&quot;allow&quot;</code> / <code>&quot;deny&quot;</code> / <code>&quot;confirm&quot;</code>，default 默认 confirm。 可按工具配正则模式：<code>always_allow</code> / <code>always_deny</code> / <code>always_confirm</code>。</p>
@@ -227,7 +228,7 @@
             <ul><li>Zed Agent — uses Zed-configured providers and native tools</li><li>External Agents — use the ACP agent process&#39;s own auth/config</li><li>Terminal Threads — use the native CLI&#39;s auth/config</li></ul>
             <p>Privacy: officially Zed states it does not store prompts or code context; telemetry can be turned off.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>适合重视编辑器性能（Rust）、解析准确度（Tree-sitter）与多人协作的场景。</p>
             <p><strong>也适合想在一个编辑器里混用多种 CLI Agent 的用户</strong> —— Claude / Codex / OpenCode / Copilot / Cursor 都能挂。</p>

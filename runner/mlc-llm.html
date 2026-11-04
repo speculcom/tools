@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>本地推理</span><span data-en>Local inference</span></span>
         <span class="tag on"><span data-zh>推理引擎</span><span data-en>Inference engine</span></span>
@@ -134,35 +135,35 @@
         <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>自带编译式推理引擎（MLCEngine）</strong>——不是调外部模型的服务，是把模型编译成目标平台的原生执行码 （「Universal LLM Deployment Engine with ML Compilation」官方定位）。模型侧吃 safetensors 系 （HF 权重编译路线），与 llama.cpp 的 GGUF 预量化路线是两条根。</p></span><span data-en><p><strong>Ships its own compiled inference engine (MLCEngine)</strong> — not a service calling an external model; it compiles models into native executables for the target platform (the official positioning: &quot;Universal LLM Deployment Engine with ML Compilation&quot;). On the model side it takes the safetensors family (the HF-weights-compile route), a different root from llama.cpp&#39;s pre-quantized GGUF route.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p><strong>编译-部署型 CLI/库</strong>（pip mlc-llm / mlc_llm 命令）；覆盖平台矩阵是它的主打面： NVIDIA/AMD/Intel GPU（CUDA/Vulkan/ROCm/OpenCL）、Apple Metal（含 iOS/iPadOS）、 Web 浏览器（WebGPU+WASM，姊妹项目 WebLLM）、Android（OpenCL）——README 平台表逐格标注。 GitHub mlc-ai/mlc-llm Apache-2.0 23,284★ 推送 2026-10-30（API 核验）； <strong>GitHub releases 名义停 v0.20.0（dev 标签 v0.26.dev0）——发版线在 PyPI（mlc-llm 包）</strong>。</p></span><span data-en><p>A <strong>compile-and-deploy CLI/library</strong> (pip mlc-llm / the mlc_llm command); the platform matrix is its headline surface: NVIDIA/AMD/Intel GPUs (CUDA/Vulkan/ROCm/OpenCL), Apple Metal (incl. iOS/iPadOS), web browsers (WebGPU+WASM, the sister project WebLLM), Android (OpenCL) — the README platform table marks cell by cell. GitHub mlc-ai/mlc-llm Apache-2.0 23,284 stars, pushed 2026-10-30 (API verified); <strong>GitHub releases nominally stop at v0.20.0 (dev tag v0.26.dev0) — the release line is on PyPI (the mlc-llm package)</strong>.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p>读写本机文件——模型权重（编译产物缓存在本地）、编译配置 JSON；REST server 跑在本机端口。 编译步骤本身产出平台特定产物（这是它与「下载即跑」型 runner 的操作差）。</p></span><span data-en><p>Reads and writes local files — model weights (compiled artifacts cached locally), compile-config JSON; the REST server runs on a local port. The compile step itself produces platform-specific artifacts (its operational difference from &quot;download-and-run&quot; runners).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p>REST server 是常驻本机进程（OpenAI 兼容 API）；无常驻云面——纯本地/自托管。</p></span><span data-en><p>The REST server is a persistent local process (OpenAI-compatible API); no persistent cloud surface — purely local/self-hosted.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p>不是 agent 工具面——它的「工具」是命令行与 API：mlc_llm generate/generate-config/compile 子命令 + MLCEngine 的 <strong>OpenAI 兼容 REST API</strong>（REST server/python/javascript/iOS/Android 同一引擎同一编译器背书——README 口径）。</p></span><span data-en><p>Not an agent-tool surface — its &quot;tools&quot; are the command line and the API: the mlc_llm generate/generate-config/compile subcommands + MLCEngine&#39;s <strong>OpenAI-compatible REST API</strong> (REST server/python/javascript/iOS/Android backed by the same engine and same compiler — README wording).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p>无跨会话记忆（推理服务面）——上下文长度按编译时模型配置与运行时参数决定； 对话状态由客户端携带，服务端不存会话。</p></span><span data-en><p>No cross-session memory (it is an inference-serving surface) — context length follows the compile-time model config and runtime parameters; conversation state is carried by the client, the server stores no sessions.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p>本机运行无鉴权默认（REST server 本地端口）；权限面=本机文件与 GPU 访问。无云账户、无遥测声明面。</p></span><span data-en><p>Local runs are unauthenticated by default (REST server on a local port); the permission surface = local files and GPU access. No cloud account, no telemetry disclosure surface.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>适合：要「一套引擎多平台部署」——尤其移动端（iOS/Android 原生 Metal/OpenCL）与浏览器（WebLLM） 这类 llama.cpp/Ollama 不覆盖的端；要编译期优化换运行性能的工程路线。 不适合：要 GGUF 即下即跑的省事路线（llama.cpp/Ollama）；不想碰编译步骤的用户。</p></span><span data-en><p>Fits: &quot;one engine, multi-platform deployment&quot; — especially mobile (iOS/Android native Metal/OpenCL) and browser (WebLLM) ends that llama.cpp/Ollama do not cover; an engineering route that trades compile-time optimization for runtime performance. Does not fit: the convenience route of GGUF download-and-run (llama.cpp/Ollama); users who do not want to touch a compile step.</p></span></dd>
         </div>

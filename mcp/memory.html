@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a> · <a href="#dimension-transport"><span data-zh>传输方式</span><span data-en>Transport</span></a> · <a href="#dimension-auth"><span data-zh>认证机制</span><span data-en>Authentication</span></a> · <a href="#dimension-scope"><span data-zh>权限范围</span><span data-en>Permission scope</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>记忆</span><span data-en>Memory</span></span>
         <span class="tag on"><span data-zh>本地</span><span data-en>Local</span></span>
@@ -132,25 +133,25 @@
         <p class="t-section-lead">11 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p>本身不调用模型，是被客户端调用的接口实现。</p>
             <p>设计与 Claude 的持久记忆场景绑定（README 明言<strong>「lets Claude remember information about the user across chats」</strong>）。</p></span><span data-en><p>It calls no model itself; it is an interface implementation called by clients.</p>
             <p>Its design is tied to Claude&#39;s persistent-memory scenario (the README states plainly <strong>&quot;lets Claude remember information about the user across chats&quot;</strong>).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p>本地 Node.js 进程，通过 stdio 通信。</p>
             <p>数据持久化在本地 JSONL 文件，生命周期独立于客户端进程。</p></span><span data-en><p>A local Node.js process communicating over stdio.</p>
             <p>Data persists in a local JSONL file, with a lifecycle independent of the client process.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p><strong>只访问自己的记忆文件</strong>（默认在 memory 目录下），不提供任意文件读写工具。</p>
             <p>存储位置可通过参数指定，实际可访问范围取决于该路径的权限。</p></span><span data-en><p><strong>Accesses only its own memory file</strong> (by default under the memory directory); it provides no arbitrary file read/write tools.</p>
             <p>The storage location can be set via a parameter; the actual accessible range depends on the permissions of that path.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p>server 进程随客户端生死，</p>
             <p>但<strong>记忆数据持久存在磁盘上，重启后仍在</strong>。</p>
@@ -158,7 +159,7 @@
             <p>but <strong>memory data persists on disk and survives restarts</strong>.</p>
             <p>A 2026-09-03 fix serialized graph mutations to avoid concurrent-write races.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p>提供 9 个工具：</p>
             <ul><li>create_entities、create_relations、add_observations、delete_entities、delete_observations、delete_relations、read_graph、search_nodes、open_nodes。</li></ul>
@@ -168,13 +169,13 @@
             <p>It also exposes one resource: <code>memory://knowledge-graph</code>.</p>
             <p><strong>Including 3 delete tools</strong> (delete_entities / delete_observations / delete_relations); output is structured JSON, ready for direct consumption.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p><strong>这是本 server 的核心能力</strong>：跨会话持久记忆。</p>
             <p>用知识图谱结构存储实体、关系与观察， 支持检索（search_nodes）与按名读取（open_nodes）。</p></span><span data-en><p><strong>This is the server&#39;s core capability</strong>: cross-session persistent memory.</p>
             <p>It stores entities, relations and observations in a knowledge-graph structure, supporting retrieval (search_nodes) and read-by-name (open_nodes).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>无独立审批机制</strong>。</p>
             <p>记忆图谱是全局共享状态，<strong>任何写入都会影响后续所有会话</strong>。</p>
@@ -184,25 +185,25 @@
             <p>It provides 3 delete tools that can remove entities, observations and relations.</p>
             <p>On 2026-09-03 a search_nodes query-length limit and a deduplication fix were added.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>让 Agent 跨会话记住用户偏好、项目背景等长期信息。</p>
             <p>不适合存放需要审计或追溯的场景（图谱会原地修改）。</p></span><span data-en><p>Lets an Agent remember long-term information such as user preferences and project context across sessions.</p>
             <p>Not a fit for scenarios needing audit or traceability (the graph is mutated in place).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-transport">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
           <dd><span data-zh><p>仅 stdio。本地 Node.js 进程，通过标准输入输出通信（npx 启动）。</p>
             <p>官方 README（2026-10-08 全文核验）没有远程传输的官方启动方式。</p></span><span data-en><p>stdio only. A local Node.js process communicating over standard input/output (launched via npx).</p>
             <p>The official README (full-text verification 2026-10-08) has no official launch method for a remote transport.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-auth">
           <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
           <dd><span data-zh><p>无独立认证层。stdio 形态继承客户端用户权限。</p>
             <p>记忆文件本身无加密，<strong>任何能读该文件的进程都能获取全部记忆内容</strong>。</p></span><span data-en><p>No separate authentication layer. In stdio form it inherits the client user&#39;s permissions.</p>
             <p>The memory file itself is unencrypted — <strong>any process that can read that file can obtain all memory content</strong>.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-scope">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
           <dd><span data-zh><p><strong>作用域最窄的一类</strong>：只读写自己的记忆文件，不提供任意文件访问工具。</p>
             <p>权限风险不在文件范围，而在<strong>内容敏感度</strong>——</p>
@@ -280,8 +281,8 @@
       <div class="panel is-slim">
         <h2><span data-zh>工具清单与读写属性</span><span data-en>Tool inventory and read/write attributes</span></h2>
         <span data-zh><div class="tbl-wrap"><table><thead><tr><th>工具</th><th>属性</th><th>说明</th></tr></thead><tbody><tr><td><code>read_graph</code></td><td>读</td><td>读取整张图</td></tr><tr><td><code>search_nodes</code></td><td>读</td><td>按条件检索节点</td></tr><tr><td><code>open_nodes</code></td><td>读</td><td>按名读取特定节点</td></tr><tr><td><code>create_entities</code></td><td><strong>写</strong></td><td>新建实体</td></tr><tr><td><code>create_relations</code></td><td><strong>写</strong></td><td>新建关系</td></tr><tr><td><code>add_observations</code></td><td><strong>写</strong></td><td>给实体追加观察</td></tr><tr><td><code>delete_entities</code></td><td><strong>删除</strong></td><td>删除实体及其关联</td></tr><tr><td><code>delete_observations</code></td><td><strong>删除</strong></td><td>删除观察</td></tr><tr><td><code>delete_relations</code></td><td><strong>删除</strong></td><td>删除关系</td></tr></tbody></table></div>
-            <p><strong>6 读 3 写 3 删除</strong>。删除能力给了三个工具，是本条目里最厚的一组。</p></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Tool</th><th>Attribute</th><th>Description</th></tr></thead><tbody><tr><td><code>read_graph</code></td><td>read</td><td>read the whole graph</td></tr><tr><td><code>search_nodes</code></td><td>read</td><td>search nodes by condition</td></tr><tr><td><code>open_nodes</code></td><td>read</td><td>read specific nodes by name</td></tr><tr><td><code>create_entities</code></td><td><strong>write</strong></td><td>create entities</td></tr><tr><td><code>create_relations</code></td><td><strong>write</strong></td><td>create relations</td></tr><tr><td><code>add_observations</code></td><td><strong>write</strong></td><td>append observations to entities</td></tr><tr><td><code>delete_entities</code></td><td><strong>delete</strong></td><td>delete entities and their connections</td></tr><tr><td><code>delete_observations</code></td><td><strong>delete</strong></td><td>delete observations</td></tr><tr><td><code>delete_relations</code></td><td><strong>delete</strong></td><td>delete relations</td></tr></tbody></table></div>
-            <p><strong>6 read, 3 write, 3 delete</strong>. Delete capability gets three tools — the thickest group in this entry.</p></span>
+            <p><strong>6 读 3 写 3 删除</strong>。删除操作有三个工具，分别用于节点、观察和关系。</p></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Tool</th><th>Attribute</th><th>Description</th></tr></thead><tbody><tr><td><code>read_graph</code></td><td>read</td><td>read the whole graph</td></tr><tr><td><code>search_nodes</code></td><td>read</td><td>search nodes by condition</td></tr><tr><td><code>open_nodes</code></td><td>read</td><td>read specific nodes by name</td></tr><tr><td><code>create_entities</code></td><td><strong>write</strong></td><td>create entities</td></tr><tr><td><code>create_relations</code></td><td><strong>write</strong></td><td>create relations</td></tr><tr><td><code>add_observations</code></td><td><strong>write</strong></td><td>append observations to entities</td></tr><tr><td><code>delete_entities</code></td><td><strong>delete</strong></td><td>delete entities and their connections</td></tr><tr><td><code>delete_observations</code></td><td><strong>delete</strong></td><td>delete observations</td></tr><tr><td><code>delete_relations</code></td><td><strong>delete</strong></td><td>delete relations</td></tr></tbody></table></div>
+            <p><strong>6 read, 3 write, 3 delete</strong>. Three deletion tools cover entities, observations and relations.</p></span>
       </div>
       <div class="panel is-slim">
         <h2><span data-zh>权限风险的特点</span><span data-en>What is distinctive about its permission risk</span></h2>

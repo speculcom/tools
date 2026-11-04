@@ -92,46 +92,47 @@
       </div>
       <div class="panel-lead"><span data-zh><p>意图、知识库、工具、护栏、评估、上线六段；含生态锁定、许可、人工兜底、验收单与失败模式。</p></span><span data-en><p>Six stages — intents, knowledge base, tools, guardrails, evaluation, launch — with ecosystem lock-in, licensing, human fallback, an acceptance list and failure modes.</p></span></div>
       <p class="t-xs" data-en>English summaries and interface labels are available. The guide body below is currently in Chinese.</p>
-      <div class="panel is-slim">
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>准备：先划不能答的问题</span><span data-en>Prepare: list what it must not answer</span></a></li><li><a href="#guide-section-1"><span data-zh>知识库：只放可对外的话</span><span data-en>Knowledge base: approved text only</span></a></li><li><a href="#guide-section-2"><span data-zh>工具：读写分离</span><span data-en>Tools: read and write separated</span></a></li><li><a href="#guide-section-3"><span data-zh>护栏：四层</span><span data-en>Guardrails: four layers</span></a></li><li><a href="#guide-section-4"><span data-zh>评估：先离线再灰度</span><span data-en>Evaluate offline first</span></a></li><li><a href="#guide-section-5"><span data-zh>上线：可观测与回滚</span><span data-en>Launch: observe and roll back</span></a></li><li><a href="#guide-section-6"><span data-zh>成本算式</span><span data-en>Cost formula</span></a></li><li><a href="#guide-section-7"><span data-zh>验收单</span><span data-en>Acceptance checklist</span></a></li><li><a href="#guide-section-8"><span data-zh>常见误判</span><span data-en>Common misreads</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>准备：先划不能答的问题</span><span data-en>Prepare: list what it must not answer</span></h2>
         <p>1. <strong>意图清单</strong>：退款、改地址、查物流、产品咨询、投诉，按频次排序。 2. <strong>禁区清单</strong>：价格承诺、法律责任、医疗建议、账号密码，一律转人工。 3. <strong>渠道</strong>：网页、App、微信、电话；渠道不同，上下文与身份不同。 4. <strong>人工兜底</strong>：什么条件下转人工、转到谁、等待多久。</p>
             <p><strong>决策点</strong>：禁区没有写清，后面所有护栏都是补丁。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-1">
         <h2><span data-zh>知识库：只放可对外的话</span><span data-en>Knowledge base: approved text only</span></h2>
         <ul><li>只收官方已发布的 FAQ、政策、产品文档；内部草稿不进库。</li><li>每条知识带版本与生效日期；过期条目自动下线。</li><li>分块按语义，不按固定字数；每块保留原文链接。</li><li>检索命中后要求引用原文句，答不出就说「没找到」。</li></ul>
             <p><strong>失败模式</strong>：把旧政策留在库里，Agent 会自信地答错。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-2">
         <h2><span data-zh>工具：读写分离</span><span data-en>Tools: read and write separated</span></h2>
         <div class="tbl-wrap"><table><thead><tr><th>工具</th><th>类型</th><th>权限</th><th>确认</th></tr></thead><tbody><tr><td>查订单</td><td>读</td><td>只读、按用户身份过滤</td><td>不需要</td></tr><tr><td>查物流</td><td>读</td><td>只读</td><td>不需要</td></tr><tr><td>改地址</td><td>写</td><td>仅未发货订单</td><td>需要人工确认</td></tr><tr><td>退款</td><td>写</td><td>仅符合政策</td><td>需要人工确认</td></tr></tbody></table></div>
             <p><strong>红线</strong>：写操作必须有人工确认或双人复核；Agent 不得直接动支付。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-3">
         <h2><span data-zh>护栏：四层</span><span data-en>Guardrails: four layers</span></h2>
         <p>1. <strong>输入层</strong>：PII 识别、注入检测、超长输入截断。 2. <strong>知识层</strong>：只答库内内容，引用原文，冲突条目标红。 3. <strong>工具层</strong>：白名单工具、参数校验、写操作确认。 4. <strong>输出层</strong>：敏感承诺过滤、转人工触发、日志留痕。</p>
             <p><strong>决策点</strong>：每层都要有可观测指标，否则出事后无法定位。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-4">
         <h2><span data-zh>评估：先离线再灰度</span><span data-en>Evaluate offline first</span></h2>
         <ul><li><strong>离线集</strong>：100 条真实问题，覆盖高频与禁区；每条有标准答案与可接受变体。</li><li><strong>指标</strong>：解决率、转人工率、错误承诺率、平均轮次、引用准确率。</li><li><strong>灰度</strong>：先 5% 流量，持续一周；错误承诺率不达标就回滚。</li><li><strong>回归</strong>：知识库每次更新跑一遍离线集。</li></ul>
             <p><strong>失败模式</strong>：只测「能答」，不测「该拒答」；上线后错误承诺最致命。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-5">
         <h2><span data-zh>上线：可观测与回滚</span><span data-en>Launch: observe and roll back</span></h2>
         <ul><li>每次会话存：意图、检索命中、工具调用、最终回答、是否转人工。</li><li>设三条告警：错误承诺、转人工率异常、检索空命中率异常。</li><li>回滚开关：一键切回人工或旧版本。</li><li>每周抽 20 条会话人工复核。</li></ul>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-6">
         <h2><span data-zh>成本算式</span><span data-en>Cost formula</span></h2>
         <pre class="code"><code>单次会话成本 ≈ 输入 tokens + 输出 tokens + 检索 + 工具调用
 月成本 ≈ 会话数 × 单次成本 + 人工兜底人力 + 维护</code></pre>
             <p>不写单价；按官方定价页与人工时薪计算。</p>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-7">
         <h2><span data-zh>验收单</span><span data-en>Acceptance checklist</span></h2>
         <ul><li>[ ] 意图清单与禁区清单已评审</li><li>[ ] 知识库只含已发布内容，每条带生效日期</li><li>[ ] 写操作全部有人工确认</li><li>[ ] 四层护栏各有一条可观测指标</li><li>[ ] 离线集覆盖高频与禁区，指标达标</li><li>[ ] 灰度流量与回滚开关就绪</li><li>[ ] 转人工条件与责任人写清</li><li>[ ] 日志保留周期符合合规要求</li></ul>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-8">
         <h2><span data-zh>常见误判</span><span data-en>Common misreads</span></h2>
         <ul><li>把「低代码平台」当成「零治理」：身份、数据驻留、审计仍要配。</li><li>把「fair-code」当成「OSI 开源」：n8n 的 Sustainable Use License 有使用限制。</li><li>把「知识库大」当成「答得准」：过期与冲突条目比数量更伤。</li><li>把「转人工」当成失败：该转不转才是失败。</li></ul>
       </div>
@@ -143,7 +144,7 @@
           <tr><td>Dify · 官方文档（可视化工作流与知识库；2026-10 快照）</td><td><a href="https://docs.dify.ai" target="_blank" rel="noopener">https://docs.dify.ai</a></td></tr>
           <tr><td>LangGraph · 官方文档（有状态编排与中断；2026-10 快照）</td><td><a href="https://docs.langchain.com/oss/python/langgraph/" target="_blank" rel="noopener">https://docs.langchain.com/oss/python/langgraph/</a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>核验快照：2026-11-03 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-11-03 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+        <p class="guide-foot"><span data-zh>资料核验日期：2026-11-03。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-11-03. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>

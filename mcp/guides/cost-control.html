@@ -92,11 +92,12 @@
       </div>
       <div class="panel-lead"><span data-zh><p>钱花在哪、怎么省：token 记账、前缀缓存、上下文膨胀与步数上限——只讲机制，不报价格。</p></span><span data-en><p>Where the money goes and how to curb it: token accounting, prefix caching, context bloat, and step caps — mechanisms only, no prices.</p></span></div>
 
-      <div class="panel is-slim">
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></a></li><li><a href="#guide-section-1"><span data-zh>先记账：钱花在哪</span><span data-en>First, account for it</span></a></li><li><a href="#guide-section-2"><span data-zh>手段一：前缀缓存</span><span data-en>Lever one: prefix caching</span></a></li><li><a href="#guide-section-3"><span data-zh>手段二：上下文治理</span><span data-en>Lever two: context hygiene</span></a></li><li><a href="#guide-section-4"><span data-zh>手段三：挡在门外</span><span data-en>Lever three: block before you pay</span></a></li><li><a href="#guide-section-5"><span data-zh>别忘了隐性成本</span><span data-en>Hidden costs</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
         <span data-zh><p><strong>agent 的成本就是 token 乘以步数，再乘以每步带着的上下文。</strong> 三个因子，三个手段：砍无效 token、缩短上下文、限制步数。 本篇只讲机制与做法，不引任何价格数字—— 具体价格以各厂商官方定价页为准。</p></span><span data-en><p><strong>An agent&#39;s cost is tokens times steps, times the context each step carries.</strong> Three factors, three levers: cut useless tokens, shorten the context, cap the steps. This guide covers only mechanisms and practices, and cites no price numbers — for actual prices go to each vendor&#39;s official pricing page.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-1">
         <h2><span data-zh>先记账：钱花在哪</span><span data-en>First, account for it</span></h2>
         <span data-zh><p>不知道花在哪，就谈不上省。 OpenAI 的缓存文档示范了最小记账单位： 每次响应的 usage 里分开报输入、输出、缓存写入、缓存读取四类 token。 先按这四类建账，再谈优化—— 否则你连「缓存到底命中了没有」都不知道。</p>
             <p>典型的成本结构：</p>
@@ -104,7 +105,7 @@
             <p>A typical cost structure:</p>
             <p>1. Input tokens: longer history costs more; in multi-turn conversations this is often the bulk. 2. Output tokens: usually pricier per token than input, but the total is controllable. 3. Steps: every agent step is a full call; loop ten times, pay ten times. 4. Tool round-trips: every tool call&#39;s definition and result enter the context.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-2">
         <h2><span data-zh>手段一：前缀缓存</span><span data-en>Lever one: prefix caching</span></h2>
         <span data-zh><p>同一段内容反复发给模型，是最大的浪费。 主流厂商的解法都是<strong>前缀缓存</strong>：把请求开头完全相同的部分缓存下来复用。</p>
             <p><strong>OpenAI</strong>：缓存对符合条件的请求自动生效，无需改代码。 命中要求前缀完全一致。 <strong>OpenAI 官方原文</strong>：&quot;Cache hits are only possible for exact prefix matches within a prompt.&quot;</p>
@@ -118,7 +119,7 @@
             <p>The cache is organized in the hierarchy tools → system → messages; changing a layer invalidates that layer and everything after it. The <code>cache_creation_input_tokens</code> and <code>cache_read_input_tokens</code> in responses are the ledger of caching&#39;s effect.</p>
             <p>Two universal disciplines: <strong>static first, change last</strong>; <strong>confirm the hit before celebrating</strong> — lots of creation and little reading means the prefix never stayed stable.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-3">
         <h2><span data-zh>手段二：上下文治理</span><span data-en>Lever two: context hygiene</span></h2>
         <span data-zh><p>上下文膨胀是 agent 成本的隐形推手。几个有据可查的手段：</p>
             <p><strong>摘要续接</strong>：长对话压成摘要再续，而不是全量续。 这是压缩，不是记忆——详见<a href="./agent-memory.html">记忆系统</a>一篇的边界讨论。</p>
@@ -130,7 +131,7 @@
             <p><strong>Wrap up promptly</strong>: stop when the task is done; don&#39;t let the agent idle through &quot;one more check&quot;. Step caps must be hard-set at the harness layer; do not count on the model&#39;s self-discipline.</p>
             <p><strong>Tier the models</strong>: use fast small models for simple steps (classification, extraction), big models only for hard ones. <strong>OpenAI official text</strong>: the guardrails docs&#39; example uses a fast economical model to check first, &quot;saving time and money&quot;, standing in front of the expensive model.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-4">
         <h2><span data-zh>手段三：挡在门外</span><span data-en>Lever three: block before you pay</span></h2>
         <span data-zh><p>最便宜的调用是从未发生的调用。 OpenAI Agents SDK 的 guardrails 有两种执行方式，成本语义完全不同。</p>
             <p><strong>并行执行</strong>（默认）：护栏与 agent 同时跑，延迟最低。 但触发时 agent 可能已经烧过 token、执行过工具。</p>
@@ -140,7 +141,7 @@
             <p><strong>Blocking execution</strong>: the guardrail finishes first, the agent starts after. Trip and halt — no tokens spent, no tool side effects. <strong>OpenAI official text</strong>: blocking execution &quot;is ideal for cost optimization and when you want to avoid potential side effects from tool calls&quot;. For &quot;malicious input should never reach the expensive model&quot; scenarios, blocking execution is the clearly cheaper choice.</p>
             <p>Note output guardrails do not support the parallel flag — they always run after the agent completes.</p></span>
       </div>
-      <div class="panel is-slim">
+      <div class="panel is-slim" id="guide-section-5">
         <h2><span data-zh>别忘了隐性成本</span><span data-en>Hidden costs</span></h2>
         <span data-zh><p><strong>Anthropic 官方原文</strong>：&quot;Agentic systems often trade latency and cost for better task performance.&quot;</p>
             <p>延迟也是成本——用户等不及会走。 以及错误复合的返工成本：一步错、步步错， 重跑十次的账单比一次大模型直接答完还贵。 先算总账，再决定省哪一段。</p></span><span data-en><p><strong>Anthropic official text</strong>: &quot;Agentic systems often trade latency and cost for better task performance.&quot;</p>
@@ -154,7 +155,7 @@
           <tr><td><span data-zh>OpenAI Agents SDK 官方文档 · Guardrails（2026-10-30 直抓 200）</span><span data-en>OpenAI Agents SDK official docs · Guardrails (direct fetch 200 on 2026-10-30)</span></td><td><a href="https://openai.github.io/openai-agents-python/guardrails/" target="_blank" rel="noopener">https://openai.github.io/openai-agents-python/guardrails/</a></td></tr>
           <tr><td><span data-zh>Anthropic 工程博客 · Building effective agents（2026-10-30 直抓 200）</span><span data-en>Anthropic engineering blog · Building effective agents (official page verified via WebFetch on 2026-10-30)</span></td><td><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">https://www.anthropic.com/engineering/building-effective-agents</a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>核验快照：2026-10-30 · 本站不实测、不排名，未知就写未知。</span><span data-en>Verification snapshot: 2026-10-30 · no benchmarks, no rankings — unknown stays unknown.</span></p>
+        <p class="guide-foot"><span data-zh>资料核验日期：2026-10-30。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-10-30. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>

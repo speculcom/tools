@@ -97,6 +97,7 @@
         </div>
       </div>
 
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a> · <a href="#dimension-transport"><span data-zh>传输方式</span><span data-en>Transport</span></a> · <a href="#dimension-auth"><span data-zh>认证机制</span><span data-en>Authentication</span></a> · <a href="#dimension-scope"><span data-zh>权限范围</span><span data-en>Permission scope</span></a></p></nav>
       <div class="badges">
         <span class="tag on"><span data-zh>MCP</span><span data-en>MCP</span></span>
         <span class="tag on"><span data-zh>数据库</span><span data-en>Databases</span></span>
@@ -132,47 +133,47 @@
         <p class="t-section-lead">11 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
       </div>
       <dl class="axes">
-        <div class="axis">
+        <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
           <dd><span data-zh><p><strong>它自己不调模型</strong>——被 MCP 客户端调用的接口实现。它把 Supabase 平台能力 （项目、数据库查询、迁移、日志、文档检索）包装成工具给编码 agent 用。</p></span><span data-en><p><strong>It calls no model itself</strong> — an interface implementation called by MCP clients. It wraps Supabase platform capabilities (projects, database queries, migrations, logs, docs retrieval) as tools for coding agents.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
           <dd><span data-zh><p>双形态：本地 npx 进程（stdio）+ 官方托管远程线；GitHub 2,983★， 最近推送 2026-10-29（GitHub API 核验）。</p></span><span data-en><p>Two forms: local npx process (stdio) + an official hosted remote line; GitHub 2,983★, last push 2026-10-29 (GitHub API verified).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
           <dd><span data-zh><p>本地形态不直接读写你本机项目文件（那是 filesystem server 的活）—— 它操作的是 Supabase 云端项目：表、迁移、日志。</p></span><span data-en><p>In the local form it does not directly read or write your local project files (that is the filesystem server&#39;s job) — it operates on Supabase cloud projects: tables, migrations, logs.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
           <dd><span data-zh><p>本地 stdio 随客户端生死；远程托管形态在 Supabase 侧。无后台任务语义。</p></span><span data-en><p>Local stdio lives and dies with the client; the hosted remote form lives on Supabase&#39;s side. No background-task semantics.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
           <dd><span data-zh><p>数据库查询/迁移、项目管理、日志与诊断、docs 检索等； 工具可按需裁剪（官方支持选择性启用工具组）；完整清单以仓 README 为准。</p></span><span data-en><p>Database queries/migrations, project management, logs and diagnostics, docs retrieval, etc.; tools can be trimmed on demand (the official side supports selectively enabling tool groups); the complete inventory follows the repo README.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
           <dd><span data-zh><p>无 server 侧跨会话记忆——状态在 Supabase 项目本身（schema、数据）。</p></span><span data-en><p>No server-side cross-session memory — state lives in the Supabase project itself (schema, data).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
           <dd><span data-zh><p><strong>凭据=Supabase 访问令牌，权限面大</strong>：能连项目级 API（含 SQL 执行面）。 官方提供工具裁剪与只读类工具区分，但 SQL 写/DDL 能力真实存在—— 接 agent 前按「给它一个能改库的凭据」这个最坏假设设防。</p></span><span data-en><p><strong>Credential = Supabase access token, a large permission surface</strong>: it can reach project-level APIs (including the SQL execution surface). The official side offers tool trimming and read-only tool distinctions, but SQL write/DDL capabilities genuinely exist — before hooking up an agent, defend on the worst-case assumption &quot;you gave it a credential that can modify the database&quot;.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
           <dd><span data-zh><p>适合：编码 agent 直接管自家 Supabase 项目（查 schema、跑迁移、看日志）。 不适合：要「只读保险」的硬边界（裁剪能收窄但不是沙箱）；非 Supabase 栈项目。</p></span><span data-en><p>Fits: coding agents directly managing your own Supabase projects (inspect schema, run migrations, read logs). Not a fit: hard boundaries needing &quot;read-only insurance&quot; (trimming narrows but is not a sandbox); non-Supabase-stack projects.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-transport">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
           <dd><span data-zh><p>本地 <strong>stdio</strong>（npx 起进程）为主；官方另有托管远程端点线（细节以官方文档为准，未逐条核验）。 核验：仓 README 与 GitHub API（2026-10-21）。</p></span><span data-en><p>Local <strong>stdio</strong> (npx starting a process) is primary; the official side also has a hosted remote endpoint line (details follow the official docs, not verified item by item). Verified: repo README and GitHub API (2026-10-21).</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-auth">
           <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
           <dd><span data-zh><p>Supabase 访问令牌（scope 可选配）；本地形态环境变量/参数传 token。 令牌轮换与最小权限实践官方文档有指引——未逐条核验细节。</p></span><span data-en><p>Supabase access token (scopes configurable); the local form passes the token via env var/parameter. The official docs give guidance on token rotation and least-privilege practices — details not verified item by item.</p></span></dd>
         </div>
-        <div class="axis">
+        <div class="axis" id="dimension-scope">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
           <dd><span data-zh><p>项目级：读 schema、执行 SQL（含写/DDL）、管迁移、看日志。 工具组裁剪可缩小暴露面；无工具级人工审批机制的官方说明。</p></span><span data-en><p>Project level: read schema, execute SQL (including writes/DDL), manage migrations, read logs. Tool-group trimming can shrink the exposure surface; no official docs for a tool-level human approval mechanism.</p></span></dd>
         </div>
