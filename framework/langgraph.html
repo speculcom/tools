@@ -200,7 +200,7 @@
         </div>
         <div class="axis">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
-          <dd><span data-zh><p><strong>这是它最强的一维，且有官方明文。</strong></p>
+          <dd><span data-zh><p><strong>这是它证据最完整的一维，且有官方明文。</strong></p>
             <p>第一条特性 <strong>Durable execution</strong> 官方原文是：</p>
             <p>Build agents that <strong>persist through failures</strong> and can run for extended periods, <strong>automatically resuming from exactly where they left off</strong>.</p>
             <p>配套是独立子包 <code>langgraph-checkpoint</code>。 查 <code>libs/checkpoint</code>，该子包首页第一段就是：</p>
@@ -297,7 +297,7 @@
         <ul>
 
           <li><span data-zh>把 Deep Agents 与 LangGraph 当两个竞品 —— <strong>Deep Agents 是建在 LangGraph 上的高层包</strong>（README 明确）</span><span data-en>Treating Deep Agents and LangGraph as two competitors — <strong>Deep Agents is a higher-level package built on LangGraph</strong> (the README says so)</span></li>
-          <li><span data-zh>用 releases/latest 判版本 —— <strong>monorepo 的 latest 不可靠</strong>：本条实测 latest 返回 <code>cli==0.4.32.dev0</code>（子包 dev 版），主包版本需从 release 列表里挑（本次核验主包为 1.2.12）</span><span data-en>Using releases/latest to judge the version — <strong>latest on a monorepo is unreliable</strong>: on this entry latest returned <code>cli==0.4.32.dev0</code> (a sub-package dev build); the main package version has to be picked out of the release list (1.2.12 at the time of this check)</span></li>
+          <li><span data-zh>用 releases/latest 判版本 —— <strong>monorepo 的 latest 不可靠</strong>：本条实测 latest 返回 <code>cli==0.4.32.dev0</code>（子包 dev 版），主包版本需从 release 列表里挑（主包为 1.2.12）</span><span data-en>Using releases/latest to judge the version — <strong>latest on a monorepo is unreliable</strong>: on this entry latest returned <code>cli==0.4.32.dev0</code> (a sub-package dev build); the main package version has to be picked out of the release list (1.2.12 at the time of this check)</span></li>
           <li><span data-zh>把 checkpoint 持久化读成「上下文管理」—— checkpoint 存的是 <strong>graph state</strong>， 上下文压缩与记忆是 README 里另设的 memory 那一层</span><span data-en>Reading checkpoint persistence as &quot;context management&quot; — a checkpoint stores <strong>graph state</strong>; context compression and memory are a separate layer the README calls memory</span></li>
           <li><span data-zh>以为它自带文件系统或工具系统 —— 这两样它都不管，要么自己接，要么走 Deep Agents</span><span data-en>Assuming it ships a filesystem or a tool system — it handles neither; wire up your own, or go through Deep Agents</span></li>
           <li><span data-zh>以为 interrupts 是权限护栏 —— 它是「检查并修改状态」，不划文件/网络边界</span><span data-en>Assuming interrupts are a permission guardrail — they &quot;check and modify state&quot;; they do not draw file or network boundaries</span></li>
@@ -449,7 +449,7 @@
         <h2><span data-zh>版本号：踩过一个坑，请注意</span><span data-en>Version numbers: a pitfall we hit — beware</span></h2>
         <span data-zh><p>⚠ <strong>本站实测：<code>releases/latest</code> 对这个 monorepo 不可靠。</strong></p>
             <p><code>gh api repos/langchain-ai/langgraph/releases/latest</code> 返回的是 <strong><code>cli==0.4.32.dev0</code>（子包 dev 版）</strong>，不是主包版本。</p>
-            <p>正确做法是列最近几个 release 自己挑主包。 本次核验（2026-10-01）的结果：</p>
+            <p>正确做法是列最近几个 release 自己挑主包。 2026-10-01 核验的结果：</p>
             <div class="tbl-wrap"><table><thead><tr><th>tag</th><th>发布日</th><th>说明</th></tr></thead><tbody><tr><td><code>cli==0.4.32.dev0</code></td><td>2026-09-23</td><td>子包 dev 版，<strong>不是主包</strong></td></tr><tr><td><code>cli==0.4.32</code></td><td>2026-09-23</td><td>子包</td></tr><tr><td><strong><code>1.2.12</code></strong></td><td><strong>2026-09-21</strong></td><td><strong>← 主包，本条采用</strong></td></tr><tr><td><code>sdk==0.4.5</code></td><td>2026-09-21</td><td>子包</td></tr></tbody></table></div>
             <p>monorepo 的子包命名是 <code>&lt;子包&gt;==&lt;版本&gt;</code>，无前缀那个才是主包。</p></span><span data-en><p>⚠ <strong>Our test: <code>releases/latest</code> is unreliable for this monorepo.</strong></p>
             <p><code>gh api repos/langchain-ai/langgraph/releases/latest</code> returns <strong><code>cli==0.4.32.dev0</code> (a subpackage dev build)</strong>, not the main package version.</p>

@@ -190,10 +190,10 @@
         <div class="axis">
           <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
           <dd><span data-zh><p><strong>无本地权限风险，但有数据出境风险</strong>： 查询内容会发送到 Upstash 服务器。 传入的库名与问题文本属于对外传输内容， 涉密场景需评估。</p>
-            <p><strong>本轮补一条官方对隐私的明确承诺</strong>（官方 FAQ 标题即 &quot;How do you keep the privacy of my queries?&quot;）：</p>
+            <p><strong>已核到一条官方对隐私的明确承诺</strong>（官方 FAQ 标题即 &quot;How do you keep the privacy of my queries?&quot;）：</p>
             <p>查询只发<strong>文档问题与库名/ID</strong>， 不发完整 prompt、源代码与对话历史； 且官方要求agent 不要在查询里带凭据、个人数据或专有代码。</p>
             <p>服务端自身的文档索引范围由 Upstash 掌握，客户端不可见。</p></span><span data-en><p><strong>No local permission risk, but there is a data-egress risk</strong>: query content is sent to Upstash servers. The library names and question text you pass are outbound content; sensitive scenarios need an assessment.</p>
-            <p><strong>This round adds one explicit official privacy commitment</strong> (the official FAQ title is &quot;How do you keep the privacy of my queries?&quot;):</p>
+            <p><strong>The 2026-10-08 check adds one explicit official privacy commitment</strong> (the official FAQ title is &quot;How do you keep the privacy of my queries?&quot;):</p>
             <p>Queries send only <strong>the documentation question and the library name/ID</strong>, not full prompts, source code or conversation history; and the official docs require agents not to include credentials, personal data or proprietary code in queries.</p>
             <p>The document-index scope on the server side is Upstash&#39;s; it is not visible to clients.</p></span></dd>
         </div>
@@ -216,14 +216,14 @@
         <ul>
           <li><strong>Free 档超出 1,000 次/月后的确切行为</strong>（官方页面只列了问题标题，未给答案正文；不做推测）</li>
           <li>Enterprise 档的具体内容（报价按 D9 口径本站不采）</li>
-          <li>文档索引的覆盖范围与更新频率（官方有「Keeping Libraries Fresh」专题，本轮未取正文）</li>
+          <li>文档索引的覆盖范围与更新频率（官方有「Keeping Libraries Fresh」专题，未取正文）</li>
           <li>服务端 SLA</li>
-          <li>官方隐私声明（只发查询与库名、不发源码与对话历史）<strong>未实测验证</strong></li>
+          <li>官方隐私声明（只发查询与库名、不发源码与对话历史）<strong>未做实测验证</strong></li>
         </ul></span><span data-en>
         <ul>
           <li><strong>The exact behaviour after the Free tier exceeds 1,000 calls/month</strong> (the official page lists only the question title, no answer body; no speculation)</li>
           <li>What the Enterprise tier includes (prices not collected per our D9 rule)</li>
-          <li>Document-index coverage and refresh frequency (the official docs have a &quot;Keeping Libraries Fresh&quot; topic; its body was not captured this round)</li>
+          <li>Document-index coverage and refresh frequency (the official docs have a &quot;Keeping Libraries Fresh&quot; topic; its body was not captured the 2026-10-08 check)</li>
           <li>Server-side SLA</li>
           <li>The official privacy statement (queries and library names only; no source code or conversation history) is <strong>not verified by measurement</strong></li>
         </ul></span>
@@ -309,11 +309,11 @@ and pass the key via the Authorization: Bearer YOUR_API_KEY header</code></pre>
         <h2><span data-zh>风险评估</span><span data-en>Risk assessment</span></h2>
         <span data-zh><div class="tbl-wrap"><table><thead><tr><th>风险类型</th><th>评价</th></tr></thead><tbody><tr><td>本地文件泄露</td><td><strong>无</strong> — 不碰本地文件</td></tr><tr><td>内网探测</td><td><strong>无</strong> — 不访问任意 URL</td></tr><tr><td><strong>数据出境</strong></td><td><strong>有，但范围窄</strong> — 只发<strong>文档问题 + 库名/ID</strong>；不发完整 prompt、源代码、对话历史（官方声明，见下方说明）</td></tr><tr><td>凭据风险</td><td>低 — 只用一个 API Key，无文件权限；官方还要求 agent 不要在查询里带凭据</td></tr><tr><td>服务可用性</td><td>依赖 Upstash 服务，本仓库无 releases 可保证服务状态</td></tr><tr><td><strong>预算失控</strong></td><td><strong>有</strong> — Free 超 1,000 次/月后行为不明；Pro 超出不阻塞、按用量另计；私有库解析是独立计费项（单价见官方页）</td></tr></tbody></table></div>
             <p><strong>涉密场景要评估的部分</strong>：如果你查的库名、报错信息、代码片段本身敏感， 这些会离开本机。</p>
-            <p><strong>但本轮补到一条官方对隐私的明确承诺</strong>（官方 FAQ 设了专题 &quot;How do you keep the privacy of my queries?&quot;）：</p>
+            <p><strong>但已核到一条官方对隐私的明确承诺</strong>（官方 FAQ 设了专题 &quot;How do you keep the privacy of my queries?&quot;）：</p>
             <p>查询只发送<strong>文档问题与库名/ID</strong>， <strong>不发送完整 prompt、源代码与对话历史</strong>； 官方并要求 agent 不要在查询里携带凭据、个人数据或专有代码。</p>
-            <p>⚠ 这条声明是<strong>官方自述</strong>，本站未实测验证 —— 即没有抓包确认发出去的内容真如所述。</p></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Risk type</th><th>Assessment</th></tr></thead><tbody><tr><td>Local file leakage</td><td><strong>None</strong> — touches no local files</td></tr><tr><td>Internal-network probing</td><td><strong>None</strong> — does not visit arbitrary URLs</td></tr><tr><td><strong>Data egress</strong></td><td><strong>Yes, but narrow in scope</strong> — sends only <strong>the documentation question + library name/ID</strong>; not full prompts, source code or conversation history (official statement, see note below)</td></tr><tr><td>Credential risk</td><td>Low — one API key only, no file permissions; the official docs also require agents not to put credentials in queries</td></tr><tr><td>Service availability</td><td>Depends on the Upstash service; this repository&#39;s releases cannot guarantee service status</td></tr><tr><td><strong>Budget overrun</strong></td><td><strong>Yes</strong> — behaviour after Free exceeds 1,000 calls/month is unknown; Pro does not block on overage but bills by usage; private-repo parsing is a separate billing item (unit price on the official page)</td></tr></tbody></table></div>
+            <p>⚠ 这条声明是<strong>官方自述</strong>，本站未做端到端实测验证 —— 即没有抓包确认发出去的内容真如所述。</p></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Risk type</th><th>Assessment</th></tr></thead><tbody><tr><td>Local file leakage</td><td><strong>None</strong> — touches no local files</td></tr><tr><td>Internal-network probing</td><td><strong>None</strong> — does not visit arbitrary URLs</td></tr><tr><td><strong>Data egress</strong></td><td><strong>Yes, but narrow in scope</strong> — sends only <strong>the documentation question + library name/ID</strong>; not full prompts, source code or conversation history (official statement, see note below)</td></tr><tr><td>Credential risk</td><td>Low — one API key only, no file permissions; the official docs also require agents not to put credentials in queries</td></tr><tr><td>Service availability</td><td>Depends on the Upstash service; this repository&#39;s releases cannot guarantee service status</td></tr><tr><td><strong>Budget overrun</strong></td><td><strong>Yes</strong> — behaviour after Free exceeds 1,000 calls/month is unknown; Pro does not block on overage but bills by usage; private-repo parsing is a separate billing item (unit price on the official page)</td></tr></tbody></table></div>
             <p><strong>The part sensitive scenarios must assess</strong>: if the library names, error messages or code snippets you query are themselves sensitive, they leave your machine.</p>
-            <p><strong>But this round adds one explicit official privacy commitment</strong> (the official FAQ has a dedicated entry, &quot;How do you keep the privacy of my queries?&quot;):</p>
+            <p><strong>But the 2026-10-08 check adds one explicit official privacy commitment</strong> (the official FAQ has a dedicated entry, &quot;How do you keep the privacy of my queries?&quot;):</p>
             <p>Queries send only <strong>the documentation question and the library name/ID</strong>, <strong>not full prompts, source code or conversation history</strong>; the official docs also require agents not to carry credentials, personal data or proprietary code in queries.</p>
             <p>⚠ This statement is the <strong>vendor&#39;s own account</strong>; this site has not verified it by measurement — i.e. no packet capture confirmed the outbound content matches the description.</p></span>
       </div>

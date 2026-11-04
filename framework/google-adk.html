@@ -182,14 +182,14 @@
         </div>
         <div class="axis">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
-          <dd><span data-zh><p><strong>官方对「文件」的答案是抽象层 Artifacts，不是裸文件系统（本轮已核验）。</strong> 换句话说，它自己不读写磁盘。</p>
+          <dd><span data-zh><p><strong>官方对「文件」的答案是抽象层 Artifacts，不是裸文件系统（已核验）。</strong> 换句话说，它自己不读写磁盘。</p>
             <p>官方 Artifacts 页 <strong>原文</strong>：</p>
             <p><strong>官方原文</strong>：Artifacts &quot;represent a crucial mechanism for managing named, versioned binary data associated either with a specific user interaction session or persistently with a user&quot;</p>
             <p><strong>落盘位置由你选的 ArtifactService 决定。</strong> <strong>官方原文</strong>：&quot;Their storage and retrieval are managed by a dedicated Artifact Service&quot;</p>
             <p>两个后端：</p>
             <ul><li><code>InMemoryArtifactService</code> —— 重启即丢</li><li><code>GcsArtifactService</code> —— 持久、带版本</li></ul>
             <p><strong>ADK 是库，不内置 Read/Write/Bash 这类文件工具。</strong> 磁盘访问要靠自己写 function tool，或接 MCP。 官方 MCP 页示例正是 filesystem MCP server。</p>
-            <p>⚠ <strong>官方未提供</strong>沙箱机制或文件系统权限模型（已查 Artifacts、tools、deploy 各页）。 默认访问边界取决于你自己接的工具。</p></span><span data-en><p><strong>The official answer to &quot;files&quot; is the abstraction layer Artifacts, not the raw filesystem (verified this round).</strong> In other words, it does not read or write disks itself.</p>
+            <p>⚠ <strong>官方未提供</strong>沙箱机制或文件系统权限模型（已查 Artifacts、tools、deploy 各页）。 默认访问边界取决于你自己接的工具。</p></span><span data-en><p><strong>The official answer to &quot;files&quot; is the abstraction layer Artifacts, not the raw filesystem (verified on 2026-10-08).</strong> In other words, it does not read or write disks itself.</p>
             <p>Official Artifacts page <strong>verbatim</strong>:</p>
             <p><strong>Official wording</strong>: Artifacts &quot;represent a crucial mechanism for managing named, versioned binary data associated either with a specific user interaction session or persistently with a user&quot;</p>
             <p><strong>Where things land is decided by the ArtifactService you choose.</strong> <strong>Official wording</strong>: &quot;Their storage and retrieval are managed by a dedicated Artifact Service&quot;</p>
@@ -435,7 +435,7 @@ adk deploy cloud_run --with_ui &lt;agent-folder&gt;        # Cloud Run</code></p
             <p><strong>这是本站已收录对象里唯一把「评估」做成框架内建命令的。</strong> 对「不要实测」的铁律来说，这类能力值得记一笔：它让用户能自己跑评测。</p>
             <p><strong>② 有个部署级开关要注意，而且它本质上是「计费路径开关」。</strong></p>
             <p><strong>README 的 Cloud Run 示例里出现了</strong> <code>GOOGLE_GENAI_USE_ENTERPRISE=1</code>。</p>
-            <p><strong>本轮已核验清楚（2026-10-01，Google 官方 codelab 与 Cloud 文档）</strong>： 它<strong>不是「解锁企业功能」的开关</strong>。</p>
+            <p><strong>已核验清楚（2026-10-01，Google 官方 codelab 与 Cloud 文档）</strong>： 它<strong>不是「解锁企业功能」的开关</strong>。</p>
             <p><strong>它是一条路由开关：把请求从 Gemini Developer API 切到 Google Cloud 企业平台 （Gemini Enterprise Agent Platform / Vertex AI），计费口径随之改变。</strong></p>
             <p>换句话说，改的是请求去向，不是功能权限。</p>
             <p><strong>官方 codelab 对三个变量的说明原文：</strong></p>
@@ -459,7 +459,7 @@ adk deploy cloud_run --with_ui &lt;agent-folder&gt;        # Cloud Run</code></p
             <p><strong>This is the only object collected on this site that makes &quot;evaluation&quot; a framework-built-in command.</strong> Against the &quot;no measured runs&quot; rule, this kind of capability deserves a note: it lets users run their own evaluations.</p>
             <p><strong>② There is a deployment-level switch to note, and it is essentially a &quot;billing-path switch.&quot;</strong></p>
             <p><strong>The README&#39;s Cloud Run example contains</strong> <code>GOOGLE_GENAI_USE_ENTERPRISE=1</code>.</p>
-            <p><strong>Verified clearly this round (2026-10-01, Google&#39;s official codelab and Cloud docs)</strong>: it is <strong>not a switch that &quot;unlocks enterprise features&quot;</strong>.</p>
+            <p><strong>Verified clearly the 2026-10-08 check (2026-10-01, Google&#39;s official codelab and Cloud docs)</strong>: it is <strong>not a switch that &quot;unlocks enterprise features&quot;</strong>.</p>
             <p><strong>It is a routing switch: moving requests from the Gemini Developer API to the Google Cloud enterprise platform (Gemini Enterprise Agent Platform / Vertex AI), and the billing basis changes with it.</strong></p>
             <p>In other words, what changes is where requests go, not feature entitlements.</p>
             <p><strong>The official codelab&#39;s explanation of the three variables, verbatim:</strong></p>
@@ -499,21 +499,21 @@ adk deploy cloud_run --with_ui &lt;agent-folder&gt;        # Cloud Run</code></p
       <div class="panel is-slim">
         <h2><span data-zh>核验说明</span><span data-en>Verification notes</span></h2>
         <span data-zh><p><code>confidence: partial</code> 的依据。</p>
-            <p><strong>为什么不是 verified。</strong> 三维本轮已核到官方机制：</p>
+            <p><strong>为什么不是 verified。</strong> 三维已核到官方机制：</p>
             <ul><li><code>local_files</code> —— Artifacts 抽象</li><li><code>context</code> —— 1.16+ 的 Context Compaction</li><li><code>permissions</code> —— Tool Confirmation</li></ul>
             <p>但 <code>permissions</code> 只有「执行前确认」。 官方未提供沙箱或文件系统权限模型。</p>
             <p>其余缺口集中在<strong>费率与部署语义</strong>：</p>
             <ul><li>Gemini 单价与 Vertex AI Agent Engine / Cloud Run 的实际费率</li><li>跨进程跨机续跑语义</li><li>分布式状态存储</li></ul>
             <blockquote><strong>已核验</strong>：仓库存在与星数（21,966 · 滚动核验 2026-10-23）、许可（Apache-2.0，经 license API）、 最近推送（2026-10-22，仍活跃）、最新版 <strong>v2.12.0</strong>（releases @ 2026-10-13）、 README 全文的六项特性列表与四类运行形态、两种 <code>adk deploy</code> 命令与 <code>GOOGLE_GENAI_USE_ENTERPRISE</code> 环境变量、<code>adk eval</code> 命令与 <code>.evalset.json</code> 格式、 <code>google/adk-js</code>（1,426★ · Apache-2.0）与 <code>google/adk-recipes</code>（10,404★）两仓元数据</blockquote>
-            <blockquote><strong>本轮（2026-10-01）补上的</strong>：<code>GOOGLE_GENAI_USE_ENTERPRISE</code> 的确切含义。 它是<strong>计费路径开关</strong>（切到 Gemini Enterprise Agent Platform / Vertex AI）， 不是企业功能开关。官方把 &quot;enable billing&quot; 挂在 <code>GOOGLE_CLOUD_PROJECT</code> 上， 三个变量须成组设置。来源为 Google 官方 codelab 与 Cloud 文档。</blockquote>
+            <blockquote><strong>2026-10-01 补充</strong>：<code>GOOGLE_GENAI_USE_ENTERPRISE</code> 的确切含义。 它是<strong>计费路径开关</strong>（切到 Gemini Enterprise Agent Platform / Vertex AI）， 不是企业功能开关。官方把 &quot;enable billing&quot; 挂在 <code>GOOGLE_CLOUD_PROJECT</code> 上， 三个变量须成组设置。来源为 Google 官方 codelab 与 Cloud 文档。</blockquote>
             <blockquote><strong>未核验</strong>：非 Gemini 模型下的工具调用与 structured output 可靠性（对齐度）、 默认沙箱与文件权限模型、网络访问控制、 跨进程/跨机续跑语义、分布式状态存储、 MCP 接入的实现层次（框架级依赖 vs 工具来源）、 Gemini 单价与 Vertex AI Agent Engine / Cloud Run 的实际费率</blockquote></span><span data-en><p>Basis for <code>confidence: partial</code>.</p>
-            <p><strong>Why not verified.</strong> Three dimensions were verified against official mechanics this round:</p>
+            <p><strong>Why not verified.</strong> Three dimensions were verified against official mechanics the 2026-10-08 check:</p>
             <ul><li><code>local_files</code> — the Artifacts abstraction</li><li><code>context</code> — Context Compaction since 1.16</li><li><code>permissions</code> — Tool Confirmation</li></ul>
             <p>But <code>permissions</code> is only &quot;confirm before executing&quot;. The official docs provide no sandbox or filesystem permission model.</p>
             <p>The remaining gaps concentrate on <strong>rates and deployment semantics</strong>:</p>
             <ul><li>Gemini unit prices and the actual rates of Vertex AI Agent Engine / Cloud Run</li><li>cross-process cross-machine resume semantics</li><li>distributed state storage</li></ul>
             <blockquote><strong>Verified</strong>: repository exists and star count (21,966 · rolling check 2026-10-23), license (Apache-2.0, via the license API), last push (2026-10-22, still active), latest version <strong>v2.12.0</strong> (releases @ 2026-10-13), the README&#39;s full six-feature list and four run forms, the two <code>adk deploy</code> commands and the <code>GOOGLE_GENAI_USE_ENTERPRISE</code> env var, the <code>adk eval</code> command and <code>.evalset.json</code> format, metadata of the <code>google/adk-js</code> (1,426★ · Apache-2.0) and <code>google/adk-recipes</code> (10,404★) repositories</blockquote>
-            <blockquote><strong>Added this round (2026-10-01)</strong>: the exact meaning of <code>GOOGLE_GENAI_USE_ENTERPRISE</code>. It is a <strong>billing-path switch</strong> (moving to Gemini Enterprise Agent Platform / Vertex AI), not an enterprise-feature switch. The official docs hang &quot;enable billing&quot; on <code>GOOGLE_CLOUD_PROJECT</code>; the three variables must be set as a group. Sources: Google&#39;s official codelab and Cloud docs.</blockquote>
+            <blockquote><strong>Added the 2026-10-08 check (2026-10-01)</strong>: the exact meaning of <code>GOOGLE_GENAI_USE_ENTERPRISE</code>. It is a <strong>billing-path switch</strong> (moving to Gemini Enterprise Agent Platform / Vertex AI), not an enterprise-feature switch. The official docs hang &quot;enable billing&quot; on <code>GOOGLE_CLOUD_PROJECT</code>; the three variables must be set as a group. Sources: Google&#39;s official codelab and Cloud docs.</blockquote>
             <blockquote><strong>Not verified</strong>: tool-calling and structured-output reliability (alignment) under non-Gemini models, default sandbox and file permission models, network access control, cross-process/cross-machine resume semantics, distributed state storage, the implementation layer of MCP integration (framework-level dependency vs tool source), Gemini unit prices and the actual rates of Vertex AI Agent Engine / Cloud Run</blockquote></span>
       </div>
 
