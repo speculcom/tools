@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>How to prepare a red-team session — 深水指南 | 投机取巧</title>
+  <meta name="description" content="怎么准备一次红队：先定范围、名单与记录格式，再让一组人分头试攻，把发现变成可测量的风险项，别把一次演练读成安全证明。" />
+  <link rel="canonical" href="https://tools.specul.com/mcp/guides/how-to-prepare-a-red-team.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="How to prepare a red-team session" />
+  <meta property="og:url" content="https://tools.specul.com/mcp/guides/how-to-prepare-a-red-team.html" />
+  <meta property="og:title" content="How to prepare a red-team session — 深水指南 | 投机取巧" />
+  <meta property="og:description" content="怎么准备一次红队：先定范围、名单与记录格式，再让一组人分头试攻，把发现变成可测量的风险项，别把一次演练读成安全证明。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../../brand.css?v=bf69a6d205ad" />
+  <link rel="stylesheet" href="../../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to prepare a red-team session","description":"Fix scope, harm list and record format first, let a team probe separately, then turn findings into measurable risk items instead of reading one session as proof of safety.","dateModified":"2026-11-06"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
+      <div class="detail-head">
+        <div>
+          <h1><span data-zh>怎么准备一次红队</span><span data-en>How to prepare a red-team session</span></h1>
+          <div class="vendor is-caps"><span data-zh>护栏与安全</span><span data-en>Guardrails & safety</span></div>
+        </div>
+      </div>
+      <div class="panel-lead"><span data-zh><p>先定范围、名单与记录格式，再让一组人分头试攻，把发现变成可测量的风险项，别把一次演练读成安全证明。</p></span><span data-en><p>Fix scope, harm list and record format first, let a team probe separately, then turn findings into measurable risk items instead of reading one session as proof of safety.</p></span></div>
+
+
+
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></a></li><li><a href="#guide-section-1"><span data-zh>适用对象</span><span data-en>Who this is for</span></a></li><li><a href="#guide-section-2"><span data-zh>前置条件</span><span data-en>Prerequisites</span></a></li><li><a href="#guide-section-3"><span data-zh>七个步骤</span><span data-en>Seven steps</span></a></li><li><a href="#guide-section-4"><span data-zh>贯穿案例：给工单助手做一次</span><span data-en>Worked example: one session for a ticket assistant</span></a></li><li><a href="#guide-section-5"><span data-zh>验收</span><span data-en>Acceptance</span></a></li><li><a href="#guide-section-6"><span data-zh>故障排查分支</span><span data-en>Troubleshooting branches</span></a></li><li><a href="#guide-section-7"><span data-zh>下一步</span><span data-en>Next steps</span></a></li><li><a href="#guide-section-8"><span data-zh>核验范围与未知</span><span data-en>What was verified and what is not</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
+        <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
+        <span data-zh><p><strong>红队是一次有组织的试攻，用来找风险面。</strong> 它证明不了安全，只能证明某些攻击还没试出来。 Microsoft 官方文档把这条边界写得很清楚： <strong>官方原文</strong>（英文）：&quot;red teaming is not a replacement for systematic measurement&quot; 本篇讲怎么把它办成一次能产出可测量项的工作。</p></span><span data-en><p><strong>A red team is an organised attempt to attack, used to map the risk surface.</strong> It cannot prove safety; it can only show which attacks have not yet been found. The Microsoft documentation draws this boundary explicitly: <strong>Official text</strong>: &quot;red teaming is not a replacement for systematic measurement&quot; This guide shows how to run a session that produces items you can measure.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-1">
+        <h2><span data-zh>适用对象</span><span data-en>Who this is for</span></h2>
+        <span data-zh><ul><li>产品将要面向外部用户，或即将拿到写权限的工具。</li><li>已有护栏与过滤，但不知道它们在真实话术下漏什么。</li><li>需要向评审或监管说明「我们主动试过哪些攻击路径」。</li><li>团队里只有开发者自测，缺少非开发视角。</li></ul>
+            <p>不适合：还没有可运行的端到端链路。 没有可测对象时，红队只会变成一场聊天比赛。</p></span><span data-en><ul><li>A product about to face external users, or about to be given tools with write access.</li><li>Guardrails and filters exist, but you do not know what they miss under real phrasings.</li><li>You must tell reviewers or regulators which attack paths you probed yourself.</li><li>The team only has developer self-tests and lacks a non-developer perspective.</li></ul>
+            <p>Not a fit: there is no end-to-end flow that runs yet. With nothing testable, a red team becomes a chat competition.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-2">
+        <h2><span data-zh>前置条件</span><span data-en>Prerequisites</span></h2>
+        <span data-zh><ol><li value="1">范围声明：测哪个版本、哪个入口（API 还是产品界面）、哪些工具允许被触发。</li><li value="2">人员构成：官方文档建议按经验与学科多样化组队， 同时包含对抗视角与「普通用户视角」的测试者。</li><li value="3">分工方式：把风险条目分配到人，并决定多轮之间是否轮换。</li><li value="4">记录位置：一份共享表，含输入、输出、唯一标识、发现时间、测试者。</li><li value="5">边界与授权：测试用的数据账号、可能被写坏的东西、谁负责善后。</li><li value="6">内容预警机制：结果里可能出现有害样本，报告与查看权限要先定。</li></ol>
+            <p>Microsoft 官方文档建议记录「输入 / 输出对的可复现标识」， 理由是后续复测要能回到同一条样例。</p></span><span data-en><ol><li value="1">A scope statement: which version, which entry point (API or product UI), and which tools may be triggered.</li><li value="2">Composition: the official documentation recommends a diverse team by experience and discipline, covering both adversarial testers and ordinary-user testers.</li><li value="3">Assignment: allocate harm entries to people, and decide whether assignments rotate between rounds.</li><li value="4">A recording place: one shared sheet with input, output, unique identifier, time surfaced, tester.</li><li value="5">Boundaries and authorisation: which test accounts exist, what could be damaged, who cleans up.</li><li value="6">A content-warning mechanism: findings may include harmful samples, so distribution is decided in advance.</li></ol>
+            <p>The Microsoft documentation recommends recording a reproducible identifier for each input/output pair, so that later rounds can return to the same example.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-3">
+        <h2><span data-zh>七个步骤</span><span data-en>Seven steps</span></h2>
+        <span data-zh><ol><li value="1">定目的：这一轮要摸风险面，还是要验证某条缓解措施有效。</li><li value="2">开放式先跑：先不设条目清单，让测试者自由试，目的是发现盲区。</li><li value="3">汇总成风险清单：把发现归并成条目，每条写定义与示例。</li><li value="4">引导式再跑：按清单逐条攻，同时继续记录新出现的条目。</li><li value="5">对照缓解措施：带护栏与不带护栏各跑一遍，才能看出措施的作用。</li><li value="6">分级与派工：按严重度与发生条件排优先级，指派修复负责人。</li><li value="7">输出短报告：官方文档给出的结构是——前列问题、原始数据链接、下一轮计划、致谢测试者。</li></ol>
+            <p>第 5 步常被省掉。没有对照组，护栏的作用只是感觉。</p></span><span data-en><ol><li value="1">Fix the goal: is this round mapping the risk surface, or validating one specific mitigation.</li><li value="2">Start open-ended: no list at first, so testers surface blind spots.</li><li value="3">Consolidate into a harm list: merge findings into entries, each with a definition and an example. Entries left off the list count as uncovered, not as safe.</li><li value="4">Run a guided round: probe the listed entries and keep recording new ones.</li><li value="5">Compare against mitigations: run once with guardrails and once without, otherwise the effect is only a feeling.</li><li value="6">Prioritise and assign: order by severity and the conditions under which the harm appears, then name owners.</li><li value="7">Publish a short report: the official structure is top issues, a link to raw data, the plan for the next round, and acknowledgement of testers.</li></ol>
+            <p>Step 5 is the one people skip.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-4">
+        <h2 id="worked-example"><span data-zh>贯穿案例：给工单助手做一次</span><span data-en>Worked example: one session for a ticket assistant</span></h2>
+        <span data-zh><p>情境与数字均为示例，是虚构假设，不是任何产品的实测结果。</p>
+            <ul><li>输入：一个内部工单助手，能读客户邮件、能改工单状态。</li><li>处理：4 人 × 90 分钟（示例安排），两人带安全背景、两人是客服业务人员； 第一轮开放式，第二轮按 6 条风险清单引导；对照组关掉输出护栏再跑同一批攻击话术。</li><li>结果判断（示例）：共 23 条发现，其中 5 条能让助手承诺未在政策内的赔偿； 这 5 条里 3 条在关闭输出护栏后仍被工具层拦住，说明当前拦截来自工具层而非输出层。 按官方文档的提醒，这仍是「识别」，不能读成「发生率低」。</li><li>失败后下一步： 把 5 条赔偿承诺写进评测样本集，作为回归项长期跑； 对「身份伪装成主管」这一条目，补一条工具入参护栏并在下一轮复测； 记录未覆盖项——这次没有测多语言输入与附件解析路径。</li></ul>
+            <p>判据一句话：<strong>一轮红队结束时，能不能拿出「新增可测条目数」和「下一轮计划」。</strong> 只有故事没有条目，这次演练没有收尾。</p></span><span data-en><p>The scenario and the numbers are illustrative — invented assumptions, not measured results for any product.</p>
+            <ul><li>Input: an internal ticket assistant that reads customer mail and can change ticket status.</li><li>Processing: 4 people x 90 minutes (example arrangement); two with security background, two from the support business team. Round one is open-ended, round two follows six harm entries; a control run disables the output guardrail on the same attack phrasings.</li><li>Judging the result (example): 23 findings in total, 5 of which make the assistant promise compensation outside policy. Of those 5, 3 are still blocked by the tool layer with the output guardrail off, so the current block comes from the tool layer, not the output layer. As the official documentation warns, this is identification, not an incident rate.</li><li>What to do after a failure: Add the 5 compensation-promise samples to the evaluation set as permanent regression items; for the &quot;impersonating a supervisor&quot; entry, add a tool-argument guardrail and retest in the next round; record what was not covered — this session did not test multilingual input or attachment parsing.</li></ul>
+            <p>One test for the session: <strong>at the end, can you show the number of new measurable entries and the plan for the next round.</strong> Stories without entries mean the work is unfinished.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-5">
+        <h2><span data-zh>验收</span><span data-en>Acceptance</span></h2>
+        <span data-zh><ul><li>[ ] 每条发现都有可复现输入与当轮环境说明</li><li>[ ] 风险清单里的条目带定义与至少一个示例</li><li>[ ] 带缓解与不带缓解的对照结果都留在记录里</li><li>[ ] 明确写出这次未覆盖的入口、语言与数据类型</li><li>[ ] 修复项进入评测或护栏配置，并有复测日期</li><li>[ ] 报告分发范围受控，有害样本不进入公开渠道</li></ul></span><span data-en><ul><li>[ ] Every finding has a reproducible input and a note on that round&#39;s environment</li><li>[ ] Each harm entry carries a definition and at least one example</li><li>[ ] Both the mitigation-on and mitigation-off results stay in the record</li><li>[ ] The report states which entries, languages and data types were not covered</li><li>[ ] Fixes land in evaluation or guardrail configuration, with a retest date</li><li>[ ] Report distribution is controlled, and harmful samples stay out of open channels</li></ul></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-6">
+        <h2><span data-zh>故障排查分支</span><span data-en>Troubleshooting branches</span></h2>
+        <span data-zh><ul><li>发现集中在少数人手里：轮换分工，或让业务视角的人先出清单。</li><li>全是老问题：说明攻击面被固定了，换入口测（产品界面而非 API）。</li><li>测试者被自己环境拦住（401 / 403）：这是权限问题，不算攻击成功，先修访问。</li><li>会话中途被限流（429）：降低并发与重复密度，别把限流当拦截效果记录。</li><li>复现不了上轮的样例：检查模型版本与工具权限是否变过，把版本号写进记录。</li><li>报告把单条样例读成比例：官方文档明确要求区分「识别」与「测量」，措辞要改。</li><li>修复后仍然易被绕过：OWASP 该项目的价值在于提供风险条目清单， 逐条比对你补的是哪一类，缺口在哪一类。</li></ul></span><span data-en><ul><li>Findings cluster in two or three people: rotate assignments, or let the business-side testers write the list first.</li><li>Everything found is a known issue: the attack surface has become fixed, so switch entry point (product UI rather than API).</li><li>Testers are blocked by their own environment (401 / 403): that is a permission problem, not a successful attack — fix access first.</li><li>Requests get rate-limited mid-session (429): lower concurrency and repetition; do not log a rate limit as a protection result.</li><li>A previous example no longer reproduces: check whether the model version or tool permissions changed, and record the version each round.</li><li>The report turns one example into a rate: the official documentation separates identification from measurement, so the wording must change.</li><li>A fix keeps getting bypassed: the value of the OWASP list is its entries — check which category you patched and which stays open.</li></ul></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-7">
+        <h2><span data-zh>下一步</span><span data-en>Next steps</span></h2>
+        <span data-zh><ol><li value="1">把可复现样例交给评测流程，变成回归集的一部分。</li><li value="2">需要新增拦截点时，按护栏选型的四个位置判断装在哪里。</li><li value="3">下一轮开始前，把这次未覆盖项写进目的清单。</li><li value="4">面向采购场景时，把红队发现的类型转成对供应商的追问。</li></ol></span><span data-en><ol><li value="1">Hand the reproducible samples to the evaluation pipeline so they become regression items.</li><li value="2">When a new blocking point is needed, decide its layer using the guardrail-placement guide.</li><li value="3">Before the next round, put this round&#39;s uncovered items into its goal list.</li><li value="4">For procurement work, convert the finding types into vendor questions.</li></ol></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-8">
+        <h2><span data-zh>核验范围与未知</span><span data-en>What was verified and what is not</span></h2>
+        <span data-zh><p>2026-11-06 直抓了四处官方来源：Microsoft Learn 的红队规划文档、 Anthropic 关于红队挑战的官方博客页、arXiv 红队方法论文摘要页、 OWASP LLM 应用风险清单项目仓库；护栏一处同页复核。 本篇只转述这些页面写明的做法与边界，未组织或运行任何红队活动。</p>
+            <p>以下未知：</p>
+            <ul><li>官方文档中的组队规模、时长与人员构成对不同体量产品的适用性——文档本身说明建议并非处处适用。</li><li>Anthropic 博客所载自动化与众测方式的当前实践细节——本次未读到具体执行数据。</li><li>arXiv 论文结论（模型规模越大越难红队，<strong>论文摘要原文</strong>（英文）：&quot;RLHF models are increasingly difficult to red team as they scale&quot;） 能否迁移到你所用的具体模型与安全训练方式——无法据公开结论判断。</li><li>OWASP 清单在你所在版本中的具体条目编号——本次未逐条核对页面表格。</li></ul></span><span data-en><p>On 2026-11-06 four official sources were fetched directly: the Microsoft Learn red-teaming planning page, the Anthropic blog on red-teaming challenges, the arXiv red-teaming methodology abstract, and the OWASP LLM application risks repository; the <a href="/framework/openai-agents-sdk.html">OpenAI Agents SDK guardrails</a> page was refetched the same day. This guide reports only the practices and boundaries those pages state. No red-team activity was organised or executed.</p>
+            <p>Unknowns:</p>
+            <ul><li>How the documented team size, duration and composition transfer to products of other scales — the documentation itself says its recommendations do not fit every scenario.</li><li>Current practical detail of the automated and crowdsourced methods described in the Anthropic post — execution data was not read here.</li><li>Whether the paper&#39;s finding (&quot;RLHF models are increasingly difficult to red team as they scale&quot;) transfers to your model and its safety training — public conclusions cannot decide that.</li><li>The exact entry numbering in the OWASP list version you use — the tables were not checked line by line here.</li></ul></span>
+      </div>
+<nav class="panel is-slim" aria-label="接下来做什么" data-ui-aria-label-zh="接下来做什么" data-ui-aria-label-en="What to do next">
+<h2><span data-zh>接下来做什么</span><span data-en>What to do next</span></h2><ul>
+<li><a href="toolkit-worksheets.html"><span data-zh>记录约束、验收与未确认项</span><span data-en>Record constraints, acceptance and unknowns</span></a></li>
+<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh>核对结果与来源</span><span data-en>Verify the result and its sources</span></a></li>
+<li><a href="failure-library.html#by-symptom"><span data-zh>按症状排查失败</span><span data-en>Troubleshoot by symptom</span></a></li>
+</ul></nav>
+      <div class="panel is-slim">
+        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
+        <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
+          <tr><td><span data-zh>Microsoft Learn · Planning red teaming for LLMs（2026-11-06 直抓 200）</span><span data-en>Microsoft Learn · Planning red teaming for LLMs (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/red-teaming" target="_blank" rel="noopener"><span data-zh>https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/red-teaming</span><span data-en>https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/red-teaming</span></a></td></tr>
+          <tr><td><span data-zh>Anthropic 官方博客 · Challenges in red teaming AI systems（2026-11-06 直抓 200）</span><span data-en>Anthropic engineering blog · Challenges in red teaming AI systems (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://anthropic.com/news/challenges-in-red-teaming-ai-systems" target="_blank" rel="noopener"><span data-zh>https://anthropic.com/news/challenges-in-red-teaming-ai-systems</span><span data-en>https://anthropic.com/news/challenges-in-red-teaming-ai-systems</span></a></td></tr>
+          <tr><td><span data-zh>红队方法论文（arXiv 2209.07858，2026-11-06 直抓摘要页）</span><span data-en>Red-teaming methodology paper (arXiv 2209.07858, abstract page direct-fetched 2026-11-06)</span></td><td><a href="https://arxiv.org/abs/2209.07858" target="_blank" rel="noopener"><span data-zh>https://arxiv.org/abs/2209.07858</span><span data-en>https://arxiv.org/abs/2209.07858</span></a></td></tr>
+          <tr><td><span data-zh>OWASP Top 10 for LLM Applications 官方仓库（2026-11-06 直抓 200）</span><span data-en>OWASP Top 10 for LLM Applications official repository (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://github.com/OWASP/www-project-top-10-for-large-language-model-applications" target="_blank" rel="noopener"><span data-zh>https://github.com/OWASP/www-project-top-10-for-large-language-model-applications</span><span data-en>https://github.com/OWASP/www-project-top-10-for-large-language-model-applications</span></a></td></tr>
+          <tr><td><span data-zh>OpenAI Agents SDK 官方文档 · Guardrails（2026-11-06 直抓 200）</span><span data-en>OpenAI Agents SDK official docs · Guardrails (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://openai.github.io/openai-agents-python/guardrails/" target="_blank" rel="noopener"><span data-zh>https://openai.github.io/openai-agents-python/guardrails/</span><span data-en>https://openai.github.io/openai-agents-python/guardrails/</span></a></td></tr>
+        </tbody></table></div>
+        <p class="guide-foot"><span data-zh>资料快照日期：2026-11-06；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Source snapshot: 2026-11-06; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

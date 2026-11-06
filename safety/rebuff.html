@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Rebuff — Safety | 投机取巧</title>
+  <meta name="description" content="Rebuff（Protect AI）：Protect AI 开源的「自硬化」提示注入检测器：启发式 + 专用 LLM 判定 + 历史攻击向量库 + canary 词泄漏回检四层叠在一起， 泄漏一次就把那次的 embedding 存下来用于下次识别。它是嵌在你应用里的 SDK 与可自托管的服务，不是替你运行模型的网…" />
+  <link rel="canonical" href="https://tools.specul.com/safety/rebuff.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Rebuff" />
+  <meta property="og:url" content="https://tools.specul.com/safety/rebuff.html" />
+  <meta property="og:title" content="Rebuff — Safety | 投机取巧" />
+  <meta property="og:description" content="Rebuff（Protect AI）：Protect AI 开源的「自硬化」提示注入检测器：启发式 + 专用 LLM 判定 + 历史攻击向量库 + canary 词泄漏回检四层叠在一起， 泄漏一次就把那次的 embedding 存下来用于下次识别。它是嵌在你应用里的 SDK 与可自托管的服务，不是替你运行模型的网…" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../brand.css?v=bf69a6d205ad" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Rebuff","applicationCategory":"DeveloperApplication","url":"https://github.com/protectai/rebuff","sameAs":"https://github.com/protectai/rebuff","description":"Protect AI 开源的「自硬化」提示注入检测器：启发式 + 专用 LLM 判定 + 历史攻击向量库 + canary 词泄漏回检四层叠在一起， 泄漏一次就把那次的 embedding 存下来用于下次识别。它是嵌在你应用里的 SDK 与可自托管的服务，不是替你运行模型的网关。","dateModified":"2026-11-06"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Safety</span>
+      </nav>
+      <a class="back" href="./">← Safety</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:&quot;#5FA86A&quot;" aria-hidden="true"><span data-zh>RB</span><span data-en>RE</span></div>
+        <div>
+          <h1><span data-zh>Rebuff</span><span data-en>Rebuff</span></h1>
+          <div class="vendor is-caps">Protect AI</div>
+        </div>
+      </div>
+
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
+      <div class="badges">
+        <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
+        <span class="tag on"><span data-zh>混合</span><span data-en>Hybrid</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: archived</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-11-06</span>
+      </div>
+
+      <p class="t-sm"><span data-zh>核验标记表示资料完整度，不是产品评分。下列未确认项可能影响选型；请按对应来源逐项确认。</span><span data-en>The confidence mark describes evidence completeness, not a product score. Unconfirmed items below may affect your choice; check them against the relevant sources.</span></p>
+            <div class="panel is-slim">
+        <h2 id="known-unknowns"><span data-zh>未确认的信息</span><span data-en>Information not confirmed</span></h2>
+        <span data-zh>
+        <ul>
+          <li>当日未取到官方正文：docs.rebuff.ai 与 playground.rebuff.ai 均无响应，只读到仓库内 docs 目录的文件名</li>
+          <li>除 OpenAI 之外的 LLM 提供方是否可用</li>
+          <li>启发式层的具体规则集与可定制范围（官方路线图把「User Defined Detection Strategies」留在未完成）</li>
+          <li>向量库容量、保留时长与清理机制</li>
+          <li>数据处理与隐私条款、是否有遥测</li>
+          <li>Python SDK 与 TS SDK 的实际能力差距（README 与官方 tests 徽章显示两套测试，未逐条核验）</li>
+          <li>大陆直连与备案状态（cn 块记为 unknown）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>No official body text obtained on the day: docs.rebuff.ai and playground.rebuff.ai both returned no response, only the filenames inside the repository&#39;s docs directory were readable</li>
+          <li>Whether LLM providers other than OpenAI can be used</li>
+          <li>The concrete heuristic rule set and how far it can be customised (&quot;User Defined Detection Strategies&quot; is still unchecked on the official roadmap)</li>
+          <li>Vector-store capacity, retention period and cleanup mechanism</li>
+          <li>Data-processing and privacy terms, and whether any telemetry exists</li>
+          <li>The real capability gap between the Python SDK and the TS SDK (badges show two test suites; not verified item by item)</li>
+          <li>Mainland direct reachability and filing status (recorded as unknown in the cn block)</li>
+        </ul></span>
+      </div>
+
+
+            
+      <div class="panel-lead"><span data-zh><p>Protect AI 开源的「自硬化」提示注入检测器：启发式 + 专用 LLM 判定 + 历史攻击向量库 + canary 词泄漏回检四层叠在一起， 泄漏一次就把那次的 embedding 存下来用于下次识别。它是嵌在你应用里的 SDK 与可自托管的服务，不是替你运行模型的网关。</p></span><span data-en><p>Protect AI 开源的「自硬化」提示注入检测器：启发式 + 专用 LLM 判定 + 历史攻击向量库 + canary 词泄漏回检四层叠在一起， 泄漏一次就把那次的 embedding 存下来用于下次识别。它是嵌在你应用里的 SDK 与可自托管的服务，不是替你运行模型的网关。</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+        <div><p>适合给自己产品的输入加一层注入告警、并顺手做泄漏自检的团队，也适合把攻击样本累积成向量库做研究复现。 不适合需要维护承诺与合规条款的生产链路（仓库已归档），也不适合必须完全离线的部署—— 官方路线图的 Local-only mode 至今未勾选，README 的 SDK 初始化就要 OpenAI 与 Pinecone 凭据。</p></div>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-11-06</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>Protect AI（GitHub 组织 Protect AI，主体为美国公司），非国产产品。</span><span data-en>Protect AI (GitHub organisation &quot;Protect AI&quot;, a US-based company); not a domestic product.</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>直连未核验</span><span data-en>direct unknown</span>　<span data-zh>当日核验了 GitHub 与 PyPI 在通用网络下的可达性；docs 域名无响应，未做大陆直连实测。</span><span data-en>GitHub and PyPI reachability were checked on the general network today; the docs domain returned no response. No mainland direct-access test was run.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>备案未核验</span><span data-en>filing unknown</span>：<span data-zh>当日未检索网信办公示名单，无官方依据判定备案状态；该产品不面向大陆公众提供服务。</span><span data-en>The CAC public registry was not searched on the verification day, so filing status has no official basis; the product does not serve the mainland public.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis" id="dimension-model_access">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>官方 README 的四层里有一层就是「用一个专用 LLM 分析进来的 prompt」，因此模型是显式配置项： <code>RebuffSdk(openai_apikey, pinecone_apikey, pinecone_index, openai_model)</code>，其中 openai_model 可选、默认 gpt-3.5-turbo。 向量侧官方给的是 Pinecone，自托管段落允许换成 Chroma。除 OpenAI 之外的 LLM 提供方官方未说明。</p></span><span data-en><p>One of the four layers the README declares is literally &quot;use a dedicated LLM to analyse incoming prompts&quot;, so the model is an explicit configuration item: <code>RebuffSdk(openai_apikey, pinecone_apikey, pinecone_index, openai_model)</code>, where openai_model is optional and defaults to gpt-3.5-turbo. On the vector side the official text gives Pinecone, with Chroma allowed in the self-hosting section. LLM providers other than OpenAI are not stated officially.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-runtime">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>两条路径都在你侧：<code>pip install rebuff</code> 的 SDK 跑在你自己的应用进程里；自托管 Playground/API server 是 Node 应用， 按 README 在 <code>server/</code> 目录 <code>npm install</code> 后 <code>npm run dev</code>，起在 <code>http://localhost:3000</code>， 并需要先把 SQL 库与向量库按 Supabase / Pinecone 搭起来。官方 hosted playground 域名当日未取到正文。</p></span><span data-en><p>Both paths sit on your side: the <code>pip install rebuff</code> SDK runs inside your application process, and the self-hosted Playground/API server is a Node app — the README has you work in <code>server/</code>, run <code>npm install</code> then <code>npm run dev</code>, and it comes up at <code>http://localhost:3000</code>, after you stand up the SQL and vector databases via Supabase / Pinecone. No official text was reachable today for the hosted playground domain.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-local_files">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>官方正文的处理对象始终是 prompt 文本与 completion 文本，未声明读取工作区文件、目录或附件的能力。 自托管时它需要的是数据库与向量库连接，而不是对你仓库的访问——文件级能力官方未说明。</p></span><span data-en><p>The object of processing in the official text is always prompt text and completion text; no ability to read workspace files, directories or attachments is declared. What the self-hosted form needs is database and vector-store connectivity rather than access to your repository. File-level capability is not stated officially.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-background">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>SDK 形态随宿主应用进程生死；自托管 server 形态是常驻服务（带 Supabase 与向量库）。 官方未说明任务队列、定时复检或关机续跑类机制。</p></span><span data-en><p>The SDK form lives and dies with the host application; the self-hosted server form is a resident service backed by Supabase and a vector database. Task queues, scheduled re-checks and continuation after shutdown are not stated officially.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-tools">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>官方 README 声明的四层检测是 Heuristics、LLM-based detection、VectorDB、Canary tokens； SDK 面是 <code>detect_injection</code>、<code>add_canary_word</code>、<code>is_canaryword_leaked</code> 三个入口。 官方路线图勾选了 JavaScript/TypeScript SDK，把「Python SDK 与 TS 对等」留在未完成项。MCP 或其他扩展接入方式官方未说明。</p></span><span data-en><p>The four declared layers are Heuristics, LLM-based detection, VectorDB and Canary tokens; the SDK surface is three entry points — <code>detect_injection</code>, <code>add_canary_word</code>, <code>is_canaryword_leaked</code>. The official roadmap checks off the JavaScript/TypeScript SDK and leaves &quot;Python SDK parity&quot; unchecked. MCP or other extension points are not stated officially.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-context">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>它的「记忆」就是向量库：官方描述为把历史攻击的 embedding 存进 VectorDB 以识别相似攻击， 并在 canary 泄漏时把该输入 prompt 的 embedding 写回，形成 attack signature learning。 库容量、保留时长与清理策略官方未说明。</p></span><span data-en><p>Its &quot;memory&quot; is the vector store: the official description is embedding previous attacks in the VectorDB to recognise similar ones, and when a canary leaks, writing the embedding of that input prompt back — the roadmap calls this attack signature learning. Store capacity, retention period and cleanup policy are not stated officially.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-permissions">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>许可 Apache-2.0（见 license 字段）。数据流向由配置决定：官方示例要求传入 OpenAI 与 Pinecone 凭据， 即被检测文本会交给所配置的外部服务；官方正文当日未给出隐私或数据处理条款。 自托管环境变量清单里另有 MASTER_API_KEY、MASTER_CREDIT_AMOUNT、BILLING_RATE_INT_10K， 说明 server 侧自带额度与按请求扣减的概念（README 给出该整数的换算口径，本站不展开数字）。合规认证与训练用途官方未说明。</p></span><span data-en><p>Licensed Apache-2.0 (see the license field). Data flow is determined by configuration: the official example requires an OpenAI key and a Pinecone key, meaning the text under inspection is handed to the external services you configure; no privacy or data-processing terms were found in the official text reached today. The self-hosting environment list also includes MASTER_API_KEY, MASTER_CREDIT_AMOUNT and BILLING_RATE_INT_10K, i.e. the server ships with a credit and per-request deduction concept (the README states an integer conversion rule for it). Compliance certifications and training use are not stated officially.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-fit">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合在自家应用里加一层提示注入告警与 canary 泄漏自检、并把攻击样本沉淀成向量的研究与工程试验。 不适合需要维护承诺、需要明确数据处理条款、或需要完全离线运行的场景： 仓库已归档，且「Local-only mode」在官方路线图里仍是未完成项。</p></span><span data-en><p>Fits research and engineering experiments that add an injection alert plus canary-leak self-check inside your own app and accumulate attack samples in a vector store. Does not fit production pipelines that need a maintenance commitment or explicit data-processing terms — the repository is archived — nor fully offline deployments: &quot;Local-only mode&quot; is still an unchecked roadmap item and the documented SDK needs OpenAI and Pinecone credentials.</p></span></dd>
+        </div>
+      </dl>
+
+      <nav class="panel is-slim" aria-label="使用排查" data-ui-aria-label-zh="使用排查" data-ui-aria-label-en="Troubleshooting">
+        <h2><span data-zh>使用时遇到问题</span><span data-en>When something fails</span></h2>
+        <p><a href="../mcp/guides/failure-library.html#auth"><span data-zh>账号与权限</span><span data-en>Account and permissions</span></a> · <a href="../mcp/guides/failure-library.html#rate-limit"><span data-zh>限流与重试</span><span data-en>Rate limits and retries</span></a> · <a href="../mcp/guides/failure-library.html#files"><span data-zh>文件读取问题</span><span data-en>File-reading issues</span></a></p>
+      </nav>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li>把四层防御理解成保障承诺：README 的 Disclaimer 自述仍是原型，不能提供完全防护</li>
+          <li>以为可以纯本地跑：Local-only mode 至今是官方路线图未勾选项，检测层默认要外部 LLM</li>
+          <li>以为 Python SDK 与 TS SDK 对等：官方路线图把 Python 对等项列为未完成</li>
+        </ul>
+      </div>
+
+
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>最近核验记录</span><span data-en>Latest recorded check</span> 2026-11-06，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-11-06。<span data-zh>单项复核范围见正文或来源说明，不代表所有字段在同一天重新核验。</span><span data-en>See the text or source notes for item-specific scope; this does not mean every field was rechecked on that date.</span></p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>changelog</td><td><span data-zh>Rebuff · 仓库提交历史（最后提交 2024-01-25；无独立 changelog 页）</span><span data-en>Rebuff · repository commit history (last commit 2024-01-25; no standalone changelog page)</span></td><td><a href="https://github.com/protectai/rebuff/commits/main" target="_blank" rel="noopener">https://github.com/protectai/rebuff/commits/main</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>PyPI · rebuff（0.1.1，2024-01-20 发布；发布记录充当变更记录）</span><span data-en>PyPI · rebuff (0.1.1, released 2024-01-20; release records stand in for a changelog)</span></td><td><a href="https://pypi.org/project/rebuff/" target="_blank" rel="noopener">https://pypi.org/project/rebuff/</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>Rebuff · 仓库 README（四层检测、SDK 用法与自托管配置）</span><span data-en>Rebuff · repository README (four detection layers, SDK usage and self-hosting configuration)</span></td><td><a href="https://github.com/protectai/rebuff" target="_blank" rel="noopener">https://github.com/protectai/rebuff</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Rebuff · 仓库 docs 目录（how-it-works / quickstart / self-hosting）</span><span data-en>Rebuff · repository docs directory (how-it-works / quickstart / self-hosting)</span></td><td><a href="https://github.com/protectai/rebuff/tree/main/docs" target="_blank" rel="noopener">https://github.com/protectai/rebuff/tree/main/docs</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Rebuff · 官方 LICENSE（Apache-2.0 全文）</span><span data-en>Rebuff · official LICENSE (full Apache-2.0 text)</span></td><td><a href="https://github.com/protectai/rebuff/blob/main/LICENSE" target="_blank" rel="noopener">https://github.com/protectai/rebuff/blob/main/LICENSE</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>官方口径与未核到项</span><span data-en>Official record and unverified items</span></h2>
+        <span data-zh><p>本站未做端到端实测：没有安装 SDK、没有起过自托管 server、也没有构造过 canary 泄漏样例。 本页结论只来自官方 README、LICENSE、仓库 docs 目录清单与 PyPI / GitHub 元数据（2026-11-06 抓取）； 官方文档站域名当日无响应，故 docs.rebuff.ai 的正文未纳入。</p></span><span data-en><p>This site has not run end-to-end tests: the SDK was not installed, the self-hosted server was not started, and no canary-leak sample was constructed. Conclusions come only from the official README, the LICENSE, the file listing of the repository&#39;s docs directory and PyPI / GitHub metadata (all 2026-11-06). The documentation-site domain returned no response that day, so docs.rebuff.ai content is not included.</p></span>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>官方声明的能力面</span><span data-en>Capability surface as declared officially</span></h2>
+        <span data-zh><p>README（2026-11-06 抓取）对四层的原样表述：Heuristics 在输入到达 LLM 前过滤可疑内容； LLM-based detection 用专用 LLM 分析 prompt 并识别攻击；VectorDB 存历史攻击 embedding 以拦相似攻击； Canary tokens 在 prompt 里加令牌以检测泄漏，并据此刻录本次输入的 embedding 防未来攻击。</p>
+            <p>Disclaimer 原文：</p>
+            <blockquote>Rebuff is still a prototype and <strong>cannot provide 100% protection</strong> against prompt injection attacks!</blockquote>
+            <p><strong>这句话是选型的第一读项</strong>：它是官方对自己能力边界的定性，本站不引任何检出或绕过数字。</p></span><span data-en><p>The README (fetched 2026-11-06) describes the four layers as: Heuristics filter suspicious input before it reaches the LLM; LLM-based detection uses a dedicated LLM to analyse prompts and identify possible attacks; VectorDB stores embeddings of previous attacks to block similar ones; Canary tokens are added to prompts to detect leakage, which lets the framework store the embedding of the incoming prompt and prevent future attacks.</p>
+            <p>The Disclaimer, original wording:</p>
+            <blockquote>Rebuff is still a prototype and <strong>cannot provide 100% protection</strong> against prompt injection attacks!</blockquote>
+            <p><strong>This sentence is the first thing to read when choosing</strong>: it is the vendor&#39;s own qualitative statement about its capability boundary. This site quotes no detection or bypass figures.</p></span>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>部署前提（官方自托管口径）</span><span data-en>Deployment prerequisites (official self-hosting terms)</span></h2>
+        <span data-zh><p>README 的自托管一节要求先备齐 Supabase、OpenAI 与向量库（Pinecone，或按文档换 Chroma）， 再在 <code>server/</code> 目录准备 <code>.env.local</code>，其中包含 OPENAI_API_KEY、MASTER_API_KEY、BILLING_RATE_INT_10K、 MASTER_CREDIT_AMOUNT、Supabase anon key 与 URL、Pinecone key / environment / index name、 SUPABASE_SERVICE_KEY 与 REBUFF_API，之后 <code>npm install</code> 与 <code>npm run dev</code>，服务落在 <code>http://localhost:3000</code>。 其中 BILLING_RATE_INT_10K 的官方解释是每请求扣减的额度单位，README 另行给出该整数的换算口径（本站不展开数字）。</p></span><span data-en><p>The self-hosting section requires Supabase, OpenAI and a vector database (Pinecone, or Chroma per the docs) set up first; then a <code>.env.local</code> in <code>server/</code> carrying OPENAI_API_KEY, MASTER_API_KEY, BILLING_RATE_INT_10K, MASTER_CREDIT_AMOUNT, the Supabase anon key and URL, the Pinecone key / environment / index name, SUPABASE_SERVICE_KEY and REBUFF_API; afterwards <code>npm install</code> and <code>npm run dev</code>, which serves at <code>http://localhost:3000</code>. The README explains BILLING_RATE_INT_10K as the credit amount deducted per request and states an integer conversion rule for it; this site does not carry the figure.</p></span>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>归档状态</span><span data-en>Archive status</span></h2>
+        <span data-zh><p>仓库 <code>archived</code> 标志为真；最后提交 2024-01-25，最后推送 2024-08-07，PyPI 版本停在 0.1.1（2024-01-20）。 据此 lifecycle 记 <code>archived</code>、confidence 上限 <code>partial</code>：本页描述的是它定格时的能力面，不代表当前可用状态。</p></span><span data-en><p>The repository&#39;s <code>archived</code> flag is true; the last commit is 2024-01-25, the last push 2024-08-07, and PyPI stops at 0.1.1 (2024-01-20). The entry therefore records lifecycle <code>archived</code> with confidence capped at <code>partial</code>: what is described here is the capability surface as it froze, not a statement that it currently works.</p></span>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./llm-guard.html"><span data-zh>LLM Guard</span><span data-en>LLM Guard</span></a></span><span class="rel-n"><span data-zh>同属「护栏与内容过滤」线：本档案只写自己在册的官方口径，对照请看那份。</span><span data-en>Same line: LLM Guard (in guardrails and content filtering); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="./canary-scan.html"><span data-zh>CanaryScan</span><span data-en>CanaryScan</span></a></span><span class="rel-n"><span data-zh>同属「护栏与内容过滤」线：本档案只写自己在册的官方口径，对照请看那份。</span><span data-en>Same line: CanaryScan (in guardrails and content filtering); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="./nemo-guardrails.html"><span data-zh>NeMo Guardrails</span><span data-en>NeMo Guardrails</span></a></span><span class="rel-n"><span data-zh>同属「护栏与内容过滤」线：本档案只写自己在册的官方口径，对照请看那份。</span><span data-en>Same line: NeMo Guardrails (in guardrails and content filtering); this entry states only what its own official sources support.</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

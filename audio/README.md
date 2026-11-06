@@ -6,7 +6,7 @@
 
 音频生成与转写产品：音乐生成、语音合成（TTS）、语音转写。声音克隆涉及人格权，permissions 维必须写清官方授权要求；开源模型（如 Whisper）按「模型不是产品」口径建档。
 
-本站共 10 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `automation` / `framework` / `mcp` / `runner`），本 README 描述「AI 音频与语音」这一个。
+本站共 11 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `automation` / `framework` / `mcp` / `runner` / `safety`），本 README 描述「AI 音频与语音」这一个。
 
 ## 这个大类提供什么
 
@@ -68,6 +68,7 @@
 | [框架与运行时](/framework/) | 运行时、编排框架、SDK | 30 |
 | [MCP 工具](/mcp/) | 缺什么，装什么 —— 给 agent 装的 MCP 工具 | 32 |
 | [本地模型运行器](/runner/) | 在自己机器上跑开源模型 | 21 |
+| [AI 安全与评测](/safety/) | 拦得住、测得出、追得回 | 25 |
 
 ---
 

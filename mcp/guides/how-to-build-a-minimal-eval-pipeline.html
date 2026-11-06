@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>How to build a minimal evaluation pipeline — 深水指南 | 投机取巧</title>
+  <meta name="description" content="怎么搭一条最小评测流程：五个部件——样本集、跑批、判据、记录、对比——半天能跑通一条，够用再扩，不先建平台。" />
+  <link rel="canonical" href="https://tools.specul.com/mcp/guides/how-to-build-a-minimal-eval-pipeline.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="How to build a minimal evaluation pipeline" />
+  <meta property="og:url" content="https://tools.specul.com/mcp/guides/how-to-build-a-minimal-eval-pipeline.html" />
+  <meta property="og:title" content="How to build a minimal evaluation pipeline — 深水指南 | 投机取巧" />
+  <meta property="og:description" content="怎么搭一条最小评测流程：五个部件——样本集、跑批、判据、记录、对比——半天能跑通一条，够用再扩，不先建平台。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../../brand.css?v=bf69a6d205ad" />
+  <link rel="stylesheet" href="../../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to build a minimal evaluation pipeline","description":"Five parts — sample set, batch run, graders, records and comparison — enough for one afternoon, extend only when it pays off.","dateModified":"2026-11-06"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
+      <div class="detail-head">
+        <div>
+          <h1><span data-zh>怎么搭一条最小评测流程</span><span data-en>How to build a minimal evaluation pipeline</span></h1>
+          <div class="vendor is-caps"><span data-zh>评测</span><span data-en>Evaluation</span></div>
+        </div>
+      </div>
+      <div class="panel-lead"><span data-zh><p>五个部件——样本集、跑批、判据、记录、对比——半天能跑通一条，够用再扩，不先建平台。</p></span><span data-en><p>Five parts — sample set, batch run, graders, records and comparison — enough for one afternoon, extend only when it pays off.</p></span></div>
+
+
+
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></a></li><li><a href="#guide-section-1"><span data-zh>适用对象</span><span data-en>Who this is for</span></a></li><li><a href="#guide-section-2"><span data-zh>前置条件</span><span data-en>Prerequisites</span></a></li><li><a href="#guide-section-3"><span data-zh>五个部件</span><span data-en>Five parts</span></a></li><li><a href="#guide-section-4"><span data-zh>搭建步骤</span><span data-en>Six steps</span></a></li><li><a href="#guide-section-5"><span data-zh>贯穿案例：一次判据修正</span><span data-en>Worked example: fixing a grader</span></a></li><li><a href="#guide-section-6"><span data-zh>验收</span><span data-en>Acceptance</span></a></li><li><a href="#guide-section-7"><span data-zh>故障排查分支</span><span data-en>Troubleshooting branches</span></a></li><li><a href="#guide-section-8"><span data-zh>下一步</span><span data-en>Next steps</span></a></li><li><a href="#guide-section-9"><span data-zh>核验范围与未知</span><span data-en>What was verified and what is not</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
+        <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
+        <span data-zh><p><strong>最小评测流程就是一条能重复跑的对比通道。</strong> 它的产物不是分数，是「这次改动比上次好还是差」的判断依据。 本篇只搭五个部件：样本集、跑批、判据、记录、对比。 先让它跑起来，再谈平台化。</p></span><span data-en><p><strong>A minimal evaluation pipeline is one repeatable channel for comparison.</strong> Its output is not a score; it is the basis for saying whether this change beat the last one. This guide builds five parts only: sample set, batch run, graders, records and comparison. Get it running first; talk about a platform later.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-1">
+        <h2><span data-zh>适用对象</span><span data-en>Who this is for</span></h2>
+        <span data-zh><ul><li>你手上有一个能跑的 agent 或提示词，改过几次但说不清好坏。</li><li>团队里出现「我觉得这版更好」的争论，需要一份共同看的记录。</li><li>线上已经开始有失败样本可以回收。</li><li>没有预算建标注平台，也不想先接一整套观测系统。</li></ul>
+            <p>不适用：任务本身没有可判定的输出（纯开放式头脑风暴）。 那种场景先重新定义任务，再来搭流程。</p></span><span data-en><ul><li>You have a working agent or prompt, edited several times, and cannot say whether it improved.</li><li>Your team argues &quot;I think this version is better&quot; and needs one record everyone reads.</li><li>Production is already producing failure samples you can harvest.</li><li>There is no budget for an annotation platform and no appetite for a full observability stack.</li></ul>
+            <p>Not applicable: the task has no judgeable output (open-ended brainstorming). Redefine the task before building a pipeline for it.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-2">
+        <h2><span data-zh>前置条件</span><span data-en>Prerequisites</span></h2>
+        <span data-zh><ol><li value="1">一个可重复调用的入口：同一段输入两次跑，路径不会随机改。</li><li value="2">至少 20 条真实样本（示例阈值，按你的任务复杂度上调）。</li><li value="3">每条样本写清「什么算通过」，写不出就先把这条删掉。</li><li value="4">一份能记下每次运行的地方：文件、表格或平台的实验记录都行。</li><li value="5">明确不测什么，写进说明，避免结果被过度解读。</li></ol></span><span data-en><ol><li value="1">A repeatable entry point: the same input twice must not take a randomly different path.</li><li value="2">At least 20 real samples (an example threshold — raise it for harder tasks).</li><li value="3">Each sample states what counts as passing; if you cannot write that, drop the sample.</li><li value="4">Somewhere to record every run: files, a spreadsheet, or experiment records in a platform.</li><li value="5">A written statement of what is not tested, so results are not over-read.</li></ol></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-3">
+        <h2><span data-zh>五个部件</span><span data-en>Five parts</span></h2>
+        <span data-zh><div class="tbl-wrap"><table><thead><tr><th>部件</th><th>最小做法</th><th>何时该换</th></tr></thead><tbody><tr><td>样本集</td><td>一个文件，含输入、期望条件、来源标签</td><td>需要按人群或场景切片时</td></tr><tr><td>跑批</td><td>循环调用，固定参数与种子</td><td>单次跑超过十分钟或要并发</td></tr><tr><td>判据</td><td>先规则后模型</td><td>需要判主观质量时</td></tr><tr><td>记录</td><td>每条输出留一行结果</td><td>要比较两个版本时</td></tr><tr><td>对比</td><td>两张表并排看差异</td><td>差异开始影响发布决策时</td></tr></tbody></table></div>
+            <p>判据的顺序值得单独说。能用相等、包含、正则、JSON 字段判的，别交给模型。 promptfoo 官方文档把断言分成这些类型，另含相似度与模型评分两类。 模型判的部分要固定提示词与输出格式，否则同一批样本两次跑会漂。</p>
+            <p>LangSmith 官方文档把评测按运行时机分两类： 开发时在整理好的数据集上跑，生产里对真实交互实时评分。 <strong>官方原文</strong>（英文）：&quot;Run evaluations on curated datasets during development.&quot;</p></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Part</th><th>Minimal form</th><th>When to replace it</th></tr></thead><tbody><tr><td>Sample set</td><td>One file with input, expected condition, source tag</td><td>When you need slices by audience or scenario</td></tr><tr><td>Batch run</td><td>A loop with fixed parameters and seed</td><td>When one run exceeds ten minutes or you need concurrency</td></tr><tr><td>Graders</td><td>Rules before models</td><td>When subjective quality must be judged</td></tr><tr><td>Records</td><td>One result line per output</td><td>When two versions must be compared</td></tr><tr><td>Comparison</td><td>Two tables side by side</td><td>When the delta starts driving release decisions</td></tr></tbody></table></div>
+            <p>The ordering of graders deserves its own note. Anything equality, containment, regex or a JSON field can decide should not be asked of a model. The promptfoo documentation groups assertions into those types and adds similarity and model-graded checks. For model graders, pin the prompt and the output format, or the same samples drift between runs.</p>
+            <p>The LangSmith documentation splits evaluation by when it runs: curated datasets during development, live scoring of real production interactions. <strong>Official text</strong>: &quot;Run evaluations on curated datasets during development.&quot;</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-4">
+        <h2><span data-zh>搭建步骤</span><span data-en>Six steps</span></h2>
+        <span data-zh><ol><li value="1">收样本：从最近的失败与常见的成功里各取一半。</li><li value="2">写判据：每条先写一条规则判据；实在写不出的标为「需人看」。</li><li value="3">定跑批：固定模型、版本、参数与工具权限，把它们记在运行元数据里。</li><li value="4">跑基线：先用当前版本跑一遍，得到一份可复现的起点。</li><li value="5">做改动：一次只改一个变量，否则差异无法归因。</li><li value="6">复盘：把不一致的样本人工看一遍，决定是判据错还是应用错。</li></ol>
+            <p>第 4 步是很多人跳过的一步。没有基线，后面的数字没有参照物。 轨迹记录值得留：最终答案对了，中间绕了几步、调错没调错工具，成本差别很大。 <strong><a href="/framework/openai-agents-sdk.html">OpenAI Agents SDK</a> 官方文档</strong>（tracing 页）写明它捕获模型生成、工具调用与 agent 运行。</p></span><span data-en><ol><li value="1">Collect samples: half from recent failures, half from typical successes.</li><li value="2">Write graders: one rule grader per sample first; mark what truly resists rules as &quot;needs a human&quot;.</li><li value="3">Fix the run: pin model, version, parameters and tool permissions, and store them with the run metadata.</li><li value="4">Measure a baseline: run the current version once so later numbers have a reference.</li><li value="5">Change one variable at a time, otherwise the delta has no attribution.</li><li value="6">Review disagreements: read the mismatching samples by hand and decide whether the grader or the application is wrong.</li></ol>
+            <p>Step 4 is the one people skip. Without a baseline the later numbers have nothing to compare against. Keep traces: a correct final answer that took extra steps or called the wrong tool costs differently. <strong>The <a href="/framework/openai-agents-sdk.html">OpenAI Agents SDK</a> tracing documentation</strong> states that traces capture LLM generations, tool calls and agent runs.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-5">
+        <h2 id="worked-example"><span data-zh>贯穿案例：一次判据修正</span><span data-en>Worked example: fixing a grader</span></h2>
+        <span data-zh><p>数字与情境均为示例，是虚构假设，不是任何产品的实测结果。</p>
+            <ul><li>输入：18 条「按合同条款回答客户问题」的样本，每条带一个必须出现的条款编号。</li><li>处理：跑批用同一模型与同一检索配置；判据两条—— 规则判「输出里是否出现指定条款编号」，模型判「解释是否与条款一致」。</li><li>结果判断（示例）：规则判通过 15/18，模型判通过 11/18。 差异不在应用，而在判据：规则判只查编号，答案里编号正确但解释错也照样通过。</li><li>失败后下一步： 给规则判据补一条「不得出现禁止表述」，并把 3 条分歧样本人工复核； 复核确认 2 条是模型判据提示词含糊，改写判据描述后重跑同一批样本。</li><li>记录：基线 15/18、改动后 17/18，两个数字都标注样本集版本与判据版本。</li></ul>
+            <p>一次通过率的变动，只有在样本集与判据都不变时才可比。 MLflow 官方文档也提醒：经典评测接口与生成式评测接口两套系统不互通， <strong>官方原文</strong>（英文）：&quot;These two systems are not interoperable.&quot;</p></span><span data-en><p>The figures and the scenario are illustrative — invented assumptions, not measured results for any product.</p>
+            <ul><li>Input: 18 samples of &quot;answer the customer from the contract clause&quot;, each requiring one clause number to appear.</li><li>Processing: one run uses the same model and the same retrieval configuration; two graders — a rule checking whether the required clause number appears, and a model judging whether the explanation matches the clause.</li><li>Judging the result (example): the rule passes 15 of 18, the model passes 11 of 18. The gap is not the application but the grader: the rule only sees the number, so a right number with a wrong explanation passes.</li><li>What to do after a failure: Add a forbidden-phrasing condition to the rule, and have a human review the 3 disagreeing samples; two of them trace back to a vague model-grader prompt — rewrite the criterion and rerun the same set.</li><li>Records: baseline 15 of 18, after the change 17 of 18, both annotated with sample-set version and grader version.</li></ul>
+            <p>A pass-rate delta is comparable only when the sample set and the graders stay fixed. The MLflow documentation also warns that its classic and generative evaluation interfaces are separate systems. <strong>Official text</strong>: &quot;These two systems are not interoperable.&quot;</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-6">
+        <h2><span data-zh>验收</span><span data-en>Acceptance</span></h2>
+        <span data-zh><ul><li>[ ] 换一台机器或换一个时间重跑，同一样本集结果差异可解释</li><li>[ ] 每条样本能说出通过条件与不通过条件</li><li>[ ] 运行记录含模型版本、参数、工具权限与样本集版本</li><li>[ ] 判据本身有人工复核样本，知道它错在哪</li><li>[ ] 能一键只跑失败子集，用于快速验证修复</li></ul></span><span data-en><ul><li>[ ] Rerunning on another machine or at another time gives differences you can explain</li><li>[ ] Every sample has both a pass condition and a fail condition written down</li><li>[ ] Run records include model version, parameters, tool permissions and sample-set version</li><li>[ ] The graders themselves have human-reviewed samples, so you know how they fail</li><li>[ ] You can rerun only the failing subset with one command</li></ul></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-7">
+        <h2><span data-zh>故障排查分支</span><span data-en>Troubleshooting branches</span></h2>
+        <span data-zh><ul><li>分数忽高忽低：先查是不是没固定版本与参数，再查判据提示词是否被顺手改过。</li><li>全通过或全失败：判据大概率写错，挑一条样本人工看输出。</li><li>跑批中途报错（401 / 403）：凭据或权限与运行环境不一致，别把它当成模型质量问题。</li><li>批量请求被限流（429）：降并发、加退避；把重试次数记进运行元数据。</li><li>检索类任务分数异常：先看召回片段是否命中，再调生成端（这条顺序能省很多时间）。</li><li>引用类任务判不准：逐条把说法对应到证据，判据要检查对应关系而非只看有没有链接。</li><li>输出是 JSON 但字段缺失：解析成功不等于字段正确，判据要按 schema 校验。</li><li>样本不够：不要合成一堆相似问法充数，先把线上失败样本回收进集子。</li></ul></span><span data-en><ul><li>Scores swing up and down: check unpinned versions or parameters first, then whether a grader prompt was quietly edited.</li><li>Everything passes or everything fails: the grader is probably wrong — read one sample&#39;s output by hand.</li><li>The run errors halfway (401 / 403): credentials or permissions differ between environments; do not file this as a quality problem.</li><li>Batch requests hit rate limits (429): lower concurrency, add backoff, and record retry counts in the run metadata.</li><li>Retrieval scores look broken: inspect whether the recalled passages match before tuning generation — that order saves time.</li><li>Cited answers are hard to judge: match each claim to its evidence, and have the grader check the mapping rather than the presence of a link.</li><li>JSON parses but fields are missing: parsing is not schema validation; grade against the schema.</li><li>Too few samples: do not pad with near-duplicate phrasings; harvest real production failures into the set instead.</li></ul></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-8">
+        <h2><span data-zh>下一步</span><span data-en>Next steps</span></h2>
+        <span data-zh><ol><li value="1">把这条流程接进发布检查，让不达标自动卡住（见对应指南）。</li><li value="2">给判据留一份人工抽检记录，定期与人工结论对齐。</li><li value="3">线上跑起来后，加一层对真实交互的持续评分，别只靠离线集。</li><li value="4">需要对外解释能力时，把样本集版本与判据一起写进说明。</li></ol></span><span data-en><ol><li value="1">Wire this pipeline into the release check so a failing run blocks the release (see the matching guide).</li><li value="2">Keep a human spot-check log for the graders and align it with human conclusions periodically.</li><li value="3">Once live traffic runs, add continuous scoring on real interactions instead of relying only on the offline set.</li><li value="4">When explaining capability to outsiders, publish the sample-set version together with the graders.</li></ol></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-9">
+        <h2><span data-zh>核验范围与未知</span><span data-en>What was verified and what is not</span></h2>
+        <span data-zh><p>2026-11-06 直抓了五处官方来源：LangSmith 评测文档、 promptfoo 入门页与断言类型页、MLflow 评测文档、OpenAI Agents SDK tracing 页。 本页只转述这些页面写明的部件、分类与限制，未运行任何评测产品。</p>
+            <p>以下未知：</p>
+            <ul><li>各产品在你数据规模下的跑批耗时与并发上限——官方页未给出可比口径。</li><li>模型判据在具体任务上与人工结论的一致率——需要你自己的复核样本才能估。</li><li>MLflow 两套评测接口在你所用版本里的迁移代价——未核对该版本发布说明。</li></ul></span><span data-en><p>On 2026-11-06 five official sources were fetched directly: the LangSmith evaluation page, the promptfoo intro and assertion pages, the MLflow evaluation page, and the OpenAI Agents SDK tracing page. This guide only reports the parts, categories and limits those pages state; no evaluation product was executed.</p>
+            <p>Unknowns:</p>
+            <ul><li>Batch runtime and concurrency ceilings at your data volume — the official pages give no comparable measurement basis.</li><li>Agreement rate between model graders and human judgement for a specific task — this needs your own review samples.</li><li>Migration cost between MLflow&#39;s two evaluation interfaces in the version you run — that release note was not checked.</li></ul></span>
+      </div>
+<nav class="panel is-slim" aria-label="接下来做什么" data-ui-aria-label-zh="接下来做什么" data-ui-aria-label-en="What to do next">
+<h2><span data-zh>接下来做什么</span><span data-en>What to do next</span></h2><ul>
+<li><a href="toolkit-worksheets.html"><span data-zh>记录约束、验收与未确认项</span><span data-en>Record constraints, acceptance and unknowns</span></a></li>
+<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh>核对结果与来源</span><span data-en>Verify the result and its sources</span></a></li>
+<li><a href="failure-library.html#by-symptom"><span data-zh>按症状排查失败</span><span data-en>Troubleshoot by symptom</span></a></li>
+</ul></nav>
+      <div class="panel is-slim">
+        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
+        <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
+          <tr><td><span data-zh>LangSmith 官方文档 · Evaluation（2026-11-06 直抓 200）</span><span data-en>LangSmith official documentation · Evaluation (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://docs.langchain.com/langsmith/evaluation" target="_blank" rel="noopener"><span data-zh>https://docs.langchain.com/langsmith/evaluation</span><span data-en>https://docs.langchain.com/langsmith/evaluation</span></a></td></tr>
+          <tr><td><span data-zh>promptfoo 官方文档 · Intro（2026-11-06 直抓 200）</span><span data-en>promptfoo official documentation · Intro (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://www.promptfoo.dev/docs/intro/" target="_blank" rel="noopener"><span data-zh>https://www.promptfoo.dev/docs/intro/</span><span data-en>https://www.promptfoo.dev/docs/intro/</span></a></td></tr>
+          <tr><td><span data-zh>promptfoo 官方文档 · 断言与判据类型（2026-11-06 直抓 200）</span><span data-en>promptfoo official documentation · assertion and expected-output types (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://www.promptfoo.dev/docs/configuration/expected-outputs/" target="_blank" rel="noopener"><span data-zh>https://www.promptfoo.dev/docs/configuration/expected-outputs/</span><span data-en>https://www.promptfoo.dev/docs/configuration/expected-outputs/</span></a></td></tr>
+          <tr><td><span data-zh>MLflow 官方文档 · 评测（含经典与生成式两套口径）（2026-11-06 直抓 200）</span><span data-en>MLflow official documentation · evaluation, covering the classic and generative interfaces (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://mlflow.org/docs/latest/ml/evaluation/" target="_blank" rel="noopener"><span data-zh>https://mlflow.org/docs/latest/ml/evaluation/</span><span data-en>https://mlflow.org/docs/latest/ml/evaluation/</span></a></td></tr>
+          <tr><td><span data-zh>OpenAI Agents SDK 官方文档 · Tracing（2026-11-06 直抓 200）</span><span data-en>OpenAI Agents SDK official documentation · Tracing (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://openai.github.io/openai-agents-python/tracing/" target="_blank" rel="noopener"><span data-zh>https://openai.github.io/openai-agents-python/tracing/</span><span data-en>https://openai.github.io/openai-agents-python/tracing/</span></a></td></tr>
+        </tbody></table></div>
+        <p class="guide-foot"><span data-zh>资料快照日期：2026-11-06；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Source snapshot: 2026-11-06; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

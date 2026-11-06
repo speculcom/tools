@@ -13,8 +13,8 @@
   <meta property="og:description" content="工具箱：四张工作表（立项、发布、迁移、泄露）：四个可直接复制的检查表：项目立项、内容发布前、模型迁移评估、数据泄露路径排查。" />
   <meta name="theme-color" content="#16121f" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
-  <script src="../../brand.js?v=6a580ac0420e"></script>
-  <link rel="stylesheet" href="../../brand.css?v=6a580ac0420e" />
+  <script src="../../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../../brand.css?v=bf69a6d205ad" />
   <link rel="stylesheet" href="../../site.css" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Toolkit: four worksheets","description":"Four copyable checklists: project kickoff, pre-publish, model migration assessment and data-leak path review.","dateModified":"2026-11-03"}</script>
 </head>
@@ -49,6 +49,7 @@
            （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
            链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
       <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
         <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
         <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
       </span>
@@ -92,6 +93,231 @@
       </div>
       <div class="panel-lead"><span data-zh><p>四个可直接复制的检查表：项目立项、内容发布前、模型迁移评估、数据泄露路径排查。</p></span><span data-en><p>Four copyable checklists: project kickoff, pre-publish, model migration assessment and data-leak path review.</p></span></div>
 
+
+
+        <section class="ws-workbench" id="worksheet-workbench" aria-labelledby="ws-title">
+          <h2 id="ws-title"><span data-zh>在这里直接填</span><span data-en>Fill it in right here</span></h2>
+          <p><span data-zh>下面四张表与本页指南里的模板同字段，填完可复制成 markdown 贴进你自己的文档，或直接打印。填写内容只留在这一页，不上传、不保存到浏览器之外。</span><span data-en>These four worksheets carry the same fields as the templates described above. Fill them in, then copy the result as markdown into your own document, or print the page. What you type stays on this page: nothing is uploaded and nothing is stored beyond this tab.</span></p>
+          <p class="ws-actions">
+            <button type="button" id="ws-copy"><span data-zh>复制成 markdown</span><span data-en>Copy as markdown</span></button>
+            <button type="button" id="ws-print"><span data-zh>打印本表</span><span data-en>Print these sheets</span></button>
+            <button type="button" id="ws-clear"><span data-zh>清空</span><span data-en>Clear all</span></button>
+          </p>
+          <p class="t-sm" id="ws-status" role="status" aria-live="polite"></p>
+        <section class="ws-block" data-ws-block="kickoff">
+          <h3><span data-zh>1. 项目立项检查表</span><span data-en>1. Project kickoff checklist</span></h3>
+          <ul class="ws-list">
+            <li class="ws-item">
+              <input type="checkbox" id="ws-kickoff-goal" data-ws="kickoff" data-key="goal" />
+              <label for="ws-kickoff-goal"><span data-zh>目标一句话：要解决谁的什么问题</span><span data-en>One-sentence goal: whose problem, solved how</span></label>
+              <input type="text" class="ws-note" id="ws-kickoff-goal-note" data-ws="kickoff" data-key="goal" data-note="1" data-ui-aria-label-zh="目标一句话：要解决谁的什么问题" data-ui-aria-label-en="One-sentence goal: whose problem, solved how" maxlength="400" />
+            </li>
+            <li class="ws-item">
+              <input type="checkbox" id="ws-kickoff-nogoals" data-ws="kickoff" data-key="nogoals" />
+              <label for="ws-kickoff-nogoals"><span data-zh>不做清单：明确不做什么</span><span data-en>Not-doing list: what this project excludes</span></label>
+              <input type="text" class="ws-note" id="ws-kickoff-nogoals-note" data-ws="kickoff" data-key="nogoals" data-note="1" data-ui-aria-label-zh="不做清单：明确不做什么" data-ui-aria-label-en="Not-doing list: what this project excludes" maxlength="400" />
+            </li>
+            <li class="ws-item">
+              <input type="checkbox" id="ws-kickoff-data" data-ws="kickoff" data-key="data" />
+              <label for="ws-kickoff-data"><span data-zh>数据来源与许可：能否使用、能否留存</span><span data-en>Data source and licence: usable? retainable?</span></label>
+              <input type="text" class="ws-note" id="ws-kickoff-data-note" data-ws="kickoff" data-key="data" data-note="1" data-ui-aria-label-zh="数据来源与许可：能否使用、能否留存" data-ui-aria-label-en="Data source and licence: usable? retainable?" maxlength="400" />
+            </li>
+            <li class="ws-item">
+              <input type="checkbox" id="ws-kickoff-models" data-ws="kickoff" data-key="models" />
+              <label for="ws-kickoff-models"><span data-zh>模型与工具：主选、备选、许可证</span><span data-en>Models and tools: primary, fallback, licences</span></label>
+              <input type="text" class="ws-note" id="ws-kickoff-models-note" data-ws="kickoff" data-key="models" data-note="1" data-ui-aria-label-zh="模型与工具：主选、备选、许可证" data-ui-aria-label-en="Models and tools: primary, fallback, licences" maxlength="400" />
+            </li>
+            <li class="ws-item">
+              <input type="checkbox" id="ws-kickoff-budget" data-ws="kickoff" data-key="budget" />
+              <label for="ws-kickoff-budget"><span data-zh>成本上限：月调用/硬件/人力</span><span data-en>Cost ceiling: monthly calls / hardware / people</span></label>
+              <input type="text" class="ws-note" id="ws-kickoff-budget-note" data-ws="kickoff" data-key="budget" data-note="1" data-ui-aria-label-zh="成本上限：月调用/硬件/人力" data-ui-aria-label-en="Cost ceiling: monthly calls / hardware / people" maxlength="400" />
+            </li>
+            <li class="ws-item">
+              <input type="checkbox" id="ws-kickoff-acceptance" data-ws="kickoff" data-key="acceptance" />
+              <label for="ws-kickoff-acceptance"><span data-zh>验收指标：三条可量化</span><span data-en>Acceptance metrics: three countable ones</span></label>
+              <input type="text" class="ws-note" id="ws-kickoff-acceptance-note" data-ws="kickoff" data-key="acceptance" data-note="1" data-ui-aria-label-zh="验收指标：三条可量化" data-ui-aria-label-en="Acceptance metrics: three countable ones" maxlength="400" />
+            </li>
+            <li class="ws-item">
+              <input type="checkbox" id="ws-kickoff-rollback" data-ws="kickoff" data-key="rollback" />
+              <label for="ws-kickoff-rollback"><span data-zh>失败回滚：谁负责、怎么退</span><span data-en>Rollback: who owns it, how to step back</span></label>
+              <input type="text" class="ws-note" id="ws-kickoff-rollback-note" data-ws="kickoff" data-key="rollback" data-note="1" data-ui-aria-label-zh="失败回滚：谁负责、怎么退" data-ui-aria-label-en="Rollback: who owns it, how to step back" maxlength="400" />
+            </li>
+            <li class="ws-item">
+              <input type="checkbox" id="ws-kickoff-timebox" data-ws="kickoff" data-key="timebox" />
+              <label for="ws-kickoff-timebox"><span data-zh>时间盒：到哪天必须评审</span><span data-en>Time box: the date a review must happen</span></label>
+              <input type="text" class="ws-note" id="ws-kickoff-timebox-note" data-ws="kickoff" data-key="timebox" data-note="1" data-ui-aria-label-zh="时间盒：到哪天必须评审" data-ui-aria-label-en="Time box: the date a review must happen" maxlength="400" />
+            </li>
+          </ul>
+        </section>
+        <section class="ws-block" data-ws-block="prepublish">
+          <h3><span data-zh>2. 内容发布前检查表</span><span data-en>2. Pre-publication checklist</span></h3>
+          <ul class="ws-list">
+            <li class="ws-item">
+              <input type="checkbox" id="ws-prepublish-facts" data-ws="prepublish" data-key="facts" />
+              <label for="ws-prepublish-facts"><span data-zh>事实：每条结论有来源与日期</span><span data-en>Facts: every conclusion has a source and a date</span></label>
+              <input type="text" class="ws-note" id="ws-prepublish-facts-note" data-ws="prepublish" data-key="facts" data-note="1" data-ui-aria-label-zh="事实：每条结论有来源与日期" data-ui-aria-label-en="Facts: every conclusion has a source and a date" maxlength="400" />
+            </li>
+            <li class="ws-item">
+              <input type="checkbox" id="ws-prepublish-quotes" data-ws="prepublish" data-key="quotes" />
+              <label for="ws-prepublish-quotes"><span data-zh>引文：单条不超过 100 字符或一句</span><span data-en>Quotes: one line, under 100 characters</span></label>
+              <input type="text" class="ws-note" id="ws-prepublish-quotes-note" data-ws="prepublish" data-key="quotes" data-note="1" data-ui-aria-label-zh="引文：单条不超过 100 字符或一句" data-ui-aria-label-en="Quotes: one line, under 100 characters" maxlength="400" />
+            </li>
+            <li class="ws-item">
+              <input type="checkbox" id="ws-prepublish-rights" data-ws="prepublish" data-key="rights" />
+              <label for="ws-prepublish-rights"><span data-zh>权利：图片/音乐/字体/数字人许可已登记</span><span data-en>Rights: image, audio, font and avatar licences recorded</span></label>
+              <input type="text" class="ws-note" id="ws-prepublish-rights-note" data-ws="prepublish" data-key="rights" data-note="1" data-ui-aria-label-zh="权利：图片/音乐/字体/数字人许可已登记" data-ui-aria-label-en="Rights: image, audio, font and avatar licences recorded" maxlength="400" />
+            </li>
+            <li class="ws-item">
+              <input type="checkbox" id="ws-prepublish-privacy" data-ws="prepublish" data-key="privacy" />
+              <label for="ws-prepublish-privacy"><span data-zh>隐私：无客户姓名、订单号、密钥</span><span data-en>Privacy: no customer names, order ids or secrets</span></label>
+              <input type="text" class="ws-note" id="ws-prepublish-privacy-note" data-ws="prepublish" data-key="privacy" data-note="1" data-ui-aria-label-zh="隐私：无客户姓名、订单号、密钥" data-ui-aria-label-en="Privacy: no customer names, order ids or secrets" maxlength="400" />
+            </li>
+            <li class="ws-item">
+              <input type="checkbox" id="ws-prepublish-label" data-ws="prepublish" data-key="label" />
+              <label for="ws-prepublish-label"><span data-zh>标注：需要 AI 生成标注的平台已标注</span><span data-en>Labelling: platforms that require AI labels are labelled</span></label>
+              <input type="text" class="ws-note" id="ws-prepublish-label-note" data-ws="prepublish" data-key="label" data-note="1" data-ui-aria-label-zh="标注：需要 AI 生成标注的平台已标注" data-ui-aria-label-en="Labelling: platforms that require AI labels are labelled" maxlength="400" />
+            </li>
+            <li class="ws-item">
+              <input type="checkbox" id="ws-prepublish-version" data-ws="prepublish" data-key="version" />
+              <label for="ws-prepublish-version"><span data-zh>版本：模型版本与生成参数已存档</span><span data-en>Version: model version and generation parameters archived</span></label>
+              <input type="text" class="ws-note" id="ws-prepublish-version-note" data-ws="prepublish" data-key="version" data-note="1" data-ui-aria-label-zh="版本：模型版本与生成参数已存档" data-ui-aria-label-en="Version: model version and generation parameters archived" maxlength="400" />
+            </li>
+            <li class="ws-item">
+              <input type="checkbox" id="ws-prepublish-a11y" data-ws="prepublish" data-key="a11y" />
+              <label for="ws-prepublish-a11y"><span data-zh>可访问性：字幕、对比度、替代文本</span><span data-en>Accessibility: captions, contrast, alternative text</span></label>
+              <input type="text" class="ws-note" id="ws-prepublish-a11y-note" data-ws="prepublish" data-key="a11y" data-note="1" data-ui-aria-label-zh="可访问性：字幕、对比度、替代文本" data-ui-aria-label-en="Accessibility: captions, contrast, alternative text" maxlength="400" />
+            </li>
+            <li class="ws-item">
+              <input type="checkbox" id="ws-prepublish-withdraw" data-ws="prepublish" data-key="withdraw" />
+              <label for="ws-prepublish-withdraw"><span data-zh>回滚：发布后 24 小时内可撤</span><span data-en>Withdrawal: can be pulled within 24 hours</span></label>
+              <input type="text" class="ws-note" id="ws-prepublish-withdraw-note" data-ws="prepublish" data-key="withdraw" data-note="1" data-ui-aria-label-zh="回滚：发布后 24 小时内可撤" data-ui-aria-label-en="Withdrawal: can be pulled within 24 hours" maxlength="400" />
+            </li>
+          </ul>
+        </section>
+        <section class="ws-block" data-ws-block="migration">
+          <h3><span data-zh>3. 模型迁移评估表</span><span data-en>3. Model migration assessment</span></h3>
+          <div class="ws-table-wrap">
+            <table class="ws-table">
+            <tr><th scope="col"><span data-zh>项目</span><span data-en>Item</span></th><th scope="col"><span data-zh>旧模型</span><span data-en>Old model</span></th><th scope="col"><span data-zh>新模型</span><span data-en>New model</span></th><th scope="col"><span data-zh>结论</span><span data-en>Verdict</span></th></tr>
+            <tr>
+              <th scope="row"><span data-zh>上下文窗口</span><span data-en>Context window</span></th>
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="context" data-col="old" data-ui-aria-label-zh="上下文窗口 — 旧模型" data-ui-aria-label-en="Context window — Old model" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="context" data-col="new" data-ui-aria-label-zh="上下文窗口 — 新模型" data-ui-aria-label-en="Context window — New model" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="context" data-col="verdict" data-ui-aria-label-zh="上下文窗口 — 结论" data-ui-aria-label-en="Context window — Verdict" maxlength="200" />
+            </tr>
+            <tr>
+              <th scope="row"><span data-zh>工具调用 schema</span><span data-en>Tool-call schema</span></th>
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="schema" data-col="old" data-ui-aria-label-zh="工具调用 schema — 旧模型" data-ui-aria-label-en="Tool-call schema — Old model" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="schema" data-col="new" data-ui-aria-label-zh="工具调用 schema — 新模型" data-ui-aria-label-en="Tool-call schema — New model" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="schema" data-col="verdict" data-ui-aria-label-zh="工具调用 schema — 结论" data-ui-aria-label-en="Tool-call schema — Verdict" maxlength="200" />
+            </tr>
+            <tr>
+              <th scope="row"><span data-zh>流式与错误码</span><span data-en>Streaming and error codes</span></th>
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="stream" data-col="old" data-ui-aria-label-zh="流式与错误码 — 旧模型" data-ui-aria-label-en="Streaming and error codes — Old model" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="stream" data-col="new" data-ui-aria-label-zh="流式与错误码 — 新模型" data-ui-aria-label-en="Streaming and error codes — New model" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="stream" data-col="verdict" data-ui-aria-label-zh="流式与错误码 — 结论" data-ui-aria-label-en="Streaming and error codes — Verdict" maxlength="200" />
+            </tr>
+            <tr>
+              <th scope="row"><span data-zh>中文质量（20 条）</span><span data-en>Chinese quality (20 samples)</span></th>
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="zh" data-col="old" data-ui-aria-label-zh="中文质量（20 条） — 旧模型" data-ui-aria-label-en="Chinese quality (20 samples) — Old model" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="zh" data-col="new" data-ui-aria-label-zh="中文质量（20 条） — 新模型" data-ui-aria-label-en="Chinese quality (20 samples) — New model" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="zh" data-col="verdict" data-ui-aria-label-zh="中文质量（20 条） — 结论" data-ui-aria-label-en="Chinese quality (20 samples) — Verdict" maxlength="200" />
+            </tr>
+            <tr>
+              <th scope="row"><span data-zh>代码/结构化输出（20 条）</span><span data-en>Code and structured output (20 samples)</span></th>
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="code" data-col="old" data-ui-aria-label-zh="代码/结构化输出（20 条） — 旧模型" data-ui-aria-label-en="Code and structured output (20 samples) — Old model" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="code" data-col="new" data-ui-aria-label-zh="代码/结构化输出（20 条） — 新模型" data-ui-aria-label-en="Code and structured output (20 samples) — New model" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="code" data-col="verdict" data-ui-aria-label-zh="代码/结构化输出（20 条） — 结论" data-ui-aria-label-en="Code and structured output (20 samples) — Verdict" maxlength="200" />
+            </tr>
+            <tr>
+              <th scope="row"><span data-zh>幻觉率（20 条）</span><span data-en>Hallucination rate (20 samples)</span></th>
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="halluc" data-col="old" data-ui-aria-label-zh="幻觉率（20 条） — 旧模型" data-ui-aria-label-en="Hallucination rate (20 samples) — Old model" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="halluc" data-col="new" data-ui-aria-label-zh="幻觉率（20 条） — 新模型" data-ui-aria-label-en="Hallucination rate (20 samples) — New model" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="halluc" data-col="verdict" data-ui-aria-label-zh="幻觉率（20 条） — 结论" data-ui-aria-label-en="Hallucination rate (20 samples) — Verdict" maxlength="200" />
+            </tr>
+            <tr>
+              <th scope="row"><span data-zh>单价与配额</span><span data-en>Price and quota</span></th>
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="price" data-col="old" data-ui-aria-label-zh="单价与配额 — 旧模型" data-ui-aria-label-en="Price and quota — Old model" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="price" data-col="new" data-ui-aria-label-zh="单价与配额 — 新模型" data-ui-aria-label-en="Price and quota — New model" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="price" data-col="verdict" data-ui-aria-label-zh="单价与配额 — 结论" data-ui-aria-label-en="Price and quota — Verdict" maxlength="200" />
+            </tr>
+            <tr>
+              <th scope="row"><span data-zh>许可证与商用</span><span data-en>Licence and commercial use</span></th>
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="licence" data-col="old" data-ui-aria-label-zh="许可证与商用 — 旧模型" data-ui-aria-label-en="Licence and commercial use — Old model" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="licence" data-col="new" data-ui-aria-label-zh="许可证与商用 — 新模型" data-ui-aria-label-en="Licence and commercial use — New model" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="licence" data-col="verdict" data-ui-aria-label-zh="许可证与商用 — 结论" data-ui-aria-label-en="Licence and commercial use — Verdict" maxlength="200" />
+            </tr>
+            <tr>
+              <th scope="row"><span data-zh>回滚方案</span><span data-en>Rollback plan</span></th>
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="rollback" data-col="old" data-ui-aria-label-zh="回滚方案 — 旧模型" data-ui-aria-label-en="Rollback plan — Old model" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="rollback" data-col="new" data-ui-aria-label-zh="回滚方案 — 新模型" data-ui-aria-label-en="Rollback plan — New model" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="migration" data-row="rollback" data-col="verdict" data-ui-aria-label-zh="回滚方案 — 结论" data-ui-aria-label-en="Rollback plan — Verdict" maxlength="200" />
+            </tr>
+            </table>
+          </div>
+          <p class="t-sm"><span data-zh>样本条数与判法由你定，表里不预设结论；填不出的一格写「未测」，不要留空当通过。</span><span data-en>Set the sample size and rubric yourself. Write &quot;not tested&quot; instead of leaving a cell blank as if it passed.</span></p>
+        </section>
+        <section class="ws-block" data-ws-block="leakmap">
+          <h3><span data-zh>4. 数据泄露路径排查表</span><span data-en>4. Data exposure path map</span></h3>
+          <div class="ws-table-wrap">
+            <table class="ws-table">
+            <tr><th scope="col"><span data-zh>项目</span><span data-en>Item</span></th><th scope="col"><span data-zh>是否出网</span><span data-en>Leaves the machine</span></th><th scope="col"><span data-zh>留存多久</span><span data-en>How long retained</span></th><th scope="col"><span data-zh>是否训练</span><span data-en>Used for training</span></th><th scope="col"><span data-zh>控制措施</span><span data-en>Control in place</span></th></tr>
+            <tr>
+              <th scope="row"><span data-zh>聊天输入</span><span data-en>Chat input</span></th>
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="chat" data-col="out" data-ui-aria-label-zh="聊天输入 — 是否出网" data-ui-aria-label-en="Chat input — Leaves the machine" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="chat" data-col="retained" data-ui-aria-label-zh="聊天输入 — 留存多久" data-ui-aria-label-en="Chat input — How long retained" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="chat" data-col="training" data-ui-aria-label-zh="聊天输入 — 是否训练" data-ui-aria-label-en="Chat input — Used for training" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="chat" data-col="control" data-ui-aria-label-zh="聊天输入 — 控制措施" data-ui-aria-label-en="Chat input — Control in place" maxlength="200" />
+            </tr>
+            <tr>
+              <th scope="row"><span data-zh>上传文件</span><span data-en>Uploaded files</span></th>
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="upload" data-col="out" data-ui-aria-label-zh="上传文件 — 是否出网" data-ui-aria-label-en="Uploaded files — Leaves the machine" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="upload" data-col="retained" data-ui-aria-label-zh="上传文件 — 留存多久" data-ui-aria-label-en="Uploaded files — How long retained" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="upload" data-col="training" data-ui-aria-label-zh="上传文件 — 是否训练" data-ui-aria-label-en="Uploaded files — Used for training" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="upload" data-col="control" data-ui-aria-label-zh="上传文件 — 控制措施" data-ui-aria-label-en="Uploaded files — Control in place" maxlength="200" />
+            </tr>
+            <tr>
+              <th scope="row"><span data-zh>工具调用参数</span><span data-en>Tool-call arguments</span></th>
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="tools" data-col="out" data-ui-aria-label-zh="工具调用参数 — 是否出网" data-ui-aria-label-en="Tool-call arguments — Leaves the machine" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="tools" data-col="retained" data-ui-aria-label-zh="工具调用参数 — 留存多久" data-ui-aria-label-en="Tool-call arguments — How long retained" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="tools" data-col="training" data-ui-aria-label-zh="工具调用参数 — 是否训练" data-ui-aria-label-en="Tool-call arguments — Used for training" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="tools" data-col="control" data-ui-aria-label-zh="工具调用参数 — 控制措施" data-ui-aria-label-en="Tool-call arguments — Control in place" maxlength="200" />
+            </tr>
+            <tr>
+              <th scope="row"><span data-zh>日志与追踪</span><span data-en>Logs and tracing</span></th>
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="logs" data-col="out" data-ui-aria-label-zh="日志与追踪 — 是否出网" data-ui-aria-label-en="Logs and tracing — Leaves the machine" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="logs" data-col="retained" data-ui-aria-label-zh="日志与追踪 — 留存多久" data-ui-aria-label-en="Logs and tracing — How long retained" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="logs" data-col="training" data-ui-aria-label-zh="日志与追踪 — 是否训练" data-ui-aria-label-en="Logs and tracing — Used for training" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="logs" data-col="control" data-ui-aria-label-zh="日志与追踪 — 控制措施" data-ui-aria-label-en="Logs and tracing — Control in place" maxlength="200" />
+            </tr>
+            <tr>
+              <th scope="row"><span data-zh>缓存与索引</span><span data-en>Cache and indexing</span></th>
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="cache" data-col="out" data-ui-aria-label-zh="缓存与索引 — 是否出网" data-ui-aria-label-en="Cache and indexing — Leaves the machine" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="cache" data-col="retained" data-ui-aria-label-zh="缓存与索引 — 留存多久" data-ui-aria-label-en="Cache and indexing — How long retained" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="cache" data-col="training" data-ui-aria-label-zh="缓存与索引 — 是否训练" data-ui-aria-label-en="Cache and indexing — Used for training" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="cache" data-col="control" data-ui-aria-label-zh="缓存与索引 — 控制措施" data-ui-aria-label-en="Cache and indexing — Control in place" maxlength="200" />
+            </tr>
+            <tr>
+              <th scope="row"><span data-zh>备份</span><span data-en>Backups</span></th>
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="backup" data-col="out" data-ui-aria-label-zh="备份 — 是否出网" data-ui-aria-label-en="Backups — Leaves the machine" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="backup" data-col="retained" data-ui-aria-label-zh="备份 — 留存多久" data-ui-aria-label-en="Backups — How long retained" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="backup" data-col="training" data-ui-aria-label-zh="备份 — 是否训练" data-ui-aria-label-en="Backups — Used for training" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="backup" data-col="control" data-ui-aria-label-zh="备份 — 控制措施" data-ui-aria-label-en="Backups — Control in place" maxlength="200" />
+            </tr>
+            <tr>
+              <th scope="row"><span data-zh>第三方子处理者</span><span data-en>Third-party sub-processors</span></th>
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="vendors" data-col="out" data-ui-aria-label-zh="第三方子处理者 — 是否出网" data-ui-aria-label-en="Third-party sub-processors — Leaves the machine" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="vendors" data-col="retained" data-ui-aria-label-zh="第三方子处理者 — 留存多久" data-ui-aria-label-en="Third-party sub-processors — How long retained" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="vendors" data-col="training" data-ui-aria-label-zh="第三方子处理者 — 是否训练" data-ui-aria-label-en="Third-party sub-processors — Used for training" maxlength="200" />
+              <td><input type="text" class="ws-cell" data-ws="leakmap" data-row="vendors" data-col="control" data-ui-aria-label-zh="第三方子处理者 — 控制措施" data-ui-aria-label-en="Third-party sub-processors — Control in place" maxlength="200" />
+            </tr>
+            </table>
+          </div>
+          <p class="t-sm"><span data-zh>每一格只写官方写过的；查不到写「未说明」，不要把「没找到禁止条款」写成「允许」。</span><span data-en>Fill each cell with what the official terms actually say. Write &quot;not stated&quot; — never turn &quot;we found no prohibition&quot; into &quot;it is allowed&quot;.</span></p>
+        </section>
+          <noscript><p class="t-sm"><span data-zh>未开启脚本：勾选框、输入框与表格仍可直接填写，打印用浏览器的打印功能；只有「复制成 markdown」不可用。</span><span data-en>Without JavaScript the checkboxes, inputs and tables are still fillable and printable from your browser; only "copy as markdown" is unavailable.</span></p></noscript>
+          <script src="../../worksheet-form.js?v=28ab63d3bf6d" defer></script>
+        </section>
       <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>怎么用这页</span><span data-en>How to use</span></a></li><li><a href="#guide-section-1"><span data-zh>常见误用</span><span data-en>Common misuses</span></a></li><li><a href="#guide-section-2"><span data-zh>已填示例：内部资料问答的立项记录</span><span data-en>Filled example: an internal document-Q&amp;A project</span></a></li></ul></nav>
       <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>怎么用这页</span><span data-en>How to use</span></h2>
@@ -198,13 +424,19 @@ Record the owner, deletion method and review schedule for every path.</code></pr
             <p>Cover normal reimbursement, exceptions and absent answers. Select sample size from task scope; a completed form is not launch approval.</p>
             <p>Then use the data-flow worksheet to record what the application, model API, logs and backups retain.</p></span>
       </div>
+<nav class="panel is-slim" aria-label="接下来做什么" data-ui-aria-label-zh="接下来做什么" data-ui-aria-label-en="What to do next">
+<h2><span data-zh>接下来做什么</span><span data-en>What to do next</span></h2><ul>
+<li><a href="exercise-builder.html"><span data-zh>用一个问答任务填写记录</span><span data-en>Use a cited-answer task to fill the records</span></a></li>
+<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh>核对结果与来源</span><span data-en>Verify the result and its sources</span></a></li>
+<li><a href="failure-library.html#by-symptom"><span data-zh>按症状排查失败</span><span data-en>Troubleshoot by symptom</span></a></li>
+</ul></nav>
       <div class="panel is-slim">
         <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
         <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
-          <tr><td><span data-zh>NIST · Cybersecurity Framework（风险管理框架，检查表结构参考）</span><span data-en>NIST Cybersecurity Framework (worksheet structure reference)</span></td><td><a href="https://www.nist.gov/cyberframework" target="_blank" rel="noopener">https://www.nist.gov/cyberframework</a></td></tr>
-          <tr><td><span data-zh>Creative Commons · 许可说明（发布前权利核对参考）</span><span data-en>Creative Commons licenses (pre-publication rights reference)</span></td><td><a href="https://creativecommons.org/licenses/" target="_blank" rel="noopener">https://creativecommons.org/licenses/</a></td></tr>
+          <tr><td><span data-zh>NIST · Cybersecurity Framework（风险管理框架，检查表结构参考）</span><span data-en>NIST Cybersecurity Framework (worksheet structure reference)</span></td><td><a href="https://www.nist.gov/cyberframework" target="_blank" rel="noopener"><span data-zh>https://www.nist.gov/cyberframework</span><span data-en>https://www.nist.gov/cyberframework</span></a></td></tr>
+          <tr><td><span data-zh>Creative Commons · 许可说明（发布前权利核对参考）</span><span data-en>Creative Commons licenses (pre-publication rights reference)</span></td><td><a href="https://creativecommons.org/licenses/" target="_blank" rel="noopener"><span data-zh>https://creativecommons.org/licenses/</span><span data-en>https://creativecommons.org/licenses/</span></a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>资料核验日期：2026-11-03。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-11-03. Features and terms may change; check the original sources before use.</span></p>
+        <p class="guide-foot"><span data-zh>资料快照日期：2026-11-03；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Source snapshot: 2026-11-03; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>
@@ -230,6 +462,8 @@ Record the owner, deletion method and review schedule for every path.</code></pr
       </nav>
     </div>
     <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
       <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
     </div>
   </footer>

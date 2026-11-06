@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>LLM Guard — Safety | 投机取巧</title>
+  <meta name="description" content="LLM Guard（Protect AI）：Protect AI 开源的 LLM 输入/输出扫描工具箱：一侧拦 prompt（注入、隐形文本、密钥、毒性、话题禁用）， 一侧拦 completion（偏见、恶意链接、敏感信息、事实一致性）。它是「你自己部署的扫描器集合」，不是托管护栏服务。" />
+  <link rel="canonical" href="https://tools.specul.com/safety/llm-guard.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="LLM Guard" />
+  <meta property="og:url" content="https://tools.specul.com/safety/llm-guard.html" />
+  <meta property="og:title" content="LLM Guard — Safety | 投机取巧" />
+  <meta property="og:description" content="LLM Guard（Protect AI）：Protect AI 开源的 LLM 输入/输出扫描工具箱：一侧拦 prompt（注入、隐形文本、密钥、毒性、话题禁用）， 一侧拦 completion（偏见、恶意链接、敏感信息、事实一致性）。它是「你自己部署的扫描器集合」，不是托管护栏服务。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../brand.css?v=bf69a6d205ad" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LLM Guard","applicationCategory":"DeveloperApplication","url":"https://protectai.github.io/llm-guard/","sameAs":"https://github.com/protectai/llm-guard","description":"Protect AI 开源的 LLM 输入/输出扫描工具箱：一侧拦 prompt（注入、隐形文本、密钥、毒性、话题禁用）， 一侧拦 completion（偏见、恶意链接、敏感信息、事实一致性）。它是「你自己部署的扫描器集合」，不是托管护栏服务。","dateModified":"2026-11-06"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Safety</span>
+      </nav>
+      <a class="back" href="./">← Safety</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:&quot;#D96C4F&quot;" aria-hidden="true"><span data-zh>LG</span><span data-en>LL</span></div>
+        <div>
+          <h1><span data-zh>LLM Guard</span><span data-en>LLM Guard</span></h1>
+          <div class="vendor is-caps">Protect AI</div>
+        </div>
+      </div>
+
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
+      <div class="badges">
+        <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
+        <span class="tag on"><span data-zh>本地</span><span data-en>Local</span></span>
+        <span class="tag on"><span data-zh>混合</span><span data-en>Hybrid</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: archived</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-11-06</span>
+      </div>
+
+      <p class="t-sm"><span data-zh>核验标记表示资料完整度，不是产品评分。下列未确认项可能影响选型；请按对应来源逐项确认。</span><span data-en>The confidence mark describes evidence completeness, not a product score. Unconfirmed items below may affect your choice; check them against the relevant sources.</span></p>
+            <div class="panel is-slim">
+        <h2 id="known-unknowns"><span data-zh>未确认的信息</span><span data-en>Information not confirmed</span></h2>
+        <span data-zh>
+        <ul>
+          <li>各扫描器所需的具体模型权重与外部推理服务（当日只到文档索引级口径）</li>
+          <li>遥测、日志留存、文本外发范围等隐私条款</li>
+          <li>文件型输入（附件、目录）支持与临时文件落盘行为</li>
+          <li>阈值与各 on-fail 动作的默认值</li>
+          <li>是否存在托管服务档位（README 只留了 Production Support 联系方式）</li>
+          <li>Python 版本口径冲突：README 说 3.9+，PyPI 元数据说 <strong>=3.10 且 </strong>3.13</li>
+          <li>MCP 或其他扩展接入方式</li>
+          <li>大陆直连与备案状态（cn 块记为 unknown）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>The exact model weights or external inference services each scanner needs (captured only at documentation-index level today)</li>
+          <li>Telemetry, log retention and the scope of sending text onward</li>
+          <li>Support for file-shaped inputs (attachments, directories) and temp-file behaviour</li>
+          <li>Default thresholds and default on-fail actions per scanner</li>
+          <li>Whether any hosted tier exists (the README only leaves a &quot;Production Support&quot; contact route)</li>
+          <li>The Python-version conflict: README says 3.9+, PyPI metadata says <strong>=3.10 and </strong>3.13</li>
+          <li>MCP or other extension points</li>
+          <li>Mainland direct reachability and filing status (recorded as unknown in the cn block)</li>
+        </ul></span>
+      </div>
+
+
+            
+      <div class="panel-lead"><span data-zh><p>Protect AI 开源的 LLM 输入/输出扫描工具箱：一侧拦 prompt（注入、隐形文本、密钥、毒性、话题禁用）， 一侧拦 completion（偏见、恶意链接、敏感信息、事实一致性）。它是「你自己部署的扫描器集合」，不是托管护栏服务。</p></span><span data-en><p>Protect AI 开源的 LLM 输入/输出扫描工具箱：一侧拦 prompt（注入、隐形文本、密钥、毒性、话题禁用）， 一侧拦 completion（偏见、恶意链接、敏感信息、事实一致性）。它是「你自己部署的扫描器集合」，不是托管护栏服务。</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+        <div><p>适合把前后置检查嵌进自有链路、并且愿意自己承担依赖与模型下载的团队；文档当日给的两种用法是 Python 库与 API server。 不适合需要「上游持续更新」的场景——README 顶部警告块已宣布项目归档，关联 Hugging Face 模型同样不再维护。 也不适合想找检测率数字的读者：官方只声明支持哪些通道，本站不做端到端实测。</p></div>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-11-06</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>Protect AI（GitHub 组织 Protect AI，主体为美国公司），非国产产品。</span><span data-en>Protect AI (GitHub organisation &quot;Protect AI&quot;, a US-based company); not a domestic product.</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>直连未核验</span><span data-en>direct unknown</span>　<span data-zh>当日只核验了通用网络下的 GitHub / 文档站 / PyPI 可达性，未做大陆直连实测，故直连结论留空。</span><span data-en>Only general-network reachability of GitHub / docs site / PyPI was checked today; no mainland direct-access test was run, so this stays unknown.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>备案未核验</span><span data-en>filing unknown</span>：<span data-zh>当日未检索网信办公示名单，无官方依据判定备案状态；该产品本身不面向大陆公众提供服务。</span><span data-en>The CAC public registry was not searched on the verification day, so filing status has no official basis; the product does not serve the mainland public.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis" id="dimension-model_access">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>它守的是「进模型前」与「模型回来后」的文本，不是某个厂商的模型本体。官方 README 的入门示例走 ChatGPT / OpenAI API 路线（examples/openai_api.py），文档当日列出的交付形态是 Python 库与 API server。 哪些扫描器需要下载本地权重、哪些需要外部推理服务，本次只抓到文档索引级口径，未逐条核验，记为未知。</p></span><span data-en><p>It guards the text going into the model and the text coming back, not any vendor&#39;s model itself. The README&#39;s starter example goes through ChatGPT / the OpenAI API (examples/openai_api.py), and the documentation index lists two delivery forms as of the verification day: a Python library and an API server. Which scanners need downloaded local weights and which need an external inference service was only captured at documentation-index level; not verified item by item, recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-runtime">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>自托管：<code>pip install llm-guard</code> 在你自己的环境里跑，README 要求 Python 3.9 及以上（PyPI 包元数据当日给的约束是</p>
+            <blockquote>=3.10 且 &lt;3.13，两处口径不一致，已记入未知项）。文档当日另给 API server 部署路径，即把扫描器架在你侧服务里</blockquote>
+            <p>做前后置检查。不存在需要交给厂商的计算面——官方正文未描述云端代跑。</p></span><span data-en><p>Self-hosted: <code>pip install llm-guard</code> runs in your own environment; the README requires Python 3.9 or newer, while the PyPI package metadata measured today states <strong>=3.10 and </strong>3.13 (the two disagree; logged in the unknowns list). The docs index also gives an API server path, i.e. hosting the scanners inside your own service as pre/post checks. No vendor-side computation is described in the official text.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-local_files">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>官方 README 与文档索引当日都把处理对象描述为 prompt / completion 文本，未声明读取工作区文件或遍历目录的能力。 扫描器对文件型输入（附件、目录）的支持范围与临时文件落盘行为，官方未说明。</p></span><span data-en><p>Both the README and the documentation index describe the object of processing as prompt / completion text; no capability to read workspace files or traverse directories is declared. Support for file-shaped inputs (attachments, directories) and any temp-file behaviour on disk is not stated officially.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-background">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>作为库时随你的进程生死；作为 API server 时是你自己常驻的服务，启停与扩缩由部署方掌握。 官方未说明托管队列、关机续跑或异步任务能力。</p></span><span data-en><p>As a library it lives and dies with your process; as an API server it is a service you keep resident, with start/stop and scaling in your hands. Managed queues, continuation after shutdown and asynchronous tasks are not stated officially.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-tools">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>官方 README 列出 15 个 Prompt scanners 与 21 个 Output scanners，覆盖 PromptInjection、InvisibleText、 Secrets、Anonymize、Toxicity、BanTopics、Regex、TokenLimit 等输入通道，以及 Bias、MaliciousURLs、 Sensitive、FactualConsistency、Relevance、JSON、LanguageSame 等输出通道。文档当日口径是可按阈值与 mask / block / answer 类处置动作配置。MCP 接入方式官方未说明。</p></span><span data-en><p>The README lists 15 Prompt scanners and 21 Output scanners, covering input channels such as PromptInjection, InvisibleText, Secrets, Anonymize, Toxicity, BanTopics, Regex and TokenLimit, and output channels such as Bias, MaliciousURLs, Sensitive, FactualConsistency, Relevance, JSON and LanguageSame. The documented configuration model is thresholds plus mask / block / answer style disposition actions. MCP integration is not stated officially.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-context">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>检测以单次送入的文本为单位，官方未说明会话级记忆、跨轮上下文或历史攻击库机制。 上下文长度上限由 TokenLimit 这类扫描器自行设定，具体默认值本次未核验，记为未知。</p></span><span data-en><p>Detection operates on the single text passed in; no session memory, cross-turn context or historical attack store is described officially. Context-length limits are set by scanners like TokenLimit; the concrete defaults were not verified and are recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-permissions">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>许可为 MIT（见 license 字段，逐条以官方 LICENSE 原文为准），可商用与再分发，需保留版权声明。 数据流向是本项目最需要留空的一维：官方 README 与当日抓到的文档索引未声明遥测、日志留存或把文本发给第三方的范围， 记为未知。合规认证（SOC 2 类）在当日抓到的页面中未见陈述。仓库已归档，官方明示不再活跃维护。</p></span><span data-en><p>The licence is MIT (see the license field, judged against the official LICENSE text), so commercial use and redistribution are permitted with the copyright notice retained. Data flow is the dimension with the biggest gap here: neither the README nor the documentation index captured today states telemetry, log retention, or the scope of sending text to third parties, so it is recorded as unknown. Compliance certifications (SOC 2 class) were not mentioned on the pages reached. The repository is archived and the official text says it is no longer actively maintained.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-fit">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合：要把输入/输出检查写进自己链路、能自己接管依赖与模型下载、并接受「规则不再更新」这一事实的工程团队。 不适合：指望持续的安全规则维护、指望托管 SLA，或需要以检测率/绕过率作为选型依据的场景（本站不跑实测，也不引官方数字）。</p></span><span data-en><p>Fits teams that want input/output checks wired into their own pipeline, can own dependencies and model downloads themselves, and accept that the ruleset stops being updated. Does not fit deployments needing continued security-rule maintenance or a hosted SLA, nor readers looking for detection or bypass rates — this site runs no end-to-end tests and quotes no vendor numbers.</p></span></dd>
+        </div>
+      </dl>
+
+      <nav class="panel is-slim" aria-label="使用排查" data-ui-aria-label-zh="使用排查" data-ui-aria-label-en="Troubleshooting">
+        <h2><span data-zh>使用时遇到问题</span><span data-en>When something fails</span></h2>
+        <p><a href="../mcp/guides/failure-library.html#auth"><span data-zh>账号与权限</span><span data-en>Account and permissions</span></a> · <a href="../mcp/guides/failure-library.html#rate-limit"><span data-zh>限流与重试</span><span data-en>Rate limits and retries</span></a> · <a href="../mcp/guides/failure-library.html#files"><span data-zh>文件读取问题</span><span data-en>File-reading issues</span></a></p>
+      </nav>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li>把 README 的扫描器清单当成检测能力承诺——官方只列通道，不列命中率</li>
+          <li>以为上游仍在维护：仓库与关联 Hugging Face 模型均已宣布归档</li>
+          <li>Python 版本要求 README 与 PyPI 元数据不一致，装不上先看包元数据</li>
+        </ul>
+      </div>
+
+
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>最近核验记录</span><span data-en>Latest recorded check</span> 2026-11-06，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-11-06。<span data-zh>单项复核范围见正文或来源说明，不代表所有字段在同一天重新核验。</span><span data-en>See the text or source notes for item-specific scope; this does not mean every field was rechecked on that date.</span></p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>changelog</td><td><span data-zh>LLM Guard · 文档站更新日志（2026-11-06 确认可达）</span><span data-en>LLM Guard · docs-site changelog (reachability confirmed 2026-11-06)</span></td><td><a href="https://protectai.github.io/llm-guard/changelog/" target="_blank" rel="noopener">https://protectai.github.io/llm-guard/changelog/</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>LLM Guard · 仓库提交历史（main 分支，最后推送 2026-07-08）</span><span data-en>LLM Guard · repository commit history (main branch, last push 2026-07-08)</span></td><td><a href="https://github.com/protectai/llm-guard/commits/main" target="_blank" rel="noopener">https://github.com/protectai/llm-guard/commits/main</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>LLM Guard · 官方文档（部署形态与扫描器配置口径）</span><span data-en>LLM Guard · official documentation (deployment forms and scanner configuration)</span></td><td><a href="https://protectai.github.io/llm-guard/" target="_blank" rel="noopener">https://protectai.github.io/llm-guard/</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>LLM Guard · 仓库 README（含归档警告与扫描器清单）</span><span data-en>LLM Guard · repository README (with the archive warning and the scanner lists)</span></td><td><a href="https://github.com/protectai/llm-guard" target="_blank" rel="noopener">https://github.com/protectai/llm-guard</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>LLM Guard · 官方 LICENSE（MIT 原文）</span><span data-en>LLM Guard · official LICENSE (MIT text)</span></td><td><a href="https://github.com/protectai/llm-guard/blob/main/LICENSE" target="_blank" rel="noopener">https://github.com/protectai/llm-guard/blob/main/LICENSE</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>PyPI · llm-guard（0.3.16，2025-05-19 发布；requires_python 约束）</span><span data-en>PyPI · llm-guard (0.3.16, released 2025-05-19; requires_python constraint)</span></td><td><a href="https://pypi.org/project/llm-guard/" target="_blank" rel="noopener">https://pypi.org/project/llm-guard/</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>官方口径与未核到项</span><span data-en>Official record and unverified items</span></h2>
+        <span data-zh><p>本站未做端到端实测：没有跑过任何扫描器的检测样例，也没有测过阈值与处置动作的实际行为。 本页全部结论只组织自官方 README、官方文档索引与 LICENSE / PyPI 元数据（2026-11-06 抓取）， 「检测通道清单」一节即 README 列表的照录，不代表任何命中或拦截表现。</p></span><span data-en><p>This site has not run end-to-end tests: no scanner was executed against samples, and no threshold or disposition action was observed in practice. Everything here is assembled from the official README, the documentation index and the LICENSE / PyPI metadata (fetched 2026-11-06). The scanner-channel section is a transcription of the README list and implies no measured hit or block behaviour.</p></span>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>检测通道清单（官方 README 照录）</span><span data-en>Declared detection channels (transcribed from the README)</span></h2>
+        <span data-zh><p>Prompt scanners（15 项）：Anonymize、BanCode、BanCompetitors、BanSubstrings、BanTopics、Code、Gibberish、 InvisibleText、Language、PromptInjection、Regex、Secrets、Sentiment、TokenLimit、Toxicity。</p>
+            <p>Output scanners（21 项）：BanCode、BanCompetitors、BanSubstrings、BanTopics、Bias、Code、Deanonymize、JSON、 Language、LanguageSame、MaliciousURLs、NoRefusal、ReadingTime、FactualConsistency、Gibberish、Regex、Relevance、 Sensitive、Sentiment、Toxicity、URLReachability。</p>
+            <blockquote>这张表只是官方声明的<strong>能力面清单</strong>。本站没有跑过其中任何一项，也不引官方或第三方的命中率数字。</blockquote></span><span data-en><p>Prompt scanners (15 items): Anonymize, BanCode, BanCompetitors, BanSubstrings, BanTopics, Code, Gibberish, InvisibleText, Language, PromptInjection, Regex, Secrets, Sentiment, TokenLimit, Toxicity.</p>
+            <p>Output scanners (21 items): BanCode, BanCompetitors, BanSubstrings, BanTopics, Bias, Code, Deanonymize, JSON, Language, LanguageSame, MaliciousURLs, NoRefusal, ReadingTime, FactualConsistency, Gibberish, Regex, Relevance, Sensitive, Sentiment, Toxicity, URLReachability.</p>
+            <blockquote>This table is only the <strong>capability surface the official text declares</strong>. This site ran none of these items and quotes no hit-rate numbers, official or third-party.</blockquote></span>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>归档状态与选型影响</span><span data-en>Archive status and what it means for selection</span></h2>
+        <span data-zh><p>README 顶部警告块原文（2026-11-06 抓取）：</p>
+            <blockquote>THIS PROJECT HAS BEEN ARCHIVED. This project and its associated models on Hugging Face are no longer under active development or maintained.</blockquote>
+            <p>配套可核验事实：仓库 <code>archived</code> 标志为真、最后推送 2026-07-08、PyPI 最新版本 0.3.16 发布于 2025-05-19。 因此本条目 lifecycle 记 <code>archived</code>，confidence 上限为 <code>partial</code>。 选型含义是<strong>维护责任转移</strong>：规则集、依赖与安全修复都要自己接手。</p></span><span data-en><p>The warning block at the top of the README, original wording (fetched 2026-11-06):</p>
+            <blockquote>THIS PROJECT HAS BEEN ARCHIVED. This project and its associated models on Hugging Face are no longer under active development or maintained.</blockquote>
+            <p>Corroborating verifiable facts: the repository&#39;s <code>archived</code> flag is true, the last push was 2026-07-08, and the newest PyPI release 0.3.16 dates to 2025-05-19. The entry therefore records lifecycle <code>archived</code> with confidence capped at <code>partial</code>.</p>
+            <p>The selection implication is <strong>a transfer of maintenance duty</strong>: rulesets, dependencies and security fixes all become your responsibility.</p></span>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./rebuff.html"><span data-zh>Rebuff</span><span data-en>Rebuff</span></a></span><span class="rel-n"><span data-zh>同属「护栏与内容过滤」线：本档案只写自己在册的官方口径，对照请看那份。</span><span data-en>Same line: Rebuff (in guardrails and content filtering); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="./canary-scan.html"><span data-zh>CanaryScan</span><span data-en>CanaryScan</span></a></span><span class="rel-n"><span data-zh>同属「护栏与内容过滤」线：本档案只写自己在册的官方口径，对照请看那份。</span><span data-en>Same line: CanaryScan (in guardrails and content filtering); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="./nemo-guardrails.html"><span data-zh>NeMo Guardrails</span><span data-en>NeMo Guardrails</span></a></span><span class="rel-n"><span data-zh>同属「护栏与内容过滤」线：本档案只写自己在册的官方口径，对照请看那份。</span><span data-en>Same line: NeMo Guardrails (in guardrails and content filtering); this entry states only what its own official sources support.</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

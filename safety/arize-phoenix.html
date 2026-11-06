@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Arize Phoenix — Safety | 投机取巧</title>
+  <meta name="description" content="Arize Phoenix（Arize AI）：Phoenix 是开源许可下的观测与评测平台，跑在你自己的机器或集群里。 它的评测面是「评估器挂在数据集上」，许可面是 Elastic License 2.0。" />
+  <link rel="canonical" href="https://tools.specul.com/safety/arize-phoenix.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Arize Phoenix" />
+  <meta property="og:url" content="https://tools.specul.com/safety/arize-phoenix.html" />
+  <meta property="og:title" content="Arize Phoenix — Safety | 投机取巧" />
+  <meta property="og:description" content="Arize Phoenix（Arize AI）：Phoenix 是开源许可下的观测与评测平台，跑在你自己的机器或集群里。 它的评测面是「评估器挂在数据集上」，许可面是 Elastic License 2.0。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../brand.css?v=bf69a6d205ad" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Arize Phoenix","applicationCategory":"DeveloperApplication","sameAs":"https://github.com/Arize-ai/phoenix","description":"Phoenix 是开源许可下的观测与评测平台，跑在你自己的机器或集群里。 它的评测面是「评估器挂在数据集上」，许可面是 Elastic License 2.0。","dateModified":"2026-11-06"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Safety</span>
+      </nav>
+      <a class="back" href="./">← Safety</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#f26d6d" aria-hidden="true"><span data-zh>Ar</span><span data-en>AR</span></div>
+        <div>
+          <h1><span data-zh>Arize Phoenix</span><span data-en>Arize Phoenix</span></h1>
+          <div class="vendor is-caps">Arize AI</div>
+        </div>
+      </div>
+
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
+      <div class="badges">
+        <span class="tag on"><span data-zh>自托管</span><span data-en>Self-hosted</span></span>
+        <span class="tag on"><span data-zh>WebUI</span><span data-en>WebUI</span></span>
+        <span class="tag on"><span data-zh>eval</span><span data-en>eval</span></span>
+        <span class="tag on"><span data-zh>Python</span><span data-en>Python</span></span>
+        <span class="tag on"><span data-zh>本地</span><span data-en>Local</span></span>
+        <span class="tag on"><span data-zh>混合</span><span data-en>Hybrid</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-11-06</span>
+      </div>
+
+      <p class="t-sm"><span data-zh>核验标记表示资料完整度，不是产品评分。下列未确认项可能影响选型；请按对应来源逐项确认。</span><span data-en>The confidence mark describes evidence completeness, not a product score. Unconfirmed items below may affect your choice; check them against the relevant sources.</span></p>
+            <div class="panel is-slim">
+        <h2 id="known-unknowns"><span data-zh>未确认的信息</span><span data-en>Information not confirmed</span></h2>
+        <span data-zh>
+        <ul>
+          <li>主体归属：按官方仓库自我归属记；注册地与主体细节未逐条核验</li>
+          <li>judge 侧支持的模型厂商适配器全清单</li>
+          <li>数据集版本、split 与实验比对口径（文档正文未抓到）</li>
+          <li>self-hosting 的外部数据库、对象存储与集群配置面（正文未抓到）</li>
+          <li>评估任务的调度、抽样与失败重试口径</li>
+          <li>MCP 接入方式与对外 API 面</li>
+          <li>商业条款、数据用途与训练开关（产品页与文档站当日 403）</li>
+          <li>备案公示检索</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>Full list of judge-side model vendor adapters</li>
+          <li>Dataset versioning, splits and experiment-comparison semantics (doc bodies not fetched)</li>
+          <li>External database, object-storage and cluster configuration in self-hosting (bodies not fetched)</li>
+          <li>Scheduling, sampling and retry behaviour of evaluation jobs</li>
+          <li>MCP support and the outward API surface</li>
+          <li>Commercial terms, data usage and training opt-out (product and docs pages returned 403 today)</li>
+          <li>Filing-registry search</li>
+        </ul></span>
+      </div>
+
+
+            <p class="t-xs" data-en>English summaries and interface labels are available. Detailed source notes below are currently in Chinese.</p>
+      <div class="panel-lead"><span data-zh><p><strong>Phoenix 是开源许可下的观测与评测平台</strong>，跑在你自己的机器或集群里。 它的评测面是「评估器挂在数据集上」，许可面是 Elastic License 2.0。</p></span><span data-en><p><strong>Phoenix 是开源许可下的观测与评测平台</strong>，跑在你自己的机器或集群里。 它的评测面是「评估器挂在数据集上」，许可面是 Elastic License 2.0。</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+        <div><p>适合已经把 OpenTelemetry 当地图、要在 notebook 里跑批量对照实验的团队： trace 先进来，再沉淀成数据集，评估器随实验自动跑，分数与来源调用可回溯。 不适合两类需求——只要厂商托管控制台的，以及想把 Phoenix 包成服务对外卖的 （ELv2 明文禁止把软件作为托管或管理服务提供，当日 LICENSE 在册）。 本站只记它支持哪些评测类型，不记评测出来的分数。</p></div>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-11-06</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>按官方仓库自我归属 Arize 记 foreign；公司主体、注册地与「Arize AX 才是托管线」的关系未逐条核验。</span><span data-en>recorded as foreign on the repository&#39;s own attribution to Arize; the legal entity, place of incorporation and the Phoenix-versus-Arize-AX relationship were not item-verified.</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>直连未核验</span><span data-en>direct unknown</span>　<span data-zh>arize.com 的产品页与文档站当日对本站抓取通道返回 403；github.com 与 pypi.org 当日直抓 200，可达性混合故标 unknown。</span><span data-en>arize.com&#39;s product and docs pages returned 403 to this site&#39;s fetch channel today, while github.com and pypi.org fetched 200 — mixed reachability, so marked unknown.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>备案未核验</span><span data-en>filing unknown</span>：<span data-zh>本次未检索备案公示名单；自托管开源组件是否落入备案口径未核验，记入未知项清单。</span><span data-en>the filing registry was not searched today; whether a self-hosted open-source component falls under filing scope is unverified — listed under unknowns.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis" id="dimension-model_access">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>平台不绑模型厂商，评测面分三层：LLM-as-judge、自定义 Python 与 TypeScript 评估器、 确定性检查（server-evals 文档当日直抓在册）。内置确定性评估器 contains、exact_match、regex、 levenshtein_distance、json_distance <strong>不需要 LLM 与 API key</strong>（同日直抓在册）。 judge 侧支持的厂商适配器全清单本次未逐条核验，记为未知。</p></span><span data-en><p>The platform is not tied to model vendors; the evaluation surface has three layers — LLM-as-judge, custom Python and TypeScript evaluators, and deterministic checks (server-evals doc direct-fetched today). The built-in deterministic evaluators contains, exact_match, regex, levenshtein_distance and json_distance <strong>need no LLM and no API key</strong> (fetched the same day). <strong>The full list of judge-side vendor adapters supported was not verified item by item — recorded as unknown.</strong></p></span></dd>
+        </div>
+        <div class="axis" id="dimension-runtime">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>本机起服务是主路线：<code>pip install arize-phoenix</code> 或 Docker（仓库 README 与 PyPI 当日在册， requires-python ≥3.11），界面是本机起的 Web UI；仓库另有 helm 与 kustomize 目录供自有集群部署。 厂商侧托管线是 Arize AX，不是 Phoenix 本体（README 当日在册）。</p></span><span data-en><p>Running the service on your own machine is the main route: <code>pip install arize-phoenix</code> or Docker (repo README and PyPI fetched today; requires-python ≥3.11), with a web UI served locally; the repository also ships helm and kustomize directories for your own clusters. The vendor-hosted line is Arize AX, not Phoenix itself (README fetched today).</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-local_files">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>自托管时 trace 与评测数据留在自有环境，经 OpenTelemetry 上报；平台不读本机代码库或工作区文件。 self-hosting 文档分区存在 deployment-options 与 configuration 两个子目录（当日目录结构在册）， <strong>但正文本次未抓到，外部数据库与对象存储的配置面记为未知。</strong></p></span><span data-en><p>Self-hosted, traces and evaluation data stay in your environment and arrive over OpenTelemetry; the platform does not read your local codebase or workspace files. The self-hosting docs area contains deployment-options and configuration subfolders (directory structure fetched today), <strong>but their bodies were not fetched, so external database and object-storage configuration is recorded as unknown.</strong></p></span></dd>
+        </div>
+        <div class="axis" id="dimension-background">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>服务端评估器可挂在数据集上，随实验自动运行、无需本地代码（server-evals 文档当日在册）； 批量对照靠 experiments 跑数据集。关机续跑不是这类平台的功能面。 评估任务的调度、抽样与重试口径未逐条在册，记为未知。</p></span><span data-en><p>Server-side evaluators can be attached to datasets and run automatically with experiments, with no local code (server-evals doc fetched today); batch comparison runs on datasets through experiments. Resume-after-shutdown is not a feature surface for this kind of platform. Scheduling, sampling and retry semantics are not on record item by item — unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-tools">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>OpenTelemetry 追踪 + Python/JS SDK（Releases 当日在册含 @arizeai/phoenix-cli）； 仓库文档分区含 tracing、prompt-engineering、datasets-and-experiments、evaluation（当日结构在册）。 <strong>MCP 接入方式与 API 面本次未核验到官方声明，记为未知。</strong></p></span><span data-en><p>OpenTelemetry tracing plus Python/JS SDKs (Releases fetched today include @arizeai/phoenix-cli); the in-repo docs areas cover tracing, prompt-engineering, datasets-and-experiments and evaluation (structure fetched today). <strong>MCP support and the outward API surface were not verified in official statements — recorded as unknown.</strong></p></span></dd>
+        </div>
+        <div class="axis" id="dimension-context">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>观测对象是 trace 与 span，评测对象是数据集与实验的对照（datasets-and-experiments 分区含 concepts、how-to、quickstart 文件，当日结构在册）。 <strong>数据集版本、split 与实验比对口径未读到正文，记为未知。</strong></p></span><span data-en><p>What is observed is traces and spans; what is evaluated is datasets against experiments (the datasets-and-experiments area holds concepts, how-to and quickstart files, structure fetched today). <strong>Dataset versioning, splits and experiment-comparison semantics were not read — recorded as unknown.</strong></p></span></dd>
+        </div>
+        <div class="axis" id="dimension-permissions">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>许可边界最要紧：ELv2 禁止把软件作为托管或管理服务对外提供，企业功能靠 license key （LICENSE 当日直抓在册）。自托管本体无账号体系。 <strong>官方文档站与产品页当日对本站抓取通道返回 403，商业条款、数据用途与训练开关未读到，记为未知。</strong></p></span><span data-en><p>The license boundary matters most: ELv2 forbids providing the software to third parties as a hosted or managed service, and enterprise functionality is gated by a license key (LICENSE fetched today). Self-hosting has no account system. <strong>The official docs site and product page returned 403 to this site&#39;s fetch channel today, so commercial terms, data usage and training opt-out were not read — recorded as unknown.</strong></p></span></dd>
+        </div>
+        <div class="axis" id="dimension-fit">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合已把 OpenTelemetry 当观测底座、要在 notebook 或自有集群里跑评测、需要「评估器挂数据集」 这种批量对照的团队。不适合只要托管控制台、打算把 Phoenix 包一层对外售卖（ELv2 限制这条）， 或要现成红队与合规审计面的场景；本站不测分也不排名。</p></span><span data-en><p>Fits teams already standardizing on OpenTelemetry who want batch comparisons in a notebook or on their own cluster: traces come in first, become datasets, evaluators run with the experiment, and each score links back to its source call. Not a fit for those who only want a hosted console, or who intend to resell Phoenix wrapped as a service (ELv2 forbids that explicitly), or who need a ready-made red-team or compliance-audit surface. This site does not measure scores and does not rank.</p></span></dd>
+        </div>
+      </dl>
+
+      <nav class="panel is-slim" aria-label="使用排查" data-ui-aria-label-zh="使用排查" data-ui-aria-label-en="Troubleshooting">
+        <h2><span data-zh>使用时遇到问题</span><span data-en>When something fails</span></h2>
+        <p><a href="../mcp/guides/failure-library.html#auth"><span data-zh>账号与权限</span><span data-en>Account and permissions</span></a> · <a href="../mcp/guides/failure-library.html#rate-limit"><span data-zh>限流与重试</span><span data-en>Rate limits and retries</span></a> · <a href="../mcp/guides/failure-library.html#files"><span data-zh>文件读取问题</span><span data-en>File-reading issues</span></a></p>
+      </nav>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li>把 README 的 open source 当成 OSI 开源许可——本体是 ELv2，对外提供托管服务是条款明文限制项（LICENSE 当日在册）</li>
+          <li>把「内置评估器」当成一定要接模型——contains、exact_match、regex 等确定性评估器不接 LLM 也不要 API key（当日在册）</li>
+          <li>把 arize.com 文档站当成可核验入口——当日对本站返回 403，能力面只能以 GitHub 仓内文档与 PyPI 在册</li>
+        </ul>
+      </div>
+
+
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>最近核验记录</span><span data-en>Latest recorded check</span> 2026-11-06，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-11-06。<span data-zh>单项复核范围见正文或来源说明，不代表所有字段在同一天重新核验。</span><span data-en>See the text or source notes for item-specific scope; this does not mean every field was rechecked on that date.</span></p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>repo</td><td><span data-zh>Arize-ai/phoenix · 仓库 README（自称 open-source AI observability platform，pip 与 Docker、OpenTelemetry、evals library、Arize AX 托管线，2026-11-06 直抓 200）</span><span data-en>Arize-ai/phoenix · repository README (self-described open-source AI observability platform; pip and Docker, OpenTelemetry, the evals library, the Arize AX hosted line, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://github.com/Arize-ai/phoenix" target="_blank" rel="noopener">https://github.com/Arize-ai/phoenix</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>Arize-ai/phoenix · LICENSE（Elastic License 2.0 与三条限制，2026-11-06 直抓 200）</span><span data-en>Arize-ai/phoenix · LICENSE (Elastic License 2.0 and its three limitations, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://github.com/Arize-ai/phoenix/blob/main/LICENSE" target="_blank" rel="noopener">https://github.com/Arize-ai/phoenix/blob/main/LICENSE</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Phoenix · server-side evals 概览（评估器分 LLM-as-judge、自定义 Python 与 TypeScript、Exact Match 与 Regex 等确定性检查，可挂数据集随实验运行，2026-11-06 直抓 200）</span><span data-en>Phoenix · server-side evals overview (evaluators split into LLM-as-judge, custom Python and TypeScript, and deterministic checks such as Exact Match and Regex; attachable to datasets and run with experiments, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://github.com/Arize-ai/phoenix/blob/main/docs/phoenix/evaluation/server-evals/overview.mdx" target="_blank" rel="noopener">https://github.com/Arize-ai/phoenix/blob/main/docs/phoenix/evaluation/server-evals/overview.mdx</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Phoenix · 内置评估器清单（contains、exact_match、regex、levenshtein_distance、json_distance，不需 LLM 与 API key，2026-11-06 直抓 200）</span><span data-en>Phoenix · built-in evaluator list (contains, exact_match, regex, levenshtein_distance, json_distance — no LLM or API key needed, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://github.com/Arize-ai/phoenix/blob/main/docs/phoenix/evaluation/server-evals/builtin-evaluators.mdx" target="_blank" rel="noopener">https://github.com/Arize-ai/phoenix/blob/main/docs/phoenix/evaluation/server-evals/builtin-evaluators.mdx</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Phoenix · 仓内文档分区（evaluation 与 datasets-and-experiments 与 self-hosting 与 tracing 与 prompt-engineering，2026-11-06 直抓目录 200）</span><span data-en>Phoenix · in-repo docs areas (evaluation, datasets-and-experiments, self-hosting, tracing, prompt-engineering; directory listing direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://github.com/Arize-ai/phoenix/tree/main/docs/phoenix" target="_blank" rel="noopener">https://github.com/Arize-ai/phoenix/tree/main/docs/phoenix</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>arize-phoenix · PyPI 官方包页（v21.0.0 页面标 Oct 30 2026、Elastic-2.0、requires-python ≥3.11、evals extras，2026-11-06 直抓 200）</span><span data-en>arize-phoenix · official PyPI package page (v21.0.0 labelled Oct 30 2026, Elastic-2.0, requires-python ≥3.11, evals extras, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://pypi.org/project/arize-phoenix/" target="_blank" rel="noopener">https://pypi.org/project/arize-phoenix/</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>Arize-ai/phoenix · Releases（当日直抓在册，最新 @arizeai/phoenix-cli@1.20.0 页面标 Nov 6）</span><span data-en>Arize-ai/phoenix · Releases (fetched today; newest @arizeai/phoenix-cli@1.20.0 labelled Nov 6)</span></td><td><a href="https://github.com/Arize-ai/phoenix/releases" target="_blank" rel="noopener">https://github.com/Arize-ai/phoenix/releases</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>官方口径与未核到项</span><span data-en>Official record and unverified items</span></h2>
+        <span data-zh><p>本站尚未完成实测，结论只覆盖能力面与许可面。</p>
+            <p><strong>实测建议</strong>（三条，都指向仓内文档正文没抓全的东西）：</p>
+            <ul><li>数据集版本与实验比对：同一数据集换 judge 模型，历史分数是否可对齐比较</li><li>确定性评估器与 LLM judge 的分工边界：哪些质量判断本质上只能用规则挡</li><li>自托管外部依赖成本：接自有 PostgreSQL 与对象存储后的运维负担与备份口径</li></ul></span><span data-en><p>This site has not completed measured runs; conclusions cover the capability and license surfaces only.</p>
+            <p><strong>Suggested measurements</strong> (three, each pointing at doc bodies we could not fetch):</p>
+            <ul><li>Dataset versioning and experiment comparison: with the same dataset and a different judge model, can historical scores still be lined up</li><li>The division of labour between deterministic evaluators and LLM judges: which quality checks can only be blocked by rules</li><li>Self-hosted dependency cost: operational load and backup semantics once an external PostgreSQL and object storage are attached</li></ul></span>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2>变更记录说明</h2>
+        <p>本对象无独立可抓取的 changelog 页（仓库有 CHANGELOG.md，当日抓到的是 GitHub 页面外壳而非正文）。 变更记录以官方 Releases 在册，最新条目为 @arizeai/phoenix-cli@1.20.0（页面标 Nov 6）， 发版节奏密集，因此 lifecycle 记 active。</p>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./langfuse.html"><span data-zh>Langfuse</span><span data-en>Langfuse</span></a></span><span class="rel-n"><span data-zh>同为自托管观测加评测：Langfuse 核心是 MIT，Phoenix 是 ELv2，许可门槛不同。</span><span data-en>Same line: Langfuse (in evaluation and observability); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="./adobe-content-credentials.html"><span data-zh>DeepEval</span><span data-en>Content Credentials</span></a></span><span class="rel-n"><span data-zh>同为评测面：DeepEval 是跑在终端与 CI 里的评测框架，Phoenix 是带界面的观测平台。</span><span data-en>Same line: Content Credentials（内容凭证） (in evaluation and observability); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="/mcp/sentry-mcp.html"><span data-zh>Sentry MCP</span><span data-en>Sentry MCP / Toolkit</span></a></span><span class="rel-n"><span data-zh>跨大类：传统可观测厂商的 LLM 线在 mcp 大类另有 server 档案，与 Phoenix 的 trace 面互补。</span><span data-en>Same line: OpenAI Evals (in evaluation and observability); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="/safety/openai-evals.html"><span data-zh>OpenAI Evals</span><span data-en>OpenAI Evals</span></a></span><span class="rel-n"><span data-zh>同分区对照</span><span data-en>Same layer</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

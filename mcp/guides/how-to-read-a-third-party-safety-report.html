@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>How to read a third-party safety report — 深水指南 | 投机取巧</title>
+  <meta name="description" content="怎么读一份第三方安全报告：按评估对象、版本、任务口径、结论边界四件事读别人出的安全报告，把「通过了」还原成「在什么条件下通过了什么」。" />
+  <link rel="canonical" href="https://tools.specul.com/mcp/guides/how-to-read-a-third-party-safety-report.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="How to read a third-party safety report" />
+  <meta property="og:url" content="https://tools.specul.com/mcp/guides/how-to-read-a-third-party-safety-report.html" />
+  <meta property="og:title" content="How to read a third-party safety report — 深水指南 | 投机取巧" />
+  <meta property="og:description" content="怎么读一份第三方安全报告：按评估对象、版本、任务口径、结论边界四件事读别人出的安全报告，把「通过了」还原成「在什么条件下通过了什么」。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../../brand.css?v=bf69a6d205ad" />
+  <link rel="stylesheet" href="../../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to read a third-party safety report","description":"Read external safety reports along subject, version, task definition and claim boundary, turning \"it passed\" into \"what passed, under which conditions\".","dateModified":"2026-11-06"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
+      <div class="detail-head">
+        <div>
+          <h1><span data-zh>怎么读一份第三方安全报告</span><span data-en>How to read a third-party safety report</span></h1>
+          <div class="vendor is-caps"><span data-zh>护栏与安全</span><span data-en>Guardrails & safety</span></div>
+        </div>
+      </div>
+      <div class="panel-lead"><span data-zh><p>按评估对象、版本、任务口径、结论边界四件事读别人出的安全报告，把「通过了」还原成「在什么条件下通过了什么」。</p></span><span data-en><p>Read external safety reports along subject, version, task definition and claim boundary, turning &quot;it passed&quot; into &quot;what passed, under which conditions&quot;.</p></span></div>
+
+
+
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></a></li><li><a href="#guide-section-1"><span data-zh>适用对象</span><span data-en>Who this is for</span></a></li><li><a href="#guide-section-2"><span data-zh>前置条件</span><span data-en>Prerequisites</span></a></li><li><a href="#guide-section-3"><span data-zh>四类来源</span><span data-en>Four kinds of reports</span></a></li><li><a href="#guide-section-4"><span data-zh>读报告的七个步骤</span><span data-en>Seven reading steps</span></a></li><li><a href="#guide-section-5"><span data-zh>贯穿案例：读一段抗注入结论</span><span data-en>Worked example: reading an injection-resistance claim</span></a></li><li><a href="#guide-section-6"><span data-zh>验收</span><span data-en>Acceptance</span></a></li><li><a href="#guide-section-7"><span data-zh>故障排查分支</span><span data-en>Troubleshooting branches</span></a></li><li><a href="#guide-section-8"><span data-zh>下一步</span><span data-en>Next steps</span></a></li><li><a href="#guide-section-9"><span data-zh>核验范围与未知</span><span data-en>What was verified and what is not</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
+        <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
+        <span data-zh><p><strong>第三方安全报告是别人替你的问题写的答案。</strong> 它值多少信任，取决于你能不能还原它的条件。 本篇给一套读法：先定位评估对象与版本，再看任务口径， 最后判断结论被推到多远。读不出条件，这条结论对你起不了作用。</p></span><span data-en><p><strong>A third-party safety report is somebody else&#39;s answer to your question.</strong> How far it can be trusted depends on whether you can reconstruct its conditions. This guide gives a reading order: locate the subject and version, inspect the task definition, then judge how far the conclusion has been stretched. Without the conditions, you have not read it.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-1">
+        <h2><span data-zh>适用对象</span><span data-en>Who this is for</span></h2>
+        <span data-zh><ul><li>采购或评审时收到厂商递来的评估结果、认证或 system card。</li><li>你要在内部会上引用一份外部报告，需要说清它能撑住哪句话。</li><li>你自己的产品被第三方测过，你要判断结论是否被转述过头。</li><li>需要做上线判断，但手上只有别人的分数。</li></ul>
+            <p>不适合：想要一份「谁更安全」的排序。 不同报告的任务口径不可比，硬排会得出没有依据的结论。</p></span><span data-en><ul><li>Procurement or review work where a vendor hands you evaluation results, certificates or a system card.</li><li>You will cite an external report internally and need to say which sentence it actually supports.</li><li>Your own product was tested by a third party and you judge whether the conclusion was over-paraphrased.</li><li>A release decision waits on results that only exist in someone else&#39;s report.</li></ul>
+            <p>Not a fit: looking for a ranking of who is safer. Task definitions differ across reports, and forcing a ranking produces conclusions with no basis.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-2">
+        <h2><span data-zh>前置条件</span><span data-en>Prerequisites</span></h2>
+        <span data-zh><ol><li value="1">报告原文或可打开的完整版本，摘要转述不够。</li><li value="2">被评估的具体版本号与发布日期，写在你的记录里。</li><li value="3">你自己的场景清单：任务类型、语言、用户群体、工具权限。</li><li value="4">一句你能接受复述的结论边界，例如「它只覆盖聊天输出，不覆盖工具写入」。</li></ol></span><span data-en><ol><li value="1">The report itself, or a complete openable version — a summary or a repost is not enough.</li><li value="2">The exact version under test and its release date, written into your record.</li><li value="3">Your own scenario list: task types, languages, user groups, tool permissions.</li><li value="4">One sentence of claim boundary you can repeat, for example &quot;it covers chat output only, not tool writes&quot;.</li></ol></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-3">
+        <h2><span data-zh>四类来源</span><span data-en>Four kinds of reports</span></h2>
+        <span data-zh><div class="tbl-wrap"><table><thead><tr><th>来源</th><th>常见内容</th><th>读时要盯住</th></tr></thead><tbody><tr><td>厂商自述</td><td>system card、透明度页、发布说明</td><td>自测与外测的区分，未披露项</td></tr><tr><td>政府或跨国评估机构</td><td>能力与风险综述、专项评测</td><td>抽样范围、时间点、局限声明</td></tr><tr><td>学术与规范提案</td><td>文档格式建议、评测方法</td><td>它主张什么、不主张什么</td></tr><tr><td>框架类文件</td><td>风险管理的结构与做法</td><td>它是自愿采用还是强制要求</td></tr></tbody></table></div>
+            <p>厂商自述页通常给索引而非全量数据。 Anthropic 透明度页列出部分安全评估摘要与一份完整 system card。 条目按政治倾向、诚实性、agent 安全等分开。 <strong>本页只描述其索引形态</strong>：条目分得细，不代表每个条目都有同等深度的数据。</p>
+            <p>学术一侧，Model Cards 论文建议随模型发布一份简短的表现说明。 <strong>论文摘要原文</strong>（英文）把它定义为 &quot;short documents accompanying trained machine learning models&quot;。 这句话的含义是：报告的价值在「分条件的表现」，不在一个总分。</p></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Source type</th><th>Typical content</th><th>What to watch</th></tr></thead><tbody><tr><td>Vendor self-report</td><td>system cards, transparency pages, release notes</td><td>Separation of self-testing from external testing; undisclosed items</td></tr><tr><td>Government or multinational bodies</td><td>capability and risk reviews, targeted evaluations</td><td>Sampling scope, cut-off date, stated limitations</td></tr><tr><td>Academic and normative proposals</td><td>documentation formats, evaluation methods</td><td>What it argues for and what it does not claim</td></tr><tr><td>Framework documents</td><td>structure for managing AI risk</td><td>Voluntary guidance versus mandatory duty</td></tr></tbody></table></div>
+            <p>Vendor self-report pages usually give an index rather than the full data. The Anthropic transparency page lists selected safety evaluation summaries and a full system card, split by entries such as political bias, honesty and agentic safety. <strong>This guide describes only the index form</strong>: many entries do not mean equal data depth per entry.</p>
+            <p>On the academic side, the Model Cards paper recommends publishing a brief performance note with each model. The paper&#39;s abstract defines them as &quot;short documents accompanying trained machine learning models&quot;. The point: a report is worth its conditions, not its single headline score.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-4">
+        <h2><span data-zh>读报告的七个步骤</span><span data-en>Seven reading steps</span></h2>
+        <span data-zh><ol><li value="1">测的是哪个具体版本？版本对不上，结论不迁移。</li><li value="2">谁做的测试，用什么接口？API 端点与产品界面行为可能不同。</li><li value="3">任务口径怎么定义？「有害」「越狱成功」的定义不同，分数不可比。</li><li value="4">样本从哪来？公开集、合成集还是自建集，覆盖你关心的语言与场景吗。</li><li value="5">报告自己怎么陈述局限？把它自陈的限制原样抄进你的记录。</li><li value="6">有没有失败与未测项清单？只报成功项的报告要降低信任权重。</li><li value="7">结论被引用时加了什么？转述者常把「在 X 任务上未观察到」写成「不会发生」。</li></ol>
+            <p>第 3 步与第 5 步通常省事。跨国评估类报告自身就强调缺口： International AI Safety Report 官方站写明， <strong>原文</strong>（英文）：&quot;significant gaps remain: sophisticated attackers can often bypass current defences&quot; 同一页面还说明它的统筹方式：报告由 30 多个国家提名的国际专家咨询小组统筹。 撰写者与资助方公开可查。</p></span><span data-en><ol><li value="1">Which exact version was tested? Conclusions do not transfer across versions.</li><li value="2">Who tested it, through which interface? API endpoints and the product UI can behave differently.</li><li value="3">How is the task defined? &quot;Harmful&quot; and &quot;jailbreak succeeded&quot; differ between reports, so scores are not comparable.</li><li value="4">Where do the samples come from — public, synthetic or custom — and do they cover your languages and scenarios?</li><li value="5">How does the report state its own limits? Copy those limits verbatim into your record.</li><li value="6">Is there a list of failures and untested items? Reports showing only successes deserve less weight.</li><li value="7">What did the person citing it add? &quot;No X observed on task Y&quot; often becomes &quot;X cannot happen&quot;.</li></ol>
+            <p>Steps 3 and 5 save real time. Multinational safety reviews say so themselves; the International AI Safety Report site states: &quot;significant gaps remain: sophisticated attackers can often bypass current defences&quot; The same page also records that the report is coordinated by an international expert advisory panel nominated by more than 30 countries, with authors and funders publicly listed.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-5">
+        <h2 id="worked-example"><span data-zh>贯穿案例：读一段抗注入结论</span><span data-en>Worked example: reading an injection-resistance claim</span></h2>
+        <span data-zh><p>情境为示例，数字是虚构假设，用来演示读法，不是任何报告的实测值。</p>
+            <ul><li>输入：一段转述——「某模型在提示注入测试中通过率为 98%」。</li><li>处理：按七个步骤逐条回到原文查： 被测版本、测试接口、任务定义、样本来源、局限声明、未测项、引用差异。</li><li>结果判断（示例）：原文写的是「在两类公开注入模板、单轮对话设定下， 拒绝率 98%」。转述把「拒绝率」写成「通过率」，把两类模板写成整体能力。 结论可用范围因此缩小：你的多轮工具链路不在其覆盖内。</li><li>失败后下一步： 把可引用句子改成「该报告在 X 设定下测得 Y，未覆盖我方 Z」； 若决策依赖工具链的抗注入，安排一次自己的红队，别等别人的报告补空白。</li></ul>
+            <p>判据一句话：<strong>能不能把结论原样念给做实现的人听，他能不能照着安排工作。</strong> 念不出来，这条结论就只是宣传材料。</p></span><span data-en><p>The scenario is illustrative and the figures are invented assumptions that demo the reading order; they are not measured values from any report.</p>
+            <ul><li>Input: a repost claiming &quot;a certain model passes prompt-injection tests at 98%&quot;.</li><li>Processing: run the seven steps back against the original text: version under test, test interface, task definition, sample source, limitation statement, untested items, and citation drift.</li><li>Judging the result (example): the original says &quot;refusal rate 98% on two public injection templates, single-turn setting&quot;. The repost turned a refusal rate into a pass rate and two template families into a general capability. The usable scope shrinks accordingly: your multi-turn tool chain is not covered.</li><li>What to do after a failure: Rewrite the citable sentence as &quot;the report measured Y under setting X; it does not cover our Z&quot;; if the decision depends on injection resistance in tool chains, run your own red team instead of waiting for someone else to fill the gap.</li></ul>
+            <p>One test for the judgement: <strong>can you read the conclusion aloud to the engineer implementing it, and can they plan work from it.</strong> If not, the conclusion is marketing material.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-6">
+        <h2><span data-zh>验收</span><span data-en>Acceptance</span></h2>
+        <span data-zh><ul><li>[ ] 记录里每个引用结论都带版本号、日期与来源页</li><li>[ ] 能写出该报告「没有覆盖什么」，且不少于三条</li><li>[ ] 引用句与原文的口径差异被明确标出</li><li>[ ] 关键结论有第二来源，或标明只有单一来源</li><li>[ ] 决策所需但报告未覆盖的部分，已安排自测</li></ul></span><span data-en><ul><li>[ ] Every cited conclusion in your record carries version, date and source page</li><li>[ ] You can write at least three things the report did not cover</li><li>[ ] Differences between the citation and the original wording are marked explicitly</li><li>[ ] Key conclusions have a second source, or are labelled single-source</li><li>[ ] The parts your decision needs but the report misses are scheduled for self-testing</li></ul></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-7">
+        <h2><span data-zh>故障排查分支</span><span data-en>Troubleshooting branches</span></h2>
+        <span data-zh><ul><li>找不到原文：按「未核验」处理，不要写进决策材料。</li><li>报告有多个版本：以被测产品对应日期的版本为准，并记下你读的版本号。</li><li>分数与自测差很远：先比对任务定义与样本，再怀疑产品退化。</li><li>只给图表不给方法：把可引用范围缩到「作者声称」级别。</li><li>引用他人报告时对方已撤回或更新：更新你的记录，别沿用旧结论。</li><li>认证类材料与能力评估混用：管理体系认证说明流程存在，不说明模型更安全。</li></ul></span><span data-en><ul><li>The original cannot be found: treat the claim as unverified and keep it out of decision material.</li><li>The report has several versions: use the version matching the product date under test, and record which one you read.</li><li>Scores differ sharply from your own tests: compare task definitions and samples before suspecting a product regression.</li><li>Charts without method: shrink the citable scope to &quot;the authors state&quot;.</li><li>The cited report was retracted or updated: refresh your record rather than carrying the old conclusion.</li><li>Management-system certificates mixed with capability evaluation: a certificate shows a process exists, not that the model is safer.</li></ul></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-8">
+        <h2><span data-zh>下一步</span><span data-en>Next steps</span></h2>
+        <span data-zh><ol><li value="1">把可引用的结论整理成一页，标注覆盖范围与缺口。</li><li value="2">针对缺口安排一次红队，或写进供应商问卷追问。</li><li value="3">需要把风险管理与组织流程对齐时，参考自愿框架的结构（NIST AI RMF 官方页说明其供组织自愿使用）。</li><li value="4">报告更新后重新核对引用句，核验日期跟着改。</li></ol></span><span data-en><ol><li value="1">Collect the citable conclusions on one page with coverage and gaps marked.</li><li value="2">Schedule a red-team pass for the gaps, or add them to the vendor questionnaire.</li><li value="3">To align risk work with organisational process, use a voluntary framework&#39;s structure — the NIST AI RMF page describes it as intended for voluntary use.</li><li value="4">Re-check each citation when a report is updated, and move the verification date with it.</li></ol></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-9">
+        <h2><span data-zh>核验范围与未知</span><span data-en>What was verified and what is not</span></h2>
+        <span data-zh><p>2026-11-06 直抓了五处来源页面：Model Cards 论文摘要页、 International AI Safety Report 官方站、英国 AI Security Institute 政府组织页、 Anthropic 透明度页、NIST AI 风险管理框架页。 本篇只转述这些页面自身写明的内容，未读取任何完整报告的正文数据。</p>
+            <p>以下未知：</p>
+            <ul><li>各报告内部的具体任务定义、样本量与统计口径——需要读全文，本次未逐份展开。</li><li>厂商透明度页中每条摘要的更新日期与方法细节——本次只确认索引结构存在。</li><li>你所在行业的监管是否把某类报告当作必需材料——取决于辖区与产品定位，本页不作判断。</li></ul></span><span data-en><p>On 2026-11-06 five source pages were fetched directly: the Model Cards paper abstract, the International AI Safety Report site, the UK AI Security Institute organisation page, the Anthropic transparency page and the NIST AI Risk Management Framework page. This guide reports only what those pages themselves state; no full report body was read for this page.</p>
+            <p>Unknowns:</p>
+            <ul><li>Exact task definitions, sample sizes and statistical bases inside each report — reading the full text is required and was not done here.</li><li>Update dates and method details behind each entry on a vendor transparency page — only the index structure was confirmed.</li><li>Whether your sector treats a given report type as required evidence — that depends on jurisdiction and product role, and this guide makes no judgement.</li></ul></span>
+      </div>
+<nav class="panel is-slim" aria-label="接下来做什么" data-ui-aria-label-zh="接下来做什么" data-ui-aria-label-en="What to do next">
+<h2><span data-zh>接下来做什么</span><span data-en>What to do next</span></h2><ul>
+<li><a href="toolkit-worksheets.html"><span data-zh>记录约束、验收与未确认项</span><span data-en>Record constraints, acceptance and unknowns</span></a></li>
+<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh>核对结果与来源</span><span data-en>Verify the result and its sources</span></a></li>
+<li><a href="failure-library.html#by-symptom"><span data-zh>按症状排查失败</span><span data-en>Troubleshoot by symptom</span></a></li>
+</ul></nav>
+      <div class="panel is-slim">
+        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
+        <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
+          <tr><td><span data-zh>Model Cards 论文（arXiv 1810.03993，2026-11-06 直抓摘要页）</span><span data-en>Model Cards paper (arXiv 1810.03993, abstract page direct-fetched 2026-11-06)</span></td><td><a href="https://arxiv.org/abs/1810.03993" target="_blank" rel="noopener"><span data-zh>https://arxiv.org/abs/1810.03993</span><span data-en>https://arxiv.org/abs/1810.03993</span></a></td></tr>
+          <tr><td><span data-zh>International AI Safety Report 官方站（2026-11-06 直抓 200）</span><span data-en>International AI Safety Report official site (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://internationalaisafetyreport.org/" target="_blank" rel="noopener"><span data-zh>https://internationalaisafetyreport.org</span><span data-en>https://internationalaisafetyreport.org/</span></a></td></tr>
+          <tr><td><span data-zh>英国 AI Security Institute 政府组织页（2026-11-06 直抓 200）</span><span data-en>UK AI Security Institute government organisation page (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://www.gov.uk/government/organisations/ai-security-institute" target="_blank" rel="noopener"><span data-zh>https://www.gov.uk/government/organisations/ai-security-institute</span><span data-en>https://www.gov.uk/government/organisations/ai-security-institute</span></a></td></tr>
+          <tr><td><span data-zh>Anthropic 官方透明度页 · 安全评估与 system card 索引（2026-11-06 直抓 200）</span><span data-en>Anthropic official transparency page · index of safety evaluations and system cards (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://www.anthropic.com/transparency" target="_blank" rel="noopener"><span data-zh>https://www.anthropic.com/transparency</span><span data-en>https://www.anthropic.com/transparency</span></a></td></tr>
+          <tr><td><span data-zh>NIST AI Risk Management Framework 官方页（2026-11-06 直抓 200）</span><span data-en>NIST AI Risk Management Framework official page (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener"><span data-zh>https://www.nist.gov/itl/ai-risk-management-framework</span><span data-en>https://www.nist.gov/itl/ai-risk-management-framework</span></a></td></tr>
+        </tbody></table></div>
+        <p class="guide-foot"><span data-zh>资料快照日期：2026-11-06；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Source snapshot: 2026-11-06; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

@@ -13,8 +13,8 @@
   <meta property="og:description" content="浏览器 Agent 三选一：Playwright MCP / Browserbase MCP / Chrome DevTools MCP：三个浏览器 MCP 的适用条件、能力边界与价格档位；按「本地还是云端、要不要模型、要不要性能分析」给出一句选择，并写明什么情况下换另一个。" />
   <meta name="theme-color" content="#16121f" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
-  <script src="../../brand.js?v=6a580ac0420e"></script>
-  <link rel="stylesheet" href="../../brand.css?v=6a580ac0420e" />
+  <script src="../../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../../brand.css?v=bf69a6d205ad" />
   <link rel="stylesheet" href="../../site.css" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Browser agents: Playwright, Browserbase, DevTools","description":"Applicability, capability limits and plan tiers for three browser MCP servers; a one-line choice based on local vs cloud, whether a model is needed and whether performance analysis is required, plus when to switch.","dateModified":"2026-11-03"}</script>
 </head>
@@ -49,6 +49,7 @@
            （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
            链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
       <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
         <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
         <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
       </span>
@@ -91,48 +92,65 @@
         </div>
       </div>
       <div class="panel-lead"><span data-zh><p>三个浏览器 MCP 的适用条件、能力边界与价格档位；按「本地还是云端、要不要模型、要不要性能分析」给出一句选择，并写明什么情况下换另一个。</p></span><span data-en><p>Applicability, capability limits and plan tiers for three browser MCP servers; a one-line choice based on local vs cloud, whether a model is needed and whether performance analysis is required, plus when to switch.</p></span></div>
-      <p class="t-xs" data-en>English summaries and interface labels are available. The guide body below is currently in Chinese.</p>
+
+
+
       <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>一句话选择</span><span data-en>One-line choice</span></a></li><li><a href="#guide-section-1"><span data-zh>适用条件</span><span data-en>When each fits</span></a></li><li><a href="#guide-section-2"><span data-zh>能力边界</span><span data-en>Capability limits</span></a></li><li><a href="#guide-section-3"><span data-zh>价格档位</span><span data-en>Plan tiers</span></a></li><li><a href="#guide-section-4"><span data-zh>什么情况选另一个</span><span data-en>When to switch</span></a></li><li><a href="#guide-section-5"><span data-zh>核验事实</span><span data-en>Dated facts</span></a></li></ul></nav>
       <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>一句话选择</span><span data-en>One-line choice</span></h2>
-        <ul><li><strong>本机浏览器 + 稳定 selector + 不要模型</strong>：选 Playwright MCP。</li><li><strong>不想在本机起浏览器 + 要自然语言驱动网页</strong>：选 Browserbase MCP。</li><li><strong>给编码 Agent 看页面、抓性能与 console</strong>：选 Chrome DevTools MCP。</li></ul>
+        <span data-zh><ul><li><strong>本机浏览器 + 结构化页面快照 + 不需视觉模型</strong>：选 Playwright MCP。</li><li><strong>不想在本机起浏览器 + 要自然语言驱动网页</strong>：选 Browserbase MCP。</li><li><strong>给编码 Agent 看页面、抓性能与 console</strong>：选 Chrome DevTools MCP。</li></ul></span><span data-en><ul><li><strong>Local browser, structured page snapshots, no vision-model requirement</strong>: examine Playwright MCP.</li><li><strong>Cloud browser with natural-language interaction</strong>: examine Browserbase MCP.</li><li><strong>Page inspection, performance and console evidence for a coding agent</strong>: examine Chrome DevTools MCP.</li></ul></span>
       </div>
       <div class="panel is-slim" id="guide-section-1">
         <h2><span data-zh>适用条件</span><span data-en>When each fits</span></h2>
-        <div class="tbl-wrap"><table><thead><tr><th>问题</th><th>Playwright MCP</th><th>Browserbase MCP</th><th>Chrome DevTools MCP</th></tr></thead><tbody><tr><td>跑在哪</td><td>本机 Node.js 进程</td><td>Browserbase 云端浏览器</td><td>本机进程，驱动本机 Chrome</td></tr><tr><td>怎么连</td><td>stdio；也提供 HTTP endpoint</td><td>托管 <code>streamable-http</code> 端点</td><td>stdio（<code>npx chrome-devtools-mcp@latest</code>）</td></tr><tr><td>要不要模型</td><td>不需要；用无障碍树快照</td><td>需要；Stagehand 驱动 act/observe/extract</td><td>不需要；包装 CDP</td></tr><tr><td>适合谁</td><td>写 E2E、表单与固定流程</td><td>云端跑批量网页任务、不想管浏览器</td><td>编码 Agent 的调试与性能分析</td></tr><tr><td>工具面</td><td>72 个（2026-10-08 核对）</td><td>6 个（start / end / navigate / act / observe / extract）</td><td>导航、交互、截图、trace、网络与 console</td></tr></tbody></table></div>
+        <span data-zh><div class="tbl-wrap"><table><thead><tr><th>问题</th><th>Playwright MCP</th><th>Browserbase MCP</th><th>Chrome DevTools MCP</th></tr></thead><tbody><tr><td>跑在哪</td><td>本机 Node.js 进程</td><td>Browserbase 云端浏览器</td><td>本机进程，驱动本机 Chrome</td></tr><tr><td>怎么连</td><td>stdio；也提供 HTTP endpoint</td><td>托管 <code>streamable-http</code> 端点</td><td>stdio（<code>npx chrome-devtools-mcp@latest</code>）</td></tr><tr><td>服务端模型依赖</td><td>无需视觉模型；客户端 Agent 仍可能使用 LLM</td><td>Stagehand 驱动 act/observe/extract</td><td>包装 CDP；客户端 Agent 仍可能使用 LLM</td></tr><tr><td>适合谁</td><td>写 E2E、表单与固定流程</td><td>云端跑批量网页任务、不想管浏览器</td><td>编码 Agent 的调试与性能分析</td></tr><tr><td>工具面</td><td>72 个（2026-10-08 核对）</td><td>6 个（start / end / navigate / act / observe / extract）</td><td>导航、交互、截图、trace、网络与 console</td></tr></tbody></table></div></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Question</th><th>Playwright MCP</th><th>Browserbase MCP</th><th>Chrome DevTools MCP</th></tr></thead><tbody><tr><td>Where it runs</td><td>Local Node.js process</td><td>Browserbase cloud browser</td><td>Local process controlling local Chrome</td></tr><tr><td>Connection</td><td>stdio; HTTP endpoint also available</td><td>Hosted <code>streamable-http</code> endpoint</td><td>stdio (<code>npx chrome-devtools-mcp@latest</code>)</td></tr><tr><td>Server-side model dependency</td><td>No vision model needed; the client agent may still use an LLM</td><td>Stagehand drives act/observe/extract</td><td>Wraps CDP; the client agent may still use an LLM</td></tr><tr><td>Use to examine</td><td>E2E, forms and repeatable workflows</td><td>Cloud web tasks without managing browsers locally</td><td>Debugging and performance analysis for coding agents</td></tr><tr><td>Tools in recorded snapshot</td><td>72 (checked 2026-10-08)</td><td>Six: start / end / navigate / act / observe / extract</td><td>Navigation, interaction, screenshots, traces, network and console</td></tr></tbody></table></div></span>
       </div>
       <div class="panel is-slim" id="guide-section-2">
         <h2><span data-zh>能力边界</span><span data-en>Capability limits</span></h2>
-        <p><strong>Playwright MCP</strong></p>
-            <ul><li>默认有头模式，<code>--headless</code> 可切；headless 默认空闲 1 小时关闭，headed 默认不自动关闭。</li><li>用户 profile 默认落盘在 Playwright 缓存目录（按 workspace hash 隔离），<code>--isolated</code> 可改为仅存内存。</li><li>没有本地文件访问能力；核心是浏览器控制。</li><li>版本仍是 <code>0.0.x</code>（v0.0.83 于 2026-09-28），工具名可能继续变。</li></ul>
+        <span data-zh><p><strong>Playwright MCP</strong></p>
+            <ul><li>默认有头模式，<code>--headless</code> 可切；headless 默认空闲 1 小时关闭，headed 默认不自动关闭。</li><li>用户 profile 默认落盘在 Playwright 缓存目录（按 workspace hash 隔离），<code>--isolated</code> 可改为仅存内存。</li><li>官方工具包括文件上传；可访问路径与客户端授权、工作区配置有关。不要据“核心是浏览器控制”推断不能读取或上传本地文件。</li><li>版本仍是 <code>0.0.x</code>（v0.0.83 于 2026-09-28），工具名可能继续变。</li></ul>
             <p><strong>Browserbase MCP</strong></p>
             <ul><li>托管线由 Browserbase 提供 Gemini 的 LLM 成本；自托管线要自备 <code>GEMINI_API_KEY</code>（可换模型并配对应 key）。</li><li>自托管只是 server 在你机器上，浏览器会话仍在 Browserbase 云端，<code>BROWSERBASE_API_KEY</code> 与 project id 照要。</li><li>GitHub 仓 <code>browserbase/mcp-server-browserbase</code> 已归档（归档状态与 2026-07-20 停推已核验）；现役实现是托管线。</li><li><code>act</code> 能在真实网页点击填表，授权边界按目标站点把关。</li></ul>
             <p><strong>Chrome DevTools MCP</strong></p>
-            <ul><li>驱动真实浏览器：客户端让它访问什么就访问什么，server 本身没有 URL 白名单的官方说明。</li><li>能力集中在运行时：页面、网络、console、performance trace、CPU/网络节流。</li><li>不读写项目源码；那是 filesystem server 的职责。</li><li>随客户端生死（stdio 子进程），无后台任务语义。</li></ul>
+            <ul><li>驱动真实浏览器：客户端让它访问什么就访问什么，server 本身没有 URL 白名单的官方说明。</li><li>能力集中在运行时：页面、网络、console、performance trace、CPU/网络节流。</li><li>不读写项目源码；那是 filesystem server 的职责。</li><li>随客户端生死（stdio 子进程），无后台任务语义。</li></ul></span><span data-en><p><strong>Playwright MCP</strong></p>
+            <ul><li>The recorded defaults use headed mode, with <code>--headless</code> available. The snapshot records a one-hour idle shutdown in headless mode and no automatic shutdown in headed mode.</li><li>Profiles are stored in the Playwright cache, isolated by workspace hash; <code>--isolated</code> keeps them in memory.</li><li>Official tools include file upload. Accessible paths depend on client authorisation and workspace configuration. Browser control does not imply that local files cannot be read or uploaded.</li><li>The recorded version is in the <code>0.0.x</code> line (v0.0.83, 2026-09-28); tool names may change.</li></ul>
+            <p><strong>Browserbase MCP</strong></p>
+            <ul><li>The hosted offering covers its Gemini model cost; self-hosting the server requires your own <code>GEMINI_API_KEY</code>, or the key for another configured model.</li><li>Self-hosting the server does not move browser sessions off Browserbase&#39;s cloud. A <code>BROWSERBASE_API_KEY</code> and project ID are still required.</li><li>The <code>browserbase/mcp-server-browserbase</code> repository is archived in the recorded snapshot, with its last push on 2026-07-20; the hosted offering is the active implementation described here.</li><li><code>act</code> can click and fill real web forms; authorisation must cover actions on the destination site.</li></ul>
+            <p><strong>Chrome DevTools MCP</strong></p>
+            <ul><li>It controls a real browser at the client&#39;s direction. This snapshot found no official server-side URL-allowlist statement.</li><li>It focuses on runtime inspection: pages, network, console, performance traces, and CPU/network throttling.</li><li>Editing project source is a separate filesystem-tool responsibility.</li><li>As a stdio child process it follows the client lifecycle; that does not establish background-task continuation.</li></ul></span>
       </div>
       <div class="panel is-slim" id="guide-section-3">
         <h2><span data-zh>价格档位</span><span data-en>Plan tiers</span></h2>
-        <p>只列档位名，不写价格数字（单价与额度查官方定价页当日值）：</p>
+        <span data-zh><p>只列档位名，不写价格数字（单价与额度查官方定价页当日值）：</p>
             <div class="tbl-wrap"><table><thead><tr><th>产品</th><th>档位</th></tr></thead><tbody><tr><td>Playwright MCP</td><td>开源仓库，无付费档位</td></tr><tr><td>Browserbase MCP</td><td>Free / Developer / Startup / Scale（Scale 为定制）</td></tr><tr><td>Chrome DevTools MCP</td><td>开源仓库（Apache-2.0），无付费档位</td></tr></tbody></table></div>
-            <p>Browserbase 的免费档有并发浏览器的上限，付费档按并发与浏览器小时递增；具体数字以定价页为准。</p>
+            <p>Browserbase 的免费档有并发浏览器的上限，付费档按并发与浏览器小时递增；具体数字以定价页为准。</p></span><span data-en><p>Only tier names are listed. Check the official pricing page for current rates and quotas:</p>
+            <div class="tbl-wrap"><table><thead><tr><th>Product</th><th>Tiers in snapshot</th></tr></thead><tbody><tr><td>Playwright MCP</td><td>Open-source repository, no paid tier listed</td></tr><tr><td>Browserbase MCP</td><td>Free / Developer / Startup / Scale (custom)</td></tr><tr><td>Chrome DevTools MCP</td><td>Open-source repository (Apache-2.0), no paid tier listed</td></tr></tbody></table></div>
+            <p>Browserbase&#39;s free tier limits concurrent browsers; paid plans scale concurrency and browser hours. Use the official page for actual limits.</p></span>
       </div>
       <div class="panel is-slim" id="guide-section-4">
         <h2><span data-zh>什么情况选另一个</span><span data-en>When to switch</span></h2>
-        <ul><li>选 Playwright 后，如果不想在本机维护浏览器与依赖：换 Browserbase。</li><li>选 Browserbase 后，如果要开源可审计的完整实现：换 Playwright 或 Chrome DevTools（Browserbase 现役实现闭源在托管侧）。</li><li>选 Chrome DevTools 后，如果要脱离本机、批量跑多会话：换 Browserbase。</li><li>选 Chrome DevTools 后，如果只要稳定的固定流程、不要调试面：换 Playwright。</li><li>选 Playwright 后，如果目标是性能 trace 与 console 取证：换 Chrome DevTools。</li></ul>
+        <span data-zh><ul><li>选 Playwright 后，如果不想在本机维护浏览器与依赖：换 Browserbase。</li><li>选 Browserbase 后，如果要开源可审计的完整实现：换 Playwright 或 Chrome DevTools（Browserbase 现役实现闭源在托管侧）。</li><li>选 Chrome DevTools 后，如果要脱离本机、批量跑多会话：换 Browserbase。</li><li>选 Chrome DevTools 后，如果只要稳定的固定流程、不要调试面：换 Playwright。</li><li>选 Playwright 后，如果目标是性能 trace 与 console 取证：换 Chrome DevTools。</li></ul></span><span data-en><ul><li>From Playwright, examine Browserbase if you do not want to maintain local browsers and dependencies.</li><li>From Browserbase, examine Playwright or Chrome DevTools if you need an open-source implementation to inspect; the active Browserbase hosted implementation is closed-source in this snapshot.</li><li>From Chrome DevTools, examine Browserbase for browser sessions running off your local machine at scale.</li><li>From Chrome DevTools, examine Playwright when repeatable interaction matters more than debugging tools.</li><li>From Playwright, examine Chrome DevTools for performance traces and console investigation.</li></ul></span>
       </div>
       <div class="panel is-slim" id="guide-section-5">
         <h2><span data-zh>核验事实</span><span data-en>Dated facts</span></h2>
-        <p>1. Playwright MCP 由 Microsoft 维护，本地 Node.js 18+、stdio 通信，工具数 72（2026-10-08 核对），最新记录版本 v0.0.83（2026-09-28）。 2. Browserbase MCP 托管端点为 <code>https://mcp.browserbase.com/mcp</code>（streamable-http），工具 6 个；GitHub 仓 archived（2026-07-20 停推）。 3. Browserbase 定价页档位为 Free / Developer / Startup / Scale（2026-11-03 直抓）；D9 口径不采价格数字。 4. Chrome DevTools MCP 为 Apache-2.0，v1.12.0 于 2026-10-22 发布；仓库 54,460★、最近推送 2026-10-29（GitHub API 核验）。</p>
+        <span data-zh><p>本页仅局部复核了 Playwright MCP 的视觉模型依赖与文件上传说明（官方 README，2026-11-04）；下列其他数据保留原核验快照，不代表当日完整复核。</p>
+            <ol><li value="1">Playwright MCP 由 Microsoft 维护，本地 Node.js 18+、stdio 通信，工具数 72（2026-10-08 核对），最新记录版本 v0.0.83（2026-09-28）。</li><li value="2">Browserbase MCP 托管端点为 <code>https://mcp.browserbase.com/mcp</code>（streamable-http），工具 6 个；GitHub 仓 archived（2026-07-20 停推）。</li><li value="3">Browserbase 定价页档位为 Free / Developer / Startup / Scale（2026-11-03 直抓）；D9 口径不采价格数字。</li><li value="4">Chrome DevTools MCP 为 Apache-2.0，v1.12.0 于 2026-10-22 发布；仓库 54,460★、最近推送 2026-10-29（GitHub API 核验）。</li></ol></span><span data-en><p>Only Playwright MCP&#39;s vision-model requirement and file-upload description were rechecked against its official README on 2026-11-04. The remaining figures below retain their earlier snapshots; this is not a full recheck for that date.</p>
+            <ol><li value="1">Microsoft maintains Playwright MCP. The recorded requirements are Node.js 18+, stdio, 72 tools (checked 2026-10-08), and recorded version v0.0.83 (2026-09-28).</li><li value="2">Browserbase&#39;s hosted endpoint is <code>https://mcp.browserbase.com/mcp</code> (streamable-http), with six tools; the recorded GitHub repository is archived and last pushed on 2026-07-20.</li><li value="3">Browserbase pricing lists Free / Developer / Startup / Scale (page retrieved 2026-11-03). This site does not collect price figures.</li><li value="4">Chrome DevTools MCP is Apache-2.0-licensed; the snapshot records v1.12.0 released 2026-10-22, 54,460 stars and last push 2026-10-29 (GitHub API check).</li></ol></span>
       </div>
+<nav class="panel is-slim" aria-label="接下来做什么" data-ui-aria-label-zh="接下来做什么" data-ui-aria-label-en="What to do next">
+<h2><span data-zh>接下来做什么</span><span data-en>What to do next</span></h2><ul>
+<li><a href="playbook-fix-a-bug.html"><span data-zh>把浏览器排查放进修复流程</span><span data-en>Place browser checks in a repair workflow</span></a></li>
+<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh>核对结果与来源</span><span data-en>Verify the result and its sources</span></a></li>
+<li><a href="failure-library.html#by-symptom"><span data-zh>按症状排查失败</span><span data-en>Troubleshoot by symptom</span></a></li>
+</ul></nav>
       <div class="panel is-slim">
         <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
         <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
-          <tr><td>Microsoft · Playwright MCP 仓库（72 个工具、v0.0.83 2026-09-28）</td><td><a href="https://github.com/microsoft/playwright-mcp" target="_blank" rel="noopener">https://github.com/microsoft/playwright-mcp</a></td></tr>
-          <tr><td>Browserbase · MCP 官方文档（托管端点与 6 个工具）</td><td><a href="https://docs.browserbase.com/integrations/mcp/introduction" target="_blank" rel="noopener">https://docs.browserbase.com/integrations/mcp/introduction</a></td></tr>
-          <tr><td>Browserbase · Pricing（档位名称与并发口径，2026-11-03 直抓）</td><td><a href="https://www.browserbase.com/pricing" target="_blank" rel="noopener">https://www.browserbase.com/pricing</a></td></tr>
-          <tr><td>ChromeDevTools · chrome-devtools-mcp 仓库（Apache-2.0、v1.12.0 2026-10-22）</td><td><a href="https://github.com/ChromeDevTools/chrome-devtools-mcp" target="_blank" rel="noopener">https://github.com/ChromeDevTools/chrome-devtools-mcp</a></td></tr>
+          <tr><td><span data-zh>Microsoft · Playwright MCP 仓库（72 个工具、v0.0.83 2026-09-28）</span><span data-en>Microsoft: Playwright MCP repository (72 tools; recorded v0.0.83, 2026-09-28)</span></td><td><a href="https://github.com/microsoft/playwright-mcp" target="_blank" rel="noopener"><span data-zh>https://github.com/microsoft/playwright-mcp</span><span data-en>https://github.com/microsoft/playwright-mcp</span></a></td></tr>
+          <tr><td><span data-zh>Browserbase · MCP 官方文档（托管端点与 6 个工具）</span><span data-en>Browserbase: official MCP documentation (hosted endpoint and six tools)</span></td><td><a href="https://docs.browserbase.com/integrations/mcp/introduction" target="_blank" rel="noopener"><span data-zh>https://docs.browserbase.com/integrations/mcp/introduction</span><span data-en>https://docs.browserbase.com/integrations/mcp/introduction</span></a></td></tr>
+          <tr><td><span data-zh>Browserbase · Pricing（档位名称与并发口径，2026-11-03 直抓）</span><span data-en>Browserbase: pricing (tier names and concurrency basis; retrieved 2026-11-03)</span></td><td><a href="https://www.browserbase.com/pricing" target="_blank" rel="noopener"><span data-zh>https://www.browserbase.com/pricing</span><span data-en>https://www.browserbase.com/pricing</span></a></td></tr>
+          <tr><td><span data-zh>ChromeDevTools · chrome-devtools-mcp 仓库（Apache-2.0、v1.12.0 2026-10-22）</span><span data-en>ChromeDevTools: chrome-devtools-mcp repository (Apache-2.0; recorded v1.12.0, 2026-10-22)</span></td><td><a href="https://github.com/ChromeDevTools/chrome-devtools-mcp" target="_blank" rel="noopener"><span data-zh>https://github.com/ChromeDevTools/chrome-devtools-mcp</span><span data-en>https://github.com/ChromeDevTools/chrome-devtools-mcp</span></a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>资料核验日期：2026-11-03。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-11-03. Features and terms may change; check the original sources before use.</span></p>
+        <p class="guide-foot"><span data-zh>资料快照日期：2026-11-03；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Source snapshot: 2026-11-03; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>
@@ -158,6 +176,8 @@
       </nav>
     </div>
     <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
       <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
     </div>
   </footer>

@@ -6,7 +6,7 @@
 
 可视化/低代码搭 AI 工作流与 agent 的产品——交付物是「搭出来的应用/流程」，运行在平台的运行时上。给程序用的编排 SDK 归 framework；传统 RPA（无 LLM 主轴）归 nav。
 
-本站共 10 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `automation` / `framework` / `mcp` / `runner`），本 README 描述「AI 自动化与工作流」这一个。
+本站共 11 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `automation` / `framework` / `mcp` / `runner` / `safety`），本 README 描述「AI 自动化与工作流」这一个。
 
 ## 这个大类提供什么
 
@@ -35,7 +35,7 @@
 | [Make](./make.html) | 网页服务 | Make（原 Integromat） | partial | 2026-10-30 |
 | [MaxKB](./maxkb.html) | 网页服务 | 飞致云（国产） | partial | 2026-10-30 |
 | [n8n](./n8n.html) | 网页服务 | n8n GmbH | partial | 2026-10-30 |
-| [Google Opal](./opal.html) | 网页服务 | Google Labs | partial | 2026-11-03 |
+| [Google Opal](./opal.html) | 网页服务 | Google Labs | partial | 2026-11-04 |
 | [Pipedream（Connect / Workflows）](./pipedream.html) | 网页服务 | Pipedream | partial | 2026-10-30 |
 | [Relevance AI](./relevance-ai.html) | 网页服务 | Relevance AI（悉尼） | partial | 2026-10-30 |
 | [SmythOS](./smythos.html) | 网页服务 | SmythOS | partial | 2026-10-30 |
@@ -74,6 +74,7 @@
 | [框架与运行时](/framework/) | 运行时、编排框架、SDK | 30 |
 | [MCP 工具](/mcp/) | 缺什么，装什么 —— 给 agent 装的 MCP 工具 | 32 |
 | [本地模型运行器](/runner/) | 在自己机器上跑开源模型 | 21 |
+| [AI 安全与评测](/safety/) | 拦得住、测得出、追得回 | 25 |
 
 ---
 

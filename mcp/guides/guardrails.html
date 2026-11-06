@@ -13,8 +13,8 @@
   <meta property="og:description" content="agent 的护栏：输入输出与工具三层防线、触发即止的 tripwire 机制，以及并行与阻塞的成本取舍。" />
   <meta name="theme-color" content="#16121f" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
-  <script src="../../brand.js?v=6a580ac0420e"></script>
-  <link rel="stylesheet" href="../../brand.css?v=6a580ac0420e" />
+  <script src="../../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../../brand.css?v=bf69a6d205ad" />
   <link rel="stylesheet" href="../../site.css" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Guardrails for agents","description":"Input, output, and tool-level defenses, tripwires that halt on trigger, and the cost trade-off between parallel and blocking checks.","dateModified":"2026-10-30"}</script>
 </head>
@@ -49,6 +49,7 @@
            （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
            链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
       <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
         <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
         <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
       </span>
@@ -92,6 +93,8 @@
       </div>
       <div class="panel-lead"><span data-zh><p>输入输出与工具三层防线、触发即止的 tripwire 机制，以及并行与阻塞的成本取舍。</p></span><span data-en><p>Input, output, and tool-level defenses, tripwires that halt on trigger, and the cost trade-off between parallel and blocking checks.</p></span></div>
 
+
+
       <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></a></li><li><a href="#guide-section-1"><span data-zh>三层防线</span><span data-en>Three lines of defense</span></a></li><li><a href="#guide-section-2"><span data-zh>触发即止：tripwire</span><span data-en>Tripwires: halt on trigger</span></a></li><li><a href="#guide-section-3"><span data-zh>并行还是阻塞：一笔成本账</span><span data-en>Parallel or blocking</span></a></li><li><a href="#guide-section-4"><span data-zh>拿什么当检查器</span><span data-en>What runs the check</span></a></li><li><a href="#guide-section-5"><span data-zh>设计上的纪律</span><span data-en>Design discipline</span></a></li></ul></nav>
       <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
@@ -133,18 +136,24 @@
       </div>
       <div class="panel is-slim" id="guide-section-5">
         <h2><span data-zh>设计上的纪律</span><span data-en>Design discipline</span></h2>
-        <span data-zh><p>1. 护栏管「行不行」，别顺手让它管「好不好」——那是评测的活。 2. 检查要快：挂在主流程前的护栏，本身不能成为延迟大头。 3. 失败要可见：拦了什么、为什么拦，要留痕，否则无法排查误杀。 4. 别只守门口：工具调用、交接、委派，每一跳都可能是入口。</p>
-            <p>最后一句官方提醒值得放在案头： <strong>Anthropic 官方原文</strong>：&quot;The autonomous nature of agents means higher costs, and the potential for compounding errors.&quot; 护栏不是万能药，但它是把错误复合按在第一步的那只手。</p></span><span data-en><p>1. Guardrails police &quot;allowed or not&quot; — don&#39;t let them drift into &quot;how good&quot;; that is evaluation&#39;s job. 2. Checks must be fast: a guardrail in front of the main flow must not itself become the latency hotspot. 3. Failures must be visible: what was blocked and why must leave a trace, or false positives cannot be debugged. 4. Don&#39;t guard only the front door: tool calls, handoffs, delegations — every hop can be an entry point.</p>
+        <span data-zh><ol><li value="1">护栏管「行不行」，别顺手让它管「好不好」——那是评测的活。</li><li value="2">检查要快：挂在主流程前的护栏，本身不能成为延迟大头。</li><li value="3">失败要可见：拦了什么、为什么拦，要留痕，否则无法排查误杀。</li><li value="4">别只守门口：工具调用、交接、委派，每一跳都可能是入口。</li></ol>
+            <p>最后一句官方提醒值得放在案头： <strong>Anthropic 官方原文</strong>：&quot;The autonomous nature of agents means higher costs, and the potential for compounding errors.&quot; 护栏不是万能药，但它是把错误复合按在第一步的那只手。</p></span><span data-en><ol><li value="1">Guardrails police &quot;allowed or not&quot; — don&#39;t let them drift into &quot;how good&quot;; that is evaluation&#39;s job.</li><li value="2">Checks must be fast: a guardrail in front of the main flow must not itself become the latency hotspot.</li><li value="3">Failures must be visible: what was blocked and why must leave a trace, or false positives cannot be debugged.</li><li value="4">Don&#39;t guard only the front door: tool calls, handoffs, delegations — every hop can be an entry point.</li></ol>
             <p>One last official reminder worth keeping on the desk: <strong>Anthropic official text</strong>: &quot;The autonomous nature of agents means higher costs, and the potential for compounding errors.&quot; Guardrails are not a cure-all, but they are the hand that pins compounding errors down at the first step.</p></span>
       </div>
+<nav class="panel is-slim" aria-label="接下来做什么" data-ui-aria-label-zh="接下来做什么" data-ui-aria-label-en="What to do next">
+<h2><span data-zh>接下来做什么</span><span data-en>What to do next</span></h2><ul>
+<li><a href="toolkit-worksheets.html"><span data-zh>记录约束、验收与未确认项</span><span data-en>Record constraints, acceptance and unknowns</span></a></li>
+<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh>核对结果与来源</span><span data-en>Verify the result and its sources</span></a></li>
+<li><a href="failure-library.html#by-symptom"><span data-zh>按症状排查失败</span><span data-en>Troubleshoot by symptom</span></a></li>
+</ul></nav>
       <div class="panel is-slim">
         <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
         <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
-          <tr><td><span data-zh>OpenAI Agents SDK 官方文档 · Guardrails（2026-10-30 直抓 200）</span><span data-en>OpenAI Agents SDK official docs · Guardrails (direct fetch 200 on 2026-10-30)</span></td><td><a href="https://openai.github.io/openai-agents-python/guardrails/" target="_blank" rel="noopener">https://openai.github.io/openai-agents-python/guardrails/</a></td></tr>
-          <tr><td><span data-zh>Llama Guard 论文（arXiv 2312.06674，2026-10-30 直抓摘要页）</span><span data-en>Llama Guard paper (arXiv 2312.06674, abstract page direct-fetched 2026-10-30)</span></td><td><a href="https://arxiv.org/abs/2312.06674" target="_blank" rel="noopener">https://arxiv.org/abs/2312.06674</a></td></tr>
-          <tr><td><span data-zh>Anthropic 工程博客 · Building effective agents（2026-10-30 直抓 200）</span><span data-en>Anthropic engineering blog · Building effective agents (official page verified via WebFetch on 2026-10-30)</span></td><td><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">https://www.anthropic.com/engineering/building-effective-agents</a></td></tr>
+          <tr><td><span data-zh>OpenAI Agents SDK 官方文档 · Guardrails（2026-10-30 直抓 200）</span><span data-en>OpenAI Agents SDK official docs · Guardrails (direct fetch 200 on 2026-10-30)</span></td><td><a href="https://openai.github.io/openai-agents-python/guardrails/" target="_blank" rel="noopener"><span data-zh>https://openai.github.io/openai-agents-python/guardrails/</span><span data-en>https://openai.github.io/openai-agents-python/guardrails/</span></a></td></tr>
+          <tr><td><span data-zh>Llama Guard 论文（arXiv 2312.06674，2026-10-30 直抓摘要页）</span><span data-en>Llama Guard paper (arXiv 2312.06674, abstract page direct-fetched 2026-10-30)</span></td><td><a href="https://arxiv.org/abs/2312.06674" target="_blank" rel="noopener"><span data-zh>https://arxiv.org/abs/2312.06674</span><span data-en>https://arxiv.org/abs/2312.06674</span></a></td></tr>
+          <tr><td><span data-zh>Anthropic 工程博客 · Building effective agents（2026-10-30 直抓 200）</span><span data-en>Anthropic engineering blog · Building effective agents (official page verified via WebFetch on 2026-10-30)</span></td><td><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener"><span data-zh>https://www.anthropic.com/engineering/building-effective-agents</span><span data-en>https://www.anthropic.com/engineering/building-effective-agents</span></a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>资料核验日期：2026-10-30。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-10-30. Features and terms may change; check the original sources before use.</span></p>
+        <p class="guide-foot"><span data-zh>资料快照日期：2026-10-30；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Source snapshot: 2026-10-30; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>
@@ -170,6 +179,8 @@
       </nav>
     </div>
     <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
       <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
     </div>
   </footer>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Lakera — Safety | 投机取巧</title>
+  <meta name="description" content="Lakera（Lakera）：Lakera 是「托管在厂商侧」的那一层 AI 安全：官网自我定位 &quot;The AI-Native Security Platform&quot;，产品面分 Workforce AI Security、AI Agent Security、AI Red Teaming 三条；工…" />
+  <link rel="canonical" href="https://tools.specul.com/safety/lakera-ai.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Lakera" />
+  <meta property="og:url" content="https://tools.specul.com/safety/lakera-ai.html" />
+  <meta property="og:title" content="Lakera — Safety | 投机取巧" />
+  <meta property="og:description" content="Lakera（Lakera）：Lakera 是「托管在厂商侧」的那一层 AI 安全：官网自我定位 &quot;The AI-Native Security Platform&quot;，产品面分 Workforce AI Security、AI Agent Security、AI Red Teaming 三条；工…" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../brand.css?v=bf69a6d205ad" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Lakera","applicationCategory":"DeveloperApplication","url":"https://platform.lakera.ai/","sameAs":"https://www.lakera.ai/","description":"Lakera 是「托管在厂商侧」的那一层 AI 安全：官网自我定位 \"The AI-Native Security Platform\"，产品面分 Workforce AI Security、AI Agent Security、AI Red Teaming 三条；工程侧能看到的是 platform.lakera.ai 的控制台加 api.lakera.ai 的 Bearer API。和本大类另外两份红队档案的分工很直白：garak 与 PyRIT 是「你自己跑、跑完留证据」， Lakera 是「你的请求每次经过它、它给一个 flagged 判定并允许你选择阻断还是留档」。当日另一个必须记的事实是","dateModified":"2026-11-06"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Safety</span>
+      </nav>
+      <a class="back" href="./">← Safety</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:&quot;#F26D6D&quot;" aria-hidden="true"><span data-zh>L</span><span data-en>LA</span></div>
+        <div>
+          <h1><span data-zh>Lakera</span><span data-en>Lakera</span></h1>
+          <div class="vendor is-caps">Lakera</div>
+        </div>
+      </div>
+
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
+      <div class="badges">
+        <span class="tag on"><span data-zh>云端</span><span data-en>Cloud</span></span>
+        <span class="tag on"><span data-zh>商业</span><span data-en>Commercial</span></span>
+        <span class="tag on"><span data-zh>guardrails</span><span data-en>guardrails</span></span>
+        <span class="tag on"><span data-zh>API</span><span data-en>API</span></span>
+        <span class="tag on"><span data-zh>多平台</span><span data-en>Multi-platform</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-11-06</span>
+      </div>
+
+      <p class="t-sm"><span data-zh>核验标记表示资料完整度，不是产品评分。下列未确认项可能影响选型；请按对应来源逐项确认。</span><span data-en>The confidence mark describes evidence completeness, not a product score. Unconfirmed items below may affect your choice; check them against the relevant sources.</span></p>
+            <div class="panel is-slim">
+        <h2 id="known-unknowns"><span data-zh>未确认的信息</span><span data-en>Information not confirmed</span></h2>
+        <span data-zh>
+        <ul>
+          <li>客户 prompt / 响应内容的留存期、删除路径与是否用于模型训练（条款未逐条区分）</li>
+          <li>合规证书与审计材料（SOC 2、ISO 27001、DPA、subprocessor 清单）：当日抓到的页面未点名</li>
+          <li>私有化 / 自托管形态是否存在</li>
+          <li>商业档位结构与额度（pricing 跳转页当日未渲染出正文）</li>
+          <li>底层检测模型能否替换或自选档位</li>
+          <li>MCP 集成的具体传输形态与工具审批语义</li>
+          <li>红队评估项目的周期、并发与交付格式</li>
+          <li>大陆网络直连可用性与备案情况（未实测、未检索）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>Retention period, deletion path and training use of customer prompt/response content (the terms do not address it separately)</li>
+          <li>Compliance certificates and audit material (SOC 2, ISO 27001, DPA, subprocessor list): not named on the pages captured</li>
+          <li>Whether a private or self-hosted form exists</li>
+          <li>Commercial tier structure and quotas (the pricing redirect did not render tier text)</li>
+          <li>Whether the underlying detection model can be replaced or chosen</li>
+          <li>The concrete MCP integration transport and tool-approval semantics</li>
+          <li>Red assessment turnaround, concurrency and deliverable format</li>
+          <li>Mainland-network direct reachability and filing status (not measured, not searched)</li>
+        </ul></span>
+      </div>
+
+
+            <p class="t-xs" data-en>English summaries and interface labels are available. Detailed source notes below are currently in Chinese.</p>
+      <div class="panel-lead"><span data-zh><p><strong>Lakera 是「托管在厂商侧」的那一层 AI 安全</strong>：官网自我定位 &quot;The AI-Native Security Platform&quot;，产品面分 Workforce AI Security、AI Agent Security、AI Red Teaming 三条；工程侧能看到的是 platform.lakera.ai 的控制台加 api.lakera.ai 的 Bearer API。<strong>和本大类另外两份红队档案的分工很直白</strong>：garak 与 PyRIT 是「你自己跑、跑完留证据」， Lakera 是「你的请求每次经过它、它给一个 flagged 判定并允许你选择阻断还是留档」。当日另一个必须记的事实是 <strong>归属与条款入口已经统一到 Check Point</strong>（privacy 与 security 都 301 过去）。</p></span><span data-en><p><strong>Lakera 是「托管在厂商侧」的那一层 AI 安全</strong>：官网自我定位 &quot;The AI-Native Security Platform&quot;，产品面分 Workforce AI Security、AI Agent Security、AI Red Teaming 三条；工程侧能看到的是 platform.lakera.ai 的控制台加 api.lakera.ai 的 Bearer API。<strong>和本大类另外两份红队档案的分工很直白</strong>：garak 与 PyRIT 是「你自己跑、跑完留证据」， Lakera 是「你的请求每次经过它、它给一个 flagged 判定并允许你选择阻断还是留档」。当日另一个必须记的事实是 <strong>归属与条款入口已经统一到 Check Point</strong>（privacy 与 security 都 301 过去）。</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+        <div><p>适合：要在链路里实时管住 prompt injection / jailbreak / PII 泄露 / 违规内容，并接受检测跑在厂商侧；策略需要按项目 在「block the interaction」与「logging for investigation」之间切换；栈里已经有 Amazon Bedrock、Google Cloud、 Microsoft Copilot Studio、Salesforce Agentforce、n8n、Relevance AI 或 MCP server。不适合：必须离线或私有化 （未取到该口径）、要替换或自选底层检测模型、只想跑一轮可复现扫描留工程证据、以及需要自助开通的红队评估 （Red 需联系团队）。</p></div>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-11-06</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>当日在册的属地证据只有官网页脚与隐私条款跳转指向 Check Point 主体；Lakera 自身的注册主体与国籍背景本批次未逐条核验，故按 foreign 记录。</span><span data-en>The only locality evidence on record the same day is the site footer and the privacy redirect pointing at the Check Point entity; Lakera&#39;s own registering entity and nationality background were not verified item by item, so it is recorded as foreign.</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>直连未核验</span><span data-en>direct unknown</span>　<span data-zh>lakera.ai、docs.lakera.ai 与 checkpoint.com 当日从当前网络取到 200/301，但未在大陆网络环境做直连实测，故记未知。</span><span data-en>lakera.ai, docs.lakera.ai and checkpoint.com returned 200/301 from the current network on the verification date, but no mainland-network direct-connection measurement was made, so it is recorded as unknown.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>备案未核验</span><span data-en>filing unknown</span>：<span data-zh>无官方依据，本批次未检索生成式 AI 备案公示，不下「未备案」结论。</span><span data-en>No official basis; the generative-AI filing registry was not searched in this pass, so no &quot;not filed&quot; conclusion is drawn.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis" id="dimension-model_access">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>它守与评的不是某一家模型，而是你的应用链路：文档把 Amazon Bedrock、Google Cloud、Microsoft Copilot Studio、 Salesforce Agentforce、n8n、Relevance AI 与 MCP servers 列为集成面。Guard API 收下的是文本（POST 带 messages 与 project_id），不是权重；底层检测模型能否替换、能否自选档位：官方未披露，API Reference 只在响应的 developer 信息里 给 git_revision 与 model_version 两个字段。</p></span><span data-en><p>What it guards and evaluates is not one vendor&#39;s model but your application chain: the docs list Amazon Bedrock, Google Cloud, Microsoft Copilot Studio, Salesforce Agentforce, n8n, Relevance AI and MCP servers as integration surfaces. The Guard API takes text (a POST with messages and project_id), not weights; whether the underlying detection model can be swapped or a tier chosen: not disclosed officially — the API Reference only exposes git_revision and model_version inside the response&#39;s developer info.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-runtime">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>云侧交付：注册与配置在 platform.lakera.ai，检测走 api.lakera.ai 的托管 API，鉴权形式是 「Authorization: Bearer $LAKERA_GUARD_API_KEY」，官方 quickstart 的调用是 POST https://api.lakera.ai/v2/guard。 官网自我定位「The AI-Native Security Platform」，产品面写作 Workforce AI Security、AI Agent Security、AI Red Teaming。 本机或私有化形态：本批次未取到官方口径，记未知。</p></span><span data-en><p>Delivered from the cloud: sign-up and configuration at platform.lakera.ai, detection through the hosted API at api.lakera.ai, authentication of the form &quot;Authorization: Bearer $LAKERA_GUARD_API_KEY&quot;, and the official quickstart call is POST https://api.lakera.ai/v2/guard. The site self-describes as &quot;The AI-Native Security Platform&quot;, with product lines Workforce AI Security, AI Agent Security and AI Red Teaming. A local or private-deployment form: no official statement captured in this pass, recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-local_files">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>本机不落地：prompt 与响应由你的应用发出与收回，判定结果可在控制台的 Guard 结果面回看（文档列 /guard 与 /guard/results 两个端点）。命中记录的导出格式、保留时长与删除方式：官方在册页未逐条给出，进 unknowns。</p></span><span data-en><p>Nothing lands locally: prompts and responses are sent and returned by your application, and decisions can be reviewed in the console&#39;s Guard results surface (the docs list the /guard and /guard/results endpoints). Export format, retention duration and deletion path for hit records: not given item by item on the pages on record, moved to unknowns.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-background">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>两类异步要分开读：Guard 是同步 API 调用，官方口径是实时筛查；Red 是一次托管评估项目，文档写四步流程 （enumeration、attack development、impact testing、reporting），交付「detailed findings with remediation guidance」。 项目时长、并发上限与结果通知机制：官方未说明。</p></span><span data-en><p>Two kinds of asynchronous behaviour must be read separately: Guard is a synchronous API call that the official framing describes as real-time screening; Red is a hosted assessment project, documented as four steps (enumeration, attack development, impact testing, reporting) delivering &quot;detailed findings with remediation guidance&quot;. Project duration, concurrency limits and result notification: not stated officially.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-tools">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>API 面两个端点在册（/guard 与 /guard/results），响应含 flagged 布尔判定。集成面见 model_access 维那份清单， 其中「MCP servers」被官方列进受保护对象面——也就是说它既可作为 MCP 侧的防护，也把 MCP server 当被检对象。 具体传输方式与工具审批语义：本批次未逐条核验。</p></span><span data-en><p>Two API endpoints on record (/guard and /guard/results), with a boolean flagged verdict in the response. The integration surface is the list in the model_access axis, where &quot;MCP servers&quot; appears among the protected objects — meaning it both acts as MCP-side protection and treats MCP servers as objects under inspection. Concrete transports and tool-approval semantics: not verified item by item in this pass.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-context">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>判定按单次文本请求组织，策略按 project 分档（Project mode 决定「block the interaction or logging for investigation」）， 因此它的「记忆」面就是项目与策略配置，不是跨会话上下文。跨会话记忆或历史串联：官方未说明，记未知。</p></span><span data-en><p>Verdicts are organised per text request, and policies are tiered per project (Project mode decides between &quot;block the interaction or logging for investigation&quot;), so its &quot;memory&quot; surface is project and policy configuration, not cross-session context. Cross-session memory or history stitching: not stated officially, recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-permissions">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>按官方条款逐条读：隐私入口当日 301 到 checkpoint.com/privacy，主体写作「Check Point Software Technologies Ltd.」； 留存原文是「We will retain your information for as long as necessary to achieve the purposes described in this Privacy Policy.」；出境原文是「We may collect and transfer Personal Data on a global basis」并说明 EEA/UK 之外的 传输依 adequacy 等机制之一；用途原文含「We may use telemetry, threat indicators … including capabilities powered by artificial intelligence (AI)」。⚠ 这些句子说的是个人信息与遥测，<strong>没有逐条区分客户 prompt 内容的留存期与训练用途</strong>， 该项进 unknowns，不做推断。商业档位：pricing 入口当日跳转 platform.lakera.ai/pricing，未渲染出档位正文，报价本站不采。</p></span><span data-en><p>Read clause by clause from the official terms: the privacy entry 301s to checkpoint.com/privacy, where the entity is written as &quot;Check Point Software Technologies Ltd.&quot;; the retention sentence reads &quot;We will retain your information for as long as necessary to achieve the purposes described in this Privacy Policy.&quot;; the transfer sentence reads &quot;We may collect and transfer Personal Data on a global basis&quot;, with transfers outside the EEA/UK handled via adequacy or one of the other listed mechanisms; the usage sentence includes &quot;We may use telemetry, threat indicators … including capabilities powered by artificial intelligence (AI)&quot;. ⚠ Those sentences speak about personal data and telemetry, and <strong>do not separately address retention or training use of customer prompt content</strong> — that item goes to unknowns, with no inference. Commercial tiers: the pricing entry redirects to platform.lakera.ai/pricing, which did not render tier text when fetched; this site does not collect prices.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-fit">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合：要在请求链路里实时管住 prompt injection / jailbreak / PII 泄露 / 违规内容，并且接受检测跑在厂商侧； 策略要能在「阻断」与「只留档」之间按项目切换；栈里已经有 Bedrock、Copilot Studio、Agentforce、n8n 或 MCP server。 不适合：必须离线或私有化部署（未取到该口径）；要换掉/自选底层检测模型；只想自己跑一轮可复现扫描留工程证据 （那是 garak 与 PyRIT 的方向）；Red 评估还要联系团队、非自助开通。</p></span><span data-en><p>Fits: needing live control of prompt injection / jailbreak / PII leakage / violating content inside the request path, accepting that detection runs vendor-side; needing policies that switch per project between blocking and logging only; already running Bedrock, Copilot Studio, Agentforce, n8n or MCP servers. Not a fit: mandatory offline or private deployment (no such statement captured); wanting to swap or choose the underlying detection model; wanting only a reproducible self-run scan for engineering evidence (that is the garak and PyRIT direction); and Red assessments are not self-serve.</p></span></dd>
+        </div>
+      </dl>
+
+      <nav class="panel is-slim" aria-label="使用排查" data-ui-aria-label-zh="使用排查" data-ui-aria-label-en="Troubleshooting">
+        <h2><span data-zh>使用时遇到问题</span><span data-en>When something fails</span></h2>
+        <p><a href="../mcp/guides/failure-library.html#auth"><span data-zh>账号与权限</span><span data-en>Account and permissions</span></a> · <a href="../mcp/guides/failure-library.html#rate-limit"><span data-zh>限流与重试</span><span data-en>Rate limits and retries</span></a> · <a href="../mcp/guides/failure-library.html#files"><span data-zh>文件读取问题</span><span data-en>File-reading issues</span></a></p>
+      </nav>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li>把官网三条产品线当成可自托管组件：当日在册只有托管控制台 + Bearer API</li>
+          <li>把 Project mode 的「block」读成拦截比例：官方在册的是策略开关，不给任何比例结论</li>
+          <li>还按 Lakera 旧主体读数据条款：privacy 与 security 入口当日均 301 到 Check Point 侧</li>
+        </ul>
+      </div>
+
+
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>最近核验记录</span><span data-en>Latest recorded check</span> 2026-11-06，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-11-06。<span data-zh>单项复核范围见正文或来源说明，不代表所有字段在同一天重新核验。</span><span data-en>See the text or source notes for item-specific scope; this does not mean every field was rechecked on that date.</span></p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>official</td><td><span data-zh>Lakera · 官网首页（「The AI-Native Security Platform」、三条产品线、docs 入口与 Check Point 署名；直读 200，2026-11-06）</span><span data-en>Lakera · official site (&quot;The AI-Native Security Platform&quot;, the three product lines, the docs entry and the Check Point credit; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://www.lakera.ai/" target="_blank" rel="noopener">https://www.lakera.ai/</a></td></tr>
+            <tr><td>official</td><td><span data-zh>Lakera · /security 跳转事实（301 → checkpoint.com/ai-security/；当日实测，2026-11-06）</span><span data-en>Lakera · /security redirect fact (301 → checkpoint.com/ai-security/; measured the same day, 2026-11-06)</span></td><td><a href="https://www.lakera.ai/security" target="_blank" rel="noopener">https://www.lakera.ai/security</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Check Point · AI Security 页（跳转目标在册产品线：Workforce / Application / Agent Runtime Security / AI Red Teaming；直读 200，2026-11-06）</span><span data-en>Check Point · AI Security page (redirect target with product lines on record: Workforce / Application / Agent Runtime Security / AI Red Teaming; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://www.checkpoint.com/ai-security/" target="_blank" rel="noopener">https://www.checkpoint.com/ai-security/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Check Point · Privacy Policy（主体名、留存句、全球传输句、telemetry 与 AI 用途句；直读 200，2026-11-06）</span><span data-en>Check Point · Privacy Policy (entity name, retention sentence, global-transfer sentence, telemetry-and-AI usage sentence; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://www.checkpoint.com/privacy/" target="_blank" rel="noopener">https://www.checkpoint.com/privacy/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Lakera Docs · Developer quickstart（platform.lakera.ai 注册、LAKERA_GUARD_API_KEY、POST api.lakera.ai/v2/guard 与 messages/project_id；直读 200，2026-11-06）</span><span data-en>Lakera Docs · Developer quickstart (platform.lakera.ai sign-up, LAKERA_GUARD_API_KEY, POST api.lakera.ai/v2/guard with messages/project_id; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://docs.lakera.ai/docs/quickstart" target="_blank" rel="noopener">https://docs.lakera.ai/docs/quickstart</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Lakera Docs · API Reference（/guard 与 /guard/results、Bearer 鉴权、响应含 git_revision 与 model_version；直读 200，2026-11-06）</span><span data-en>Lakera Docs · API Reference (/guard and /guard/results, Bearer authentication, responses carrying git_revision and model_version; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://docs.lakera.ai/api-reference" target="_blank" rel="noopener">https://docs.lakera.ai/api-reference</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Lakera Docs · AI Agent Security / Guard（防护类别、Project mode 的阻断或留档、集成清单含 MCP servers；直读 200，2026-11-06）</span><span data-en>Lakera Docs · AI Agent Security / Guard (protection categories, Project mode block-or-log, integration list including MCP servers; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://docs.lakera.ai/guard" target="_blank" rel="noopener">https://docs.lakera.ai/guard</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Lakera Docs · AI Red Teaming（四步评估流程、覆盖的攻击类别、交付物、需联系团队；直读 200，2026-11-06）</span><span data-en>Lakera Docs · AI Red Teaming (four-step assessment flow, attack categories covered, deliverables, contact-sales requirement; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://docs.lakera.ai/red" target="_blank" rel="noopener">https://docs.lakera.ai/red</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>Lakera Docs · Changelog 2026-10-26（Analytics 页给 Guard API 延迟 25/50/75/95 分位图；直读 200，2026-11-06）</span><span data-en>Lakera Docs · Changelog 2026-10-26 (Guard API latency 25/50/75/95 percentile chart added to Analytics; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://docs.lakera.ai/changelog/2026-10-26" target="_blank" rel="noopener">https://docs.lakera.ai/changelog/2026-10-26</a></td></tr>
+            <tr><td>pricing</td><td><span data-zh>Lakera · Pricing 入口（301 → platform.lakera.ai/pricing；当日抓取未渲染出档位正文，报价不采，2026-11-06）</span><span data-en>Lakera · Pricing entry (301 → platform.lakera.ai/pricing; tier text did not render when fetched, prices not collected, 2026-11-06)</span></td><td><a href="https://www.lakera.ai/pricing" target="_blank" rel="noopener">https://www.lakera.ai/pricing</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>官方口径与未核到项</span><span data-en>Official record and unverified items</span></h2>
+        <span data-zh><p><strong>本站未做端到端实测</strong>：没有发起过 /guard 调用，没有跑过 Red 评估项目，不产出延迟、准确率或任何比例结论， 也不做产品排名。本档案只组织官网、跳转事实、Check Point 隐私条款、四个 Docs 页面与 Changelog 在册的说法。 <strong>实测建议</strong>（四条）：</p>
+            <ul><li><strong>策略分档的实际语义</strong>：Project mode 选「logging」时，你的应用拿到的是什么形态的响应（flagged 字段与后续处置）</li><li><strong>响应里 model_version 的可追溯性</strong>：能否用于变更审计，官方未说明</li><li><strong>客户 prompt 内容的留存期与删除路径</strong>（条款未逐条区分，见 unknowns）</li><li><strong>私有化/自托管是否存在</strong>（当日未取到任何官方口径）</li></ul></span><span data-en><p><strong>This site has not run it end to end</strong>: no /guard call issued, no Red assessment project run, so no latency, accuracy or ratio conclusions and no product rankings. This archive only organises statements on record at the official site, the redirect evidence, Check Point&#39;s privacy policy, four docs pages and the changelog.</p>
+            <p><strong>Suggested measurements</strong> (four):</p>
+            <ul><li><strong>What &quot;logging&quot; actually returns</strong>: when Project mode is set to log-only, what shape of response your application receives (the flagged field and downstream handling)</li><li><strong>Traceability of model_version in responses</strong>: whether it is usable for change audit, which the vendor does not state</li><li><strong>Retention and deletion path for customer prompt content</strong> (the terms do not separate it; see unknowns)</li><li><strong>Whether a private/on-prem form exists</strong> (no official statement captured)</li></ul></span>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2>变更记录说明</h2>
+        <p>本对象有独立 changelog：docs.lakera.ai/changelog/ 下按日期分条，最新在册条目为 2026-10-26（Analytics 页新增 Guard API 请求延迟的 25/50/75/95 分位图），sitemap 可回溯到 2023-10-05，条目大致两周一条。 <strong>这条变化对本档案的意义是运维面而不是防护面</strong>：它给的是延迟观测，不是拦截效果指标；本站不把任何此类数值转写成 「拦得住多少」。仓库形态为闭源 SaaS，无 releases 可比。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2>能力边界</h2>
+        <ul><li>能确认的判定类别（官方 Guard 页在册）：prompt attacks / data leakage / content violations，含 jailbreak、PII、 攻击性与违规内容，以及「dangerous actions outside the agent&#39;s trusted mandate」这类 agent 越权动作。</li><li>判定形式是<strong>每次请求返回的布尔与分类</strong>，不是覆盖率证明；类别名字说明的是测试语义，本站不做比例换算。</li><li>检测发生在 Lakera/Check Point 侧，这意味着数据出境与留存是选型的第一道问题——而当日条款文本只覆盖个人信息与遥测， <strong>客户 prompt 内容的留存与训练用途未逐条在册</strong>。</li></ul>
+      </div>
+      <div class="panel is-slim">
+        <h2>部署建议</h2>
+        <ol><li value="1">先解决尽调问题：客户 prompt 是否出境、留存多久、是否进训练——当日条款文本<strong>没有</strong>逐条回答这三问，要拿 DPA 再判。</li><li value="2">灰度时先让 Project mode 走「logging」，把 flagged 的处置权留在自己应用里，再决定何时切「block」。</li><li value="3">把响应里的 model_version / git_revision 记进你的变更日志，否则事后无法举证当时用的是哪一版检测。</li><li value="4">红队需求先分清：要工程可复现的探针记录走 PyRIT/garak，要一份带整改建议的托管评估再联系 Lakera Red。</li></ol>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./azure-ai-content-safety.html"><span data-zh>Azure AI Content Safety</span><span data-en>Azure AI Content Safety</span></a></span><span class="rel-n"><span data-zh>同为托管内容安全 API：那份挂在 Azure 账号与区域口径下，本档案挂在 Check Point 主体的 SaaS 条款下。</span><span data-en>Also a hosted content-safety API: that archive sits under Azure&#39;s account and region terms, this one under the Check Point entity&#39;s SaaS terms.</span></span></li>
+          <li><span class="rel-t"><a href="./pyrit.html"><span data-zh>PyRIT</span><span data-en>PyRIT</span></a></span><span class="rel-n"><span data-zh>同一问题的两端：本档案是链路里的托管判定，那份是你自己编排、自己留记录的红队流程。</span><span data-en>Two ends of the same question: this archive is a hosted verdict inside the request path, that one is a red-teaming pipeline you orchestrate and record yourself.</span></span></li>
+          <li><span class="rel-t"><a href="/automation/n8n.html"><span data-zh>n8n</span><span data-en>n8n</span></a></span><span class="rel-n"><span data-zh>官方在册的集成面之一：agent 工作流平台是它被防护的对象形态。</span><span data-en>One of the integration surfaces on record: an agent workflow platform is exactly the object shape it protects.</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

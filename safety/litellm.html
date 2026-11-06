@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>LiteLLM 网关（Proxy / AI Gateway） — Safety | 投机取巧</title>
+  <meta name="description" content="LiteLLM 网关（Proxy / AI Gateway）（BerriAI · LiteLLM）：它是自己部署的统一入口，治理面在密钥与预算上。 官方把它写成开源 AI 网关：一种 OpenAI 格式接住多家 provider， 再把「谁能调哪个模型、花多少钱、能碰哪些工具」变成可配置的对象。" />
+  <link rel="canonical" href="https://tools.specul.com/safety/litellm.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="LiteLLM 网关（Proxy / AI Gateway）" />
+  <meta property="og:url" content="https://tools.specul.com/safety/litellm.html" />
+  <meta property="og:title" content="LiteLLM 网关（Proxy / AI Gateway） — Safety | 投机取巧" />
+  <meta property="og:description" content="LiteLLM 网关（Proxy / AI Gateway）（BerriAI · LiteLLM）：它是自己部署的统一入口，治理面在密钥与预算上。 官方把它写成开源 AI 网关：一种 OpenAI 格式接住多家 provider， 再把「谁能调哪个模型、花多少钱、能碰哪些工具」变成可配置的对象。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../brand.css?v=bf69a6d205ad" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LiteLLM 网关（Proxy / AI Gateway）","applicationCategory":"DeveloperApplication","url":"https://docs.litellm.ai/docs/simple_proxy","sameAs":"https://docs.litellm.ai/","description":"它是自己部署的统一入口，治理面在密钥与预算上。 官方把它写成开源 AI 网关：一种 OpenAI 格式接住多家 provider， 再把「谁能调哪个模型、花多少钱、能碰哪些工具」变成可配置的对象。","dateModified":"2026-11-06"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Safety</span>
+      </nav>
+      <a class="back" href="./">← Safety</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#f26d6d" aria-hidden="true"><span data-zh>Li</span><span data-en>LI</span></div>
+        <div>
+          <h1><span data-zh>LiteLLM 网关（Proxy / AI Gateway）</span><span data-en>LiteLLM Proxy (AI Gateway)</span></h1>
+          <div class="vendor is-caps">BerriAI · LiteLLM</div>
+        </div>
+      </div>
+
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
+      <div class="badges">
+        <span class="tag on"><span data-zh>本地</span><span data-en>Local</span></span>
+        <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
+        <span class="tag on"><span data-zh>自托管</span><span data-en>Self-hosted</span></span>
+        <span class="tag on"><span data-zh>云端</span><span data-en>Cloud</span></span>
+        <span class="tag on"><span data-zh>权限链</span><span data-en>Permission chain</span></span>
+        <span class="tag on"><span data-zh>webhook</span><span data-en>webhook</span></span>
+        <span class="tag on"><span data-zh>MCP</span><span data-en>MCP</span></span>
+        <span class="tag on"><span data-zh>guardrails</span><span data-en>guardrails</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-11-06</span>
+      </div>
+
+      <p class="t-sm"><span data-zh>核验标记表示资料完整度，不是产品评分。下列未确认项可能影响选型；请按对应来源逐项确认。</span><span data-en>The confidence mark describes evidence completeness, not a product score. Unconfirmed items below may affect your choice; check them against the relevant sources.</span></p>
+            <div class="panel is-slim">
+        <h2 id="known-unknowns"><span data-zh>未确认的信息</span><span data-en>Information not confirmed</span></h2>
+        <span data-zh>
+        <ul>
+          <li>批处理 / 异步作业（videos、batches 等）的托管面细节与限制</li>
+          <li>开源版与企业版的完整特性分界清单（只取到文档点到为止的条目）</li>
+          <li>官方云托管版的数据驻留与留存政策</li>
+          <li>合规认证与第三方审计报告</li>
+          <li>数据库与缓存的最小部署要求（Helm / Terraform 之外的裸机口径）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>Hosted details and limits of batch / asynchronous jobs (videos, batches and similar)</li>
+          <li>The full open-source versus Enterprise feature split (only the items the docs mention were verified)</li>
+          <li>Data residency and retention terms of the official hosted cloud</li>
+          <li>Compliance certifications and third-party audit reports</li>
+          <li>Minimum deployment requirements beyond Helm / Terraform (bare-metal sizing, cache needs)</li>
+        </ul></span>
+      </div>
+
+
+            
+      <div class="panel-lead"><span data-zh><p>它是自己部署的统一入口，治理面在密钥与预算上。</p>
+            <p>官方把它写成开源 AI 网关：一种 OpenAI 格式接住多家 provider， 再把「谁能调哪个模型、花多少钱、能碰哪些工具」变成可配置的对象。</p></span><span data-en><p>它是自己部署的统一入口，治理面在密钥与预算上。</p>
+            <p>官方把它写成开源 AI 网关：一种 OpenAI 格式接住多家 provider， 再把「谁能调哪个模型、花多少钱、能碰哪些工具」变成可配置的对象。</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+        <div><p>适合要把多模型接入收口、需要按 key / team / organization 分层授权，并坚持把密钥与日志留在自己环境里的团队。 不适合只要一个薄客户端 SDK 的场景，也不适合必须拿到厂商背书的托管护栏与合规承诺的团队—— 护栏在这里是「你挂进来的外部服务」，不是厂商担保。</p></div>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-11-06</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>BerriAI / LiteLLM 主体（PyPI 与官网当日在册）；开源项目，无中国区特供版本的官方声明。</span><span data-en>BerriAI / LiteLLM (on the PyPI page and official site the same day); an open-source project with no official statement about a China-specific edition.</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>同日实测 docs.litellm.ai、www.litellm.ai 与 pypi.org 返回 200，安装路由可用；自建服务不依赖厂商区域，故「可用」指自托管路由，不指任何合规承诺。</span><span data-en>Same-day probes returned 200 for docs.litellm.ai, www.litellm.ai and pypi.org, so the install route works; self-hosting does not depend on vendor regions. &quot;Usable&quot; here means the self-hosted route, not any compliance claim.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>备案未核验</span><span data-en>filing unknown</span>：<span data-zh>官方文档与官网未写中国大陆备案/登记信息；本次未检索监管公示名单，不做推断。</span><span data-en>The docs and site say nothing about mainland filing/registration; the public registry was not searched.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis" id="dimension-model_access">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>这是它的主轴之一：官方 providers 页在册「100+ LLM，一种 OpenAI 格式」，密钥自带（BYO key）； 自托管端点也在这条线上（页内在册 Ollama、vLLM、Llamafile）。release notes 在册 provider 持续新增 （2026-11 条目含 Microsoft 365 Copilot、Azure PTU 容量等）。护栏判定不内置，由挂进来的外部 rail 完成。</p></span><span data-en><p>This is one of its two main axes: the providers page records &#39;100+ LLMs&#39; behind one OpenAI-format API with bring-your-own keys, and self-hosted endpoints on the same page (Ollama, vLLM, Llamafile). Release notes record providers still being added (the 2026-11 entries include Microsoft 365 Copilot and Azure PTU capacity). No guardrail judgement is built in; it comes from external rails you attach.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-runtime">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>自托管为主：simple-proxy 页在册 pip 安装后 <code>litellm --config config.yaml</code> 起服务，默认 4000 端口； deploy 页在册镜像 ghcr.io/berriai/litellm、Docker 运行示例、Helm / Terraform 与 Postgres 依赖、 健康检查 /health/readiness。首页在册另有托管云用法。生产需数据库这点在 simple-proxy 页明写。</p></span><span data-en><p>Self-hosting first: the simple-proxy page records pip install then <code>litellm --config config.yaml</code>, default port 4000. The deploy page records the ghcr.io/berriai/litellm image, a docker run example, Helm / Terraform, a Postgres dependency and the /health/readiness check. The site also records a hosted cloud usage path. Production requiring a database is stated plainly on the simple-proxy page.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-local_files">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>读的是你本机的 config.yaml（模型清单、密钥引用、guardrail 配置），密钥与路由定义都在你自己的环境； 花费与日志写进你自管的 Postgres。它不读你的业务代码工作区，文件面就是配置与数据落库两处。</p></span><span data-en><p>It reads your own config.yaml (model list, key references, guardrail settings); keys and routing definitions stay in your environment, and spend and logs go into the Postgres you manage. It does not read your application source tree - the file surface is configuration plus where you persist data.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-background">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>它是常驻网关进程，请求排队、重试与路由由服务侧处理；跨关机续跑取决于你怎么部署（Helm / VM）。 批处理与异步作业面（如 videos / batches）只在 release notes 里出现过，官方专页本档未逐条核验，记为未知。</p></span><span data-en><p>It is a long-running gateway process: queueing, retries and routing happen service-side, and surviving a shutdown depends on how you deploy it (Helm or a VM). The batch and asynchronous job surface (videos / batches) has only appeared in release notes; dedicated pages were not verified item by item and are recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-tools">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>官方 MCP 页在册它是「MCP Gateway」，提供「governed access to tools」：server 走 config.yaml 或 UI 配置， 传输支持 HTTP / SSE / stdio，鉴权含 OAuth、API key 与 AWS SigV4，访问按 key / team / organization 控制。 另外有 A2A、Auto Router、logging 与 OpenTelemetry 页在文档导航在册。</p></span><span data-en><p>The MCP page records it acting as an &#39;MCP Gateway&#39; offering &#39;governed access to tools&#39;: servers configured through config.yaml or the UI, transports HTTP / SSE / stdio, authentication via OAuth, API keys and AWS SigV4, with access scoped by key, team and organization. A2A, Auto Router, logging and OpenTelemetry pages sit in the documentation navigation.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-context">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>上下文由调用方透传，网关自身不做记忆或压缩。虚拟密钥、预算与团队是访问层的边界，不是上下文层； 上下文窗口实际大小由你路由到的模型决定。</p></span><span data-en><p>Context passes through from the caller; the gateway itself keeps no memory and does no compression. Virtual keys, budgets and teams are access-layer boundaries, not context-layer ones, and the effective window is whatever the routed model gives you.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-permissions">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>访问控制是它的核心：virtual-keys 页在册密钥经 /key/generate 签发，可限模型、预算、速率与团队， 主密钥用于管理，定时轮换属企业版。guardrails 页在册多数护栏在开源侧可用， 动态参数与逐 key 护栏控制需企业版。数据流向取决于你接的 provider；SSO 与审计日志在企业版口径下（simple-proxy 页在册）。 合规认证与第三方审计未核验到官方在册页，记为未知。</p></span><span data-en><p>Access control is its core: the virtual-keys page records keys minted through /key/generate, model, budget, rate-limit and team scoping, a master key for administration, and scheduled rotation as an Enterprise capability. The guardrails page records that most integrations run in the open-source build while dynamic parameters and per-key rail control need Enterprise. Data flow follows whichever providers you attach. SSO and audit logs sit in the Enterprise framing (simple-proxy page). Compliance certifications and third-party audits were not found on official pages and are recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-fit">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合要把多家 provider 收成一个 OpenAI 兼容入口、同时按 key / team 做预算与访问治理、并坚持自托管的团队。 不适合只要一个薄 SDK 的场景，也不适合把「厂商背书的托管护栏 + 合规承诺」当必需项的团队。</p></span><span data-en><p>Fits: teams collapsing many providers into one OpenAI-compatible entry point, governing spend and access per key or team, and insisting on self-hosting. Not a fit: anyone wanting only a thin client SDK, nor anyone for whom a vendor-backed hosted guardrail with compliance attestations is a requirement - rails here are external services you plug in, not a vendor guarantee.</p></span></dd>
+        </div>
+      </dl>
+
+      <nav class="panel is-slim" aria-label="使用排查" data-ui-aria-label-zh="使用排查" data-ui-aria-label-en="Troubleshooting">
+        <h2><span data-zh>使用时遇到问题</span><span data-en>When something fails</span></h2>
+        <p><a href="../mcp/guides/failure-library.html#auth"><span data-zh>账号与权限</span><span data-en>Account and permissions</span></a> · <a href="../mcp/guides/failure-library.html#rate-limit"><span data-zh>限流与重试</span><span data-en>Rate limits and retries</span></a> · <a href="../mcp/guides/failure-library.html#files"><span data-zh>文件读取问题</span><span data-en>File-reading issues</span></a></p>
+      </nav>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li>以为开源版就带 SSO 与审计日志：官方 simple-proxy 页把这些写在企业版口径里</li>
+          <li>以为 MCP 工具接进来就安全：MCP 页在册的是按 key / team / org 的授权面，策略仍要自己配</li>
+          <li>以为 100+ provider 等于都能挂护栏：护栏集成是另一份清单，逐 key 控制还要企业版</li>
+        </ul>
+      </div>
+
+
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>最近核验记录</span><span data-en>Latest recorded check</span> 2026-11-06，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-11-06。<span data-zh>单项复核范围见正文或来源说明，不代表所有字段在同一天重新核验。</span><span data-en>See the text or source notes for item-specific scope; this does not mean every field was rechecked on that date.</span></p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>docs</td><td><span data-zh>LiteLLM · 文档首页（开源 AI 网关定位、100+ 模型、quickstart、变更记录入口，2026-11-06 直抓 200）</span><span data-en>LiteLLM · docs home (open-source AI gateway positioning, 100+ models, quickstart, release-notes entry, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.litellm.ai/" target="_blank" rel="noopener">https://docs.litellm.ai/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>LiteLLM · Providers（一种 OpenAI 格式接 100+ 模型与自托管端点，2026-11-06 直抓 200）</span><span data-en>LiteLLM · Providers (100+ models through one OpenAI format, self-hosted endpoints, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.litellm.ai/docs/providers" target="_blank" rel="noopener">https://docs.litellm.ai/docs/providers</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>LiteLLM · Run LiteLLM Proxy（pip 安装、--config、4000 端口、生产需数据库、企业版能力边界，2026-11-06 直抓 200）</span><span data-en>LiteLLM · Run LiteLLM Proxy (pip install, --config, port 4000, production database, Enterprise capability boundary, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.litellm.ai/docs/simple_proxy" target="_blank" rel="noopener">https://docs.litellm.ai/docs/simple_proxy</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>LiteLLM · Deploy（镜像、Docker / Helm / Terraform、Postgres、健康检查，2026-11-06 直抓 200）</span><span data-en>LiteLLM · Deploy (image, Docker / Helm / Terraform, Postgres, health check, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.litellm.ai/docs/proxy/deploy" target="_blank" rel="noopener">https://docs.litellm.ai/docs/proxy/deploy</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>LiteLLM · Virtual keys（/key/generate、预算/速率/团队、轮换属企业版，2026-11-06 直抓 200）</span><span data-en>LiteLLM · Virtual keys (/key/generate, budgets / rate limits / teams, rotation as Enterprise, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.litellm.ai/docs/proxy/virtual_keys" target="_blank" rel="noopener">https://docs.litellm.ai/docs/proxy/virtual_keys</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>LiteLLM · Guardrails quick start（在册集成清单、config.yaml 字段、阻断与掩码、企业边界，2026-11-06 直抓 200）</span><span data-en>LiteLLM · Guardrails quick start (recorded integration list, config.yaml fields, block versus mask, Enterprise boundary, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.litellm.ai/docs/proxy/guardrails/quick_start" target="_blank" rel="noopener">https://docs.litellm.ai/docs/proxy/guardrails/quick_start</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>LiteLLM · MCP（网关定位、传输与鉴权、按 key/team/org 授权，2026-11-06 直抓 200）</span><span data-en>LiteLLM · MCP (gateway positioning, transports and authentication, key / team / org authorisation, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.litellm.ai/docs/mcp" target="_blank" rel="noopener">https://docs.litellm.ai/docs/mcp</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>LiteLLM · Release notes（v1.108.0 等于 2026-11-04 的在册条目，2026-11-06 直抓 200）</span><span data-en>LiteLLM · Release notes (v1.108.0 entries dated 2026-11-04, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.litellm.ai/release_notes" target="_blank" rel="noopener">https://docs.litellm.ai/release_notes</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>LiteLLM · PyPI（MIT 许可、1.108.1 与 2026-11-05 发布日、Python 版本区间，2026-11-06 直抓 200）</span><span data-en>LiteLLM · PyPI (MIT licence, 1.108.1 dated 2026-11-05, Python range, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://pypi.org/project/litellm/" target="_blank" rel="noopener">https://pypi.org/project/litellm/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>LiteLLM · 官网（开源网关与自托管/云两种用法、企业特性口径，2026-11-06 直抓 200）</span><span data-en>LiteLLM · official site (open-source gateway, self-host versus cloud, Enterprise feature framing, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://www.litellm.ai/" target="_blank" rel="noopener">https://www.litellm.ai/</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>官方口径与未核到项</span><span data-en>Official record and unverified items</span></h2>
+        <span data-zh><p>本站尚未完成实测。本档不含路由成功率、延迟、护栏拦截率或统计误差数字。</p>
+            <p><strong>实测建议</strong>（三条）：</p>
+            <ul><li>逐 key 花费统计在失败请求、批处理与推理配置文件场景下是否准确</li><li>同一 MCP 工具在有 key / team / org 三层配置时的实际可见范围</li><li>挂外部护栏后 pre_call 与 post_call 的延迟与阻断行为差异</li></ul></span><span data-en><p>This site has not completed measured runs; nothing here covers routing success rates, latency, guardrail block rates or accounting error.</p>
+            <p><strong>Suggested measurements</strong> (three):</p>
+            <ul><li>Whether per-key spend accounting stays accurate for failed requests, batches and Bedrock inference profiles</li><li>The real visibility of one MCP tool across key / team / organization layers</li><li>Latency and blocking behaviour of pre_call versus post_call rails</li></ul></span>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>能力边界</span><span data-en>Capability boundaries</span></h2>
+        <span data-zh><p>在册的治理对象是：模型访问、预算与速率、团队归属、MCP 工具的可见范围、外部护栏的挂载点。 不在册的：它不做内容安全模型的训练承诺，也不给「拦得准不准」的数字。 按 key 的护栏控制与动态参数被写在企业版口径里，开源版与企业版的边界要按官方页逐条核对。</p></span><span data-en><p>What it governs is on record: model access, budgets and rate limits, team membership, which MCP tools a principal can see, and where external rails attach. What it does not claim: any training-use promise about content safety, or published numbers for how well anything blocks. Per-key rail control and dynamic parameters sit in the Enterprise framing, so the open-source / Enterprise split has to be checked line by line against the official pages.</p></span>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>变更记录说明</span><span data-en>Change record</span></h2>
+        <span data-zh><p>变更记录有两条官方流水线：docs 站内 release_notes 页与 PyPI 发布记录。 当日在册：release notes 最新条目 v1.108.0（2026-11-04），PyPI 最新 1.108.1（2026-11-05）。 近期条目里能看到与安全相关的连续动作，例如 2026-10-24 更换镜像签名密钥并调整信任根， 以及多条修 spend logging 的记录——花费统计的正确性要靠实测确认，不能只看版本标题。</p></span><span data-en><p>Two official streams carry change history: the release_notes page inside the docs and the PyPI release record. Recorded on the verification day: release notes latest v1.108.0 (2026-11-04), PyPI latest 1.108.1 (2026-11-05). Recent entries also show security-relevant actions, such as the 2026-10-24 image-signing key change and trust-bundle adjustment, plus repeated spend-logging fixes - spend accuracy needs measurement, not a changelog headline.</p></span>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./nemo-guardrails.html"><span data-zh>NeMo Guardrails</span><span data-en>NeMo Guardrails</span></a></span><span class="rel-n"><span data-zh>护栏本体在那边；这里决定在哪个入口、对哪些 key 调用它。</span><span data-en>Same line: NeMo Guardrails (in gateway and access control); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="./bedrock-guardrails.html"><span data-zh>Amazon Bedrock Guardrails</span><span data-en>Amazon Bedrock Guardrails</span></a></span><span class="rel-n"><span data-zh>云内推理层的策略与数据保留模式，这里是可以把它当外部 rail 挂进来的入口层。</span><span data-en>Same line: Azure AI Content Safety (in gateway and access control); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="./azure-ai-content-safety.html"><span data-zh>Azure AI Content Safety</span><span data-en>Azure AI Content Safety</span></a></span><span class="rel-n"><span data-zh>判定能力在厂商侧，路由与预算治理在网关侧，两层互不替代。</span><span data-en>Same line: Amazon Bedrock Guardrails (in gateway and access control); this entry states only what its own official sources support.</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

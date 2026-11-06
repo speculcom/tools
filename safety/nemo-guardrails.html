@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>NeMo Guardrails — Safety | 投机取巧</title>
+  <meta name="description" content="NeMo Guardrails（NVIDIA）：它是本地跑的护栏库，不是托管的安全服务。 NVIDIA 把它写成「给 LLM 应用加可编程护栏的开源 Python 库」（About 页当日在册）： rail 的类型、判定用的模型、数据往哪走，都由你 config.yml 里的选择决定。" />
+  <link rel="canonical" href="https://tools.specul.com/safety/nemo-guardrails.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="NeMo Guardrails" />
+  <meta property="og:url" content="https://tools.specul.com/safety/nemo-guardrails.html" />
+  <meta property="og:title" content="NeMo Guardrails — Safety | 投机取巧" />
+  <meta property="og:description" content="NeMo Guardrails（NVIDIA）：它是本地跑的护栏库，不是托管的安全服务。 NVIDIA 把它写成「给 LLM 应用加可编程护栏的开源 Python 库」（About 页当日在册）： rail 的类型、判定用的模型、数据往哪走，都由你 config.yml 里的选择决定。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../brand.css?v=bf69a6d205ad" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"NeMo Guardrails","applicationCategory":"DeveloperApplication","url":"https://docs.nvidia.com/nemo/guardrails/","sameAs":"https://docs.nvidia.com/nemo/guardrails/","description":"它是本地跑的护栏库，不是托管的安全服务。 NVIDIA 把它写成「给 LLM 应用加可编程护栏的开源 Python 库」（About 页当日在册）： rail 的类型、判定用的模型、数据往哪走，都由你 config.yml 里的选择决定。","dateModified":"2026-11-06"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Safety</span>
+      </nav>
+      <a class="back" href="./">← Safety</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#f26d6d" aria-hidden="true"><span data-zh>Ne</span><span data-en>NE</span></div>
+        <div>
+          <h1><span data-zh>NeMo Guardrails</span><span data-en>NeMo Guardrails</span></h1>
+          <div class="vendor is-caps"><span data-zh>NVIDIA</span><span data-en>NVIDIA</span></div>
+        </div>
+      </div>
+
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
+      <div class="badges">
+        <span class="tag on"><span data-zh>本地</span><span data-en>Local</span></span>
+        <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
+        <span class="tag on"><span data-zh>guardrails</span><span data-en>guardrails</span></span>
+        <span class="tag on"><span data-zh>多后端</span><span data-en>Multiple backends</span></span>
+        <span class="tag on"><span data-zh>自托管</span><span data-en>Self-hosted</span></span>
+        <span class="tag on"><span data-zh>API</span><span data-en>API</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: maintenance</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-11-06</span>
+      </div>
+
+      <p class="t-sm"><span data-zh>核验标记表示资料完整度，不是产品评分。下列未确认项可能影响选型；请按对应来源逐项确认。</span><span data-en>The confidence mark describes evidence completeness, not a product score. Unconfirmed items below may affect your choice; check them against the relevant sources.</span></p>
+            <div class="panel is-slim">
+        <h2 id="known-unknowns"><span data-zh>未确认的信息</span><span data-en>Information not confirmed</span></h2>
+        <span data-zh>
+        <ul>
+          <li>MCP server 作为工具的接入方式：config.yml 顶层键未见对应配置项</li>
+          <li>跨会话记忆与 rail 状态的持久化策略</li>
+          <li>除配置目录外的本机文件读写面</li>
+          <li>合规认证与遥测/日志留存承诺</li>
+          <li>各 rail 在不同语言下的准确率（官方未公布，本站不测）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>How MCP servers are attached as tools: no corresponding top-level key in the config.yml schema</li>
+          <li>Cross-session memory and rail-state persistence</li>
+          <li>The local file surface beyond the configuration directory</li>
+          <li>Compliance certifications and telemetry/log-retention commitments</li>
+          <li>Per-language rail accuracy (not published officially; this site does not measure it)</li>
+        </ul></span>
+      </div>
+
+
+            
+      <div class="panel-lead"><span data-zh><p>它是本地跑的护栏库，不是托管的安全服务。</p>
+            <p>NVIDIA 把它写成「给 LLM 应用加可编程护栏的开源 Python 库」（About 页当日在册）： rail 的类型、判定用的模型、数据往哪走，都由你 config.yml 里的选择决定。</p></span><span data-en><p>它是本地跑的护栏库，不是托管的安全服务。</p>
+            <p>NVIDIA 把它写成「给 LLM 应用加可编程护栏的开源 Python 库」（About 页当日在册）： rail 的类型、判定用的模型、数据往哪走，都由你 config.yml 里的选择决定。</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+        <div><p>适合在自有进程或容器里加护栏的团队：话题控制、越狱检测、PII、工具调用管控都能写进 rail。 不适合想要托管控制台与审核工作流的人，也不适合把「护栏质量」当厂商承诺的团队—— 判定用的是你选的模型，模型换了结论就跟着换。</p></div>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-11-06</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>NVIDIA 主体（文档站与仓库页当日在册）；未见面向中国大陆的本地化版本。</span><span data-en>NVIDIA entity (on the docs site and repository page same day); no mainland-localised edition found.</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>同日实测 docs.nvidia.com 与 pypi.org 返回 200，github.com 返回 000（本机网络受限）；安装路由走 PyPI 可达，文档可达不等于任何合规承诺。</span><span data-en>Same-day probes: docs.nvidia.com and pypi.org returned 200, github.com returned 000 (local network restriction); the install route via PyPI is reachable. Page reachability is not a compliance claim.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>备案未核验</span><span data-en>filing unknown</span>：<span data-zh>官方文档与仓库页当日在册内容未写中国大陆备案/登记信息；本次未检索监管公示名单，不做推断。</span><span data-en>Nothing on the mainland filing/registration appears in the official pages fetched same day; the regulator&#39;s public registry was not searched, so no inference is made.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis" id="dimension-model_access">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>守的是你应用里接的那个模型，模型本身不由它提供。官方 Supported LLMs 页在册：NVIDIA NIM、 OpenAI、Azure、Anthropic、Hugging Face、Ollama、LangChain，可同机服务也可远端端点。 护栏判定可用应用模型自检（LLM self-checking）、NemoGuard / Nemotron 专用安全模型， 也可挂第三方（目录在册 LlamaGuard、ActiveFence、Cisco AI Defense 等）。</p></span><span data-en><p>It guards the model your app already calls; it does not supply one. The official Supported LLMs page records NVIDIA NIM, OpenAI, Azure, Anthropic, Hugging Face, Ollama and LangChain, served either on the same machine or at a remote endpoint. Rail decisions can use the application LLM for self-checking, dedicated NemoGuard / Nemotron safety models, or third parties (the catalog records LlamaGuard, ActiveFence, Cisco AI Defense).</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-runtime">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>开源 Python 库，官方 About 页在册两种交付：PyPI 包与容器镜像。装在你自己的进程或容器里跑， installation 页在册 pip 安装、Python 3.10–3.13、uv 起 server、Docker 可用。 检测逻辑在本地引擎执行，模型调用按你配置的端点出去。</p></span><span data-en><p>An open-source Python library; the About page records two delivery forms: the PyPI package and a container image. It runs inside your own process or container. The installation page records pip install, Python 3.10-3.13, starting the server with uv, and Docker. Rail logic executes locally; model calls go wherever you configure them.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-local_files">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>配置目录（config.yml + flows / actions）在你本机文件系统，CLI 与 server 直接读该目录。 官方页未声明它读写你的工作区业务文件；评测用公开数据集（evaluate 页在册 chit-chat、MSMARCO）。 更大范围的本地文件面本次未逐条核验，记为未知。</p></span><span data-en><p>The config folder (config.yml plus flows and actions) lives on your own filesystem and is read directly by the CLI and the server. No official statement was found about reading your project&#39;s business files; evaluation uses public datasets (chit-chat, MSMARCO, on the evaluate page). The wider local file surface was not verified item by item and is recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-background">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>没有托管侧的「关机后续跑」任务面：它是随你的应用一起起来的库或服务进程。 官方 CLI 页在册 chat / server / convert / find_providers 等子命令， evaluate 页在册离线批跑评测；异步队列与断点续跑不在产品口径里。</p></span><span data-en><p>There is no hosted &#39;keeps running after shutdown&#39; task surface: it comes up with your application. The CLI page records chat / server / convert / find_providers, and the evaluate page records offline batch evaluation. Queues and resumption are not part of the product framing.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-tools">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>五类 rail 在册：input / dialog / retrieval / execution / output，execution rail 管工具调用， 自定义 action 可挂自己的校验函数。LangChain / LangGraph 走 passthrough mode 集成。 config.yml 顶层键（models / instructions / rails / prompts / knowledge_base / tracing） 未见 MCP server 配置项，MCP 接入方式记为未知。</p></span><span data-en><p>Five rail types are on record: input / dialog / retrieval / execution / output, where execution rails govern tool calls and custom actions let you plug in your own checks. LangChain and LangGraph integrate through passthrough mode. The top-level config.yml keys (models / instructions / rails / prompts / knowledge_base / tracing) contain no MCP server entry, so MCP access is recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-context">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>会话消息由调用方带入，rail 在处理 user / assistant 消息时逐条判定； retrieval rail 可读 knowledge_base 做检索过滤。跨会话记忆与持久化策略本次未核验到官方声明， 记为未知；上下文长度实际上限由你所选模型决定。</p></span><span data-en><p>Conversation messages are passed in by the caller and rails judge user / assistant messages one by one; retrieval rails can read the knowledge_base. No official statement was verified on cross-session memory or rail-state persistence, recorded as unknown; effective context length is set by whichever model you choose.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-permissions">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>数据流向取决于你选的端点：本地 / 自托管端点内容不出你的环境； catalog 页在册第三方 guardrail 服务会把送检内容交给该方。许可证 Apache-2.0（当日在册）。 观测面有 logging / tracing 专页在册。合规认证（SOC 2 / ISO 等）与训练用途承诺本次未核验，记为未知。</p></span><span data-en><p>Data flow depends on the endpoint you select: local or self-hosted endpoints keep content inside your environment, while the catalog page records that third-party guardrail services send submitted content to that party. Apache-2.0 is on the PyPI and repository pages the same day. Logging and tracing have dedicated pages. Compliance certifications and training-use commitments were not verified and are recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-fit">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合：要在自己的进程或容器里加可编程护栏——话题控制、PII、越狱检测、工具调用管控， 并且要能换模型与端点。不适合：只想要一个托管控制台带审核工作流、要把评测平台当主轴、 或不能接受「护栏质量取决于所选模型」这件事。</p></span><span data-en><p>Fits: teams adding programmable rails inside their own process or container - topic control, PII, jailbreak detection, tool-call governance - while keeping the freedom to swap models and endpoints. Not a fit: anyone wanting a hosted console with review workflows, or treating rail quality as a vendor guarantee, since the judgement inherits whichever model runs it.</p></span></dd>
+        </div>
+      </dl>
+
+      <nav class="panel is-slim" aria-label="使用排查" data-ui-aria-label-zh="使用排查" data-ui-aria-label-en="Troubleshooting">
+        <h2><span data-zh>使用时遇到问题</span><span data-en>When something fails</span></h2>
+        <p><a href="../mcp/guides/failure-library.html#auth"><span data-zh>账号与权限</span><span data-en>Account and permissions</span></a> · <a href="../mcp/guides/failure-library.html#rate-limit"><span data-zh>限流与重试</span><span data-en>Rate limits and retries</span></a> · <a href="../mcp/guides/failure-library.html#files"><span data-zh>文件读取问题</span><span data-en>File-reading issues</span></a></p>
+      </nav>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li>把它当托管安全服务：本体是本地库 / 容器，数据流向由你配的端点决定</li>
+          <li>以为工具调用自动被拦：官方工具集成页写明 tool 消息绕过 input 校验，建议补 output rail</li>
+          <li>把 catalog 里的第三方 rail 当免费内置能力：接第三方即把送检内容送出你的环境</li>
+        </ul>
+      </div>
+
+
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>最近核验记录</span><span data-en>Latest recorded check</span> 2026-11-06，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-11-06。<span data-zh>单项复核范围见正文或来源说明，不代表所有字段在同一天重新核验。</span><span data-en>See the text or source notes for item-specific scope; this does not mean every field was rechecked on that date.</span></p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>docs</td><td><span data-zh>NeMo Guardrails · Docs Overview（开源 Python 库定位与导航，2026-11-06 直抓 200）</span><span data-en>NeMo Guardrails · Docs Overview (open-source Python library positioning and navigation, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.nvidia.com/nemo/guardrails/" target="_blank" rel="noopener">https://docs.nvidia.com/nemo/guardrails/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>NeMo Guardrails · About the library（两种交付形态与防护对象，2026-11-06 直抓 200）</span><span data-en>NeMo Guardrails · About the library (two delivery forms and what gets guarded, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.nvidia.com/nemo/guardrails/latest/about-nemo-guardrails-library/overview.md" target="_blank" rel="noopener">https://docs.nvidia.com/nemo/guardrails/latest/about-nemo-guardrails-library/overview.md</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>NeMo Guardrails · Supported LLMs（provider 清单与本地/远端端点表述，2026-11-06 直抓 200）</span><span data-en>NeMo Guardrails · Supported LLMs (provider list and local/remote endpoint wording, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.nvidia.com/nemo/guardrails/latest/about-nemo-guardrails-library/supported-llms.md" target="_blank" rel="noopener">https://docs.nvidia.com/nemo/guardrails/latest/about-nemo-guardrails-library/supported-llms.md</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>NeMo Guardrails · Guardrail Types（五类 rail 各自职责，2026-11-06 直抓 200）</span><span data-en>NeMo Guardrails · Guardrail Types (responsibilities of the five rail types, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.nvidia.com/nemo/guardrails/about-nemo-guardrails-library/rail-types" target="_blank" rel="noopener">https://docs.nvidia.com/nemo/guardrails/about-nemo-guardrails-library/rail-types</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>NeMo Guardrails · Installation guide（pip / Python 版本 / server / Docker，2026-11-06 直抓 200）</span><span data-en>NeMo Guardrails · Installation guide (pip / Python versions / server / Docker, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.nvidia.com/nemo/guardrails/get-started/installation-guide" target="_blank" rel="noopener">https://docs.nvidia.com/nemo/guardrails/get-started/installation-guide</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>NeMo Guardrails · CLI（子命令清单，2026-11-06 直抓 200）</span><span data-en>NeMo Guardrails · CLI (subcommand list, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.nvidia.com/nemo/guardrails/latest/guardrails-python-sdk/nemoguardrails/cli.md" target="_blank" rel="noopener">https://docs.nvidia.com/nemo/guardrails/latest/guardrails-python-sdk/nemoguardrails/cli.md</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>NeMo Guardrails · Guardrail catalog（内容安全 / 越狱 / PII / 工具调用等家族，2026-11-06 直抓 200）</span><span data-en>NeMo Guardrails · Guardrail catalog (content safety / jailbreak / PII / tool-calling families, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.nvidia.com/nemo/guardrails/latest/configure-guardrails/guardrail-catalog.md" target="_blank" rel="noopener">https://docs.nvidia.com/nemo/guardrails/latest/configure-guardrails/guardrail-catalog.md</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>NeMo Guardrails · Content safety rails（本地 Nemotron 与第三方 API 之分，2026-11-06 直抓 200）</span><span data-en>NeMo Guardrails · Content safety rails (local Nemotron versus third-party APIs, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.nvidia.com/nemo/guardrails/latest/configure-guardrails/guardrail-catalog/content-safety.md" target="_blank" rel="noopener">https://docs.nvidia.com/nemo/guardrails/latest/configure-guardrails/guardrail-catalog/content-safety.md</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>NeMo Guardrails · Tools integration（passthrough mode 与 tool 消息校验边界，2026-11-06 直抓 200）</span><span data-en>NeMo Guardrails · Tools integration (passthrough mode and the tool-message validation boundary, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.nvidia.com/nemo/guardrails/integration-with-third-party-libraries/tools-integration" target="_blank" rel="noopener">https://docs.nvidia.com/nemo/guardrails/integration-with-third-party-libraries/tools-integration</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>NeMo Guardrails · config.yml schema（顶层键清单，2026-11-06 直抓 200）</span><span data-en>NeMo Guardrails · config.yml schema (top-level key list, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.nvidia.com/nemo/guardrails/latest/configure-guardrails/yaml-schema.md" target="_blank" rel="noopener">https://docs.nvidia.com/nemo/guardrails/latest/configure-guardrails/yaml-schema.md</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>NeMo Guardrails · Evaluate guardrails（可离线批跑的评测面，2026-11-06 直抓 200）</span><span data-en>NeMo Guardrails · Evaluate guardrails (the offline batch evaluation surface, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.nvidia.com/nemo/guardrails/latest/evaluation/evaluate-guardrails.md" target="_blank" rel="noopener">https://docs.nvidia.com/nemo/guardrails/latest/evaluation/evaluate-guardrails.md</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>NeMo Guardrails · Releases（变更记录；v0.24.1 及各版要点，2026-11-06 直抓 200）</span><span data-en>NeMo Guardrails · Releases (change record; v0.24.1 and per-release highlights, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://github.com/NVIDIA/NeMo-Guardrails/releases" target="_blank" rel="noopener">https://github.com/NVIDIA/NeMo-Guardrails/releases</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>NeMo Guardrails · PyPI（版本 0.24.1 与 2026-09-16 发布日、Apache-2.0，2026-11-06 直抓 200）</span><span data-en>NeMo Guardrails · PyPI (version 0.24.1 dated 2026-09-16 with Apache-2.0, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://pypi.org/project/nemoguardrails/" target="_blank" rel="noopener">https://pypi.org/project/nemoguardrails/</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>NeMo Guardrails · 仓库（Apache 2.0、最新 release 与未归档状态，2026-11-06 直抓 200）</span><span data-en>NeMo Guardrails · repository (Apache 2.0, latest release, not archived, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://github.com/NVIDIA/NeMo-Guardrails" target="_blank" rel="noopener">https://github.com/NVIDIA/NeMo-Guardrails</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>官方口径与未核到项</span><span data-en>Official record and unverified items</span></h2>
+        <span data-zh><p>本站尚未完成实测。本档只覆盖能力面与配置面，不含命中率、误拦率或延迟数字。</p>
+            <p><strong>实测建议</strong>（三条）：</p>
+            <ul><li>同一套 rail 在不同 provider 上的判定差异（本地端点 vs 第三方 API）</li><li>tool 消息绕过 input 校验的实际后果，与补 output rail 的成本差</li><li>接第三方 guardrail 服务时的数据外送范围与留存条款</li></ul></span><span data-en><p>This site has not completed measured runs; nothing here covers hit rates, false-block rates or latency.</p>
+            <p><strong>Suggested measurements</strong> (three):</p>
+            <ul><li>How the same rail set behaves across providers (local endpoint versus third-party API)</li><li>The real consequences of tool messages bypassing input validation, versus the cost of adding output rails</li><li>What data actually leaves your environment when a third-party guardrail service is attached</li></ul></span>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>能力边界</span><span data-en>Capability boundaries</span></h2>
+        <span data-zh><p>官方 catalog 页在册的家族是：内容安全、越狱防护、话题控制、PII 检测、agentic 安全与工具调用、 幻觉与自检、第三方 rail API。它拦的是消息与动作；「人工审核外包」与跨厂商模型打分 都不在官方口径里（本站观点，按在册页面范围判断）。 评测面（evaluate）在开源包内，用公开数据集跑 dialog / fact-checking / moderation / hallucination 四类指标——这是「你自己的 rail 配置有多准」，不是跨厂商的跑分。</p></span><span data-en><p>The catalog families on record are content safety, jailbreak protection, topic control, PII detection, agentic security and tool calling, hallucination and self-checks, plus third-party rail APIs. What it blocks are messages and actions; human-review outsourcing and cross-vendor model scoring are absent from the official framing (this site&#39;s view, judged from the scope of the pages on record). The evaluation surface ships in the open-source package and runs dialog, fact-checking, moderation and hallucination metrics over public datasets - that measures your own rail configuration, not a cross-vendor leaderboard.</p></span>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>变更记录说明</span><span data-en>Change record</span></h2>
+        <span data-zh><p>变更记录走 GitHub releases（无独立 changelog 页）。当日直抓在册的版本线： v0.24.1（09-16）、v0.24.0（IORails 扩充内建 rail、F5 集成）、v0.23.0（Polygraf PII、HF 分类器）、 v0.22.0（与 LangChain 解耦、流式与 OpenTelemetry）、v0.21.0（IORails 并行引擎、OpenAI 兼容服务）。 最近一次官方发布距核验日约 51 天，故 lifecycle 记 maintenance，不记 active。</p></span><span data-en><p>Change history lives in the GitHub releases page (there is no separate changelog page). Recorded release line on the verification day: v0.24.1 (09-16), v0.24.0 (IORails expands built-in rails, F5 integration), v0.23.0 (Polygraf PII, Hugging Face classifiers), v0.22.0 (LangChain decoupling, streaming and OpenTelemetry), v0.21.0 (IORails parallel engine, OpenAI-compatible server). The most recent official release is about 51 days before the verification date, so lifecycle is recorded as maintenance rather than active.</p></span>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./azure-ai-content-safety.html"><span data-zh>Azure AI Content Safety</span><span data-en>Azure AI Content Safety</span></a></span><span class="rel-n"><span data-zh>同为护栏，运行位置相反：那边检测在厂商侧，这里在你进程里。</span><span data-en>Same line: Azure AI Content Safety (in guardrails and content filtering); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="./bedrock-guardrails.html"><span data-zh>Amazon Bedrock Guardrails</span><span data-en>Amazon Bedrock Guardrails</span></a></span><span class="rel-n"><span data-zh>策略面相似（内容/越狱/PII），差别在能不能换模型端点。</span><span data-en>Same line: Amazon Bedrock Guardrails (in guardrails and content filtering); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="./litellm.html"><span data-zh>LiteLLM</span><span data-en>LiteLLM Proxy (AI Gateway)</span></a></span><span class="rel-n"><span data-zh>网关侧也能挂 rail；这里是应用内库，那里是入口治理。</span><span data-en>Same line: LiteLLM 网关（Proxy / AI Gateway） (in guardrails and content filtering); this entry states only what its own official sources support.</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

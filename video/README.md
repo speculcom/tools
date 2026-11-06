@@ -6,7 +6,7 @@
 
 视频生成产品：文生视频、图生视频、数字人视频。数字人线（造人说话）与生成线（造世界）是两种产品，档案里互链写清差别。国产阵营的备案号口径逐家挂公示编号。
 
-本站共 10 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `automation` / `framework` / `mcp` / `runner`），本 README 描述「AI 视频创作」这一个。
+本站共 11 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `automation` / `framework` / `mcp` / `runner` / `safety`），本 README 描述「AI 视频创作」这一个。
 
 ## 这个大类提供什么
 
@@ -65,6 +65,7 @@
 | [框架与运行时](/framework/) | 运行时、编排框架、SDK | 30 |
 | [MCP 工具](/mcp/) | 缺什么，装什么 —— 给 agent 装的 MCP 工具 | 32 |
 | [本地模型运行器](/runner/) | 在自己机器上跑开源模型 | 21 |
+| [AI 安全与评测](/safety/) | 拦得住、测得出、追得回 | 25 |
 
 ---
 

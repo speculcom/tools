@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>promptfoo — Safety | 投机取巧</title>
+  <meta name="description" content="promptfoo（promptfoo）：promptfoo 是终端里的评测与红队工具。 官方自我定位是「评测与红队 LLM 应用的开源 CLI 与库」，产物留在本机，模型自带 key。" />
+  <link rel="canonical" href="https://tools.specul.com/safety/promptfoo.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="promptfoo" />
+  <meta property="og:url" content="https://tools.specul.com/safety/promptfoo.html" />
+  <meta property="og:title" content="promptfoo — Safety | 投机取巧" />
+  <meta property="og:description" content="promptfoo（promptfoo）：promptfoo 是终端里的评测与红队工具。 官方自我定位是「评测与红队 LLM 应用的开源 CLI 与库」，产物留在本机，模型自带 key。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../brand.css?v=bf69a6d205ad" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"promptfoo","applicationCategory":"DeveloperApplication","sameAs":"https://www.promptfoo.dev","description":"promptfoo 是终端里的评测与红队工具。 官方自我定位是「评测与红队 LLM 应用的开源 CLI 与库」，产物留在本机，模型自带 key。","dateModified":"2026-11-06"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Safety</span>
+      </nav>
+      <a class="back" href="./">← Safety</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#f26d6d" aria-hidden="true"><span data-zh>pr</span><span data-en>PR</span></div>
+        <div>
+          <h1><span data-zh>promptfoo</span><span data-en>promptfoo</span></h1>
+          <div class="vendor is-caps">promptfoo</div>
+        </div>
+      </div>
+
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
+      <div class="badges">
+        <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
+        <span class="tag on"><span data-zh>MIT</span><span data-en>MIT</span></span>
+        <span class="tag on"><span data-zh>终端</span><span data-en>Terminal</span></span>
+        <span class="tag on"><span data-zh>CI</span><span data-en>CI</span></span>
+        <span class="tag on"><span data-zh>eval</span><span data-en>eval</span></span>
+        <span class="tag on"><span data-zh>本地</span><span data-en>Local</span></span>
+        <span class="tag on"><span data-zh>多模型</span><span data-en>Multiple models</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-11-06</span>
+      </div>
+
+      <p class="t-sm"><span data-zh>核验标记表示资料完整度，不是产品评分。下列未确认项可能影响选型；请按对应来源逐项确认。</span><span data-en>The confidence mark describes evidence completeness, not a product score. Unconfirmed items below may affect your choice; check them against the relevant sources.</span></p>
+            <div class="panel is-slim">
+        <h2 id="known-unknowns"><span data-zh>未确认的信息</span><span data-en>Information not confirmed</span></h2>
+        <span data-zh>
+        <ul>
+          <li>主体归属：官方仓库元数据当日在册自述站点为 promptfoo.dev；公司主体未逐条核验</li>
+          <li>LICENSE 文件正文与逐字许可条款（当日抓取失败，仅有 API 元数据在册）</li>
+          <li>官方 changelog 页正文（两处路径当日均 404）</li>
+          <li>本地模型（OpenAI 兼容端点）接入的具体配置面</li>
+          <li>分布式执行与断点续跑能力</li>
+          <li>promptfoo 自身是否提供 MCP server</li>
+          <li>promptfoo.app 托管面的数据留存与训练条款</li>
+          <li>备案公示检索</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>Configuration surface for local models behind OpenAI-compatible endpoints</li>
+          <li>Distributed execution and checkpointed restarts</li>
+          <li>Whether an MCP server is provided</li>
+          <li>Data retention and training terms of the hosted promptfoo.app</li>
+          <li>Team, RBAC and audit capabilities on the hosted side</li>
+          <li>Behaviour of red-team plugins beyond what the official page states</li>
+        </ul></span>
+      </div>
+
+
+            <p class="t-xs" data-en>English summaries and interface labels are available. Detailed source notes below are currently in Chinese.</p>
+      <div class="panel-lead"><span data-zh><p><strong>promptfoo 是终端里的评测与红队工具</strong>。 官方自我定位是「评测与红队 LLM 应用的开源 CLI 与库」，产物留在本机，模型自带 key。</p></span><span data-en><p><strong>promptfoo 是终端里的评测与红队工具</strong>。 官方自我定位是「评测与红队 LLM 应用的开源 CLI 与库」，产物留在本机，模型自带 key。</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+        <div><p>适合把评测当代码资产管理的团队：一份 YAML 定义多提示词、多模型、多用例， 一条命令跑出矩阵对照，再让不达阈值的构建在 CI 里失败。 不适合需要托管控制台做长期指标看板，或希望厂商代跑合规审计的场景。 它另有红队面，但本站只记支持的攻击插件与漏洞类别，不记测出来的分数与通过率。</p></div>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-11-06</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>官方仓库与文档域名当日在册（promptfoo.dev 与 github.com/promptfoo）；项目主体与注册地未逐条核验，按 foreign 记。</span><span data-en>the official repository and docs domains are on record today (promptfoo.dev and github.com/promptfoo); the entity and place of incorporation were not item-verified, recorded as foreign.</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>www.promptfoo.dev 的 7 个文档页当日直抓均 200；github.com 的仓库与 releases HTML 页当日抓取失败（改由官方 GitHub API 在册），npmjs.com 返回 403。</span><span data-en>seven docs pages on www.promptfoo.dev fetched 200 today; github.com repository and releases HTML pages failed to fetch (taken from the official GitHub API instead), and npmjs.com returned 403.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>备案未核验</span><span data-en>filing unknown</span>：<span data-zh>本次未检索备案公示名单；开源 CLI 本体是否落入备案口径未核验，记入未知项清单。</span><span data-en>the filing registry was not searched today; whether an open-source CLI falls under filing scope is unverified — listed under unknowns.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis" id="dimension-model_access">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>全靠自带凭据：官方 intro 当日在册支持 OpenAI、Anthropic、Azure、Google、HuggingFace 与 Llama 这类开源模型，口径写明 BYOK 与 API keys。<strong>本地模型走 OpenAI 兼容端点的具体配置面本次未逐条核验。</strong> 评测器不内置厂商模型，judge 调用落在你配置的账户上。</p></span><span data-en><p>Bring-your-own keys throughout: the intro page was on record the same day as supporting OpenAI, Anthropic, Azure, Google, Hugging Face and open models such as Llama, stated as BYOK with API keys. The exact configuration surface for local models behind OpenAI-compatible endpoints was not verified item by item. The evaluator ships no vendor model; judge calls run against the account you configure.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-runtime">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>终端为主：<code>npx promptfoo init</code> 起手、<code>eval</code> 跑评测、<code>view</code> 起本机结果页（当日在册）， 配置是 promptfooconfig.yaml，本地运行<strong>不需要登录</strong>（当日在册）。 另有 promptfoo.app 托管查看入口，同页在册称分享链接对本组织私有；托管面细节未核验。</p></span><span data-en><p>Terminal-first: <code>npx promptfoo init</code> to start, <code>eval</code> to run, <code>view</code> to serve a local results page (all on record the same day), with configuration in promptfooconfig.yaml and local runs stated as requiring no login. A hosted viewer at promptfoo.app also appears on that page, which states shared links are private to your organisation; hosted-side details were not verified.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-local_files">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>读写都在本机：配置、用例与结果产物留在本地目录，viewer 读本地文件渲染（当日在册）； 测试数据可来自 CSV 或 JSON 与自定义函数（当日在册）。平台不读本机代码库以外的隐式上下文。</p></span><span data-en><p>Reads and writes stay on your machine: configuration, test cases and result artefacts live in local directories and the viewer renders local files (on record); test data may come from CSV or JSON, or from custom functions. The platform does not pick up implicit context beyond what you point it at.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-background">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>评测是本机进程内跑完的批任务，官方在册有缓存、并发与热重载；CI 里按阈值让构建失败 （当日在册「Fail the build when quality thresholds aren&#39;t met」）。 关机续跑不适用；<strong>分布式执行与断点续跑面未在册，记为未知。</strong></p></span><span data-en><p>Evaluation runs as a local batch process; caching, concurrency and hot reload are on record, as is failing the build when quality thresholds are not met in CI. Resuming after shutdown does not apply. Distributed execution and checkpointed restarts are not on record and are treated as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-tools">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>作为被调用方，它的扩展面是 provider 配置、断言类型与自定义函数，文档索引当日在册含 CI 与 代码扫描（GitHub Action）集成页；结果可发到 PR 评论（当日在册）。 <strong>promptfoo 自身是否提供 MCP server 未核验到官方声明，记为未知。</strong></p></span><span data-en><p>Its extension surface, as the called side, is provider configuration, assertion types and custom functions; the documentation index was on record the same day including CI and code-scanning (GitHub Action) integration pages, and results can be posted to PR comments. Whether promptfoo itself provides an MCP server is not stated in what was captured, so it is recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-context">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>评测上下文完全由配置文件定义：多提示词 × 多模型 × 多用例的矩阵对照（当日在册 matrix views）， 期望值可用 CSV 的 __expected 列或自定义函数给（当日在册）。跨会话记忆不是这类工具的功能面。</p></span><span data-en><p>Evaluation context is entirely defined by the configuration file: a matrix across prompts x models x test cases (matrix views on record); expectations can come from a CSV <code>__expected</code> column or custom functions. Cross-session memory is not part of what this class of tool does.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-permissions">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>MIT 许可（当日在册元数据）；本机执行加自带 key，意味着模型调用费用与数据出口都在你自己账户 （BYOK 口径当日在册）；官方 CI 页建议把 key 存成加密 secrets（当日在册）。 <strong>promptfoo.app 托管面的数据留存与训练条款正文本次未抓到，记为未知。</strong></p></span><span data-en><p>MIT licensed (metadata on record). Local execution plus your own keys means model spend and egress sit in your account (BYOK on record); the official CI page recommends storing keys as encrypted secrets. Retention and training terms for the promptfoo.app hosted side were not captured, so they remain unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-fit">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合把评测写进仓库、用一次命令跑多提示词与多模型对照、并在 CI 里按阈值挡住合并的团队。 不适合要托管控制台做长期指标看板、要厂商侧代跑合规审计的场景； 本站只记支持的断言类型与红队能力面，不记测出的分数，也不排名。</p></span><span data-en><p>Fits teams that want evaluation in the repository, one command to compare many prompts against many models, and a CI threshold that blocks merges. Does not fit anyone needing a hosted console as a long-term metrics dashboard, or vendor-run compliance auditing. This site records the assertion types and red-teaming surface only, never scores produced by the tool, and draws no ranking.</p></span></dd>
+        </div>
+      </dl>
+
+      <nav class="panel is-slim" aria-label="使用排查" data-ui-aria-label-zh="使用排查" data-ui-aria-label-en="Troubleshooting">
+        <h2><span data-zh>使用时遇到问题</span><span data-en>When something fails</span></h2>
+        <p><a href="../mcp/guides/failure-library.html#auth"><span data-zh>账号与权限</span><span data-en>Account and permissions</span></a> · <a href="../mcp/guides/failure-library.html#rate-limit"><span data-zh>限流与重试</span><span data-en>Rate limits and retries</span></a> · <a href="../mcp/guides/failure-library.html#files"><span data-zh>文件读取问题</span><span data-en>File-reading issues</span></a></p>
+      </nav>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li>把「自带评测能力」当成自带模型——相似度与 rubric 类断言都调你配置的服务，key 与用量在你账上（当日在册）</li>
+          <li>把红队页当成安全评分——官方在册的是攻击插件与漏洞类别面，本站不采通过率也不排名</li>
+          <li>把本机 viewer 当成 SaaS——promptfoo.app 是可选面，评测与产物默认留在本机（当日在册）</li>
+        </ul>
+      </div>
+
+
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>最近核验记录</span><span data-en>Latest recorded check</span> 2026-11-06，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-11-06。<span data-zh>单项复核范围见正文或来源说明，不代表所有字段在同一天重新核验。</span><span data-en>See the text or source notes for item-specific scope; this does not mean every field was rechecked on that date.</span></p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>docs</td><td><span data-zh>promptfoo · 文档 intro（自述 open-source CLI and library for evaluating and red-teaming LLM apps；断言含 determinism 与 similarity 与 JSON validity 与 LLM-rubric；BYOK 与多厂商 provider，2026-11-06 直抓 200）</span><span data-en>promptfoo · docs intro (self-described open-source CLI and library for evaluating and red-teaming LLM apps; assertions include determinism, similarity and JSON validity and LLM-rubric; BYOK across many providers; 200 direct on 2026-11-06)</span></td><td><a href="https://www.promptfoo.dev/docs/intro/" target="_blank" rel="noopener">https://www.promptfoo.dev/docs/intro/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>promptfoo · 断言与期望值文档（确定性类 equals 与 contains 与 regex 与 json 与 sql 与 latency 与 cost；judge 类 llm-rubric 与 factuality 与 similarity；CSV __expected 与自定义函数，2026-11-06 直抓 200）</span><span data-en>promptfoo · assertions and expectations docs (equals/contains/regex/json/sql/latency/cost; llm-rubric/factuality/similarity; CSV __expected and custom functions; 200 direct on 2026-11-06)</span></td><td><a href="https://www.promptfoo.dev/docs/configuration/expected-outputs/" target="_blank" rel="noopener">https://www.promptfoo.dev/docs/configuration/expected-outputs/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>promptfoo · 上手页（npx promptfoo init 与 eval 与 view、promptfooconfig.yaml、本地运行不需登录、OPENAI_API_KEY 配置，2026-11-06 直抓 200）</span><span data-en>promptfoo · getting started (npx promptfoo init / eval / view, promptfooconfig.yaml, no login needed locally, OPENAI_API_KEY; 200 direct on 2026-11-06)</span></td><td><a href="https://www.promptfoo.dev/docs/getting-started/" target="_blank" rel="noopener">https://www.promptfoo.dev/docs/getting-started/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>promptfoo · 本机结果页（viewer 命令与结果图表；另在册 promptfoo.app 分享链接对本组织私有，2026-11-06 直抓 200）</span><span data-en>promptfoo · local viewer (viewer command and result charts; promptfoo.app shared links private to your organisation; 200 direct on 2026-11-06)</span></td><td><a href="https://www.promptfoo.dev/docs/usage/web-ui/" target="_blank" rel="noopener">https://www.promptfoo.dev/docs/usage/web-ui/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>promptfoo · CI 集成页（密钥存加密 secrets、阈值不达则构建失败、结果发 PR 评论，2026-11-06 直抓 200）</span><span data-en>promptfoo · CI integration (keys as encrypted secrets, fail the build below thresholds, results to PR comments; 200 direct on 2026-11-06)</span></td><td><a href="https://www.promptfoo.dev/docs/integrations/ci-cd/" target="_blank" rel="noopener">https://www.promptfoo.dev/docs/integrations/ci-cd/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>promptfoo · 红队页（自动生成攻击与插件面、覆盖越狱类漏洞检查；不含本站口径的分数结论，2026-11-06 直抓 200）</span><span data-en>promptfoo · red-teaming page (generated attacks and plugin surface, jailbreak-class checks; no score conclusions adopted by this site; 200 direct on 2026-11-06)</span></td><td><a href="https://www.promptfoo.dev/docs/red-team/" target="_blank" rel="noopener">https://www.promptfoo.dev/docs/red-team/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>promptfoo · 文档索引（当日在册含 caching、red-team configuration、code scanning 与 GitHub Action 等条目）</span><span data-en>promptfoo · documentation index (caching, red-team configuration, code scanning and GitHub Action entries on record the same day)</span></td><td><a href="https://www.promptfoo.dev/llms.txt" target="_blank" rel="noopener">https://www.promptfoo.dev/llms.txt</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>promptfoo/promptfoo · 仓库元数据（GitHub API 当日直抓在册：MIT、最近推送 2026-11-06、官方站 promptfoo.dev）</span><span data-en>promptfoo/promptfoo · repository metadata (GitHub API on record 2026-11-06: MIT, last push 2026-11-06, official site promptfoo.dev)</span></td><td><a href="https://api.github.com/repos/promptfoo/promptfoo" target="_blank" rel="noopener">https://api.github.com/repos/promptfoo/promptfoo</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>promptfoo/promptfoo · Releases（经官方 GitHub API 当日在册，最新 0.125.1 发布于 2026-10-25；HTML releases 页正文本次抓取失败）</span><span data-en>promptfoo/promptfoo · releases (via the official GitHub API on record: 0.125.1 published 2026-10-25; the HTML releases page itself failed to fetch)</span></td><td><a href="https://api.github.com/repos/promptfoo/promptfoo/releases/latest" target="_blank" rel="noopener">https://api.github.com/repos/promptfoo/promptfoo/releases/latest</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>官方口径与未核到项</span><span data-en>Official record and unverified items</span></h2>
+        <span data-zh><p>本站尚未完成实测，结论只覆盖能力面与许可面。</p>
+            <p><strong>实测建议</strong>（三条，都是官方可读页给不出的东西）：</p>
+            <ul><li>阈值门禁的稳定性：同一份配置连跑 20 次，judge 类断言的波动幅度有多大</li><li>本机产物体积与缓存命中：用例数上千时，缓存与并发参数的实际收益</li><li>托管面的边界：promptfoo.app 的数据留存、成员权限与导出方式</li></ul></span><span data-en><p>This entry has not completed measured runs: no pass rates, no attack success rates, no latency or cost figures. Everything above is organised from the official pages fetched on 2026-11-06, and the gaps are listed separately rather than filled by inference.</p></span>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2>变更记录说明</h2>
+        <p>本对象没有可直接抓到的 changelog 页（/changelog 与 /docs/changelog 当日均 404）， 变更记录以官方仓库 Releases 为准；当日经 GitHub API 在册最新为 0.125.1（2026-10-25）， 仓库最近推送日期为 2026-11-06，因此 lifecycle 记 active。</p>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./langfuse.html"><span data-zh>Langfuse</span><span data-en>Langfuse</span></a></span><span class="rel-n"><span data-zh>同做评测：Langfuse 把 trace 与数据集放在平台里长期留存的，promptfoo 把评测留在仓库与 CI。</span><span data-en>Same line: Arize Phoenix (in evaluation and observability); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="./braintrust.html"><span data-zh>Braintrust</span><span data-en>Braintrust</span></a></span><span class="rel-n"><span data-zh>同以评测挡回归：Braintrust 的 scorer 是平台资产，promptfoo 的断言是配置文件。</span><span data-en>Same line: Content Credentials（内容凭证） (in evaluation and observability); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="/runner/ollama.html"><span data-zh>Ollama</span><span data-en>Ollama</span></a></span><span class="rel-n"><span data-zh>跨大类：本机跑的开源模型服务是它最常见的被测对象之一，形态归 runner。</span><span data-en>Same line: OpenAI Evals (in evaluation and observability); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="/safety/arize-phoenix.html"><span data-zh>Arize Phoenix</span><span data-en>Arize Phoenix</span></a></span><span class="rel-n"><span data-zh>同分区对照</span><span data-en>Same layer</span></span></li>
+          <li><span class="rel-t"><a href="/safety/adobe-content-credentials.html"><span data-zh>Content Credentials（内容凭证）</span><span data-en>Content Credentials</span></a></span><span class="rel-n"><span data-zh>同分区对照</span><span data-en>Same layer</span></span></li>
+          <li><span class="rel-t"><a href="/safety/openai-evals.html"><span data-zh>OpenAI Evals</span><span data-en>OpenAI Evals</span></a></span><span class="rel-n"><span data-zh>同分区对照</span><span data-en>Same layer</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

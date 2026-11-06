@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>LangSmith — Safety | 投机取巧</title>
+  <meta name="description" content="LangSmith（LangChain）：LangSmith 是托管型的观测与评测平台。 当日在册的官方自我定位是「agent 与 LLM 观测平台」，评测是其中一个面板。" />
+  <link rel="canonical" href="https://tools.specul.com/safety/langsmith.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="LangSmith" />
+  <meta property="og:url" content="https://tools.specul.com/safety/langsmith.html" />
+  <meta property="og:title" content="LangSmith — Safety | 投机取巧" />
+  <meta property="og:description" content="LangSmith（LangChain）：LangSmith 是托管型的观测与评测平台。 当日在册的官方自我定位是「agent 与 LLM 观测平台」，评测是其中一个面板。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../brand.css?v=bf69a6d205ad" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LangSmith","applicationCategory":"DeveloperApplication","sameAs":"https://www.langchain.com/langsmith","description":"LangSmith 是托管型的观测与评测平台。 当日在册的官方自我定位是「agent 与 LLM 观测平台」，评测是其中一个面板。","dateModified":"2026-11-06"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Safety</span>
+      </nav>
+      <a class="back" href="./">← Safety</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#f26d6d" aria-hidden="true"><span data-zh>La</span><span data-en>LA</span></div>
+        <div>
+          <h1><span data-zh>LangSmith</span><span data-en>LangSmith</span></h1>
+          <div class="vendor is-caps">LangChain</div>
+        </div>
+      </div>
+
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
+      <div class="badges">
+        <span class="tag on"><span data-zh>云端</span><span data-en>Cloud</span></span>
+        <span class="tag on"><span data-zh>商业平台</span><span data-en>Commercial platform</span></span>
+        <span class="tag on"><span data-zh>自托管</span><span data-en>Self-hosted</span></span>
+        <span class="tag on"><span data-zh>WebUI</span><span data-en>WebUI</span></span>
+        <span class="tag on"><span data-zh>eval</span><span data-en>eval</span></span>
+        <span class="tag on"><span data-zh>LangChain</span><span data-en>LangChain</span></span>
+        <span class="tag on"><span data-zh>多模型</span><span data-en>Multiple models</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-11-06</span>
+      </div>
+
+      <p class="t-sm"><span data-zh>核验标记表示资料完整度，不是产品评分。下列未确认项可能影响选型；请按对应来源逐项确认。</span><span data-en>The confidence mark describes evidence completeness, not a product score. Unconfirmed items below may affect your choice; check them against the relevant sources.</span></p>
+            <div class="panel is-slim">
+        <h2 id="known-unknowns"><span data-zh>未确认的信息</span><span data-en>Information not confirmed</span></h2>
+        <span data-zh>
+        <ul>
+          <li>主体归属：LangChain, Inc. 生态；主体细节本次未逐条核验</li>
+          <li>LLM-as-judge 与 decision model 评测器是否必须自备模型凭据</li>
+          <li>评分队列的吞吐、延迟与抽样口径</li>
+          <li>数据保留时长与 TTL 的具体数值口径</li>
+          <li>是否使用客户 trace 训练模型（privacy 页当日 404）</li>
+          <li>MCP 接入方式与对外集成面</li>
+          <li>导出与删除接口清单</li>
+          <li>备案公示检索</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>Whether LLM-as-judge and decision-model evaluators require your own model credentials</li>
+          <li>Queue throughput, latency and sampling rules for online evaluation</li>
+          <li>Exact retention windows and TTL values</li>
+          <li>Whether customer traces are used to train models (privacy page 404 today)</li>
+          <li>MCP support and the outward integration surface</li>
+          <li>The export and deletion interface inventory</li>
+          <li>Filing-registry search</li>
+        </ul></span>
+      </div>
+
+
+            <p class="t-xs" data-en>English summaries and interface labels are available. Detailed source notes below are currently in Chinese.</p>
+      <div class="panel-lead"><span data-zh><p><strong>LangSmith 是托管型的观测与评测平台</strong>。 当日在册的官方自我定位是「agent 与 LLM 观测平台」，评测是其中一个面板。</p></span><span data-en><p><strong>LangSmith 是托管型的观测与评测平台</strong>。 当日在册的官方自我定位是「agent 与 LLM 观测平台」，评测是其中一个面板。</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+        <div><p>适合想要一个控制台同时管 trace、数据集、评测器和告警，又不想自运维观测栈的团队。 已有 OpenTelemetry 的应用可以先接进来，之后再决定要不要同时发往别的后端。 不适合把许可门槛当次要问题的团队：自托管按官方口径是企业版加购，还要自备集群与外部存储。 本站只写它支持哪些评测类型，不写它测出来的分数，也不做同类排名。</p></div>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-11-06</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>官方产品与文档域名归 LangChain（www.langchain.com 与 docs.langchain.com），按当日在册口径记 foreign；公司注册地未逐条核验。</span><span data-en>the official product and docs domains belong to LangChain (www.langchain.com and docs.langchain.com); recorded as foreign on today&#39;s evidence; place of incorporation not item-verified.</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>本档 9 个在册源页面当日直抓均 200（旧域名 docs.smith.langchain.com 当日 308 跳新域名）；docs 站的 security 与 otlp 路径当日 404，数据条款面因此记未知。</span><span data-en>all nine on-record source pages fetched 200 today (the old docs.smith.langchain.com domain 308-redirected to the new one); the docs site&#39;s security and otlp paths returned 404 today, which is why the data-terms surface is recorded as unknown.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>备案未核验</span><span data-en>filing unknown</span>：<span data-zh>本次未检索备案公示名单；托管型开发者平台是否落入备案口径未核验，记入未知项清单。</span><span data-en>the filing registry was not searched today; whether a hosted developer platform falls under filing scope is unverified — listed under unknowns.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis" id="dimension-model_access">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>被观测与被评测的模型都不由平台提供：官方产品页点名可接 OpenAI、Anthropic、Vercel AI SDK、LlamaIndex 与自研实现（当日在册）。评测器面含人工、代码、LLM-as-judge、decision model 与成对比较 （evaluation-concepts 当日在册）。<strong>judge 是否必须自备模型凭据，该页未说明，记为未知。</strong></p></span><span data-en><p>Neither the observed nor the evaluated models come from the platform: the official product page names OpenAI, Anthropic, Vercel AI SDK, LlamaIndex and custom implementations as supported (fetched today). The evaluator surface covers human, code, LLM-as-judge, decision model and pairwise comparisons (evaluation-concepts fetched today). <strong>Whether judge evaluators require your own model credentials is not stated on that page — recorded as unknown.</strong></p></span></dd>
+        </div>
+        <div class="axis" id="dimension-runtime">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>主形态是厂商托管云（SaaS），另有 BYOC 与企业版自托管：官方写「Self-hosted LangSmith 是 Enterprise 加购」「在你自己的 Kubernetes 集群里跑」，默认捆绑存储、生产建议改用外部存储服务 （self-hosted 文档当日在册）。控制台在浏览器，SDK、CLI 与 API 是代码面。</p></span><span data-en><p>The primary form is the vendor-hosted cloud (SaaS), with BYOC and enterprise self-hosting: the official line reads that self-hosted LangSmith is an add-on to the Enterprise plan and runs in your own Kubernetes cluster, storage is bundled by default and external storage services are recommended for production (self-hosted docs fetched today). The console lives in the browser; SDKs, the CLI and the API are the code surfaces.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-local_files">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>数据面默认在厂商侧，除非走 BYOC 或自托管；trace 由 SDK 或 OpenTelemetry 上报， OTLP 端点是 LANGSMITH_ENDPOINT 加 /otel（当日在册）。平台不读本机代码库； <strong>导出与删除接口面本次未逐条核验。</strong></p></span><span data-en><p>The data plane sits on the vendor side unless you use BYOC or self-hosting; traces are reported via SDK or OpenTelemetry, with the OTLP base URL being LANGSMITH_ENDPOINT plus /otel (fetched today). The platform does not read your local codebase; <strong>the export and deletion interface surface was not itemized today.</strong></p></span></dd>
+        </div>
+        <div class="axis" id="dimension-background">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>在线评测跑在生产 trace 上（evaluation-concepts 当日在册），离线评测用带参考输出的数据集做回归对照； 官方 changelog 当日在册条目提到在线评测器的细粒度权限与自定义视图。 <strong>评分队列的吞吐、延迟与抽样口径未在册，记为未知。</strong></p></span><span data-en><p>Online evaluation runs on production traces (evaluation-concepts fetched today); offline evaluation uses datasets with reference outputs for regression comparison. Today&#39;s changelog entries cover granular permissions and custom views for online evaluators. <strong>Queue throughput, latency and sampling rules are not on record — recorded as unknown.</strong></p></span></dd>
+        </div>
+        <div class="axis" id="dimension-tools">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>OpenTelemetry 摄入并可用 collector 做多目的地 fanout（当日在册）；官方 CLI 可查询与管理 traces、runs、datasets、evaluators、experiments、insights、threads（当日在册）； 文档索引在册的 Terraform 面把评测器与规则当代码管。<strong>MCP 接入方式未核验到官方声明，记为未知。</strong></p></span><span data-en><p>OpenTelemetry ingestion with collector fanout to multiple destinations (fetched today); the official CLI queries and manages traces, runs, datasets, evaluators, experiments, insights and threads (fetched today); the docs index on record lists a Terraform surface that manages evaluators and rules as code. <strong>MCP support was not verified in official statements — recorded as unknown.</strong></p></span></dd>
+        </div>
+        <div class="axis" id="dimension-context">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>观测与评测对象按 workspace 与 project 组织，权限按 workspace 配内置或自定义角色 （enterprise 文档当日在册）；数据集带参考输出，用于回归对照。 <strong>保留时长与 TTL 的具体口径未逐条在册，记为未知；「跨会话记忆」不是本类平台的功能面。</strong></p></span><span data-en><p>Observed and evaluated objects are organized by workspace and project, with built-in or custom roles defined per workspace (enterprise docs fetched today); datasets carry reference outputs used for regression comparison. <strong>Retention windows and TTL specifics were not itemized — recorded as unknown; cross-session memory is not a feature surface for this class of platform.</strong></p></span></dd>
+        </div>
+        <div class="axis" id="dimension-permissions">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>合规标记当日在册：SOC 2 Type II、HIPAA、GDPR（enterprise 文档直抓）；SAML 或 OIDC 单点登录与 即时用户配置同页在册。档位与配额事实为 Developer 免费档、Plus 与按需 Enterprise（含自托管与 BYOC）， 价格数字按 D9 不采。<strong>是否用客户 trace 训练模型、数据保留条款正文未抓到（privacy 页当日 404），记为未知。</strong></p></span><span data-en><p>Compliance markers on record today: SOC 2 Type II, HIPAA and GDPR (enterprise docs direct-fetched); SAML or OIDC single sign-on with just-in-time provisioning on the same page. Tier and quota facts are a free Developer tier, Plus, and custom Enterprise including self-hosted and BYOC; price numbers are excluded per D9. <strong>Whether customer traces train models, and the data-retention clause text, were not fetched (the privacy page returned 404 today) — recorded as unknown.</strong></p></span></dd>
+        </div>
+        <div class="axis" id="dimension-fit">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合要「一个控制台管住 trace、数据集、评测器与告警」、又不想自运维观测栈的团队； 已用 OpenTelemetry 的应用可先接进来再换后端。不适合把许可门槛当次要问题、 或必须整机自托管却买不到企业档的团队；本站不测分也不排名。</p></span><span data-en><p>Fits teams that want one console covering traces, datasets, evaluators and alerts without operating their own observability stack; applications already on OpenTelemetry can feed in first and decide later whether to fan out elsewhere. Not a fit where licensing thresholds are treated as secondary: self-hosting is, per official docs, an Enterprise add-on that also needs your own cluster and external storage. This site records which evaluation types are supported, not the scores they produce, and does not rank peers.</p></span></dd>
+        </div>
+      </dl>
+
+      <nav class="panel is-slim" aria-label="使用排查" data-ui-aria-label-zh="使用排查" data-ui-aria-label-en="Troubleshooting">
+        <h2><span data-zh>使用时遇到问题</span><span data-en>When something fails</span></h2>
+        <p><a href="../mcp/guides/failure-library.html#auth"><span data-zh>账号与权限</span><span data-en>Account and permissions</span></a> · <a href="../mcp/guides/failure-library.html#rate-limit"><span data-zh>限流与重试</span><span data-en>Rate limits and retries</span></a> · <a href="../mcp/guides/failure-library.html#files"><span data-zh>文件读取问题</span><span data-en>File-reading issues</span></a></p>
+      </nav>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li>把「支持任意框架」当成零成本兼容——接入面靠 SDK 与 OTel，字段口径要在 collector 侧对齐（当日在册）</li>
+          <li>把自托管当成可自选部署形态——官方口径是 Enterprise 加购，默认捆绑存储、生产要换外部服务</li>
+          <li>把在线评测当实时告警——异步评分与权限面在 changelog 在册，延迟与抽样口径未逐条核验</li>
+        </ul>
+      </div>
+
+
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>最近核验记录</span><span data-en>Latest recorded check</span> 2026-11-06，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-11-06。<span data-zh>单项复核范围见正文或来源说明，不代表所有字段在同一天重新核验。</span><span data-en>See the text or source notes for item-specific scope; this does not mean every field was rechecked on that date.</span></p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>docs</td><td><span data-zh>LangSmith · 产品页（自述 Agent 与 LLM Observability Platform；tracing 与 monitoring 与 evaluation；可接任意 LLM 框架；managed cloud 与 BYOC 与 self-hosted，2026-11-06 直抓 200）</span><span data-en>LangSmith · product page (self-described Agent &amp; LLM observability platform; tracing, monitoring and evaluation; works with any LLM framework; managed cloud, BYOC and self-hosted options, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://www.langchain.com/langsmith" target="_blank" rel="noopener">https://www.langchain.com/langsmith</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>LangSmith · Evaluation concepts（人工与代码与 LLM-as-judge 与 decision model 与成对评测；离线数据集回归与在线 trace 评测；标注队列，2026-11-06 直抓 200）</span><span data-en>LangSmith · Evaluation concepts (human, code, LLM-as-judge, decision-model and pairwise evaluators; offline dataset regression and online trace evaluation; annotation queues, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.langchain.com/langsmith/evaluation-concepts" target="_blank" rel="noopener">https://docs.langchain.com/langsmith/evaluation-concepts</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>LangSmith · Changelog（当日直抓在册，最新条目日期 2026-11-02，覆盖评测、数据集、队列与在线评测器）</span><span data-en>LangSmith · Changelog (direct-fetched today; newest entry dated 2026-11-02, covering evaluation, datasets, queues and online evaluators)</span></td><td><a href="https://docs.langchain.com/langsmith/changelog" target="_blank" rel="noopener">https://docs.langchain.com/langsmith/changelog</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>LangSmith · Self-hosted（Enterprise 加购、自有 Kubernetes 集群、默认捆绑存储与生产用外部存储、license key 走销售，2026-11-06 直抓 200）</span><span data-en>LangSmith · Self-hosted (Enterprise add-on, your own Kubernetes cluster, bundled storage by default and external storage for production, license key via sales, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.langchain.com/langsmith/self-hosted" target="_blank" rel="noopener">https://docs.langchain.com/langsmith/self-hosted</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>LangSmith · Enterprise（自有基础设施托管、SAML 与 OIDC 与即时配置、按 workspace 的角色、SOC 2 Type II 与 HIPAA 与 GDPR，2026-11-06 直抓 200）</span><span data-en>LangSmith · Enterprise (hosting entirely in your own infrastructure, SAML and OIDC with just-in-time provisioning, per-workspace roles, SOC 2 Type II, HIPAA and GDPR, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.langchain.com/langsmith/enterprise.md" target="_blank" rel="noopener">https://docs.langchain.com/langsmith/enterprise.md</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>LangSmith · Trace with OpenTelemetry（支持 OTel 追踪、OTLP 端点为 API 地址加 /otel、LANGSMITH_OTEL_ENABLED、collector 多目的地 fanout，2026-11-06 直抓 200）</span><span data-en>LangSmith · Trace with OpenTelemetry (OpenTelemetry-based tracing, OTLP base URL is the API URL plus /otel, LANGSMITH_OTEL_ENABLED, collector fanout, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.langchain.com/langsmith/trace-with-opentelemetry.md" target="_blank" rel="noopener">https://docs.langchain.com/langsmith/trace-with-opentelemetry.md</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>LangSmith · CLI（查询与管理 traces、runs、datasets、evaluators、experiments、insights、threads；curl 安装；OAuth 或 API key 登录，2026-11-06 直抓 200）</span><span data-en>LangSmith · CLI (query and manage traces, runs, datasets, evaluators, experiments, insights and threads; curl install; OAuth or API-key login, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://docs.langchain.com/langsmith/langsmith-cli.md" target="_blank" rel="noopener">https://docs.langchain.com/langsmith/langsmith-cli.md</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>LangSmith · 文档索引（在册含 Terraform 管理评测器与规则即代码等条目，索引页正文 2026-11-06 直抓 200，目标页未逐条抓取）</span><span data-en>LangSmith · docs index (on record includes a Terraform surface managing evaluators and rules as code; index fetched 200 on 2026-11-06, target pages not itemized)</span></td><td><a href="https://docs.langchain.com/_llms/products-and-setup/lang-smith-setup.txt" target="_blank" rel="noopener">https://docs.langchain.com/_llms/products-and-setup/lang-smith-setup.txt</a></td></tr>
+            <tr><td>pricing</td><td><span data-zh>LangSmith · Pricing（Developer 免费档、Plus、按需 Enterprise 含自托管与 BYOC；价格数字不采，2026-11-06 直抓 200）</span><span data-en>LangSmith · Pricing (free Developer tier, Plus, custom Enterprise including self-hosted and BYOC; no price numbers, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://www.langchain.com/pricing" target="_blank" rel="noopener">https://www.langchain.com/pricing</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>官方口径与未核到项</span><span data-en>Official record and unverified items</span></h2>
+        <span data-zh><p>本站尚未完成实测，结论只覆盖能力面与许可面。</p>
+            <p><strong>实测建议</strong>（三条，都指向官方可读页没给的东西）：</p>
+            <ul><li>judge 凭据归谁：评测器调用产生的模型费用落在厂商侧还是客户账户</li><li>在线评测的端到端延迟与漏评率：同一条 trace 从产生到出分要多久</li><li>自托管的真实运维量：Kubernetes 集群、外部存储与 license key 轮换的组合成本</li></ul></span><span data-en><p>This site has not completed measured runs; conclusions cover the capability and license surfaces only.</p>
+            <p><strong>Suggested measurements</strong> (three, each pointing at what the readable official pages do not give):</p>
+            <ul><li>Who owns the judge credentials: whether evaluator model calls bill to the vendor side or to your account</li><li>End-to-end latency and miss rate of online evaluation: how long one trace takes from ingest to score</li><li>The real operational load of self-hosting: Kubernetes cluster, external storage and license-key rotation combined</li></ul></span>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2>变更记录说明</h2>
+        <p>官方 changelog 当日直抓在册，最新条目日期 2026-11-02，条目覆盖评测、数据集、 标注队列与在线评测器的权限面。旧域名 docs.smith.langchain.com 当日 308 跳转新域名， 档案一律按新域名挂源。</p>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./langfuse.html"><span data-zh>Langfuse</span><span data-en>Langfuse</span></a></span><span class="rel-n"><span data-zh>同是 trace 加评测一体：Langfuse 核心开源可气隙自托管，LangSmith 自托管是企业加购。</span><span data-en>Same line: Braintrust (in evaluation and observability); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="./arize-phoenix.html"><span data-zh>Arize Phoenix</span><span data-en>Arize Phoenix</span></a></span><span class="rel-n"><span data-zh>同以 OpenTelemetry 为摄入面：Phoenix 跑在你机器上且许可是 ELv2，LangSmith 主体是 SaaS。</span><span data-en>Same line: promptfoo (in evaluation and observability); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="./adobe-content-credentials.html"><span data-zh>DeepEval</span><span data-en>Content Credentials</span></a></span><span class="rel-n"><span data-zh>同做评测：DeepEval 是本地跑的评测框架，评测结果的托管报表面才对应 LangSmith 这类平台。</span><span data-en>Same line: Content Credentials（内容凭证） (in evaluation and observability); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="/safety/braintrust.html"><span data-zh>Braintrust</span><span data-en>Braintrust</span></a></span><span class="rel-n"><span data-zh>同分区对照</span><span data-en>Same layer</span></span></li>
+          <li><span class="rel-t"><a href="/safety/promptfoo.html"><span data-zh>promptfoo</span><span data-en>promptfoo</span></a></span><span class="rel-n"><span data-zh>同分区对照</span><span data-en>Same layer</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

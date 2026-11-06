@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>How to map a data flow — 深水指南 | 投机取巧</title>
+  <meta name="description" content="怎么做一次数据流梳理：一次梳理要画出字段从哪来、经谁处理、存到哪里、多久删；把「数据不出域」这类说法落成可核对的图与表。" />
+  <link rel="canonical" href="https://tools.specul.com/mcp/guides/how-to-map-a-data-flow.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="How to map a data flow" />
+  <meta property="og:url" content="https://tools.specul.com/mcp/guides/how-to-map-a-data-flow.html" />
+  <meta property="og:title" content="How to map a data flow — 深水指南 | 投机取巧" />
+  <meta property="og:description" content="怎么做一次数据流梳理：一次梳理要画出字段从哪来、经谁处理、存到哪里、多久删；把「数据不出域」这类说法落成可核对的图与表。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../../brand.css?v=bf69a6d205ad" />
+  <link rel="stylesheet" href="../../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to map a data flow","description":"One pass should show where each field originates, who processes it, where it is stored and when it is deleted — turning \"data stays in our domain\" into a checkable diagram and table.","dateModified":"2026-11-06"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
+      <div class="detail-head">
+        <div>
+          <h1><span data-zh>怎么做一次数据流梳理</span><span data-en>How to map a data flow</span></h1>
+          <div class="vendor is-caps"><span data-zh>护栏与安全</span><span data-en>Guardrails & safety</span></div>
+        </div>
+      </div>
+      <div class="panel-lead"><span data-zh><p>一次梳理要画出字段从哪来、经谁处理、存到哪里、多久删；把「数据不出域」这类说法落成可核对的图与表。</p></span><span data-en><p>One pass should show where each field originates, who processes it, where it is stored and when it is deleted — turning &quot;data stays in our domain&quot; into a checkable diagram and table.</p></span></div>
+
+
+
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></a></li><li><a href="#guide-section-1"><span data-zh>适用对象</span><span data-en>Who this is for</span></a></li><li><a href="#guide-section-2"><span data-zh>前置条件</span><span data-en>Prerequisites</span></a></li><li><a href="#guide-section-3"><span data-zh>五段结构</span><span data-en>Five segments</span></a></li><li><a href="#guide-section-4"><span data-zh>梳理步骤</span><span data-en>Six steps</span></a></li><li><a href="#guide-section-5"><span data-zh>贯穿案例：报表助手的一次梳理</span><span data-en>Worked example: mapping a reporting assistant</span></a></li><li><a href="#guide-section-6"><span data-zh>验收</span><span data-en>Acceptance</span></a></li><li><a href="#guide-section-7"><span data-zh>故障排查分支</span><span data-en>Troubleshooting branches</span></a></li><li><a href="#guide-section-8"><span data-zh>下一步</span><span data-en>Next steps</span></a></li><li><a href="#guide-section-9"><span data-zh>核验范围与未知</span><span data-en>What was verified and what is not</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
+        <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
+        <span data-zh><p><strong>数据流梳理是把一条链路上的字段走向画成能核对的图。</strong> 它的价值在把「我们不看客户数据」这类说法变成可检查的条目。 本篇按一次梳理的粒度写：源头、传输、处理、存储、删除。 模型与工具只是链路上的一类节点，不要单独跳过。</p></span><span data-en><p><strong>A data-flow map draws where each field travels, so that the drawing can be checked.</strong> Its value is turning claims such as &quot;we do not look at customer data&quot; into items you can verify. This guide works at the granularity of one pass: origin, transfer, processing, storage, deletion. Models and tools are just one kind of node on the chain; do not skip them.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-1">
+        <h2><span data-zh>适用对象</span><span data-en>Who this is for</span></h2>
+        <span data-zh><ul><li>要接一个 AI 服务，但不清楚数据在哪一步离开自己的边界。</li><li>需要回答法务或客户的尽调问题：哪些字段被存、存多久。</li><li>上线材料里要写「是否用于训练」「是否跨境」「谁可访问」。</li><li>已有多个系统与 agent 混合编排，没人画得出全图。</li></ul>
+            <p>不适合：纯粹的性能或成本估算。那张图要画的不是数据，是调用量。</p></span><span data-en><ul><li>You are about to integrate an AI service and do not know at which step data leaves your boundary.</li><li>Legal or customer due diligence asks which fields are stored, where, and for how long.</li><li>Release material must answer: is training used, does data cross borders, who can access it.</li><li>Several systems and agents are wired together and nobody can draw the whole picture.</li></ul>
+            <p>Not a fit: estimating performance or cost, which tracks calls rather than data fields.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-2">
+        <h2><span data-zh>前置条件</span><span data-en>Prerequisites</span></h2>
+        <span data-zh><ol><li value="1">一个具体场景，而不是「整个系统」。选一条日常在跑的链路。</li><li value="2">能问到三方的联系人：模型服务、托管平台、外包标注（如有）。</li><li value="3">字段清单的来源：表结构、日志样例或接口文档，至少一种。</li><li value="4">记录口径：同一张表里写清「谁写的、依据哪个页面、核验日期」。</li></ol>
+            <p>框架层面对照可以用自愿文件搭结构。 NIST Privacy Framework 官方页说明它供组织自愿使用，帮助管理隐私风险。 本站不判断你是否必须采用某一框架，那是辖区与业务的问题。</p></span><span data-en><ol><li value="1">One concrete scenario, not &quot;the whole system&quot;. Pick the chain you run daily.</li><li value="2">Contacts at each third party: model provider, hosting platform, any outsourced labelling.</li><li value="3">A source of field lists: table schemas, a log sample or the API contract — at least one.</li><li value="4">A recording convention: the same table notes who wrote the row, which page it relies on, and the verification date.</li></ol>
+            <p>Voluntary documents can supply the structure. The NIST Privacy Framework page describes it as a voluntary tool that helps organisations manage privacy risk. This guide does not judge whether you must adopt a framework; that is a jurisdiction and business question.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-3">
+        <h2><span data-zh>五段结构</span><span data-en>Five segments</span></h2>
+        <span data-zh><div class="tbl-wrap"><table><thead><tr><th>段</th><th>要回答的问题</th><th>常见漏项</th></tr></thead><tbody><tr><td>源头</td><td>字段来自哪张表、哪个用户动作</td><td>把派生字段当成新数据</td></tr><tr><td>传输</td><td>离开边界前经过哪些服务、加密与端点</td><td>只记主链路，漏掉遥测与日志上报</td></tr><tr><td>处理</td><td>谁读、是否落盘、是否进入提示词或检索</td><td>把检索上下文与用户原话混为一谈</td></tr><tr><td>存储</td><td>存哪里、多久、谁可访问、是否可删</td><td>只写保留期，不写备份与导出副本</td></tr><tr><td>删除</td><td>触发条件、耗时、验证方式</td><td>没有验证手段，只有承诺</td></tr></tbody></table></div>
+            <p>第三方条款里能直接抄进表的，是「用途」与「保留」两类句子。 AWS 数据隐私常见问题页写明， <strong>官方原文</strong>（英文）：&quot;We do not access or use your content for any purpose without your agreement.&quot; Anthropic 隐私政策在训练用途上有一句可直接引用： <strong>官方原文</strong>（英文）：&quot;We disassociate Inputs and Outputs from your user ID to use them for training and improving our models.&quot;</p>
+            <p>这句只描述政策里的做法，不覆盖你签约的具体档位； 消费端与企业端的差别要按当期条款另查，本页未逐项核对。</p></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Segment</th><th>Question to answer</th><th>Commonly missed</th></tr></thead><tbody><tr><td>Origin</td><td>Which table or which user action produced the field</td><td>Treating a derived field as brand-new data</td></tr><tr><td>Transfer</td><td>Which services it passes before leaving the boundary, and how</td><td>Recording only the main path, missing telemetry and log shipping</td></tr><tr><td>Processing</td><td>Who reads it, whether it lands on disk, whether it enters prompts or retrieval</td><td>Confusing retrieved context with the user&#39;s own words</td></tr><tr><td>Storage</td><td>Where, how long, who accesses, whether it can be deleted</td><td>Writing a retention period but ignoring backups and exported copies</td></tr><tr><td>Deletion</td><td>Trigger, duration, verification method</td><td>A promise with no way to verify it</td></tr></tbody></table></div>
+            <p>Two kinds of sentences in third-party terms can be copied straight into the table: purpose and retention. The AWS data-privacy FAQ states: &quot;We do not access or use your content for any purpose without your agreement.&quot; On training use, the Anthropic privacy policy offers one quotable sentence: &quot;We disassociate Inputs and Outputs from your user ID to use them for training and improving our models.&quot; That sentence describes a practice in the policy, not the tier you signed for. Differences between consumer and business tiers must be checked against current terms; they were not itemised here.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-4">
+        <h2><span data-zh>梳理步骤</span><span data-en>Six steps</span></h2>
+        <span data-zh><ol><li value="1">定边界：画出「自己管的」与「别人管的」两块，边界线要能指着说。</li><li value="2">列字段：只列敏感或有业务含义的字段，避免整表照抄。</li><li value="3">标去向：每个字段标出它在链路上被谁读过、写进过哪里。</li><li value="4">查留痕：确认是否真有日志。审计日志默认开关各处不同—— Google 该文档记载提示与响应日志默认关闭，数据访问审计需在日志服务里开启（站内既有来源，2026-11-03 复核）。</li><li value="5">定保留：写出保留期与删除触发方式，注明来源页面。</li><li value="6">做核对：拿一条真实请求的样本，把它的字段沿图走一遍。</li></ol>
+            <p>第 6 步能抓出大部分错图。第 4 步能抓出「以为有日志，其实没开」。</p></span><span data-en><ol><li value="1">Draw the boundary: what you administer versus what someone else administers, and be able to point at the line.</li><li value="2">List fields: only sensitive or business-meaningful ones, not a whole schema dump.</li><li value="3">Mark destinations: for each field, who read it and where it was written.</li><li value="4">Check the trail: confirm logs really exist. Audit defaults differ — the Google document records that prompt and response logging is off by default and data-access auditing must be enabled in the logging service (in-repo source, rechecked 2026-11-03).</li><li value="5">Set retention: write the period and the deletion trigger, with the source page noted.</li><li value="6">Walk one real request through the diagram, field by field.</li></ol>
+            <p>Step 6 catches most wrong diagrams. Step 4 catches &quot;we assumed logging was on&quot;.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-5">
+        <h2 id="worked-example"><span data-zh>贯穿案例：报表助手的一次梳理</span><span data-en>Worked example: mapping a reporting assistant</span></h2>
+        <span data-zh><p>情境为示例，字段与数字是虚构假设，用来说明画法。</p>
+            <ul><li>输入：一条指令「把上月退款金额按区域汇总」，来自分析师账号。</li><li>处理：链路上有四个节点——内部数仓、检索层、模型 API、结果邮件服务。 梳理表逐字段记录：客户邮箱（进入检索层与提示词）、订单号（进入模型 API 请求体）、 汇总结果（写进邮件正文与工单系统）。</li><li>结果判断：图上有一处对不上——遥测上报把查询文本带出去了，原图漏画这一段。 同时发现「删除」段为空：邮件服务里的结果没有保留期说明。</li><li>失败后下一步： 补上遥测节点并把查询文本改写字段名后再上报； 向邮件服务管理员确认保留策略并写回表格，标注依据页面与核验日期； 在图上加一条「未知」标记，而不是留空——留空会被读成已确认无风险。</li></ul>
+            <p>判据一句话：<strong>图上每一条边，都能指出它依据哪个页面或哪次实测。</strong> 指不出来的边，就画成虚线并标未知。</p></span><span data-en><p>The scenario is illustrative; the fields and numbers are invented assumptions used to show the drawing method.</p>
+            <ul><li>Input: one instruction, &quot;summarise last month&#39;s refund amounts by region&quot;, from an analyst account.</li><li>Processing: four nodes on the chain — internal warehouse, retrieval layer, model API, result mail service. The table records each field: customer email (enters retrieval and the prompt), order id (enters the API request body), the summary (written into the mail body and the ticketing system).</li><li>Judging the result: one edge does not match reality — telemetry shipped the query text, and the original diagram missed that segment. The deletion segment is also empty: no retention statement for results kept by the mail service.</li><li>What to do after a failure: Add the telemetry node and hash the query-text field before shipping; confirm the retention policy with the mail service administrator and write it back with source page and verification date; mark the gap as &quot;unknown&quot; on the diagram rather than leaving it blank — blank reads as &quot;confirmed no risk&quot;.</li></ul>
+            <p>One test for the map: <strong>every edge can be traced to a page or an observation you actually made.</strong> Edges you cannot trace get drawn dashed and labelled unknown.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-6">
+        <h2><span data-zh>验收</span><span data-en>Acceptance</span></h2>
+        <span data-zh><ul><li>[ ] 一张图覆盖源头到删除五段，没有空白段</li><li>[ ] 字段表每个敏感字段都有去向、保留期与依据来源</li><li>[ ] 至少一条真实请求沿图走通，差异被记录</li><li>[ ] 未确认项以「未知」显式标注，而不是留空</li><li>[ ] 谁在什么时间可以访问，与角色表能对上</li><li>[ ] 复核日期写在图上，过期后有人负责重画</li></ul></span><span data-en><ul><li>[ ] One diagram covers all five segments, with none left blank</li><li>[ ] Every sensitive field has a destination, retention period and cited source</li><li>[ ] At least one real request was walked through the map, with differences recorded</li><li>[ ] Unconfirmed items are labelled &quot;unknown&quot; instead of left empty</li><li>[ ] Access timing and roles match the permission table</li><li>[ ] A review date sits on the diagram and someone owns the redraw</li></ul></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-7">
+        <h2><span data-zh>故障排查分支</span><span data-en>Troubleshooting branches</span></h2>
+        <span data-zh><ul><li>图画得比实际粗：多半是把「服务」当节点，改成以字段的一次读写为节点。</li><li>说法与配置对不上：以能改的配置为准，把条款措辞与开关状态分列记录。</li><li>日志找不到：确认审计开关与保留设置；限流类错误（429）与权限类错误（401 / 403）要分开归因。</li><li>元数据工具里的血缘缺失：Microsoft Purview 文档指出，血缘抽取可关闭， 扫描范围与频率需要按计划设置——工具里的图不等于你手工梳理的图。</li><li>供应商改口：条款页更新后要重画，核验日期跟着更新。</li><li>一张图想覆盖所有场景：拆成多张，每张只讲一条链路。</li></ul></span><span data-en><ul><li>The map is coarser than reality: you drew services as nodes; draw one read or write of a field as the node.</li><li>Claims contradict configuration: trust the setting you can change, and record terms wording and switch state in separate columns.</li><li>Logs cannot be found: check audit switches and retention; attribute permission errors (401 / 403) separately from rate limits (429).</li><li>Lineage is missing in the metadata tool: the Purview documentation notes that lineage extraction can be disabled and that scan scope and frequency are plan-dependent — a tool&#39;s graph is not your hand-drawn map.</li><li>The vendor changes its story: redraw after terms pages update, and move the verification date with it.</li><li>One diagram tries to cover every scenario: split it, one chain per diagram.</li></ul></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-8">
+        <h2><span data-zh>下一步</span><span data-en>Next steps</span></h2>
+        <span data-zh><ol><li value="1">把梳理表里的「未知」条目转成对供应商的书面追问。</li><li value="2">需要估合规投入时，用梳理表的工作量项作为基数（见对应指南）。</li><li value="3">上线前检查：图上每个外发节点是否都有拦截或脱敏策略。</li><li value="4">建立周期性重画机制，频率按业务变更速度定，不套用通用周期。</li></ol></span><span data-en><ol><li value="1">Turn the unknown cells into written questions for the vendor.</li><li value="2">When estimating compliance effort, use the workload items from this table as the base (see the matching guide).</li><li value="3">Pre-release check: every outbound node on the map has a blocking or masking policy.</li><li value="4">Set a redraw cadence from your own change rate rather than a generic interval.</li></ol></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-9">
+        <h2><span data-zh>核验范围与未知</span><span data-en>What was verified and what is not</span></h2>
+        <span data-zh><p>2026-11-06 直抓了四处官方来源：NIST Privacy Framework 页、 Microsoft Purview Data Map 文档、Anthropic 隐私政策、AWS 合规与数据隐私常见问题页。 第五条为站内既有来源，沿用 2026-11-03 的复核记录，本次未重抓。</p>
+            <p>以下未知：</p>
+            <ul><li>你所在辖区要求保留哪些记录、保留多久——本页不作法律判断，需按当期法规与合同核对。</li><li>各条款页对不同产品档位（消费端、企业端、API）的差异化表述——本次只记录抓到的句子。</li><li>Purview 或其他元数据工具在你环境里的血缘覆盖度——依赖扫描配置与实际数据源，未实测。</li></ul></span><span data-en><p>On 2026-11-06 four official sources were fetched directly: the NIST Privacy Framework page, the Microsoft Purview Data Map documentation, the Anthropic privacy policy and the AWS compliance data-privacy FAQ. The fifth source is an in-repo entry that keeps its 2026-11-03 recheck record and was not refetched today.</p>
+            <p>Unknowns:</p>
+            <ul><li>Which records and retention periods your jurisdiction requires — this guide makes no legal judgement; check current law and contract.</li><li>How terms pages differ across product tiers (consumer, enterprise, API) — only the fetched sentences are recorded here.</li><li>How much lineage coverage a metadata tool gives in your environment — it depends on scan settings and actual sources, and was not measured.</li></ul></span>
+      </div>
+<nav class="panel is-slim" aria-label="接下来做什么" data-ui-aria-label-zh="接下来做什么" data-ui-aria-label-en="What to do next">
+<h2><span data-zh>接下来做什么</span><span data-en>What to do next</span></h2><ul>
+<li><a href="toolkit-worksheets.html"><span data-zh>记录约束、验收与未确认项</span><span data-en>Record constraints, acceptance and unknowns</span></a></li>
+<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh>核对结果与来源</span><span data-en>Verify the result and its sources</span></a></li>
+<li><a href="failure-library.html#by-symptom"><span data-zh>按症状排查失败</span><span data-en>Troubleshoot by symptom</span></a></li>
+</ul></nav>
+      <div class="panel is-slim">
+        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
+        <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
+          <tr><td><span data-zh>NIST Privacy Framework 官方页（2026-11-06 直抓 200）</span><span data-en>NIST Privacy Framework official page (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://www.nist.gov/privacy-framework" target="_blank" rel="noopener"><span data-zh>https://www.nist.gov/privacy-framework</span><span data-en>https://www.nist.gov/privacy-framework</span></a></td></tr>
+          <tr><td><span data-zh>Microsoft Purview Data Map 官方文档（2026-11-06 直抓 200）</span><span data-en>Microsoft Purview Data Map official documentation (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://learn.microsoft.com/en-us/purview/data-map" target="_blank" rel="noopener"><span data-zh>https://learn.microsoft.com/en-us/purview/data-map</span><span data-en>https://learn.microsoft.com/en-us/purview/data-map</span></a></td></tr>
+          <tr><td><span data-zh>Anthropic 官方隐私政策（2026-11-06 直抓 200）</span><span data-en>Anthropic official privacy policy (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener"><span data-zh>https://www.anthropic.com/legal/privacy</span><span data-en>https://www.anthropic.com/legal/privacy</span></a></td></tr>
+          <tr><td><span data-zh>AWS 合规与数据隐私常见问题官方页（2026-11-06 直抓 200）</span><span data-en>AWS compliance and data-privacy FAQ official page (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://aws.amazon.com/compliance/data-privacy-faq/" target="_blank" rel="noopener"><span data-zh>https://aws.amazon.com/compliance/data-privacy-faq/</span><span data-en>https://aws.amazon.com/compliance/data-privacy-faq/</span></a></td></tr>
+          <tr><td><span data-zh>Google Cloud · Gemini Enterprise 使用与审计日志文档（站内既有来源，2026-11-03 复核）</span><span data-en>Google Cloud · Gemini Enterprise usage and audit logging documentation (existing in-repo source, rechecked 2026-11-03)</span></td><td><a href="https://docs.cloud.google.com/gemini/enterprise/docs/set-up-usage-audit-logs" target="_blank" rel="noopener"><span data-zh>https://docs.cloud.google.com/gemini/enterprise/docs/set-up-usage-audit-logs</span><span data-en>https://docs.cloud.google.com/gemini/enterprise/docs/set-up-usage-audit-logs</span></a></td></tr>
+        </tbody></table></div>
+        <p class="guide-foot"><span data-zh>资料快照日期：2026-11-06；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Source snapshot: 2026-11-06; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

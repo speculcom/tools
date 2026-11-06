@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Truepic Vision / Lens — Safety | 投机取巧</title>
+  <meta name="description" content="Truepic Vision / Lens（Truepic Inc.）：它验的是「这张照片是不是当场拍的」，不是「这段话能不能发」。 官方文档把主轴写成拍摄即验真：PKI 签名证书加 C2PA content credentials， 再叠一组现场一致性检查（时间、位置、屏幕翻拍、清晰度）。" />
+  <link rel="canonical" href="https://tools.specul.com/safety/truepic.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Truepic Vision / Lens" />
+  <meta property="og:url" content="https://tools.specul.com/safety/truepic.html" />
+  <meta property="og:title" content="Truepic Vision / Lens — Safety | 投机取巧" />
+  <meta property="og:description" content="Truepic Vision / Lens（Truepic Inc.）：它验的是「这张照片是不是当场拍的」，不是「这段话能不能发」。 官方文档把主轴写成拍摄即验真：PKI 签名证书加 C2PA content credentials， 再叠一组现场一致性检查（时间、位置、屏幕翻拍、清晰度）。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../brand.css?v=bf69a6d205ad" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Truepic Vision / Lens","applicationCategory":"DeveloperApplication","url":"https://www.truepic.com/contact-us","sameAs":"https://www.truepic.com/","description":"它验的是「这张照片是不是当场拍的」，不是「这段话能不能发」。 官方文档把主轴写成拍摄即验真：PKI 签名证书加 C2PA content credentials， 再叠一组现场一致性检查（时间、位置、屏幕翻拍、清晰度）。","dateModified":"2026-11-06"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Safety</span>
+      </nav>
+      <a class="back" href="./">← Safety</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#f26d6d" aria-hidden="true"><span data-zh>Tr</span><span data-en>TR</span></div>
+        <div>
+          <h1><span data-zh>Truepic Vision / Lens</span><span data-en>Truepic Vision / Lens</span></h1>
+          <div class="vendor is-caps">Truepic Inc.</div>
+        </div>
+      </div>
+
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
+      <div class="badges">
+        <span class="tag on"><span data-zh>云端</span><span data-en>Cloud</span></span>
+        <span class="tag on"><span data-zh>商业</span><span data-en>Commercial</span></span>
+        <span class="tag on"><span data-zh>API</span><span data-en>API</span></span>
+        <span class="tag on"><span data-zh>自动化</span><span data-en>automation</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: maintenance</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-11-06</span>
+      </div>
+
+      <p class="t-sm"><span data-zh>核验标记表示资料完整度，不是产品评分。下列未确认项可能影响选型；请按对应来源逐项确认。</span><span data-en>The confidence mark describes evidence completeness, not a product score. Unconfirmed items below may affect your choice; check them against the relevant sources.</span></p>
+            <div class="panel is-slim">
+        <h2 id="known-unknowns"><span data-zh>未确认的信息</span><span data-en>Information not confirmed</span></h2>
+        <span data-zh>
+        <ul>
+          <li>验真与 AI 分析背后的模型是否披露、能否替换</li>
+          <li>媒体与派生数据的完整存储位置与分包方清单</li>
+          <li>合规认证明细（官方 trust 页本次直抓只返回动态脚本壳，无在册内容）</li>
+          <li>检查任务的队列时长、重试与续跑细节</li>
+          <li>API 的具体配额与并发上限（除每 10 秒 20 次在册值外）</li>
+          <li>是否支持中国大陆接入</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>Whether the models behind authentication and AI analysis are disclosed or replaceable</li>
+          <li>Full storage locations and the sub-processor list for media and derived data</li>
+          <li>Certification detail (the official trust page returned only a dynamic script shell)</li>
+          <li>Inspection queue duration, retries and resumption details</li>
+          <li>API quotas and concurrency beyond the recorded 20 requests per 10 seconds</li>
+          <li>Whether mainland-China access is supported</li>
+        </ul></span>
+      </div>
+
+
+            
+      <div class="panel-lead"><span data-zh><p>它验的是「这张照片是不是当场拍的」，不是「这段话能不能发」。</p>
+            <p>官方文档把主轴写成拍摄即验真：PKI 签名证书加 C2PA content credentials， 再叠一组现场一致性检查（时间、位置、屏幕翻拍、清晰度）。</p></span><span data-en><p>它验的是「这张照片是不是当场拍的」，不是「这段话能不能发」。</p>
+            <p>官方文档把主轴写成拍摄即验真：PKI 签名证书加 C2PA content credentials， 再叠一组现场一致性检查（时间、位置、屏幕翻拍、清晰度）。</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+        <div><p>适合保险理赔、贷款抵押、设备勘验这类要证据链的流程，以及要把验真结论用 API 接进自有系统的团队。 不适合两类人：要找 LLM 输入输出过滤的（那是护栏那条线），要自助注册先试起来的 ——官方 getting-started 页明写不提供自助开通，走演示与合同。</p></div>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-11-06</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>Truepic Inc.（隐私政策当日在册主体）；官方 regions 页只列 US 与 UK。</span><span data-en>Truepic Inc. (entity on record in the privacy policy same day); the official regions page lists only US and UK.</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>直连未核验</span><span data-en>direct unknown</span>　<span data-zh>同日实测 www.truepic.com 与 vision.truepic.dev 返回 200，但这只是站点与文档可达；服务侧无自助开通、区域未含大陆，故不判「可用」。verify.truepic.com 本次实测返回 000（无法建连）。</span><span data-en>Same-day probes returned 200 for www.truepic.com and vision.truepic.dev, but that is site/documentation reachability only; there is no self-serve provisioning and no mainland region, so availability is not asserted. verify.truepic.com returned 000.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>备案未核验</span><span data-en>filing unknown</span>：<span data-zh>官方站点与文档均未写中国大陆备案/登记信息；本次未检索监管公示名单，不做推断。</span><span data-en>Neither the site nor the docs mention mainland filing/registration; the public registry was not searched.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis" id="dimension-model_access">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>不开放选模型：在册的检测面是 Truepic 自己的验真与检查流水线。verification-tests 页在册项目为 模糊度、时间准确性、位置、屏幕翻拍检测与可选 AI 任务；Lens 侧走 PKI 签名证书与 C2PA content credentials 判来源（lens-api 页在册）。验真用的具体模型是否披露、能否替换，官方页未逐条说明，记为未知。</p></span><span data-en><p>No model picking: the recorded detection surface is Truepic&#39;s own authentication and inspection pipeline. The verification-tests page lists blur, time accuracy, location, screen-recapture detection and optional AI tasks; the Lens side judges provenance through PKI-signed certificates and C2PA content credentials (Lens API page on record). Whether the underlying models are disclosed or replaceable is not stated item by item and is recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-runtime">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>托管云交付：Vision 网页平台（登录入口与 Okta SSO 在文档在册）加 REST API。 regions 页在册只有 US 与 UK 两个区域，并写明数据存在发起请求的那个区域。未见本机或离线形态的官方声明。</p></span><span data-en><p>Delivered as a hosted cloud: the Vision web platform (login entry and Okta SSO are in the docs) plus a REST API. The regions page records only US and UK, and states data is stored in the region where the API request is made. No official statement of a local or offline deployment form was found.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-local_files">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>你上传图像/视频与检查单，结果以 JSON 报告返回，检查单可导出 PDF（导出页在文档导航在册）。 Lens Web SDK 在浏览器侧完成采集。官方页未声明读写你的本地文件系统，也未声明媒体最终落在哪家存储。</p></span><span data-en><p>You upload images, video and inspection records; results come back as a JSON report, and inspections can be exported as PDFs (that page sits in the documentation navigation). Lens Web SDK captures on the browser side. Nothing is recorded about reading your local filesystem, nor where media ultimately lands in storage.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-background">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>检查按任务态推进：Inspection Statuses、Alerts、Webhooks 等页面在官方文档导航在册， 说明是「提交后异步出结论 + 回调通知」的形态。任务队列时长与续跑细节本次未逐页核验，记为未知。</p></span><span data-en><p>Inspections move through task states: the Inspection Statuses, Alerts and Webhooks pages sit in the official documentation navigation, which is the shape of &#39;submit, get a conclusion asynchronously, receive callbacks&#39;. Queue duration and retry details were not verified page by page and are recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-tools">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>扩展面是 API 而非插件：OAuth 2.0 鉴权、Lens API 与 Lens Web SDK（各有独立 changelog）、 webhook 与 webhook actions、网站表单、嵌入原生应用的 webview（以上页面均在文档导航在册）。 MCP 或其他第三方工具协议未见官方声明，记为未知。</p></span><span data-en><p>The extension surface is the API, not plugins: OAuth 2.0 authentication, the Lens API and Lens Web SDK (each with its own changelog), webhooks and webhook actions, website forms, and a webview embedded into native apps - all listed in the documentation navigation. No MCP or other tool-protocol statement was found; recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-context">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>以单条 inspection 为组织单位：Teams、Custom Fields、Lists、Message Template Sets 在册， Risk Network 提供跨客户的历史线索。这不是会话式上下文，跨请求的「记忆」机制官方未说明，记为未知。</p></span><span data-en><p>The unit of organisation is a single inspection: Teams, Custom Fields, Lists and Message Template Sets are on record, and the Risk Network adds cross-customer history. This is not conversational context, and no cross-request memory mechanism is described; recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-permissions">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>官方 getting-started 页在册「Vision 不提供自助注册」，走演示与合同。API 限流在册：每 10 秒最多 20 次请求。 隐私政策（生效 2026-01-23）在册：采集标识符、内容与设备数据；以匿名化数据训练模型； 与分包方在全球范围共享；保留期按合同，账号终止后 90 天。合规认证明细未核验到—— 官方 trust 页本次直抓只返回动态脚本壳，无在册内容，记为未知。</p></span><span data-en><p>The getting-started page records &#39;Vision does not provide self-serve signup&#39;; access runs through demos and contracts. The API overview page records a limit of up to 20 requests per 10-second period. The privacy policy (effective 2026-01-23) records collection of identifiers, content and device data; model training on anonymised data; global sharing with sub-processors; retention per contract and 90 days after termination. Certification detail was not verified - the official trust page returned only a dynamic script shell - so it is recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-fit">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合保险理赔、贷款与抵押、设备勘验这类要「拍摄即验真、事后可举证」的流程，以及要把验真结论接进自有系统的 API 用户。 不适合要 LLM 输入输出过滤的团队（不是它的产品主轴），也不适合要自托管或要免费自助额度的人。</p></span><span data-en><p>Fits: insurance claims, lending and collateral, equipment inspection - any workflow needing authenticated-at-capture evidence plus a defensible record - and teams wiring authentication verdicts into their own systems through the API. Not a fit: teams looking for LLM input/output filtering (not the product&#39;s main axis), anyone needing self-hosting, or anyone expecting a free self-serve quota (the pricing page records no free plan).</p></span></dd>
+        </div>
+      </dl>
+
+      <nav class="panel is-slim" aria-label="使用排查" data-ui-aria-label-zh="使用排查" data-ui-aria-label-en="Troubleshooting">
+        <h2><span data-zh>使用时遇到问题</span><span data-en>When something fails</span></h2>
+        <p><a href="../mcp/guides/failure-library.html#auth"><span data-zh>账号与权限</span><span data-en>Account and permissions</span></a> · <a href="../mcp/guides/failure-library.html#rate-limit"><span data-zh>限流与重试</span><span data-en>Rate limits and retries</span></a> · <a href="../mcp/guides/failure-library.html#files"><span data-zh>文件读取问题</span><span data-en>File-reading issues</span></a></p>
+      </nav>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li>把 Truepic 当通用内容审核 API：官方在册主轴是拍摄验真与检查流水，不是 prompt 与输出过滤</li>
+          <li>以为有 C2PA 凭证就等于内容真实：凭证给的是来源与编辑史，不等于内容没有误导</li>
+          <li>以为能自助开通：官方 getting-started 页在册「不提供 self-serve signup」</li>
+        </ul>
+      </div>
+
+
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>最近核验记录</span><span data-en>Latest recorded check</span> 2026-11-06，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-11-06。<span data-zh>单项复核范围见正文或来源说明，不代表所有字段在同一天重新核验。</span><span data-en>See the text or source notes for item-specific scope; this does not mean every field was rechecked on that date.</span></p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>docs</td><td><span data-zh>Truepic · 官网（产品定位为拍摄即验真与检查平台，导航与文档入口在册，2026-11-06 直抓 200）</span><span data-en>Truepic · official site (capture-time authentication and inspection platform positioning; navigation and docs entry, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://www.truepic.com/" target="_blank" rel="noopener">https://www.truepic.com/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Truepic Vision · Getting started（无自助注册；content credentials 表述，2026-11-06 直抓 200）</span><span data-en>Truepic Vision · Getting started (no self-serve signup; content-credentials wording, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://vision.truepic.dev/docs/getting-started.md" target="_blank" rel="noopener">https://vision.truepic.dev/docs/getting-started.md</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Truepic Vision · API overview（OAuth 2.0 鉴权与每 10 秒 20 次限流，2026-11-06 直抓 200）</span><span data-en>Truepic Vision · API overview (OAuth 2.0 and the 20-requests-per-10-seconds limit, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://vision.truepic.dev/docs/api-overview.md" target="_blank" rel="noopener">https://vision.truepic.dev/docs/api-overview.md</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Truepic Vision · Regions（仅 US / UK；数据存在发起请求的区域，2026-11-06 直抓 200）</span><span data-en>Truepic Vision · Regions (US and UK only; data stored in the request region, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://vision.truepic.dev/docs/regions.md" target="_blank" rel="noopener">https://vision.truepic.dev/docs/regions.md</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Truepic Lens API（PKI 签名证书与 C2PA 凭证校验、JSON 验真报告，2026-11-06 直抓 200）</span><span data-en>Truepic Lens API (PKI-signed certificates with C2PA credentials; JSON authentication report, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://vision.truepic.dev/docs/lens-api.md" target="_blank" rel="noopener">https://vision.truepic.dev/docs/lens-api.md</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Truepic Vision · Verification tests（模糊度/时间/位置/屏幕翻拍与可选 AI 任务，2026-11-06 直抓 200）</span><span data-en>Truepic Vision · Verification tests (blur / time / location / screen detection plus optional AI tasks, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://vision.truepic.dev/docs/verification-tests.md" target="_blank" rel="noopener">https://vision.truepic.dev/docs/verification-tests.md</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>Truepic Lens API · Changelog（2024-09-26 C2PA 1.4/2.0 等条目，2026-11-06 直抓 200）</span><span data-en>Truepic Lens API · Changelog (C2PA 1.4/2.0 entry dated 2024-09-26, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://vision.truepic.dev/docs/lens-api-changelog.md" target="_blank" rel="noopener">https://vision.truepic.dev/docs/lens-api-changelog.md</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>Truepic Lens Web SDK · Changelog（最新在册条目 2025-01-22，2026-11-06 直抓 200）</span><span data-en>Truepic Lens Web SDK · Changelog (latest recorded entry 2025-01-22, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://vision.truepic.dev/docs/lens-web-sdk-changelog.md" target="_blank" rel="noopener">https://vision.truepic.dev/docs/lens-web-sdk-changelog.md</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Truepic · Privacy Policy（主体 Truepic Inc.、训练用途、分包方与保留期，2026-11-06 直抓 200）</span><span data-en>Truepic · Privacy Policy (Truepic Inc., anonymised model training, sub-processors, retention, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://www.truepic.com/privacy-policy" target="_blank" rel="noopener">https://www.truepic.com/privacy-policy</a></td></tr>
+            <tr><td>pricing</td><td><span data-zh>Truepic · Pricing（Flex 月付 / Standard 年付结构，无免费自助档；本档不采价格数字，2026-11-06 直抓 200）</span><span data-en>Truepic · Pricing (Flex month-to-month and Standard annual structure, no free self-serve tier; no price numbers here, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://www.truepic.com/pricing" target="_blank" rel="noopener">https://www.truepic.com/pricing</a></td></tr>
+            <tr><td>engineering</td><td><span data-zh>Truepic · Blog（2026-08 AI Analysis 等产品在册条目，2026-11-06 直抓 200）</span><span data-en>Truepic · Blog (2026 product items on record such as AI Analysis, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://www.truepic.com/blog" target="_blank" rel="noopener">https://www.truepic.com/blog</a></td></tr>
+            <tr><td>spec</td><td><span data-zh>C2PA · 官网（规范主体与指导委员会成员在册含 Truepic，2026-11-06 直抓 200）</span><span data-en>C2PA · official site (standards body and steering-committee membership including Truepic, direct-fetched 200 on 2026-11-06)</span></td><td><a href="https://c2pa.org/" target="_blank" rel="noopener">https://c2pa.org/</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>官方口径与未核到项</span><span data-en>Official record and unverified items</span></h2>
+        <span data-zh><p>本站尚未完成实测。本档不含验真准确率、误判率或延迟数字。</p>
+            <p><strong>实测建议</strong>（三条）：</p>
+            <ul><li>同一张翻拍图在不同检查项下的结论是否互相矛盾</li><li>US 与 UK 区域的延迟差异与数据驻留实际效果</li><li>C2PA 凭证缺失与被改坏这两种状态在报告里如何区分</li></ul></span><span data-en><p>This site has not completed measured runs; nothing here covers authentication accuracy, false-positive rates or latency.</p>
+            <p><strong>Suggested measurements</strong> (three):</p>
+            <ul><li>Whether the individual verification tests ever contradict each other on the same re-photographed image</li><li>Latency differences between the US and UK regions, and whether residency behaves as documented</li><li>How the report distinguishes &#39;credential missing&#39; from &#39;credential damaged&#39;</li></ul></span>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>能力边界</span><span data-en>Capability boundaries</span></h2>
+        <span data-zh><p>在册能判的：媒体是否为签名设备当场采集、是否翻拍屏幕、时间与位置是否自洽、 元数据是否被改动，以及可选的 AI 分析任务。不在册的：它不判内容是否有害， 也不替你决定要不要采信这张图。C2PA 侧的边界是本站观点：凭证给的是来源与处理史， 不是「真实」的终极判定（详见 <a href="./adobe-content-credentials.html">Content Credentials</a>）。</p></span><span data-en><p>On record it can judge: whether media was captured live on a signing device, whether a screen was re-photographed, whether time and location are self-consistent, whether metadata was altered, plus optional AI analysis tasks. Not on record: it does not decide whether content is harmful, and it does not decide whether you should trust the picture. The C2PA boundary, in this site&#39;s view: credentials give provenance and processing history, not a final verdict on truthfulness (see the Content Credentials entry).</p></span>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>变更记录说明</span><span data-en>Change record</span></h2>
+        <span data-zh><p>公开版本记录只有两条 SDK 线：Lens API changelog 最新在册条目为 2024-09-26 （加 C2PA 1.4 / 2.0、hash box、GPSHPositioningError 与元数据断言）， Lens Web SDK changelog 最新为 2025-01-22。Vision 平台本体无公开 changelog。 官网 blog 与 newsroom 有 2026 年的产品与集成在册条目（如 2026-08 AI Analysis）， 但没有可核验的版本号，故 lifecycle 记 maintenance 而非 active。</p></span><span data-en><p>Only two SDK lines have public version records: the Lens API changelog&#39;s newest entry dated 2024-09-26 (C2PA 1.4 / 2.0, hash boxes, GPSHPositioningError, metadata assertions) and the Lens Web SDK changelog&#39;s newest dated 2025-01-22. The Vision platform itself has no public changelog. The blog and newsroom carry dated 2026 product and integration items (AI Analysis in 2026-08, a Verisk workflow in 2026-09) but without verifiable version numbers, so lifecycle is recorded as maintenance rather than active.</p></span>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./adobe-content-credentials.html"><span data-zh>Content Credentials</span><span data-en>Content Credentials</span></a></span><span class="rel-n"><span data-zh>同一套凭证标准的验证侧生态；这里是采集与业务流，那里是通用验证器。</span><span data-en>Same line: Content Credentials（内容凭证） (in provenance and labelling); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="./azure-ai-content-safety.html"><span data-zh>Azure AI Content Safety</span><span data-en>Azure AI Content Safety</span></a></span><span class="rel-n"><span data-zh>一条管「内容该不该拦」，一条管「内容能不能举证」。</span><span data-en>Same line: Azure AI Content Safety (in provenance and labelling); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="./litellm.html"><span data-zh>LiteLLM</span><span data-en>LiteLLM Proxy (AI Gateway)</span></a></span><span class="rel-n"><span data-zh>网关侧留的是调用与预算记录，这里留的是媒体与拍摄现场记录。</span><span data-en>Same line: Amazon Bedrock Guardrails (in provenance and labelling); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="/safety/bedrock-guardrails.html"><span data-zh>Amazon Bedrock Guardrails</span><span data-en>Amazon Bedrock Guardrails</span></a></span><span class="rel-n"><span data-zh>同分区对照</span><span data-en>Same layer</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

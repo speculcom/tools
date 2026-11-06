@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>garak — Safety | 投机取巧</title>
+  <meta name="description" content="garak（NVIDIA · Leon Derczynski）：garak 是跑在自己终端里的 LLM 探针扫描器（NVIDIA 与维护者 Leon Derczynski，Apache-2.0）：它把「和模型对话」写成 probes，把「什么算失效」写成 detectors，用 harness 组织成一次扫描，然…" />
+  <link rel="canonical" href="https://tools.specul.com/safety/garak.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="garak" />
+  <meta property="og:url" content="https://tools.specul.com/safety/garak.html" />
+  <meta property="og:title" content="garak — Safety | 投机取巧" />
+  <meta property="og:description" content="garak（NVIDIA · Leon Derczynski）：garak 是跑在自己终端里的 LLM 探针扫描器（NVIDIA 与维护者 Leon Derczynski，Apache-2.0）：它把「和模型对话」写成 probes，把「什么算失效」写成 detectors，用 harness 组织成一次扫描，然…" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../brand.css?v=bf69a6d205ad" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"garak","applicationCategory":"DeveloperApplication","url":"https://github.com/NVIDIA/garak","sameAs":"https://garak.ai/","description":"garak 是跑在自己终端里的 LLM 探针扫描器（NVIDIA 与维护者 Leon Derczynski，Apache-2.0）：它把「和模型对话」写成 probes，把「什么算失效」写成 detectors，用 harness 组织成一次扫描，然后逐条把失败的 prompt 与响应落成本地日志。 仓库首页的自我表述是 generative AI red-teaming & assessment kit，官网则写作 \"LLM vulnerability scanner\"—— 两句话都是评测语义，不是运行时拦截语义。","dateModified":"2026-11-06"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Safety</span>
+      </nav>
+      <a class="back" href="./">← Safety</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:&quot;#76B900&quot;" aria-hidden="true"><span data-zh>G</span><span data-en>GA</span></div>
+        <div>
+          <h1><span data-zh>garak</span><span data-en>garak</span></h1>
+          <div class="vendor is-caps">NVIDIA · Leon Derczynski</div>
+        </div>
+      </div>
+
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
+      <div class="badges">
+        <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
+        <span class="tag on"><span data-zh>Apache-2.0</span><span data-en>Apache-2.0</span></span>
+        <span class="tag on"><span data-zh>Python</span><span data-en>Python</span></span>
+        <span class="tag on"><span data-zh>终端</span><span data-en>Terminal</span></span>
+        <span class="tag on"><span data-zh>CI</span><span data-en>CI</span></span>
+        <span class="tag on"><span data-zh>eval</span><span data-en>eval</span></span>
+        <span class="tag on"><span data-zh>本地</span><span data-en>Local</span></span>
+        <span class="tag on"><span data-zh>多模型</span><span data-en>Multiple models</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-11-06</span>
+      </div>
+
+      <p class="t-sm"><span data-zh>核验标记表示资料完整度，不是产品评分。下列未确认项可能影响选型；请按对应来源逐项确认。</span><span data-en>The confidence mark describes evidence completeness, not a product score. Unconfirmed items below may affect your choice; check them against the relevant sources.</span></p>
+            <div class="panel is-slim">
+        <h2 id="known-unknowns"><span data-zh>未确认的信息</span><span data-en>Information not confirmed</span></h2>
+        <span data-zh>
+        <ul>
+          <li>全部 generator 类型清单与逐家参数差异（官方只点名数家）</li>
+          <li>默认日志目录名、文件保留与清理规则</li>
+          <li>是否存在默认遥测或结果上报（未取到官方声明）</li>
+          <li>Docker 镜像与 CI 集成的官方口径（本批次未取到正文）</li>
+          <li>harness 的会话构造与长度策略细节（README 只给一句定义）</li>
+          <li>MCP 接入方式（官方文档未说明）</li>
+          <li>releases 页与 PyPI 的 v0.17.1 日期标注差异原因</li>
+          <li>大陆网络环境下的直连可用性与备案情况（未实测、未检索）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>The complete generator list and per-provider parameter differences (the official pages name only a few)</li>
+          <li>Default log directory names, retention and cleanup rules</li>
+          <li>Whether telemetry or result upload is on by default (no official statement captured)</li>
+          <li>The official Docker image and CI-integration story (no text captured in this pass)</li>
+          <li>Harness conversation-construction and length strategy (the README gives one defining sentence only)</li>
+          <li>MCP transport support (not described in the official docs)</li>
+          <li>Why the releases page date label for v0.17.1 does not fully match PyPI</li>
+          <li>Mainland-network direct reachability and filing status (not measured, not searched)</li>
+        </ul></span>
+      </div>
+
+
+            <p class="t-xs" data-en>English summaries and interface labels are available. Detailed source notes below are currently in Chinese.</p>
+      <div class="panel-lead"><span data-zh><p><strong>garak 是跑在自己终端里的 LLM 探针扫描器</strong>（NVIDIA 与维护者 Leon Derczynski，Apache-2.0）：它把「和模型对话」写成 probes，把「什么算失效」写成 detectors，用 harness 组织成一次扫描，然后逐条把失败的 prompt 与响应落成本地日志。 仓库首页的自我表述是 generative AI red-teaming &amp; assessment kit，官网则写作 &quot;LLM vulnerability scanner&quot;—— 两句话都是<strong>评测语义</strong>，不是运行时拦截语义。</p></span><span data-en><p><strong>garak 是跑在自己终端里的 LLM 探针扫描器</strong>（NVIDIA 与维护者 Leon Derczynski，Apache-2.0）：它把「和模型对话」写成 probes，把「什么算失效」写成 detectors，用 harness 组织成一次扫描，然后逐条把失败的 prompt 与响应落成本地日志。 仓库首页的自我表述是 generative AI red-teaming &amp; assessment kit，官网则写作 &quot;LLM vulnerability scanner&quot;—— 两句话都是<strong>评测语义</strong>，不是运行时拦截语义。</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+        <div><p>适合：上线前对着自己可控的 endpoint（HuggingFace、OpenAI、Bedrock、replicate、litellm，或任何 REST 接口） 批量跑一轮探针；需要可复核的证据文件（JSONL、hit log）而不是一个「通过/不通过」的口号；要在多个 target 上复用同一套探针。 不适合：想在请求链路里拦用户输入的（它不阻断）；把「全部探针 PASS」当成模型安全证明；要托管报告平台或合规证书的团队。</p></div>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-11-06</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>NVIDIA（美国）与维护者 Leon Derczynski 的开源项目；本批次未取到面向中国大陆的服务条款或中文站点。</span><span data-en>An open-source project of NVIDIA (US) and maintainer Leon Derczynski; no mainland-facing terms page or Chinese site was captured in this pass.</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>直连未核验</span><span data-en>direct unknown</span>　<span data-zh>github.com、garak.ai 与 docs.garak.ai 本批次从当前网络取到 200，但未在大陆网络环境做直连实测，故记未知；PyPI 与 GitHub 需自备可达性。</span><span data-en>github.com, garak.ai and docs.garak.ai returned 200 from the current network in this pass, but no mainland-network direct-connection measurement was made, so it is recorded as unknown; PyPI and GitHub reachability is on you.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>备案未核验</span><span data-en>filing unknown</span>：<span data-zh>无官方依据，本批次未检索生成式 AI 备案公示，不下「未备案」结论。</span><span data-en>No official basis; the generative-AI filing registry was not searched in this pass, so no &quot;not filed&quot; conclusion is drawn.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis" id="dimension-model_access">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>它自己不带模型，被测面是别人的模型或应用：仓库首页把 generators 定义成「plugins for LLMs to be probed」， 点名的接入有 hugging face hub generative models、replicate text models、openai api chat &amp; continuation models、 aws bedrock foundation models、litellm，并补一句「pretty much anything accessible via REST」。 文档首扫示例是 <code>--model_type huggingface --model_name gpt2</code>。全部 generator 类型与各家参数差异：未逐条清点。</p></span><span data-en><p>It ships no model of its own — the thing under test is somebody else&#39;s model or application: the repository front page defines generators as &quot;plugins for LLMs to be probed&quot;, and names hugging face hub generative models, replicate text models, openai api chat &amp; continuation models, aws bedrock foundation models and litellm, adding &quot;pretty much anything accessible via REST&quot;. The documentation&#39;s first-scan example is <code>--model_type huggingface --model_name gpt2</code>. The full generator list and per-provider parameter differences: not itemised.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-runtime">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>本机 Python 进程、终端交互：README 的安装命令是 <code>python -m pip install -U garak</code>，PyPI 记 <code>pip install garak</code>、 requires-python 为 &gt;=3.11；文档「Setting up」页同样把它描述成命令行工具。扫描请求按你选的 target 发往云端 API 或本机推理端点。是否存在托管执行面与 Docker 镜像口径：本批次未取到官方正文，记未知。</p></span><span data-en><p>A local Python process with a terminal interface: the README install command is <code>python -m pip install -U garak</code>, PyPI records <code>pip install garak</code> with requires-python &gt;=3.11, and the &quot;Setting up&quot; doc page likewise describes a command-line tool. Scan requests go to the target endpoint you pick — a cloud API or local inference. Whether a hosted execution surface exists, and the official Docker story: no official text captured in this pass, recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-local_files">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>读的是随包安装的探针数据集与本机配置，写的是本地结果文件：README 记结果落 JSONL、garak.log 与 hit log； 文档「Our Features」列四类输出 Screen output、Report log、Hit log、Debug log。默认目录名、文件保留与清理规则： 本批次未逐字核验。</p></span><span data-en><p>It reads the probe datasets installed with the package and your local configuration, and writes local result files: the README records JSONL, garak.log and hit logs; the &quot;Our Features&quot; doc page lists four output kinds — Screen output, Report log, Hit log, Debug log. Default directory names, retention and cleanup rules: not verified word for word in this pass.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-background">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>没有「关机后续跑」的托管任务：一次扫描是一个本机进程，跑完写日志。文档目录列出 Setting up、Your first scan、 Getting help 等条目，未出现断点续跑或队列语义。批量任务的并行与限流方式：本批次未取到官方正文。</p></span><span data-en><p>There is no &quot;keeps running after you shut down&quot; hosted task: one scan is one local process that writes logs when it ends. The docs table of contents lists Setting up, Your first scan and Getting help, with no resume or queue semantics. How batch runs parallelise and throttle: no official text captured in this pass.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-tools">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>四类插件面（README 原文短语）：probes「classes for generating interactions with LLMs」、 detectors「classes for detecting an LLM is exhibiting a given failure mode」、harnesses「classes for structuring testing」、 generators 负责接模型。点选形式见文档示例 <code>--probes lmrc.Profanity</code>，<code>--list_probes</code> 可列探针。 MCP 接入方式：官方文档未说明，记未知。</p></span><span data-en><p>Four plugin surfaces (README&#39;s own phrasing): probes are &quot;classes for generating interactions with LLMs&quot;, detectors are &quot;classes for detecting an LLM is exhibiting a given failure mode&quot;, harnesses are &quot;classes for structuring testing&quot;, and generators connect to models. Selection syntax appears in the docs example <code>--probes lmrc.Profanity</code>, and <code>--list_probes</code> enumerates probes. MCP support: not described in the official docs, recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-context">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>这里的「上下文」是 harness 如何把多轮交互拼成一次探测，不是跨会话记忆。README 对 harnesses 的表述止于 「classes for structuring testing」，具体会话构造与长度策略本批次未取到逐条官方正文，记未知。</p></span><span data-en><p>Here &quot;context&quot; means how a harness assembles multiple turns into one probe, not cross-session memory. The README&#39;s statement about harnesses stops at &quot;classes for structuring testing&quot;; the concrete conversation-construction and length strategy had no official text captured in this pass, recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-permissions">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>许可面清楚：Apache-2.0（LICENSE 正文直读，见 license 字段）。数据流向只有一条官方可读口径——探针 prompt 与响应 发往你配置的 target 端点，失败样本逐条写进本地日志（README：「If any of the prompt attempts yielded an undesirable behavior, the response will be marked as FAIL」）。是否有默认遥测、是否上传探针结果：未取到官方声明，进 unknowns。 它不阻断线上流量，因此不存在「拦截比例」这类结论；本站也不引用任何成功率或漏检率数字。</p></span><span data-en><p>The licence is unambiguous: Apache-2.0 (LICENSE read directly, see the licence field). There is only one readable official statement about data flow — probe prompts and responses go to the target endpoint you configured, and failing samples are written item by item to local logs (README: &quot;If any of the prompt attempts yielded an undesirable behavior, the response will be marked as FAIL&quot;). Whether telemetry is on by default or results are uploaded: no official statement captured, moved to unknowns. It never blocks live traffic, so there is no &quot;what share it stops&quot; conclusion to write; this site cites no success-rate or miss-rate figures.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-fit">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合：上线前对自己可控的 endpoint 批量跑一轮探针、要求留下可复核的 prompt/响应证据文件、要在 HuggingFace、 OpenAI、Bedrock、litellm 等 target 之间复用同一套探针。不适合：当运行时护栏拦用户请求；把「探针全 PASS」读成 「模型安全」（官方口径只记录失败样本，不出安全证明）；要托管报告平台或合规证书。</p></span><span data-en><p>Fits: running a probe sweep against an endpoint you control before launch, keeping reviewable prompt/response evidence files rather than a slogan, reusing one probe set across HuggingFace, OpenAI, Bedrock, litellm and other targets. Not a fit: intercepting user requests at runtime (it does not block); reading &quot;all probes PASS&quot; as proof the model is safe (the official framing only records failing samples); teams needing a hosted report platform or compliance certificates.</p></span></dd>
+        </div>
+      </dl>
+
+      <nav class="panel is-slim" aria-label="使用排查" data-ui-aria-label-zh="使用排查" data-ui-aria-label-en="Troubleshooting">
+        <h2><span data-zh>使用时遇到问题</span><span data-en>When something fails</span></h2>
+        <p><a href="../mcp/guides/failure-library.html#auth"><span data-zh>账号与权限</span><span data-en>Account and permissions</span></a> · <a href="../mcp/guides/failure-library.html#rate-limit"><span data-zh>限流与重试</span><span data-en>Rate limits and retries</span></a> · <a href="../mcp/guides/failure-library.html#files"><span data-zh>文件读取问题</span><span data-en>File-reading issues</span></a></p>
+      </nav>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li>把「支持哪些探针类别」读成「能拦住多少比例」——它只产出失败样本日志，不做阻断</li>
+          <li>以为 garak 是运行时护栏：它是一次性扫描进程，不在请求链路里</li>
+          <li>把 <code>--list_probes</code> 的数量当成覆盖面结论：探针名与官方合规映射的关系本批次未逐条核验</li>
+        </ul>
+      </div>
+
+
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>最近核验记录</span><span data-en>Latest recorded check</span> 2026-11-06，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-11-06。<span data-zh>单项复核范围见正文或来源说明，不代表所有字段在同一天重新核验。</span><span data-en>See the text or source notes for item-specific scope; this does not mean every field was rechecked on that date.</span></p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>repo</td><td><span data-zh>NVIDIA/garak · 仓库首页（定位句、probes/detectors/harnesses/generators 四件套、target 接入清单、安装命令；直读 200，2026-11-06）</span><span data-en>NVIDIA/garak · repository front page (positioning line, the probes/detectors/harnesses/generators four, the target list, install commands; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://github.com/NVIDIA/garak" target="_blank" rel="noopener">https://github.com/NVIDIA/garak</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>garak · LICENSE（Apache-2.0 正文与版权行署名；直读 200，2026-11-06）</span><span data-en>garak · LICENSE (Apache-2.0 text and copyright attribution lines; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://github.com/NVIDIA/garak/blob/main/LICENSE" target="_blank" rel="noopener">https://github.com/NVIDIA/garak/blob/main/LICENSE</a></td></tr>
+            <tr><td>official</td><td><span data-zh>garak · 官网首页（「LLM vulnerability scanner」与 docs/reference 入口；直读 200，2026-11-06）</span><span data-en>garak · official site (&quot;LLM vulnerability scanner&quot; plus the docs/reference entry points; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://garak.ai/" target="_blank" rel="noopener">https://garak.ai/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>garak · 文档 What is garak?（「finds holes in LLM-based tech」「identifies how your LLM can fail」；直读 200，2026-11-06）</span><span data-en>garak · docs, What is garak? (&quot;finds holes in LLM-based tech&quot;, &quot;identifies how your LLM can fail&quot;; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://docs.garak.ai/garak/overview/what-is-garak/" target="_blank" rel="noopener">https://docs.garak.ai/garak/overview/what-is-garak/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>garak · 文档 Our Features（四类输出 Screen/Report/Hit/Debug log；直读 200，2026-11-06）</span><span data-en>garak · docs, Our Features (the four output kinds: Screen/Report/Hit/Debug log; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://docs.garak.ai/garak/overview/our-features/" target="_blank" rel="noopener">https://docs.garak.ai/garak/overview/our-features/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>garak · 文档 Your first scan（<code>python -m garak --list_probes</code> 等命令与 PASS/FAIL 输出；直读 200，2026-11-06）</span><span data-en>garak · docs, Your first scan (<code>python -m garak --list_probes</code> and the PASS/FAIL output; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://docs.garak.ai/garak/llm-scanning-basics/your-first-scan" target="_blank" rel="noopener">https://docs.garak.ai/garak/llm-scanning-basics/your-first-scan</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>garak · Releases 最新条目（v0.17.1；直读 200，2026-11-06）</span><span data-en>garak · latest release entry (v0.17.1; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://github.com/NVIDIA/garak/releases/latest" target="_blank" rel="noopener">https://github.com/NVIDIA/garak/releases/latest</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>garak · PyPI 项目页（0.17.1、<code>pip install garak</code>、requires-python &gt;=3.11、Apache-2.0；直读 200，2026-11-06）</span><span data-en>garak · PyPI project page (0.17.1, <code>pip install garak</code>, requires-python &gt;=3.11, Apache-2.0; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://pypi.org/project/garak/" target="_blank" rel="noopener">https://pypi.org/project/garak/</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>官方口径与未核到项</span><span data-en>Official record and unverified items</span></h2>
+        <span data-zh><p><strong>本站未做端到端实测</strong>：没有运行过 <code>python -m garak</code>，没有打开任何 JSONL/hit log，不产出分数、成功率或排名， 也不统计探针总数。本档案只组织官方仓库首页、LICENSE、官网、docs.garak.ai 与 PyPI 上在册的说法，逐条见 sources 与核验日。</p>
+            <p><strong>实测建议</strong>（四条，都指向官方可读页没给的东西）：</p>
+            <ul><li><strong>换 target 后的可比性</strong>：同一套 <code>--probes</code> 在 HuggingFace 本地端点与 OpenAPI 云端端点上的耗时与失败面差异</li><li><strong>默认日志目录与保留行为</strong>（官方文档未逐字说明，落盘位置要自己确认）</li><li><strong>是否有默认遥测</strong>（本批次未取到任何官方声明）</li><li><strong>Docker / CI 集成里的可复现性</strong>（官方文档未在本批次取到镜像口径）</li></ul></span><span data-en><p><strong>This site has not run it end to end</strong>: no <code>python -m garak</code> execution, no JSONL/hit log opened, no scores, success rates or rankings produced, and no probe count tallied. This archive only organises statements on record at the official repository front page, LICENSE, garak.ai, docs.garak.ai and PyPI — item by item in sources with the verification date.</p>
+            <p><strong>Suggested measurements</strong> (four, each pointing at something the official readable pages do not give):</p>
+            <ul><li><strong>Comparability across targets</strong>: how the same <code>--probes</code> set differs in wall time and failure surface between a local HuggingFace endpoint and a hosted OpenAI-style endpoint</li><li><strong>Default log directory and retention behaviour</strong> (not spelled out in the official docs; confirm where files land)</li><li><strong>Whether any telemetry is on by default</strong> (no official statement captured in this pass)</li><li><strong>Reproducibility under Docker / CI</strong> (no official image statement captured in this pass)</li></ul></span>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2>变更记录说明</h2>
+        <p>本对象有独立 releases 页：最新条目 v0.17.1（releases/latest 直读，标题「v0.17.1」，要点含 Python 3.14 支持 与 evaluators 侧新增 hit@k 指标口径）。<strong>本站不引用这类指标的任何数值</strong>，只记录「官方把评测指标写进了更新日志」这一事实。 PyPI 项目页记 0.17.1 的发布时间为 2026-10-16；GitHub releases 页当日抓取文本里的日期标注与 PyPI 不完全一致， 差异原因未核验，进 unknowns。仓库未被标记归档，故 lifecycle 记 active。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2>能力边界</h2>
+        <p>按官方在册口径能确认的边界有三条：</p>
+            <ul><li>它是<strong>评测工具</strong>，交付物是「失败样本 + 日志」，不是拦截动作；README 的判定表述是「the response will be marked as FAIL」。</li><li>它能接什么模型，等于 generators 插件面覆盖了什么；官方点名的接入见 model_access 维，其余接入方式要查 reference 文档。</li><li>探针名单（README 出现的 lmrc、promptinject、encoding、snowball、xss、gcg 等）说明的是<strong>测试语义的种类</strong>， 与「挡住多少攻击比例」没有关系；本站不做这类换算，也不做产品排名。</li></ul>
+      </div>
+      <div class="panel is-slim">
+        <h2>第一次怎么用</h2>
+        <ol><li value="1">先确认被测端点属于哪一类 generator：官方首扫示例是 <code>--model_type huggingface --model_name gpt2</code>。</li><li value="2"><code>python -m pip install -U garak</code>，然后用 <code>python -m garak --list_probes</code> 看探针名，不要凭印象写 <code>--probes</code>。</li><li value="3">点选具体探针跑第一次扫描（文档示例形式：<code>--probes lmrc.Profanity</code>），把输出文件路径记下来——默认目录未在官方文档逐字说明。</li><li value="4">复核只看失败样本与命中日志：这一步是它的价值所在，也是「评测」与「防护」的分界。</li><li value="5">要进 CI 就先解决 target 的凭据与限流，这两项官方文档在本批次没有给出可直接引用的口径。</li></ol>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./pyrit.html"><span data-zh>PyRIT</span><span data-en>PyRIT</span></a></span><span class="rel-n"><span data-zh>同为红队框架：那份的编排与攻击策略由 Python SDK 与 GUI 组织，本档案的默认入口是终端一次性扫描。</span><span data-en>Also a red-teaming framework: the PyRIT archive organises orchestration and attack strategies through a Python SDK and a GUI, while this archive&#39;s default entry point is a one-shot terminal scan.</span></span></li>
+          <li><span class="rel-t"><a href="./promptfoo.html"><span data-zh>Promptfoo</span><span data-en>promptfoo</span></a></span><span class="rel-n"><span data-zh>同是能在 CI 里跑的评测工具：那份主轴是 prompt/agent 的断言与回归，本档案主轴是攻击探针。</span><span data-en>Also an evaluation tool that can run in CI: Promptfoo&#39;s main axis is prompt/agent assertions and regression, whereas this archive&#39;s main axis is attack probes.</span></span></li>
+          <li><span class="rel-t"><a href="/runner/ollama.html"><span data-zh>Ollama</span><span data-en>Ollama</span></a></span><span class="rel-n"><span data-zh>本机推理端点：作为 garak 的一个 target 形态时才与它发生关系。</span><span data-en>A local inference endpoint: Ollama only becomes relevant to garak as one target shape among the generator plugins.</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

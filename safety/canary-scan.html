@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>CanaryScan — Safety | 投机取巧</title>
+  <meta name="description" content="CanaryScan（PSA Intelligence）：PSA Intelligence 的开源命令行体检器：在你（或你的 agent）真正打开外部交付的文档集之前， 先用静态解析把里面的 canary、追踪器、远程信标和按收件人区分的指纹找出来。 它不是模型 I/O 护栏，也不是提示注入分类器，而是「接触前的…" />
+  <link rel="canonical" href="https://tools.specul.com/safety/canary-scan.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="CanaryScan" />
+  <meta property="og:url" content="https://tools.specul.com/safety/canary-scan.html" />
+  <meta property="og:title" content="CanaryScan — Safety | 投机取巧" />
+  <meta property="og:description" content="CanaryScan（PSA Intelligence）：PSA Intelligence 的开源命令行体检器：在你（或你的 agent）真正打开外部交付的文档集之前， 先用静态解析把里面的 canary、追踪器、远程信标和按收件人区分的指纹找出来。 它不是模型 I/O 护栏，也不是提示注入分类器，而是「接触前的…" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../brand.css?v=bf69a6d205ad" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"CanaryScan","applicationCategory":"DeveloperApplication","url":"https://pypi.org/project/canary-scan/","sameAs":"https://github.com/psaintelligence/canary-scan","description":"PSA Intelligence 的开源命令行体检器：在你（或你的 agent）真正打开外部交付的文档集之前， 先用静态解析把里面的 canary、追踪器、远程信标和按收件人区分的指纹找出来。 它不是模型 I/O 护栏，也不是提示注入分类器，而是「接触前的反跟踪筛查」。","dateModified":"2026-11-06"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Safety</span>
+      </nav>
+      <a class="back" href="./">← Safety</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:&quot;#4F8FD9&quot;" aria-hidden="true"><span data-zh>CS</span><span data-en>CA</span></div>
+        <div>
+          <h1><span data-zh>CanaryScan</span><span data-en>CanaryScan</span></h1>
+          <div class="vendor is-caps">PSA Intelligence</div>
+        </div>
+      </div>
+
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
+      <div class="badges">
+        <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
+        <span class="tag on"><span data-zh>本地</span><span data-en>Local</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: maintenance</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-11-06</span>
+      </div>
+
+      <p class="t-sm"><span data-zh>核验标记表示资料完整度，不是产品评分。下列未确认项可能影响选型；请按对应来源逐项确认。</span><span data-en>The confidence mark describes evidence completeness, not a product score. Unconfirmed items below may affect your choice; check them against the relevant sources.</span></p>
+            <div class="panel is-slim">
+        <h2 id="known-unknowns"><span data-zh>未确认的信息</span><span data-en>Information not confirmed</span></h2>
+        <span data-zh>
+        <ul>
+          <li>官方正文当日未把「提示注入文本检测」列为检测通道，它与间接注入攻击面的关系只有本站的读法，官方未说明</li>
+          <li>支持的文件格式全集（文档索引只给出「多种格式」级口径，未逐项清点）</li>
+          <li>severity 分级（critical 至 info）的具体判据</li>
+          <li>遥测与网络隔离的正式条款（当日只到「离线」这一口径）</li>
+          <li>历史基线 / 跨次运行比对是否存在</li>
+          <li>与 agent 运行时的集成方式（MCP 或其他扩展）</li>
+          <li>大陆直连与备案状态（cn 块记为 unknown）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>The official text does not list &quot;prompt-injection text detection&quot; as a channel; the link to the indirect-injection attack surface is this site&#39;s reading, not an official statement</li>
+          <li>The complete set of supported file formats (the documentation index only gives a &quot;various formats&quot; level statement)</li>
+          <li>The concrete criteria behind the severity levels (critical down to info)</li>
+          <li>Formal telemetry and network-isolation terms (only the &quot;offline&quot; wording was available today)</li>
+          <li>Whether historical baselines / cross-run comparison exist</li>
+          <li>Integration with agent runtimes (MCP or other extensions)</li>
+          <li>Mainland direct reachability and filing status (recorded as unknown in the cn block)</li>
+        </ul></span>
+      </div>
+
+
+            
+      <div class="panel-lead"><span data-zh><p>PSA Intelligence 的开源命令行体检器：在你（或你的 agent）真正打开外部交付的文档集之前， 先用静态解析把里面的 canary、追踪器、远程信标和按收件人区分的指纹找出来。 它不是模型 I/O 护栏，也不是提示注入分类器，而是「接触前的反跟踪筛查」。</p></span><span data-en><p>PSA Intelligence 的开源命令行体检器：在你（或你的 agent）真正打开外部交付的文档集之前， 先用静态解析把里面的 canary、追踪器、远程信标和按收件人区分的指纹找出来。 它不是模型 I/O 护栏，也不是提示注入分类器，而是「接触前的反跟踪筛查」。</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+        <div><p>适合接手泄露件、法律披露、调查材料这类外部文档集时的第一道静态检查，也适合放进流水线做批量复检。 不适合需要理解自然语言指令是否被篡改的场景，也不适合需要实时拦截模型输入输出的链路—— 官方正文（2026-11-06 抓取）把它的能力面描述为对文件结构、元数据、嵌入对象与近似重复指纹的分析。</p></div>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-11-06</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>PSA Intelligence（GitHub 组织资料标注所在地为新加坡），非国产产品。</span><span data-en>PSA Intelligence (the GitHub organisation profile lists Singapore as location); not a domestic product.</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>直连未核验</span><span data-en>direct unknown</span>　<span data-zh>当日只核验 GitHub / 文档站 / PyPI 在通用网络下的可达性，未做大陆直连实测。</span><span data-en>Only general-network reachability of GitHub / docs site / PyPI was checked today; no mainland direct-access test was run.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>备案未核验</span><span data-en>filing unknown</span>：<span data-zh>当日未检索网信办公示名单，无官方依据判定备案状态；该产品不面向大陆公众提供服务。</span><span data-en>The CAC public registry was not searched on the verification day, so filing status has no official basis; the product does not serve the mainland public.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis" id="dimension-model_access">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>当日抓到的 README 与文档索引都没有把「调用谁的模型」作为配置项：检测被描述为对文件原始结构、元数据、 嵌入对象与近似重复指纹的静态解析。文档索引当日口径为离线运行、不涉及 LLM 与 API 密钥。 是否在某个阶段引入过模型判定，官方正文未说明。</p></span><span data-en><p>Neither the README nor the documentation index reached today treats &quot;whose model&quot; as a configuration item: detection is described as static analysis of raw file structure, metadata, embedded objects and near-duplicate fingerprints. The documentation index states, as of the verification day, offline operation with no LLM and no API key involved. Whether any stage ever consults a model is not stated officially.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-runtime">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>本机命令行工具，两种官方装法：<code>pipx install canary-scan</code>（README 要求自备 exiftool、qpdf、poppler-utils、 mupdf-tools、ripgrep、unzip、p7zip 等系统依赖）与容器 <code>ghcr.io/psaintelligence/canary-scan:latest</code> （官方推荐，理由是镜像已打齐系统工具）。PyPI 元数据当日要求 Python 3.10 及以上。</p></span><span data-en><p>A local command-line tool with two documented installs: <code>pipx install canary-scan</code> (the README expects you to provide system tools such as exiftool, qpdf, poppler-utils, mupdf-tools, ripgrep, unzip and p7zip) and the container image <code>ghcr.io/psaintelligence/canary-scan:latest</code>, which the README recommends because the image bundles those system tools. PyPI metadata measured today requires Python 3.10 or newer.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-local_files">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>核心动作就是读你提供的文件集：官方 Docker 示例把数据源目录以只读方式挂载（<code>-v /mnt/datasource:/data:ro</code>）， 结果写入独立输出目录。README 明确「不以外来文件的原生查看器打开它」即可完成检测， 即刻意避免触发文档里可能存在的远程引用。逐阶段产物写在 <code>.canary-scan/</code>。</p></span><span data-en><p>Reading the file set you supply is the core action: the Docker example mounts the data source read-only (<code>-v /mnt/datasource:/data:ro</code>) and writes results to a separate output directory. The README states inspection happens without opening a file in its native viewer, deliberately avoiding remote references that documents may contain. Per-stage artefacts land in <code>.canary-scan/</code>.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-background">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>按次运行的批处理命令，不是常驻服务。官方未说明守护进程、任务队列或增量监控模式； 要做周期性复检只能自己排班。</p></span><span data-en><p>A batch command run per invocation, not a resident service. No daemon, task queue or incremental-watch mode is stated officially; periodic re-scans have to be scheduled by you.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-tools">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>官方文档索引当日列出的命令面是 <code>scan</code>、<code>stage</code>、<code>report</code>、<code>deps</code>，另有 <code>--guide</code> 输出速查表； 报告为 JSON（示例用 jq 过滤 <code>severity==&quot;critical&quot;</code>），可直接进脚本与流水线。 七阶段管道为 inventory、metadata、remote-refs、embedded、stego、uniqueness、report，每阶段落一份 JSONL。 MCP 与其他扩展接入方式官方未说明。</p></span><span data-en><p>The command surface listed by the documentation index for the day is <code>scan</code>, <code>stage</code>, <code>report</code> and <code>deps</code>, plus <code>--guide</code> for a cheat sheet. Reporting is JSON (the example filters <code>severity==&quot;critical&quot;</code> with jq), so it drops straight into scripts and pipelines. The seven-stage pipeline is inventory, metadata, remote-refs, embedded, stego, uniqueness and report, each writing one JSONL artefact. MCP or other extension points are not stated officially.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-context">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>单次扫描自成一体，不存在会话记忆。跨文件的关联靠 uniqueness 阶段的近似重复指纹与阶段产物文件， 官方未说明历史基线、跨次运行的比对库或结果留存策略。</p></span><span data-en><p>Each scan is self-contained; there is no session memory. Cross-file linkage comes from the uniqueness stage&#39;s near-duplicate fingerprints and the stage artefacts. Historical baselines, cross-run comparison stores and retention policy are not stated officially.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-permissions">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>许可 Apache-2.0，内置脚本另有 BSD 2-Clause（见 license 字段）。数据流向：当日抓到的 README 与文档索引 未声明任何遥测、上报或外部服务调用，「离线」是文档索引给出的口径；网络隔离级别的正式条款官方未逐条说明。 供应链侧官方口径是用 <code>uv</code> 的 <code>exclude-newer</code> 把第三方依赖钉到不超过 14 天的版本， 内置脚本在构建期以 <code>make vendor</code> 固定并记录出处。</p></span><span data-en><p>Licensed Apache-2.0, with BSD 2-Clause for bundled scripts (see the license field). On data flow: the README and documentation index captured today declare no telemetry, no reporting and no external service calls, with &quot;offline&quot; being the wording given by the documentation index; a formal network-isolation clause is not published. On the supply chain, the official text says third-party Python dependencies are pinned with <code>uv</code>&#39;s <code>exclude-newer</code> to releases no newer than 14 days, and the bundled scripts are fixed at build time via <code>make vendor</code> with provenance recorded.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-fit">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合在接触外部交付的文档集（泄露件、法律披露、调查材料）之前先做一轮静态体检，看有没有能反向暴露「你在读它」的 追踪像素、远程模板、信标、按收件人区分的指纹。不适合需要判定自然语言指令是否被篡改、 或需要在运行时拦住模型输入输出的场景——官方正文把它定位为交付前的文档侧检测，不是模型 I/O 护栏。</p></span><span data-en><p>Fits a static pre-flight over externally supplied document sets (leaks, legal disclosures, investigation material) to find anything that could reveal to the external party that the data source is being examined — tracking pixels, remote templates, beacons, per-recipient fingerprints. Does not fit judgement calls about tampered natural-language instructions, nor runtime interception of model input/output: the official text positions it as pre-contact document inspection, not a model-I/O guardrail.</p></span></dd>
+        </div>
+      </dl>
+
+      <nav class="panel is-slim" aria-label="使用排查" data-ui-aria-label-zh="使用排查" data-ui-aria-label-en="Troubleshooting">
+        <h2><span data-zh>使用时遇到问题</span><span data-en>When something fails</span></h2>
+        <p><a href="../mcp/guides/failure-library.html#auth"><span data-zh>账号与权限</span><span data-en>Account and permissions</span></a> · <a href="../mcp/guides/failure-library.html#rate-limit"><span data-zh>限流与重试</span><span data-en>Rate limits and retries</span></a> · <a href="../mcp/guides/failure-library.html#files"><span data-zh>文件读取问题</span><span data-en>File-reading issues</span></a></p>
+      </nav>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li>把它当提示注入文本分类器：官方正文列的是 canary、追踪器、信标与指纹四类静态信号</li>
+          <li>以为 pipx 装完就能跑：解析依赖 apt 层的 exiftool、qpdf、poppler 等系统工具</li>
+          <li>以为扫描会打开文件确认效果：官方设计恰恰是不用原生查看器打开，以免触发远程引用</li>
+        </ul>
+      </div>
+
+
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>最近核验记录</span><span data-en>Latest recorded check</span> 2026-11-06，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-11-06。<span data-zh>单项复核范围见正文或来源说明，不代表所有字段在同一天重新核验。</span><span data-en>See the text or source notes for item-specific scope; this does not mean every field was rechecked on that date.</span></p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>changelog</td><td><span data-zh>CanaryScan · Releases（v0.2.0，2026-07-20；v0.1.1 至 v0.1.4 均在 2026-06-26）</span><span data-en>CanaryScan · Releases (v0.2.0, 2026-07-20; v0.1.1 to v0.1.4 all on 2026-06-26)</span></td><td><a href="https://github.com/psaintelligence/canary-scan/releases" target="_blank" rel="noopener">https://github.com/psaintelligence/canary-scan/releases</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>CanaryScan · 官方文档站（命令面与七阶段管道）</span><span data-en>CanaryScan · official documentation site (command surface and seven-stage pipeline)</span></td><td><a href="https://psaintelligence.github.io/canary-scan/" target="_blank" rel="noopener">https://psaintelligence.github.io/canary-scan/</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>CanaryScan · 仓库 README（Docker / pipx 用法与供应链口径）</span><span data-en>CanaryScan · repository README (Docker / pipx usage and supply-chain terms)</span></td><td><a href="https://github.com/psaintelligence/canary-scan" target="_blank" rel="noopener">https://github.com/psaintelligence/canary-scan</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>CanaryScan · 官方 LICENSE（Apache-2.0，内置脚本另有 BSD 2-Clause）</span><span data-en>CanaryScan · official LICENSE (Apache-2.0, bundled scripts additionally BSD 2-Clause)</span></td><td><a href="https://github.com/psaintelligence/canary-scan/blob/main/LICENSE" target="_blank" rel="noopener">https://github.com/psaintelligence/canary-scan/blob/main/LICENSE</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>PyPI · canary-scan（0.2.0；requires_python 3.10 及以上）</span><span data-en>PyPI · canary-scan (0.2.0; requires_python 3.10 or newer)</span></td><td><a href="https://pypi.org/project/canary-scan/" target="_blank" rel="noopener">https://pypi.org/project/canary-scan/</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>官方口径与未核到项</span><span data-en>Official record and unverified items</span></h2>
+        <span data-zh><p>本站未做端到端实测：没有跑过 scan，没有核验过任何阶段的输出结构，也没有测过系统依赖缺失时的失败表现。 本页只组织官方 README、官方文档站索引与 LICENSE / PyPI 元数据（均于 2026-11-06 抓取）。</p></span><span data-en><p>This site has not run end-to-end tests: no <code>scan</code> was executed, no stage output structure was verified, and the failure behaviour with missing system dependencies was not observed. The page only organises the official README, the documentation-site index, the LICENSE and PyPI metadata, all fetched 2026-11-06.</p></span>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2><span data-zh>官方命令面与管道</span><span data-en>Official command surface and pipeline</span></h2>
+        <span data-zh><p>README 与文档站索引（2026-11-06）给出的用法要点：</p>
+            <ul><li>容器：<code>docker run --rm -v /mnt/datasource:/data:ro -v $(pwd)/canary-scan-out:/output ghcr.io/psaintelligence/canary-scan:latest scan /data -o /output</code></li><li>本机：<code>pipx install canary-scan</code>，再装 <code>libimage-exiftool-perl qpdf poppler-utils mupdf-tools ripgrep unzip p7zip-full</code>，然后 <code>canary-scan scan /mnt/datasource</code></li><li>子命令：<code>scan</code> / <code>stage</code> / <code>report</code> / <code>deps</code>，<code>--guide</code> 输出速查表</li><li>七阶段：inventory → metadata → remote-refs → embedded → stego → uniqueness → report，每阶段写一份 JSONL 到 <code>.canary-scan/</code></li><li>报告：<code>canary-scan-out/canary-scan-report.json</code>，示例用 <code>jq</code> 过滤 <code>severity==&quot;critical&quot;</code></li></ul>
+            <p><strong>供应链口径</strong>（官方 README 原文要点）：第三方 Python 依赖用 <code>uv</code> 的 <code>exclude-newer</code> 钉到不超过 14 天的发布； Didier Stevens 的脚本在构建期用 <code>make vendor</code> 固定，commit SHA、版本与日期记在 <code>src/canary_scan/bundled/VERSIONS.txt</code>。</p></span><span data-en><p>Usage points given by the README and docs index (2026-11-06):</p>
+            <ul><li>Container: <code>docker run --rm -v /mnt/datasource:/data:ro -v $(pwd)/canary-scan-out:/output ghcr.io/psaintelligence/canary-scan:latest scan /data -o /output</code></li><li>Host: <code>pipx install canary-scan</code>, then install <code>libimage-exiftool-perl qpdf poppler-utils mupdf-tools ripgrep unzip p7zip-full</code>, then <code>canary-scan scan /mnt/datasource</code></li><li>Subcommands: <code>scan</code> / <code>stage</code> / <code>report</code> / <code>deps</code>; <code>--guide</code> prints a cheat sheet</li><li>Seven stages: inventory → metadata → remote-refs → embedded → stego → uniqueness → report, each writing one JSONL file into <code>.canary-scan/</code></li><li>Report: <code>canary-scan-out/canary-scan-report.json</code>; the example filters <code>severity==&quot;critical&quot;</code> with jq</li></ul>
+            <p><strong>Supply-chain terms</strong> (key points of the official README): third-party Python dependencies are pinned to releases no newer than 14 days via <code>uv</code>&#39;s <code>exclude-newer</code>; the Didier Stevens scripts are fixed at build time with <code>make vendor</code>, with commit SHA, version and date recorded in <code>src/canary_scan/bundled/VERSIONS.txt</code>.</p></span>
+      </div>
+      <div class="panel is-slim">
+        <h2><span data-zh>维护状态</span><span data-en>Maintenance status</span></h2>
+        <span data-zh><p>仓库未归档；GitHub 显示最后推送与最新 release（v0.2.0）同为 2026-07-20，距本次核验已逾 90 天， release 历史集中在 2026-06-26 至 2026-07-20 两周内。据此 lifecycle 记 <code>maintenance</code>， confidence 上限 <code>partial</code>：节奏判断只是快照，不代表官方停维护的声明。</p></span><span data-en><p>The repository is not archived. GitHub shows the last push and the newest release (v0.2.0) both on 2026-07-20, i.e. more than 90 days before this verification, and the whole release history sits inside the two weeks from 2026-06-26 to 2026-07-20. The entry therefore records lifecycle <code>maintenance</code> with confidence capped at <code>partial</code>: the cadence reading is a snapshot, not an official statement of discontinuation.</p></span>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./llm-guard.html"><span data-zh>LLM Guard</span><span data-en>LLM Guard</span></a></span><span class="rel-n"><span data-zh>同属「红队与注入检测」线：本档案只写自己在册的官方口径，对照请看那份。</span><span data-en>Same line: LLM Guard (in red-teaming and injection scanning); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="./rebuff.html"><span data-zh>Rebuff</span><span data-en>Rebuff</span></a></span><span class="rel-n"><span data-zh>同属「红队与注入检测」线：本档案只写自己在册的官方口径，对照请看那份。</span><span data-en>Same line: Rebuff (in red-teaming and injection scanning); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="./garak.html"><span data-zh>garak</span><span data-en>garak</span></a></span><span class="rel-n"><span data-zh>同属「红队与注入检测」线：本档案只写自己在册的官方口径，对照请看那份。</span><span data-en>Same line: garak (in red-teaming and injection scanning); this entry states only what its own official sources support.</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

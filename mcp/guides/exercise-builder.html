@@ -13,8 +13,8 @@
   <meta property="og:description" content="练习包 · Builder：用 10 篇站内文档搭一个带引用的问答：一个可独立完成的 RAG 练习：选 10 篇站内页面做语料，产出 10 题答案、引用表、评测表与失败记录；附评分标准与参考答案结构。" />
   <meta name="theme-color" content="#16121f" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
-  <script src="../../brand.js?v=6a580ac0420e"></script>
-  <link rel="stylesheet" href="../../brand.css?v=6a580ac0420e" />
+  <script src="../../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../../brand.css?v=bf69a6d205ad" />
   <link rel="stylesheet" href="../../site.css" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Exercise: cited answers from 10 source pages","description":"A self-contained RAG exercise: use 10 site pages as a corpus and produce 10 answers, a citation table, an evaluation sheet and a failure log, with a rubric and a model-answer outline.","dateModified":"2026-11-03"}</script>
 </head>
@@ -49,6 +49,7 @@
            （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
            链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
       <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
         <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
         <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
       </span>
@@ -91,45 +92,69 @@
         </div>
       </div>
       <div class="panel-lead"><span data-zh><p>一个可独立完成的 RAG 练习：选 10 篇站内页面做语料，产出 10 题答案、引用表、评测表与失败记录；附评分标准与参考答案结构。</p></span><span data-en><p>A self-contained RAG exercise: use 10 site pages as a corpus and produce 10 answers, a citation table, an evaluation sheet and a failure log, with a rubric and a model-answer outline.</p></span></div>
-      <p class="t-xs" data-en>English summaries and interface labels are available. The guide body below is currently in Chinese.</p>
+
+
+
       <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>任务</span><span data-en>The task</span></a></li><li><a href="#guide-section-1"><span data-zh>交付物</span><span data-en>Deliverables</span></a></li><li><a href="#guide-section-2"><span data-zh>评分标准</span><span data-en>Rubric</span></a></li><li><a href="#guide-section-3"><span data-zh>参考答案结构</span><span data-en>Model answer outline</span></a></li><li><a href="#guide-section-4"><span data-zh>常见失分</span><span data-en>Common misses</span></a></li></ul></nav>
       <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>任务</span><span data-en>The task</span></h2>
-        <p>用 10 篇站内页面做唯一语料，搭一个能回答问题的问答流程。不允许接外部搜索，不允许凭记忆补充。</p>
-            <p>1. 从 learn 站任选 10 个词条页，主题集中在一个领域（如 RAG 或本地部署）。 2. 把它们切成可检索的片段，记录切分规则（按段、按标题、固定长度）。 3. 写 10 个问题，其中 3 个的答案不在语料里，用来测拒答。 4. 每次回答必须带引用：页面标题 + 链接 + 命中的原文句子。 5. 记录每次失败：答错、答偏、编造、引用错页。</p>
+        <span data-zh><p>用 10 篇站内页面做唯一语料，搭一个能回答问题的问答流程。不允许接外部搜索，不允许凭记忆补充。题数和评分线是本练习的教学约束，不是生产系统的通用标准。</p>
+            <ol><li value="1">从 learn 站任选 10 个词条页，主题集中在一个领域（如 RAG 或本地部署）。</li><li value="2">把它们切成可检索的片段，记录切分规则（按段、按标题、固定长度）。</li><li value="3">写 10 个问题，其中 3 个的答案不在语料里，用来测拒答。</li><li value="4">每次回答必须带引用：页面标题 + 链接 + 命中的原文句子。</li><li value="5">记录每次失败：答错、答偏、编造、引用错页。</li></ol></span><span data-en><p>Use ten site pages as the only corpus for a question-answering workflow. Do not add external search or fill gaps from memory. The question count and passing score are teaching constraints for this exercise, not universal production standards.</p>
+            <ol><li value="1">Choose ten Learn term pages concentrated in one area, such as RAG or local deployment.</li><li value="2">Split them into retrievable passages and record whether you split by paragraph, heading or fixed length.</li><li value="3">Write ten questions; three should have no answer in the corpus, to test abstention.</li><li value="4">Every answer must cite a page title, link and supporting source sentence.</li><li value="5">Record failures: incorrect answers, off-topic answers, fabrication or citations to the wrong page.</li></ol></span>
       </div>
       <div class="panel is-slim" id="guide-section-1">
         <h2><span data-zh>交付物</span><span data-en>Deliverables</span></h2>
-        <div class="tbl-wrap"><table><thead><tr><th>文件</th><th>内容</th><th>检查点</th></tr></thead><tbody><tr><td><code>answers.md</code></td><td>10 题答案，逐题带引用</td><td>每条引用能点回原文并找到该句</td></tr><tr><td><code>citations.csv</code></td><td>题目 / 引用页 / 原文句 / 是否命中</td><td>10 行，无空行</td></tr><tr><td><code>eval.csv</code></td><td>题目 / 判定（对/错/拒答）/ 原因</td><td>判定可被第二人复核</td></tr><tr><td><code>failures.md</code></td><td>失败记录与改法</td><td>至少 3 条，写清触发条件</td></tr></tbody></table></div>
+        <span data-zh><div class="tbl-wrap"><table><thead><tr><th>文件</th><th>内容</th><th>检查点</th></tr></thead><tbody><tr><td><code>answers.md</code></td><td>10 题答案，逐题带引用</td><td>每条引用能点回原文并找到该句</td></tr><tr><td><code>citations.csv</code></td><td>题目 / 引用页 / 原文句 / 是否命中</td><td>10 行，无空行</td></tr><tr><td><code>eval.csv</code></td><td>题目 / 判定（对/错/拒答）/ 原因</td><td>判定可被第二人复核</td></tr><tr><td><code>failures.md</code></td><td>失败记录与改法</td><td>按实际情况记录并写清触发条件；人为构造的失败输入须标注</td></tr></tbody></table></div></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>File</th><th>Contents</th><th>Check</th></tr></thead><tbody><tr><td><code>answers.md</code></td><td>Ten answers, each with citations</td><td>Every citation links back to a source where the sentence can be located</td></tr><tr><td><code>citations.csv</code></td><td>Question / cited page / source sentence / supported?</td><td>Ten rows, no blank rows</td></tr><tr><td><code>eval.csv</code></td><td>Question / verdict (correct, incorrect, abstained) / reason</td><td>Another reader can review the verdict</td></tr><tr><td><code>failures.md</code></td><td>Failures and proposed fixes</td><td>Record actual outcomes and triggers; label deliberately constructed failure inputs</td></tr></tbody></table></div></span>
       </div>
       <div class="panel is-slim" id="guide-section-2">
         <h2><span data-zh>评分标准</span><span data-en>Rubric</span></h2>
-        <p>每项 0–2 分，共 10 分：</p>
+        <span data-zh><p>每项 0–2 分，共 10 分：</p>
             <div class="tbl-wrap"><table><thead><tr><th>维度</th><th>0 分</th><th>1 分</th><th>2 分</th></tr></thead><tbody><tr><td>引用准确</td><td>引用页与答案无关</td><td>引用页相关但句子对不上</td><td>每条都能点回并找到原句</td></tr><tr><td>拒答</td><td>不会的题也硬答</td><td>拒答了但没说缺什么</td><td>3 道无答案题全部拒答并说明缺口</td></tr><tr><td>评测可复核</td><td>只有「感觉对」</td><td>有判定但无原因</td><td>每题有判定与可复核原因</td></tr><tr><td>失败记录</td><td>没记录</td><td>记了现象</td><td>记了触发条件与改法</td></tr><tr><td>可复现</td><td>别人跑不出同样结果</td><td>步骤缺一环</td><td>切分、检索、提示词三步可照做</td></tr></tbody></table></div>
-            <p>8 分及格；6 分以下回到「怎么评测 RAG 的效果」重做。</p>
+            <p>8 分及格；6 分以下回到「怎么评测 RAG 的效果」重做。</p></span><span data-en><p>Award 0–2 for each item, for a total of ten:</p>
+            <div class="tbl-wrap"><table><thead><tr><th>Dimension</th><th>0</th><th>1</th><th>2</th></tr></thead><tbody><tr><td>Citation accuracy</td><td>Page unrelated to answer</td><td>Relevant page, but sentence does not support answer</td><td>Every source sentence can be located and supports the answer</td></tr><tr><td>Abstention</td><td>Answers unsupported questions anyway</td><td>Abstains without explaining the gap</td><td>Abstains on all three unanswerable questions and explains what is missing</td></tr><tr><td>Reviewable evaluation</td><td>Only “feels right”</td><td>Verdict without a reason</td><td>Verdict and reviewable reason for every question</td></tr><tr><td>Failure log</td><td>No log</td><td>Symptoms only</td><td>Trigger conditions and proposed fixes</td></tr><tr><td>Reproducibility</td><td>Others cannot follow the process</td><td>A step is missing</td><td>Chunking, retrieval and prompting steps can be followed</td></tr></tbody></table></div>
+            <p>Eight is the exercise&#39;s passing score. Below six, return to the RAG evaluation guide and repeat the exercise.</p></span>
       </div>
       <div class="panel is-slim" id="guide-section-3">
         <h2><span data-zh>参考答案结构</span><span data-en>Model answer outline</span></h2>
-        <p>不提供逐题答案（语料由你选），提供合格答案的结构：</p>
-            <pre class="code"><code>问题：RAG 的分块为什么要按标题切？
-答案：按标题切能保留段落主题，减少跨主题片段；固定长度切分容易把定义与例子分开。
-引用：《怎么给文档做分块》第 2 节「按结构切」；原文句：「先按标题与段落切，再对超长段做二次切分。」
+        <span data-zh><p>不提供逐题答案（语料由你选），提供合格答案的结构：</p>
+            <pre class="code"><code>问题：分块时为什么要保留标题和页码？
+答案：它们可作为元数据，让检索时按结构信息过滤。
+引用：《怎么给文档做分块》「怎么做」第 6 项；原文句：「保留结构信息：标题、章节、页码存进元数据，检索时能过滤。」
 判定：对；原因：引用句直接支持答案。</code></pre>
             <p>拒答题的合格写法：</p>
             <pre class="code"><code>问题：这个模型在 2026-11-01 的准确率是多少？
 答案：语料里没有该日期的评测数据，无法回答。需要补充官方评测页或自建评测。
-判定：拒答；原因：语料中无对应事实。</code></pre>
+判定：拒答；原因：语料中无对应事实。</code></pre></span><span data-en><p>The corpus is your choice, so this supplies an answer structure rather than answers to every question:</p>
+            <pre class="code"><code>Question: Why preserve headings and page numbers when chunking?
+Answer: They can be stored as metadata to filter retrieval by document structure.
+Citation: How to Chunk Documents for Retrieval, “How to do it”, item 6.
+Source sentence (Chinese original): 保留结构信息：标题、章节、页码存进元数据，检索时能过滤。
+Verdict: correct; the cited sentence directly supports the answer.</code></pre>
+            <p>An acceptable abstention:</p>
+            <pre class="code"><code>Question: What was this model&#39;s accuracy on 2026-11-01?
+Answer: The corpus contains no evaluation data for that date, so this cannot be answered.
+An official evaluation page or a suitable evaluation would be needed.
+Verdict: abstained; the required fact is absent from the corpus.</code></pre></span>
       </div>
       <div class="panel is-slim" id="guide-section-4">
         <h2><span data-zh>常见失分</span><span data-en>Common misses</span></h2>
-        <ul><li>引用整页而不是句子：读者无法核对。</li><li>把「语义相近」当「原文支持」：答案超出引用句。</li><li>无答案题也答：宁可拒答，不要补记忆。</li><li>只测正常输入会漏掉边界问题；补充无答案、缺字段和不符合格式的样本。</li></ul>
+        <span data-zh><ul><li>引用整页而不是句子：读者无法核对。</li><li>把「语义相近」当「原文支持」：答案超出引用句。</li><li>无答案题也答：宁可拒答，不要补记忆。</li><li>只测正常输入会漏掉边界问题；补充无答案、缺字段和不符合格式的样本。</li></ul></span><span data-en><ul><li>Citing a whole page instead of a supporting sentence makes checking difficult.</li><li>Semantic similarity does not establish support; an answer may go beyond the cited text.</li><li>Abstain on unanswerable questions rather than filling gaps from memory.</li><li>Normal inputs alone miss boundary cases. Add unanswerable questions, missing fields and malformed inputs.</li></ul></span>
       </div>
+<nav class="panel is-slim" aria-label="接下来做什么" data-ui-aria-label-zh="接下来做什么" data-ui-aria-label-en="What to do next">
+<h2><span data-zh>接下来做什么</span><span data-en>What to do next</span></h2><ul>
+<li><a href="toolkit-worksheets.html"><span data-zh>记录约束、验收与未确认项</span><span data-en>Record constraints, acceptance and unknowns</span></a></li>
+<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh>核对结果与来源</span><span data-en>Verify the result and its sources</span></a></li>
+<li><a href="failure-library.html#by-symptom"><span data-zh>按症状排查失败</span><span data-en>Troubleshoot by symptom</span></a></li>
+</ul></nav>
       <div class="panel is-slim">
         <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
         <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
-          <tr><td>本站 · 怎么给文档做分块</td><td><a href="https://learn.specul.com/guide/怎么给文档做分块/" target="_blank" rel="noopener">https://learn.specul.com/guide/怎么给文档做分块/</a></td></tr>
+          <tr><td><span data-zh>本站 · RAG 全链路：从文档到答案</span><span data-en>This site: RAG end to end, from documents to answers</span></td><td><a href="https://learn.specul.com/guide/RAG%20%E5%85%A8%E9%93%BE%E8%B7%AF%EF%BC%9A%E4%BB%8E%E6%96%87%E6%A1%A3%E5%88%B0%E7%AD%94%E6%A1%88/" target="_blank" rel="noopener"><span data-zh>https://learn.specul.com/guide/RAG%20全链路：从文档到答案/</span><span data-en>https://learn.specul.com/guide/RAG%20%E5%85%A8%E9%93%BE%E8%B7%AF%EF%BC%9A%E4%BB%8E%E6%96%87%E6%A1%A3%E5%88%B0%E7%AD%94%E6%A1%88/</span></a></td></tr>
+          <tr><td><span data-zh>本站 · 怎么给文档做分块</span><span data-en>This site: how to chunk documents for retrieval</span></td><td><a href="https://learn.specul.com/guide/%E6%80%8E%E4%B9%88%E7%BB%99%E6%96%87%E6%A1%A3%E5%81%9A%E5%88%86%E5%9D%97/" target="_blank" rel="noopener"><span data-zh>https://learn.specul.com/guide/怎么给文档做分块/</span><span data-en>https://learn.specul.com/guide/%E6%80%8E%E4%B9%88%E7%BB%99%E6%96%87%E6%A1%A3%E5%81%9A%E5%88%86%E5%9D%97/</span></a></td></tr>
+          <tr><td><span data-zh>本站 · 怎么评测 RAG 的效果</span><span data-en>This site: how to evaluate RAG</span></td><td><a href="https://learn.specul.com/guide/%E6%80%8E%E4%B9%88%E8%AF%84%E6%B5%8B%20RAG%20%E7%9A%84%E6%95%88%E6%9E%9C/" target="_blank" rel="noopener"><span data-zh>https://learn.specul.com/guide/怎么评测%20RAG%20的效果/</span><span data-en>https://learn.specul.com/guide/%E6%80%8E%E4%B9%88%E8%AF%84%E6%B5%8B%20RAG%20%E7%9A%84%E6%95%88%E6%9E%9C/</span></a></td></tr>
+          <tr><td><span data-zh>本站 · 怎么验证 AI 的输出</span><span data-en>This site: how to verify AI output</span></td><td><a href="https://learn.specul.com/guide/%E6%80%8E%E4%B9%88%E9%AA%8C%E8%AF%81%20AI%20%E7%9A%84%E8%BE%93%E5%87%BA/" target="_blank" rel="noopener"><span data-zh>https://learn.specul.com/guide/怎么验证%20AI%20的输出/</span><span data-en>https://learn.specul.com/guide/%E6%80%8E%E4%B9%88%E9%AA%8C%E8%AF%81%20AI%20%E7%9A%84%E8%BE%93%E5%87%BA/</span></a></td></tr>
         </tbody></table></div>
-        <p class="guide-foot"><span data-zh>资料核验日期：2026-11-03。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Sources checked: 2026-11-03. Features and terms may change; check the original sources before use.</span></p>
+        <p class="guide-foot"><span data-zh>资料快照日期：2026-11-03；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Source snapshot: 2026-11-03; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
       </div>
     </div>
   </main>
@@ -155,6 +180,8 @@
       </nav>
     </div>
     <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
       <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
     </div>
   </footer>

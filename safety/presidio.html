@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Presidio — Safety | 投机取巧</title>
+  <meta name="description" content="Presidio（Data Privacy Stack）：Presidio 是「自己部署的那一层脱敏 SDK」：文档首页把它写成面向 text 与 images 的快速识别与匿名化模块， 三面 API 是 AnalyzerEngine、AnonymizerEngine、Image Redactor，变换算子官方在…" />
+  <link rel="canonical" href="https://tools.specul.com/safety/presidio.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Presidio" />
+  <meta property="og:url" content="https://tools.specul.com/safety/presidio.html" />
+  <meta property="og:title" content="Presidio — Safety | 投机取巧" />
+  <meta property="og:description" content="Presidio（Data Privacy Stack）：Presidio 是「自己部署的那一层脱敏 SDK」：文档首页把它写成面向 text 与 images 的快速识别与匿名化模块， 三面 API 是 AnalyzerEngine、AnonymizerEngine、Image Redactor，变换算子官方在…" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../brand.css?v=bf69a6d205ad" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Presidio","applicationCategory":"DeveloperApplication","url":"https://presidio.dataprivacystack.org/","sameAs":"https://presidio.dataprivacystack.org/","description":"Presidio 是「自己部署的那一层脱敏 SDK」：文档首页把它写成面向 text 与 images 的快速识别与匿名化模块， 三面 API 是 AnalyzerEngine、AnonymizerEngine、Image Redactor，变换算子官方在册 replace / redact / hash / mask / encrypt / keep / custom。它和本大类托管那几份的区别只有一条：文本要不要出你的边界——Presidio 官方口径是在你自己的 部署里完成、支持离线；也因此它的输出没有任何「拦住了多少」的比例含义，官方 analyzer 页甚至专门写着 「Scores ","dateModified":"2026-11-06"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Safety</span>
+      </nav>
+      <a class="back" href="./">← Safety</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:&quot;#2F855A&quot;" aria-hidden="true"><span data-zh>PS</span><span data-en>PR</span></div>
+        <div>
+          <h1><span data-zh>Presidio</span><span data-en>Presidio</span></h1>
+          <div class="vendor is-caps">Data Privacy Stack</div>
+        </div>
+      </div>
+
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
+      <div class="badges">
+        <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
+        <span class="tag on"><span data-zh>MIT</span><span data-en>MIT</span></span>
+        <span class="tag on"><span data-zh>Python</span><span data-en>Python</span></span>
+        <span class="tag on"><span data-zh>本地</span><span data-en>Local</span></span>
+        <span class="tag on"><span data-zh>自托管</span><span data-en>Self-hosted</span></span>
+        <span class="tag on"><span data-zh>API</span><span data-en>API</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-11-06</span>
+      </div>
+
+      <p class="t-sm"><span data-zh>核验标记表示资料完整度，不是产品评分。下列未确认项可能影响选型；请按对应来源逐项确认。</span><span data-en>The confidence mark describes evidence completeness, not a product score. Unconfirmed items below may affect your choice; check them against the relevant sources.</span></p>
+            <div class="panel is-slim">
+        <h2 id="known-unknowns"><span data-zh>未确认的信息</span><span data-en>Information not confirmed</span></h2>
+        <span data-zh>
+        <ul>
+          <li>仓库 LICENSE 正文未直读到（MIT 依 PyPI 许可字段记录）</li>
+          <li>CHANGELOG.md 逐条内容未取到正文</li>
+          <li>支持语言与实体类型的官方完整清单（文档 recognizers 页当日返回 404）</li>
+          <li>presidio-anonymizer 与 presidio-image-redaction 各自的版本与发布日期</li>
+          <li>Docker 镜像标签与版本的对应关系</li>
+          <li>recognizer 语言模型的下载位置与离线打包方式</li>
+          <li>可选 NLP 引擎的完整档位与版本要求</li>
+          <li>遥测/上报是否存在（包索引与文档未声明，本批次未取到反证）</li>
+          <li>大陆网络直连可用性与备案情况（未实测、未检索）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>The repository LICENSE text was not fetched directly (MIT recorded from the PyPI licence field)</li>
+          <li>Item-by-item CHANGELOG.md contents, since the file body was not fetched</li>
+          <li>The official complete list of supported languages and entity types (the recognizers docs page returned 404)</li>
+          <li>Versions and release dates of presidio-anonymizer and presidio-image-redaction individually</li>
+          <li>Docker image tag-to-version mapping</li>
+          <li>Where recognizer language models are downloaded and how they are packaged offline</li>
+          <li>The full set of selectable NLP engine tiers and version requirements</li>
+          <li>Whether any telemetry or reporting exists (not declared by the index or docs; no counter-evidence captured)</li>
+          <li>Mainland-network direct reachability and filing status (not measured, not searched)</li>
+        </ul></span>
+      </div>
+
+
+            <p class="t-xs" data-en>English summaries and interface labels are available. Detailed source notes below are currently in Chinese.</p>
+      <div class="panel-lead"><span data-zh><p><strong>Presidio 是「自己部署的那一层脱敏 SDK」</strong>：文档首页把它写成面向 text 与 images 的快速识别与匿名化模块， 三面 API 是 AnalyzerEngine、AnonymizerEngine、Image Redactor，变换算子官方在册 replace / redact / hash / mask / encrypt / keep / custom。它和本大类托管那几份的区别只有一条：<strong>文本要不要出你的边界</strong>——Presidio 官方口径是在你自己的 部署里完成、支持离线；也因此它的输出没有任何「拦住了多少」的比例含义，官方 analyzer 页甚至专门写着 「Scores are not probabilities」。</p></span><span data-en><p><strong>Presidio 是「自己部署的那一层脱敏 SDK」</strong>：文档首页把它写成面向 text 与 images 的快速识别与匿名化模块， 三面 API 是 AnalyzerEngine、AnonymizerEngine、Image Redactor，变换算子官方在册 replace / redact / hash / mask / encrypt / keep / custom。它和本大类托管那几份的区别只有一条：<strong>文本要不要出你的边界</strong>——Presidio 官方口径是在你自己的 部署里完成、支持离线；也因此它的输出没有任何「拦住了多少」的比例含义，官方 analyzer 页甚至专门写着 「Scores are not probabilities」。</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+        <div><p>适合：把个人数据识别与变换插进自己的管线（RAG 入库前、日志落盘前、发给云端模型前）、需要算子级组合与自定义 recognizer、要求文本不出网络边界、需要离线跑完整链路。不适合：要托管控制台与合规交付物；要 text/image 之外的模态 （官方在册面止于这两类）；把 score 阈值当合规证明的团队。</p></div>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-11-06</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>治理方为社区组织 Data Privacy Stack（文档首页在册），项目源自 Microsoft；本批次未取到面向中国大陆的服务条款或中文文档。</span><span data-en>Governed by the community organisation Data Privacy Stack (on record on the docs home page), with the project originating at Microsoft; no mainland-facing terms page or Chinese documentation was captured in this pass.</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>直连未核验</span><span data-en>direct unknown</span>　<span data-zh>文档站与 PyPI 当日从当前网络取到 200，但仓库页与 raw 路径抓取超时；大陆网络下的可达性与语言模型下载均未实测，故记未知。</span><span data-en>The docs site and PyPI returned 200 from the current network on the verification date, but the repository page and raw path timed out; mainland-network reachability and language-model download were not measured, so it is recorded as unknown.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>备案未核验</span><span data-en>filing unknown</span>：<span data-zh>无官方依据，本批次未检索生成式 AI 备案公示，不下「未备案」结论。</span><span data-en>No official basis; the generative-AI filing registry was not searched in this pass, so no &quot;not filed&quot; conclusion is drawn.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis" id="dimension-model_access">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>它本身不带生成模型：analyzer 页写明「Predefined recognizers leverage regex, Named Entity Recognition and other types of logic to detect PII in unstructured text.」，识别面由正则、NLP（spaCy / Transformers 类）、规则与校验和组合， 上下文词用来加权 score，自定义 recognizer 有官方 tutorial。可选 NLP 引擎与模型档位的完整清单：本批次未逐条清点。</p></span><span data-en><p>It carries no generative model of its own: the Analyzer page states &quot;Predefined recognizers leverage regex, Named Entity Recognition and other types of logic to detect PII in unstructured text.&quot; — the recognition surface combines regex, NLP (spaCy / Transformers class), rules and checksums, with context words weighting the score, and custom recognizers covered by an official tutorial. The full list of selectable NLP engines and model tiers: not itemised in this pass.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-runtime">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>全部跑在你自己的边界内：文档首页的安装口径是 pip 包或 Docker REST API，并写明支持离线使用、数据留在你自己的部署里。 官方未提供托管服务面（未取到该口径）。镜像标签与版本对应关系本批次未逐字核验。</p></span><span data-en><p>Everything runs inside your own boundary: the docs home page gives the install surface as pip packages or a Docker REST API, and states that offline usage is supported with data staying inside your own deployment. No hosted service surface is offered officially (no such statement captured). Image tags and their version mapping: not verified word for word in this pass.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-local_files">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>它不读你的工作区，只处理你显式交给它的文本与图像，结果在你的进程或你的服务里返回。recognizer 依赖的语言模型文件的 下载位置、缓存路径与离线打包方式：本批次未取到逐字官方说明，记未知。</p></span><span data-en><p>It does not read your workspace; it processes only the text and images you explicitly hand it, and returns results inside your own process or service. Where the recognizers&#39; language-model files are downloaded and cached, and how they are packaged offline: no word-for-word official statement captured, recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-background">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>没有托管后台任务：一次 analyze / anonymize 是一次调用或你自己服务里的一次处理，批量与重试由你的编排层负责。 官方文档目录（Getting Started / Analyzer / Anonymizer / Image Redactor / Samples / API Docs）未出现队列或续跑概念。</p></span><span data-en><p>There is no hosted background task: one analyze / anonymize call is one invocation, or one pass inside your own service, with batching and retries owned by your orchestration layer. The docs table of contents (Getting Started / Analyzer / Anonymizer / Image Redactor / Samples / API Docs) contains no queue or resume concept.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-tools">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>三面 API：AnalyzerEngine（识别）、AnonymizerEngine（变换）、Image Redactor（图像遮挡）。变换算子按文档 anonymizer 页 在册：replace、redact、hash、mask、encrypt、keep、custom，经 OperatorConfig 的 type 与 params 配置，多个算子可组合。 MCP 接入方式：官方文档未说明，记未知。</p></span><span data-en><p>Three API faces: AnalyzerEngine (recognition), AnonymizerEngine (transformation), Image Redactor (image masking). The operators on record from the Anonymizer page are replace, redact, hash, mask, encrypt, keep and custom, configured through OperatorConfig&#39;s type and params and combinable. MCP transport support: not described in the official docs, recorded as unknown.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-context">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>这里的「上下文」是字面机制：recognizer 用上下文词对候选实体加权，因此同一段文本里邻近词会改变结果；文档首页把项目 表述为面向 text and images 的「fast identification and anonymization modules」。它是无状态的一次处理，不存在跨会话记忆， 批量场景的上下文窗口管理属于你自己的调用方。</p></span><span data-en><p>Here &quot;context&quot; is a literal mechanism: recognizers weight candidate entities with context words, so neighbouring words in the same text change the result; the docs home page describes the project as &quot;fast identification and anonymization modules&quot; for text and images. It is a stateless one-pass handler with no cross-session memory — batch context-window management belongs to your calling code.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-permissions">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>许可见 license 字段（MIT，依 PyPI 元数据；LICENSE 正文未直读到）。归属要记两条实测事实：旧址 microsoft.github.io/presidio 当日显示「This page has moved」，中间站 data-privacy-stack.github.io 再 301 到 presidio.dataprivacystack.org，文档首页指认项目由 Data Privacy Stack 治理。<strong>数据流向</strong>：识别与脱敏在你自己的部署内完成、 支持离线，即文本不必发给第三方。<strong>红线口径</strong>：analyzer 页原文在册「Scores are not probabilities」，所以 score 阈值 不是检出概率，本站不写检出率、漏检率，也不做任何产品排名；它是否满足某法域的匿名化义务，官方不作法律结论。</p></span><span data-en><p>See the licence field (MIT, taken from the PyPI licence metadata; the LICENSE text was not read directly). Two measured facts about ownership: the old address microsoft.github.io/presidio displayed &quot;This page has moved&quot; on the verification date, and the intermediate host data-privacy-stack.github.io 301s to presidio.dataprivacystack.org, whose home page states the project is governed by Data Privacy Stack. <strong>Data flow</strong>: recognition and anonymisation complete inside your own deployment and offline use is supported, meaning text need not be sent to any third party. <strong>Red line</strong>: the Analyzer page states on record &quot;Scores are not probabilities&quot;, so a score threshold is not a detection probability; this site publishes no detection rate, no miss rate and no product rankings. Whether it satisfies an anonymisation obligation under any given law is not a legal conclusion the project makes.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-fit">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合：把个人数据识别与变换插进自己的管线（RAG 入库前、日志落盘前、发给云端模型前）、需要算子级定制与自定义 recognizer、要求文本不出自己的网络边界、要把整套东西离线跑。不适合：要托管控制台与合规交付物；要文本与图像之外的 模态（官方在册面止于这两类）；把 score 阈值当合规证明的团队。</p></span><span data-en><p>Fits: inserting personal-data recognition and transformation into your own pipeline (before RAG ingestion, before logs are written, before a call to a hosted model); needing operator-level composition and custom recognizers; requiring text not to leave your network boundary; needing the whole chain to run offline. Not a fit: teams wanting a hosted console and compliance deliverables; modalities beyond text and images (the surface on record stops there); anyone treating a score threshold as proof of compliance.</p></span></dd>
+        </div>
+      </dl>
+
+      <nav class="panel is-slim" aria-label="使用排查" data-ui-aria-label-zh="使用排查" data-ui-aria-label-en="Troubleshooting">
+        <h2><span data-zh>使用时遇到问题</span><span data-en>When something fails</span></h2>
+        <p><a href="../mcp/guides/failure-library.html#auth"><span data-zh>账号与权限</span><span data-en>Account and permissions</span></a> · <a href="../mcp/guides/failure-library.html#rate-limit"><span data-zh>限流与重试</span><span data-en>Rate limits and retries</span></a> · <a href="../mcp/guides/failure-library.html#files"><span data-zh>文件读取问题</span><span data-en>File-reading issues</span></a></p>
+      </nav>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li>把 score 当「检出概率」：官方 analyzer 页原文是「Scores are not probabilities」</li>
+          <li>把「算子有七类」当成脱敏覆盖率：算子是可组合动作，官方不给任何命中比例</li>
+          <li>以为仓库还在 microsoft/presidio：旧址已显示 moved、文档首页指认 Data Privacy Stack 治理</li>
+        </ul>
+      </div>
+
+
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>最近核验记录</span><span data-en>Latest recorded check</span> 2026-11-06，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-11-06。<span data-zh>单项复核范围见正文或来源说明，不代表所有字段在同一天重新核验。</span><span data-en>See the text or source notes for item-specific scope; this does not mean every field was rechecked on that date.</span></p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>docs</td><td><span data-zh>Presidio · 文档首页（新址定位句、pip/Docker REST 与离线口径、Data Privacy Stack 治理、目录与 CHANGELOG 链接；直读 200，2026-11-06）</span><span data-en>Presidio · docs home page (new address, positioning sentence, pip/Docker REST and offline statements, Data Privacy Stack governance, table of contents and CHANGELOG link; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://presidio.dataprivacystack.org/" target="_blank" rel="noopener">https://presidio.dataprivacystack.org/</a></td></tr>
+            <tr><td>migration</td><td><span data-zh>Presidio · 旧文档址（「This page has moved」迁移事实；直读 200，2026-11-06）</span><span data-en>Presidio · old docs address (the &quot;This page has moved&quot; migration fact; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://microsoft.github.io/presidio/" target="_blank" rel="noopener">https://microsoft.github.io/presidio/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Presidio · 文档 Analyzer（recognizer 逻辑原文、「Scores are not probabilities」、上下文词加权与自定义 recognizer；直读 200，2026-11-06）</span><span data-en>Presidio · docs Analyzer (recognizer logic wording, &quot;Scores are not probabilities&quot;, context-word weighting and custom recognizers; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://presidio.dataprivacystack.org/analyzer/" target="_blank" rel="noopener">https://presidio.dataprivacystack.org/analyzer/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>Presidio · 文档 Anonymizer（算子 replace/redact/hash/mask/encrypt/keep/custom 与 OperatorConfig；直读 200，2026-11-06）</span><span data-en>Presidio · docs Anonymizer (operators replace/redact/hash/mask/encrypt/keep/custom and OperatorConfig; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://presidio.dataprivacystack.org/anonymizer/" target="_blank" rel="noopener">https://presidio.dataprivacystack.org/anonymizer/</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>presidio-analyzer · PyPI 项目页（2.2.366、许可字段 MIT、摘要与 Home 指认的仓库地址；直读 200，2026-11-06）</span><span data-en>presidio-analyzer · PyPI project page (2.2.366, licence field MIT, summary and the repository address named as Home; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://pypi.org/project/presidio-analyzer/" target="_blank" rel="noopener">https://pypi.org/project/presidio-analyzer/</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>presidio-analyzer · PyPI 发布历史（2.2.366 至 2.2.361 的日期序列；直读 200，2026-11-06）</span><span data-en>presidio-analyzer · PyPI release history (the 2.2.366 down to 2.2.361 date sequence; direct-fetched 200, 2026-11-06)</span></td><td><a href="https://pypi.org/project/presidio-analyzer/#history" target="_blank" rel="noopener">https://pypi.org/project/presidio-analyzer/#history</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>data-privacy-stack/presidio · 仓库页（文档首页指认的仓库位置；本批次直抓失败，未取到正文，仅登记链接关系，2026-11-06）</span><span data-en>data-privacy-stack/presidio · repository page (the location the docs home page points at; direct fetch failed in this pass, no body captured, only the link relation recorded, 2026-11-06)</span></td><td><a href="https://github.com/data-privacy-stack/presidio" target="_blank" rel="noopener">https://github.com/data-privacy-stack/presidio</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>data-privacy-stack/presidio · CHANGELOG（文档首页指认的变更文件；本批次直抓失败，未取到正文，2026-11-06）</span><span data-en>data-privacy-stack/presidio · CHANGELOG (the change file named by the docs home page; direct fetch failed in this pass, no body captured, 2026-11-06)</span></td><td><a href="https://github.com/data-privacy-stack/presidio/blob/main/CHANGELOG.md" target="_blank" rel="noopener">https://github.com/data-privacy-stack/presidio/blob/main/CHANGELOG.md</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>官方口径与未核到项</span><span data-en>Official record and unverified items</span></h2>
+        <span data-zh><p><strong>本站未做端到端实测</strong>：没有安装并调用过 AnalyzerEngine/AnonymizerEngine，没有跑过任何语料来测命中效果， 不产出检出率、漏检率、精度或任何排名，也不清点官方 recognizer 数量。本档案只组织文档首页、Analyzer/Anonymizer 两个 文档页、PyPI 项目页与发布历史在册的说法。</p>
+            <p><strong>实测建议</strong>（四条）：</p>
+            <ul><li><strong>自定义 recognizer 的接入成本</strong>（官方 tutorial 在册，实际改动量要自己试）</li><li><strong>离线部署时语言模型的获取路径</strong>（官方文档未逐字说明下载与缓存位置）</li><li><strong>算子组合的可逆性与审计留痕</strong>（replace 与 encrypt 混用后的还原边界）</li><li><strong>换非英语语言时的实体覆盖面差异</strong>（本站不给出比例结论，只验证机制是否可用）</li></ul></span><span data-en><p><strong>This site has not run it end to end</strong>: AnalyzerEngine/AnonymizerEngine were never installed or called, no corpus was run to test hit behaviour, so no detection rate, miss rate, precision or ranking is produced, and the number of official recognizers is not tallied. This archive only organises statements on record at the docs home page, the Analyzer and Anonymizer pages, the PyPI project page and its release history.</p>
+            <p><strong>Suggested measurements</strong> (four):</p>
+            <ul><li><strong>The real cost of wiring a custom recognizer</strong> (the tutorial is on record; the amount of change is yours to test)</li><li><strong>How language models are obtained in an offline deployment</strong> (download and cache locations are not spelled out officially)</li><li><strong>Reversibility and audit trail of combined operators</strong> (what the restore boundary looks like when replace meets encrypt)</li><li><strong>Entity coverage differences outside English</strong> (this site draws no ratio conclusion — only whether the mechanism works)</li></ul></span>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2>变更记录说明</h2>
+        <p>本对象有可核验的变更记录，但不在仓库页上：<strong>PyPI 发布历史在册</strong>（presidio-analyzer 2.2.366 发布于 2026-10-27、 2.2.365 于 2026-10-25、2.2.364 于 2026-07-22、2.2.363 于 2026-06-28、2.2.362 于 2026-03-15、2.2.361 于 2026-02-12）。 文档首页另指认 CHANGELOG.md 位于 github.com/data-privacy-stack/presidio，本批次该仓库页与 raw 路径均抓取超时， 未取到正文——所以变更内容口径以包索引日期为准，逐条内容进 unknowns。按发布密度（近 30 天内有版本）判 lifecycle active。</p>
+      </div>
+      <div class="panel is-slim">
+        <h2>能力边界</h2>
+        <ul><li>模态面：官方在册只有文本与图像两条（image redaction 是独立组件）。</li><li>判定面：输出是候选实体与 score，<strong>官方明确 score 不是概率</strong>；把它读成任何百分比都是越界。</li><li>变换面：算子是动作（遮、替、哈希、加密、保留、自定义），不承诺「脱敏后不可逆推」这类结论，那是你选算子与密钥管理的责任。</li><li>合规面：它不产出法律结论；GDPR/个保法意义上的匿名化是否成立，取决于你的整体处理方案，而不是这一个 SDK。</li></ul>
+      </div>
+      <div class="panel is-slim">
+        <h2>部署建议</h2>
+        <ol><li value="1">先定边界：如果「文本不出内网」是硬约束，本档案这条线是唯一可选项；否则才需要比较托管方案。</li><li value="2">装两个包（analyzer 与 anonymizer），先用官方 tutorial 跑一遍 replace 与 mask，再决定要不要自定义 recognizer。</li><li value="3">需要服务化时用官方 Docker REST 路径，但把镜像标签与版本钉住——本批次未取到标签对应关系。</li><li value="4">记录配置而非结果分数：把 recognizer 集、上下文词与算子参数进版本控制；把 score 阈值写进文档时要同时写明官方那句 「Scores are not probabilities」。</li></ol>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./nightfall.html"><span data-zh>Nightfall</span><span data-en>Nightfall</span></a></span><span class="rel-n"><span data-zh>同是「进模型前处理个人数据」，差别在谁执行：那份是托管 API 与算子配置，本档案全部跑在你自己边界内。</span><span data-en>Also &quot;handle personal data before it reaches the model&quot;, but the difference is who executes: that archive is a hosted API with configured operators, this one runs entirely inside your own boundary.</span></span></li>
+          <li><span class="rel-t"><a href="./gitguardian.html"><span data-zh>GitGuardian</span><span data-en>GitGuardian</span></a></span><span class="rel-n"><span data-zh>管的是另一类敏感物：凭据与密钥；两者常在同一条管线上前后串起来，本站不排名。</span><span data-en>Covers a different class of sensitive material — credentials and secrets; the two are often chained on the same pipeline, and this site does not rank them.</span></span></li>
+          <li><span class="rel-t"><a href="/framework/microsoft-agent-framework.html"><span data-zh>Microsoft Agent Framework</span><span data-en>Microsoft Agent Framework</span></a></span><span class="rel-n"><span data-zh>编排侧：脱敏算子要接进 agent 的输入输出管道时，落点在编排框架那一层。</span><span data-en>The orchestration side: when redaction operators must sit in an agent&#39;s input/output path, the landing point is the agent framework layer.</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

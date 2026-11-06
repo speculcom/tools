@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>LangWatch — Safety | 投机取巧</title>
+  <meta name="description" content="LangWatch（LangWatch）：LangWatch 是把线上调用、评测与提示版本收在一处的 LLMOps 平台：官方列出的能力是追踪每一次模型调用、工具使用与用户交互，并在其上跑评测与代理测试。开源核心可自托管（文档写为 Apache-2.0），另提供托管版。" />
+  <link rel="canonical" href="https://tools.specul.com/safety/langwatch.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="LangWatch" />
+  <meta property="og:url" content="https://tools.specul.com/safety/langwatch.html" />
+  <meta property="og:title" content="LangWatch — Safety | 投机取巧" />
+  <meta property="og:description" content="LangWatch（LangWatch）：LangWatch 是把线上调用、评测与提示版本收在一处的 LLMOps 平台：官方列出的能力是追踪每一次模型调用、工具使用与用户交互，并在其上跑评测与代理测试。开源核心可自托管（文档写为 Apache-2.0），另提供托管版。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../brand.css?v=bf69a6d205ad" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LangWatch","applicationCategory":"DeveloperApplication","sameAs":"https://langwatch.ai/docs/","description":"LangWatch 是把线上调用、评测与提示版本收在一处的 LLMOps 平台：官方列出的能力是追踪每一次模型调用、工具使用与用户交互，并在其上跑评测与代理测试。开源核心可自托管（文档写为 Apache-2.0），另提供托管版。","dateModified":"2026-11-06"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Safety</span>
+      </nav>
+      <a class="back" href="./">← Safety</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#f26d6d" aria-hidden="true"><span data-zh>La</span><span data-en>LA</span></div>
+        <div>
+          <h1><span data-zh>LangWatch</span><span data-en>LangWatch</span></h1>
+          <div class="vendor is-caps">LangWatch</div>
+        </div>
+      </div>
+
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
+      <div class="badges">
+        <span class="tag on"><span data-zh>LLMOps</span><span data-en>LLMOps</span></span>
+        <span class="tag on"><span data-zh>追踪</span><span data-en>tracing</span></span>
+        <span class="tag on"><span data-zh>评测</span><span data-en>evaluation</span></span>
+        <span class="tag on"><span data-zh>提示管理</span><span data-en>prompt management</span></span>
+        <span class="tag on"><span data-zh>可自托管</span><span data-en>self-hostable</span></span>
+        <span class="tag on"><span data-zh>开源核心</span><span data-en>open-source core</span></span>
+        <span class="badge accent">partial</span>
+        <span class="badge">lifecycle: active</span>
+        <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-11-06</span>
+      </div>
+
+      <p class="t-sm"><span data-zh>核验标记表示资料完整度，不是产品评分。下列未确认项可能影响选型；请按对应来源逐项确认。</span><span data-en>The confidence mark describes evidence completeness, not a product score. Unconfirmed items below may affect your choice; check them against the relevant sources.</span></p>
+            <div class="panel is-slim">
+        <h2 id="known-unknowns"><span data-zh>未确认的信息</span><span data-en>Information not confirmed</span></h2>
+        <span data-zh>
+        <ul>
+          <li>托管版与自托管版的功能差异清单</li>
+          <li>托管版的留存位置、删除时限与训练用途条款</li>
+          <li>支持的模型与框架接入全清单</li>
+          <li>自定义评判器、外部工具接入的确切边界</li>
+          <li>trace 的长度上限、采样策略与保留窗口</li>
+          <li>托管版账号与团队权限分级</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>Feature delta between the hosted product and the self-hosted core</li>
+          <li>Retention location, deletion deadlines and training use on the hosted plan</li>
+          <li>Full list of supported models and frameworks</li>
+          <li>Exact boundaries of custom judges and external tool integrations</li>
+          <li>Trace size limits, sampling policy and retention window</li>
+          <li>Account and team permission tiers on the hosted product</li>
+        </ul></span>
+      </div>
+
+
+            <p class="t-xs" data-en>English summaries and interface labels are available. Detailed source notes below are currently in Chinese.</p>
+      <div class="panel-lead"><span data-zh><p><strong>LangWatch 是把线上调用、评测与提示版本收在一处的 LLMOps 平台</strong>：官方列出的能力是追踪每一次模型调用、工具使用与用户交互，并在其上跑评测与代理测试。开源核心可自托管（文档写为 Apache-2.0），另提供托管版。</p></span><span data-en><p><strong>LangWatch 是把线上调用、评测与提示版本收在一处的 LLMOps 平台</strong>：官方列出的能力是追踪每一次模型调用、工具使用与用户交互，并在其上跑评测与代理测试。开源核心可自托管（文档写为 Apache-2.0），另提供托管版。</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+        <div><p>适合：需要把 trace、评测与提示变更放在一起复盘，同时希望保留自托管退路的团队。 不适合：只想要一个现成基准分数；或对「调用记录是否离开自己环境」有硬性限制却打算用托管版的场景。</p></div>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-11-06</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>官方文档与更新记录为境外站点，当日直抓可达（docs 由 docs.langwatch.ai 跳转至 langwatch.ai/docs/）。</span><span data-en>Docs and changelog are hosted outside the mainland; both were reachable on the check date (docs.langwatch.ai redirects to langwatch.ai/docs/).</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>langwatch.ai/docs/ 与 langwatch.ai/changelog 直抓 200（2026-11-06）。</span><span data-en>langwatch.ai/docs/ and langwatch.ai/changelog returned 200 direct on 2026-11-06.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>备案未核验</span><span data-en>filing unknown</span>：<span data-zh>备案与境内服务口径当日未核到；页面可达不等于境内可用。</span><span data-en>Filing and in-country availability not verified on the check date; reachability is not availability.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis" id="dimension-model_access">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><span data-zh><p>官方文档把它定位为 LLMOps 平台，追踪「每一次模型调用、工具使用与用户交互」；被测模型由你接入，平台不自带模型。具体兼容清单当日未逐条核到。</p></span><span data-en><p>The docs position it as an LLMOps platform that tracks &quot;every LLM call, tool usage, and user interaction&quot;; the models under test are yours to connect, the platform does not ship a model. The full compatibility list was not verified item by item on the check date.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-runtime">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><span data-zh><p>两条运行位置：官方托管，或自托管开源核心（文档明写 Apache-2.0 core 可自托管）。托管版与自托管版的功能差异当日未逐条核到。</p></span><span data-en><p>Two placements: the hosted product, or self-hosting the open-source core (the docs state the core is Apache-2.0 and self-hostable). Feature differences between hosted and self-hosted were not verified item by item.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-local_files">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><span data-zh><p>自托管时数据在你自己的存储里；用托管版时追踪数据离开本机——留存位置与删除方式需按当日条款另行确认，本档案未核到具体政策。</p></span><span data-en><p>Self-hosting keeps traces in your own storage; on the hosted product trace data leaves your machine. Retention location and deletion terms were not verified for this entry.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-background">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><span data-zh><p>追踪与评测以在线服务形式持续运行；离线批处理与定时任务的能力面未逐条核验。</p></span><span data-en><p>Tracing and evaluation run as a continuous service; the offline batch and scheduled-task surface was not verified item by item.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-tools">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><span data-zh><p>官方列出的能力包含 tracing、evaluations、agent testing、prompt management；能否接入自定义评判器与外部工具，当日正文未逐条说明。</p></span><span data-en><p>The official list of capabilities is tracing, evaluations, agent testing and prompt management; whether custom judges and external tools can be plugged in is not spelled out on the pages checked.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-context">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><span data-zh><p>上下文由被测应用决定；平台侧对 trace 长度、采样与保留窗口的限制未逐条核验。</p></span><span data-en><p>Context length belongs to the application under test; platform-side limits on trace size, sampling and retention windows were not verified.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-permissions">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><span data-zh><p>托管版有账号与团队权限体系（具体分级未核到）；自托管版权限等同你所部署环境的访问控制。</p></span><span data-en><p>The hosted product has an account and team permission model (tiering not verified); self-hosted, permissions equal whatever your deployment grants.</p></span></dd>
+        </div>
+        <div class="axis" id="dimension-fit">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><span data-zh><p>适合：要把线上调用、评测与提示版本放在一处看，且希望保留自托管退路。 不适合：只想要一次性基准分数；或不能接受追踪数据离开自己环境的场景（那需要走自托管并自行核实功能边界）。</p></span><span data-en><p>Fits: keeping live calls, evaluations and prompt versions in one place while retaining a self-hosting path. Does not fit: anyone wanting only a ready-made benchmark score, or anyone who cannot let trace data leave their environment and plans to use the hosted product.</p></span></dd>
+        </div>
+      </dl>
+
+      <nav class="panel is-slim" aria-label="使用排查" data-ui-aria-label-zh="使用排查" data-ui-aria-label-en="Troubleshooting">
+        <h2><span data-zh>使用时遇到问题</span><span data-en>When something fails</span></h2>
+        <p><a href="../mcp/guides/failure-library.html#auth"><span data-zh>账号与权限</span><span data-en>Account and permissions</span></a> · <a href="../mcp/guides/failure-library.html#rate-limit"><span data-zh>限流与重试</span><span data-en>Rate limits and retries</span></a> · <a href="../mcp/guides/failure-library.html#files"><span data-zh>文件读取问题</span><span data-en>File-reading issues</span></a></p>
+      </nav>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li>把「能追踪」当成「能判定质量」——评测判法与样本仍要你自己定义</li>
+          <li>只看开源核心可自托管，就假设托管版与自托管版功能一致</li>
+          <li>允许平台记录完整输入输出前，没先确认里面是否含客户数据与密钥</li>
+        </ul>
+      </div>
+
+
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>最近核验记录</span><span data-en>Latest recorded check</span> 2026-11-06，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-11-06。<span data-zh>单项复核范围见正文或来源说明，不代表所有字段在同一天重新核验。</span><span data-en>See the text or source notes for item-specific scope; this does not mean every field was rechecked on that date.</span></p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>docs</td><td><span data-zh>LangWatch · 官方文档（tracing / evaluations / agent testing / prompt management，自托管说明）</span><span data-en>LangWatch · official docs (tracing / evaluations / agent testing / prompt management, self-hosting note; 200 direct on 2026-11-06)</span></td><td><a href="https://langwatch.ai/docs/" target="_blank" rel="noopener">https://langwatch.ai/docs/</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>LangWatch · 更新记录</span><span data-en>LangWatch · changelog (200 direct on 2026-11-06)</span></td><td><a href="https://langwatch.ai/changelog" target="_blank" rel="noopener">https://langwatch.ai/changelog</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>官方口径与未核到项</span><span data-en>Official record and unverified items</span></h2>
+        <span data-zh><p>本档未做拦截率、评测一致性或性能测试；能力描述取自当日可达的官方文档与更新记录原文，本站不重复其数字，也不据此评价同类产品。</p></span><span data-en><p>This entry has not completed measured runs on interception rates, evaluation consistency or performance. Capability wording comes from the official docs and changelog reachable on the check date; the site does not restate their figures as an evaluation, and draws no comparison against similar products.</p></span>
+      </div>
+
+
+            <div class="panel is-slim">
+        <h2>第一次怎么用</h2>
+        <ol><li value="1">先决定运行位置：能接受托管版就核对留存与删除条款；不能接受就按文档自托管开源核心，并逐项确认你需要的是否在核心内。</li><li value="2">接入时只送必要字段：把客户姓名、订单号、密钥这类内容在进入 trace 前处理掉，事后清理比事前控制难。</li><li value="3">评测从你自己的样本集开始：先写判法（哪些能机器判、哪些必须人判），再挂到线上 trace 上，别用平台默认指标替代验收标准。</li><li value="4">每次改动记录三件东西：提示版本、模型标识、评测样本集版本；缺一件，下一轮的对比就失去解释力。</li></ol>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="./helicone.html"><span data-zh>Helicone</span><span data-en>Helicone</span></a></span><span class="rel-n"><span data-zh>同属「评测与观测」线：本档案只写自己在册的官方口径，对照请看那份。</span><span data-en>Same line: Helicone (in evaluation and observability); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="./openai-evals.html"><span data-zh>OpenAI Evals</span><span data-en>OpenAI Evals</span></a></span><span class="rel-n"><span data-zh>同属「评测与观测」线：本档案只写自己在册的官方口径，对照请看那份。</span><span data-en>Same line: OpenAI Evals (in evaluation and observability); this entry states only what its own official sources support.</span></span></li>
+          <li><span class="rel-t"><a href="./inspect-ai.html"><span data-zh>Inspect</span><span data-en>Inspect</span></a></span><span class="rel-n"><span data-zh>同属「评测与观测」线：本档案只写自己在册的官方口径，对照请看那份。</span><span data-en>Same line: Inspect (in evaluation and observability); this entry states only what its own official sources support.</span></span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

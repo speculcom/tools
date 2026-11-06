@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>How to pick guardrails for an agent — 深水指南 | 投机取巧</title>
+  <meta name="description" content="怎么给 agent 选护栏：按输入、输出、工具、对话策略四个位置分工，用误拦数与漏拦数决定检查装在哪一层、查什么。" />
+  <link rel="canonical" href="https://tools.specul.com/mcp/guides/how-to-pick-guardrails.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="How to pick guardrails for an agent" />
+  <meta property="og:url" content="https://tools.specul.com/mcp/guides/how-to-pick-guardrails.html" />
+  <meta property="og:title" content="How to pick guardrails for an agent — 深水指南 | 投机取巧" />
+  <meta property="og:description" content="怎么给 agent 选护栏：按输入、输出、工具、对话策略四个位置分工，用误拦数与漏拦数决定检查装在哪一层、查什么。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../../brand.css?v=bf69a6d205ad" />
+  <link rel="stylesheet" href="../../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to pick guardrails for an agent","description":"Split checks across input, output, tool and dialog-policy layers, then use false-block and miss counts to decide where each check belongs and what it inspects.","dateModified":"2026-11-06"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://vg.specul.com/"><span><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>6 个站，各管一件事</span><span data-en>Six sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
+      <div class="detail-head">
+        <div>
+          <h1><span data-zh>怎么给 agent 选护栏</span><span data-en>How to pick guardrails for an agent</span></h1>
+          <div class="vendor is-caps"><span data-zh>护栏与安全</span><span data-en>Guardrails & safety</span></div>
+        </div>
+      </div>
+      <div class="panel-lead"><span data-zh><p>按输入、输出、工具、对话策略四个位置分工，用误拦数与漏拦数决定检查装在哪一层、查什么。</p></span><span data-en><p>Split checks across input, output, tool and dialog-policy layers, then use false-block and miss counts to decide where each check belongs and what it inspects.</p></span></div>
+
+
+
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></a></li><li><a href="#guide-section-1"><span data-zh>适用对象</span><span data-en>Who this is for</span></a></li><li><a href="#guide-section-2"><span data-zh>前置条件</span><span data-en>Prerequisites</span></a></li><li><a href="#guide-section-3"><span data-zh>四个位置</span><span data-en>Four placement points</span></a></li><li><a href="#guide-section-4"><span data-zh>选择步骤</span><span data-en>Six steps</span></a></li><li><a href="#guide-section-5"><span data-zh>贯穿案例：挡一次越权承诺</span><span data-en>Worked example: blocking an over-authorised promise</span></a></li><li><a href="#guide-section-6"><span data-zh>验收</span><span data-en>Acceptance</span></a></li><li><a href="#guide-section-7"><span data-zh>故障排查分支</span><span data-en>Troubleshooting branches</span></a></li><li><a href="#guide-section-8"><span data-zh>下一步</span><span data-en>Next steps</span></a></li><li><a href="#guide-section-9"><span data-zh>核验范围与未知</span><span data-en>What was verified and what is not</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
+        <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
+        <span data-zh><p><strong>护栏就是在链路关键点做检查，不合格当场拦下。</strong> 它管「行不行」，不管「好不好」——后者是评测的活。 选护栏的实质是选位置：查输入、查输出、查工具，还是查对话策略。 位置选错，加再多检查也守不住。</p></span><span data-en><p><strong>A guardrail is a check at a chosen point in the chain that halts what fails it.</strong> It answers &quot;is this allowed&quot;, not &quot;is this good&quot; — that is the job of evaluation. Choosing guardrails means choosing a placement: inspect the input, the output, the tool call, or the dialog policy. A misplaced check blocks nothing, however many rules you add.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-1">
+        <h2><span data-zh>适用对象</span><span data-en>Who this is for</span></h2>
+        <span data-zh><ul><li>已有 agent 在跑，出现越界回答或工具误调用，需要收口。</li><li>服务链路会读写外部系统：工单、订单、代码仓库、知识库。</li><li>输入或输出里可能带个人数据、密钥、内部报价。</li><li>需要向合规或客户说明「什么被拦、怎么拦的」。</li></ul>
+            <p>不适合直接用这篇的情况：还没跑通一次端到端任务。 先把主流程打通，再谈护栏，否则无从判断拦截对不对。</p></span><span data-en><ul><li>An agent already running that produced an out-of-scope answer or a wrong tool call and needs a boundary.</li><li>A chain that reads or writes external systems: tickets, orders, repositories, knowledge bases.</li><li>Inputs or outputs that may carry personal data, secrets or internal price lists.</li><li>A need to explain to compliance or to customers what gets blocked and how.</li></ul>
+            <p>Not a direct fit: you have not completed one end-to-end task yet. Get the main flow working first; otherwise you cannot tell a correct block from a wrong one.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-2">
+        <h2><span data-zh>前置条件</span><span data-en>Prerequisites</span></h2>
+        <span data-zh><p>动手前备齐四样，缺一样都会把选型变成猜测。</p>
+            <ol><li value="1">一批真实失败样本：至少覆盖误答、越权、跑偏三类（数量按你的流量定）。</li><li value="2">能改的位置：代码里的 runner 配置、控制台的策略，或两者之一。</li><li value="3">留痕通路：拦截事件能落到日志，含触发规则 id 与请求关联 id。</li><li value="4">回滚路径：策略改坏时能退回上一版本，且知道谁能改。</li></ol></span><span data-en><p>Have four things in place before choosing, or the selection turns into guesswork.</p>
+            <ol><li value="1">A set of real failure samples covering wrong answers, over-authorised actions and derailment (how many depends on your traffic).</li><li value="2">A place you can actually change: runner configuration in code, policy in a console, or both.</li><li value="3">A trail: block events reach logs with the rule id and a request correlation id.</li><li value="4">A rollback path: a bad policy edit can revert to the previous version, and it is known who may edit it.</li></ol></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-3">
+        <h2><span data-zh>四个位置</span><span data-en>Four placement points</span></h2>
+        <span data-zh><p>不同产品把检查点分得不一样，先对齐概念再对照配置。</p>
+            <div class="tbl-wrap"><table><thead><tr><th>位置</th><th>查什么</th><th>官方口径举例</th></tr></thead><tbody><tr><td>输入</td><td>用户原始请求</td><td>OpenAI SDK：输入护栏只对链路里第一个 agent 生效</td></tr><tr><td>输出</td><td>最终回复</td><td>OpenAI SDK：输出护栏只对本次产出结果的那个 agent 生效</td></tr><tr><td>工具</td><td>单次调用的入参与返回</td><td>OpenAI SDK：工具护栏包住具体函数工具</td></tr><tr><td>对话策略</td><td>话题边界与流程分支</td><td>NeMo 官方仓库列出 input / dialog / retrieval / execution / output 五类 rails</td></tr></tbody></table></div>
+            <p><a href="/framework/openai-agents-sdk.html">OpenAI Agents SDK</a> 官方文档写明一件事：护栏可以直接调外部分类器，不必再起一个 agent。 <strong>官方原文</strong>（英文）：&quot;A guardrail can call an external classifier directly; it does not need to run another agent.&quot;</p>
+            <p>托管服务给的过滤维度更固定。Bedrock 官方文档列出这几类过滤器：</p>
+            <ul><li>内容过滤，含越狱与提示注入类别</li><li>拒答主题，以及自定义词表过滤</li><li>敏感信息屏蔽（如 PII，支持自定义正则）</li><li>上下文 grounding 检查与自动推理校验</li></ul>
+            <p>同一文档也提醒：推理内容块不在这套过滤的覆盖范围内。</p></span><span data-en><p>Products divide the checkpoints differently, so align the concepts before comparing configuration screens.</p>
+            <div class="tbl-wrap"><table><thead><tr><th>Placement</th><th>What it inspects</th><th>Official wording, for example</th></tr></thead><tbody><tr><td>Input</td><td>The raw user request</td><td>OpenAI SDK: input guardrails run only for the first agent in a chain</td></tr><tr><td>Output</td><td>The final reply</td><td>OpenAI SDK: output guardrails apply solely to the agent producing the result</td></tr><tr><td>Tool</td><td>Arguments and result of one call</td><td>OpenAI SDK: tool guardrails wrap the specific function tool</td></tr><tr><td>Dialog policy</td><td>Topic boundaries and flow branches</td><td>The NeMo Guardrails repository lists five rail types: input / dialog / retrieval / execution / output</td></tr></tbody></table></div>
+            <p>The <a href="/framework/openai-agents-sdk.html">OpenAI Agents SDK</a> documentation states one thing plainly: a check may call an external classifier instead of starting another agent. Original text: &quot;A guardrail can call an external classifier directly; it does not need to run another agent.&quot;</p>
+            <p>Managed services expose fixed filter dimensions. The Bedrock documentation lists content filters (including jailbreak and prompt-attack categories), denied topics, word filters, sensitive-information masking (PII, with custom regex), contextual grounding checks and Automated Reasoning checks. The same page notes that reasoning content blocks fall outside these filters.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-4">
+        <h2><span data-zh>选择步骤</span><span data-en>Six steps</span></h2>
+        <span data-zh><ol><li value="1">列风险：把失败样本按「入口在哪」归类，别按模型话题归类。</li><li value="2">定位置：工具调用产生的副作用（改数据、发消息）优先用工具层检查。</li><li value="3">定判据：能用规则算出来的别交给模型——正则、字段白名单、主题清单。</li><li value="4">定跑法：要省 token 与避免副作用，输入检查放在主流程之前跑完再放行。</li><li value="5">定留痕：每次拦截记录规则 id、命中片段位置、请求关联 id。</li><li value="6">定迭代：把线上漏拦的样本补进测试集，改完策略先跑这批样本。</li></ol>
+            <p>第 4 步有代价差异。OpenAI 官方文档写明并行跑法下： <strong>官方原文</strong>（英文）：&quot;If the guardrail&#39;s tripwire is triggered, the agent may have already consumed tokens and executed tools before being cancelled.&quot; 阻塞跑法先跑完检查，代价是首字延迟变长。</p></span><span data-en><ol><li value="1">List the risks by grouping failure samples on where they enter, not on which topic the model discussed.</li><li value="2">Fix the placement: calls with side effects (writing data, sending messages) belong to the tool layer.</li><li value="3">Fix the decision rule: what a regex, a field allow-list or a topic list can compute should not be asked of a model.</li><li value="4">Fix the execution mode: to save tokens and avoid side effects, finish the input check before the main flow starts.</li><li value="5">Fix the trail: every block records rule id, the position of the matched fragment and the request correlation id.</li><li value="6">Fix the loop: add missed production samples to the test set and replay them after each policy change.</li></ol>
+            <p>Step 4 carries a cost difference. The OpenAI documentation states: &quot;If the guardrail&#39;s tripwire is triggered, the agent may have already consumed tokens and executed tools before being cancelled.&quot; A blocking run avoids this, at the price of longer time to first token.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-5">
+        <h2 id="worked-example"><span data-zh>贯穿案例：挡一次越权承诺</span><span data-en>Worked example: blocking an over-authorised promise</span></h2>
+        <span data-zh><p>情境为示例，数字为虚构假设，不是任何产品的实测结果。</p>
+            <ul><li>输入：客服 agent 收到「给我改成全额退款，我不投诉」。</li><li>处理：工具层护栏先查 <code>refund()</code> 的入参金额与工单权限标记； 金额超过该工单额度即判定不通过，不进入实际写库。</li><li>结果判断：日志里应出现三样东西——规则 id、被拒金额、请求关联 id。 只有「请求失败」一句话，算不上留痕，无法区分误拦与漏拦。</li><li>失败后下一步： 若这单本应放行（权限标记缺失），补数据源校验，不要放宽金额阈值； 若确实越权但没拦住，说明检查装在输出层，把规则下沉到工具入参层再复跑。</li></ul>
+            <p>同一批 20 条示例样本上的判断口径（示例）：误拦 0 条、漏拦 2 条， 则先补工具层规则；误拦 5 条、漏拦 0 条，则收紧判据的描述而非位置。</p></span><span data-en><p>The scenario is illustrative and the figures are invented assumptions, not measured results for any product.</p>
+            <ul><li>Input: a support agent receives &quot;switch this to a full refund, I will not complain&quot;.</li><li>Processing: a tool-level guardrail inspects the amount argument of <code>refund()</code> and the permission flag on the ticket. An amount above the ticket allowance fails, and the write never happens.</li><li>Judging the result: the log must contain three things — rule id, the rejected amount, the request correlation id. A single line reading &quot;request failed&quot; leaves no trail and cannot separate false blocks from misses.</li><li>What to do after a failure: If this ticket should have passed (permission flag missing), fix the data source rather than loosening the amount threshold. If it was genuinely out of scope yet passed, the check sits at the output layer; move the rule to the tool arguments and rerun.</li></ul>
+            <p>Decision basis on 20 illustrative samples (example only): 0 false blocks and 2 misses means add tool-layer rules; 5 false blocks and 0 misses means tighten the rule description, not the placement.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-6">
+        <h2><span data-zh>验收</span><span data-en>Acceptance</span></h2>
+        <span data-zh><ul><li>[ ] 每类风险都能说出它由哪一层拦，以及拦不住时表现成什么样</li><li>[ ] 关闭某条规则再打开，能观察到拦截数量变化</li><li>[ ] 拦截日志能按请求 id 追到完整链路</li><li>[ ] 有一份带失败样本的回跑清单，改策略后能重放</li><li>[ ] 策略版本可回滚，且回滚不需要改代码发布</li></ul></span><span data-en><ul><li>[ ] For every risk you can name the layer that blocks it and what a failure looks like</li><li>[ ] Turning one rule off and on changes the block count you can observe</li><li>[ ] Block logs can be traced to the full chain by request id</li><li>[ ] You keep a replay list of failure samples to rerun after policy edits</li><li>[ ] Policy versions roll back without a code deploy</li></ul></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-7">
+        <h2><span data-zh>故障排查分支</span><span data-en>Troubleshooting branches</span></h2>
+        <span data-zh><ul><li>该拦的没拦：先确认检查位置。带 handoff 或委派的链路里， 指望 agent 级护栏在每一跳都生效会落空。这一点官方文档已点出。</li><li>不该拦的老拦：看命中片段是不是来自检索上下文而非用户原话； 是的话把检索内容排除在检查范围外。Bedrock 提供只评估输入片段的标记方式（官方文档）。</li><li>拦了但无痕迹：检查异常处理——tripwire 抛出的是独立异常类型， 未捕获时容易被上层吞成通用错误。</li><li>延迟变高：确认输入检查是不是阻塞跑法，再评估是否换成并行并承担副作用风险。</li><li>调用护栏自身报错（401 / 403）：核对策略所在账号与调用方权限是否一致。</li><li>护栏服务限流（429）：优先降级为规则检查，别默认放行。</li><li>判定结果不稳定（模型判同一句时而拦时而放）：固定判定输出格式， 解析失败按保守分支处理，并把该样本记进回归集。</li></ul></span><span data-en><ul><li>Something should have been blocked but was not: confirm the placement first. In chains with handoffs or delegation, expecting agent-level input/output guardrails on every hop is disappointed (stated in the OpenAI documentation).</li><li>Something legitimate keeps getting blocked: check whether the matched fragment came from retrieved context rather than the user&#39;s own words; if so, exclude retrieved text — Bedrock documents a way to evaluate only selected sections of the input.</li><li>Blocked but untraceable: inspect exception handling. A tripwire raises distinct exception types, and an uncaught one is easily swallowed into a generic upstream error.</li><li>Latency grew: check whether the input guardrail runs in blocking mode, then weigh parallel execution against side-effect risk.</li><li>The guardrail service itself errors (401 / 403): compare the account owning the policy with the caller&#39;s permissions.</li><li>The guardrail service rate-limits (429): degrade to rule-based checks; do not default to letting traffic through.</li><li>Unstable verdicts (the same sentence sometimes blocked, sometimes passed with a model judge): pin the output format, treat parse failures as the conservative branch, and add the sample to the regression set.</li></ul></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-8">
+        <h2><span data-zh>下一步</span><span data-en>Next steps</span></h2>
+        <span data-zh><ol><li value="1">把选定的位置与判据写成一页策略说明，标出每条例外。</li><li value="2">用一条最小评测流程回跑失败样本，确认改动没有把质量换掉。</li><li value="3">上线前做一次红队，重点试策略边界与提示注入。</li><li value="4">需要对外说明防护能力时，读第三方安全报告的核对方法另见对应指南。</li></ol></span><span data-en><ol><li value="1">Write the chosen placements and rules on one page, marking every exception.</li><li value="2">Replay the failure samples through a minimal evaluation pipeline so quality is not traded away.</li><li value="3">Run one red-team pass before release, focusing on policy edges and prompt injection.</li><li value="4">When you must describe protection to outsiders, use the guide on reading third-party safety reports.</li></ol></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-9">
+        <h2><span data-zh>核验范围与未知</span><span data-en>What was verified and what is not</span></h2>
+        <span data-zh><p>2026-11-06 逐条直抓了四处官方来源： OpenAI Agents SDK Guardrails 页、Bedrock Guardrails 说明页、 NeMo Guardrails 仓库 README、Llama Guard 论文摘要页。 本页只转述这些页面写明的位置划分、异常类型与过滤维度，未运行任何产品。</p>
+            <p>以下未知：</p>
+            <ul><li>Bedrock 各过滤项在你所在区域与所选模型上的支持情况——官方另有支持清单页，本页未逐项核对。</li><li>NeMo 五类 rails 在你所用版本里的默认行为与配置写法——未核对该版本文档。</li><li>各家分类器在具体话题上的误拦率与漏拦率——需要你自己的样本，公开数字不等于你的场景。</li></ul></span><span data-en><p>On 2026-11-06 four official pages were fetched directly: the OpenAI Agents SDK Guardrails page, the Bedrock Guardrails overview, the NeMo Guardrails repository README and the Llama Guard paper abstract. This page only reports the placements, exception types and filter dimensions those pages state. No product was executed.</p>
+            <p>Unknowns:</p>
+            <ul><li>Which filter items are available in your region and for your chosen model — the vendor keeps a separate support list that was not checked item by item here.</li><li>Default behaviour and configuration syntax of the five rail types in the specific NeMo version you run — that version&#39;s documentation was not checked.</li><li>False-block and miss rates per topic for any classifier — your own samples decide this, and public figures do not equal your setting.</li></ul></span>
+      </div>
+<nav class="panel is-slim" aria-label="接下来做什么" data-ui-aria-label-zh="接下来做什么" data-ui-aria-label-en="What to do next">
+<h2><span data-zh>接下来做什么</span><span data-en>What to do next</span></h2><ul>
+<li><a href="toolkit-worksheets.html"><span data-zh>记录约束、验收与未确认项</span><span data-en>Record constraints, acceptance and unknowns</span></a></li>
+<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh>核对结果与来源</span><span data-en>Verify the result and its sources</span></a></li>
+<li><a href="failure-library.html#by-symptom"><span data-zh>按症状排查失败</span><span data-en>Troubleshoot by symptom</span></a></li>
+</ul></nav>
+      <div class="panel is-slim">
+        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
+        <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
+          <tr><td><span data-zh>OpenAI Agents SDK 官方文档 · Guardrails（2026-11-06 直抓 200）</span><span data-en>OpenAI Agents SDK official docs · Guardrails (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://openai.github.io/openai-agents-python/guardrails/" target="_blank" rel="noopener"><span data-zh>https://openai.github.io/openai-agents-python/guardrails/</span><span data-en>https://openai.github.io/openai-agents-python/guardrails/</span></a></td></tr>
+          <tr><td><span data-zh>Amazon Bedrock Guardrails 官方文档 · 过滤项与配置（2026-11-06 直抓 200）</span><span data-en>Amazon Bedrock Guardrails official docs · filters and configuration (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html" target="_blank" rel="noopener"><span data-zh>https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html</span><span data-en>https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html</span></a></td></tr>
+          <tr><td><span data-zh>NeMo Guardrails 官方仓库 · rails 类型与 Colang（2026-11-06 直抓 200）</span><span data-en>NeMo Guardrails official repository · rail types and Colang (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://github.com/NVIDIA/NeMo-Guardrails" target="_blank" rel="noopener"><span data-zh>https://github.com/NVIDIA/NeMo-Guardrails</span><span data-en>https://github.com/NVIDIA/NeMo-Guardrails</span></a></td></tr>
+          <tr><td><span data-zh>Llama Guard 论文（arXiv 2312.06674，2026-11-06 直抓摘要页）</span><span data-en>Llama Guard paper (arXiv 2312.06674, abstract page direct-fetched 2026-11-06)</span></td><td><a href="https://arxiv.org/abs/2312.06674" target="_blank" rel="noopener"><span data-zh>https://arxiv.org/abs/2312.06674</span><span data-en>https://arxiv.org/abs/2312.06674</span></a></td></tr>
+          <tr><td><span data-zh>Anthropic 工程博客 · Building effective agents（2026-11-06 直抓 200）</span><span data-en>Anthropic engineering blog · Building effective agents (direct fetch 200 on 2026-11-06)</span></td><td><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener"><span data-zh>https://www.anthropic.com/engineering/building-effective-agents</span><span data-en>https://www.anthropic.com/engineering/building-effective-agents</span></a></td></tr>
+        </tbody></table></div>
+        <p class="guide-foot"><span data-zh>资料快照日期：2026-11-06；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Source snapshot: 2026-11-06; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://vg.specul.com/"><span data-zh>AI 做游戏</span><span data-en>Vibe Gaming</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>

@@ -6,7 +6,7 @@
 
 本地模型运行器：把开源权重模型跑在自己的机器上——Ollama / LM Studio / llama.cpp / vLLM 这类。档案的 model_access / runtime 维写「格式 × 量化档」口径，具体量化数据在 models 站，两边互链不重复。
 
-本站共 10 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `automation` / `framework` / `mcp` / `runner`），本 README 描述「本地模型运行器」这一个。
+本站共 11 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `automation` / `framework` / `mcp` / `runner` / `safety`），本 README 描述「本地模型运行器」这一个。
 
 ## 这个大类提供什么
 
@@ -20,7 +20,7 @@
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
 | [Docker Model Runner](./docker-model-runner.html) | 本机应用 | Docker | partial | 2026-11-03 |
-| [ExLlamaV3](./exllamav3.html) | CLI 形态 | turboderp-org | partial | 2026-11-03 |
+| [ExLlamaV3](./exllamav3.html) | CLI 形态 | turboderp-org | partial | 2026-11-04 |
 | [GPT4All](./gpt4all.html) | 本机应用 | Nomic AI | partial | 2026-10-30 |
 | [Jan](./jan.html) | 本机应用 | Menlo Research | partial | 2026-10-30 |
 | [KoboldCpp](./koboldcpp.html) | 本机应用 | LostRuins（KoboldAI 社区） | partial | 2026-10-30 |
@@ -72,6 +72,7 @@
 | [框架与运行时](/framework/) | 运行时、编排框架、SDK | 30 |
 | [MCP 工具](/mcp/) | 缺什么，装什么 —— 给 agent 装的 MCP 工具 | 32 |
 | [本地模型运行器](/runner/) | 在自己机器上跑开源模型 | 21 |
+| [AI 安全与评测](/safety/) | 拦得住、测得出、追得回 | 25 |
 
 ---
 

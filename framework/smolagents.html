@@ -13,8 +13,8 @@
   <meta property="og:description" content="smolagents（Hugging Face）：smolagents 是一个薄 agent 库 —— 它让 agent「用代码思考」。 官方自述是 &quot;barebones library for agents that think in code&quot;（仓库 description 原文）。 它最…" />
   <meta name="theme-color" content="#16121f" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
-  <script src="../brand.js?v=6a580ac0420e"></script>
-  <link rel="stylesheet" href="../brand.css?v=6a580ac0420e" />
+  <script src="../brand.js?v=bf69a6d205ad"></script>
+  <link rel="stylesheet" href="../brand.css?v=bf69a6d205ad" />
   <link rel="stylesheet" href="../site.css" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"smolagents","applicationCategory":"DeveloperApplication","url":"https://huggingface.co/docs/smolagents","sameAs":"https://huggingface.co/docs/smolagents","description":"smolagents 是一个薄 agent 库 —— 它让 agent「用代码思考」。 官方自述是 \"barebones library for agents that think in code\"（仓库 description 原文）。 它最核心的设计是 code-as-action。默认的 CodeAgent 让 LLM 把动作写成 Python 代码， 并执行它。它不输出 JSON 工具调用。","dateModified":"2026-10-23"}</script>
 </head>
@@ -49,6 +49,7 @@
            （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
            链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
       <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
         <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
         <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
       </span>
@@ -113,6 +114,29 @@
         <span class="badge">lifecycle: active</span>
         <span class="badge"><span data-zh>核验</span><span data-en>Checked</span> 2026-10-23</span>
       </div>
+
+      <p class="t-sm"><span data-zh>核验标记表示资料完整度，不是产品评分。下列未确认项可能影响选型；请按对应来源逐项确认。</span><span data-en>The confidence mark describes evidence completeness, not a product score. Unconfirmed items below may affect your choice; check them against the relevant sources.</span></p>
+            <div class="panel is-slim">
+        <h2 id="known-unknowns"><span data-zh>未确认的信息</span><span data-en>Information not confirmed</span></h2>
+        <span data-zh>
+        <ul>
+          <li>换 provider 后 tool calling / 结构化输出的可靠性对齐（官方未说明，已查 guided_tour 与 models 参考页）</li>
+          <li>CodeAgent 默认允许的文件访问范围（官方未说明，已查 secure_code_execution 与 guided_tour 两页）</li>
+          <li>把大工具输出落盘的深上下文管理（官方未说明）</li>
+          <li>内建网络访问控制机制（官方未说明）</li>
+          <li>进程间持久化 / 断点续跑的内建方案（官方未提供，得自己序列化 steps）</li>
+          <li>hosted 沙箱（Blaxel / E2B / Modal）的配额与计费口径（各由服务商页决定；报价按本站的报价记录约定本站不存）</li>
+        </ul></span><span data-en>
+        <ul>
+          <li>After switching providers, the reliability alignment of tool calling / structured output (not stated officially; guided_tour and models reference pages checked)</li>
+          <li>The default file-access scope allowed for CodeAgent (not stated officially; secure_code_execution and guided_tour pages checked)</li>
+          <li>Deep context management spilling large tool outputs to disk (not stated officially)</li>
+          <li>Built-in network access control mechanisms (not stated officially)</li>
+          <li>A built-in cross-process persistence / checkpoint-resume solution (not provided officially; serialize steps yourself)</li>
+          <li>Quotas and billing of the hosted sandboxes (Blaxel / E2B / Modal) (each decided by the provider&#39;s own pages; quotes not stored per our price-recording policy)</li>
+        </ul></span>
+      </div>
+
 
             
       <div class="panel-lead"><span data-zh><p><strong>smolagents 是一个薄 agent 库 —— 它让 agent「用代码思考」。</strong></p>
@@ -264,6 +288,11 @@
         </div>
       </dl>
 
+      <nav class="panel is-slim" aria-label="使用排查" data-ui-aria-label-zh="使用排查" data-ui-aria-label-en="Troubleshooting">
+        <h2><span data-zh>使用时遇到问题</span><span data-en>When something fails</span></h2>
+        <p><a href="../mcp/guides/failure-library.html#auth"><span data-zh>身份与权限</span><span data-en>Authentication and permissions</span></a> · <a href="../mcp/guides/failure-library.html#tool-input"><span data-zh>工具输入错误</span><span data-en>Invalid tool inputs</span></a> · <a href="../mcp/guides/failure-library.html#json"><span data-zh>输出格式错误</span><span data-en>Invalid output format</span></a></p>
+      </nav>
+
             <div class="panel warn">
         <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
         <ul>
@@ -275,31 +304,11 @@
       </div>
 
 
-            <div class="panel is-slim">
-        <h2><span data-zh>未知项清单</span><span data-en>Known unknowns</span></h2>
-        <span data-zh>
-        <ul>
-          <li>换 provider 后 tool calling / 结构化输出的可靠性对齐（官方未说明，已查 guided_tour 与 models 参考页）</li>
-          <li>CodeAgent 默认允许的文件访问范围（官方未说明，已查 secure_code_execution 与 guided_tour 两页）</li>
-          <li>把大工具输出落盘的深上下文管理（官方未说明）</li>
-          <li>内建网络访问控制机制（官方未说明）</li>
-          <li>进程间持久化 / 断点续跑的内建方案（官方未提供，得自己序列化 steps）</li>
-          <li>hosted 沙箱（Blaxel / E2B / Modal）的配额与计费口径（各由服务商页决定；报价按本站的报价记录约定本站不存）</li>
-        </ul></span><span data-en>
-        <ul>
-          <li>After switching providers, the reliability alignment of tool calling / structured output (not stated officially; guided_tour and models reference pages checked)</li>
-          <li>The default file-access scope allowed for CodeAgent (not stated officially; secure_code_execution and guided_tour pages checked)</li>
-          <li>Deep context management spilling large tool outputs to disk (not stated officially)</li>
-          <li>Built-in network access control mechanisms (not stated officially)</li>
-          <li>A built-in cross-process persistence / checkpoint-resume solution (not provided officially; serialize steps yourself)</li>
-          <li>Quotas and billing of the hosted sandboxes (Blaxel / E2B / Modal) (each decided by the provider&#39;s own pages; quotes not stored per our price-recording policy)</li>
-        </ul></span>
-      </div>
 
 
       <div class="panel">
         <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
-        <p class="t-sm"><span data-zh>判断可回到以下一手源复核。本站核验日</span><span data-en>Every judgement can be rechecked against the primary sources below. Verified on</span> 2026-10-23，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-08。</p>
+        <p class="t-sm"><span data-zh>最近核验记录</span><span data-en>Latest recorded check</span> 2026-10-23，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-10-08。<span data-zh>单项复核范围见正文或来源说明，不代表所有字段在同一天重新核验。</span><span data-en>See the text or source notes for item-specific scope; this does not mean every field was rechecked on that date.</span></p>
         <table class="src">
           <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
           <tbody>
@@ -318,7 +327,7 @@
       </div>
 
             <div class="panel is-slim">
-        <h2><span data-zh>实测记录</span><span data-en>Measured runs</span></h2>
+        <h2><span data-zh>官方口径与未核到项</span><span data-en>Official record and unverified items</span></h2>
         <span data-zh><p>本档未跑集成与性能实测；结论只覆盖 API 与官方文档披露的能力面。</p>
             <p><strong>实测建议</strong>（按编程底座 + code-as-action 维度定制）：</p>
             <div class="tbl-wrap"><table><thead><tr><th>#</th><th>测什么</th><th>为什么值得测</th></tr></thead><tbody><tr><td>1</td><td>最小 hello CodeAgent 要几个文件、多少行</td><td>验证官方「barebones / ~1000 行」的薄到什么程度</td></tr><tr><td>2</td><td><code>LocalPythonExecutor</code> 能拦住几类经典逃逸</td><td>官方说它不是安全边界，实测边界在哪</td></tr><tr><td>3</td><td><code>executor_type=&quot;docker&quot;</code> 跑通多 agent 的成本</td><td>官方说明代码片段模式不支持多 agent</td></tr><tr><td>4</td><td>换成 LiteLLM 接本地 Ollama 要改多少行</td><td>验证 model-agnostic 的真实改动量</td></tr><tr><td>5</td><td>单步 <code>agent.step()</code> 跨进程恢复 memory 的可行性</td><td>官方无内建落盘，验证自建断点的代价</td></tr></tbody></table></div></span><span data-en><p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" target="_blank" rel="noopener">protocols/framework/_protocol.md</a>.</p>
@@ -423,6 +432,8 @@
       </nav>
     </div>
     <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索六站内容</span><span data-en>Search all six sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
       <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
     </div>
   </footer>

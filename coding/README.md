@@ -6,7 +6,7 @@
 
 自己能跑的成品 AI 编程工具，共用八维（模型接入 / 运行位置 / 本地文件 / 关机后任务 / 工具扩展 / 上下文 / 权限 / 适合场景）。按形态分三列——IDE 形态、CLI 形态、厂商云形态。前两者是同一产品的不同装法、不是竞争关系；厂商云形态则是另一个方向：不需要自己装，工作在别人的机器上做。
 
-本站共 10 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `automation` / `framework` / `mcp` / `runner`），本 README 描述「AI 编程」这一个。
+本站共 11 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `automation` / `framework` / `mcp` / `runner` / `safety`），本 README 描述「AI 编程」这一个。
 
 ## 这个大类提供什么
 
@@ -92,6 +92,7 @@
 | [框架与运行时](/framework/) | 运行时、编排框架、SDK | 30 |
 | [MCP 工具](/mcp/) | 缺什么，装什么 —— 给 agent 装的 MCP 工具 | 32 |
 | [本地模型运行器](/runner/) | 在自己机器上跑开源模型 | 21 |
+| [AI 安全与评测](/safety/) | 拦得住、测得出、追得回 | 25 |
 
 ---
 
