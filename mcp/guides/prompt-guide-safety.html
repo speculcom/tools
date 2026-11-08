@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Boundaries of prompt safety — 深水指南 | 投机取巧</title>
+  <meta name="description" content="提示词安全的边界：注入攻击钻的是数据与指令的模糊边界：分隔、护栏、最小权限各挡一层，也各有代价与失效方式。" />
+  <link rel="canonical" href="https://tools.specul.com/mcp/guides/prompt-guide-safety.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Boundaries of prompt safety" />
+  <meta property="og:url" content="https://tools.specul.com/mcp/guides/prompt-guide-safety.html" />
+  <meta property="og:title" content="Boundaries of prompt safety — 深水指南 | 投机取巧" />
+  <meta property="og:description" content="提示词安全的边界：注入攻击钻的是数据与指令的模糊边界：分隔、护栏、最小权限各挡一层，也各有代价与失效方式。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../../brand.js?v=5e907aab579b"></script>
+  <link rel="stylesheet" href="../../brand.css?v=5e907aab579b" />
+  <link rel="stylesheet" href="../../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Boundaries of prompt safety","description":"Injection attacks exploit the blurred boundary between data and instructions — separation, guardrails, and least privilege each block a layer, each with costs and failure modes.","dateModified":"2026-11-07"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+        <a href="https://demos.specul.com/"><span data-zh>作品库</span><span data-en>Demos</span></a>
+        <a href="https://hardware.specul.com/"><span data-zh>AI 硬件</span><span data-en>AI Hardware</span></a>
+        <a href="https://papers.specul.com/"><span data-zh>论文</span><span data-en>Papers</span></a>
+        <a href="https://chain.specul.com/"><span data-zh>链 × AI</span><span data-en>Chain × AI</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>AI 工具</span><span data-en>AI Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>AI 模型</span><span data-en>AI Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://demos.specul.com/"><span><span data-zh>作品库</span><span data-en>Demos</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://hardware.specul.com/"><span><span data-zh>AI 硬件</span><span data-en>AI Hardware</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://papers.specul.com/"><span><span data-zh>论文</span><span data-en>Papers</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://chain.specul.com/"><span><span data-zh>链 × AI</span><span data-en>Chain × AI</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">→</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>9 个站，各管一件事</span><span data-en>Nine sites, one job each</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
+      <div class="detail-head">
+        <div>
+          <h1><span data-zh>提示词安全的边界</span><span data-en>Boundaries of prompt safety</span></h1>
+          <div class="vendor is-caps"><span data-zh>提示词与工作流</span><span data-en>Prompts & workflows</span> · <span data-zh>提示词指南</span><span data-en>Prompt guide</span></div>
+        </div>
+      </div>
+      <div class="panel-lead"><span data-zh><p>注入攻击钻的是数据与指令的模糊边界：分隔、护栏、最小权限各挡一层，也各有代价与失效方式。</p></span><span data-en><p>Injection attacks exploit the blurred boundary between data and instructions — separation, guardrails, and least privilege each block a layer, each with costs and failure modes.</p></span></div>
+      <div class="panel is-slim">
+        <p><span data-zh>提示词效果未实测。</span><span data-en>Prompt effect has not been tested.</span></p>
+        <p class="t-xs"><span data-zh>提示词是可复跑的模板，不是效果承诺。换模型、换版本、换输入都可能改变结果；用本页的检查点自己核对，并把官方出处当作机制依据而不是效果保证。</span><span data-en>A prompt is a re-runnable template, not a promise of results. Changing the model, version or input can change the outcome. Use the checkpoints on this page to verify it yourself, and treat the official sources as evidence of mechanism rather than a guarantee of effect.</span></p>
+      </div>
+
+
+
+      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></a></li><li><a href="#guide-section-1"><span data-zh>注入：数据里藏着指令</span><span data-en>Injection: instructions hidden in data</span></a></li><li><a href="#guide-section-2"><span data-zh>提示词层：分开数据与指令</span><span data-en>Prompt level: separate data from instructions</span></a></li><li><a href="#guide-section-3"><span data-zh>护栏：输入与输出</span><span data-en>Guardrails: input and output</span></a></li><li><a href="#guide-section-4"><span data-zh>护栏的局限</span><span data-en>Limits of guardrails</span></a></li><li><a href="#guide-section-5"><span data-zh>协议层：最小权限与同意</span><span data-en>Protocol level: least privilege and consent</span></a></li><li><a href="#guide-section-6"><span data-zh>失败模式</span><span data-en>Failure modes</span></a></li><li><a href="#guide-section-7"><span data-zh>出处</span><span data-en>Sources</span></a></li></ul></nav>
+      <div class="panel is-slim" id="guide-section-0">
+        <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
+        <span data-zh><p><strong>提示词安全的核心问题：模型分不清指令和数据。</strong> 论文的一句话概括：LLM 集成应用 &quot;blur the line between data and instructions&quot;。 攻击者把指令藏进数据，模型就可能照办。 防御分三层：提示词层分隔、应用层护栏、协议层最小权限。 效果未实测；以下机制均出自官方文档、规范与论文。</p></span><span data-en><p><strong>The core problem of prompt safety: the model cannot tell instructions from data.</strong> The paper&#39;s one-line summary: LLM-integrated applications &quot;blur the line between data and instructions&quot;. An attacker hides instructions inside data, and the model may simply comply. Defense comes in three layers: prompt-level separation, application-level guardrails, protocol-level least privilege. We have not run hands-on tests; the mechanisms below come from official docs, specs, and papers.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-1">
+        <h2><span data-zh>注入：数据里藏着指令</span><span data-en>Injection: instructions hidden in data</span></h2>
+        <span data-zh><p>间接提示注入的攻击路径（论文定义）： 攻击者不直接接触模型，而是把提示词埋进可能被检索的数据里—— 网页、文档、邮件，等应用自己取回来喂给模型。 论文演示的后果包括数据窃取、蠕虫式传播、污染信息生态； 处理被检索的提示词，效果可类比任意代码执行： 操纵应用行为，决定其他 API 调不调、怎么调。 论文发表时的判断：有效的缓解手段仍然缺乏。</p></span><span data-en><p>The indirect prompt injection attack path (as defined by the paper): the attacker never touches the model directly — prompts are planted into data likely to be retrieved: web pages, documents, emails, waiting for the application to fetch them and feed them to the model. Demonstrated impacts include data theft, worming, and contamination of the information ecosystem; processing retrieved prompts can act like arbitrary code execution: manipulating application behavior and deciding whether and how other APIs get called. The paper&#39;s judgment at publication: effective mitigations were still lacking.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-2">
+        <h2><span data-zh>提示词层：分开数据与指令</span><span data-en>Prompt level: separate data from instructions</span></h2>
+        <span data-zh><p>Anthropic 官方教程的做法：提示词模板加变量替换， 变量内容用 XML 标签包起来，让模型知道数据从哪开始、到哪结束。 教程的反例：不包标签时，用户输入里的「Yo Claude」被当成任务的一部分。 分隔让注入文本更难越过数据的边界。</p>
+            <p>两个清醒剂： 官方说 Claude 被训练识别 XML 标签，但没有必用的「魔法标签」； 分隔是缓解，不是保证——论文指出的攻击面并没有因此消失。</p></span><span data-en><p>Anthropic&#39;s official tutorial approach: prompt templates with variable substitution, wrapping variable content in XML tags so the model knows where data begins and ends. The tutorial&#39;s counterexample: without tags, &quot;Yo Claude&quot; inside user input gets treated as part of the task. Separation makes it harder for injected text to cross the data boundary.</p>
+            <p>Two sobering notes: the official docs say Claude is trained to recognize XML tags, but there are no mandatory &quot;magic tags&quot;; separation is mitigation, not a guarantee — the attack surface the paper identifies does not disappear.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-3">
+        <h2><span data-zh>护栏：输入与输出</span><span data-en>Guardrails: input and output</span></h2>
+        <span data-zh><p>OpenAI 教程把护栏定义为检测性控制，分两侧： 输入侧在内容进模型前拦截——离题、越狱、提示注入； 输出侧在结果给用户前校验——幻觉、违规内容、语法损坏。 护栏可与主调用并行跑，触发才拦截，压低延迟。</p>
+            <p>阈值是取舍，不是玄学：官方建议建评测集、用混淆矩阵定容忍度。 误报多，正常请求被拒，体验碎裂； 漏报多，危险内容放行，业务承担后果。 不同场景容忍度不同：越狱风险高的场景阈值要更严。</p></span><span data-en><p>OpenAI&#39;s cookbook defines guardrails as detective controls on two sides: input side intercepts content before it reaches the model — off-topic queries, jailbreaks, prompt injection; output side validates results before they reach the user — hallucinations, policy violations, broken syntax. Guardrails can run in parallel with the main call, intercepting only when triggered, keeping latency down.</p>
+            <p>Thresholds are a trade-off, not mysticism: the official advice is to build an eval set and set tolerance with a confusion matrix. More false positives fracture the experience as legitimate requests get rejected; more false negatives let dangerous content through, and the business bears the consequences. Tolerance varies by scenario: high jailbreak risk calls for stricter thresholds.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-4">
+        <h2><span data-zh>护栏的局限</span><span data-en>Limits of guardrails</span></h2>
+        <span data-zh><p>官方教程列了三条，条条要紧： 用 LLM 当护栏，它和主调用有同样的漏洞——一次注入可能同时骗过两者； 对话越长，指令被稀释，越狱越容易； 护栏过严会过度拒绝，把正常请求误判成攻击。</p>
+            <p>官方给的缓解：与规则式检测或传统模型组合； 有的护栏只看最新一条消息，避免长对话干扰； 灰度上线并监控，把新攻击样本回灌进护栏。</p></span><span data-en><p>The official cookbook lists three limits, each one critical: an LLM guardrail shares the base call&#39;s vulnerabilities — one injection can evade both at once; the longer the conversation, the more instructions get diluted, and the easier jailbreaking becomes; overly strict guardrails over-refuse, misclassifying normal requests as attacks.</p>
+            <p>Official mitigations: combine with rule-based detection or traditional models; some guardrails consider only the latest message to avoid long-conversation confusion; roll out gradually with monitoring, feeding new attack samples back into the guardrails.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-5">
+        <h2><span data-zh>协议层：最小权限与同意</span><span data-en>Protocol level: least privilege and consent</span></h2>
+        <span data-zh><p>提示词挡不住的，协议层接着挡。MCP 安全规范的要求： 权限最小化——起步只给低风险的基础权限集， 特权操作首次触发时再增量提权，避免通配符与一揽子权限。 宽权限的代价规范写得很全：令牌泄露波及面大、撤销牵动全部流程、审计看不清意图。</p>
+            <p>代理服务器必须逐客户端取得用户同意，防 confused deputy 攻击； token passthrough（把客户端令牌原样转给下游）被明确列为禁止的反模式。 工具侧的权限设计，决定了注入成功后攻击者能走多远。</p></span><span data-en><p>What prompts cannot stop, the protocol layer catches. The MCP security spec requires: scope minimization — start with a minimal set of low-risk baseline scopes, elevate incrementally when a privileged operation is first attempted, and avoid wildcard or omnibus scopes. The spec spells out the cost of broad scopes: a leaked token has a large blast radius, revocation disrupts every workflow, and audit trails obscure intent.</p>
+            <p>Proxy servers must obtain per-client user consent to prevent confused-deputy attacks; token passthrough (forwarding the client&#39;s token as-is to downstream APIs) is an explicitly forbidden anti-pattern. Tool-side permission design decides how far an attacker gets after a successful injection.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-6">
+        <h2><span data-zh>失败模式</span><span data-en>Failure modes</span></h2>
+        <span data-zh><ol><li value="1">信任检索内容：把取回来的网页、文档当成可信指令源，注入直接进上下文。</li><li value="2">单层幻觉：以为一道护栏就够，忘了护栏与主调用共享漏洞。</li><li value="3">过度拒绝：为防注入把护栏调得太严，正常请求大面积被拒。</li><li value="4">权限一次给满：泄露一个令牌等于交出全部能力，撤销还要重新同意一遍。</li><li value="5">长对话麻痹：轮次越多指令越稀释，监控要跟着轮次走。</li></ol>
+            <p>三层防御的共同逻辑：承认模型会受骗，把损失控制在每一层的边界内。</p></span><span data-en><ol><li value="1">Trusting retrieved content: treating fetched pages and documents as trusted instruction sources puts injection straight into context.</li><li value="2">Single-layer illusion: assuming one guardrail is enough, forgetting it shares vulnerabilities with the main call.</li><li value="3">Over-refusal: tightening guardrails against injection until normal requests are rejected at scale.</li><li value="4">Granting everything up front: one leaked token hands over every capability, and revocation forces re-consent across the board.</li><li value="5">Long-conversation complacency: more turns dilute instructions further — monitoring must keep pace.</li></ol>
+            <p>The shared logic of all three layers: accept that the model can be fooled, and contain the damage within each layer&#39;s boundary.</p></span>
+      </div>
+      <div class="panel is-slim" id="guide-section-7">
+        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
+        <span data-zh><ul><li><a href="https://raw.githubusercontent.com/openai/openai-cookbook/main/examples/How_to_use_guardrails.ipynb" target="_blank" rel="noopener">OpenAI Cookbook · How to use guardrails</a></li><li><a href="https://raw.githubusercontent.com/anthropics/courses/master/prompt_engineering_interactive_tutorial/Anthropic%201P/04_Separating_Data_and_Instructions.ipynb" target="_blank" rel="noopener">Anthropic 官方教程 · Separating Data and Instructions</a></li><li><a href="https://arxiv.org/abs/2302.12173" target="_blank" rel="noopener">Indirect Prompt Injection（arXiv 2302.12173）</a></li><li><a href="https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices" target="_blank" rel="noopener">MCP 规范 · Security Best Practices</a></li></ul>
+            <p>核验日 2026-11-07，四条均直抓成功。 OpenAI 与 Anthropic 的文档主站本次网络不可达，官方内容取自两家官方仓库的 raw 文件。</p></span><span data-en><ul><li><a href="https://raw.githubusercontent.com/openai/openai-cookbook/main/examples/How_to_use_guardrails.ipynb" target="_blank" rel="noopener">OpenAI Cookbook · How to use guardrails</a></li><li><a href="https://raw.githubusercontent.com/anthropics/courses/master/prompt_engineering_interactive_tutorial/Anthropic%201P/04_Separating_Data_and_Instructions.ipynb" target="_blank" rel="noopener">Anthropic official tutorial · Separating Data and Instructions</a></li><li><a href="https://arxiv.org/abs/2302.12173" target="_blank" rel="noopener">Indirect Prompt Injection (arXiv 2302.12173)</a></li><li><a href="https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices" target="_blank" rel="noopener">MCP specification · Security Best Practices</a></li></ul>
+            <p>Verified 2026-11-07; all four fetched directly with HTTP 200. The OpenAI and Anthropic doc sites were unreachable from this network; official content was taken from raw files in both vendors&#39; official repositories.</p></span>
+      </div>
+<nav class="panel is-slim" aria-label="接下来做什么" data-ui-aria-label-zh="接下来做什么" data-ui-aria-label-en="What to do next">
+<h2><span data-zh>接下来做什么</span><span data-en>What to do next</span></h2><ul>
+<li><a href="toolkit-worksheets.html"><span data-zh>记录约束、验收与未确认项</span><span data-en>Record constraints, acceptance and unknowns</span></a></li>
+<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh>核对结果与来源</span><span data-en>Verify the result and its sources</span></a></li>
+<li><a href="failure-library.html#by-symptom"><span data-zh>按症状排查失败</span><span data-en>Troubleshoot by symptom</span></a></li>
+</ul></nav>
+      <div class="panel is-slim">
+        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
+        <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
+          <tr><td><span data-zh>OpenAI Cookbook · How to use guardrails（官方仓库 raw 文件，2026-11-07 直抓 200）</span><span data-en>OpenAI Cookbook · How to use guardrails (official repo raw file, direct fetch 200 on 2026-11-07)</span></td><td><a href="https://raw.githubusercontent.com/openai/openai-cookbook/main/examples/How_to_use_guardrails.ipynb" target="_blank" rel="noopener"><span data-zh>https://raw.githubusercontent.com/openai/openai-cookbook/main/examples/How_to_use_guardrails.ipynb</span><span data-en>https://raw.githubusercontent.com/openai/openai-cookbook/main/examples/How_to_use_guardrails.ipynb</span></a></td></tr>
+          <tr><td><span data-zh>Anthropic 官方教程 · Separating Data and Instructions（官方仓库 raw 文件，2026-11-07 直抓 200）</span><span data-en>Anthropic official tutorial · Separating Data and Instructions (official repo raw file, direct fetch 200 on 2026-11-07)</span></td><td><a href="https://raw.githubusercontent.com/anthropics/courses/master/prompt_engineering_interactive_tutorial/Anthropic%201P/04_Separating_Data_and_Instructions.ipynb" target="_blank" rel="noopener"><span data-zh>https://raw.githubusercontent.com/anthropics/courses/master/prompt_engineering_interactive_tutorial/Anthropic%201P/04_Separating_Data_and_Instructions.ipynb</span><span data-en>https://raw.githubusercontent.com/anthropics/courses/master/prompt_engineering_interactive_tutorial/Anthropic%201P/04_Separating_Data_and_Instructions.ipynb</span></a></td></tr>
+          <tr><td><span data-zh>Indirect Prompt Injection 论文（arXiv 2302.12173，2026-11-07 直抓摘要页）</span><span data-en>Indirect Prompt Injection paper (arXiv 2302.12173, abstract page direct-fetched 2026-11-07)</span></td><td><a href="https://arxiv.org/abs/2302.12173" target="_blank" rel="noopener"><span data-zh>https://arxiv.org/abs/2302.12173</span><span data-en>https://arxiv.org/abs/2302.12173</span></a></td></tr>
+          <tr><td><span data-zh>MCP 规范 · Security Best Practices（2026-11-07 直抓 200）</span><span data-en>MCP specification · Security Best Practices (direct fetch 200 on 2026-11-07)</span></td><td><a href="https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices" target="_blank" rel="noopener"><span data-zh>https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices</span><span data-en>https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices</span></a></td></tr>
+        </tbody></table></div>
+        <p class="guide-foot"><span data-zh>资料快照日期：2026-11-07；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Source snapshot: 2026-11-07; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>AI 模型</span><span data-en>AI Models</span></a>
+          <a href="https://demos.specul.com/"><span data-zh>作品库</span><span data-en>Demos</span></a>
+          <a href="https://hardware.specul.com/"><span data-zh>AI 硬件</span><span data-en>AI Hardware</span></a>
+          <a href="https://papers.specul.com/"><span data-zh>论文</span><span data-en>Papers</span></a>
+          <a href="https://chain.specul.com/"><span data-zh>链 × AI</span><span data-en>Chain × AI</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索全站内容</span><span data-en>Search all sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar" aria-label="快捷导航">
+  <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+  <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学 AI</span><span data-en>Learn</span></a>
+  <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+  <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+  <button type="button" id="tabMore" aria-controls="navDrawer" aria-expanded="false"><span class="ti" aria-hidden="true">⋯</span><span data-zh>更多</span><span data-en>More</span></button>
+</nav>
+</body>
+</html>
