@@ -10,7 +10,7 @@
 
 ## 这个大类提供什么
 
-- **23 个对象**，按固定 8 个维度记录
+- **24 个对象**，按固定 8 个维度记录
 - 每个维度都能回溯到官方一手源，附来源类型与核验日期
 - **不给总分排名**——缺少跨工具的统一实测，排名会误导
 - **「未知」是合法答案**——查不到就写未知并说明原因，不用推测填充
@@ -37,6 +37,7 @@
 | [n8n](./n8n.html) | 网页服务 | n8n GmbH | partial | 2026-10-30 |
 | [Google Opal](./opal.html) | 网页服务 | Google Labs | partial | 2026-11-04 |
 | [Pipedream（Connect / Workflows）](./pipedream.html) | 网页服务 | Pipedream | partial | 2026-10-30 |
+| [Microsoft Power Automate](./power-automate.html) | 网页服务 | Microsoft | partial | 2026-11-17 |
 | [Relevance AI](./relevance-ai.html) | 网页服务 | Relevance AI（悉尼） | partial | 2026-10-30 |
 | [SmythOS](./smythos.html) | 网页服务 | SmythOS | partial | 2026-10-30 |
 | [Vertex AI Agent Builder（Gemini Enterprise 平台线）](./vertex-agent-builder.html) | 网页服务 | Google | partial | 2026-10-30 |
@@ -51,7 +52,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 23 个对象中，**0 个为 verified**。
+当前 24 个对象中，**0 个为 verified**。
 
 ## 数据来源
 
@@ -65,12 +66,12 @@
 | 大类 | 主题 | 对象数 |
 |---|---|---|
 | [AI 编程](/coding/) | 装在编辑器、终端，或厂商云里 | 41 |
-| [AI 对话助手](/chat/) | 通用对话产品，含国产 | 21 |
+| [AI 对话助手](/chat/) | 通用对话产品，含国产 | 23 |
 | [AI 图像创作](/image/) | 文生图与图像工作台 | 15 |
 | [AI 视频创作](/video/) | 文生视频与数字人 | 14 |
 | [AI 音频与语音](/audio/) | 音乐生成、语音合成与转写 | 17 |
 | [AI 搜索与研究](/research/) | AI 搜索、学术检索与研究工作台 | 11 |
-| [AI 自动化与工作流](/automation/) | 可视化搭 AI 工作流与 agent | 23 |
+| [AI 自动化与工作流](/automation/) | 可视化搭 AI 工作流与 agent | 24 |
 | [框架与运行时](/framework/) | 运行时、编排框架、SDK、机器人软件栈 | 42 |
 | [MCP 工具](/mcp/) | 缺什么，装什么 —— 给 agent 装的 MCP 工具 | 32 |
 | [本地模型运行器](/runner/) | 在自己机器上跑开源模型 | 21 |
