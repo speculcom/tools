@@ -6,7 +6,7 @@
 
 图像生成产品：文生图、编辑工作台、聚合模型入口。八维按消费级读法；permissions 维必答产物商用授权与训练用途——「能生成」≠「能商用」。
 
-本站共 11 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `automation` / `framework` / `mcp` / `runner` / `safety`），本 README 描述「AI 图像创作」这一个。
+本站共 12 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `office` / `automation` / `framework` / `mcp` / `runner` / `safety`），本 README 描述「AI 图像创作」这一个。
 
 ## 这个大类提供什么
 
@@ -62,6 +62,7 @@
 | [AI 视频创作](/video/) | 文生视频与数字人 | 14 |
 | [AI 音频与语音](/audio/) | 音乐生成、语音合成与转写 | 17 |
 | [AI 搜索与研究](/research/) | AI 搜索、学术检索与研究工作台 | 11 |
+| [办公与写作](/office/) | 文档、表格、演示、会议、翻译与邮件 | 15 |
 | [AI 自动化与工作流](/automation/) | 可视化搭 AI 工作流与 agent | 24 |
 | [框架与运行时](/framework/) | 运行时、编排框架、SDK、机器人软件栈 | 42 |
 | [MCP 工具](/mcp/) | 缺什么，装什么 —— 给 agent 装的 MCP 工具 | 32 |

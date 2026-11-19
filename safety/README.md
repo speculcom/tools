@@ -6,7 +6,7 @@
 
 给 AI 系统做约束、度量与追责的产品：护栏与内容过滤、评测与观测、红队与审计、机密计算与访问控制、数据合规与脱敏、内容溯源与标识。本大类只收四条形态（网页 / 云服务 / 本机应用 / CLI）。安全与护栏的模型本体不收（「模型不是产品」）；六条线在不同层，按你的约束挑一个就好。
 
-本站共 11 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `automation` / `framework` / `mcp` / `runner` / `safety`），本 README 描述「AI 安全与评测」这一个。
+本站共 12 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `office` / `automation` / `framework` / `mcp` / `runner` / `safety`），本 README 描述「AI 安全与评测」这一个。
 
 ## 这个大类提供什么
 
@@ -72,6 +72,7 @@
 | [AI 视频创作](/video/) | 文生视频与数字人 | 14 |
 | [AI 音频与语音](/audio/) | 音乐生成、语音合成与转写 | 17 |
 | [AI 搜索与研究](/research/) | AI 搜索、学术检索与研究工作台 | 11 |
+| [办公与写作](/office/) | 文档、表格、演示、会议、翻译与邮件 | 15 |
 | [AI 自动化与工作流](/automation/) | 可视化搭 AI 工作流与 agent | 24 |
 | [框架与运行时](/framework/) | 运行时、编排框架、SDK、机器人软件栈 | 42 |
 | [MCP 工具](/mcp/) | 缺什么，装什么 —— 给 agent 装的 MCP 工具 | 32 |

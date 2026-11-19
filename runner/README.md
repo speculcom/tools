@@ -6,7 +6,7 @@
 
 本地模型运行器：把开源权重模型跑在自己的机器上——Ollama / LM Studio / llama.cpp / vLLM 这类。档案的 model_access / runtime 维写「格式 × 量化档」口径，具体量化数据在 models 站，两边互链不重复。
 
-本站共 11 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `automation` / `framework` / `mcp` / `runner` / `safety`），本 README 描述「本地模型运行器」这一个。
+本站共 12 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `office` / `automation` / `framework` / `mcp` / `runner` / `safety`），本 README 描述「本地模型运行器」这一个。
 
 ## 这个大类提供什么
 
@@ -68,6 +68,7 @@
 | [AI 视频创作](/video/) | 文生视频与数字人 | 14 |
 | [AI 音频与语音](/audio/) | 音乐生成、语音合成与转写 | 17 |
 | [AI 搜索与研究](/research/) | AI 搜索、学术检索与研究工作台 | 11 |
+| [办公与写作](/office/) | 文档、表格、演示、会议、翻译与邮件 | 15 |
 | [AI 自动化与工作流](/automation/) | 可视化搭 AI 工作流与 agent | 24 |
 | [框架与运行时](/framework/) | 运行时、编排框架、SDK、机器人软件栈 | 42 |
 | [MCP 工具](/mcp/) | 缺什么，装什么 —— 给 agent 装的 MCP 工具 | 32 |

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>飞书智能伙伴 — Office | 投机取巧</title>
+  <meta name="description" content="飞书智能伙伴（飞书）：飞书智能伙伴 是面向办公与写作场景的 AI 产品，核心是把文档、会议、消息这类任务放进现有工作流；它不替代最终审校与责任判断。" />
+  <link rel="canonical" href="https://tools.specul.com/office/feishu-ai.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="飞书智能伙伴" />
+  <meta property="og:url" content="https://tools.specul.com/office/feishu-ai.html" />
+  <meta property="og:title" content="飞书智能伙伴 — Office | 投机取巧" />
+  <meta property="og:description" content="飞书智能伙伴（飞书）：飞书智能伙伴 是面向办公与写作场景的 AI 产品，核心是把文档、会议、消息这类任务放进现有工作流；它不替代最终审校与责任判断。" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=11bc9d7dba82"></script>
+  <link rel="stylesheet" href="../brand.css?v=11bc9d7dba82" />
+  <link rel="stylesheet" href="../site.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"飞书智能伙伴","applicationCategory":"DeveloperApplication","sameAs":"https://www.feishu.cn/product/ai","description":"飞书智能伙伴 是面向办公与写作场景的 AI 产品，核心是把文档、会议、消息这类任务放进现有工作流；它不替代最终审校与责任判断。","dateModified":"2026-11-19"}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>工具</span><span data-en>Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a>
+        <a href="https://demos.specul.com/"><span data-zh>作品演示</span><span data-en>Playground</span></a>
+        <a href="https://oss.specul.com/"><span data-zh>开源库</span><span data-en>OSS</span></a>
+        <a href="https://hardware.specul.com/" class="nav-group-start"><span data-zh>硬件算力</span><span data-en>Compute</span></a>
+        <a href="https://papers.specul.com/"><span data-zh>AI 论文</span><span data-en>AI Papers</span></a>
+        <a href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a>
+        <a href="https://nav.specul.com/" class="nav-group-start" data-nav-group="external"><span data-zh>AI导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>工具</span><span data-en>Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>模型</span><span data-en>Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://demos.specul.com/"><span><span data-zh>作品演示</span><span data-en>Playground</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://oss.specul.com/"><span><span data-zh>开源库</span><span data-en>OSS</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://hardware.specul.com/" class="nav-group-start"><span><span data-zh>硬件算力</span><span data-en>Compute</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://papers.specul.com/"><span><span data-zh>AI 论文</span><span data-en>AI Papers</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://chain.specul.com/"><span><span data-zh>链</span><span data-en>Chain</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/" class="nav-group-start" data-nav-group="external"><span><span data-zh>AI导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">↗</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>内容站覆盖学、用、选、跑；AI导航是站外的 AI 网站目录，点出去看。</span><span data-en>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+    <div class="container detail">
+      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
+        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
+        <span aria-current="page">Office</span>
+      </nav>
+      <a class="back" href="./">← Office</a>
+
+      <div class="detail-head">
+        <div class="mark" style="--card-accent:#e0a33a" aria-hidden="true"><span data-zh>飞书</span><span data-en>FE</span></div>
+        <div>
+          <h1><span data-zh>飞书智能伙伴</span><span data-en>Feishu AI</span></h1>
+          <div class="vendor is-caps">飞书</div>
+        </div>
+      </div>
+
+      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
+      <div class="badges">
+        <span class="tag on"><span data-zh>文档</span><span data-en>文档</span></span>
+        <span class="tag on"><span data-zh>会议</span><span data-en>会议</span></span>
+        <span class="tag on"><span data-zh>消息</span><span data-en>Messaging</span></span>
+        <span class="tag on"><span data-zh>企业</span><span data-en>Enterprise</span></span>
+        <span class="tag on"><span data-zh>国产</span><span data-en>China-origin</span></span>
+        <span class="badge accent"><span data-zh>资料不全</span><span data-en>Partly missing</span></span>
+        <span class="badge"><span data-zh>状态：活跃</span><span data-en>Status: active</span></span>
+        <span class="badge"><span data-zh>资料时间</span><span data-en>Info dated</span> 2026-11-19</span>
+      </div>
+
+      <p class="t-sm"><span data-zh>带「资料不全」的字段，说明官网没写清或链接失效；买前最好问厂商，或翻一眼它的更新日志。</span><span data-en>A “partly missing” field means the official docs were unclear or a link was dead; ask the vendor or check its changelog before buying.</span></p>
+            <div class="panel is-slim">
+        <h2 id="known-unknowns"><span data-zh>未确认的信息</span><span data-en>Information not confirmed</span></h2>
+        
+        <ul>
+          <li>具体模型、档位差异、额度和地区可用范围</li>
+          <li>企业版的数据驻留、保留周期与管理员开关细节</li>
+          <li>生成质量、长文档处理和并发限制（未运行验证）</li>
+          <li>具体价格与合同条款（本站不采价格数字）</li>
+        </ul>
+      </div>
+
+
+            <p class="t-xs" data-en>English summaries and interface labels are available. Detailed source notes below are currently in Chinese.</p>
+      <div class="panel-lead"><span data-zh><p>飞书智能伙伴 是面向办公与写作场景的 AI 产品，核心是把文档、会议、消息这类任务放进现有工作流；它不替代最终审校与责任判断。</p></span><span data-en><p>飞书智能伙伴 是面向办公与写作场景的 AI 产品，核心是把文档、会议、消息这类任务放进现有工作流；它不替代最终审校与责任判断。</p></span></div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
+        <div><p>适合：适合已经用飞书办公的团队做会议纪要、文档协作和消息总结；不适合跨企业、跨平台的统一检索。</p></div>
+        <div class="warn-p"><p>不适合：需要完全离线、跨组织统一检索、或把生成结果直接作为法律/财务定稿的场景；这些要另配本地工具或专业审阅流程。</p></div>
+      </div>
+
+            <div class="panel">
+        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-11-19</span></h2>
+        <dl class="cn-rows">
+          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国产</span><span data-en>domestic</span>　<span data-zh>飞书（字节跳动，中国）。</span><span data-en>Feishu (ByteDance, China).</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>直连未核验</span><span data-en>direct unknown</span>　<span data-zh>本次未做中国大陆网络探测；是否直连以当地网络与官方入口为准。</span><span data-en>No mainland-China network probe was run; direct reachability depends on the local network and the official entry point.</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>备案未核验</span><span data-en>filing unknown</span>：<span data-zh>本次未检索备案名单，不据此判断备案义务。</span><span data-en>No filing registry search was run; this does not determine filing obligations.</span></dd>
+        </dl>
+        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+      </div>
+
+
+      <div class="block-head">
+        <h2 class="t-h2"><span data-zh>固定坐标系</span><span data-en>Fixed coordinate system</span></h2>
+        <p class="t-section-lead">8 <span data-zh>个维度</span><span data-en>dimensions</span>, <span data-zh>与同分区其他对象逐项可比</span><span data-en>each comparable item by item against others in the same section</span>.</p>
+      </div>
+      <dl class="axes">
+        <div class="axis" id="dimension-model_access">
+          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
+          <dd><p>由飞书智能伙伴的生成式能力驱动，具体模型与可用功能随租户版本、地区和管理员设置变化。</p></dd>
+        </div>
+        <div class="axis" id="dimension-runtime">
+          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
+          <dd><p>运行在飞书云端，入口在飞书消息、文档、会议、日历和知识库；本机只负责客户端交互。</p></dd>
+        </div>
+        <div class="axis" id="dimension-local_files">
+          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
+          <dd><p>可读取租户内有权访问的文档、消息、会议与日历内容；本地文件需上传到飞书。</p></dd>
+        </div>
+        <div class="axis" id="dimension-background">
+          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
+          <dd><p>会议纪要、消息摘要和文档任务在对应场景触发；没有跨租户的通用后台代理。</p></dd>
+        </div>
+        <div class="axis" id="dimension-tools">
+          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
+          <dd><p>与飞书文档、表格、多维表格、会议、日历、审批和机器人集成，可通过开放平台扩展。</p></dd>
+        </div>
+        <div class="axis" id="dimension-context">
+          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
+          <dd><p>上下文来自租户内可访问内容与当前会话；跨部门检索受权限和知识库范围限制。</p></dd>
+        </div>
+        <div class="axis" id="dimension-permissions">
+          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
+          <dd><p>企业租户由管理员控制功能、数据范围与日志；商业使用与数据驻留按飞书合同核对。</p></dd>
+        </div>
+        <div class="axis" id="dimension-fit">
+          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
+          <dd><p>适合已经用飞书办公的团队做会议纪要、文档协作和消息总结；不适合跨企业、跨平台的统一检索。</p></dd>
+        </div>
+      </dl>
+
+            <div class="panel is-slim" id="license">
+        <h2><span data-zh>许可与使用条款</span><span data-en>Licence and terms of use</span></h2>
+        <p><span data-zh>官方产品页与条款页为准；本条目只记录能力与边界，不复制价格数字或完整合同。</span><span data-en>See the official product and terms pages; this entry records capabilities and boundaries only, not price figures or the full contract.</span></p>
+      </div>
+
+
+      <nav class="panel is-slim" aria-label="使用排查" data-ui-aria-label-zh="使用排查" data-ui-aria-label-en="Troubleshooting">
+        <h2><span data-zh>使用时遇到问题</span><span data-en>When something fails</span></h2>
+        <p><a href="../mcp/guides/failure-library.html#auth"><span data-zh>账号与权限</span><span data-en>Account and permissions</span></a> · <a href="../mcp/guides/failure-library.html#rate-limit"><span data-zh>限流与重试</span><span data-en>Rate limits and retries</span></a> · <a href="../mcp/guides/failure-library.html#files"><span data-zh>文件读取问题</span><span data-en>File-reading issues</span></a></p>
+      </nav>
+
+            <div class="panel warn">
+        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
+        <ul>
+
+          <li>以为智能伙伴能读整个租户的知识——仍受文档权限与知识库范围限制。</li>
+          <li>把会议纪要直接当决策记录——行动项和数字要回看原文。</li>
+          <li>忽略租户的数据驻留与管理员开关——企业合同优先于产品页。</li>
+        </ul>
+      </div>
+
+
+
+
+      <div class="panel">
+        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
+        <p class="t-sm"><span data-zh>资料时间</span><span data-en>Info dated</span> 2026-11-19，<span data-zh>内容更新日</span><span data-en>content updated on</span> 2026-11-19。<span data-zh>只说明这条资料的时间，不代表每个字段都在同一天重新查过。</span><span data-en>This is the date of the entry, not a claim that every field was rechecked that day.</span></p>
+        <table class="src">
+          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
+          <tbody>
+            <tr><td>official</td><td>飞书智能伙伴 · 官方产品页</td><td><a href="https://www.feishu.cn/product/ai" target="_blank" rel="noopener">https://www.feishu.cn/product/ai</a></td></tr>
+            <tr><td>changelog</td><td>飞书智能伙伴 · 官方更新 / 发布记录</td><td><a href="https://www.feishu.cn/hc/zh-CN/" target="_blank" rel="noopener">https://www.feishu.cn/hc/zh-CN/</a></td></tr>
+            <tr><td>docs</td><td>飞书智能伙伴 · 官方帮助 / 文档</td><td><a href="https://www.feishu.cn/hc/zh-CN/" target="_blank" rel="noopener">https://www.feishu.cn/hc/zh-CN/</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+            <div class="panel is-slim">
+        <h2><span data-zh>官方口径与未核到项</span><span data-en>Official record and unverified items</span></h2>
+        <p>2026-11-19 只核对官方产品页、帮助入口与条款入口，记录能力边界、数据路径和已知限制；没有登录账号、没有跑完整任务，也没有复核对价格数字与全部企业合同。页面中的功能名称以官方当前入口为准。</p>
+      </div>
+
+
+      
+
+            <div class="panel is-slim">
+        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
+        <ul class="rel-list">
+          <li><span class="rel-t"><a href="../office/products/dingtalk-ai.md"><span data-zh>dingtalk-ai</span><span data-en>DingTalk AI Assistant</span></a></span><span class="rel-n">相邻场景，按任务与权限边界对照。</span></li>
+          <li><span class="rel-t"><a href="../office/products/tencent-docs-ai.md"><span data-zh>tencent-docs-ai</span><span data-en>Tencent Docs AI</span></a></span><span class="rel-n">相邻场景，按任务与权限边界对照。</span></li>
+          <li><span class="rel-t"><a href="/chat/chatgpt.html"><span data-zh>chatgpt</span><span data-en>ChatGPT</span></a></span><span class="rel-n">相邻场景，按任务与权限边界对照。</span></li>
+        </ul>
+      </div>
+
+
+      <p class="fine mt-6">
+        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
+        <span data-zh>方法论与坐标系定义见仓库内</span><span data-en>For the methodology and coordinate definitions, see</span> <code>METHODOLOGY.md</code>.
+      </p>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>工具</span><span data-en>Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a>
+          <a href="https://demos.specul.com/"><span data-zh>作品演示</span><span data-en>Playground</span></a>
+          <a href="https://oss.specul.com/"><span data-zh>开源库</span><span data-en>OSS</span></a>
+          <a href="https://hardware.specul.com/"><span data-zh>硬件算力</span><span data-en>Compute</span></a>
+          <a href="https://papers.specul.com/"><span data-zh>AI 论文</span><span data-en>AI Papers</span></a>
+          <a href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索全站内容</span><span data-en>Search all sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar nav-tabbar-1row" aria-label="快捷导航">
+    <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+    <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学AI</span><span data-en>Learn</span></a>
+    <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+    <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+    <a href="https://demos.specul.com/"><span class="ti" aria-hidden="true">▷</span><span data-zh>演示</span><span data-en>Demos</span></a>
+    <a href="https://oss.specul.com/"><span class="ti" aria-hidden="true">▧</span><span data-zh>开源</span><span data-en>OSS</span></a>
+    <a href="https://hardware.specul.com/"><span class="ti" aria-hidden="true">▣</span><span data-zh>算力</span><span data-en>Chips</span></a>
+    <a href="https://papers.specul.com/"><span class="ti" aria-hidden="true">▥</span><span data-zh>论文</span><span data-en>Papers</span></a>
+    <a href="https://chain.specul.com/"><span class="ti" aria-hidden="true">◇</span><span data-zh>链</span><span data-en>Chain</span></a>
+    <a href="https://nav.specul.com/" data-nav-group="external"><span class="ti" aria-hidden="true">↗</span><span data-zh>导航</span><span data-en>Nav</span></a>
+</nav>
+</body>
+</html>
