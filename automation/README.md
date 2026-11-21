@@ -19,7 +19,7 @@
 
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
-| [Activepieces](./activepieces.html) | 网页服务 | Activepieces Inc. | partial | 2026-10-30 |
+| [Activepieces](./activepieces.html) | 网页服务 | Activepieces Inc. | verified | 2026-11-21 |
 | [Salesforce Agentforce](./agentforce.html) | 网页服务 | Salesforce | verified | 2026-10-30 |
 | [AutoGPT（现 Experts AI 团队平台）](./autogpt.html) | 网页服务 | AutoGPT（Determinist Ltd 运营） | verified | 2026-10-30 |
 | [Bedrock Agents / AgentCore](./bedrock-agents.html) | 网页服务 | AWS | verified | 2026-10-30 |
@@ -52,7 +52,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 24 个对象中，**21 个为 verified**。
+当前 24 个对象中，**22 个为 verified**。
 
 ## 数据来源
 

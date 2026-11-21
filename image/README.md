@@ -20,7 +20,7 @@
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
 | [Adobe Firefly](./adobe-firefly.html) | 网页服务 | Adobe | verified | 2026-10-22 |
-| [Clipdrop](./clipdrop.html) | 网页服务 | Jasper（原 InitML，2023 并入 Stability AI，2024-02 售予 Jasper） | partial | 2026-10-22 |
+| [Clipdrop](./clipdrop.html) | 网页服务 | Jasper（原 InitML，2023 并入 Stability AI，2024-02 售予 Jasper） | verified | 2026-11-21 |
 | [FLUX（Black Forest Labs）](./flux.html) | 厂商云形态 | Black Forest Labs | verified | 2026-10-30 |
 | [Ideogram](./ideogram.html) | 网页服务 | Ideogram | verified | 2026-10-22 |
 | [即梦](./jimeng.html) | 网页服务 | 字节跳动（剪映团队） | verified | 2026-11-19 |
@@ -43,7 +43,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 15 个对象中，**13 个为 verified**。
+当前 15 个对象中，**14 个为 verified**。
 
 ## 数据来源
 
