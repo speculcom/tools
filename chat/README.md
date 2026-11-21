@@ -27,7 +27,7 @@
 | [Gemini（对话应用）](./gemini-chat.html) | 网页服务 | Google | verified | 2026-11-19 |
 | [Grok](./grok-chat.html) | 网页服务 | xAI | partial | 2026-10-30 |
 | [海螺AI](./hailuo-chat.html) | 网页服务 | MiniMax（稀宇科技） | partial | 2026-10-30 |
-| [HuggingChat](./huggingchat.html) | 网页服务 | Hugging Face | partial | 2026-10-30 |
+| [HuggingChat](./huggingchat.html) | 网页服务 | Hugging Face | verified | 2026-10-30 |
 | [Kimi](./kimi-chat.html) | 网页服务 | 月之暗面 Moonshot AI | verified | 2026-11-19 |
 | [Le Chat](./le-chat.html) | 网页服务 | Mistral AI | partial | 2026-10-30 |
 | [LibreChat](./librechat.html) | 网页服务 | LibreChat AI | verified | 2026-11-17 |
@@ -51,7 +51,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 23 个对象中，**7 个为 verified**。
+当前 23 个对象中，**8 个为 verified**。
 
 ## 数据来源
 

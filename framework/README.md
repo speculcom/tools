@@ -29,38 +29,38 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 | [Drake](./drake.html) | 框架 / SDK | Robot Locomotion Group / MIT | partial | 2026-11-07 |
 | [DSPy](./dspy.html) | 框架 / SDK | Stanford NLP / Databricks | partial | 2026-10-30 |
 | [ElizaOS（Eliza）](./elizaos.html) | 框架 / SDK | ElizaOS 社区（Eliza Research） | partial | 2026-10-31 |
-| [Gazebo Sim](./gazebo.html) | 本机应用 | Open Robotics | partial | 2026-11-07 |
-| [Genesis](./genesis.html) | 框架 / SDK | Genesis Embodied AI | partial | 2026-11-07 |
+| [Gazebo Sim](./gazebo.html) | 本机应用 | Open Robotics | verified | 2026-11-07 |
+| [Genesis](./genesis.html) | 框架 / SDK | Genesis Embodied AI | verified | 2026-11-07 |
 | [Google ADK（Agent Development Kit）](./google-adk.html) | 框架 / SDK | Google | partial | 2026-10-23 |
 | [Haystack](./haystack.html) | 框架 / SDK | deepset | verified | 2026-10-30 |
 | [Hermes Agent](./hermes-agent.html) | 框架 / SDK | Nous Research | partial | 2026-10-23 |
-| [Isaac Lab](./isaac-lab.html) | 框架 / SDK | NVIDIA | partial | 2026-11-07 |
-| [Isaac Sim](./isaac-sim.html) | 本机应用 | NVIDIA | partial | 2026-11-07 |
+| [Isaac Lab](./isaac-lab.html) | 框架 / SDK | NVIDIA | verified | 2026-11-07 |
+| [Isaac Sim](./isaac-sim.html) | 本机应用 | NVIDIA | verified | 2026-11-07 |
 | [LangChain](./langchain.html) | 框架 / SDK | LangChain, Inc. | verified | 2026-10-30 |
 | [LangChain4j](./langchain4j.html) | 框架 / SDK | LangChain4j 社区 | verified | 2026-11-03 |
 | [LangGraph](./langgraph.html) | 框架 / SDK | LangChain Inc | partial | 2026-10-23 |
-| [LeRobot](./lerobot.html) | 框架 / SDK | Hugging Face | partial | 2026-11-07 |
+| [LeRobot](./lerobot.html) | 框架 / SDK | Hugging Face | verified | 2026-11-07 |
 | [Letta / MemGPT](./letta.html) | 框架 / SDK | Letta, Inc. | verified | 2026-10-30 |
 | [LlamaIndex Framework](./llamaindex.html) | 框架 / SDK | LlamaIndex（run-llama） | partial | 2026-10-23 |
 | [Mastra](./mastra.html) | 框架 / SDK | Mastra AI | partial | 2026-10-23 |
 | [MetaGPT](./metagpt.html) | 框架 / SDK | DeepWisdom（深度赋智，国产） | partial | 2026-10-31 |
 | [Microsoft Agent Framework](./microsoft-agent-framework.html) | 框架 / SDK | Microsoft | partial | 2026-10-23 |
-| [MoveIt 2](./moveit2.html) | 框架 / SDK | MoveIt | partial | 2026-11-07 |
-| [MuJoCo](./mujoco.html) | 框架 / SDK | Google DeepMind | partial | 2026-11-07 |
-| [Nav2](./nav2.html) | 框架 / SDK | ROS Navigation | partial | 2026-11-07 |
+| [MoveIt 2](./moveit2.html) | 框架 / SDK | MoveIt | verified | 2026-11-07 |
+| [MuJoCo](./mujoco.html) | 框架 / SDK | Google DeepMind | verified | 2026-11-07 |
+| [Nav2](./nav2.html) | 框架 / SDK | ROS Navigation | verified | 2026-11-07 |
 | [Open Interpreter](./open-interpreter.html) | 框架 / SDK | Open Interpreter（开源社区） | verified | 2026-10-31 |
 | [OpenAI Agents SDK](./openai-agents-sdk.html) | 框架 / SDK | OpenAI | partial | 2026-10-23 |
 | [OpenHands Agent Canvas](./openhands.html) | 框架 / SDK | OpenHands（All-Hands-AI） | partial | 2026-10-23 |
-| [PyBullet](./pybullet.html) | 框架 / SDK | Bullet Physics | partial | 2026-11-07 |
+| [PyBullet](./pybullet.html) | 框架 / SDK | Bullet Physics | verified | 2026-11-07 |
 | [Pydantic AI](./pydantic-ai.html) | 框架 / SDK | Pydantic | partial | 2026-10-23 |
-| [ROS 2](./ros2.html) | 框架 / SDK | Open Robotics | partial | 2026-11-07 |
+| [ROS 2](./ros2.html) | 框架 / SDK | Open Robotics | verified | 2026-11-07 |
 | [Semantic Kernel（SK）](./semantic-kernel.html) | 框架 / SDK | Microsoft | verified | 2026-10-31 |
 | [smolagents](./smolagents.html) | 框架 / SDK | Hugging Face | partial | 2026-10-23 |
 | [Spring AI](./spring-ai.html) | 框架 / SDK | Spring（VMware/Broadcom） | verified | 2026-11-03 |
 | [Strands Agents SDK](./strands-agents.html) | 框架 / SDK | AWS | verified | 2026-10-30 |
 | [SWE-agent](./swe-agent.html) | 框架 / SDK | Princeton / Stanford（学术团队） | verified | 2026-10-30 |
 | [Vercel AI SDK 7](./vercel-ai-sdk.html) | 框架 / SDK | Vercel | verified | 2026-11-03 |
-| [Webots](./webots.html) | 本机应用 | Cyberbotics | partial | 2026-11-07 |
+| [Webots](./webots.html) | 本机应用 | Cyberbotics | verified | 2026-11-07 |
 
 ## 可信度标记
 
@@ -70,7 +70,7 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 42 个对象中，**12 个为 verified**。
+当前 42 个对象中，**23 个为 verified**。
 
 ## 数据来源
 
