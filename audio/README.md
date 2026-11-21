@@ -30,7 +30,7 @@
 | [MiniMax Audio（海螺语音）](./minimax-audio.html) | 网页服务 | MiniMax（稀宇科技） | partial | 2026-10-22 |
 | [魔音工坊](./moyin.html) | 网页服务 | 出门问问 | partial | 2026-10-22 |
 | [Murf](./murf.html) | 网页服务 | Murf AI | partial | 2026-10-30 |
-| [Otter.ai](./otter.html) | 网页服务 | Otter.ai | partial | 2026-10-22 |
+| [Otter.ai](./otter.html) | 网页服务 | Otter.ai | verified | 2026-10-22 |
 | [Resemble AI](./resemble.html) | 网页服务 | Resemble AI | partial | 2026-10-30 |
 | [Soundraw](./soundraw.html) | 网页服务 | SOUNDRAW Inc. | partial | 2026-10-30 |
 | [Suno](./suno.html) | 网页服务 | Suno Inc. | verified | 2026-10-30 |
@@ -45,7 +45,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 17 个对象中，**5 个为 verified**。
+当前 17 个对象中，**6 个为 verified**。
 
 ## 数据来源
 
