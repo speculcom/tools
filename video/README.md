@@ -19,18 +19,18 @@
 
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
-| [D-ID](./d-id.html) | 网页服务 | D-ID | partial | 2026-10-22 |
+| [D-ID](./d-id.html) | 网页服务 | D-ID | verified | 2026-10-22 |
 | [Genmo](./genmo.html) | 网页服务 | Genmo | partial | 2026-10-30 |
 | [海螺视频](./hailuo-video.html) | 网页服务 | MiniMax（稀宇科技） | partial | 2026-10-22 |
 | [HeyGen](./heygen.html) | 网页服务 | HeyGen | partial | 2026-10-22 |
 | [Higgsfield](./higgsfield.html) | 网页服务 | Higgsfield AI | partial | 2026-10-22 |
 | [invideo AI](./invideo.html) | 网页服务 | invideo | partial | 2026-10-30 |
 | [可灵 Kling AI](./kling.html) | 网页服务 | Kling AI Pte. Ltd.（快手） | partial | 2026-10-30 |
-| [Luma（Dream Machine）](./luma.html) | 网页服务 | Luma AI | partial | 2026-10-22 |
+| [Luma（Dream Machine）](./luma.html) | 网页服务 | Luma AI | verified | 2026-10-22 |
 | [Pika](./pika.html) | 网页服务 | Pika Labs | partial | 2026-10-22 |
 | [PixVerse](./pixverse.html) | 网页服务 | 爱诗科技 | partial | 2026-10-22 |
 | [Runway](./runway.html) | 网页服务 | Runway AI, Inc. | verified | 2026-10-30 |
-| [Synthesia](./synthesia.html) | 网页服务 | Synthesia | partial | 2026-10-22 |
+| [Synthesia](./synthesia.html) | 网页服务 | Synthesia | verified | 2026-10-22 |
 | [Veo（Google）](./veo.html) | 厂商云形态 | Google | verified | 2026-10-30 |
 | [Vidu](./vidu.html) | 网页服务 | 生数科技（清华系） | partial | 2026-10-22 |
 
@@ -42,7 +42,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 14 个对象中，**2 个为 verified**。
+当前 14 个对象中，**5 个为 verified**。
 
 ## 数据来源
 

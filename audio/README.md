@@ -35,7 +35,7 @@
 | [Soundraw](./soundraw.html) | 网页服务 | SOUNDRAW Inc. | partial | 2026-10-30 |
 | [Suno](./suno.html) | 网页服务 | Suno Inc. | verified | 2026-10-30 |
 | [Udio](./udio.html) | 网页服务 | Udio | partial | 2026-10-22 |
-| [Whisper](./whisper.html) | 本机应用 | OpenAI（开源） | partial | 2026-10-22 |
+| [Whisper](./whisper.html) | 本机应用 | OpenAI（开源） | verified | 2026-10-22 |
 
 ## 可信度标记
 
@@ -45,7 +45,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 17 个对象中，**4 个为 verified**。
+当前 17 个对象中，**5 个为 verified**。
 
 ## 数据来源
 

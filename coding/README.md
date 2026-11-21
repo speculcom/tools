@@ -29,7 +29,7 @@
 | [Claude Code CLI](./claude-code-cli.html) | CLI 形态 | Anthropic | partial | 2026-10-23 |
 | [Claude Code IDE 扩展](./claude-code.html) | IDE 形态 | Anthropic | verified | 2026-10-23 |
 | [Cline](./cline.html) | IDE 形态 | Cline Bot | partial | 2026-10-23 |
-| [CodeBuddy](./codebuddy.html) | IDE 形态 | 腾讯云 | partial | 2026-10-30 |
+| [CodeBuddy](./codebuddy.html) | IDE 形态 | 腾讯云 | verified | 2026-10-30 |
 | [Codex CLI](./codex-cli.html) | CLI 形态 | OpenAI | partial | 2026-10-23 |
 | [Codex IDE 扩展](./codex-ide.html) | IDE 形态 | OpenAI | partial | 2026-10-23 |
 | [Continue](./continue.html) | IDE 形态 | Continue | partial | 2026-10-23 |
@@ -69,7 +69,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 41 个对象中，**7 个为 verified**。
+当前 41 个对象中，**8 个为 verified**。
 
 ## 数据来源
 
