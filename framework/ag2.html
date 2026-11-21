@@ -211,7 +211,7 @@
             <p><strong>本地 / 自托管明确支持。</strong></p>
             <p>官方专列一节 &quot;Self-Hosted and OpenAI-Compatible Models（vLLM, LM Studio, etc.）&quot;， 走 <code>OpenAIConfig</code> 的 base_url。README 亦列出 <code>ag2[ollama]</code>。</p>
             <p><strong>Bedrock 于 v1.1.1 改为原生异步客户端</strong> aiobotocore。官方 release 明示为 breaking。</p>
-            <p><strong>未知</strong> —— 换 provider 后 tool calling / structured output 的可靠性对比，官方文档不展开 （已查 <code>beta/model_configuration</code> 与 Grok 兼容页）。</p></span><span data-en><p><strong>The provider list is explicit, type-safe config classes, covering both cloud and local paths.</strong></p>
+            <p><strong>边界</strong> —— 换 provider 后 tool calling / structured output 的可靠性对比，官方文档不展开 （已查 <code>beta/model_configuration</code> 与 Grok 兼容页）。</p></span><span data-en><p><strong>The provider list is explicit, type-safe config classes, covering both cloud and local paths.</strong></p>
             <p>Official <code>beta/model_configuration</code> page wording:</p>
             <p>&quot;The AG2 framework provides an explicit, predictable, and <strong>type-safe</strong> way to configure Large Language Models&quot;</p>
             <p>One Config class + one extra per provider:</p>
@@ -268,7 +268,7 @@
             <p>管道 / 重定向 / 通配符 / 变量在受限模式下被拒。</p>
             <ul><li><code>readonly=True</code> 只放行不可写文件、不启动其它程序的命令</li><li><code>blocked=[...]</code> 官方明说：</li></ul>
             <p>&quot;remains <strong>best-effort</strong>. It is <strong>not</strong> a security boundary.&quot;</p>
-            <p><strong>未知</strong> —— 框架级的默认文件访问边界与容器级隔离，官方文档不展开 （已查 <code>network/overview</code>、<code>agent_harness</code> 与 release 页）。</p></span><span data-en><p><strong>The framework ships no general-purpose file tools. File capability comes from KnowledgeStore and the sandboxed shell tool.</strong></p>
+            <p><strong>边界</strong> —— 框架级的默认文件访问边界与容器级隔离，官方文档不展开 （已查 <code>network/overview</code>、<code>agent_harness</code> 与 release 页）。</p></span><span data-en><p><strong>The framework ships no general-purpose file tools. File capability comes from KnowledgeStore and the sandboxed shell tool.</strong></p>
             <p>The latter&#39;s boundaries are written more clearly than most peers — the single most notable thing about this object.</p>
             <p><strong>① Disk knowledge store.</strong></p>
             <p>The official harness example uses <code>DiskKnowledgeStore(Path(&quot;./knowledge_demo&quot;))</code>, official comment:</p>
@@ -296,7 +296,7 @@
             <p><strong>长期记忆可跨进程存活。</strong> DiskKnowledgeStore 落盘，见 local_files 轴。</p>
             <p><strong>但没有任何厂商托管 offer。</strong></p>
             <p>进程必须跑在你自己的服务器上；要真后台得自己上容器 / K8s。</p>
-            <p><strong>未知</strong> —— 托管选项与断点续跑在崩溃场景下的具体语义，官方文档不展开 （已查 <code>network/overview</code> 页）。</p></span><span data-en><p><strong>&quot;Still running after shutdown&quot; is pure-library form on this site — there is no hosted background.</strong></p>
+            <p><strong>边界</strong> —— 托管选项与断点续跑在崩溃场景下的具体语义，官方文档不展开 （已查 <code>network/overview</code> 页）。</p></span><span data-en><p><strong>&quot;Still running after shutdown&quot; is pure-library form on this site — there is no hosted background.</strong></p>
             <p>But the durable messaging mechanism has an explicit official implementation. The Network capabilities listed on the <code>network/overview</code> page include:</p>
             <p>&quot;<strong>Durable messaging</strong> with replayable channel transcripts (<strong>write-ahead log</strong>)&quot;</p>
             <p>&quot;<strong>Distributed / cross-process deployment</strong>: replace <code>LocalLink</code> with <strong><code>WsLink</code></strong>&quot;</p>
@@ -383,7 +383,7 @@
             <p>v1.1.2 还修了一个 shell 命令过滤绕过漏洞（<strong>GHSA-42mf-vpmr-gw5r</strong>）。</p>
             <p><strong>④ 数据接口安全提示。</strong></p>
             <p>官方文档警告 Redis 的 <code>Serializer.PICKLE</code> 会把代码执行能力交给任何能写该 stream 的人。 建议只用完全可信的 Redis，JSON 为默认。</p>
-            <p><strong>未知</strong> —— 框架级的进程 / 容器沙箱默认值，官方文档不展开 （已查 <code>agent_harness</code> 与 release 页）。</p></span><span data-en><p><strong>The official mechanisms come in two layers: HITL human review + restricted shell tools. Neither layer equals a container sandbox.</strong></p>
+            <p><strong>边界</strong> —— 框架级的进程 / 容器沙箱默认值，官方文档不展开 （已查 <code>agent_harness</code> 与 release 页）。</p></span><span data-en><p><strong>The official mechanisms come in two layers: HITL human review + restricted shell tools. Neither layer equals a container sandbox.</strong></p>
             <p><strong>① HITL.</strong></p>
             <p>README wording:</p>
             <ul><li>calling <code>context.input(...)</code> inside a tool pauses the run to ask a human</li><li><code>hitl_hook</code> decides where the answer comes from (CLI / web UI / queue)</li></ul>

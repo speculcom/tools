@@ -250,7 +250,7 @@
             <p><strong>官方原文</strong>：&quot;use it whole, or use the blocks it bundles directly; the two are equivalent&quot;</p>
             <p><strong>关键边界官方写明了</strong>：文件访问是 <strong>workspace-rooted</strong>（限定工作区）， shell 是 <strong>allowlisted</strong>（白名单）。</p>
             <p>另有 <strong>Monty</strong>，官方称其为 &quot;a sandboxed Python interpreter that runs model-written code&quot;。 它用来跑模型写出的代码。</p>
-            <p><strong>未知：核心 SDK 层面的文件访问默认边界（不经 Harness 时），官方文档不展开</strong> <strong>核验：</strong>overview 与 harness 页已查。</p></span><span data-en><p><strong>The core agent carries no file system; the official Harness provides a complete local-file kit.</strong></p>
+            <p><strong>边界：核心 SDK 层面的文件访问默认边界（不经 Harness 时），官方文档不展开</strong> <strong>核验：</strong>overview 与 harness 页已查。</p></span><span data-en><p><strong>The core agent carries no file system; the official Harness provides a complete local-file kit.</strong></p>
             <p>A plain <code>Agent</code> has no workspace concept. File capability lives in the <strong>Pydantic AI Harness</strong>. <strong>Official README, verbatim</strong> (Coding agent section):</p>
             <p>&quot;A complete coding agent in your terminal: <strong>workspace-rooted file access</strong>, <strong>allowlisted shell</strong>, repo orientation, planning, and <strong>context management</strong> that survives long sessions.&quot;</p>
             <p>The implementation is a set of separable <strong>capabilities</strong>:</p>
@@ -322,7 +322,7 @@
             <p><strong>Harness 另给上下文管理</strong>：官方 capabilities 列表含 <strong>memory</strong>、 <strong>context management</strong>（compaction）、<strong>persistence</strong>。<strong>官方 README 原文</strong>称 Harness：</p>
             <p><strong>官方原文</strong>：&quot;has everything an agent needs for complex, long-running work, snapped on as capabilities&quot;</p>
             <p>所以本档的「状态 ≠ 上下文」在这里被官方拆成三块： durable run（引擎）、chat thread（Persistence）、上下文压缩（compaction）。</p>
-            <p><strong>未知：compaction 的具体裁剪策略与阈值，官方文档未给出默认值</strong> <strong>核验：</strong>README 与 durable 页已查。</p></span><span data-en><p><strong>It explicitly splits &quot;persistence&quot; from &quot;durability&quot; — the core framing of this dimension.</strong></p>
+            <p><strong>边界：compaction 的具体裁剪策略与阈值，官方文档未给出默认值</strong> <strong>核验：</strong>README 与 durable 页已查。</p></span><span data-en><p><strong>It explicitly splits &quot;persistence&quot; from &quot;durability&quot; — the core framing of this dimension.</strong></p>
             <p><strong>Official durable execution page, verbatim</strong>:</p>
             <p>&quot;<strong>Durability is not storage</strong> — A durable engine keeps one run alive across crashes and restarts. It <strong>does not store your chat threads</strong>: saving a conversation and picking it up later is a different problem ... laid out in <strong>Persistence</strong>.&quot;</p>
             <p>i.e. the durable engine manages run survival. <strong>Persistence</strong> manages saving and resuming conversation threads — a separate module.</p>
@@ -340,7 +340,7 @@
             <p><strong>guardrails</strong> 也随 Harness 提供（官方 Harness 能力列表含 guardrails）。</p>
             <p><strong>沙箱</strong>：官方 <strong>Monty</strong> 是 &quot;a sandboxed Python interpreter that runs model-written code&quot;。 Harness 的 <code>Shell</code> 是 <strong>allowlisted</strong>，<code>FileSystem</code> 是 <strong>workspace-rooted</strong>。</p>
             <p><strong>凭据</strong>：MCP 默认本地运行，官方称 &quot;keeping credentials, hooks, and tracing under your control&quot;。</p>
-            <p><strong>未知：核心 SDK 是否有进程/网络级沙箱、以及内置认证/权限边界，官方文档不展开</strong> <strong>核验：</strong>overview、durable、mcp 三页已查。 企业级权限与审计由 Logfire / Gateway 那侧承担。</p></span><span data-en><p><strong>Human intervention is &quot;tool-level approval&quot;; sandboxing sits in Harness / Monty; credentials default to local.</strong></p>
+            <p><strong>边界：核心 SDK 是否有进程/网络级沙箱、以及内置认证/权限边界，官方文档不展开</strong> <strong>核验：</strong>overview、durable、mcp 三页已查。 企业级权限与审计由 Logfire / Gateway 那侧承担。</p></span><span data-en><p><strong>Human intervention is &quot;tool-level approval&quot;; sandboxing sits in Harness / Monty; credentials default to local.</strong></p>
             <p><strong>HITL tool approval</strong> is item 8 of the official overview:</p>
             <p>&quot;<strong>Human-in-the-Loop Tool Approval</strong>: Easily lets you flag that certain tool calls <strong>require approval</strong> before they can proceed, <strong>possibly depending on tool call arguments, conversation history, or user preferences</strong>.&quot;</p>
             <p>This line comes from the deferred tools page. Its level differs from other listed objects: <strong>it intercepts &quot;may this tool call run&quot;, and can decide dynamically from arguments and history.</strong></p>

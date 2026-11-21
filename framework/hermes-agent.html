@@ -215,7 +215,7 @@
             <p>&quot;saved in <code>config.yaml</code>&quot;</p>
             <p><strong>官方对那一页的定位原文</strong>：</p>
             <p>&quot;from cloud APIs ... to self-hosted endpoints like <strong>Ollama and vLLM</strong>, to advanced routing and fallback configurations.&quot;</p>
-            <p>⚠ <strong>未知：换模型后的能力对齐度、本地量化模型在多后端下的行为差异，官方按套餐/版本口径结论。</strong></p>
+            <p>⚠ <strong>边界：换模型后的能力对齐度、本地量化模型在多后端下的行为差异，官方按套餐/版本口径结论。</strong></p>
             <p>本档也没有实测。</p>
             <p><strong>核验</strong>：已查 providers 页与 configuration 页。</p></span><span data-en><p><strong>The official docs give four paths and stress there is no lock-in.</strong></p>
             <p>This is the most blunt statement of model freedom among everything we list.</p>
@@ -299,7 +299,7 @@
             <ul><li>有 <strong>misfire catch-up</strong> 扫描</li><li><code>resume</code> 之后 &quot;the next tick fires one <strong>catch-up run</strong>&quot;</li><li>补跑可关：<code>cron.catch_up_missed: false</code></li><li>全局 <code>hermes pause</code> 期间，托管 cron 的 fire webhook 返 <code>503 Retry-After: 60</code>， 让调度器重投</li></ul>
             <ul><li>官方称 &quot;nothing is lost: due work catches up on the first tick&quot;</li><li>运行中的任务 &quot;never killed&quot;</li></ul>
             <p>网关侧还有 <strong>event-loop liveness watchdog</strong>。 它连续 3 次探针无响应就以 code 75 退出，由 supervisor 重启。 另有 60s 心跳。</p>
-            <p>⚠ <strong>未知：跨休眠 / 唤醒的状态一致性，官方文档不展开。</strong></p>
+            <p>⚠ <strong>边界：跨休眠 / 唤醒的状态一致性，官方文档不展开。</strong></p>
             <p><strong>核验</strong>：已查 <code>features/cron</code>、<code>features/tools</code>、<code>user-guide/messaging</code> 三页。</p></span><span data-en><p><strong>The official docs describe three background-task mechanisms.</strong></p>
             <p><strong>① Built-in cron scheduler.</strong> Official feature-table wording:</p>
             <p>&quot;Built-in <strong>cron scheduler</strong> with delivery to any platform. Daily reports, nightly backups, weekly audits — all in natural language, <strong>running unattended</strong>.&quot;</p>
@@ -386,7 +386,7 @@
             <p><strong>迁移脚本会碰密钥。</strong> <code>hermes claw migrate</code> 会导入五家 API keys：</p>
             <ul><li>Telegram</li><li>OpenRouter / OpenAI</li><li>Anthropic</li><li>ElevenLabs</li></ul>
             <p>官方给了 <code>--dry-run</code> 预览。</p>
-            <p>⚠ <strong>未知：gateway 端口安全，官方未单列一节。</strong></p>
+            <p>⚠ <strong>边界：gateway 端口安全，官方未单列一节。</strong></p>
             <p>dashboard 侧有 OAuth / 自托管 OIDC 鉴权。</p></span><span data-en><p><strong>The official docs have a standalone &quot;Security&quot; section that splits the permissions surface into eight layers.</strong></p>
             <p><strong>The eight layers, verbatim</strong>:</p>
             <ul><li>user authorization (allowlists, DM pairing)</li><li>dangerous command approval</li><li>file write safety</li><li>container isolation</li><li>MCP credential filtering</li><li>context file scanning</li><li>cross-session isolation</li><li>input sanitization</li></ul>
@@ -503,7 +503,7 @@
             <blockquote>&quot;runs anywhere, not just your laptop&quot;</blockquote>
             <p>消息入口有六个：<strong>Telegram、Discord、Slack</strong>、 <strong>WhatsApp、Signal、Email</strong>。 它也能接 Home Assistant。</p>
             <p>⚠ <strong>另有一条本档必须记的前身信息。</strong> README 有独立的 <strong>&quot;Migrating from OpenClaw&quot;</strong> 章节。 <code>hermes setup</code> 会自动检测 <code>~/.openclaw</code> 并提供迁移。</p>
-            <p>⚠ <strong>未知：Hermes 与 OpenClaw 的关系（是否同一团队、是否改名）本档官方文档未单列。</strong> <strong>本档只记录 README 的一手事实。</strong></p></span><span data-en><p>This is the single thing this page most needs to say up front. <strong>Hermes is not on the same layer as the other harnesses we list:</strong></p>
+            <p>⚠ <strong>边界：Hermes 与 OpenClaw 的关系（是否同一团队、是否改名）本档官方文档未单列。</strong> <strong>本档只记录 README 的一手事实。</strong></p></span><span data-en><p>This is the single thing this page most needs to say up front. <strong>Hermes is not on the same layer as the other harnesses we list:</strong></p>
             <div class="tbl-wrap"><table><thead><tr><th>Object</th><th>Positioning</th><th>Entry</th></tr></thead><tbody><tr><td>LangGraph / Google ADK / CrewAI</td><td>orchestration frameworks for coding tasks</td><td>Python code</td></tr><tr><td>Deep Agents</td><td>batteries-included harness for coding</td><td>Python code</td></tr><tr><td>OpenHands</td><td>self-hosted agent control center</td><td>Web UI</td></tr><tr><td><strong>Hermes Agent</strong></td><td><strong>a resident cross-platform personal assistant</strong></td><td><strong>TUI + six messaging platforms</strong></td></tr></tbody></table></div>
             <p>Coding is just one thing Hermes can do. The official description of it:</p>
             <blockquote>&quot;runs anywhere, not just your laptop&quot;</blockquote>
@@ -620,7 +620,7 @@
             <p><strong>cron 的补偿 / 补跑已核验。</strong></p>
             <ul><li>有 misfire catch-up 扫描</li><li>补跑可关：<code>cron.catch_up_missed</code></li><li>全局 <code>hermes pause</code> 期间，托管 cron 的 fire webhook 重投 <code>503 Retry-After: 60</code></li><li>运行中的任务 &quot;never killed&quot;</li></ul>
             <p>网关侧有 event-loop liveness watchdog 与 60s 心跳。</p>
-            <p>⚠ <strong>未知：跨休眠 / 唤醒的状态一致性，官方文档不展开。</strong></p></span><span data-en><blockquote>README feature table, verbatim:</blockquote>
+            <p>⚠ <strong>边界：跨休眠 / 唤醒的状态一致性，官方文档不展开。</strong></p></span><span data-en><blockquote>README feature table, verbatim:</blockquote>
             <blockquote>Built-in <strong>cron scheduler</strong> with delivery to any platform. Daily reports, nightly backups, weekly audits — all in <strong>natural language</strong>, <strong>running unattended</strong>.</blockquote>
             <p><strong>The official docs give three layers for residency</strong>:</p>
             <ul><li>① built-in cron</li><li>② serverless hibernate-and-wake</li><li>③ a resident gateway process (multi-platform triggering any time)</li></ul>

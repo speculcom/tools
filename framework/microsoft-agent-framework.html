@@ -222,7 +222,7 @@
             <p><code>python/samples/02-agents/providers</code></p>
             <ul><li>Anthropic —— <code>AnthropicClient</code> / <code>ClaudeAgent</code></li><li>AWS Bedrock —— <code>BedrockChatClient</code></li><li>Azure OpenAI —— <code>OpenAIChatCompletionClient</code></li><li>Copilot Studio</li><li>Microsoft Foundry 与 Foundry Local —— <code>FoundryChatClient</code></li><li>Google Gemini</li><li>GitHub Copilot —— <code>GitHubCopilotAgent</code></li><li>Mistral —— embedding</li><li><strong>Ollama 本地模型</strong> —— <code>OllamaChatClient</code>，官方标注为推荐用法</li><li>OpenAI</li></ul>
             <p>自建 provider 继承 <code>BaseAgent</code> / <code>BaseChatClient</code>。</p>
-            <p><strong>⚠ 未知：换 provider 后 tool calling / structured output 的可靠性对比，官方文档不展开。</strong> （已查 overview 页与 providers 样例 README。）</p></span><span data-en><p><strong>Its providers are comprehensive, and each one can be verified individually in the official samples directory.</strong></p>
+            <p><strong>⚠ 边界：换 provider 后 tool calling / structured output 的可靠性对比，官方文档不展开。</strong> （已查 overview 页与 providers 样例 README。）</p></span><span data-en><p><strong>Its providers are comprehensive, and each one can be verified individually in the official samples directory.</strong></p>
             <p><strong>The official answer is the combo of &quot;provider flexibility + consistent multi-language API&quot;.</strong></p>
             <p>Official overview page, verbatim:</p>
             <p><strong>Official wording</strong>: &quot;Agents support model providers including <strong>Azure OpenAI, OpenAI, and Azure AI</strong>.&quot;</p>
@@ -272,7 +272,7 @@
             <p>即文件/命令/网络的权限范围由该 provider 的权限模型决定，不是框架统一提供。</p>
             <p>另有一组安全样例（<code>python/samples/02-agents/security</code>）演示三件事： prompt injection 防御、MCP 工具代理、跨工具数据外泄防护。</p>
             <p>这属「用中间件自己加固」，不是文件沙箱。</p>
-            <p><strong>⚠ 未知：框架级的默认文件系统权限模型与进程/容器沙箱，官方文档不展开。</strong> （已查 overview 页与 providers 样例 README 两页。）</p></span><span data-en><p><strong>The framework core ships no file read/write tools; file capability comes from providers and the tool layer.</strong></p>
+            <p><strong>⚠ 边界：框架级的默认文件系统权限模型与进程/容器沙箱，官方文档不展开。</strong> （已查 overview 页与 providers 样例 README 两页。）</p></span><span data-en><p><strong>The framework core ships no file read/write tools; file capability comes from providers and the tool layer.</strong></p>
             <p><strong>The default boundary is not systematically defined by the official docs.</strong></p>
             <p>The official overview only describes agents as <strong>&quot;call tools and MCP servers to perform actions&quot;</strong>.</p>
             <p>It does not list &quot;read/write local files&quot; as a built-in capability, nor describe a default file-access boundary.</p>
@@ -325,7 +325,7 @@
             <p>此外还有三项：</p>
             <ul><li><strong>中间件</strong> —— 请求/响应处理、异常处理、自定义管线</li><li><strong>Agent Skills</strong> —— 从文件/内联代码/类库构建领域知识库</li><li><strong>Declarative Agents</strong> —— 用 YAML/JSON 声明 agent</li></ul>
             <p>以及实验包 <strong>AF Labs</strong>。</p>
-            <p><strong>⚠ 未知：MCP/A2A 的传输矩阵细节，官方文档未集中给出。</strong> （已查 overview 与 a2a 两页。）</p></span><span data-en><p><strong>The tool ecosystem is its strength against ADK: MCP and A2A are both officially named first-class capabilities.</strong></p>
+            <p><strong>⚠ 边界：MCP/A2A 的传输矩阵细节，官方文档未集中给出。</strong> （已查 overview 与 a2a 两页。）</p></span><span data-en><p><strong>The tool ecosystem is its strength against ADK: MCP and A2A are both officially named first-class capabilities.</strong></p>
             <p>The first item of the announcement page&#39;s &quot;<strong>Four Pillars</strong>&quot; lists three open standards.</p>
             <p><strong>Official wording</strong> (MCP): &quot;Agents can dynamically discover and invoke external tools or data servers exposed over MCP&quot;</p>
             <p><strong>Official wording</strong> (A2A): &quot;Agents can collaborate across runtimes using structured, protocol-driven messaging&quot;</p>
@@ -354,7 +354,7 @@
             <p>它落盘的是 executor 状态与待处理消息。</p>
             <p>这属「流程状态」，见 background 轴。</p>
             <p><strong>两套机制官方分节描述，不可混为一谈。</strong></p>
-            <p><strong>⚠ 未知：长历史如何压缩进窗口，官方未在概览层给出统一机制。</strong> （已查 overview 页与 checkpoints 页，未见类似 ADK Context Compaction 的专章。）</p></span><span data-en><p><strong>The official docs split &quot;session state&quot; and &quot;memory&quot; into two primitive groups.</strong></p>
+            <p><strong>⚠ 边界：长历史如何压缩进窗口，官方未在概览层给出统一机制。</strong> （已查 overview 页与 checkpoints 页，未见类似 ADK Context Compaction 的专章。）</p></span><span data-en><p><strong>The official docs split &quot;session state&quot; and &quot;memory&quot; into two primitive groups.</strong></p>
             <p><strong>Workflows additionally have superstep-level checkpoints.</strong></p>
             <p>These two map exactly onto our &quot;state ≠ context&quot; claim.</p>
             <p>The overview page lists the basic building blocks, verbatim:</p>
@@ -380,7 +380,7 @@
             <p><strong>官方原文</strong>：&quot;tools can be marked as <strong>requiring human approval</strong>.&quot; &quot;Agent Framework automatically emits a <strong>pending approval request</strong> that can be routed to a UI or queue, then continues or denies execution accordingly.&quot;</p>
             <p><strong>③ 安全样例</strong>（官方 <code>02-agents/security</code>）：</p>
             <ul><li><code>SecureAgentConfig</code> + <code>quarantined_llm</code> 防 prompt injection</li><li><code>SecureMCPToolProxy</code> 加固外部 MCP 工具</li><li>跨工具机密数据外泄防护</li></ul>
-            <p><strong>⚠ 未知：框架级的进程/容器沙箱默认值，官方文档不展开。</strong> （已查 overview、checkpoints、a2a 三页。）</p></span><span data-en><p><strong>The officially explicit mechanisms are &quot;HITL request/response + tool-level human approval&quot;.</strong></p>
+            <p><strong>⚠ 边界：框架级的进程/容器沙箱默认值，官方文档不展开。</strong> （已查 overview、checkpoints、a2a 三页。）</p></span><span data-en><p><strong>The officially explicit mechanisms are &quot;HITL request/response + tool-level human approval&quot;.</strong></p>
             <p>Both are execution interception, not boundary setting.</p>
             <p><strong>① Workflow-layer HITL</strong> (official <code>workflows/human-in-the-loop</code> page):</p>
             <p><strong>Official wording</strong>: HITL &quot;is achieved through the <strong>request and response</strong> handling mechanism&quot;</p>

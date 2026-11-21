@@ -190,7 +190,7 @@
             <ul><li>其余走 <code>LiteLLMModel</code>（官方称 &quot;100+ different models&quot;）、<code>OpenAIModel</code>（OpenAI 及兼容端点， 示例给 Together / OpenRouter）、<code>AzureOpenAIModel</code>、<code>AmazonBedrockModel</code></li></ul>
             <ul><li>本地侧有 <code>TransformersModel</code>、<code>MLXModel</code>、<code>Ollama</code></li></ul>
             <p><strong>换 provider 的改动量 = 换一个 Model 类</strong>。也可加 <code>provider=</code> 参数。代码结构不变。</p>
-            <p><strong>未知：换 provider 后 tool calling / 结构化输出的可靠性对齐，官方文档不展开。</strong> （已查 guided_tour 与 models 参考页。）</p></span><span data-en><p><strong>The official self-description is model-agnostic: &quot;supports any LLM&quot;</strong> (README, verbatim).</p>
+            <p><strong>边界：换 provider 后 tool calling / 结构化输出的可靠性对齐，官方文档不展开。</strong> （已查 guided_tour 与 models 参考页。）</p></span><span data-en><p><strong>The official self-description is model-agnostic: &quot;supports any LLM&quot;</strong> (README, verbatim).</p>
             <p>The implementation is several Model classes, each covering one end:</p>
             <ul><li>On the HF side, <code>InferenceClientModel</code> goes through the Hub&#39;s Inference Providers. Officially named: Cerebras, Cohere, Fal, Fireworks, HF-Inference, Hyperbolic, Nebius, Novita, Replicate, SambaNova, Together</li></ul>
             <ul><li>The rest go through <code>LiteLLMModel</code> (officially &quot;100+ different models&quot;), <code>OpenAIModel</code> (OpenAI and compatible endpoints, examples given for Together / OpenRouter), <code>AzureOpenAIModel</code>, <code>AmazonBedrockModel</code></li></ul>
@@ -220,7 +220,7 @@
             <p>官方 default toolbox（<code>smolagents[toolkit]</code>）只有三项：DuckDuckGo/WebSearch、 Python 代码解释器、Whisper 转写 —— <strong>没有专门的文件读写工具</strong>。</p>
             <p>CodeAgent 要读写文件。它靠的是<strong>自己生成的 Python 代码</strong>（如 <code>open()</code>）或你提供的自定义工具。</p>
             <p>所以<strong>文件边界由执行环境决定，框架不提供</strong>。本地跑则受 <code>LocalPythonExecutor</code> 的 import 白名单约束。远程沙箱跑则限在沙箱容器内。两种沙箱模式见 secure_code_execution 页。</p>
-            <p><strong>未知：CodeAgent 默认允许的文件访问范围，官方文档不展开。</strong> （已查 secure_code_execution 与 guided_tour 两页，无文件权限章节。）</p></span><span data-en><p><strong>The framework itself presets no file-system tools.</strong></p>
+            <p><strong>边界：CodeAgent 默认允许的文件访问范围，官方文档不展开。</strong> （已查 secure_code_execution 与 guided_tour 两页，无文件权限章节。）</p></span><span data-en><p><strong>The framework itself presets no file-system tools.</strong></p>
             <p>The official default toolbox (<code>smolagents[toolkit]</code>) has only three items: DuckDuckGo/WebSearch, a Python code interpreter, Whisper transcription — <strong>no dedicated file read/write tool</strong>.</p>
             <p>CodeAgent reads and writes files through <strong>the Python code it generates itself</strong> (e.g. <code>open()</code>) or custom tools you provide.</p>
             <p>So <strong>the file boundary comes from the execution environment, not the framework</strong>. Locally it is constrained by <code>LocalPythonExecutor</code>&#39;s import allowlist. In a remote sandbox it is confined to the sandbox container. The two sandbox modes are on the secure_code_execution page.</p>
@@ -232,7 +232,7 @@
             <p>README 的运行方式全是本地代码调用。形式是 Python API / CLI / 沙箱。它没有云端常驻或定时执行形态。</p>
             <p><strong>唯一与「长任务 / 断点」相关的官方机制是单步执行</strong>。<code>agent.step(memory_step)</code> 可一次只走一步。 memory 存在进程内的 <code>agent.memory</code>。tutorials/memory 页举的用例正是：</p>
             <p><strong>官方原文</strong>：&quot;tool calls that take days&quot;</p>
-            <p><strong>未知：官方未提供把这些 memory 落盘并在新进程恢复的内建方案</strong>（已查 tutorials/memory 与 guided_tour 两页）。</p>
+            <p><strong>边界：官方未提供把这些 memory 落盘并在新进程恢复的内建方案</strong>（已查 tutorials/memory 与 guided_tour 两页）。</p>
             <p>所以断点续跑要自己序列化 steps。</p></span><span data-en><p><strong>Self-hosted = stop the process and it&#39;s gone; no hosted background option.</strong></p>
             <p>All run modes in the README are local code calls. The forms are Python API / CLI / sandbox. There is no cloud-resident or scheduled-execution form.</p>
             <p><strong>The only official mechanism related to &quot;long tasks / checkpoints&quot; is single-step execution.</strong> <code>agent.step(memory_step)</code> advances one step at a time. Memory lives in-process at <code>agent.memory</code>. The use case on the tutorials/memory page is exactly:</p>
@@ -260,7 +260,7 @@
             <ul><li><code>agent.replay()</code> 回放</li><li>直接读写 <code>agent.memory.steps</code>（示例甚至在两个 agent 间搬 steps）</li><li><code>step_callbacks</code>（官方示例：删掉旧截图以省 token）</li></ul>
             <p>另有 <code>planning_interval=N</code> 每 N 步插一次规划步。</p>
             <p><strong>官方把这一轴定位成「检查 / 改写记忆」，不是压缩。</strong></p>
-            <p><strong>未知：把大工具输出落盘这类深上下文管理，官方文档不展开。</strong> （已查 tutorials/memory 与 guided_tour 两页。）</p></span><span data-en><p><strong>Context = the step history (AgentMemory); no cross-session persistence.</strong></p>
+            <p><strong>边界：把大工具输出落盘这类深上下文管理，官方文档不展开。</strong> （已查 tutorials/memory 与 guided_tour 两页。）</p></span><span data-en><p><strong>Context = the step history (AgentMemory); no cross-session persistence.</strong></p>
             <p>The official tutorials/memory page says the agent &quot;has a memory of past steps&quot;.</p>
             <p>Step types: <code>TaskStep</code> / <code>ActionStep</code> / <code>PlanningStep</code> / <code>FinalAnswerStep</code>.</p>
             <p>Three official manipulation options:</p>
@@ -279,7 +279,7 @@
             <p><strong>要真正隔离必须用远程沙箱</strong>：<code>executor_type=&quot;blaxel&quot; / &quot;e2b&quot; / &quot;modal&quot; / &quot;docker&quot;</code>。</p>
             <p>官方区分两种模式。一是只沙箱化代码片段。二是整包 agent 进沙箱（后者多 agent 才可用）。</p>
             <p>官方另有 Human-in-the-Loop 示例（examples/plan_customization），但<strong>不是内建审批机制</strong>。</p>
-            <p><strong>未知：网络访问控制，官方文档不展开。</strong></p></span><span data-en><p><strong>The official docs are very blunt about execution safety. The default <code>LocalPythonExecutor</code> is not a secure sandbox.</strong></p>
+            <p><strong>边界：网络访问控制，官方文档不展开。</strong></p></span><span data-en><p><strong>The official docs are very blunt about execution safety. The default <code>LocalPythonExecutor</code> is not a secure sandbox.</strong></p>
             <p>README, verbatim:</p>
             <p>&quot;The built-in <code>LocalPythonExecutor</code> is <strong>not</strong> a security sandbox. It applies some restrictions but can be bypassed and must not be used as a security boundary.&quot;</p>
             <p>What the local interpreter provides:</p>
