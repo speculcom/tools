@@ -27,7 +27,7 @@
 | [Microsoft Copilot Studio](./copilot-studio.html) | 网页服务 | Microsoft | verified | 2026-10-30 |
 | [扣子 / Coze](./coze.html) | 网页服务 | 字节跳动 | partial | 2026-10-30 |
 | [Dify](./dify.html) | 网页服务 | LangGenius（国产出海） | partial | 2026-10-30 |
-| [FastGPT](./fastgpt.html) | 网页服务 | labring（环际云，国产） | partial | 2026-10-30 |
+| [FastGPT](./fastgpt.html) | 网页服务 | labring（环际云，国产） | verified | 2026-11-21 |
 | [Flowise](./flowise.html) | 网页服务 | FlowiseAI, Inc. | verified | 2026-10-30 |
 | [Gumloop](./gumloop.html) | 网页服务 | Gumloop | partial | 2026-10-30 |
 | [Langflow](./langflow.html) | 网页服务 | DataStax（原 Langflow AI） | verified | 2026-10-30 |
@@ -52,7 +52,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 24 个对象中，**9 个为 verified**。
+当前 24 个对象中，**10 个为 verified**。
 
 ## 数据来源
 

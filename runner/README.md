@@ -29,7 +29,7 @@
 | [LlamaEdge](./llamaedge.html) | CLI 形态 | LlamaEdge 社区（WasmEdge / Second State 生态） | partial | 2026-10-31 |
 | [LM Studio](./lm-studio.html) | 本机应用 | Element Labs | verified | 2026-10-30 |
 | [LocalAI](./localai.html) | CLI 形态 | Mudler T.（mudler） | verified | 2026-10-30 |
-| [MLC LLM](./mlc-llm.html) | CLI 形态 | MLCEngine（CMU 系，mlc-ai） | partial | 2026-10-31 |
+| [MLC LLM](./mlc-llm.html) | CLI 形态 | MLCEngine（CMU 系，mlc-ai） | verified | 2026-11-21 |
 | [MLX（mlx-lm）](./mlx.html) | CLI 形态 | Apple | verified | 2026-10-30 |
 | [Msty](./msty.html) | 本机应用 | Msty（CloudStack, LLC） | verified | 2026-10-31 |
 | [Ollama](./ollama.html) | CLI 形态 | Ollama Inc. | partial | 2026-10-30 |
@@ -49,7 +49,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 21 个对象中，**14 个为 verified**。
+当前 21 个对象中，**15 个为 verified**。
 
 ## 数据来源
 

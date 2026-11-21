@@ -53,7 +53,7 @@
 | [OpenAI Dot](./openai-dot.html) | 厂商云形态 | OpenAI | partial | 2026-10-23 |
 | [OpenCode](./opencode.html) | CLI 形态 | OpenCode | partial | 2026-10-23 |
 | [Qoder CN（原通义灵码）](./qoder-cn.html) | IDE 形态 | 阿里云 | partial | 2026-10-22 |
-| [Qoder](./qoder.html) | IDE 形态 | 阿里云 | partial | 2026-10-22 |
+| [Qoder](./qoder.html) | IDE 形态 | 阿里云 | verified | 2026-11-21 |
 | [Replit Agent](./replit-agent.html) | 厂商云形态 | Replit | partial | 2026-10-30 |
 | [Trae](./trae.html) | IDE 形态 | 字节跳动 | partial | 2026-10-30 |
 | [v0](./v0.html) | 厂商云形态 | Vercel | verified | 2026-10-22 |
@@ -69,7 +69,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 41 个对象中，**13 个为 verified**。
+当前 41 个对象中，**14 个为 verified**。
 
 ## 数据来源
 
