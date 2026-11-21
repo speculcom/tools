@@ -22,7 +22,7 @@
 | [Activepieces](./activepieces.html) | 网页服务 | Activepieces Inc. | partial | 2026-10-30 |
 | [Salesforce Agentforce](./agentforce.html) | 网页服务 | Salesforce | partial | 2026-10-30 |
 | [AutoGPT（现 Experts AI 团队平台）](./autogpt.html) | 网页服务 | AutoGPT（Determinist Ltd 运营） | partial | 2026-10-30 |
-| [Bedrock Agents / AgentCore](./bedrock-agents.html) | 网页服务 | AWS | partial | 2026-10-30 |
+| [Bedrock Agents / AgentCore](./bedrock-agents.html) | 网页服务 | AWS | verified | 2026-10-30 |
 | [Botpress](./botpress.html) | 网页服务 | Botpress | partial | 2026-10-30 |
 | [Microsoft Copilot Studio](./copilot-studio.html) | 网页服务 | Microsoft | partial | 2026-10-30 |
 | [扣子 / Coze](./coze.html) | 网页服务 | 字节跳动 | partial | 2026-10-30 |
@@ -52,7 +52,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 24 个对象中，**0 个为 verified**。
+当前 24 个对象中，**1 个为 verified**。
 
 ## 数据来源
 

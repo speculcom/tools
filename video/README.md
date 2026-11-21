@@ -29,9 +29,9 @@
 | [Luma（Dream Machine）](./luma.html) | 网页服务 | Luma AI | partial | 2026-10-22 |
 | [Pika](./pika.html) | 网页服务 | Pika Labs | partial | 2026-10-22 |
 | [PixVerse](./pixverse.html) | 网页服务 | 爱诗科技 | partial | 2026-10-22 |
-| [Runway](./runway.html) | 网页服务 | Runway AI, Inc. | partial | 2026-10-30 |
+| [Runway](./runway.html) | 网页服务 | Runway AI, Inc. | verified | 2026-10-30 |
 | [Synthesia](./synthesia.html) | 网页服务 | Synthesia | partial | 2026-10-22 |
-| [Veo（Google）](./veo.html) | 厂商云形态 | Google | partial | 2026-10-30 |
+| [Veo（Google）](./veo.html) | 厂商云形态 | Google | verified | 2026-10-30 |
 | [Vidu](./vidu.html) | 网页服务 | 生数科技（清华系） | partial | 2026-10-22 |
 
 ## 可信度标记
@@ -42,7 +42,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 14 个对象中，**0 个为 verified**。
+当前 14 个对象中，**2 个为 verified**。
 
 ## 数据来源
 

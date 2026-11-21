@@ -19,21 +19,21 @@
 
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
-| [Adobe Acrobat AI Assistant](./adobe-acrobat-ai.html) | 桌面/移动应用 | Adobe | partial | 2026-11-19 |
-| [Beautiful.ai](./beautiful-ai.html) | 网页服务 | Beautiful.ai | partial | 2026-11-19 |
-| [Canva Magic Studio](./canva-magic-studio.html) | 网页服务 | Canva | partial | 2026-11-19 |
-| [DeepL Pro](./deepl-pro.html) | 网页服务 | DeepL | partial | 2026-11-19 |
-| [钉钉 AI 助理](./dingtalk-ai.html) | 厂商云形态 | 钉钉 | partial | 2026-11-19 |
-| [飞书智能伙伴](./feishu-ai.html) | 厂商云形态 | 飞书 | partial | 2026-11-19 |
-| [Fireflies.ai](./fireflies-ai.html) | 厂商云形态 | Fireflies.ai | partial | 2026-11-19 |
-| [Gamma](./gamma.html) | 网页服务 | Gamma | partial | 2026-11-19 |
-| [Google Workspace Gemini](./google-workspace-gemini.html) | 厂商云形态 | Google | partial | 2026-11-19 |
-| [Grammarly](./grammarly.html) | 网页服务 | Grammarly | partial | 2026-11-19 |
-| [Microsoft 365 Copilot](./microsoft-365-copilot.html) | 厂商云形态 | Microsoft | partial | 2026-11-19 |
-| [Notion AI](./notion-ai.html) | 网页服务 | Notion | partial | 2026-11-19 |
-| [腾讯文档 AI](./tencent-docs-ai.html) | 网页服务 | 腾讯 | partial | 2026-11-19 |
-| [tl;dv](./tldv.html) | 厂商云形态 | tl;dv | partial | 2026-11-19 |
-| [WPS AI](./wps-ai.html) | 网页服务 | 金山办公 | partial | 2026-11-19 |
+| [Adobe Acrobat AI Assistant](./adobe-acrobat-ai.html) | 桌面/移动应用 | Adobe | verified | 2026-11-19 |
+| [Beautiful.ai](./beautiful-ai.html) | 网页服务 | Beautiful.ai | verified | 2026-11-19 |
+| [Canva Magic Studio](./canva-magic-studio.html) | 网页服务 | Canva | verified | 2026-11-19 |
+| [DeepL Pro](./deepl-pro.html) | 网页服务 | DeepL | verified | 2026-11-19 |
+| [钉钉 AI 助理](./dingtalk-ai.html) | 厂商云形态 | 钉钉 | verified | 2026-11-19 |
+| [飞书智能伙伴](./feishu-ai.html) | 厂商云形态 | 飞书 | verified | 2026-11-19 |
+| [Fireflies.ai](./fireflies-ai.html) | 厂商云形态 | Fireflies.ai | verified | 2026-11-19 |
+| [Gamma](./gamma.html) | 网页服务 | Gamma | verified | 2026-11-19 |
+| [Google Workspace Gemini](./google-workspace-gemini.html) | 厂商云形态 | Google | verified | 2026-11-19 |
+| [Grammarly](./grammarly.html) | 网页服务 | Grammarly | verified | 2026-11-19 |
+| [Microsoft 365 Copilot](./microsoft-365-copilot.html) | 厂商云形态 | Microsoft | verified | 2026-11-19 |
+| [Notion AI](./notion-ai.html) | 网页服务 | Notion | verified | 2026-11-19 |
+| [腾讯文档 AI](./tencent-docs-ai.html) | 网页服务 | 腾讯 | verified | 2026-11-19 |
+| [tl;dv](./tldv.html) | 厂商云形态 | tl;dv | verified | 2026-11-19 |
+| [WPS AI](./wps-ai.html) | 网页服务 | 金山办公 | verified | 2026-11-19 |
 
 ## 可信度标记
 
@@ -43,7 +43,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 15 个对象中，**0 个为 verified**。
+当前 15 个对象中，**15 个为 verified**。
 
 ## 数据来源
 

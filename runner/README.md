@@ -19,24 +19,24 @@
 
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
-| [Docker Model Runner](./docker-model-runner.html) | 本机应用 | Docker | partial | 2026-11-03 |
-| [ExLlamaV3](./exllamav3.html) | CLI 形态 | turboderp-org | partial | 2026-11-04 |
+| [Docker Model Runner](./docker-model-runner.html) | 本机应用 | Docker | verified | 2026-11-03 |
+| [ExLlamaV3](./exllamav3.html) | CLI 形态 | turboderp-org | verified | 2026-11-04 |
 | [GPT4All](./gpt4all.html) | 本机应用 | Nomic AI | partial | 2026-10-30 |
-| [Jan](./jan.html) | 本机应用 | Menlo Research | partial | 2026-10-30 |
-| [KoboldCpp](./koboldcpp.html) | 本机应用 | LostRuins（KoboldAI 社区） | partial | 2026-10-30 |
-| [Lemonade](./lemonade.html) | 本机应用 | AMD / Lemonade 社区 | partial | 2026-11-03 |
+| [Jan](./jan.html) | 本机应用 | Menlo Research | verified | 2026-10-30 |
+| [KoboldCpp](./koboldcpp.html) | 本机应用 | LostRuins（KoboldAI 社区） | verified | 2026-10-30 |
+| [Lemonade](./lemonade.html) | 本机应用 | AMD / Lemonade 社区 | verified | 2026-11-03 |
 | [llama.cpp](./llama-cpp.html) | CLI 形态 | ggml-org | partial | 2026-10-30 |
 | [LlamaEdge](./llamaedge.html) | CLI 形态 | LlamaEdge 社区（WasmEdge / Second State 生态） | partial | 2026-10-31 |
-| [LM Studio](./lm-studio.html) | 本机应用 | Element Labs | partial | 2026-10-30 |
+| [LM Studio](./lm-studio.html) | 本机应用 | Element Labs | verified | 2026-10-30 |
 | [LocalAI](./localai.html) | CLI 形态 | Mudler T.（mudler） | partial | 2026-10-30 |
 | [MLC LLM](./mlc-llm.html) | CLI 形态 | MLCEngine（CMU 系，mlc-ai） | partial | 2026-10-31 |
 | [MLX（mlx-lm）](./mlx.html) | CLI 形态 | Apple | partial | 2026-10-30 |
 | [Msty](./msty.html) | 本机应用 | Msty（CloudStack, LLC） | partial | 2026-10-31 |
 | [Ollama](./ollama.html) | CLI 形态 | Ollama Inc. | partial | 2026-10-30 |
-| [OpenVINO](./openvino.html) | CLI 形态 | Intel | partial | 2026-11-03 |
+| [OpenVINO](./openvino.html) | CLI 形态 | Intel | verified | 2026-11-03 |
 | [SGLang](./sglang.html) | CLI 形态 | LMSYS / sgl-project | partial | 2026-10-30 |
 | [TabbyAPI](./tabbyapi.html) | CLI 形态 | Royal Lab（theroyallab） | partial | 2026-10-31 |
-| [NVIDIA TensorRT-LLM](./tensorrt-llm.html) | CLI 形态 | NVIDIA | partial | 2026-11-03 |
+| [NVIDIA TensorRT-LLM](./tensorrt-llm.html) | CLI 形态 | NVIDIA | verified | 2026-11-03 |
 | [text-generation-webui / textgen](./text-generation-webui.html) | 本机应用 | oobabooga | partial | 2026-10-30 |
 | [Text Generation Inference（TGI）](./tgi.html) | CLI 形态 | Hugging Face | partial | 2026-10-30 |
 | [vLLM](./vllm.html) | CLI 形态 | vLLM 项目（PyTorch 基金会） | partial | 2026-10-30 |
@@ -49,7 +49,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 21 个对象中，**0 个为 verified**。
+当前 21 个对象中，**8 个为 verified**。
 
 ## 数据来源
 

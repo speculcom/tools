@@ -32,7 +32,7 @@
 | [Lakera](./lakera-ai.html) | 厂商云形态 | Lakera | partial | 2026-11-06 |
 | [Langfuse](./langfuse.html) | 本机应用 | Langfuse | partial | 2026-11-06 |
 | [LangSmith](./langsmith.html) | 厂商云形态 | LangChain | partial | 2026-11-06 |
-| [LangWatch](./langwatch.html) | 厂商云形态 | LangWatch | partial | 2026-11-06 |
+| [LangWatch](./langwatch.html) | 厂商云形态 | LangWatch | verified | 2026-11-06 |
 | [LiteLLM 网关（Proxy / AI Gateway）](./litellm.html) | 本机应用 | BerriAI · LiteLLM | partial | 2026-11-06 |
 | [LLM Guard](./llm-guard.html) | 本机应用 | Protect AI | partial | 2026-11-06 |
 | [NeMo Guardrails](./nemo-guardrails.html) | 本机应用 | NVIDIA | partial | 2026-11-06 |
@@ -53,7 +53,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 25 个对象中，**0 个为 verified**。
+当前 25 个对象中，**1 个为 verified**。
 
 ## 数据来源
 
