@@ -42,7 +42,7 @@
 | [SmythOS](./smythos.html) | 网页服务 | SmythOS | partial | 2026-10-30 |
 | [Vertex AI Agent Builder（Gemini Enterprise 平台线）](./vertex-agent-builder.html) | 网页服务 | Google | verified | 2026-10-30 |
 | [Voiceflow](./voiceflow.html) | 网页服务 | Voiceflow | verified | 2026-10-30 |
-| [Zapier](./zapier.html) | 网页服务 | Zapier | partial | 2026-10-30 |
+| [Zapier](./zapier.html) | 网页服务 | Zapier | verified | 2026-11-21 |
 
 ## 可信度标记
 
@@ -52,7 +52,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 24 个对象中，**20 个为 verified**。
+当前 24 个对象中，**21 个为 verified**。
 
 ## 数据来源
 

@@ -26,7 +26,7 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 | [Codex SDK](./codex-sdk.html) | 框架 / SDK | OpenAI | verified | 2026-10-23 |
 | [CrewAI](./crewai.html) | 框架 / SDK | CrewAI Inc | verified | 2026-10-23 |
 | [Deep Agents](./deepagents.html) | 框架 / SDK | LangChain | verified | 2026-10-23 |
-| [Drake](./drake.html) | 框架 / SDK | Robot Locomotion Group / MIT | partial | 2026-11-07 |
+| [Drake](./drake.html) | 框架 / SDK | Robot Locomotion Group / MIT | verified | 2026-11-21 |
 | [DSPy](./dspy.html) | 框架 / SDK | Stanford NLP / Databricks | verified | 2026-11-21 |
 | [ElizaOS（Eliza）](./elizaos.html) | 框架 / SDK | ElizaOS 社区（Eliza Research） | verified | 2026-11-21 |
 | [Gazebo Sim](./gazebo.html) | 本机应用 | Open Robotics | verified | 2026-11-07 |
@@ -70,7 +70,7 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 42 个对象中，**40 个为 verified**。
+当前 42 个对象中，**41 个为 verified**。
 
 ## 数据来源
 

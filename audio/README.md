@@ -21,7 +21,7 @@
 |---|---|---|---|---|
 | [AIVA](./aiva.html) | 网页服务 | AIVA Limited | verified | 2026-10-30 |
 | [AssemblyAI](./assemblyai.html) | 厂商云形态 | AssemblyAI | verified | 2026-10-22 |
-| [Cartesia](./cartesia.html) | 网页服务 | Cartesia AI, Inc. | partial | 2026-10-30 |
+| [Cartesia](./cartesia.html) | 网页服务 | Cartesia AI, Inc. | verified | 2026-11-21 |
 | [CosyVoice](./cosyvoice.html) | 本机应用 | 阿里 FunAudioLLM（开源） | verified | 2026-11-21 |
 | [Deepgram](./deepgram.html) | 厂商云形态 | Deepgram | verified | 2026-10-22 |
 | [ElevenLabs](./elevenlabs.html) | 网页服务 | ElevenLabs | verified | 2026-10-30 |
@@ -45,7 +45,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 17 个对象中，**12 个为 verified**。
+当前 17 个对象中，**13 个为 verified**。
 
 ## 数据来源
 

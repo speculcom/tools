@@ -24,7 +24,7 @@
 | [Devv](./devv.html) | 网页服务 | Devv AI | verified | 2026-10-22 |
 | [Elicit](./elicit.html) | 网页服务 | Elicit | verified | 2026-10-22 |
 | [Genspark](./genspark.html) | 网页服务 | Genspark | partial | 2026-10-22 |
-| [Kagi](./kagi.html) | 网页服务 | Kagi | partial | 2026-10-22 |
+| [Kagi](./kagi.html) | 网页服务 | Kagi | verified | 2026-11-21 |
 | [秘塔 AI 搜索](./metaso.html) | 网页服务 | 秘塔科技（上海秘塔网络科技） | verified | 2026-10-22 |
 | [NotebookLM](./notebooklm.html) | 网页服务 | Google | verified | 2026-11-04 |
 | [Perplexity](./perplexity.html) | 网页服务 | Perplexity AI | verified | 2026-10-22 |
@@ -39,7 +39,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 11 个对象中，**6 个为 verified**。
+当前 11 个对象中，**7 个为 verified**。
 
 ## 数据来源
 
