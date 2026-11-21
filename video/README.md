@@ -22,7 +22,7 @@
 | [D-ID](./d-id.html) | 网页服务 | D-ID | verified | 2026-10-22 |
 | [Genmo](./genmo.html) | 网页服务 | Genmo | verified | 2026-10-30 |
 | [海螺视频](./hailuo-video.html) | 网页服务 | MiniMax（稀宇科技） | partial | 2026-10-22 |
-| [HeyGen](./heygen.html) | 网页服务 | HeyGen | partial | 2026-10-22 |
+| [HeyGen](./heygen.html) | 网页服务 | HeyGen | verified | 2026-11-21 |
 | [Higgsfield](./higgsfield.html) | 网页服务 | Higgsfield AI | partial | 2026-10-22 |
 | [invideo AI](./invideo.html) | 网页服务 | invideo | verified | 2026-10-30 |
 | [可灵 Kling AI](./kling.html) | 网页服务 | Kling AI Pte. Ltd.（快手） | verified | 2026-11-21 |
@@ -42,7 +42,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 14 个对象中，**9 个为 verified**。
+当前 14 个对象中，**10 个为 verified**。
 
 ## 数据来源
 

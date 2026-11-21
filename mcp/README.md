@@ -20,7 +20,7 @@ MCP server 的权限范围、传输方式与输出可用性。收录标准：已
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
 | [1Password Environments MCP Server](./1password-mcp.html) | MCP | 1Password | verified | 2026-10-31 |
-| [Atlassian Remote MCP Server（Jira/Confluence）](./atlassian-mcp.html) | MCP | Atlassian | partial | 2026-10-30 |
+| [Atlassian Remote MCP Server（Jira/Confluence）](./atlassian-mcp.html) | MCP | Atlassian | verified | 2026-11-21 |
 | [Brave Search MCP Server](./brave-search-mcp.html) | MCP | Brave | verified | 2026-10-30 |
 | [Browserbase MCP Server](./browserbase-mcp.html) | MCP | Browserbase | verified | 2026-10-31 |
 | [Chrome DevTools MCP](./chrome-devtools-mcp.html) | MCP | Google（Chrome DevTools 团队） | verified | 2026-10-30 |
@@ -60,7 +60,7 @@ MCP server 的权限范围、传输方式与输出可用性。收录标准：已
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 32 个对象中，**31 个为 verified**。
+当前 32 个对象中，**32 个为 verified**。
 
 ## 数据来源
 
