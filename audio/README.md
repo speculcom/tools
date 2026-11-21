@@ -19,7 +19,7 @@
 
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
-| [AIVA](./aiva.html) | 网页服务 | AIVA Limited | partial | 2026-10-30 |
+| [AIVA](./aiva.html) | 网页服务 | AIVA Limited | verified | 2026-10-30 |
 | [AssemblyAI](./assemblyai.html) | 厂商云形态 | AssemblyAI | verified | 2026-10-22 |
 | [Cartesia](./cartesia.html) | 网页服务 | Cartesia AI, Inc. | partial | 2026-10-30 |
 | [CosyVoice](./cosyvoice.html) | 本机应用 | 阿里 FunAudioLLM（开源） | verified | 2026-11-21 |
@@ -32,7 +32,7 @@
 | [Murf](./murf.html) | 网页服务 | Murf AI | verified | 2026-10-30 |
 | [Otter.ai](./otter.html) | 网页服务 | Otter.ai | verified | 2026-10-22 |
 | [Resemble AI](./resemble.html) | 网页服务 | Resemble AI | verified | 2026-10-30 |
-| [Soundraw](./soundraw.html) | 网页服务 | SOUNDRAW Inc. | partial | 2026-10-30 |
+| [Soundraw](./soundraw.html) | 网页服务 | SOUNDRAW Inc. | verified | 2026-10-30 |
 | [Suno](./suno.html) | 网页服务 | Suno Inc. | verified | 2026-10-30 |
 | [Udio](./udio.html) | 网页服务 | Udio | partial | 2026-10-22 |
 | [Whisper](./whisper.html) | 本机应用 | OpenAI（开源） | verified | 2026-10-22 |
@@ -45,7 +45,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 17 个对象中，**10 个为 verified**。
+当前 17 个对象中，**12 个为 verified**。
 
 ## 数据来源
 

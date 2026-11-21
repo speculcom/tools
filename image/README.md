@@ -24,7 +24,7 @@
 | [FLUX（Black Forest Labs）](./flux.html) | 厂商云形态 | Black Forest Labs | verified | 2026-10-30 |
 | [Ideogram](./ideogram.html) | 网页服务 | Ideogram | verified | 2026-10-22 |
 | [即梦](./jimeng.html) | 网页服务 | 字节跳动（剪映团队） | verified | 2026-11-19 |
-| [Krea](./krea.html) | 网页服务 | Krea | partial | 2026-10-22 |
+| [Krea](./krea.html) | 网页服务 | Krea | verified | 2026-11-21 |
 | [Leonardo AI](./leonardo-ai.html) | 网页服务 | Leonardo（2024-07 被 Canva 收购） | verified | 2026-10-22 |
 | [Microsoft Designer](./microsoft-designer.html) | 网页服务 | 微软 | partial | 2026-10-22 |
 | [Midjourney](./midjourney.html) | 网页服务 | Midjourney, Inc. | verified | 2026-10-30 |
@@ -43,7 +43,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 15 个对象中，**11 个为 verified**。
+当前 15 个对象中，**12 个为 verified**。
 
 ## 数据来源
 
