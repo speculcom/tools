@@ -38,7 +38,7 @@
 | [Crush](./crush.html) | CLI 形态 | Charm | partial | 2026-10-23 |
 | [Cursor CLI](./cursor-cli.html) | CLI 形态 | Anysphere | partial | 2026-10-23 |
 | [Cursor](./cursor.html) | IDE 形态 | Anysphere | partial | 2026-10-23 |
-| [Devin](./devin.html) | 厂商云形态 | Cognition | partial | 2026-10-30 |
+| [Devin](./devin.html) | 厂商云形态 | Cognition | verified | 2026-10-30 |
 | [Droid](./factory-droid.html) | CLI 形态 | Factory AI | partial | 2026-10-23 |
 | [Gemini CLI](./gemini-cli.html) | CLI 形态 | Google | partial | 2026-10-23 |
 | [Google Antigravity](./google-antigravity.html) | IDE 形态 | Google | partial | 2026-10-30 |
@@ -69,7 +69,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 41 个对象中，**1 个为 verified**。
+当前 41 个对象中，**2 个为 verified**。
 
 ## 数据来源
 

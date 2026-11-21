@@ -20,10 +20,10 @@
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
 | [AIVA](./aiva.html) | 网页服务 | AIVA Limited | partial | 2026-10-30 |
-| [AssemblyAI](./assemblyai.html) | 厂商云形态 | AssemblyAI | partial | 2026-10-22 |
+| [AssemblyAI](./assemblyai.html) | 厂商云形态 | AssemblyAI | verified | 2026-10-22 |
 | [Cartesia](./cartesia.html) | 网页服务 | Cartesia AI, Inc. | partial | 2026-10-30 |
 | [CosyVoice](./cosyvoice.html) | 本机应用 | 阿里 FunAudioLLM（开源） | partial | 2026-10-30 |
-| [Deepgram](./deepgram.html) | 厂商云形态 | Deepgram | partial | 2026-10-22 |
+| [Deepgram](./deepgram.html) | 厂商云形态 | Deepgram | verified | 2026-10-22 |
 | [ElevenLabs](./elevenlabs.html) | 网页服务 | ElevenLabs | verified | 2026-10-30 |
 | [F5-TTS](./f5-tts.html) | 本机应用 | SWivid / 上交 X-LANCE 等（开源） | partial | 2026-10-30 |
 | [fish audio](./fish-audio.html) | 网页服务 | fish.audio | partial | 2026-10-22 |
@@ -45,7 +45,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 17 个对象中，**2 个为 verified**。
+当前 17 个对象中，**4 个为 verified**。
 
 ## 数据来源
 

@@ -23,34 +23,34 @@ MCP server 的权限范围、传输方式与输出可用性。收录标准：已
 | [Atlassian Remote MCP Server（Jira/Confluence）](./atlassian-mcp.html) | MCP | Atlassian | partial | 2026-10-30 |
 | [Brave Search MCP Server](./brave-search-mcp.html) | MCP | Brave | verified | 2026-10-30 |
 | [Browserbase MCP Server](./browserbase-mcp.html) | MCP | Browserbase | verified | 2026-10-31 |
-| [Chrome DevTools MCP](./chrome-devtools-mcp.html) | MCP | Google（Chrome DevTools 团队） | partial | 2026-10-30 |
-| [Cloudflare MCP Server](./cloudflare-mcp.html) | MCP | Cloudflare | partial | 2026-10-30 |
-| [Context7](./context7.html) | MCP | Upstash | partial | 2026-10-23 |
+| [Chrome DevTools MCP](./chrome-devtools-mcp.html) | MCP | Google（Chrome DevTools 团队） | verified | 2026-10-30 |
+| [Cloudflare MCP Server](./cloudflare-mcp.html) | MCP | Cloudflare | verified | 2026-10-30 |
+| [Context7](./context7.html) | MCP | Upstash | verified | 2026-10-23 |
 | [Datadog MCP Server](./datadog-mcp.html) | MCP | Datadog | verified | 2026-10-23 |
 | [Everything MCP Server](./everything.html) | MCP | Model Context Protocol | verified | 2026-10-23 |
 | [Exa MCP Server](./exa-mcp.html) | MCP | Exa | verified | 2026-10-23 |
 | [Fetch MCP Server](./fetch.html) | MCP | Model Context Protocol | verified | 2026-10-23 |
-| [Figma MCP Server](./figma-mcp.html) | MCP | Figma | partial | 2026-10-30 |
+| [Figma MCP Server](./figma-mcp.html) | MCP | Figma | verified | 2026-10-30 |
 | [Filesystem MCP Server](./filesystem.html) | MCP | Model Context Protocol | verified | 2026-10-23 |
 | [Firecrawl MCP Server](./firecrawl-mcp.html) | MCP | Firecrawl | verified | 2026-10-23 |
 | [Git MCP Server](./git.html) | MCP | Model Context Protocol | verified | 2026-10-23 |
 | [GitHub MCP Server](./github-mcp.html) | MCP | GitHub | partial | 2026-10-23 |
-| [Grafana MCP Server](./grafana-mcp.html) | MCP | Grafana Labs | partial | 2026-10-23 |
+| [Grafana MCP Server](./grafana-mcp.html) | MCP | Grafana Labs | verified | 2026-10-23 |
 | [Intercom MCP Server](./intercom-mcp.html) | MCP | Intercom | verified | 2026-10-31 |
-| [Linear MCP](./linear-mcp.html) | MCP | Linear | partial | 2026-10-30 |
+| [Linear MCP](./linear-mcp.html) | MCP | Linear | verified | 2026-10-30 |
 | [Knowledge Graph Memory Server](./memory.html) | MCP | Model Context Protocol | verified | 2026-10-23 |
-| [MongoDB MCP Server](./mongodb-mcp.html) | MCP | MongoDB | partial | 2026-10-30 |
-| [Neon MCP Server](./neon-mcp.html) | MCP | Neon | partial | 2026-10-30 |
-| [Notion MCP](./notion-mcp.html) | MCP | Notion | partial | 2026-10-30 |
+| [MongoDB MCP Server](./mongodb-mcp.html) | MCP | MongoDB | verified | 2026-10-30 |
+| [Neon MCP Server](./neon-mcp.html) | MCP | Neon | verified | 2026-10-30 |
+| [Notion MCP](./notion-mcp.html) | MCP | Notion | verified | 2026-10-30 |
 | [Playwright MCP Server](./playwright.html) | MCP | Microsoft | verified | 2026-10-23 |
-| [Sentry MCP / Toolkit](./sentry-mcp.html) | MCP | Sentry | partial | 2026-10-30 |
+| [Sentry MCP / Toolkit](./sentry-mcp.html) | MCP | Sentry | verified | 2026-10-30 |
 | [Sequential Thinking MCP Server](./sequential-thinking.html) | MCP | Model Context Protocol | verified | 2026-10-23 |
 | [Shopify Dev MCP Server](./shopify-mcp.html) | MCP | Shopify | verified | 2026-10-31 |
-| [Slack MCP Server](./slack-mcp.html) | MCP | Slack（Salesforce） | partial | 2026-10-30 |
-| [Stripe Agent Toolkit / MCP](./stripe-mcp.html) | MCP | Stripe | partial | 2026-10-30 |
-| [Supabase MCP](./supabase-mcp.html) | MCP | Supabase | partial | 2026-10-30 |
+| [Slack MCP Server](./slack-mcp.html) | MCP | Slack（Salesforce） | verified | 2026-10-30 |
+| [Stripe Agent Toolkit / MCP](./stripe-mcp.html) | MCP | Stripe | verified | 2026-10-30 |
+| [Supabase MCP](./supabase-mcp.html) | MCP | Supabase | verified | 2026-10-30 |
 | [Time MCP Server](./time.html) | MCP | Model Context Protocol | verified | 2026-10-23 |
-| [Zapier MCP](./zapier-mcp.html) | MCP | Zapier | partial | 2026-10-30 |
+| [Zapier MCP](./zapier-mcp.html) | MCP | Zapier | verified | 2026-10-30 |
 
 ## 可信度标记
 
@@ -60,7 +60,7 @@ MCP server 的权限范围、传输方式与输出可用性。收录标准：已
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 32 个对象中，**15 个为 verified**。
+当前 32 个对象中，**29 个为 verified**。
 
 ## 数据来源
 

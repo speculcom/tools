@@ -22,13 +22,13 @@
 | [Andi Search](./andi.html) | 网页服务 | Andi | partial | 2026-10-22 |
 | [Consensus](./consensus.html) | 网页服务 | Consensus | partial | 2026-10-22 |
 | [Devv](./devv.html) | 网页服务 | Devv AI | verified | 2026-10-22 |
-| [Elicit](./elicit.html) | 网页服务 | Elicit | partial | 2026-10-22 |
+| [Elicit](./elicit.html) | 网页服务 | Elicit | verified | 2026-10-22 |
 | [Genspark](./genspark.html) | 网页服务 | Genspark | partial | 2026-10-22 |
 | [Kagi](./kagi.html) | 网页服务 | Kagi | partial | 2026-10-22 |
 | [秘塔 AI 搜索](./metaso.html) | 网页服务 | 秘塔科技（上海秘塔网络科技） | verified | 2026-10-22 |
 | [NotebookLM](./notebooklm.html) | 网页服务 | Google | verified | 2026-11-04 |
-| [Perplexity](./perplexity.html) | 网页服务 | Perplexity AI | partial | 2026-10-22 |
-| [天工 AI 搜索](./tiangong.html) | 网页服务 | 昆仑万维 | partial | 2026-10-22 |
+| [Perplexity](./perplexity.html) | 网页服务 | Perplexity AI | verified | 2026-10-22 |
+| [天工 AI 搜索](./tiangong.html) | 网页服务 | 昆仑万维 | verified | 2026-10-22 |
 | [You.com](./you-com.html) | 网页服务 | You.com | partial | 2026-10-22 |
 
 ## 可信度标记
@@ -39,7 +39,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 11 个对象中，**3 个为 verified**。
+当前 11 个对象中，**6 个为 verified**。
 
 ## 数据来源
 

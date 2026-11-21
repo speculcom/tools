@@ -26,7 +26,7 @@
 | [Braintrust](./braintrust.html) | 网页服务 | Braintrust AI | partial | 2026-11-06 |
 | [CanaryScan](./canary-scan.html) | CLI 形态 | PSA Intelligence | partial | 2026-11-06 |
 | [garak](./garak.html) | CLI 形态 | NVIDIA · Leon Derczynski | partial | 2026-11-06 |
-| [GitGuardian](./gitguardian.html) | 网页服务 | GitGuardian | partial | 2026-11-06 |
+| [GitGuardian](./gitguardian.html) | 网页服务 | GitGuardian | verified | 2026-11-06 |
 | [Helicone](./helicone.html) | 厂商云形态 | Helicone | partial | 2026-11-06 |
 | [Inspect](./inspect-ai.html) | CLI 形态 | UK AI Security Institute | partial | 2026-11-06 |
 | [Lakera](./lakera-ai.html) | 厂商云形态 | Lakera | partial | 2026-11-06 |
@@ -53,7 +53,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 25 个对象中，**1 个为 verified**。
+当前 25 个对象中，**2 个为 verified**。
 
 ## 数据来源
 
