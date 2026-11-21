@@ -22,10 +22,10 @@
 | [智谱清言](./chatglm-chat.html) | 网页服务 | 智谱 AI | verified | 2026-11-21 |
 | [ChatGPT](./chatgpt.html) | 网页服务 | OpenAI | verified | 2026-11-19 |
 | [Claude（对话应用）](./claude-chat.html) | 网页服务 | Anthropic | verified | 2026-10-30 |
-| [DeepSeek](./deepseek-chat.html) | 网页服务 | 深度求索 | partial | 2026-10-22 |
-| [豆包](./doubao-chat.html) | 网页服务 | 字节跳动 | partial | 2026-11-19 |
+| [DeepSeek](./deepseek-chat.html) | 网页服务 | 深度求索 | verified | 2026-11-21 |
+| [豆包](./doubao-chat.html) | 网页服务 | 字节跳动 | verified | 2026-11-21 |
 | [Gemini（对话应用）](./gemini-chat.html) | 网页服务 | Google | verified | 2026-11-19 |
-| [Grok](./grok-chat.html) | 网页服务 | xAI | partial | 2026-10-30 |
+| [Grok](./grok-chat.html) | 网页服务 | xAI | verified | 2026-11-21 |
 | [海螺AI](./hailuo-chat.html) | 网页服务 | MiniMax（稀宇科技） | verified | 2026-11-21 |
 | [HuggingChat](./huggingchat.html) | 网页服务 | Hugging Face | verified | 2026-10-30 |
 | [Kimi](./kimi-chat.html) | 网页服务 | 月之暗面 Moonshot AI | verified | 2026-11-19 |
@@ -51,7 +51,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 23 个对象中，**20 个为 verified**。
+当前 23 个对象中，**23 个为 verified**。
 
 ## 数据来源
 
