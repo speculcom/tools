@@ -26,7 +26,7 @@
 | [豆包](./doubao-chat.html) | 网页服务 | 字节跳动 | partial | 2026-11-19 |
 | [Gemini（对话应用）](./gemini-chat.html) | 网页服务 | Google | verified | 2026-11-19 |
 | [Grok](./grok-chat.html) | 网页服务 | xAI | partial | 2026-10-30 |
-| [海螺AI](./hailuo-chat.html) | 网页服务 | MiniMax（稀宇科技） | partial | 2026-10-30 |
+| [海螺AI](./hailuo-chat.html) | 网页服务 | MiniMax（稀宇科技） | verified | 2026-11-21 |
 | [HuggingChat](./huggingchat.html) | 网页服务 | Hugging Face | verified | 2026-10-30 |
 | [Kimi](./kimi-chat.html) | 网页服务 | 月之暗面 Moonshot AI | verified | 2026-11-19 |
 | [Le Chat](./le-chat.html) | 网页服务 | Mistral AI | verified | 2026-10-30 |
@@ -37,10 +37,10 @@
 | [Open WebUI](./open-webui.html) | 网页服务 | Open WebUI 社区 | verified | 2026-11-17 |
 | [Poe](./poe.html) | 网页服务 | Quora | verified | 2026-10-30 |
 | [Reka Chat（Reka Playground / Edge Chat）](./reka-chat.html) | 网页服务 | Reka AI, Inc. | verified | 2026-10-31 |
-| [阶跃AI](./stepfun.html) | 网页服务 | 阶跃星辰 | partial | 2026-10-30 |
-| [通义千问](./tongyi-qianwen.html) | 网页服务 | 阿里巴巴 | partial | 2026-10-22 |
+| [阶跃AI](./stepfun.html) | 网页服务 | 阶跃星辰 | verified | 2026-11-21 |
+| [通义千问](./tongyi-qianwen.html) | 网页服务 | 阿里巴巴 | verified | 2026-11-21 |
 | [文心](./wenxin.html) | 网页服务 | 百度 | verified | 2026-10-22 |
-| [讯飞星火](./xinghuo-spark.html) | 网页服务 | 科大讯飞 | partial | 2026-10-22 |
+| [讯飞星火](./xinghuo-spark.html) | 网页服务 | 科大讯飞 | verified | 2026-11-21 |
 | [腾讯元宝](./yuanbao-chat.html) | 网页服务 | 腾讯 | verified | 2026-10-22 |
 
 ## 可信度标记
@@ -51,7 +51,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 23 个对象中，**14 个为 verified**。
+当前 23 个对象中，**18 个为 verified**。
 
 ## 数据来源
 
