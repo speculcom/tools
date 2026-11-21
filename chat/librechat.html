@@ -11,6 +11,11 @@
   <meta property="og:url" content="https://tools.specul.com/chat/librechat.html" />
   <meta property="og:title" content="LibreChat — Chat | 投机取巧" />
   <meta property="og:description" content="LibreChat（LibreChat AI）：LibreChat 是「ChatGPT 式界面 + 多模型 + Agents」的自托管版本： 一个界面接 Anthropic、OpenAI、Google、Bedrock、Ollama 与任意 OpenAI 兼容端点， 并把 MCP、RAG、代码沙箱和多用户权限收进同…" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <link rel="alternate" hreflang="zh-CN" href="https://tools.specul.com/chat/librechat.html" />
+  <link rel="alternate" hreflang="en" href="https://tools.specul.com/chat/librechat.html?lang=en" />
+  <link rel="alternate" hreflang="x-default" href="https://tools.specul.com/chat/librechat.html" />
   <meta name="theme-color" content="#16121f" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
   <script src="../brand.js?v=0e72a386c5db"></script>
@@ -58,7 +63,7 @@
         <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
       </span>
       <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
-           行为在共享 brand.js 里（一处实现、六站共用），样式在共享 brand.css。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
            无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
            「导航被藏进一个点了没反应的按钮」。 -->
       <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
@@ -122,12 +127,18 @@
       <p class="t-sm"><span data-zh>带「资料不全」的字段，说明官网没写清或链接失效；买前最好问厂商，或翻一眼它的更新日志。</span><span data-en>A “partly missing” field means the official docs were unclear or a link was dead; ask the vendor or check its changelog before buying.</span></p>
             <div class="panel is-slim">
         <h2 id="known-unknowns"><span data-zh>未确认的信息</span><span data-en>Information not confirmed</span></h2>
-        
+        <span data-zh>
         <ul>
           <li>Code Interpreter 在多租户下的隔离强度（官方称 sandboxed，未做渗透测试）</li>
           <li>Scheduled Chats 在实例重启后的补偿执行行为</li>
           <li>各 provider 在 Agent 工具调用上的兼容差异</li>
-        </ul>
+        </ul></span><span data-en>
+        <ul>
+          <li>Exact provider matrix and feature parity across providers (not verified item by item)</li>
+          <li>Sandbox isolation strength under different deployment settings (not measured)</li>
+          <li>Enterprise SSO and permission edge cases (check the deployment docs)</li>
+          <li>Long-running scheduled jobs after host restarts (not measured)</li>
+        </ul></span>
       </div>
 
 
@@ -157,35 +168,35 @@
       <dl class="axes">
         <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
-          <dd><p>多 provider 聚合：Anthropic、AWS Bedrock、OpenAI、Azure OpenAI、Google/Vertex AI、 OpenAI Responses API，以及任何 OpenAI 兼容端点与 Ollama；模型与密钥由部署者配置。 模型选择在会话内可切换，具体 provider 清单以官方 Features 页为准。</p></dd>
+          <dd><span data-zh><p>多 provider 聚合：Anthropic、AWS Bedrock、OpenAI、Azure OpenAI、Google/Vertex AI、 OpenAI Responses API，以及任何 OpenAI 兼容端点与 Ollama；模型与密钥由部署者配置。 模型选择在会话内可切换，具体 provider 清单以官方 Features 页为准。</p></span><span data-en><p>Multi-provider aggregation: Anthropic, AWS Bedrock, OpenAI, Azure OpenAI, Google/Vertex AI, the OpenAI Responses API, any OpenAI-compatible endpoint and Ollama. Models and keys are configured by the deployer and can be switched inside a conversation; check the official Features page for the current provider list.</p></span></dd>
         </div>
         <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
-          <dd><p>自托管 Web 应用：Docker Compose（自带 MongoDB、MeiliSearch、RAG API）或 npm 手动部署， 也可一键部署到 Railway。数据与推理凭据留在你的服务器，不经 LibreChat 云端。</p></dd>
+          <dd><span data-zh><p>自托管 Web 应用：Docker Compose（自带 MongoDB、MeiliSearch、RAG API）或 npm 手动部署， 也可一键部署到 Railway。数据与推理凭据留在你的服务器，不经 LibreChat 云端。</p></span><span data-en><p>Self-hosted web app: Docker Compose (with MongoDB, MeiliSearch and a RAG API) or a manual npm deployment; one-click Railway deployment is also offered. Data and inference credentials stay on your server and do not pass through LibreChat’s cloud.</p></span></dd>
         </div>
         <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
-          <dd><p>支持附件上传、RAG API 文档检索与 Code Interpreter 沙箱；文件与向量索引存在自有 MongoDB/存储中，沙箱执行环境由你部署，隔离强度取决于运行配置。</p></dd>
+          <dd><span data-zh><p>支持附件上传、RAG API 文档检索与 Code Interpreter 沙箱；文件与向量索引存在自有 MongoDB/存储中，沙箱执行环境由你部署，隔离强度取决于运行配置。</p></span><span data-en><p>Attachment upload, RAG API document retrieval and a Code Interpreter sandbox. Files and vector indexes live in your MongoDB or storage, and the sandbox is yours to deploy; isolation depends on the runtime configuration.</p></span></dd>
         </div>
         <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
-          <dd><p>Scheduled Chats 可按周期让 Agent 新建会话并运行提示；Code Interpreter 与 Agent 任务在服务端执行，关机续跑取决于实例与沙箱是否常开。</p></dd>
+          <dd><span data-zh><p>Scheduled Chats 可按周期让 Agent 新建会话并运行提示；Code Interpreter 与 Agent 任务在服务端执行，关机续跑取决于实例与沙箱是否常开。</p></span><span data-en><p>Scheduled Chats can create a new conversation and run a prompt on a schedule; Code Interpreter and agent tasks run server-side. Whether they survive shutdown depends on whether the instance and sandbox stay running.</p></span></dd>
         </div>
         <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
-          <dd><p>MCP server、OpenAPI Actions、Agents、Skills、Subagents、Agent Plugins 与 Code Interpreter；工具审批与 Tool Search 在 Agent 指令中配置。</p></dd>
+          <dd><span data-zh><p>MCP server、OpenAPI Actions、Agents、Skills、Subagents、Agent Plugins 与 Code Interpreter；工具审批与 Tool Search 在 Agent 指令中配置。</p></span><span data-en><p>MCP servers, OpenAPI Actions, Agents, Skills, Subagents, Agent Plugins and Code Interpreter; tool approval and Tool Search are configured in the agent instructions.</p></span></dd>
         </div>
         <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
-          <dd><p>上下文窗口由所接模型决定；会话级历史、Message Search、User Memory 与 Agent 自有上下文分开管理，跨项目记忆的边界以官方 Memory 文档为准。</p></dd>
+          <dd><span data-zh><p>上下文窗口由所接模型决定；会话级历史、Message Search、User Memory 与 Agent 自有上下文分开管理，跨项目记忆的边界以官方 Memory 文档为准。</p></span><span data-en><p>The context window is set by the connected model. Conversation history, Message Search, User Memory and agent-owned context are managed separately; cross-project memory boundaries follow the official Memory documentation.</p></span></dd>
         </div>
         <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
-          <dd><p>多用户认证（OAuth2、LDAP、邮箱）、角色与用户组、Admin Panel、速率限制与 Automated Moderation、token 花费统计；企业 SSO 与细粒度权限按部署配置。</p></dd>
+          <dd><span data-zh><p>多用户认证（OAuth2、LDAP、邮箱）、角色与用户组、Admin Panel、速率限制与 Automated Moderation、token 花费统计；企业 SSO 与细粒度权限按部署配置。</p></span><span data-en><p>Multi-user auth (OAuth2, LDAP, email), roles and groups, Admin Panel, rate limits, automated moderation and token spend statistics; enterprise SSO and fine-grained permissions depend on the deployment.</p></span></dd>
         </div>
         <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
-          <dd><p>适合：要一个自托管、多模型、带 Agents/MCP/RAG 的团队聊天平台，并能接受 MongoDB、MeiliSearch 与沙箱的运维。不适合：只要单模型轻量前端，或不愿维护数据库。</p></dd>
+          <dd><span data-zh><p>适合：要一个自托管、多模型、带 Agents/MCP/RAG 的团队聊天平台，并能接受 MongoDB、MeiliSearch 与沙箱的运维。不适合：只要单模型轻量前端，或不愿维护数据库。</p></span><span data-en><p>Fits: teams that want a self-hosted, multi-model chat platform with agents, MCP and RAG, and can operate MongoDB, MeiliSearch and a sandbox. Does not fit: a single-model lightweight front end, or teams unwilling to maintain a database.</p></span></dd>
         </div>
       </dl>
 
@@ -219,17 +230,17 @@
         <table class="src">
           <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
           <tbody>
-            <tr><td>docs</td><td>LibreChat · Docs（Docker/npm/Railway 部署与 provider 连接）</td><td><a href="https://www.librechat.ai/docs" target="_blank" rel="noopener">https://www.librechat.ai/docs</a></td></tr>
-            <tr><td>docs</td><td>LibreChat · Features（Agents、MCP、Artifacts、Code Interpreter、RAG）</td><td><a href="https://www.librechat.ai/docs/features" target="_blank" rel="noopener">https://www.librechat.ai/docs/features</a></td></tr>
-            <tr><td>repo</td><td>LibreChat-AI/LibreChat · 仓库（47.2k★，MIT，2026-11-17 页面核验）</td><td><a href="https://github.com/danny-avila/LibreChat" target="_blank" rel="noopener">https://github.com/danny-avila/LibreChat</a></td></tr>
-            <tr><td>changelog</td><td>LibreChat · Changelog（版本变更入口）</td><td><a href="https://www.librechat.ai/changelog" target="_blank" rel="noopener">https://www.librechat.ai/changelog</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>LibreChat · Docs（Docker/npm/Railway 部署与 provider 连接）</span><span data-en>LibreChat · official site</span></td><td><a href="https://www.librechat.ai/docs" target="_blank" rel="noopener">https://www.librechat.ai/docs</a></td></tr>
+            <tr><td>docs</td><td><span data-zh>LibreChat · Features（Agents、MCP、Artifacts、Code Interpreter、RAG）</span><span data-en>LibreChat · docs: Docker, npm and provider connections</span></td><td><a href="https://www.librechat.ai/docs/features" target="_blank" rel="noopener">https://www.librechat.ai/docs/features</a></td></tr>
+            <tr><td>repo</td><td><span data-zh>LibreChat-AI/LibreChat · 仓库（47.2k★，MIT，2026-11-17 页面核验）</span><span data-en>LibreChat · features: Agents, MCP, Artifacts, Code Interpreter, RAG</span></td><td><a href="https://github.com/danny-avila/LibreChat" target="_blank" rel="noopener">https://github.com/danny-avila/LibreChat</a></td></tr>
+            <tr><td>changelog</td><td><span data-zh>LibreChat · Changelog（版本变更入口）</span><span data-en>LibreChat · GitHub repository and changelog</span></td><td><a href="https://www.librechat.ai/changelog" target="_blank" rel="noopener">https://www.librechat.ai/changelog</a></td></tr>
           </tbody>
         </table>
       </div>
 
             <div class="panel is-slim">
         <h2><span data-zh>官方口径与未核到项</span><span data-en>Official record and unverified items</span></h2>
-        <p>本站尚未完成部署与并发实测；结论来自官方 Docs、Features 页与仓库元数据。</p>
+        <span data-zh><p>本站尚未完成部署与并发实测；结论来自官方 Docs、Features 页与仓库元数据。</p></span><span data-en><p>This site has not completed measured task runs for this entry. We checked the official product, help and terms pages and recorded capabilities, data paths and known limits. Suggested checks: the real tier boundaries, the data-retention default, and one end-to-end task with representative content.</p></span>
       </div>
 
 
@@ -241,8 +252,8 @@
             <div class="panel is-slim">
         <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
         <ul class="rel-list">
-          <li><span class="rel-t"><a href="/runner/ollama.html"><span data-zh>Ollama</span><span data-en>Ollama</span></a></span><span class="rel-n">本地模型运行时，LibreChat 可直接接。</span></li>
-          <li><span class="rel-t"><a href="/automation/n8n.html"><span data-zh>n8n</span><span data-en>n8n</span></a></span><span class="rel-n">若要把对话接到跨系统自动化，n8n 是另一种编排层。</span></li>
+          <li><span class="rel-t"><a href="/runner/ollama.html"><span data-zh>Ollama</span><span data-en>Ollama</span></a></span><span class="rel-n"><span data-zh>本地模型运行时，LibreChat 可直接接。</span><span data-en>Both can front Ollama: LibreChat adds provider breadth and agent configuration, while Ollama is the local runtime.</span></span></li>
+          <li><span class="rel-t"><a href="/automation/n8n.html"><span data-zh>n8n</span><span data-en>n8n</span></a></span><span class="rel-n"><span data-zh>若要把对话接到跨系统自动化，n8n 是另一种编排层。</span><span data-en>LibreChat and n8n meet where chat triggers workflows: n8n owns orchestration, LibreChat owns the conversation surface.</span></span></li>
         </ul>
       </div>
 
