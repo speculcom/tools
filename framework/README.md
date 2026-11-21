@@ -19,43 +19,43 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
-| [AG2](./ag2.html) | 框架 / SDK | ag2ai | partial | 2026-10-23 |
+| [AG2](./ag2.html) | 框架 / SDK | ag2ai | verified | 2026-10-23 |
 | [AgentScope](./agentscope.html) | 框架 / SDK | 阿里巴巴（魔搭社区） | verified | 2026-10-30 |
 | [Agno（原 Phidata）](./agno.html) | 框架 / SDK | Agno Inc. | verified | 2026-10-31 |
-| [Claude Agent SDK](./claude-agent-sdk.html) | 框架 / SDK | Anthropic | partial | 2026-10-23 |
-| [Codex SDK](./codex-sdk.html) | 框架 / SDK | OpenAI | partial | 2026-10-23 |
-| [CrewAI](./crewai.html) | 框架 / SDK | CrewAI Inc | partial | 2026-10-23 |
-| [Deep Agents](./deepagents.html) | 框架 / SDK | LangChain | partial | 2026-10-23 |
+| [Claude Agent SDK](./claude-agent-sdk.html) | 框架 / SDK | Anthropic | verified | 2026-10-23 |
+| [Codex SDK](./codex-sdk.html) | 框架 / SDK | OpenAI | verified | 2026-10-23 |
+| [CrewAI](./crewai.html) | 框架 / SDK | CrewAI Inc | verified | 2026-10-23 |
+| [Deep Agents](./deepagents.html) | 框架 / SDK | LangChain | verified | 2026-10-23 |
 | [Drake](./drake.html) | 框架 / SDK | Robot Locomotion Group / MIT | partial | 2026-11-07 |
 | [DSPy](./dspy.html) | 框架 / SDK | Stanford NLP / Databricks | verified | 2026-11-21 |
 | [ElizaOS（Eliza）](./elizaos.html) | 框架 / SDK | ElizaOS 社区（Eliza Research） | verified | 2026-11-21 |
 | [Gazebo Sim](./gazebo.html) | 本机应用 | Open Robotics | verified | 2026-11-07 |
 | [Genesis](./genesis.html) | 框架 / SDK | Genesis Embodied AI | verified | 2026-11-07 |
-| [Google ADK（Agent Development Kit）](./google-adk.html) | 框架 / SDK | Google | partial | 2026-10-23 |
+| [Google ADK（Agent Development Kit）](./google-adk.html) | 框架 / SDK | Google | verified | 2026-10-23 |
 | [Haystack](./haystack.html) | 框架 / SDK | deepset | verified | 2026-10-30 |
-| [Hermes Agent](./hermes-agent.html) | 框架 / SDK | Nous Research | partial | 2026-10-23 |
+| [Hermes Agent](./hermes-agent.html) | 框架 / SDK | Nous Research | verified | 2026-10-23 |
 | [Isaac Lab](./isaac-lab.html) | 框架 / SDK | NVIDIA | verified | 2026-11-07 |
 | [Isaac Sim](./isaac-sim.html) | 本机应用 | NVIDIA | verified | 2026-11-07 |
 | [LangChain](./langchain.html) | 框架 / SDK | LangChain, Inc. | verified | 2026-10-30 |
 | [LangChain4j](./langchain4j.html) | 框架 / SDK | LangChain4j 社区 | verified | 2026-11-03 |
-| [LangGraph](./langgraph.html) | 框架 / SDK | LangChain Inc | partial | 2026-10-23 |
+| [LangGraph](./langgraph.html) | 框架 / SDK | LangChain Inc | verified | 2026-10-23 |
 | [LeRobot](./lerobot.html) | 框架 / SDK | Hugging Face | verified | 2026-11-07 |
 | [Letta / MemGPT](./letta.html) | 框架 / SDK | Letta, Inc. | verified | 2026-10-30 |
-| [LlamaIndex Framework](./llamaindex.html) | 框架 / SDK | LlamaIndex（run-llama） | partial | 2026-10-23 |
-| [Mastra](./mastra.html) | 框架 / SDK | Mastra AI | partial | 2026-10-23 |
+| [LlamaIndex Framework](./llamaindex.html) | 框架 / SDK | LlamaIndex（run-llama） | verified | 2026-10-23 |
+| [Mastra](./mastra.html) | 框架 / SDK | Mastra AI | verified | 2026-10-23 |
 | [MetaGPT](./metagpt.html) | 框架 / SDK | DeepWisdom（深度赋智，国产） | partial | 2026-10-31 |
-| [Microsoft Agent Framework](./microsoft-agent-framework.html) | 框架 / SDK | Microsoft | partial | 2026-10-23 |
+| [Microsoft Agent Framework](./microsoft-agent-framework.html) | 框架 / SDK | Microsoft | verified | 2026-10-23 |
 | [MoveIt 2](./moveit2.html) | 框架 / SDK | MoveIt | verified | 2026-11-07 |
 | [MuJoCo](./mujoco.html) | 框架 / SDK | Google DeepMind | verified | 2026-11-07 |
 | [Nav2](./nav2.html) | 框架 / SDK | ROS Navigation | verified | 2026-11-07 |
 | [Open Interpreter](./open-interpreter.html) | 框架 / SDK | Open Interpreter（开源社区） | verified | 2026-10-31 |
-| [OpenAI Agents SDK](./openai-agents-sdk.html) | 框架 / SDK | OpenAI | partial | 2026-10-23 |
-| [OpenHands Agent Canvas](./openhands.html) | 框架 / SDK | OpenHands（All-Hands-AI） | partial | 2026-10-23 |
+| [OpenAI Agents SDK](./openai-agents-sdk.html) | 框架 / SDK | OpenAI | verified | 2026-10-23 |
+| [OpenHands Agent Canvas](./openhands.html) | 框架 / SDK | OpenHands（All-Hands-AI） | verified | 2026-10-23 |
 | [PyBullet](./pybullet.html) | 框架 / SDK | Bullet Physics | verified | 2026-11-07 |
-| [Pydantic AI](./pydantic-ai.html) | 框架 / SDK | Pydantic | partial | 2026-10-23 |
+| [Pydantic AI](./pydantic-ai.html) | 框架 / SDK | Pydantic | verified | 2026-10-23 |
 | [ROS 2](./ros2.html) | 框架 / SDK | Open Robotics | verified | 2026-11-07 |
 | [Semantic Kernel（SK）](./semantic-kernel.html) | 框架 / SDK | Microsoft | verified | 2026-10-31 |
-| [smolagents](./smolagents.html) | 框架 / SDK | Hugging Face | partial | 2026-10-23 |
+| [smolagents](./smolagents.html) | 框架 / SDK | Hugging Face | verified | 2026-10-23 |
 | [Spring AI](./spring-ai.html) | 框架 / SDK | Spring（VMware/Broadcom） | verified | 2026-11-03 |
 | [Strands Agents SDK](./strands-agents.html) | 框架 / SDK | AWS | verified | 2026-10-30 |
 | [SWE-agent](./swe-agent.html) | 框架 / SDK | Princeton / Stanford（学术团队） | verified | 2026-10-30 |
@@ -70,7 +70,7 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 42 个对象中，**25 个为 verified**。
+当前 42 个对象中，**40 个为 verified**。
 
 ## 数据来源
 

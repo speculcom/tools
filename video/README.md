@@ -24,11 +24,11 @@
 | [海螺视频](./hailuo-video.html) | 网页服务 | MiniMax（稀宇科技） | partial | 2026-10-22 |
 | [HeyGen](./heygen.html) | 网页服务 | HeyGen | partial | 2026-10-22 |
 | [Higgsfield](./higgsfield.html) | 网页服务 | Higgsfield AI | partial | 2026-10-22 |
-| [invideo AI](./invideo.html) | 网页服务 | invideo | partial | 2026-10-30 |
+| [invideo AI](./invideo.html) | 网页服务 | invideo | verified | 2026-10-30 |
 | [可灵 Kling AI](./kling.html) | 网页服务 | Kling AI Pte. Ltd.（快手） | verified | 2026-11-21 |
 | [Luma（Dream Machine）](./luma.html) | 网页服务 | Luma AI | verified | 2026-10-22 |
 | [Pika](./pika.html) | 网页服务 | Pika Labs | partial | 2026-10-22 |
-| [PixVerse](./pixverse.html) | 网页服务 | 爱诗科技 | partial | 2026-10-22 |
+| [PixVerse](./pixverse.html) | 网页服务 | 爱诗科技 | verified | 2026-10-22 |
 | [Runway](./runway.html) | 网页服务 | Runway AI, Inc. | verified | 2026-10-30 |
 | [Synthesia](./synthesia.html) | 网页服务 | Synthesia | verified | 2026-10-22 |
 | [Veo（Google）](./veo.html) | 厂商云形态 | Google | verified | 2026-10-30 |
@@ -42,7 +42,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 14 个对象中，**6 个为 verified**。
+当前 14 个对象中，**8 个为 verified**。
 
 ## 数据来源
 

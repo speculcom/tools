@@ -19,28 +19,28 @@
 
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
-| [Content Credentials（内容凭证）](./adobe-content-credentials.html) | 网页服务 | Adobe · Content Authenticity Initiative / C2PA | partial | 2026-11-06 |
-| [Arize Phoenix](./arize-phoenix.html) | 本机应用 | Arize AI | partial | 2026-11-06 |
-| [Azure AI Content Safety](./azure-ai-content-safety.html) | 厂商云形态 | Microsoft | partial | 2026-11-06 |
-| [Amazon Bedrock Guardrails](./bedrock-guardrails.html) | 厂商云形态 | Amazon Web Services | partial | 2026-11-06 |
-| [Braintrust](./braintrust.html) | 网页服务 | Braintrust AI | partial | 2026-11-06 |
+| [Content Credentials（内容凭证）](./adobe-content-credentials.html) | 网页服务 | Adobe · Content Authenticity Initiative / C2PA | verified | 2026-11-06 |
+| [Arize Phoenix](./arize-phoenix.html) | 本机应用 | Arize AI | verified | 2026-11-06 |
+| [Azure AI Content Safety](./azure-ai-content-safety.html) | 厂商云形态 | Microsoft | verified | 2026-11-06 |
+| [Amazon Bedrock Guardrails](./bedrock-guardrails.html) | 厂商云形态 | Amazon Web Services | verified | 2026-11-06 |
+| [Braintrust](./braintrust.html) | 网页服务 | Braintrust AI | verified | 2026-11-06 |
 | [CanaryScan](./canary-scan.html) | CLI 形态 | PSA Intelligence | partial | 2026-11-06 |
-| [garak](./garak.html) | CLI 形态 | NVIDIA · Leon Derczynski | partial | 2026-11-06 |
+| [garak](./garak.html) | CLI 形态 | NVIDIA · Leon Derczynski | verified | 2026-11-06 |
 | [GitGuardian](./gitguardian.html) | 网页服务 | GitGuardian | verified | 2026-11-06 |
 | [Helicone](./helicone.html) | 厂商云形态 | Helicone | partial | 2026-11-06 |
-| [Inspect](./inspect-ai.html) | CLI 形态 | UK AI Security Institute | partial | 2026-11-06 |
-| [Lakera](./lakera-ai.html) | 厂商云形态 | Lakera | partial | 2026-11-06 |
-| [Langfuse](./langfuse.html) | 本机应用 | Langfuse | partial | 2026-11-06 |
-| [LangSmith](./langsmith.html) | 厂商云形态 | LangChain | partial | 2026-11-06 |
+| [Inspect](./inspect-ai.html) | CLI 形态 | UK AI Security Institute | verified | 2026-11-06 |
+| [Lakera](./lakera-ai.html) | 厂商云形态 | Lakera | verified | 2026-11-06 |
+| [Langfuse](./langfuse.html) | 本机应用 | Langfuse | verified | 2026-11-06 |
+| [LangSmith](./langsmith.html) | 厂商云形态 | LangChain | verified | 2026-11-06 |
 | [LangWatch](./langwatch.html) | 厂商云形态 | LangWatch | verified | 2026-11-06 |
-| [LiteLLM 网关（Proxy / AI Gateway）](./litellm.html) | 本机应用 | BerriAI · LiteLLM | partial | 2026-11-06 |
+| [LiteLLM 网关（Proxy / AI Gateway）](./litellm.html) | 本机应用 | BerriAI · LiteLLM | verified | 2026-11-06 |
 | [LLM Guard](./llm-guard.html) | 本机应用 | Protect AI | partial | 2026-11-06 |
 | [NeMo Guardrails](./nemo-guardrails.html) | 本机应用 | NVIDIA | partial | 2026-11-06 |
-| [Nightfall](./nightfall.html) | 厂商云形态 | Nightfall AI | partial | 2026-11-06 |
+| [Nightfall](./nightfall.html) | 厂商云形态 | Nightfall AI | verified | 2026-11-06 |
 | [OpenAI Evals](./openai-evals.html) | CLI 形态 | OpenAI | partial | 2026-11-06 |
-| [Presidio](./presidio.html) | 本机应用 | Data Privacy Stack | partial | 2026-11-06 |
-| [promptfoo](./promptfoo.html) | CLI 形态 | promptfoo | partial | 2026-11-06 |
-| [PyRIT](./pyrit.html) | 本机应用 | Microsoft | partial | 2026-11-06 |
+| [Presidio](./presidio.html) | 本机应用 | Data Privacy Stack | verified | 2026-11-06 |
+| [promptfoo](./promptfoo.html) | CLI 形态 | promptfoo | verified | 2026-11-06 |
+| [PyRIT](./pyrit.html) | 本机应用 | Microsoft | verified | 2026-11-06 |
 | [Ragas](./ragas.html) | 本机应用 | VibrantLabs | partial | 2026-11-06 |
 | [Rebuff](./rebuff.html) | 本机应用 | Protect AI | partial | 2026-11-06 |
 | [Truepic Vision / Lens](./truepic.html) | 厂商云形态 | Truepic Inc. | partial | 2026-11-06 |
@@ -53,7 +53,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 25 个对象中，**2 个为 verified**。
+当前 25 个对象中，**17 个为 verified**。
 
 ## 数据来源
 

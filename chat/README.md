@@ -31,12 +31,12 @@
 | [Kimi](./kimi-chat.html) | 网页服务 | 月之暗面 Moonshot AI | verified | 2026-11-19 |
 | [Le Chat](./le-chat.html) | 网页服务 | Mistral AI | verified | 2026-10-30 |
 | [LibreChat](./librechat.html) | 网页服务 | LibreChat AI | verified | 2026-11-17 |
-| [Manus](./manus.html) | 网页服务 | Manus AI（Monica 团队） | partial | 2026-10-22 |
+| [Manus](./manus.html) | 网页服务 | Manus AI（Monica 团队） | verified | 2026-10-22 |
 | [Meta AI](./meta-ai.html) | 网页服务 | Meta | verified | 2026-10-30 |
 | [Microsoft Copilot](./microsoft-copilot.html) | 网页服务 | 微软 | partial | 2026-10-22 |
 | [Open WebUI](./open-webui.html) | 网页服务 | Open WebUI 社区 | verified | 2026-11-17 |
 | [Poe](./poe.html) | 网页服务 | Quora | verified | 2026-10-30 |
-| [Reka Chat（Reka Playground / Edge Chat）](./reka-chat.html) | 网页服务 | Reka AI, Inc. | partial | 2026-10-31 |
+| [Reka Chat（Reka Playground / Edge Chat）](./reka-chat.html) | 网页服务 | Reka AI, Inc. | verified | 2026-10-31 |
 | [阶跃AI](./stepfun.html) | 网页服务 | 阶跃星辰 | partial | 2026-10-30 |
 | [通义千问](./tongyi-qianwen.html) | 网页服务 | 阿里巴巴 | partial | 2026-10-22 |
 | [文心](./wenxin.html) | 网页服务 | 百度 | verified | 2026-10-22 |
@@ -51,7 +51,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 23 个对象中，**12 个为 verified**。
+当前 23 个对象中，**14 个为 verified**。
 
 ## 数据来源
 

@@ -24,42 +24,42 @@
 | [Amazon Q Developer](./amazon-q-developer.html) | IDE 形态 | AWS | partial | 2026-10-22 |
 | [Amp](./amp.html) | CLI 形态 | Amp Frontier Corporation（原 Sourcegraph，2025-12 分拆独立） | verified | 2026-10-23 |
 | [Augment Code](./augment-code.html) | 厂商云形态 | Augment Code | verified | 2026-11-21 |
-| [文心快码（Baidu Comate）](./baidu-comate.html) | IDE 形态 | 百度 | partial | 2026-10-22 |
+| [文心快码（Baidu Comate）](./baidu-comate.html) | IDE 形态 | 百度 | verified | 2026-10-22 |
 | [Bolt.new](./bolt-new.html) | 厂商云形态 | StackBlitz | verified | 2026-10-22 |
-| [Claude Code CLI](./claude-code-cli.html) | CLI 形态 | Anthropic | partial | 2026-10-23 |
+| [Claude Code CLI](./claude-code-cli.html) | CLI 形态 | Anthropic | verified | 2026-10-23 |
 | [Claude Code IDE 扩展](./claude-code.html) | IDE 形态 | Anthropic | verified | 2026-10-23 |
-| [Cline](./cline.html) | IDE 形态 | Cline Bot | partial | 2026-10-23 |
+| [Cline](./cline.html) | IDE 形态 | Cline Bot | verified | 2026-10-23 |
 | [CodeBuddy](./codebuddy.html) | IDE 形态 | 腾讯云 | verified | 2026-10-30 |
-| [Codex CLI](./codex-cli.html) | CLI 形态 | OpenAI | partial | 2026-10-23 |
+| [Codex CLI](./codex-cli.html) | CLI 形态 | OpenAI | verified | 2026-10-23 |
 | [Codex IDE 扩展](./codex-ide.html) | IDE 形态 | OpenAI | verified | 2026-10-23 |
 | [Continue](./continue.html) | IDE 形态 | Continue | partial | 2026-10-23 |
 | [GitHub Copilot CLI](./copilot-cli.html) | CLI 形态 | GitHub | verified | 2026-10-23 |
 | [GitHub Copilot](./copilot.html) | IDE 形态 | GitHub / Microsoft | verified | 2026-10-23 |
-| [Crush](./crush.html) | CLI 形态 | Charm | partial | 2026-10-23 |
-| [Cursor CLI](./cursor-cli.html) | CLI 形态 | Anysphere | partial | 2026-10-23 |
-| [Cursor](./cursor.html) | IDE 形态 | Anysphere | partial | 2026-10-23 |
+| [Crush](./crush.html) | CLI 形态 | Charm | verified | 2026-10-23 |
+| [Cursor CLI](./cursor-cli.html) | CLI 形态 | Anysphere | verified | 2026-10-23 |
+| [Cursor](./cursor.html) | IDE 形态 | Anysphere | verified | 2026-10-23 |
 | [Devin](./devin.html) | 厂商云形态 | Cognition | verified | 2026-10-30 |
-| [Droid](./factory-droid.html) | CLI 形态 | Factory AI | partial | 2026-10-23 |
-| [Gemini CLI](./gemini-cli.html) | CLI 形态 | Google | partial | 2026-10-23 |
+| [Droid](./factory-droid.html) | CLI 形态 | Factory AI | verified | 2026-10-23 |
+| [Gemini CLI](./gemini-cli.html) | CLI 形态 | Google | verified | 2026-10-23 |
 | [Google Antigravity](./google-antigravity.html) | IDE 形态 | Google | verified | 2026-10-30 |
 | [Goose](./goose.html) | CLI 形态 | Agentic AI Foundation | verified | 2026-10-23 |
-| [xAI Grok Bot](./grok-bot.html) | 厂商云形态 | xAI | partial | 2026-10-23 |
-| [Jules](./jules.html) | 厂商云形态 | Google | partial | 2026-10-23 |
-| [Junie](./junie.html) | IDE 形态 | JetBrains | partial | 2026-10-23 |
+| [xAI Grok Bot](./grok-bot.html) | 厂商云形态 | xAI | verified | 2026-10-23 |
+| [Jules](./jules.html) | 厂商云形态 | Google | verified | 2026-10-23 |
+| [Junie](./junie.html) | IDE 形态 | JetBrains | verified | 2026-10-23 |
 | [Kilo Code](./kilocode.html) | IDE 形态 | Kilo-Org | verified | 2026-10-22 |
-| [Kiro](./kiro.html) | IDE 形态 | AWS | partial | 2026-10-23 |
-| [Lovable](./lovable.html) | 厂商云形态 | Lovable | partial | 2026-10-22 |
-| [Meta Muse](./meta-muse.html) | 厂商云形态 | Meta | partial | 2026-10-23 |
-| [OpenAI Dot](./openai-dot.html) | 厂商云形态 | OpenAI | partial | 2026-10-23 |
-| [OpenCode](./opencode.html) | CLI 形态 | OpenCode | partial | 2026-10-23 |
-| [Qoder CN（原通义灵码）](./qoder-cn.html) | IDE 形态 | 阿里云 | partial | 2026-10-22 |
+| [Kiro](./kiro.html) | IDE 形态 | AWS | verified | 2026-10-23 |
+| [Lovable](./lovable.html) | 厂商云形态 | Lovable | verified | 2026-10-22 |
+| [Meta Muse](./meta-muse.html) | 厂商云形态 | Meta | verified | 2026-10-23 |
+| [OpenAI Dot](./openai-dot.html) | 厂商云形态 | OpenAI | verified | 2026-10-23 |
+| [OpenCode](./opencode.html) | CLI 形态 | OpenCode | verified | 2026-10-23 |
+| [Qoder CN（原通义灵码）](./qoder-cn.html) | IDE 形态 | 阿里云 | verified | 2026-10-22 |
 | [Qoder](./qoder.html) | IDE 形态 | 阿里云 | verified | 2026-11-21 |
 | [Replit Agent](./replit-agent.html) | 厂商云形态 | Replit | verified | 2026-11-21 |
-| [Trae](./trae.html) | IDE 形态 | 字节跳动 | partial | 2026-10-30 |
+| [Trae](./trae.html) | IDE 形态 | 字节跳动 | verified | 2026-10-30 |
 | [v0](./v0.html) | 厂商云形态 | Vercel | verified | 2026-10-22 |
-| [Warp](./warp.html) | CLI 形态 | Warp | partial | 2026-10-23 |
+| [Warp](./warp.html) | CLI 形态 | Warp | verified | 2026-10-23 |
 | [Windsurf / Devin Desktop](./windsurf.html) | IDE 形态 | Cognition | verified | 2026-10-23 |
-| [Zed](./zed.html) | IDE 形态 | Zed Industries | partial | 2026-10-23 |
+| [Zed](./zed.html) | IDE 形态 | Zed Industries | verified | 2026-10-23 |
 
 ## 可信度标记
 
@@ -69,7 +69,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 41 个对象中，**16 个为 verified**。
+当前 41 个对象中，**37 个为 verified**。
 
 ## 数据来源
 

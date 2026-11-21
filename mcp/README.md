@@ -34,7 +34,7 @@ MCP server 的权限范围、传输方式与输出可用性。收录标准：已
 | [Filesystem MCP Server](./filesystem.html) | MCP | Model Context Protocol | verified | 2026-10-23 |
 | [Firecrawl MCP Server](./firecrawl-mcp.html) | MCP | Firecrawl | verified | 2026-10-23 |
 | [Git MCP Server](./git.html) | MCP | Model Context Protocol | verified | 2026-10-23 |
-| [GitHub MCP Server](./github-mcp.html) | MCP | GitHub | partial | 2026-10-23 |
+| [GitHub MCP Server](./github-mcp.html) | MCP | GitHub | verified | 2026-10-23 |
 | [Grafana MCP Server](./grafana-mcp.html) | MCP | Grafana Labs | verified | 2026-10-23 |
 | [Intercom MCP Server](./intercom-mcp.html) | MCP | Intercom | verified | 2026-10-31 |
 | [Linear MCP](./linear-mcp.html) | MCP | Linear | verified | 2026-10-30 |
@@ -60,7 +60,7 @@ MCP server 的权限范围、传输方式与输出可用性。收录标准：已
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 32 个对象中，**30 个为 verified**。
+当前 32 个对象中，**31 个为 verified**。
 
 ## 数据来源
 

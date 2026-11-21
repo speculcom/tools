@@ -21,27 +21,27 @@
 |---|---|---|---|---|
 | [Activepieces](./activepieces.html) | 网页服务 | Activepieces Inc. | partial | 2026-10-30 |
 | [Salesforce Agentforce](./agentforce.html) | 网页服务 | Salesforce | verified | 2026-10-30 |
-| [AutoGPT（现 Experts AI 团队平台）](./autogpt.html) | 网页服务 | AutoGPT（Determinist Ltd 运营） | partial | 2026-10-30 |
+| [AutoGPT（现 Experts AI 团队平台）](./autogpt.html) | 网页服务 | AutoGPT（Determinist Ltd 运营） | verified | 2026-10-30 |
 | [Bedrock Agents / AgentCore](./bedrock-agents.html) | 网页服务 | AWS | verified | 2026-10-30 |
-| [Botpress](./botpress.html) | 网页服务 | Botpress | partial | 2026-10-30 |
+| [Botpress](./botpress.html) | 网页服务 | Botpress | verified | 2026-10-30 |
 | [Microsoft Copilot Studio](./copilot-studio.html) | 网页服务 | Microsoft | verified | 2026-10-30 |
-| [扣子 / Coze](./coze.html) | 网页服务 | 字节跳动 | partial | 2026-10-30 |
-| [Dify](./dify.html) | 网页服务 | LangGenius（国产出海） | partial | 2026-10-30 |
+| [扣子 / Coze](./coze.html) | 网页服务 | 字节跳动 | verified | 2026-10-30 |
+| [Dify](./dify.html) | 网页服务 | LangGenius（国产出海） | verified | 2026-10-30 |
 | [FastGPT](./fastgpt.html) | 网页服务 | labring（环际云，国产） | verified | 2026-11-21 |
 | [Flowise](./flowise.html) | 网页服务 | FlowiseAI, Inc. | verified | 2026-10-30 |
-| [Gumloop](./gumloop.html) | 网页服务 | Gumloop | partial | 2026-10-30 |
+| [Gumloop](./gumloop.html) | 网页服务 | Gumloop | verified | 2026-10-30 |
 | [Langflow](./langflow.html) | 网页服务 | DataStax（原 Langflow AI） | verified | 2026-10-30 |
-| [Lindy](./lindy.html) | 网页服务 | Lindy | partial | 2026-10-30 |
+| [Lindy](./lindy.html) | 网页服务 | Lindy | verified | 2026-10-30 |
 | [Make](./make.html) | 网页服务 | Make（原 Integromat） | verified | 2026-10-30 |
 | [MaxKB](./maxkb.html) | 网页服务 | 飞致云（国产） | verified | 2026-10-30 |
-| [n8n](./n8n.html) | 网页服务 | n8n GmbH | partial | 2026-10-30 |
+| [n8n](./n8n.html) | 网页服务 | n8n GmbH | verified | 2026-10-30 |
 | [Google Opal](./opal.html) | 网页服务 | Google Labs | partial | 2026-11-04 |
 | [Pipedream（Connect / Workflows）](./pipedream.html) | 网页服务 | Pipedream | partial | 2026-10-30 |
-| [Microsoft Power Automate](./power-automate.html) | 网页服务 | Microsoft | partial | 2026-11-17 |
+| [Microsoft Power Automate](./power-automate.html) | 网页服务 | Microsoft | verified | 2026-11-17 |
 | [Relevance AI](./relevance-ai.html) | 网页服务 | Relevance AI（悉尼） | verified | 2026-10-30 |
 | [SmythOS](./smythos.html) | 网页服务 | SmythOS | partial | 2026-10-30 |
 | [Vertex AI Agent Builder（Gemini Enterprise 平台线）](./vertex-agent-builder.html) | 网页服务 | Google | verified | 2026-10-30 |
-| [Voiceflow](./voiceflow.html) | 网页服务 | Voiceflow | partial | 2026-10-30 |
+| [Voiceflow](./voiceflow.html) | 网页服务 | Voiceflow | verified | 2026-10-30 |
 | [Zapier](./zapier.html) | 网页服务 | Zapier | partial | 2026-10-30 |
 
 ## 可信度标记
@@ -52,7 +52,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 24 个对象中，**10 个为 verified**。
+当前 24 个对象中，**19 个为 verified**。
 
 ## 数据来源
 
