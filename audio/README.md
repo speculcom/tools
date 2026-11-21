@@ -4,7 +4,7 @@
 
 **tools.specul.com/audio/** · 独立信息项目（非厂商官方榜单）
 
-音频生成与转写产品：音乐生成、语音合成（TTS）、语音转写。声音克隆涉及人格权，permissions 维必须写清官方授权要求；开源模型（如 Whisper）按「模型不是产品」口径建档。
+音频生成与转写产品：音乐生成、语音合成（TTS）、语音转写。声音克隆涉及人格权，「权限与限制」这项必须写清官方授权要求；开源模型（如 Whisper）按「模型不是产品」口径建档。
 
 本站共 12 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `office` / `automation` / `framework` / `mcp` / `runner` / `safety`），本 README 描述「AI 音频与语音」这一个。
 
@@ -37,13 +37,15 @@
 | [Udio](./udio.html) | 网页服务 | Udio | verified | 2026-11-21 |
 | [Whisper](./whisper.html) | 本机应用 | OpenAI（开源） | verified | 2026-10-22 |
 
-## 可信度标记
+## 状态标记
 
 | 标记 | 含义 |
 |---|---|
-| `verified` | all 8 dimensions backed by official sources, checked within 90 days |
-| `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
-| `stale` | 官方已发布重大变化，本站尚未核验 |
+| `verified` | 八维都有官方依据，且核验日在 90 天内（只讲证据，不讲产品是否活跃） |
+| `partial` | 有维度没核清、官方文档打不开，或核验超过 90 天 |
+| `stale` | 官方已发生重大变化，本站尚未复核 |
+
+`lifecycle` 单独表示产品状态（`active` / `maintenance` / `archived` / `unknown`），不参与 `confidence` 封顶。一个已归档产品可以有完整的证据；一个每天发版的产品也可能因为官方不披露而只有 `partial`。
 
 当前 17 个对象中，**17 个为 verified**。
 

@@ -34,13 +34,15 @@
 | [Veo（Google）](./veo.html) | 厂商云形态 | Google | verified | 2026-10-30 |
 | [Vidu](./vidu.html) | 网页服务 | 生数科技（清华系） | verified | 2026-11-21 |
 
-## 可信度标记
+## 状态标记
 
 | 标记 | 含义 |
 |---|---|
-| `verified` | all 8 dimensions backed by official sources, checked within 90 days |
-| `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
-| `stale` | 官方已发布重大变化，本站尚未核验 |
+| `verified` | 八维都有官方依据，且核验日在 90 天内（只讲证据，不讲产品是否活跃） |
+| `partial` | 有维度没核清、官方文档打不开，或核验超过 90 天 |
+| `stale` | 官方已发生重大变化，本站尚未复核 |
+
+`lifecycle` 单独表示产品状态（`active` / `maintenance` / `archived` / `unknown`），不参与 `confidence` 封顶。一个已归档产品可以有完整的证据；一个每天发版的产品也可能因为官方不披露而只有 `partial`。
 
 当前 14 个对象中，**14 个为 verified**。
 

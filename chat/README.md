@@ -4,7 +4,7 @@
 
 **tools.specul.com/chat/** · 独立信息项目（非厂商官方榜单）
 
-通用 AI 对话助手——网页入口的多模型对话产品，国产与国际阵营都收。八维按消费级读法：背后模型是否披露、能不能选档、历史与记忆机制、账户数据用途与训练开关、产物商用条款。
+通用 AI 对话助手——网页入口的多模型对话产品，国产与国际阵营都收。按普通用户该问的几件事读：背后模型是否披露、能不能选档、历史与记忆怎么处理、账户数据是否用于训练、产物能不能商用。
 
 本站共 12 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `office` / `automation` / `framework` / `mcp` / `runner` / `safety`），本 README 描述「AI 对话助手」这一个。
 
@@ -43,13 +43,15 @@
 | [讯飞星火](./xinghuo-spark.html) | 网页服务 | 科大讯飞 | verified | 2026-11-21 |
 | [腾讯元宝](./yuanbao-chat.html) | 网页服务 | 腾讯 | verified | 2026-10-22 |
 
-## 可信度标记
+## 状态标记
 
 | 标记 | 含义 |
 |---|---|
-| `verified` | all 8 dimensions backed by official sources, checked within 90 days |
-| `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
-| `stale` | 官方已发布重大变化，本站尚未核验 |
+| `verified` | 八维都有官方依据，且核验日在 90 天内（只讲证据，不讲产品是否活跃） |
+| `partial` | 有维度没核清、官方文档打不开，或核验超过 90 天 |
+| `stale` | 官方已发生重大变化，本站尚未复核 |
+
+`lifecycle` 单独表示产品状态（`active` / `maintenance` / `archived` / `unknown`），不参与 `confidence` 封顶。一个已归档产品可以有完整的证据；一个每天发版的产品也可能因为官方不披露而只有 `partial`。
 
 当前 23 个对象中，**23 个为 verified**。
 

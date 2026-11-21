@@ -4,7 +4,7 @@
 
 **tools.specul.com/image/** · 独立信息项目（非厂商官方榜单）
 
-图像生成产品：文生图、编辑工作台、聚合模型入口。八维按消费级读法；permissions 维必答产物商用授权与训练用途——「能生成」≠「能商用」。
+图像生成产品：文生图、编辑工作台、聚合模型入口。同样按普通用户该问的几件事读；其中「权限与限制」必须写清产物商用授权与训练用途——「能生成」≠「能商用」。
 
 本站共 12 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `office` / `automation` / `framework` / `mcp` / `runner` / `safety`），本 README 描述「AI 图像创作」这一个。
 
@@ -35,13 +35,15 @@
 | [Tensor.Art](./tensor-art.html) | 网页服务 | ECHO INTERNATIONAL HK LIMITED（Tensor.Art） | verified | 2026-10-31 |
 | [通义万相](./tongyi-wanxiang.html) | 网页服务 | 阿里巴巴 | verified | 2026-11-21 |
 
-## 可信度标记
+## 状态标记
 
 | 标记 | 含义 |
 |---|---|
-| `verified` | all 8 dimensions backed by official sources, checked within 90 days |
-| `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
-| `stale` | 官方已发布重大变化，本站尚未核验 |
+| `verified` | 八维都有官方依据，且核验日在 90 天内（只讲证据，不讲产品是否活跃） |
+| `partial` | 有维度没核清、官方文档打不开，或核验超过 90 天 |
+| `stale` | 官方已发生重大变化，本站尚未复核 |
+
+`lifecycle` 单独表示产品状态（`active` / `maintenance` / `archived` / `unknown`），不参与 `confidence` 封顶。一个已归档产品可以有完整的证据；一个每天发版的产品也可能因为官方不披露而只有 `partial`。
 
 当前 15 个对象中，**15 个为 verified**。
 

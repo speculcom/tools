@@ -4,7 +4,7 @@
 
 **tools.specul.com/runner/** · 独立信息项目（非厂商官方榜单）
 
-本地模型运行器：把开源权重模型跑在自己的机器上——Ollama / LM Studio / llama.cpp / vLLM 这类。档案的 model_access / runtime 维写「格式 × 量化档」口径，具体量化数据在 models 站，两边互链不重复。
+本地模型运行器：把开源权重模型跑在自己的机器上——Ollama / LM Studio / llama.cpp / vLLM 这类。档案的「模型接入」「运行位置」两项写清「格式 × 量化档」，具体量化数据在 models 站，两边互链不重复。
 
 本站共 12 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `office` / `automation` / `framework` / `mcp` / `runner` / `safety`），本 README 描述「本地模型运行器」这一个。
 
@@ -41,13 +41,15 @@
 | [Text Generation Inference（TGI）](./tgi.html) | CLI 形态 | Hugging Face | partial | 2026-10-30 |
 | [vLLM](./vllm.html) | CLI 形态 | vLLM 项目（PyTorch 基金会） | verified | 2026-10-30 |
 
-## 可信度标记
+## 状态标记
 
 | 标记 | 含义 |
 |---|---|
-| `verified` | all 8 dimensions backed by official sources, checked within 90 days |
-| `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
-| `stale` | 官方已发布重大变化，本站尚未核验 |
+| `verified` | 八维都有官方依据，且核验日在 90 天内（只讲证据，不讲产品是否活跃） |
+| `partial` | 有维度没核清、官方文档打不开，或核验超过 90 天 |
+| `stale` | 官方已发生重大变化，本站尚未复核 |
+
+`lifecycle` 单独表示产品状态（`active` / `maintenance` / `archived` / `unknown`），不参与 `confidence` 封顶。一个已归档产品可以有完整的证据；一个每天发版的产品也可能因为官方不披露而只有 `partial`。
 
 当前 21 个对象中，**17 个为 verified**。
 

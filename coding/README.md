@@ -4,7 +4,7 @@
 
 **tools.specul.com/coding/** · 独立信息项目（非厂商官方榜单）
 
-自己能跑的成品 AI 编程工具，共用八维（模型接入 / 运行位置 / 本地文件 / 关机后任务 / 工具扩展 / 上下文 / 权限 / 适合场景）。按形态分三列——IDE 形态、CLI 形态、厂商云形态。前两者是同一产品的不同装法、不是竞争关系；厂商云形态则是另一个方向：不需要自己装，工作在别人的机器上做。
+自己能跑的成品 AI 编程工具，都按同一组问题看：模型怎么接、跑在哪、能不能改本地文件、关机后谁接着跑、能接什么工具、上下文怎么留、权限给到哪、适合什么任务。按形态分三列——IDE 形态、CLI 形态、厂商云形态。前两者是同一产品的不同装法、不是竞争关系；厂商云形态则是另一个方向：不需要自己装，工作在别人的机器上做。
 
 本站共 12 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `office` / `automation` / `framework` / `mcp` / `runner` / `safety`），本 README 描述「AI 编程」这一个。
 
@@ -19,8 +19,8 @@
 
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
-| [Aider](./aider-cli.html) | CLI 形态 | Aider-AI | partial | 2026-10-23 |
-| [Aider Watch 模式](./aider.html) | IDE 形态 | Aider-AI | partial | 2026-10-23 |
+| [Aider](./aider-cli.html) | CLI 形态 | Aider-AI | verified | 2026-10-23 |
+| [Aider Watch 模式](./aider.html) | IDE 形态 | Aider-AI | verified | 2026-10-23 |
 | [Amazon Q Developer](./amazon-q-developer.html) | IDE 形态 | AWS | partial | 2026-10-22 |
 | [Amp](./amp.html) | CLI 形态 | Amp Frontier Corporation（原 Sourcegraph，2025-12 分拆独立） | verified | 2026-10-23 |
 | [Augment Code](./augment-code.html) | 厂商云形态 | Augment Code | verified | 2026-11-21 |
@@ -32,7 +32,7 @@
 | [CodeBuddy](./codebuddy.html) | IDE 形态 | 腾讯云 | verified | 2026-10-30 |
 | [Codex CLI](./codex-cli.html) | CLI 形态 | OpenAI | verified | 2026-10-23 |
 | [Codex IDE 扩展](./codex-ide.html) | IDE 形态 | OpenAI | verified | 2026-10-23 |
-| [Continue](./continue.html) | IDE 形态 | Continue | partial | 2026-10-23 |
+| [Continue](./continue.html) | IDE 形态 | Continue | verified | 2026-10-23 |
 | [GitHub Copilot CLI](./copilot-cli.html) | CLI 形态 | GitHub | verified | 2026-10-23 |
 | [GitHub Copilot](./copilot.html) | IDE 形态 | GitHub / Microsoft | verified | 2026-10-23 |
 | [Crush](./crush.html) | CLI 形态 | Charm | verified | 2026-10-23 |
@@ -61,15 +61,17 @@
 | [Windsurf / Devin Desktop](./windsurf.html) | IDE 形态 | Cognition | verified | 2026-10-23 |
 | [Zed](./zed.html) | IDE 形态 | Zed Industries | verified | 2026-10-23 |
 
-## 可信度标记
+## 状态标记
 
 | 标记 | 含义 |
 |---|---|
-| `verified` | all 8 dimensions backed by official sources, checked within 90 days |
-| `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
-| `stale` | 官方已发布重大变化，本站尚未核验 |
+| `verified` | 八维都有官方依据，且核验日在 90 天内（只讲证据，不讲产品是否活跃） |
+| `partial` | 有维度没核清、官方文档打不开，或核验超过 90 天 |
+| `stale` | 官方已发生重大变化，本站尚未复核 |
 
-当前 41 个对象中，**37 个为 verified**。
+`lifecycle` 单独表示产品状态（`active` / `maintenance` / `archived` / `unknown`），不参与 `confidence` 封顶。一个已归档产品可以有完整的证据；一个每天发版的产品也可能因为官方不披露而只有 `partial`。
+
+当前 41 个对象中，**40 个为 verified**。
 
 ## 数据来源
 

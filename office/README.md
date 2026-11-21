@@ -4,7 +4,7 @@
 
 **tools.specul.com/office/** · 独立信息项目（非厂商官方榜单）
 
-普通办公场景的 AI 产品：文档写作、表格分析、演示生成、会议记录、翻译与邮件日程。八维按「交付物是什么、数据会去哪、能否商用」读；同一功能可能藏在通用助手或办公套件里，档案只收以办公为主轴的产品，并与 chat / research / automation 互链。
+普通办公场景的 AI 产品：文档写作、表格分析、演示生成、会议记录、翻译与邮件日程。按「交付物是什么、数据会去哪、能否商用」来读；同一功能可能藏在通用助手或办公套件里，档案只收以办公为主轴的产品，并与 chat / research / automation 互链。
 
 本站共 12 个大类（`coding` / `chat` / `image` / `video` / `audio` / `research` / `office` / `automation` / `framework` / `mcp` / `runner` / `safety`），本 README 描述「办公与写作」这一个。
 
@@ -35,13 +35,15 @@
 | [tl;dv](./tldv.html) | 厂商云形态 | tl;dv | verified | 2026-11-19 |
 | [WPS AI](./wps-ai.html) | 网页服务 | 金山办公 | verified | 2026-11-19 |
 
-## 可信度标记
+## 状态标记
 
 | 标记 | 含义 |
 |---|---|
-| `verified` | all 8 dimensions backed by official sources, checked within 90 days |
-| `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
-| `stale` | 官方已发布重大变化，本站尚未核验 |
+| `verified` | 八维都有官方依据，且核验日在 90 天内（只讲证据，不讲产品是否活跃） |
+| `partial` | 有维度没核清、官方文档打不开，或核验超过 90 天 |
+| `stale` | 官方已发生重大变化，本站尚未复核 |
+
+`lifecycle` 单独表示产品状态（`active` / `maintenance` / `archived` / `unknown`），不参与 `confidence` 封顶。一个已归档产品可以有完整的证据；一个每天发版的产品也可能因为官方不披露而只有 `partial`。
 
 当前 15 个对象中，**15 个为 verified**。
 
