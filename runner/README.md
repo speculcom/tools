@@ -32,7 +32,7 @@
 | [MLC LLM](./mlc-llm.html) | CLI 形态 | MLCEngine（CMU 系，mlc-ai） | verified | 2026-11-21 |
 | [MLX（mlx-lm）](./mlx.html) | CLI 形态 | Apple | verified | 2026-10-30 |
 | [Msty](./msty.html) | 本机应用 | Msty（CloudStack, LLC） | verified | 2026-10-31 |
-| [Ollama](./ollama.html) | CLI 形态 | Ollama Inc. | partial | 2026-10-30 |
+| [Ollama](./ollama.html) | CLI 形态 | Ollama Inc. | verified | 2026-11-21 |
 | [OpenVINO](./openvino.html) | CLI 形态 | Intel | verified | 2026-11-03 |
 | [SGLang](./sglang.html) | CLI 形态 | LMSYS / sgl-project | verified | 2026-10-30 |
 | [TabbyAPI](./tabbyapi.html) | CLI 形态 | Royal Lab（theroyallab） | verified | 2026-10-31 |
@@ -49,7 +49,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 21 个对象中，**15 个为 verified**。
+当前 21 个对象中，**16 个为 verified**。
 
 ## 数据来源
 
