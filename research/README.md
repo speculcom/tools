@@ -20,7 +20,7 @@
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
 | [Andi Search](./andi.html) | 网页服务 | Andi | verified | 2026-11-21 |
-| [Consensus](./consensus.html) | 网页服务 | Consensus | partial | 2026-10-22 |
+| [Consensus](./consensus.html) | 网页服务 | Consensus | verified | 2026-11-21 |
 | [Devv](./devv.html) | 网页服务 | Devv AI | verified | 2026-10-22 |
 | [Elicit](./elicit.html) | 网页服务 | Elicit | verified | 2026-10-22 |
 | [Genspark](./genspark.html) | 网页服务 | Genspark | verified | 2026-11-21 |
@@ -39,7 +39,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 11 个对象中，**10 个为 verified**。
+当前 11 个对象中，**11 个为 verified**。
 
 ## 数据来源
 

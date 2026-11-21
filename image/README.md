@@ -33,7 +33,7 @@
 | [SeaArt](./seaart.html) | 网页服务 | 海艺（成都海艺互娱） | verified | 2026-10-22 |
 | [Stability AI（Stable Image 平台）](./stability-ai.html) | 网页服务 | Stability AI | verified | 2026-10-30 |
 | [Tensor.Art](./tensor-art.html) | 网页服务 | ECHO INTERNATIONAL HK LIMITED（Tensor.Art） | verified | 2026-10-31 |
-| [通义万相](./tongyi-wanxiang.html) | 网页服务 | 阿里巴巴 | partial | 2026-10-22 |
+| [通义万相](./tongyi-wanxiang.html) | 网页服务 | 阿里巴巴 | verified | 2026-11-21 |
 
 ## 可信度标记
 
@@ -43,7 +43,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 15 个对象中，**14 个为 verified**。
+当前 15 个对象中，**15 个为 verified**。
 
 ## 数据来源
 

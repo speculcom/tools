@@ -25,7 +25,7 @@
 | [Jan](./jan.html) | 本机应用 | Menlo Research | verified | 2026-10-30 |
 | [KoboldCpp](./koboldcpp.html) | 本机应用 | LostRuins（KoboldAI 社区） | verified | 2026-10-30 |
 | [Lemonade](./lemonade.html) | 本机应用 | AMD / Lemonade 社区 | verified | 2026-11-03 |
-| [llama.cpp](./llama-cpp.html) | CLI 形态 | ggml-org | partial | 2026-10-30 |
+| [llama.cpp](./llama-cpp.html) | CLI 形态 | ggml-org | verified | 2026-11-21 |
 | [LlamaEdge](./llamaedge.html) | CLI 形态 | LlamaEdge 社区（WasmEdge / Second State 生态） | partial | 2026-10-31 |
 | [LM Studio](./lm-studio.html) | 本机应用 | Element Labs | verified | 2026-10-30 |
 | [LocalAI](./localai.html) | CLI 形态 | Mudler T.（mudler） | verified | 2026-10-30 |
@@ -49,7 +49,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 21 个对象中，**16 个为 verified**。
+当前 21 个对象中，**17 个为 verified**。
 
 ## 数据来源
 

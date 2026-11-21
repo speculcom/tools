@@ -27,7 +27,7 @@
 | [invideo AI](./invideo.html) | 网页服务 | invideo | verified | 2026-10-30 |
 | [可灵 Kling AI](./kling.html) | 网页服务 | Kling AI Pte. Ltd.（快手） | verified | 2026-11-21 |
 | [Luma（Dream Machine）](./luma.html) | 网页服务 | Luma AI | verified | 2026-10-22 |
-| [Pika](./pika.html) | 网页服务 | Pika Labs | partial | 2026-10-22 |
+| [Pika](./pika.html) | 网页服务 | Pika Labs | verified | 2026-11-21 |
 | [PixVerse](./pixverse.html) | 网页服务 | 爱诗科技 | verified | 2026-10-22 |
 | [Runway](./runway.html) | 网页服务 | Runway AI, Inc. | verified | 2026-10-30 |
 | [Synthesia](./synthesia.html) | 网页服务 | Synthesia | verified | 2026-10-22 |
@@ -42,7 +42,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 14 个对象中，**12 个为 verified**。
+当前 14 个对象中，**13 个为 verified**。
 
 ## 数据来源
 
