@@ -32,7 +32,7 @@
 | [Runway](./runway.html) | 网页服务 | Runway AI, Inc. | verified | 2026-10-30 |
 | [Synthesia](./synthesia.html) | 网页服务 | Synthesia | verified | 2026-10-22 |
 | [Veo（Google）](./veo.html) | 厂商云形态 | Google | verified | 2026-10-30 |
-| [Vidu](./vidu.html) | 网页服务 | 生数科技（清华系） | partial | 2026-10-22 |
+| [Vidu](./vidu.html) | 网页服务 | 生数科技（清华系） | verified | 2026-11-21 |
 
 ## 可信度标记
 
@@ -42,7 +42,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 14 个对象中，**10 个为 verified**。
+当前 14 个对象中，**11 个为 verified**。
 
 ## 数据来源
 
