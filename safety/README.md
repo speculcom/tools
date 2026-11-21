@@ -27,7 +27,7 @@
 | [CanaryScan](./canary-scan.html) | CLI 形态 | PSA Intelligence | partial | 2026-11-06 |
 | [garak](./garak.html) | CLI 形态 | NVIDIA · Leon Derczynski | verified | 2026-11-06 |
 | [GitGuardian](./gitguardian.html) | 网页服务 | GitGuardian | verified | 2026-11-06 |
-| [Helicone](./helicone.html) | 厂商云形态 | Helicone | partial | 2026-11-06 |
+| [Helicone](./helicone.html) | 厂商云形态 | Helicone | verified | 2026-11-21 |
 | [Inspect](./inspect-ai.html) | CLI 形态 | UK AI Security Institute | verified | 2026-11-06 |
 | [Lakera](./lakera-ai.html) | 厂商云形态 | Lakera | verified | 2026-11-06 |
 | [Langfuse](./langfuse.html) | 本机应用 | Langfuse | verified | 2026-11-06 |
@@ -53,7 +53,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 25 个对象中，**17 个为 verified**。
+当前 25 个对象中，**18 个为 verified**。
 
 ## 数据来源
 
