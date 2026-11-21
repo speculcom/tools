@@ -19,7 +19,7 @@
 
 | 对象 | 形态 | 厂商 | 可信度 | 核验日 |
 |---|---|---|---|---|
-| [智谱清言](./chatglm-chat.html) | 网页服务 | 智谱 AI | partial | 2026-10-22 |
+| [智谱清言](./chatglm-chat.html) | 网页服务 | 智谱 AI | verified | 2026-11-21 |
 | [ChatGPT](./chatgpt.html) | 网页服务 | OpenAI | verified | 2026-11-19 |
 | [Claude（对话应用）](./claude-chat.html) | 网页服务 | Anthropic | verified | 2026-10-30 |
 | [DeepSeek](./deepseek-chat.html) | 网页服务 | 深度求索 | partial | 2026-10-22 |
@@ -33,7 +33,7 @@
 | [LibreChat](./librechat.html) | 网页服务 | LibreChat AI | verified | 2026-11-17 |
 | [Manus](./manus.html) | 网页服务 | Manus AI（Monica 团队） | verified | 2026-10-22 |
 | [Meta AI](./meta-ai.html) | 网页服务 | Meta | verified | 2026-10-30 |
-| [Microsoft Copilot](./microsoft-copilot.html) | 网页服务 | 微软 | partial | 2026-10-22 |
+| [Microsoft Copilot](./microsoft-copilot.html) | 网页服务 | 微软 | verified | 2026-11-21 |
 | [Open WebUI](./open-webui.html) | 网页服务 | Open WebUI 社区 | verified | 2026-11-17 |
 | [Poe](./poe.html) | 网页服务 | Quora | verified | 2026-10-30 |
 | [Reka Chat（Reka Playground / Edge Chat）](./reka-chat.html) | 网页服务 | Reka AI, Inc. | verified | 2026-10-31 |
@@ -51,7 +51,7 @@
 | `partial` | some dimensions unknown, or official docs unreachable, or checked over 90 days ago |
 | `stale` | 官方已发布重大变化，本站尚未核验 |
 
-当前 23 个对象中，**18 个为 verified**。
+当前 23 个对象中，**20 个为 verified**。
 
 ## 数据来源
 
