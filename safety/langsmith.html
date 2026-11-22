@@ -169,7 +169,9 @@
 
             <div class="panel is-slim">
         <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
-<span data-zh>        <div><p>适合想要一个控制台同时管 trace、数据集、评测器和告警，又不想自运维观测栈的团队。 已有 OpenTelemetry 的应用可以先接进来，之后再决定要不要同时发往别的后端。 不适合把许可门槛当次要问题的团队：自托管按官方口径是企业版加购，还要自备集群与外部存储。 本档只写它支持哪些评测类型，不写它测出来的分数，也不做同类排名。</p></div></span><span data-en>        <div><p>Fit: teams wanting one console for traces, datasets, evaluators and alerts without running the observability stack themselves. Apps already on OpenTelemetry can connect first and later decide whether to dual-send to another backend. Not fit: teams treating licence terms as secondary; self-hosting is officially an Enterprise add-on and needs your own cluster and external storage. This entry records supported evaluation types, not scores or peer rankings.</p></div></span>
+<span data-zh>        <div><p>适合想要一个控制台同时管 trace、数据集、评测器和告警。又不想自运维观测栈的团队。</p></div>
+        <div><p>已有 OpenTelemetry 的应用可以先接进来，之后再决定要不要同时发往别的后端。不适合把许可门槛当次要问题的团队。</p></div>
+        <div><p>自托管按官方口径是企业版加购，还要自备集群与外部存储。本档只写它支持哪些评测类型，不写它测出来的分数，也不做同类排名。</p></div></span><span data-en>        <div><p>Fit: teams wanting one console for traces, datasets, evaluators and alerts without running the observability stack themselves. Apps already on OpenTelemetry can connect first and later decide whether to dual-send to another backend. Not fit: teams treating licence terms as secondary; self-hosting is officially an Enterprise add-on and needs your own cluster and external storage. This entry records supported evaluation types, not scores or peer rankings.</p></div></span>
       </div>
 
             <div class="panel">
@@ -190,35 +192,43 @@
       <dl class="axes">
         <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
-          <dd><span data-zh><p>被观测与被评测的模型都不由平台提供：官方产品页点名可接 OpenAI、Anthropic、Vercel AI SDK、LlamaIndex 与自研实现（当日在册）。评测器面含人工、代码、LLM-as-judge、decision model 与成对比较 （evaluation-concepts 当日在册）。<strong>judge 是否必须自备模型凭据，该页未说明，官方文档未单列。</strong></p></span><span data-en><p>Neither the observed nor the evaluated models come from the platform: the official product page names OpenAI, Anthropic, Vercel AI SDK, LlamaIndex and custom implementations as supported (fetched today). The evaluator surface covers human, code, LLM-as-judge, decision model and pairwise comparisons (evaluation-concepts fetched today). <strong>Whether judge evaluators require your own model credentials is not stated on that page — recorded as unknown.</strong></p></span></dd>
+          <dd><span data-zh><p><strong>依据：</strong> 被观测与被评测的模型都不由平台提供：官方产品页点名可接 OpenAI、Anthropic、Vercel AI SDK、LlamaIndex 与自研实现（当日在册）。评测器面含人工、代码、LLM-as-judge、decision model 与成对比较 （evaluation-concepts 当日在册）。<strong>judge 是否必须自备模型凭据，该页未说明，官方文档未单列。</strong></p></span><span data-en><p>Neither the observed nor the evaluated models come from the platform: the official product page names OpenAI, Anthropic, Vercel AI SDK, LlamaIndex and custom implementations as supported (fetched today). The evaluator surface covers human, code, LLM-as-judge, decision model and pairwise comparisons (evaluation-concepts fetched today). <strong>Whether judge evaluators require your own model credentials is not stated on that page — recorded as unknown.</strong></p></span></dd>
         </div>
         <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
-          <dd><span data-zh><p>主形态是厂商托管云（SaaS），另有 BYOC 与企业版自托管：官方写「Self-hosted LangSmith 是 Enterprise 加购」「在你自己的 Kubernetes 集群里跑」，默认捆绑存储、生产建议改用外部存储服务 （self-hosted 文档当日在册）。控制台在浏览器，SDK、CLI 与 API 是代码面。</p></span><span data-en><p>The primary form is the vendor-hosted cloud (SaaS), with BYOC and enterprise self-hosting: the official line reads that self-hosted LangSmith is an add-on to the Enterprise plan and runs in your own Kubernetes cluster, storage is bundled by default and external storage services are recommended for production (self-hosted docs fetched today). The console lives in the browser; SDKs, the CLI and the API are the code surfaces.</p></span></dd>
+          <dd><span data-zh><p>主形态是厂商托管云（SaaS）。另有 BYOC 与企业版自托管：官方写「Self-hosted LangSmith 是 Enterprise 加购」「在你自己的 Kubernetes 集群里跑」。</p>
+            <p>默认捆绑存储、生产建议改用外部存储服务 （self-hosted 文档当日在册）。控制台在浏览器，SDK、CLI 与 API 是代码面。</p></span><span data-en><p>The primary form is the vendor-hosted cloud (SaaS), with BYOC and enterprise self-hosting: the official line reads that self-hosted LangSmith is an add-on to the Enterprise plan and runs in your own Kubernetes cluster, storage is bundled by default and external storage services are recommended for production (self-hosted docs fetched today). The console lives in the browser; SDKs, the CLI and the API are the code surfaces.</p></span></dd>
         </div>
         <div class="axis" id="dimension-local_files">
           <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
-          <dd><span data-zh><p>数据面默认在厂商侧，除非走 BYOC 或自托管；trace 由 SDK 或 OpenTelemetry 上报， OTLP 端点是 LANGSMITH_ENDPOINT 加 /otel（当日在册）。平台不读本机代码库； <strong>导出与删除接口面本次按官方文档口径。</strong></p></span><span data-en><p>The data plane sits on the vendor side unless you use BYOC or self-hosting; traces are reported via SDK or OpenTelemetry, with the OTLP base URL being LANGSMITH_ENDPOINT plus /otel (fetched today). The platform does not read your local codebase; <strong>the export and deletion interface surface was not itemized today.</strong></p></span></dd>
+          <dd><span data-zh><p>数据面默认在厂商侧，除非走 BYOC 或自托管。trace 由 SDK 或 OpenTelemetry 上报。OTLP 端点是 LANGSMITH_ENDPOINT 加 /otel（当日在册）。</p>
+            <p>平台不读本机代码库。<strong>导出与删除接口面本次按官方文档口径。</strong></p></span><span data-en><p>The data plane sits on the vendor side unless you use BYOC or self-hosting; traces are reported via SDK or OpenTelemetry, with the OTLP base URL being LANGSMITH_ENDPOINT plus /otel (fetched today). The platform does not read your local codebase; <strong>the export and deletion interface surface was not itemized today.</strong></p></span></dd>
         </div>
         <div class="axis" id="dimension-background">
           <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
-          <dd><span data-zh><p>在线评测跑在生产 trace 上（evaluation-concepts 当日在册），离线评测用带参考输出的数据集做回归对照； 官方 changelog 当日在册条目提到在线评测器的细粒度权限与自定义视图。 <strong>评分队列的吞吐、延迟与抽样口径未在册，官方文档未单列。</strong></p></span><span data-en><p>Online evaluation runs on production traces (evaluation-concepts fetched today); offline evaluation uses datasets with reference outputs for regression comparison. Today&#39;s changelog entries cover granular permissions and custom views for online evaluators. <strong>Queue throughput, latency and sampling rules are not on record — recorded as unknown.</strong></p></span></dd>
+          <dd><span data-zh><p>在线评测跑在生产 trace 上（evaluation-concepts 当日在册）。离线评测用带参考输出的数据集做回归对照。</p>
+            <p>官方 changelog 当日在册条目提到在线评测器的细粒度权限与自定义视图。<strong>评分队列的吞吐、延迟与抽样口径未在册，官方文档未单列。</strong></p></span><span data-en><p>Online evaluation runs on production traces (evaluation-concepts fetched today); offline evaluation uses datasets with reference outputs for regression comparison. Today&#39;s changelog entries cover granular permissions and custom views for online evaluators. <strong>Queue throughput, latency and sampling rules are not on record — recorded as unknown.</strong></p></span></dd>
         </div>
         <div class="axis" id="dimension-tools">
           <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
-          <dd><span data-zh><p>OpenTelemetry 摄入并可用 collector 做多目的地 fanout（当日在册）；官方 CLI 可查询与管理 traces、runs、datasets、evaluators、experiments、insights、threads（当日在册）； 文档索引在册的 Terraform 面把评测器与规则当代码管。<strong>MCP 接入方式官方文档未单列。</strong></p></span><span data-en><p>OpenTelemetry ingestion with collector fanout to multiple destinations (fetched today); the official CLI queries and manages traces, runs, datasets, evaluators, experiments, insights and threads (fetched today); the docs index on record lists a Terraform surface that manages evaluators and rules as code. <strong>MCP support is not itemized in official docs in official statements — recorded as unknown.</strong></p></span></dd>
+          <dd><span data-zh><p>OpenTelemetry 摄入并可用 collector 做多目的地 fanout（当日在册）。</p>
+            <p>官方 CLI 可查询与管理 traces、runs、datasets、evaluators、experiments、insights、threads（当日在册）。</p>
+            <p>文档索引在册的 Terraform 面把评测器与规则当代码管。<strong>MCP 接入方式官方文档未单列。</strong></p></span><span data-en><p>OpenTelemetry ingestion with collector fanout to multiple destinations (fetched today); the official CLI queries and manages traces, runs, datasets, evaluators, experiments, insights and threads (fetched today); the docs index on record lists a Terraform surface that manages evaluators and rules as code. <strong>MCP support is not itemized in official docs in official statements — recorded as unknown.</strong></p></span></dd>
         </div>
         <div class="axis" id="dimension-context">
           <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
-          <dd><span data-zh><p>观测与评测对象按 workspace 与 project 组织，权限按 workspace 配内置或自定义角色 （enterprise 文档当日在册）；数据集带参考输出，用于回归对照。 <strong>保留时长与 TTL 的具体口径未逐条在册，官方文档未单列；「跨会话记忆」不是本类平台的功能面。</strong></p></span><span data-en><p>Observed and evaluated objects are organized by workspace and project, with built-in or custom roles defined per workspace (enterprise docs fetched today); datasets carry reference outputs used for regression comparison. <strong>Retention windows and TTL specifics were not itemized — recorded as unknown; cross-session memory is not a feature surface for this class of platform.</strong></p></span></dd>
+          <dd><span data-zh><p>观测与评测对象按 workspace 与 project 组织。权限按 workspace 配内置或自定义角色 （enterprise 文档当日在册）。数据集带参考输出，用于回归对照。</p>
+            <p><strong>保留时长与 TTL 的具体口径未逐条在册，官方文档未单列。「跨会话记忆」不是本类平台的功能面。</strong></p></span><span data-en><p>Observed and evaluated objects are organized by workspace and project, with built-in or custom roles defined per workspace (enterprise docs fetched today); datasets carry reference outputs used for regression comparison. <strong>Retention windows and TTL specifics were not itemized — recorded as unknown; cross-session memory is not a feature surface for this class of platform.</strong></p></span></dd>
         </div>
         <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
-          <dd><span data-zh><p>合规标记当日在册：SOC 2 Type II、HIPAA、GDPR（enterprise 文档直抓）；SAML 或 OIDC 单点登录与 即时用户配置同页在册。档位与配额事实为 Developer 免费档、Plus 与按需 Enterprise（含自托管与 BYOC）， 价格数字按 D9 不采。<strong>是否用客户 trace 训练模型、数据保留条款正文未抓到（privacy 页当日 404），官方文档未单列。</strong></p></span><span data-en><p>Compliance markers on record today: SOC 2 Type II, HIPAA and GDPR (enterprise docs direct-fetched); SAML or OIDC single sign-on with just-in-time provisioning on the same page. Tier and quota facts are a free Developer tier, Plus, and custom Enterprise including self-hosted and BYOC; price numbers are excluded per D9. <strong>Whether customer traces train models, and the data-retention clause text, were not fetched (the privacy page returned 404 today) — recorded as unknown.</strong></p></span></dd>
+          <dd><span data-zh><p>合规标记当日在册。SOC 2 Type II、HIPAA、GDPR（enterprise 文档直抓）。SAML 或 OIDC 单点登录与 即时用户配置同页在册。</p>
+            <p>档位与配额事实为 Developer 免费档、Plus 与按需 Enterprise（含自托管与 BYOC）。价格数字按 D9 不采。</p>
+            <p><strong>是否用客户 trace 训练模型、数据保留条款正文未抓到（privacy 页当日 404）。官方文档未单列。</strong></p></span><span data-en><p>Compliance markers on record today: SOC 2 Type II, HIPAA and GDPR (enterprise docs direct-fetched); SAML or OIDC single sign-on with just-in-time provisioning on the same page. Tier and quota facts are a free Developer tier, Plus, and custom Enterprise including self-hosted and BYOC; price numbers are excluded per D9. <strong>Whether customer traces train models, and the data-retention clause text, were not fetched (the privacy page returned 404 today) — recorded as unknown.</strong></p></span></dd>
         </div>
         <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
-          <dd><span data-zh><p>适合要「一个控制台管住 trace、数据集、评测器与告警」、又不想自运维观测栈的团队； 已用 OpenTelemetry 的应用可先接进来再换后端。不适合把许可门槛当次要问题、 或必须整机自托管却买不到企业档的团队；本档不测分也不排名。</p></span><span data-en><p>Fits teams that want one console covering traces, datasets, evaluators and alerts without operating their own observability stack; applications already on OpenTelemetry can feed in first and decide later whether to fan out elsewhere. Not a fit where licensing thresholds are treated as secondary: self-hosting is, per official docs, an Enterprise add-on that also needs your own cluster and external storage. This site records which evaluation types are supported, not the scores they produce, and does not rank peers.</p></span></dd>
+          <dd><span data-zh><p><strong>依据：</strong> 适合要「一个控制台管住 trace、数据集、评测器与告警」、又不想自运维观测栈的团队； 已用 OpenTelemetry 的应用可先接进来再换后端。不适合把许可门槛当次要问题、 或必须整机自托管却买不到企业档的团队；本档不测分也不排名。</p></span><span data-en><p>Fits teams that want one console covering traces, datasets, evaluators and alerts without operating their own observability stack; applications already on OpenTelemetry can feed in first and decide later whether to fan out elsewhere. Not a fit where licensing thresholds are treated as secondary: self-hosting is, per official docs, an Enterprise add-on that also needs your own cluster and external storage. This site records which evaluation types are supported, not the scores they produce, and does not rank peers.</p></span></dd>
         </div>
       </dl>
 
@@ -280,7 +290,8 @@ data-terms text was not fetched today — recorded as unknown.</span></p>
 
             <div class="panel is-slim">
         <h2>变更记录说明</h2>
-        <p>官方 changelog 当日直抓在册，最新条目日期 2026-11-02，条目覆盖评测、数据集、 标注队列与在线评测器的权限面。旧域名 docs.smith.langchain.com 当日 308 跳转新域名， 档案一律按新域名挂源。</p>
+        <p>官方 changelog 当日直抓在册。最新条目日期 2026-11-02，条目覆盖评测、数据集、标注队列与在线评测器的权限面。</p>
+            <p>旧域名 docs.smith.langchain.com 当日 308 跳转新域名，档案一律按新域名挂源。</p>
       </div>
 
             <div class="panel is-slim">
