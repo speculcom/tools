@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Agent frameworks: how to choose — 深水指南 | 投机取巧</title>
-  <meta name="description" content="Agent 框架：LangGraph / OpenAI Agents SDK / Google ADK / Claude Agent SDK 怎么选：按流程控制、会话状态、工具执行与部署边界对照四个 SDK；区分框架提供的机制与应用仍需配置的部分。" />
+  <meta name="description" content="Agent 框架。LangGraph / OpenAI Agents SDK / Google ADK / Claude Agent SDK 怎么选：按流程控制、会话状态、工具执行与部署边界对照四个 SDK。区分框架提供的机制与应用仍需配置的部分。" />
   <link rel="canonical" href="https://tools.specul.com/mcp/guides/compare-agent-frameworks.html" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Agent frameworks: how to choose" />
   <meta property="og:url" content="https://tools.specul.com/mcp/guides/compare-agent-frameworks.html" />
   <meta property="og:title" content="Agent frameworks: how to choose — 深水指南 | 投机取巧" />
-  <meta property="og:description" content="Agent 框架：LangGraph / OpenAI Agents SDK / Google ADK / Claude Agent SDK 怎么选：按流程控制、会话状态、工具执行与部署边界对照四个 SDK；区分框架提供的机制与应用仍需配置的部分。" />
+  <meta property="og:description" content="Agent 框架。LangGraph / OpenAI Agents SDK / Google ADK / Claude Agent SDK 怎么选：按流程控制、会话状态、工具执行与部署边界对照四个 SDK。区分框架提供的机制与应用仍需配置的部分。" />
   <meta property="og:locale" content="zh_CN" />
   <meta property="og:locale:alternate" content="en_US" />
   <link rel="alternate" hreflang="zh-CN" href="https://tools.specul.com/mcp/guides/compare-agent-frameworks.html" />
@@ -100,11 +100,11 @@
       <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
       <div class="detail-head">
         <div>
-          <h1><span data-zh>Agent 框架：LangGraph / OpenAI Agents SDK / Google ADK / Claude Agent SDK 怎么选</span><span data-en>Agent frameworks: how to choose</span></h1>
+          <h1><span data-zh>Agent 框架。LangGraph / OpenAI Agents SDK / Google ADK / Claude Agent SDK 怎么选</span><span data-en>Agent frameworks: how to choose</span></h1>
           <div class="vendor is-caps"><span data-zh>规划</span><span data-en>Planning</span></div>
         </div>
       </div>
-      <div class="panel-lead"><span data-zh><p>按流程控制、会话状态、工具执行与部署边界对照四个 SDK；区分框架提供的机制与应用仍需配置的部分。</p></span><span data-en><p>Compare workflow control, session state, tool execution and deployment boundaries; distinguish SDK mechanisms from application configuration.</p></span></div>
+      <div class="panel-lead"><span data-zh><p>按流程控制、会话状态、工具执行与部署边界对照四个 SDK。区分框架提供的机制与应用仍需配置的部分。</p></span><span data-en><p>Compare workflow control, session state, tool execution and deployment boundaries; distinguish SDK mechanisms from application configuration.</p></span></div>
 
 
 
@@ -112,35 +112,39 @@
       <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>先分清两类</span><span data-en>Choose the level you need</span></a></li><li><a href="#guide-section-1"><span data-zh>四行对照</span><span data-en>Four frameworks</span></a></li><li><a href="#guide-section-2"><span data-zh>逐个适用条件</span><span data-en>When each fits</span></a></li><li><a href="#guide-section-3"><span data-zh>核验事实</span><span data-en>Verification scope</span></a></li><li><a href="#guide-section-4"><span data-zh>常见误判</span><span data-en>Common misreads</span></a></li></ul></nav>
       <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>先分清两类</span><span data-en>Choose the level you need</span></h2>
-        <span data-zh><p>先写清需要控制的部分，再选 SDK。四个项目的抽象层不同，不宜把“低层”解释成能力少，也不能把某一种工具的执行方式推广到整个 SDK。</p>
+        <span data-zh><p>先写清需要控制的部分，再选 SDK。四个项目的抽象层不同。不能把“低层”解释成能力少，也不能把一种工具的执行方式推广到整个 SDK。</p>
             <div class="tbl-wrap"><table><thead><tr><th>需求</th><th>对应检查点</th></tr></thead><tbody><tr><td>流程步骤与分支由应用明确控制</td><td>图、状态、节点与中断恢复</td></tr><tr><td>多个 Agent 协作</td><td>工具、handoff、调度与职责边界</td></tr><tr><td>跨轮保留上下文</td><td>Session 后端、保留范围与恢复方法</td></tr><tr><td>工具接触文件、命令或网络</td><td>执行进程、权限与隔离方式</td></tr></tbody></table></div></span><span data-en><p>Write down what your application needs to control before choosing an SDK. Their abstraction levels differ. Low-level does not mean fewer capabilities, and one kind of tool&#39;s execution model does not describe the whole SDK.</p>
             <div class="tbl-wrap"><table><thead><tr><th>Requirement</th><th>Inspect</th></tr></thead><tbody><tr><td>Explicit workflow steps and branches</td><td>Graph, state, nodes and interruption recovery</td></tr><tr><td>Collaboration between agents</td><td>Tools, handoffs, scheduling and responsibilities</td></tr><tr><td>Context across turns</td><td>Session backend, retained scope and recovery</td></tr><tr><td>Tools accessing files, commands or networks</td><td>Execution process, permissions and isolation</td></tr></tbody></table></div></span>
       </div>
       <div class="panel is-slim" id="guide-section-1">
         <h2><span data-zh>四行对照</span><span data-en>Four frameworks</span></h2>
         <span data-zh><div class="tbl-wrap"><table><thead><tr><th>项目</th><th>官方文档提供的机制</th><th>应用仍需决定</th></tr></thead><tbody><tr><td>LangGraph</td><td>有状态编排、持久执行、流式输出、人在回路</td><td>状态结构、存储配置、业务分支与工具权限</td></tr><tr><td>OpenAI Agents SDK</td><td>Agent 循环、工具、handoff、Sessions、人在回路</td><td>会话后端、工具授权、业务审批与模型适配</td></tr><tr><td>Google ADK</td><td>Agent、图工作流、顺序/循环/并行工作流、Runtime</td><td>流程设计、状态数据与部署配置</td></tr><tr><td>Claude Agent SDK</td><td>Claude Code 能力、自定义进程内 MCP 工具、外部 MCP 连接</td><td>CLI 进程与工具的权限、部署隔离、会话生命周期</td></tr></tbody></table></div>
-            <p>某机制存在不代表已为你的应用配置好；不同语言 SDK 和版本的覆盖也需分别检查。</p></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Project</th><th>Mechanisms in official documentation</th><th>Application decisions</th></tr></thead><tbody><tr><td>LangGraph</td><td>Stateful orchestration, durable execution, streaming, human-in-the-loop</td><td>State schema, storage configuration, branches and tool permissions</td></tr><tr><td>OpenAI Agents SDK</td><td>Agent loop, tools, handoffs, Sessions, human-in-the-loop</td><td>Session backend, tool authorisation, business approvals and model integration</td></tr><tr><td>Google ADK</td><td>Agents, graph workflows, sequential/loop/parallel workflows and runtime</td><td>Workflow design, state data and deployment configuration</td></tr><tr><td>Claude Agent SDK</td><td>Claude Code capabilities, custom in-process MCP tools and external MCP connections</td><td>CLI/tool permissions, deployment isolation and session lifecycle</td></tr></tbody></table></div>
+            <p>某机制存在不代表已为你的应用配置好。不同语言 SDK 和版本的覆盖也需分别检查。</p></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Project</th><th>Mechanisms in official documentation</th><th>Application decisions</th></tr></thead><tbody><tr><td>LangGraph</td><td>Stateful orchestration, durable execution, streaming, human-in-the-loop</td><td>State schema, storage configuration, branches and tool permissions</td></tr><tr><td>OpenAI Agents SDK</td><td>Agent loop, tools, handoffs, Sessions, human-in-the-loop</td><td>Session backend, tool authorisation, business approvals and model integration</td></tr><tr><td>Google ADK</td><td>Agents, graph workflows, sequential/loop/parallel workflows and runtime</td><td>Workflow design, state data and deployment configuration</td></tr><tr><td>Claude Agent SDK</td><td>Claude Code capabilities, custom in-process MCP tools and external MCP connections</td><td>CLI/tool permissions, deployment isolation and session lifecycle</td></tr></tbody></table></div>
             <p>A mechanism&#39;s existence does not mean it is configured for your application. Check language-specific SDK and version coverage separately.</p></span>
       </div>
       <div class="panel is-slim" id="guide-section-2">
         <h2><span data-zh>逐个适用条件</span><span data-en>When each fits</span></h2>
-        <span data-zh><p><strong>LangGraph</strong>：当你需要明确控制图、状态与恢复过程时，对照其持久执行与中断机制。开始前先写一个失败后如何恢复的流程，不只画成功路径。</p>
-            <p><strong>OpenAI Agents SDK</strong>：当你需要 Agent 循环、工具和 handoff 时，对照其运行机制；需要跨轮上下文时检查 Sessions，不能笼统写成“没有状态管理”。模型兼容性按实际工具调用与响应能力确认。</p>
-            <p><strong>Google ADK</strong>：当任务需要图、顺序、循环或并行工作流时，对照对应机制；官方也提供 Agent Runtime，不能把它概括为“只管图、不跑 Agent”。</p>
-            <p><strong>Claude Agent SDK</strong>：当你要将 Claude Code 能力接入应用并定义工具时，对照 Python/TypeScript 版本。<code>create_sdk_mcp_server()</code> 创建的工具服务在 Python 应用进程内；这不表示整个 SDK 没有 CLI 子进程，也不能据此承诺端到端“无 IPC 开销”。</p></span><span data-en><p><strong>LangGraph</strong>: examine durable execution and interruption mechanisms when you need explicit graph, state and recovery control. Describe recovery from failure as well as the success path.</p>
+        <span data-zh><p><strong>LangGraph</strong></p>
+            <p>当你需要明确控制图、状态与恢复过程时。对照其持久执行与中断机制。开始前先写一个失败后如何恢复的流程，不只画成功路径。</p>
+            <p><strong>OpenAI Agents SDK</strong>：当你需要 Agent 循环、工具和 handoff 时。对照其运行机制。需要跨轮上下文时检查 Sessions，不能笼统写成“没有状态管理”。模型兼容性按实际工具调用与响应能力确认。</p>
+            <p><strong>Google ADK</strong></p>
+            <p>当任务需要图、顺序、循环或并行工作流时，对照对应机制。官方也提供 Agent Runtime。不能把它概括为“只管图、不跑 Agent”。</p>
+            <p><strong>Claude Agent SDK</strong>：把 Claude Code 能力接入应用，并自己定义工具时。对照 Python/TypeScript 版本。</p>
+            <p><code>create_sdk_mcp_server()</code> 创建的工具服务在 Python 应用进程内。这不表示整个 SDK 没有 CLI 子进程。也不能据此承诺端到端“无 IPC 开销”。</p></span><span data-en><p><strong>LangGraph</strong>: examine durable execution and interruption mechanisms when you need explicit graph, state and recovery control. Describe recovery from failure as well as the success path.</p>
             <p><strong>OpenAI Agents SDK</strong>: examine its runtime when you need an agent loop, tools and handoffs. For cross-turn context, inspect Sessions rather than describing it as having no state management. Check model compatibility against the tool-call and response capabilities you actually need.</p>
             <p><strong>Google ADK</strong>: examine graph, sequential, loop or parallel workflows for the appropriate task. Its documentation also provides an Agent Runtime; it is not merely a graph layer that cannot run agents.</p>
             <p><strong>Claude Agent SDK</strong>: examine the Python or TypeScript version when embedding Claude Code capabilities and custom tools. <code>create_sdk_mcp_server()</code> creates a tool server inside the Python application. That does not mean the whole SDK has no CLI subprocess or guarantee zero end-to-end IPC overhead.</p></span>
       </div>
       <div class="panel is-slim" id="guide-section-3">
         <h2><span data-zh>核验事实</span><span data-en>Verification scope</span></h2>
-        <span data-zh><p>2026-11-04 复核了四份官方文档中与本页机制对照有关的内容：LangGraph 概览、OpenAI Agents SDK 概览、Google ADK 文档入口与 Claude Agent SDK Python 参考。</p>
-            <p>重点修正三处边界：OpenAI Agents SDK 有 Sessions 与人在回路机制；ADK 有 Agent Runtime；Claude 的进程内 MCP 工具不等于整个 SDK 单进程。这里没有运行 SDK、做吞吐测试或核验所有版本的兼容性。</p></span><span data-en><p>On 2026-11-04, this page&#39;s mechanism comparison was checked against four official documents: the LangGraph overview, OpenAI Agents SDK introduction, Google ADK documentation and Claude Agent SDK Python reference.</p>
+        <span data-zh><p>2026-11-04 复核了四份官方文档中与本页机制对照有关的内容。LangGraph 概览、OpenAI Agents SDK 概览、Google ADK 文档入口与 Claude Agent SDK Python 参考。</p>
+            <p>重点修正三处边界。OpenAI Agents SDK 有 Sessions 与人在回路机制。ADK 有 Agent Runtime。Claude 的进程内 MCP 工具不等于整个 SDK 单进程。</p>
+            <p>这里没有运行 SDK、做吞吐测试或核验所有版本的兼容性。</p></span><span data-en><p>On 2026-11-04, this page&#39;s mechanism comparison was checked against four official documents: the LangGraph overview, OpenAI Agents SDK introduction, Google ADK documentation and Claude Agent SDK Python reference.</p>
             <p>Three boundaries were corrected: OpenAI Agents SDK has Sessions and human-in-the-loop mechanisms; ADK has an Agent Runtime; Claude&#39;s in-process MCP tools do not make the entire SDK single-process. No SDK was executed, no throughput was measured, and compatibility across all versions was not verified.</p></span>
       </div>
       <div class="panel is-slim" id="guide-section-4">
         <h2><span data-zh>常见误判</span><span data-en>Common misreads</span></h2>
-        <span data-zh><ul><li>把框架提供持久化机制当成已经完成数据备份；需要核对后端、保留与恢复。</li><li>把支持多个模型当成无成本替换；提示词、工具 schema 和评估要重新检查。</li><li>把人在回路当成自动安全；审批点必须覆盖真正会产生影响的动作。</li><li>把进程内工具当成不用隔离；文件、命令与网络权限仍需明确。</li><li>只按功能名对照，不检查所用语言、版本与部署环境。</li></ul></span><span data-en><ul><li>A persistence mechanism does not establish a working backup; check backend, retention and recovery.</li><li>Multiple-model support does not make substitution free; recheck prompts, tool schemas and evaluations.</li><li>Human-in-the-loop is not automatic safety; approval points must cover consequential actions.</li><li>In-process tools still need explicit file, command and network boundaries.</li><li>Feature names alone are insufficient; check language, version and deployment environment.</li></ul></span>
+        <span data-zh><ul><li>把框架提供持久化机制当成已经完成数据备份；需要核对后端、保留与恢复。</li><li>把支持多个模型当成无成本替换。提示词、工具 schema 和评估要重新检查。</li><li>把人在回路当成自动安全；审批点必须覆盖真正会产生影响的动作。</li><li>把进程内工具当成不用隔离；文件、命令与网络权限仍需明确。</li><li>只按功能名对照，不检查所用语言、版本与部署环境。</li></ul></span><span data-en><ul><li>A persistence mechanism does not establish a working backup; check backend, retention and recovery.</li><li>Multiple-model support does not make substitution free; recheck prompts, tool schemas and evaluations.</li><li>Human-in-the-loop is not automatic safety; approval points must cover consequential actions.</li><li>In-process tools still need explicit file, command and network boundaries.</li><li>Feature names alone are insufficient; check language, version and deployment environment.</li></ul></span>
       </div>
 <nav class="panel is-slim" aria-label="接下来做什么" data-ui-aria-label-zh="接下来做什么" data-ui-aria-label-en="What to do next">
 <h2><span data-zh>接下来做什么</span><span data-en>What to do next</span></h2><ul>

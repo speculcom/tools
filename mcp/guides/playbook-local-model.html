@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Playbook: running a model on your own machine — 深水指南 | 投机取巧</title>
-  <meta name="description" content="任务：在自己的机器上跑一个模型：显存、量化档、runtime、评估、监控五步；含体积算式、量化索引、失败模式与验收单。" />
+  <meta name="description" content="任务：在自己的机器上跑一个模型：显存、量化档、runtime、评估、监控五步。含体积算式、量化索引、失败模式与验收单。" />
   <link rel="canonical" href="https://tools.specul.com/mcp/guides/playbook-local-model.html" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Playbook: running a model on your own machine" />
   <meta property="og:url" content="https://tools.specul.com/mcp/guides/playbook-local-model.html" />
   <meta property="og:title" content="Playbook: running a model on your own machine — 深水指南 | 投机取巧" />
-  <meta property="og:description" content="任务：在自己的机器上跑一个模型：显存、量化档、runtime、评估、监控五步；含体积算式、量化索引、失败模式与验收单。" />
+  <meta property="og:description" content="任务：在自己的机器上跑一个模型：显存、量化档、runtime、评估、监控五步。含体积算式、量化索引、失败模式与验收单。" />
   <meta property="og:locale" content="zh_CN" />
   <meta property="og:locale:alternate" content="en_US" />
   <link rel="alternate" hreflang="zh-CN" href="https://tools.specul.com/mcp/guides/playbook-local-model.html" />
@@ -104,7 +104,7 @@
           <div class="vendor is-caps"><span data-zh>规划</span><span data-en>Planning</span></div>
         </div>
       </div>
-      <div class="panel-lead"><span data-zh><p>显存、量化档、runtime、评估、监控五步；含体积算式、量化索引、失败模式与验收单。</p></span><span data-en><p>Five steps — VRAM, quantization tier, runtime, evaluation, monitoring — with a size formula, the quantization index, failure modes and an acceptance list.</p></span></div>
+      <div class="panel-lead"><span data-zh><p>显存、量化档、runtime、评估、监控五步。含体积算式、量化索引、失败模式与验收单。</p></span><span data-en><p>Five steps — VRAM, quantization tier, runtime, evaluation, monitoring — with a size formula, the quantization index, failure modes and an acceptance list.</p></span></div>
 
 
 
@@ -112,11 +112,11 @@
       <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>显存：先算再下</span><span data-en>VRAM: calculate before downloading</span></a></li><li><a href="#guide-section-1"><span data-zh>量化档：按索引选</span><span data-en>Quantization: use the index</span></a></li><li><a href="#guide-section-2"><span data-zh>Runtime：按硬件选</span><span data-en>Runtime: match the hardware</span></a></li><li><a href="#guide-section-3"><span data-zh>评估：三类任务各 20 条</span><span data-en>Evaluate: 20 cases per task</span></a></li><li><a href="#guide-section-4"><span data-zh>监控：上线后看什么</span><span data-en>Monitor after launch</span></a></li><li><a href="#guide-section-5"><span data-zh>成本算式</span><span data-en>Cost formula</span></a></li><li><a href="#guide-section-6"><span data-zh>验收单</span><span data-en>Acceptance checklist</span></a></li><li><a href="#guide-section-7"><span data-zh>常见失败模式</span><span data-en>Failure modes</span></a></li><li><a href="#guide-section-8"><span data-zh>贯穿案例：先算内存，再尝试启动</span><span data-en>Worked example: budget memory before starting</span></a></li></ul></nav>
       <div class="panel is-slim" id="guide-section-0">
         <h2><span data-zh>显存：先算再下</span><span data-en>VRAM: calculate before downloading</span></h2>
-        <span data-zh><p><strong>一句话</strong>：以下 KV 算式仅用于常规注意力缓存的简化预算，不适用于所有架构或缓存实现。GB 按十进制计，GiB = 字节 / 2^30。</p>
+        <span data-zh><p><strong>一句话</strong>：以下 KV 算式只做常规注意力缓存的简化预算。不适用于所有架构或缓存实现。GB 按十进制计，GiB = 字节 / 2^30。</p>
             <pre class="code"><code>权重体积 GB ≈ 参数量(B) × bpw / 8
 KV 字节 ≈ 2 × 层数 × KV 头数 × 头维度 × 每请求缓存 tokens × 每元素字节数 × 并发请求数
 总预算 ≈ 权重 + KV 缓存 + 运行器与系统开销 + 自定余量</code></pre>
-            <ul><li>7B 参数按纯 4-bit 算约为 3.5 GB；实际文件还含量化与其他数据，以文件字节数为准。</li><li>先定上下文长度，再定量化档；只按参数量算会低估。</li><li>GQA/MQA 使用 KV 头数，不直接套查询头数。运行器开销与余量按配置记录，不预设通用百分比。</li></ul></span><span data-en><p>The KV formula below is a simplified budget for conventional attention caches, not every architecture or implementation. GB is decimal; GiB = bytes / 2^30.</p>
+            <ul><li>7B 参数按纯 4-bit 算约为 3.5 GB。实际文件还含量化与其他数据，以文件字节数为准。</li><li>先定上下文长度，再定量化档；只按参数量算会低估。</li><li>GQA/MQA 使用 KV 头数，不直接套查询头数。运行器开销与余量按配置记录，不预设通用百分比。</li></ul></span><span data-en><p>The KV formula below is a simplified budget for conventional attention caches, not every architecture or implementation. GB is decimal; GiB = bytes / 2^30.</p>
             <pre class="code"><code>Weight GB ≈ parameters in billions × bits per weight / 8
 KV bytes ≈ 2 × layers × KV heads × head dimension × cached tokens per request
          × bytes per element × concurrent requests
@@ -131,13 +131,13 @@ Total budget ≈ weights + KV cache + runtime/system overhead + chosen headroom<
       </div>
       <div class="panel is-slim" id="guide-section-2">
         <h2><span data-zh>Runtime：按硬件选</span><span data-en>Runtime: match the hardware</span></h2>
-        <span data-zh><div class="tbl-wrap"><table><thead><tr><th>硬件</th><th>候选路线</th><th>需要核对</th></tr></thead><tbody><tr><td>Apple 硅</td><td>LM Studio（MLX）或 llama.cpp</td><td>模型架构、格式与统一内存预算</td></tr><tr><td>单张 NVIDIA</td><td>LM Studio、llama.cpp 或 ExLlamaV3</td><td>GPU/驱动支持；GGUF 与 EXL3 不是同一格式</td></tr><tr><td>多卡 / 并发</td><td>vLLM 等服务运行器</td><td>并行配置、架构与量化格式支持</td></tr><tr><td>CPU / 边缘</td><td>llama.cpp 等本地运行器</td><td>内存、架构支持与任务响应要求</td></tr></tbody></table></div>
+        <span data-zh><div class="tbl-wrap"><table><thead><tr><th>硬件</th><th>候选路线</th><th>需要核对</th></tr></thead><tbody><tr><td>Apple 硅</td><td>LM Studio（MLX）或 llama.cpp</td><td>模型架构、格式与统一内存预算</td></tr><tr><td>单张 NVIDIA</td><td>LM Studio、llama.cpp 或 ExLlamaV3</td><td>GPU/驱动支持。GGUF 与 EXL3 不是同一格式</td></tr><tr><td>多卡 / 并发</td><td>vLLM 等服务运行器</td><td>并行配置、架构与量化格式支持</td></tr><tr><td>CPU / 边缘</td><td>llama.cpp 等本地运行器</td><td>内存、架构支持与任务响应要求</td></tr></tbody></table></div>
             <ul><li>按图形界面、脚本或服务化需求选择路线；这不是性能排序。</li><li>注意工具许可证与权重许可证是两份文件。</li></ul></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Hardware</th><th>Candidate paths</th><th>Check</th></tr></thead><tbody><tr><td>Apple silicon</td><td>LM Studio with MLX, or llama.cpp</td><td>Architecture, format and unified-memory budget</td></tr><tr><td>One NVIDIA GPU</td><td>LM Studio, llama.cpp or ExLlamaV3</td><td>GPU/driver support; GGUF and EXL3 are different formats</td></tr><tr><td>Multiple GPUs/concurrency</td><td>Serving runtimes such as vLLM</td><td>Parallel configuration, architecture and quantisation support</td></tr><tr><td>CPU/edge</td><td>Local runtimes such as llama.cpp</td><td>Memory, supported architectures and response requirements</td></tr></tbody></table></div>
             <ul><li>Choose according to GUI, scripting or serving needs; this is not a performance ranking.</li><li>Tool and model licences are separate.</li></ul></span>
       </div>
       <div class="panel is-slim" id="guide-section-3">
         <h2><span data-zh>评估：三类任务各 20 条</span><span data-en>Evaluate: 20 cases per task</span></h2>
-        <span data-zh><p>下面以三类各 20 条为教学安排，实际样本按业务任务、边界情况与风险设计，不是通用验收规模。</p>
+        <span data-zh><p>下面以三类各 20 条为教学安排。实际样本按业务任务、边界情况与风险设计，这不是通用验收规模。</p>
             <ol><li value="1"><strong>准备 60 条真实任务</strong>：问答、摘要、代码各 20 条，带标准答案。</li><li value="2"><strong>跑三档</strong>：Q4、Q5、Q8（或模型提供的相邻档），记录质量与速度。</li><li value="3"><strong>看四个指标</strong>：正确率、幻觉率、首 token 延迟、tokens/s。</li><li value="4"><strong>选档结论</strong>：写清「为什么这个档够用」，不要只写「感觉不错」。</li></ol>
             <p><strong>失败模式</strong>：只测一个 prompt；真实任务一上就崩。</p></span><span data-en><p>Twenty cases in each of three categories is an illustrative exercise, not a universal acceptance-set size. Choose real task and boundary coverage for the risk.</p>
             <ol><li value="1">Prepare an illustrative 60 tasks: Q&amp;A, summaries and code, 20 each, with expected answers.</li><li value="2">Compare Q4/Q5/Q8, or available neighbouring tiers, recording quality and speed.</li><li value="3">Record correctness, hallucinations, first-token delay and tokens per second.</li><li value="4">Explain why the chosen tier satisfies the task rather than saying it “feels good”.</li></ol>
@@ -145,14 +145,14 @@ Total budget ≈ weights + KV cache + runtime/system overhead + chosen headroom<
       </div>
       <div class="panel is-slim" id="guide-section-4">
         <h2><span data-zh>监控：上线后看什么</span><span data-en>Monitor after launch</span></h2>
-        <span data-zh><ul><li>显存峰值、tokens/s、首 token 延迟、错误率。</li><li>优先记录必要的长度、耗时与错误；哈希也可能关联原文，不能当作自动匿名化。明确日志访问权限与保留范围。</li><li>模型或量化档更新时，重跑评估集再切换。</li></ul></span><span data-en><ul><li>Peak memory, output throughput, first-token delay and error rates.</li><li>Prefer necessary lengths, timings and errors in logs. Hashes can still link back to input; they are not automatic anonymisation. Define access and retention.</li><li>Rerun the task set before changing the model or quantisation.</li></ul></span>
+        <span data-zh><ul><li>显存峰值、tokens/s、首 token 延迟、错误率。</li><li>优先记录必要的长度、耗时与错误。哈希也可能关联原文，不能当作自动匿名化。明确日志访问权限与保留范围。</li><li>模型或量化档更新时，重跑评估集再切换。</li></ul></span><span data-en><ul><li>Peak memory, output throughput, first-token delay and error rates.</li><li>Prefer necessary lengths, timings and errors in logs. Hashes can still link back to input; they are not automatic anonymisation. Define access and retention.</li><li>Rerun the task set before changing the model or quantisation.</li></ul></span>
       </div>
       <div class="panel is-slim" id="guide-section-5">
         <h2><span data-zh>成本算式</span><span data-en>Cost formula</span></h2>
         <span data-zh><pre class="code"><code>一次性：硬件 + 下载流量 + 调试时间
 持续：电费 + 维护 + 评估复跑
 对比云端：按同一期间分开计算输入/输出、缓存、工具与固定费用</code></pre>
-            <p>不预置电价与报价。用 <a href="https://tools.specul.com/mcp/guides/cost-calculator.html" target="_blank" rel="noopener">成本计算器</a> 填写相同期间的假设；已有硬件、分摊与维护会改变结论，不能仅由调用量推断哪种更省。</p></span><span data-en><pre class="code"><code>Initial: hardware, transfer and setup time
+            <p>不预置电价与报价。用 <a href="https://tools.specul.com/mcp/guides/cost-calculator.html" target="_blank" rel="noopener">成本计算器</a> 填写相同期间的假设。已有硬件、分摊与维护会改变结论，不能仅由调用量推断哪种更省。</p></span><span data-en><pre class="code"><code>Initial: hardware, transfer and setup time
 Recurring: electricity, maintenance and reevaluation
 Cloud comparison: input/output, caching, tools and fixed costs over the same period</code></pre>
             <p>No electricity rates or quotations are prefilled. Use the <a href="https://tools.specul.com/mcp/guides/cost-calculator.html" target="_blank" rel="noopener">cost calculator</a> with comparable periods. Existing hardware, allocation and maintenance can change the outcome; usage alone does not determine which is cheaper.</p></span>
@@ -168,9 +168,9 @@ Cloud comparison: input/output, caching, tools and fixed costs over the same per
       <div class="panel is-slim" id="guide-section-8">
         <h2 id="worked-example"><span data-zh>贯穿案例：先算内存，再尝试启动</span><span data-en>Worked example: budget memory before starting</span></h2>
         <span data-zh><p>以下数字是假设的容量练习，不对应某款模型，也不是性能测量。</p>
-            <p>设设备可用预算为 10 GiB，候选权重为 6 GiB。先预留 2 GiB 给上下文缓存、1 GiB 给运行时，其余 1 GiB 作为余量。合计 9 GiB 是初步预算，不是一定能启动的保证。</p>
-            <p>接下来核对文件来源、许可、运行器与架构支持。先用短输入检查能否加载、是否有不支持的算子，以及真实内存占用。再逐渐增加上下文；每一步记录错误和响应时间。</p>
-            <p>装不下时，先区分权重、缓存还是其他程序占用，再评估更小规格、不同量化或运行器支持的卸载。能启动但响应不满足任务要求，也应记录为未通过。</p>
+            <p>设设备可用预算为 10 GiB，候选权重为 6 GiB。先预留 2 GiB 给上下文缓存，1 GiB 给运行时，其余 1 GiB 作为余量。合计 9 GiB 是初步预算，不是一定能启动的保证。</p>
+            <p>接下来核对文件来源、许可、运行器与架构支持。先用短输入检查能否加载、是否有不支持的算子，以及真实内存占用。再逐渐增加上下文。每一步记录错误和响应时间。</p>
+            <p>装不下时，先分清是权重、缓存还是其他程序占用。再评估更小规格、不同量化或运行器支持的卸载。能启动但响应不满足任务要求，也应记录为未通过。</p>
             <p>具体计算与单位见 <a href="https://models.specul.com/guides/gpu-cost-math.html" target="_blank" rel="noopener">硬件预算示例</a>。</p></span><span data-en><p>These are hypothetical capacity figures, not a named model or measured performance.</p>
             <p>Assume a 10 GiB available budget and 6 GiB of weights. Reserve 2 GiB for context cache and 1 GiB for runtime, leaving 1 GiB headroom. The 9 GiB estimate is not a startup guarantee.</p>
             <p>Check file provenance, licensing, runtime and architecture support. Start with short input and inspect loading, unsupported operations and actual memory. Increase context gradually, recording errors and response times.</p>

@@ -131,13 +131,15 @@
       </div>
       <div class="panel is-slim" id="guide-section-3">
         <h2><span data-zh>自动搜索：APE</span><span data-en>Automated search: APE</span></h2>
-        <span data-zh><p>APE 论文把指令当作「程序」来做合成： LLM 提出一批候选指令，搜索在其中最大化选定的评分函数， 再用另一个 LLM 的零样本表现评估选中的指令。 论文报告：在 24 个 NLP 任务上，自动生成的指令大幅超过零样本基线， 其中 19 个任务达到或超过人工标注的指令（论文自述，非本站实测）。</p>
+        <span data-zh><p>APE 论文把指令当作「程序」来做合成： LLM 提出一批候选指令，搜索在其中最大化选定的评分函数， 再用另一个 LLM 的零样本表现评估选中的指令。 论文报告：在 24 个 NLP 任务上，自动生成的指令大幅超过零样本基线，</p>
+            <p>其中 19 个任务达到或超过人工标注的指令（论文自述，非本站实测）。</p>
             <p>机制上的要点：评分函数决定搜索方向。 分数定义偏了，选出的指令就偏了——标准要先于搜索想清楚。</p></span><span data-en><p>The APE paper treats instructions as &quot;programs&quot; to be synthesized: an LLM proposes a pool of candidate instructions, search maximizes a chosen score function over them, and another LLM&#39;s zero-shot performance evaluates the selected instruction. The paper reports: across 24 NLP tasks, automatically generated instructions beat the zero-shot baseline by a large margin, matching or exceeding human-annotated instructions on 19 of 24 (the paper&#39;s own report, not our testing).</p>
             <p>The mechanical point: the score function decides the search direction. If the score is misdefined, the selected instruction is misaligned — settle the criteria before searching.</p></span>
       </div>
       <div class="panel is-slim" id="guide-section-4">
         <h2><span data-zh>运行时循环：生成器与评估器</span><span data-en>Runtime loop: generator and evaluator</span></h2>
-        <span data-zh><p>Anthropic 的 evaluator-optimizer 模式把迭代搬到运行时： 生成器产出答案，评估器只评不解，给出 PASS / NEEDS_IMPROVEMENT / FAIL 与反馈； 未通过时，生成器带着历史尝试和反馈重新生成，直到通过。 <strong>依据：</strong> 参考实现里，评估器被明确要求「只评估，不尝试解题」， 输出走 XML 标签，方便程序分支。</p>
+        <span data-zh><p>Anthropic 的 evaluator-optimizer 模式把迭代搬到运行时： 生成器产出答案，评估器只评不解。它给出 PASS / NEEDS_IMPROVEMENT / FAIL 与反馈；</p>
+            <p>未通过时，生成器带着历史尝试和反馈重新生成，直到通过。 <strong>依据：</strong> 参考实现里，评估器被明确要求「只评估，不尝试解题」， 输出走 XML 标签，方便程序分支。</p>
             <p>注意：参考实现循环到 PASS 为止，没有步数上限。 生产环境要自设步数上限与兜底出口（本站观点）。</p></span><span data-en><p>Anthropic&#39;s evaluator-optimizer pattern moves iteration to runtime: a generator produces an answer; an evaluator judges without solving, returning PASS / NEEDS_IMPROVEMENT / FAIL plus feedback; on failure, the generator regenerates with previous attempts and feedback until it passes. In the reference implementation, the evaluator is explicitly told to evaluate only, never attempt the task, and outputs use XML tags so code can branch on them.</p>
             <p>Note: the reference implementation loops until PASS with no iteration cap. Production needs its own step limit and fallback exit (our view).</p></span>
       </div>
@@ -150,7 +152,7 @@
       <div class="panel is-slim" id="guide-section-6">
         <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
         <span data-zh><ul><li><a href="https://raw.githubusercontent.com/openai/openai-cookbook/main/examples/Enhance_your_prompts_with_meta_prompting.ipynb" target="_blank" rel="noopener">OpenAI Cookbook · Meta Prompting</a></li><li><a href="https://raw.githubusercontent.com/anthropics/anthropic-cookbook/main/patterns/agents/evaluator_optimizer.ipynb" target="_blank" rel="noopener">Anthropic Cookbook · Evaluator-Optimizer</a></li><li><a href="https://arxiv.org/abs/2211.01910" target="_blank" rel="noopener">APE 论文（arXiv 2211.01910）</a></li></ul>
-            <p>核验日 2026-11-07，三条均直抓成功。 OpenAI 与 Anthropic 的文档主站本次网络不可达，官方内容取自两家官方仓库的 raw 文件。</p></span><span data-en><ul><li><a href="https://raw.githubusercontent.com/openai/openai-cookbook/main/examples/Enhance_your_prompts_with_meta_prompting.ipynb" target="_blank" rel="noopener">OpenAI Cookbook · Meta Prompting</a></li><li><a href="https://raw.githubusercontent.com/anthropics/anthropic-cookbook/main/patterns/agents/evaluator_optimizer.ipynb" target="_blank" rel="noopener">Anthropic Cookbook · Evaluator-Optimizer</a></li><li><a href="https://arxiv.org/abs/2211.01910" target="_blank" rel="noopener">APE paper (arXiv 2211.01910)</a></li></ul>
+            <p>核验日 2026-11-07，三条均直抓成功。 OpenAI 与 Anthropic 的文档主站本次网络不可达。官方内容取自两家官方仓库的 raw 文件。</p></span><span data-en><ul><li><a href="https://raw.githubusercontent.com/openai/openai-cookbook/main/examples/Enhance_your_prompts_with_meta_prompting.ipynb" target="_blank" rel="noopener">OpenAI Cookbook · Meta Prompting</a></li><li><a href="https://raw.githubusercontent.com/anthropics/anthropic-cookbook/main/patterns/agents/evaluator_optimizer.ipynb" target="_blank" rel="noopener">Anthropic Cookbook · Evaluator-Optimizer</a></li><li><a href="https://arxiv.org/abs/2211.01910" target="_blank" rel="noopener">APE paper (arXiv 2211.01910)</a></li></ul>
             <p>Verified 2026-11-07; all three fetched directly with HTTP 200. The OpenAI and Anthropic doc sites were unreachable from this network; official content was taken from raw files in both vendors&#39; official repositories.</p></span>
       </div>
 <nav class="panel is-slim" aria-label="接下来做什么" data-ui-aria-label-zh="接下来做什么" data-ui-aria-label-en="What to do next">

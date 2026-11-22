@@ -167,8 +167,8 @@
         <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-21</span></h2>
         <dl class="cn-rows">
           <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>MongoDB, Inc.（美国）。</span><span data-en>MongoDB, Inc. (US).</span></dd>
-          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>直连不可达</span><span data-en>direct blocked</span>　<span data-zh>github.com 直连实测 000（波动，同日代理可达 200）；mongodb.com 直连 200（docs 首页）。</span><span data-en>github.com measured 000 direct (fluctuating; 200 via proxy the same day); mongodb.com measured 200 direct (docs home).</span></dd>
-          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>未见于备案名单</span><span data-en>not in filing list</span>：<span data-zh>未见于网信办公示名单（2026-10-21 检索）；该产品未面向大陆公众提供服务，备案不适用。</span><span data-en>not in the CAC public registry (searched 2026-10-21); the product does not serve the mainland public, so filing does not apply.</span></dd>
+          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>直连不可达</span><span data-en>direct blocked</span>　<span data-zh>github.com 直连实测 000（波动，同日代理可达 200）。mongodb.com 直连 200（docs 首页）。</span><span data-en>github.com measured 000 direct (fluctuating; 200 via proxy the same day); mongodb.com measured 200 direct (docs home).</span></dd>
+          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>未见于备案名单</span><span data-en>not in filing list</span>：<span data-zh>未见于网信办公示名单（2026-10-21 检索）。该产品未面向大陆公众提供服务，备案不适用。</span><span data-en>not in the CAC public registry (searched 2026-10-21); the product does not serve the mainland public, so filing does not apply.</span></dd>
         </dl>
         <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
       </div>
@@ -181,7 +181,7 @@
       <dl class="axes">
         <div class="axis" id="dimension-model_access">
           <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
-          <dd><span data-zh><p><strong>它自己不调模型</strong>——被 MCP 客户端调用的接口实现。它把 MongoDB 数据库操作 （连接、集合查询、聚合）与 Atlas 管理包装成工具给 agent 用。</p></span><span data-en><p><strong>It calls no model itself</strong> — an interface implementation called by MCP clients. It wraps MongoDB database operations (connecting, collection queries, aggregations) and Atlas management as tools for agents.</p></span></dd>
+          <dd><span data-zh><p><strong>它自己不调模型</strong>——被 MCP 客户端调用的接口实现。它把 MongoDB 数据库操作与 Atlas 管理包装成工具给 agent 用。含连接、集合查询与聚合。</p></span><span data-en><p><strong>It calls no model itself</strong> — an interface implementation called by MCP clients. It wraps MongoDB database operations (connecting, collection queries, aggregations) and Atlas management as tools for agents.</p></span></dd>
         </div>
         <div class="axis" id="dimension-runtime">
           <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
@@ -206,12 +206,12 @@
         </div>
         <div class="axis" id="dimension-permissions">
           <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
-          <dd><span data-zh><p><strong>两条凭据路线</strong>：连接串直连（能连什么库=能做什么，含写/删）或 Atlas API key（管 Atlas 面）。</p>
-            <p>官方 README 明确提示高危操作确认机制存在（删除类工具带确认参数）—— 但边界仍是凭据：接 agent 前按「它能删集合」设防。</p></span><span data-en><p><strong>Two credential routes</strong>: a connection string direct connection (whatever database it can reach = whatever it can do, including writes/deletes) or an Atlas API key (the Atlas management surface). The official README explicitly notes a confirmation mechanism for high-risk operations (delete-class tools carry a confirmation parameter) — but the boundary is still the credential: before hooking up an agent, defend on the assumption &quot;it can drop collections&quot;.</p></span></dd>
+          <dd><span data-zh><p><strong>两条凭据路线</strong>：连接串直连，能连什么库就能做什么，含写与删。也可用 Atlas API key 管 Atlas 面。</p>
+            <p>官方 README 明确提示高危操作确认机制存在（删除类工具带确认参数）。 但边界仍是凭据：接 agent 前按「它能删集合」设防。</p></span><span data-en><p><strong>Two credential routes</strong>: a connection string direct connection (whatever database it can reach = whatever it can do, including writes/deletes) or an Atlas API key (the Atlas management surface). The official README explicitly notes a confirmation mechanism for high-risk operations (delete-class tools carry a confirmation parameter) — but the boundary is still the credential: before hooking up an agent, defend on the assumption &quot;it can drop collections&quot;.</p></span></dd>
         </div>
         <div class="axis" id="dimension-fit">
           <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
-          <dd><span data-zh><p>适合：MongoDB 项目的 agent 开发流（查 schema、跑聚合、试写操作）。不适合：要硬只读沙箱。非 MongoDB 栈。</p></span><span data-en><p>Fits: agent dev flows for MongoDB projects (inspect schemas, run aggregations, try write operations). Not a fit: hard read-only sandboxes; non-MongoDB stacks.</p></span></dd>
+          <dd><span data-zh><p>适合：MongoDB 项目的 agent 开发流。查 schema、跑聚合、试写操作。不适合：要硬只读沙箱。非 MongoDB 栈。</p></span><span data-en><p>Fits: agent dev flows for MongoDB projects (inspect schemas, run aggregations, try write operations). Not a fit: hard read-only sandboxes; non-MongoDB stacks.</p></span></dd>
         </div>
         <div class="axis" id="dimension-transport">
           <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
@@ -242,7 +242,7 @@
         <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
         <ul>
 
-          <li><span data-zh>找 mongodb.com/docs/mcp——该路径 404（2026-10-21 直抓），现役以 mongodb-js 仓为准</span><span data-en>Looking for mongodb.com/docs/mcp — that path 404s (direct-fetched 2026-10-21); the live line is the mongodb-js repo</span></li>
+          <li><span data-zh>找 mongodb.com/docs/mcp。该路径 404（2026-10-21 直抓），现役以 mongodb-js 仓为准</span><span data-en>Looking for mongodb.com/docs/mcp — that path 404s (direct-fetched 2026-10-21); the live line is the mongodb-js repo</span></li>
           <li><span data-zh>把「删除类工具带确认」当安全边界——确认参数可被 agent 自己填，凭据才是边界</span><span data-en>Treating &#39;delete tools ask for confirmation&#39; as a security boundary — the agent can fill in the confirmation parameter itself; credentials are the boundary</span></li>
           <li><span data-zh>连接串直连本地库与 Atlas 混配——两条凭据路线权限面不同</span><span data-en>Mixing direct local connections with Atlas in configuration — the two credential routes have different permission surfaces</span></li>
         </ul>
