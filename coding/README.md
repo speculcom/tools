@@ -10,7 +10,7 @@
 
 ## 这个大类提供什么
 
-- **41 个对象**，按固定 8 个维度记录
+- **42 个对象**，按固定 8 个维度记录
 - 每个维度都能回溯到官方一手源，附来源类型与核验日期
 - **不给总分排名**——缺少跨工具的统一实测，排名会误导
 - **「未知」是合法答案**——查不到就写未知并说明原因，不用推测填充
@@ -38,12 +38,13 @@
 | [Crush](./crush.html) | CLI 形态 | Charm | verified | 2026-10-23 |
 | [Cursor CLI](./cursor-cli.html) | CLI 形态 | Anysphere | verified | 2026-10-23 |
 | [Cursor](./cursor.html) | IDE 形态 | Anysphere | verified | 2026-10-23 |
+| [Devin Bots](./devin-bots.html) | 厂商云形态 | Cognition | partial | 2026-11-23 |
 | [Devin](./devin.html) | 厂商云形态 | Cognition | verified | 2026-10-30 |
 | [Droid](./factory-droid.html) | CLI 形态 | Factory AI | verified | 2026-10-23 |
 | [Gemini CLI](./gemini-cli.html) | CLI 形态 | Google | verified | 2026-10-23 |
 | [Google Antigravity](./google-antigravity.html) | IDE 形态 | Google | verified | 2026-10-30 |
 | [Goose](./goose.html) | CLI 形态 | Agentic AI Foundation | verified | 2026-10-23 |
-| [xAI Grok Bot](./grok-bot.html) | 厂商云形态 | xAI | verified | 2026-10-23 |
+| [xAI Grok Bot](./grok-bot.html) | 厂商云形态 | xAI | verified | 2026-11-23 |
 | [Jules](./jules.html) | 厂商云形态 | Google | verified | 2026-10-23 |
 | [Junie](./junie.html) | IDE 形态 | JetBrains | verified | 2026-10-23 |
 | [Kilo Code](./kilocode.html) | IDE 形态 | Kilo-Org | verified | 2026-10-22 |
@@ -71,7 +72,7 @@
 
 `lifecycle` 单独表示产品状态（`active` / `maintenance` / `archived` / `unknown`），不参与 `confidence` 封顶。一个已归档产品可以有完整的证据；一个每天发版的产品也可能因为官方不披露而只有 `partial`。
 
-当前 41 个对象中，**40 个为 verified**。
+当前 42 个对象中，**40 个为 verified**。
 
 ## 数据来源
 
@@ -84,7 +85,7 @@
 
 | 大类 | 主题 | 对象数 |
 |---|---|---|
-| [AI 编程](/coding/) | 装在编辑器、终端，或厂商云里 | 41 |
+| [AI 编程](/coding/) | 装在编辑器、终端，或厂商云里 | 42 |
 | [AI 对话助手](/chat/) | 通用对话产品，含国产 | 23 |
 | [AI 图像创作](/image/) | 文生图与图像工作台 | 15 |
 | [AI 视频创作](/video/) | 文生视频与数字人 | 14 |
@@ -92,7 +93,7 @@
 | [AI 搜索与研究](/research/) | AI 搜索、学术检索与研究工作台 | 11 |
 | [办公与写作](/office/) | 文档、表格、演示、会议、翻译与邮件 | 15 |
 | [AI 自动化与工作流](/automation/) | 可视化搭 AI 工作流与 agent | 24 |
-| [框架与运行时](/framework/) | 运行时、编排框架、SDK、机器人软件栈 | 42 |
+| [框架与运行时](/framework/) | 运行时、编排框架、SDK、机器人软件栈 | 43 |
 | [MCP 工具](/mcp/) | 缺什么，装什么 —— 给 agent 装的 MCP 工具 | 32 |
 | [本地模型运行器](/runner/) | 在自己机器上跑开源模型 | 21 |
 | [AI 安全与评测](/safety/) | 拦得住、测得出、追得回 | 25 |

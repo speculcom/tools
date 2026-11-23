@@ -10,7 +10,7 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 
 ## 这个大类提供什么
 
-- **42 个对象**，按固定 8 个维度记录
+- **43 个对象**，按固定 8 个维度记录
 - 每个维度都能回溯到官方一手源，附来源类型与核验日期
 - **不给总分排名**——缺少跨工具的统一实测，排名会误导
 - **「未知」是合法答案**——查不到就写未知并说明原因，不用推测填充
@@ -60,6 +60,7 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 | [Strands Agents SDK](./strands-agents.html) | 框架 / SDK | AWS | verified | 2026-10-30 |
 | [SWE-agent](./swe-agent.html) | 框架 / SDK | Princeton / Stanford（学术团队） | verified | 2026-10-30 |
 | [Vercel AI SDK 7](./vercel-ai-sdk.html) | 框架 / SDK | Vercel | verified | 2026-11-03 |
+| [Vercel eve（1.0）](./vercel-eve.html) | 框架 / SDK | Vercel | partial | 2026-11-23 |
 | [Webots](./webots.html) | 本机应用 | Cyberbotics | verified | 2026-11-07 |
 
 ## 状态标记
@@ -72,7 +73,7 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 
 `lifecycle` 单独表示产品状态（`active` / `maintenance` / `archived` / `unknown`），不参与 `confidence` 封顶。一个已归档产品可以有完整的证据；一个每天发版的产品也可能因为官方不披露而只有 `partial`。
 
-当前 42 个对象中，**41 个为 verified**。
+当前 43 个对象中，**41 个为 verified**。
 
 ## 数据来源
 
@@ -85,7 +86,7 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 
 | 大类 | 主题 | 对象数 |
 |---|---|---|
-| [AI 编程](/coding/) | 装在编辑器、终端，或厂商云里 | 41 |
+| [AI 编程](/coding/) | 装在编辑器、终端，或厂商云里 | 42 |
 | [AI 对话助手](/chat/) | 通用对话产品，含国产 | 23 |
 | [AI 图像创作](/image/) | 文生图与图像工作台 | 15 |
 | [AI 视频创作](/video/) | 文生视频与数字人 | 14 |
@@ -93,7 +94,7 @@ Agent 运行时 / 编排框架 / SDK 的责任边界、状态持久化能力与�
 | [AI 搜索与研究](/research/) | AI 搜索、学术检索与研究工作台 | 11 |
 | [办公与写作](/office/) | 文档、表格、演示、会议、翻译与邮件 | 15 |
 | [AI 自动化与工作流](/automation/) | 可视化搭 AI 工作流与 agent | 24 |
-| [框架与运行时](/framework/) | 运行时、编排框架、SDK、机器人软件栈 | 42 |
+| [框架与运行时](/framework/) | 运行时、编排框架、SDK、机器人软件栈 | 43 |
 | [MCP 工具](/mcp/) | 缺什么，装什么 —— 给 agent 装的 MCP 工具 | 32 |
 | [本地模型运行器](/runner/) | 在自己机器上跑开源模型 | 21 |
 | [AI 安全与评测](/safety/) | 拦得住、测得出、追得回 | 25 |
