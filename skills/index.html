@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Skills：能力包，不是提示词 · AI 工具</title>
+  <meta name="description" content="Skills 是什么、和 prompt / MCP / agent 的分界；首批 12 条官方与社区技能索引，含来源、许可、权限与风险提示。" />
+  <link rel="canonical" href="https://tools.specul.com/skills/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Skills：能力包，不是提示词 · AI 工具" />
+  <meta property="og:url" content="https://tools.specul.com/skills/" />
+  <meta property="og:title" content="Skills：能力包，不是提示词 · AI 工具" />
+  <meta property="og:description" content="Skills 是什么、和 prompt / MCP / agent 的分界；首批 12 条官方与社区技能索引，含来源、许可、权限与风险提示。" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <link rel="alternate" hreflang="zh-CN" href="https://tools.specul.com/skills/" />
+  <link rel="alternate" hreflang="en" href="https://tools.specul.com/skills/?lang=en" />
+  <link rel="alternate" hreflang="x-default" href="https://tools.specul.com/skills/" />
+  <meta name="theme-color" content="#16121f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b7cf8'/%3E%3Cstop offset='1' stop-color='%2322d3c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='48' height='48' rx='12' fill='%2305080f'/%3E%3Cpath d='M14 32 L24 12 L34 32' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='27' r='2.4' fill='%2322d3c5'/%3E%3C/svg%3E" />
+  <script src="../brand.js?v=bb632b891131"></script>
+  <link rel="stylesheet" href="../brand.css?v=bb632b891131" />
+  <link rel="stylesheet" href="../site.css" />
+  <link rel="stylesheet" href="../sections.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Skills：能力包，不是提示词 · AI 工具","description":"Skills 是什么、和 prompt / MCP / agent 的分界；首批 12 条官方与社区技能索引，含来源、许可、权限与风险提示。","url":"https://tools.specul.com/skills/","inLanguage":["zh-CN","en"],"isPartOf":{"@type":"WebSite","url":"https://specul.com/"}}</script>
+</head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
+  <header class="site-header">
+    <div class="container site-bar">
+      <a class="brand" href="https://specul.com/" title="投机取巧">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
+          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="站点导航">
+        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>工具</span><span data-en>Tools</span></a>
+        <a href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a>
+        <a href="https://demos.specul.com/"><span data-zh>作品演示</span><span data-en>Playground</span></a>
+        <a href="https://oss.specul.com/"><span data-zh>开源库</span><span data-en>OSS</span></a>
+        <a href="https://hardware.specul.com/"><span data-zh>硬件算力</span><span data-en>Compute</span></a>
+        <a href="https://papers.specul.com/"><span data-zh>AI 论文</span><span data-en>AI Papers</span></a>
+        <a href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a>
+        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+      </nav>
+      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+      <span class="nav-tools">
+        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
+        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
+      </span>
+      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
+        <i></i><i></i><i></i>
+      </button>
+    </div>
+  </header>
+  <div class="nav-scrim"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
+    <div class="nav-drawer-h">
+      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
+      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
+      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
+    </div>
+    <nav class="nav-drawer-list">
+      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>工具</span><span data-en>Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://models.specul.com/"><span><span data-zh>模型</span><span data-en>Models</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://demos.specul.com/"><span><span data-zh>作品演示</span><span data-en>Playground</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://oss.specul.com/"><span><span data-zh>开源库</span><span data-en>OSS</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://hardware.specul.com/" class="nav-group-start"><span><span data-zh>硬件算力</span><span data-en>Compute</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://papers.specul.com/"><span><span data-zh>AI 论文</span><span data-en>AI Papers</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://chain.specul.com/"><span><span data-zh>链</span><span data-en>Chain</span></span><span class="ar" aria-hidden="true">→</span></a>
+      <a href="https://nav.specul.com/" class="nav-group-start" data-nav-group="external"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">↗</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <p><span data-zh>内容站覆盖学、用、选、跑；AI 导航是站外的 AI 网站目录，点出去看。</span><span data-en>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</span></p>
+      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
+    </div>
+  </aside>
+  <main id="main">
+<div class="container">
+<header class="sec-head">
+  <p class="eyebrow">Tools · Skills</p>
+  <h1><span data-zh>Skills 是什么：能力包，不是提示词</span><span data-en>What Skills are: capability packages, not prompts</span></h1>
+  <p class="lede">Skill 是把一套可复用的工作流、脚本和资源打成一个包。它和 prompt、MCP、agent 不是同一层东西；先分清边界，再决定要不要装。</p>
+</header>
+<nav class="sec-nav" aria-label="Skills pages">
+  <a href="index.html" aria-current="page"><span data-zh>是什么</span><span data-en>What</span></a>
+  <a href="structure.html"><span data-zh>结构</span><span data-en>Structure</span></a>
+  <a href="build-test.html"><span data-zh>怎么写 / 怎么测</span><span data-en>Build &amp; test</span></a>
+  <a href="review.html"><span data-zh>审第三方</span><span data-en>Review</span></a>
+  <a href="../index.html"><span data-zh>回工具站</span><span data-en>Tools home</span></a>
+</nav>
+<div class="sec-note"><b>先分清：</b>Skill 是能力包，不是更长的提示词；MCP 是工具接口，agent 是执行主体。Skill 可以调用 MCP，也可以被 agent 加载。下面 12 条只做索引，不执行仓库脚本，也不背书安全与许可。</div>
+<div class="sec-body">
+<h2>和 prompt 的分界</h2><p>Prompt 是这一次对话里的指令；Skill 是跨会话可复用的能力包。Prompt 可以只有几句话；Skill 一般包含 SKILL.md、脚本、模板、参考资料和触发条件。</p><p>Skill 里的 SKILL.md 可以包含提示词，但它的重点不是“怎么说”，而是“按什么步骤做、用哪个脚本、产出什么、怎么验收”。</p>
+<h2>和 MCP 的分界</h2><p>MCP 是工具接口：把外部服务暴露成模型能调用的工具，重点是协议、参数与权限。Skill 是能力包：告诉模型在什么场景、按什么顺序、调用哪些工具与脚本，最后怎么检查。</p><p>一个 Skill 可以调用 MCP 工具；一个 MCP server 也可以被多个 Skill 复用。两者不是替代关系。</p>
+<h2>和 agent 的分界</h2><p>Agent 是一个会自己规划、调用工具、循环执行的主体；Skill 是它可加载的一份“操作手册”。Agent 可以选择加载哪个 Skill，但 Skill 本身不负责长期运行与调度。</p><p>把 Skill 当成“给 agent 的 SOP + 工具箱”，比当成“更长的提示词”更准确。</p>
+<h2>什么时候值得做成 Skill</h2><p>同一套步骤每周重复、步骤里有固定脚本或模板、产出有明确验收标准、需要别人也能复现——这四种情况适合做成 Skill。</p><p>只写一次、没有固定步骤、不需要脚本的任务，写成 prompt 或清单就够了；不要为了“看起来高级”把一句话包成 Skill。</p>
+</div>
+<h2>首批 12 条：6 条官方 + 6 条社区</h2>
+<p>点进仓库看 SKILL.md、脚本、权限与许可；先按「怎么审第三方 Skill」走一遍，再决定装不装。</p>
+<div class="sec-grid"><article class="sec-card">
+  <div class="sec-card-top"><span class="sec-tag">官方</span><span class="sec-badge">Anthropic</span></div>
+  <h3><a href="https://github.com/anthropics/skills/tree/main/skill-creator" target="_blank" rel="noopener">Skill Creator</a></h3>
+  <p>教你把一个工作流写成 SKILL.md：触发条件、步骤、脚本、资源与验收。</p>
+  <dl class="sec-facts">
+    <div><dt>来源</dt><dd>Anthropic 官方</dd></div>
+    <div><dt>许可</dt><dd>Apache-2.0（以仓库 LICENSE 为准）</dd></div>
+    <div><dt>权限</dt><dd>以 SKILL.md 为准；通常只读写工作区文件</dd></div>
+    <div><dt>兼容</dt><dd>Claude Code / 兼容 Agent Skills 的客户端</dd></div>
+  </dl>
+  <p class="sec-caveat">低到中：会生成新文件与目录；先在小项目试。</p>
+  <a class="sec-link" href="https://github.com/anthropics/skills/tree/main/skill-creator" target="_blank" rel="noopener">看源码 / SKILL.md →</a>
+</article><article class="sec-card">
+  <div class="sec-card-top"><span class="sec-tag">官方</span><span class="sec-badge">Anthropic</span></div>
+  <h3><a href="https://github.com/anthropics/skills/tree/main/pdf" target="_blank" rel="noopener">PDF</a></h3>
+  <p>读取、拆分、合并、填表、抽取 PDF 内容，并保留页面结构。</p>
+  <dl class="sec-facts">
+    <div><dt>来源</dt><dd>Anthropic 官方</dd></div>
+    <div><dt>许可</dt><dd>Apache-2.0（以仓库 LICENSE 为准）</dd></div>
+    <div><dt>权限</dt><dd>读写本地 PDF 与输出文件；可能调用 Python 库</dd></div>
+    <div><dt>兼容</dt><dd>Claude Code / 兼容 Agent Skills 的客户端</dd></div>
+  </dl>
+  <p class="sec-caveat">中：处理敏感 PDF 时注意本地缓存与日志；不要直接处理未脱敏文件。</p>
+  <a class="sec-link" href="https://github.com/anthropics/skills/tree/main/pdf" target="_blank" rel="noopener">看源码 / SKILL.md →</a>
+</article><article class="sec-card">
+  <div class="sec-card-top"><span class="sec-tag">官方</span><span class="sec-badge">Anthropic</span></div>
+  <h3><a href="https://github.com/anthropics/skills/tree/main/docx" target="_blank" rel="noopener">DOCX</a></h3>
+  <p>创建、编辑 Word 文档，处理样式、表格、页眉页脚与批注。</p>
+  <dl class="sec-facts">
+    <div><dt>来源</dt><dd>Anthropic 官方</dd></div>
+    <div><dt>许可</dt><dd>Apache-2.0（以仓库 LICENSE 为准）</dd></div>
+    <div><dt>权限</dt><dd>读写本地 .docx；可能调用 LibreOffice 或 Python 库</dd></div>
+    <div><dt>兼容</dt><dd>Claude Code / 兼容 Agent Skills 的客户端</dd></div>
+  </dl>
+  <p class="sec-caveat">中：模板可能带宏或外部链接；打开前先审。</p>
+  <a class="sec-link" href="https://github.com/anthropics/skills/tree/main/docx" target="_blank" rel="noopener">看源码 / SKILL.md →</a>
+</article><article class="sec-card">
+  <div class="sec-card-top"><span class="sec-tag">官方</span><span class="sec-badge">Anthropic</span></div>
+  <h3><a href="https://github.com/anthropics/skills/tree/main/pptx" target="_blank" rel="noopener">PPTX</a></h3>
+  <p>生成、编辑幻灯片，处理版式、图表、备注与导出。</p>
+  <dl class="sec-facts">
+    <div><dt>来源</dt><dd>Anthropic 官方</dd></div>
+    <div><dt>许可</dt><dd>Apache-2.0（以仓库 LICENSE 为准）</dd></div>
+    <div><dt>权限</dt><dd>读写本地 .pptx；可能调用渲染工具</dd></div>
+    <div><dt>兼容</dt><dd>Claude Code / 兼容 Agent Skills 的客户端</dd></div>
+  </dl>
+  <p class="sec-caveat">中：模板中的图片与字体有版权；商用前逐项核对。</p>
+  <a class="sec-link" href="https://github.com/anthropics/skills/tree/main/pptx" target="_blank" rel="noopener">看源码 / SKILL.md →</a>
+</article><article class="sec-card">
+  <div class="sec-card-top"><span class="sec-tag">官方</span><span class="sec-badge">Anthropic</span></div>
+  <h3><a href="https://github.com/anthropics/skills/tree/main/xlsx" target="_blank" rel="noopener">XLSX</a></h3>
+  <p>创建、编辑表格，处理公式、格式、透视表与图表。</p>
+  <dl class="sec-facts">
+    <div><dt>来源</dt><dd>Anthropic 官方</dd></div>
+    <div><dt>许可</dt><dd>Apache-2.0（以仓库 LICENSE 为准）</dd></div>
+    <div><dt>权限</dt><dd>读写本地 .xlsx；可能调用 Python 库</dd></div>
+    <div><dt>兼容</dt><dd>Claude Code / 兼容 Agent Skills 的客户端</dd></div>
+  </dl>
+  <p class="sec-caveat">中：公式与外部链接可能泄露数据；不要直接打开来源不明的表。</p>
+  <a class="sec-link" href="https://github.com/anthropics/skills/tree/main/xlsx" target="_blank" rel="noopener">看源码 / SKILL.md →</a>
+</article><article class="sec-card">
+  <div class="sec-card-top"><span class="sec-tag">官方</span><span class="sec-badge">Anthropic</span></div>
+  <h3><a href="https://github.com/anthropics/skills/tree/main/mcp-builder" target="_blank" rel="noopener">MCP Builder</a></h3>
+  <p>把一个 API 或工具包封装成 MCP server，含工具描述、参数与错误处理。</p>
+  <dl class="sec-facts">
+    <div><dt>来源</dt><dd>Anthropic 官方</dd></div>
+    <div><dt>许可</dt><dd>Apache-2.0（以仓库 LICENSE 为准）</dd></div>
+    <div><dt>权限</dt><dd>可能读写项目文件、启动本地进程、访问网络</dd></div>
+    <div><dt>兼容</dt><dd>Claude Code / 兼容 MCP 的客户端</dd></div>
+  </dl>
+  <p class="sec-caveat">中到高：会启动本地服务并访问网络；先读工具描述与权限。</p>
+  <a class="sec-link" href="https://github.com/anthropics/skills/tree/main/mcp-builder" target="_blank" rel="noopener">看源码 / SKILL.md →</a>
+</article><article class="sec-card">
+  <div class="sec-card-top"><span class="sec-tag">社区</span><span class="sec-badge">第三方</span></div>
+  <h3><a href="https://github.com/obra/superpowers" target="_blank" rel="noopener">Superpowers</a></h3>
+  <p>一组面向开发流程的技能：需求澄清、计划、TDD、调试、代码审查。</p>
+  <dl class="sec-facts">
+    <div><dt>来源</dt><dd>社区（obra）</dd></div>
+    <div><dt>许可</dt><dd>MIT（以仓库 LICENSE 为准）</dd></div>
+    <div><dt>权限</dt><dd>以各 SKILL.md 为准；可能读写仓库、运行测试</dd></div>
+    <div><dt>兼容</dt><dd>Claude Code 为主</dd></div>
+  </dl>
+  <p class="sec-caveat">中：会运行测试与修改仓库；先在分支上试。</p>
+  <a class="sec-link" href="https://github.com/obra/superpowers" target="_blank" rel="noopener">看源码 / SKILL.md →</a>
+</article><article class="sec-card">
+  <div class="sec-card-top"><span class="sec-tag">社区</span><span class="sec-badge">第三方</span></div>
+  <h3><a href="https://github.com/travisvn/awesome-claude-skills" target="_blank" rel="noopener">Awesome Claude Skills</a></h3>
+  <p>技能索引与分类清单，适合发现社区技能，不直接提供技能实现。</p>
+  <dl class="sec-facts">
+    <div><dt>来源</dt><dd>社区（travisvn）</dd></div>
+    <div><dt>许可</dt><dd>MIT（以仓库 LICENSE 为准）</dd></div>
+    <div><dt>权限</dt><dd>只读清单；外链到第三方仓库</dd></div>
+    <div><dt>兼容</dt><dd>通用索引</dd></div>
+  </dl>
+  <p class="sec-caveat">低：只做索引；但外链技能要逐个审来源与权限。</p>
+  <a class="sec-link" href="https://github.com/travisvn/awesome-claude-skills" target="_blank" rel="noopener">看源码 / SKILL.md →</a>
+</article><article class="sec-card">
+  <div class="sec-card-top"><span class="sec-tag">社区</span><span class="sec-badge">第三方</span></div>
+  <h3><a href="https://github.com/K-Dense-AI/claude-scientific-skills" target="_blank" rel="noopener">Claude Scientific Skills</a></h3>
+  <p>科研场景技能：文献检索、数据整理、统计分析、图表与写作辅助。</p>
+  <dl class="sec-facts">
+    <div><dt>来源</dt><dd>社区（K-Dense AI）</dd></div>
+    <div><dt>许可</dt><dd>MIT（以仓库 LICENSE 为准）</dd></div>
+    <div><dt>权限</dt><dd>可能访问数据库、读写数据文件、调用 Python</dd></div>
+    <div><dt>兼容</dt><dd>Claude Code 为主</dd></div>
+  </dl>
+  <p class="sec-caveat">中：会接触研究数据与外部数据库；敏感数据先脱敏。</p>
+  <a class="sec-link" href="https://github.com/K-Dense-AI/claude-scientific-skills" target="_blank" rel="noopener">看源码 / SKILL.md →</a>
+</article><article class="sec-card">
+  <div class="sec-card-top"><span class="sec-tag">社区</span><span class="sec-badge">第三方</span></div>
+  <h3><a href="https://github.com/vercel-labs/skills" target="_blank" rel="noopener">Vercel Skills</a></h3>
+  <p>面向 Web 开发与部署的技能集合，含前端、API、部署与调试流程。</p>
+  <dl class="sec-facts">
+    <div><dt>来源</dt><dd>社区（Vercel Labs）</dd></div>
+    <div><dt>许可</dt><dd>Apache-2.0（以仓库 LICENSE 为准）</dd></div>
+    <div><dt>权限</dt><dd>可能读写项目、调用 CLI、访问部署平台</dd></div>
+    <div><dt>兼容</dt><dd>Claude Code / 兼容 Agent Skills 的客户端</dd></div>
+  </dl>
+  <p class="sec-caveat">中到高：部署命令可能影响线上环境；先 dry-run。</p>
+  <a class="sec-link" href="https://github.com/vercel-labs/skills" target="_blank" rel="noopener">看源码 / SKILL.md →</a>
+</article><article class="sec-card">
+  <div class="sec-card-top"><span class="sec-tag">社区</span><span class="sec-badge">第三方</span></div>
+  <h3><a href="https://github.com/tech-leads-club/agent-skills" target="_blank" rel="noopener">Agent Skills</a></h3>
+  <p>面向工程团队的技能模板与示例，覆盖代码审查、文档、测试与协作。</p>
+  <dl class="sec-facts">
+    <div><dt>来源</dt><dd>社区（Tech Leads Club）</dd></div>
+    <div><dt>许可</dt><dd>MIT（以仓库 LICENSE 为准）</dd></div>
+    <div><dt>权限</dt><dd>以各 SKILL.md 为准；可能读写仓库与运行命令</dd></div>
+    <div><dt>兼容</dt><dd>Claude Code / 兼容 Agent Skills 的客户端</dd></div>
+  </dl>
+  <p class="sec-caveat">中：团队流程类技能会改仓库；先在测试分支试。</p>
+  <a class="sec-link" href="https://github.com/tech-leads-club/agent-skills" target="_blank" rel="noopener">看源码 / SKILL.md →</a>
+</article><article class="sec-card">
+  <div class="sec-card-top"><span class="sec-tag">社区</span><span class="sec-badge">第三方</span></div>
+  <h3><a href="https://github.com/alirezarezvani/claude-skills" target="_blank" rel="noopener">Claude Skills（社区合集）</a></h3>
+  <p>多角色技能合集：产品、工程、数据、写作与运营。</p>
+  <dl class="sec-facts">
+    <div><dt>来源</dt><dd>社区（alirezarezvani）</dd></div>
+    <div><dt>许可</dt><dd>MIT（以仓库 LICENSE 为准）</dd></div>
+    <div><dt>权限</dt><dd>以各 SKILL.md 为准；可能读写文件与访问网络</dd></div>
+    <div><dt>兼容</dt><dd>Claude Code 为主</dd></div>
+  </dl>
+  <p class="sec-caveat">中：合集质量参差；按单个技能审，不要整包信任。</p>
+  <a class="sec-link" href="https://github.com/alirezarezvani/claude-skills" target="_blank" rel="noopener">看源码 / SKILL.md →</a>
+</article></div>
+<div class="sec-sources">参考：<a href="https://github.com/anthropics/skills" target="_blank" rel="noopener">Anthropic Skills 仓库</a> · <a href="https://docs.anthropic.com/en/docs/agents-and-tools/agent-skills" target="_blank" rel="noopener">Anthropic Agent Skills 文档</a> · <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener">MCP 官方文档</a></div>
+</div>
+  </main>
+  <footer class="site-footer">
+    <div class="container foot-row">
+      <div class="foot-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="foot-copy">© 2026 <span data-zh>投机取巧</span><span data-en>Specul</span></span>
+      </div>
+      <nav class="foot-links" aria-label="页脚导航">
+          <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
+          <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
+          <a href="https://tools.specul.com/"><span data-zh>工具</span><span data-en>Tools</span></a>
+          <a href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a>
+          <a href="https://demos.specul.com/"><span data-zh>作品演示</span><span data-en>Playground</span></a>
+          <a href="https://oss.specul.com/"><span data-zh>开源库</span><span data-en>OSS</span></a>
+          <a href="https://hardware.specul.com/"><span data-zh>硬件算力</span><span data-en>Compute</span></a>
+          <a href="https://papers.specul.com/"><span data-zh>AI 论文</span><span data-en>AI Papers</span></a>
+          <a href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a>
+          <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
+          <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>开源</span><span data-en>Open source</span></a>
+      </nav>
+      <nav class="foot-legal-links" aria-label="法律">
+        <a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a>
+        <a href="https://specul.com/legal.html#s6"><span data-zh>免责声明</span><span data-en>Disclaimer</span></a>
+        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私与本地存储</span><span data-en>Privacy</span></a>
+      </nav>
+    </div>
+    <div class="container">
+      <p><a href="https://specul.com/search.html"><span data-zh>搜索全站内容</span><span data-en>Search all sites</span></a></p>
+      <p><a href="https://specul.com/correct.html"><span data-zh>发现错误？生成纠错草稿</span><span data-en>Spot an error? Compose a correction draft</span></a></p>
+      <p class="foot-trademark"><span data-zh>产品名与商标归各权利方所有，本站仅作识别与评论之用。</span><span data-en>Product names and trademarks belong to their respective owners and are used here for identification and commentary only.</span></p>
+    </div>
+  </footer>
+<nav class="nav-tabbar nav-tabbar-1row" aria-label="快捷导航">
+    <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
+    <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学AI</span><span data-en>Learn</span></a>
+    <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
+    <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
+    <a href="https://demos.specul.com/"><span class="ti" aria-hidden="true">▷</span><span data-zh>演示</span><span data-en>Demos</span></a>
+    <a href="https://oss.specul.com/"><span class="ti" aria-hidden="true">▧</span><span data-zh>开源</span><span data-en>OSS</span></a>
+    <a href="https://hardware.specul.com/"><span class="ti" aria-hidden="true">▣</span><span data-zh>算力</span><span data-en>Chips</span></a>
+    <a href="https://papers.specul.com/"><span class="ti" aria-hidden="true">▥</span><span data-zh>论文</span><span data-en>Papers</span></a>
+    <a href="https://chain.specul.com/"><span class="ti" aria-hidden="true">◇</span><span data-zh>链</span><span data-en>Chain</span></a>
+    <a href="https://nav.specul.com/" data-nav-group="external"><span class="ti" aria-hidden="true">↗</span><span data-zh>导航</span><span data-en>Nav</span></a>
+</nav>
+</body>
+</html>

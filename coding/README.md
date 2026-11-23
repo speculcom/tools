@@ -44,7 +44,7 @@
 | [Gemini CLI](./gemini-cli.html) | CLI 形态 | Google | verified | 2026-10-23 |
 | [Google Antigravity](./google-antigravity.html) | IDE 形态 | Google | verified | 2026-10-30 |
 | [Goose](./goose.html) | CLI 形态 | Agentic AI Foundation | verified | 2026-10-23 |
-| [xAI Grok Bot](./grok-bot.html) | 厂商云形态 | xAI | verified | 2026-11-23 |
+| [xAI Grok Bot](./grok-bot.html) | 厂商云形态 | xAI | verified | 2026-11-11 |
 | [Jules](./jules.html) | 厂商云形态 | Google | verified | 2026-10-23 |
 | [Junie](./junie.html) | IDE 形态 | JetBrains | verified | 2026-10-23 |
 | [Kilo Code](./kilocode.html) | IDE 形态 | Kilo-Org | verified | 2026-10-22 |
