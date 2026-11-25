@@ -51,7 +51,7 @@
 | [Kiro](./kiro.html) | IDE 形态 | AWS | verified | 2026-10-23 |
 | [Lovable](./lovable.html) | 厂商云形态 | Lovable | verified | 2026-10-22 |
 | [Meta Muse](./meta-muse.html) | 厂商云形态 | Meta | verified | 2026-10-23 |
-| [OpenAI Dot](./openai-dot.html) | 厂商云形态 | OpenAI | verified | 2026-10-23 |
+| [OpenAI Dot](./openai-dot.html) | 厂商云形态 | OpenAI | verified | 2026-11-25 |
 | [OpenCode](./opencode.html) | CLI 形态 | OpenCode | verified | 2026-10-23 |
 | [Qoder CN（原通义灵码）](./qoder-cn.html) | IDE 形态 | 阿里云 | verified | 2026-10-22 |
 | [Qoder](./qoder.html) | IDE 形态 | 阿里云 | verified | 2026-11-21 |
