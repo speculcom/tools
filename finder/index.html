@@ -13,9 +13,6 @@
   <meta property="og:description" content="纯前端规则筛选：选任务、预算、国内直连、本地运行与数据敏感度，从 282 个工具档案里收窄到 3 个候选，并说明为什么。" />
   <meta property="og:locale" content="zh_CN" />
   <meta property="og:locale:alternate" content="en_US" />
-  <link rel="alternate" hreflang="zh-CN" href="https://tools.specul.com/finder/" />
-  <link rel="alternate" hreflang="en" href="https://tools.specul.com/finder/?lang=en" />
-  <link rel="alternate" hreflang="x-default" href="https://tools.specul.com/finder/" />
   <meta name="theme-color" content="#16121f" />
   <link rel="icon" type="image/png" href="../assets/brand/dandelion-favicon-site.png" />
   <link rel="apple-touch-icon" href="../assets/brand/dandelion-apple-touch-site.png" />
@@ -104,7 +101,7 @@
   <div class="container">
     <p class="kicker">AI 选型器</p>
     <h1>说三件事，先排掉一半</h1>
-    <p class="lede">选型不是“选冠军”，是“哪个不违背你的硬条件”。勾任务、预算、国内可用、本地/隐私，下面给 3 个候选和“为什么”。结果由规则算，不联网、不存你的输入。</p>
+    <p class="lede">选型不是“哪个最强”，是“哪个不违背你的硬条件”。勾任务、预算、国内可用、本地/隐私，下面给 3 个候选和“为什么”。结果由规则算，不联网、不存你的输入。</p>
     <div class="decision-meta"><span><b>282</b> 个工具档案</span><span><b>16</b> 个模型记录</span><span class="meta-warn">规则筛选，不是测评</span></div>
   </div>
 </section>
@@ -157,11 +154,25 @@
 
 <section class="section section-inset" id="finder-results-section">
   <div class="container">
-    <p class="kicker">结果</p>
-    <h2 id="finder-title">等你选任务</h2>
+    <div class="finder-result-head">
+      <div><p class="kicker">结果</p><h2 id="finder-title">等你选任务</h2></div>
+      <div class="finder-share-actions">
+        <button type="button" class="btn-secondary" id="finder-share">复制结果链接</button>
+        <span id="finder-share-status" class="t-xs" role="status" aria-live="polite"></span>
+      </div>
+    </div>
+    <p class="finder-result-note"><span data-zh>结果只按你勾的硬条件筛选，不是排名。价格与许可带核验日期；超过 90 天的会标“待复核”。</span><span data-en>Results are filtered by your hard constraints, not ranked. Prices and licences carry checked dates; anything older than 90 days is marked for review.</span></p>
     <div id="finder-results" class="finder-results">
       <p class="finder-empty">先在上面的“要它干什么”里至少选一项。</p>
     </div>
+    <div class="finder-excluded" id="finder-excluded" hidden></div>
+    <section class="finder-compare" id="finder-compare" hidden aria-labelledby="finder-compare-title">
+      <div class="finder-compare-head">
+        <h3 id="finder-compare-title"><span data-zh>两项并排看</span><span data-en>Compare two side by side</span></h3>
+        <p class="t-xs"><span data-zh>勾选结果卡上的“加入对比”，最多两项。这里不生成总分，只把硬字段摊开。</span><span data-en>Tick “add to compare” on up to two result cards. No total score — only hard fields side by side.</span></p>
+      </div>
+      <div class="decision-table-wrap"><table class="decision-table finder-compare-table"><thead id="finder-compare-head"></thead><tbody id="finder-compare-body"></tbody></table></div>
+    </section>
     <div class="finder-legend">
       <span class="legend-strong">强匹配</span>：任务与硬条件都对上，但没实测。
       <span class="legend-ok">可考虑</span>：主要条件对上，有一项未知。
