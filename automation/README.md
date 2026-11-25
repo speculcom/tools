@@ -35,7 +35,7 @@
 | [Make](./make.html) | 网页服务 | Make（原 Integromat） | verified | 2026-10-30 |
 | [MaxKB](./maxkb.html) | 网页服务 | 飞致云（国产） | verified | 2026-10-30 |
 | [n8n](./n8n.html) | 网页服务 | n8n GmbH | verified | 2026-10-30 |
-| [Google Opal](./opal.html) | 网页服务 | Google Labs | partial | 2026-11-04 |
+| [Google Opal](./opal.html) | 网页服务 | Google Labs | partial | 2026-11-25 |
 | [Pipedream（Connect / Workflows）](./pipedream.html) | 网页服务 | Pipedream | verified | 2026-11-21 |
 | [Microsoft Power Automate](./power-automate.html) | 网页服务 | Microsoft | verified | 2026-11-17 |
 | [Relevance AI](./relevance-ai.html) | 网页服务 | Relevance AI（悉尼） | verified | 2026-10-30 |
