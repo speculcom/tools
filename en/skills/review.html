@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html data-lang="en" lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <title>Reviewing a third-party Skill: start with what it touches…</title>
-<meta content="Reviewing a third-party Skill: start with what it touches" name="description"/>
+<meta content="A third-party Skill is executable code, not harmless text. Before installing, inspect permissions, scripts, network access, secrets and supply chain." name="description"/>
 <link href="https://tools.specul.com/en/skills/review.html" rel="canonical"/>
 <meta content="website" property="og:type"/>
 <meta content="Tools" property="og:site_name"/>
@@ -21,7 +22,7 @@
 <link href="/site.css" rel="stylesheet"/>
 <link href="/sections.css" rel="stylesheet"/>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Reviewing a third-party Skill: start with what it touches…","description":"Reviewing a third-party Skill: start with what it touches","url":"https://tools.specul.com/en/skills/review.html","inLanguage":"en","isPartOf":{"@type":"WebSite","url":"https://tools.specul.com/en/skills/review.html"}}</script>
-<meta content="Reviewing a third-party Skill: start with what it touches…" name="twitter:title"/><meta content="Reviewing a third-party Skill: start with what it touches" name="twitter:description"/><meta content="noindex,follow" name="robots"/></head>
+<meta content="Reviewing a third-party Skill: start with what it touches…" name="twitter:title"/><meta content="Reviewing a third-party Skill: start with what it touches" name="twitter:description"/><meta content="index,follow" name="robots"/><link href="https://tools.specul.com/en/skills/review.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/skills/review.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/skills/review.html" hreflang="x-default" rel="alternate"/></head>
 <!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
      同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
      而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
@@ -94,29 +95,10 @@
 <nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
 </div>
 </aside>
-<main id="main">
-<div class="container">
-<header class="sec-head">
-<p class="eyebrow">Tools · Skills</p>
-<h1>Reviewing a third-party Skill: start with what it touches</h1>
-<p class="lede">第三方 Skill 是可执行代码，不是一段无害的文本。装之前先看权限、脚本、网络、密钥与供应链。</p>
-</header>
-<nav aria-label="Skills pages" class="sec-nav">
-<a href="index.html">What</a>
-<a href="/en/skills/structure.html">Structure</a>
-<a href="/en/skills/build-test.html">Build &amp; test</a>
-<a aria-current="page" href="/en/skills/review.html">Review</a>
-<a href="../index.html">Tools home</a>
-</nav>
-<div class="sec-body">
-<h2>先看来源与许可</h2><p>来源要是可核的仓库或官方市场；要有 LICENSE；要有最近提交与 issue 记录。没有来源、没有许可、长期不维护的，不装。</p><p>不要因为 star 多就信任。star 可以买，代码不会因此变安全。</p>
-<h2>再看它碰什么</h2><p>读 SKILL.md 与脚本，找这几类动作：读写哪些目录、删不删文件、跑不跑 shell、访不访问网络、要不要密钥、启不启动本地服务。</p><p>任何“下载后直接执行”“curl | bash”“把密钥写到文件”“关闭安全设置”的步骤，都按高风险处理。</p>
-<h2>然后看依赖与供应链</h2><p>脚本依赖的包是否锁版本？有没有从不可信源安装？有没有 postinstall 脚本？有没有把环境变量整体传出？</p><p>把 Skill 放在隔离目录或容器里跑；先给最小权限，确认输出后再扩权。</p>
-<h2>最后做一次小样本试跑</h2><p>用脱敏样本跑，观察它实际读写哪些文件、发出哪些网络请求。不要拿生产密钥或客户数据做第一次测试。</p><p>试跑后看日志与临时文件；确认没有残留、没有把数据写到奇怪的位置。</p>
-</div>
-<div class="sec-sources">参考：<a href="https://github.com/anthropics/skills" rel="noopener" target="_blank">Anthropic Skills 仓库</a> · <a href="https://agentskills.io/" rel="noopener" target="_blank">Agent Skills 规范</a> · <a href="https://openssf.org/resources/" rel="noopener" target="_blank">OpenSSF 供应链安全指南</a></div>
-</div>
-</main>
+<main id="main"><div class="container"><nav aria-label="Breadcrumb" class="crumbs"><a href="https://tools.specul.com/en/">AI Tools</a><span aria-current="page">English edition</span></nav><header class="page-head"><p class="eyebrow">Tools · English edition</p><h1>Reviewing a third-party Skill: permissions, scripts and supply chain</h1><p class="lede">A third-party Skill is executable code, not harmless text. Before installing, inspect permissions, scripts, network access, secrets and supply chain.</p></header><div class="sec-body"><h2>Source and licence</h2><p>The source should be a verifiable repository or an official marketplace, with a LICENSE, recent commits and issue history. If the source, licence or maintenance record is missing, do not install it. Stars are not trust: stars can be bought; code does not become safe because of them.</p>
+<h2>What it touches</h2><p>Read SKILL.md and the scripts. Look for directory reads/writes, file deletion, shell execution, network access, secret requests and local services. Treat “download and execute”, “curl | bash”, “write the key to a file” and “disable security settings” as high-risk steps.</p>
+<h2>Dependencies and supply chain</h2><p>Are package versions locked? Are packages installed from an untrusted source? Is there a postinstall script? Does it export the whole environment? Run the Skill in an isolated directory or container, with the smallest permission set; expand only after checking output.</p>
+<h2>A small test run</h2><p>Use redacted samples. Observe which files it reads and writes and which network requests it makes. Do not use production keys or customer data for the first test. Afterward, inspect logs and temporary files for residue or writes to unexpected locations.</p></div><div class="sec-sources">English edition. Prices, licences and availability are snapshots; verify the official page before buying.</div></div></main>
 <footer class="site-footer foot-single">
 <div class="container foot-line">
 <div class="foot-brand">
