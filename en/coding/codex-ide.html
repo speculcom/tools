@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Codex (IDE extension) | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/codex-ide.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/codex-ide.html" property="og:url"/>
+<meta content="Codex (IDE extension) | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Codex (IDE extension) | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/coding/codex-ide.html","sameAs":"https://developers.openai.com/codex/ide","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Codex (IDE extension) | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/codex-ide.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/codex-ide.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/codex-ide.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/codex-ide.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#10A37F"'>CO</div>
+<div>
+<h1>Codex (IDE extension)</h1>
+<div class="vendor is-caps">OpenAI</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Coding</span>
+<span class="tag on">IDE</span>
+<span class="tag on">Local</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Not a standalone IDE but an extension for VS Code / Cursor / Windsurf — sharing the…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · In editor</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Blocked · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Per-platform sandbox implementation differences on Windows / macOS / Linux</li>
+<li>Concrete context-window numbers and the automatic-compaction trigger threshold</li>
+<li>Concurrency-write and cross-machine migration semantics of the app server</li>
+<li>Tool-call quality alignment after switching to a non-OpenAI provider</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>The Codex IDE extension is an extension you install into VS Code / Cursor / Windsurf, not a standalone IDE</strong> — it shares the same session mechanism with the CLI through the app server.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>A fit for two groups:</p></div>
+<div><ul><li>People already in VS Code / Cursor / Windsurf who want Codex in the same environment without switching tools</li><li>People who need the IDE and the CLI to share sessions (the app server architecture)</li></ul></div>
+<div class="warn-p"><p><strong>Not a fit for</strong> people who need a standalone editor — this form must attach to an existing editor and cannot be used alone.</p></div>
+<div><p>Also note: local tasks depend on the editor process staying alive, so "keep running after shutdown" requires cloud delegation (Codex Cloud).</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-20</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct blocked　developers.openai.com returns 403 direct from mainland but 200 via proxy — the block is at the network layer, not anti-bot.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>It uses the CLI's agent and configuration; the model is switchable.</strong></p>
+<p><strong>Official IDE page wording</strong>: "It uses the same agent as the Codex CLI and shares the same configuration"</p>
+<p>Models listed on the official pricing page:</p>
+<ul><li>GPT-5.5</li><li>GPT-5.4</li><li>GPT-5.4 mini</li><li>Pro additionally has GPT-5.3-Codex-Spark (research preview)</li></ul>
+<p>Below the chat input there is a <strong>model switcher</strong>, with reasoning effort adjustable (<code>low</code> / <code>medium</code> / <code>high</code>).</p>
+<p><strong>The default model is set in the shared <code>config.toml</code></strong> (<code>model = "..."</code>), shared by IDE and CLI, so custom providers go through the same <code>model_providers</code> configuration (see the CLI / SDK dossiers).</p>
+<p><strong>BYOK works</strong>: the official supports logging in with an API key; the JetBrains integration can also ride a JetBrains AI subscription. On the API-key path, the usable model range follows that key's API models.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>It is an extension, not a standalone editor.</strong></p>
+<p><strong>Official README wording</strong>: "If you want Codex in your code editor (VS Code, Cursor, Windsurf), install in your IDE."</p>
+<p>That is: <strong>install into an existing editor such as VS Code / Cursor / Windsurf</strong>.</p>
+<p>This is a different form from Zed (standalone editor) and Cline Desktop (native app).</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>Accesses workspace files through the host editor.</p>
+<p>Context comes from open files, selections and <code>@file</code> references. There is also <strong>Auto Context</strong>: automatically pulling in recent files and IDE context (see <code>/auto-context</code>).</p>
+<p>Official stance: workspace = current directory plus temp directories (e.g. <code>/tmp</code>); writes default to the workspace.</p>
+<p>On Windows it can run natively (via the Windows sandbox) or switch to WSL2 (setting <code>chatgpt.runCodexInWindowsSubsystemForLinux</code>).</p>
+<p><strong>The official IDE docs describe no standalone semantic index</strong> — local file retrieval is done by the same agent's tools.</p>
+<p><strong>Verification</strong>: checked the official features and settings pages.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>There is a cloud form: the official says tasks can be delegated from the IDE to Codex Cloud.</strong></p>
+<p><strong>IDE page wording</strong>: "delegate tasks to Codex Cloud"</p>
+<p><strong>Features page wording</strong>: "Offload longer jobs to a cloud environment"</p>
+<p>Switch with <code>/cloud</code> and <code>/local</code>.</p>
+<p>Cloud tasks run in the background (including in parallel) inside <strong>OpenAI-managed containers</strong>, so <strong>cloud tasks keep going after the local editor is closed</strong>. <strong>Local tasks depend on the host editor process — close it and they stop.</strong></p>
+<p>Cloud tasks and local messages share plan usage (the official pricing page says a shared 5-hour window).</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>Built-in first-party tools and commands are all verified.</strong></p>
+<p>Tools:</p>
+<ul><li>web search — the official says enabled by default, via an OpenAI-maintained search cache, configurable <code>web_search = "live" | "disabled"</code></li><li>image generation — <code>$imagegen</code>, model <code>gpt-image-2</code>, counts against usage and drains quota faster</li><li>code review — <code>/review</code></li><li>editor context — <code>@file</code>, selections, drag-in images</li></ul>
+<p>Command-palette commands: <code>chatgpt.newChat</code> / <code>addToThread</code> / <code>addFileToThread</code> / <code>implementTodo</code>, plus TODO CodeLens.</p>
+<p><strong>MCP is explicitly supported in the IDE extension officially.</strong></p>
+<p>STDIO and Streamable HTTP supported; CLI and IDE share <code>[mcp_servers.&lt;name&gt;]</code> in <code>config.toml</code> (including <code>enabled_tools</code>, and per-server, per-tool <code>approval_mode</code>).</p>
+<p><strong>Original wording</strong>: "Codex supports MCP servers in both the CLI and the IDE extension"</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>The app-server architecture remains the key design</strong> — threads can be started, resumed and recovered; IDE and CLI share the same session mechanics and the same configuration.</p>
+<p>The official adds three more points:</p>
+<ul><li>launching a cloud task from a local session remembers the session context (and context is kept when a cloud task returns to local to continue)</li><li><code>/status</code> shows the thread ID, context usage and rate limits</li><li><code>/goal</code> can set a persistent goal</li></ul>
+<p><strong>Concrete context-window numbers and the automatic compaction policy are not given separately in the IDE docs.</strong></p>
+<p>Compaction on the CLI / SDK side goes through config keys such as <code>compact_prompt</code>;</p>
+<p><strong>Verification</strong>: checked the official features and slash-commands pages.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>IDE and CLI share the same sandbox and approvals.</strong></p>
+<p><strong>Official settings page wording</strong>: "The Codex IDE extension uses the Codex CLI"</p>
+<p><strong>Same page</strong>: approvals and sandbox are configured in the shared <code>~/.codex/config.toml</code>.</p>
+<p>The UI side has three approval modes: <code>Chat</code> / <code>Agent</code> / <code>Agent (Full Access)</code>.</p>
+<ul><li>default <code>Agent</code> — reads/writes and executes commands automatically inside the working directory, <strong>but outside the working directory or for networking it still asks</strong></li><li>only <code>Full Access</code> skips approval for networking</li></ul>
+<p>Official security page stance (covering the IDE extension): by default <strong>no network + writes limited to the current workspace</strong>; <code>.git</code> / <code>.agents</code> / <code>.codex</code> recursively read-only.</p>
+<p>Approval and sandbox keys are the same as the CLI: <code>approval_policy</code> / <code>sandbox_mode</code> / <code>[sandbox_workspace_write] network_access</code> and the <code>network_proxy</code> domain list. The Windows native sandbox defaults to <code>elevated</code>.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Fits two kinds of people:</p>
+<ul><li>those already using VS Code / Cursor / Windsurf-style editors who want Codex in the same environment without switching tools</li><li>those who need IDE and CLI to share sessions (the app-server architecture)</li></ul></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Treating it as a standalone IDE — it is really an extension installed into an existing editor</li>
+<li>Assuming the IDE extension and the CLI are two separate systems — the app server architecture lets them share sessions</li>
+<li>Assuming the IDE extension has its own permission model — both share config.toml, and the sandbox and approvals are the same</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-08。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>docs</td><td>OpenAI · Codex IDE docs (extension form, cloud-delegation overview)</td><td><a href="https://developers.openai.com/codex/ide" rel="noopener" target="_blank">https://developers.openai.com/codex/ide</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Codex IDE Features (model switching, approval modes, cloud delegation, web search, image generation)</td><td><a href="https://developers.openai.com/codex/ide/features" rel="noopener" target="_blank">https://developers.openai.com/codex/ide/features</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Codex IDE Settings (shared config.toml, Windows/WSL settings)</td><td><a href="https://developers.openai.com/codex/ide/settings" rel="noopener" target="_blank">https://developers.openai.com/codex/ide/settings</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Codex IDE Slash commands (/cloud /local /status /goal)</td><td><a href="https://developers.openai.com/codex/ide/slash-commands" rel="noopener" target="_blank">https://developers.openai.com/codex/ide/slash-commands</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Codex Cloud (cloud tasks run in background, @codex, PRs)</td><td><a href="https://developers.openai.com/codex/cloud" rel="noopener" target="_blank">https://developers.openai.com/codex/cloud</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Codex Cloud environments (managed containers, setup/agent two phases)</td><td><a href="https://developers.openai.com/codex/cloud/environments" rel="noopener" target="_blank">https://developers.openai.com/codex/cloud/environments</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Codex Agent approvals &amp; security (sandbox defaults, approval policies, protected paths)</td><td><a href="https://developers.openai.com/codex/agent-approvals-security" rel="noopener" target="_blank">https://developers.openai.com/codex/agent-approvals-security</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Codex MCP (CLI and IDE extension support STDIO/Streamable HTTP)</td><td><a href="https://developers.openai.com/codex/mcp" rel="noopener" target="_blank">https://developers.openai.com/codex/mcp</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Codex Config basics (default model, approval_policy, sandbox_mode)</td><td><a href="https://developers.openai.com/codex/config-basic" rel="noopener" target="_blank">https://developers.openai.com/codex/config-basic</a></td></tr>
+<tr><td>pricing</td><td>OpenAI · Codex Pricing (usable models and plans)</td><td><a href="https://developers.openai.com/codex/pricing" rel="noopener" target="_blank">https://developers.openai.com/codex/pricing</a></td></tr>
+<tr><td>repo</td><td>OpenAI · Codex repository README (includes IDE install instructions)</td><td><a href="https://github.com/openai/codex" rel="noopener" target="_blank">https://github.com/openai/codex</a></td></tr>
+<tr><td>changelog</td><td>OpenAI · Codex CLI Releases</td><td><a href="https://github.com/openai/codex/releases" rel="noopener" target="_blank">https://github.com/openai/codex/releases</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong>: focus on <strong>app-server session continuity</strong> — open a session in the IDE, switch to the CLI to continue, and check whether state is fully preserved.</p>
+<p>That is architecturally its most valuable and most verification-worthy point.</p>
+</div>
+<div class="panel is-slim">
+<h2>Form clarification (the most easily misunderstood point)</h2>
+<p>It explicitly lists three supported host editors.</p>
+<blockquote>Official README wording: "If you want Codex in your code editor (VS Code, Cursor, Windsurf), install in your IDE."</blockquote>
+<p><strong>Key information</strong>: this shows the <strong>Codex IDE form is an "extension", not an "editor"</strong>.</p>
+<h3 class="sub-h">Comparing the three IDE-class forms</h3>
+<div class="tbl-wrap"><table><thead><tr><th>Form</th><th>Example</th><th>Meaning</th></tr></thead><tbody><tr><td><strong>Standalone editor</strong></td><td>Zed</td><td>ships a full editor; AI is part of it</td></tr><tr><td><strong>Native desktop app</strong></td><td>Cline Desktop</td><td>attaches to no editor</td></tr><tr><td><strong>Editor extension</strong></td><td><strong>Codex IDE</strong>, Copilot, the Cline extension</td><td>installs into an existing editor</td></tr></tbody></table></div>
+<p><strong>This distinction matters</strong>:</p>
+<ul><li>in the extension form, "indexing strategy" and "context building" are often decided by the host editor, not by this tool itself</li><li>so this entry is not fully comparable with <a href="/en/coding/zed.html">Zed</a> — one is a standalone editor, the other an extension</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Relationship with the CLI form</h2>
+<p>Two entries, different categories, but a shared backend:</p>
+<div class="tbl-wrap"><table><thead><tr><th></th><th><a href="/en/coding/codex-cli.html">CLI form</a></th><th>IDE form (this entry)</th></tr></thead><tbody><tr><td>Form</td><td>terminal process</td><td>editor extension</td></tr><tr><td>Authorization</td><td>rides the ChatGPT subscription</td><td><strong>the same authorization</strong></td></tr><tr><td>Backend</td><td>app server</td><td><strong>the same app server</strong></td></tr></tbody></table></div>
+<p><strong>The practical meaning of the app-server architecture</strong>: threads can be started, resumed and recovered.</p>
+<p>So <strong>a session opened in the IDE can be continued in the CLI</strong>, and vice versa.</p>
+<p><strong>This is the tool's most valuable architectural feature</strong>, and the reason the CLI and IDE entries must cross-reference each other.</p>
+</div>
+<div class="panel is-slim">
+<h2>Collection limits</h2>
+<p>2026-10-08 fetched the official IDE docs-site body at <code>developers.openai.com/codex/ide</code> and its features / settings / slash-commands subpages, and cross-checked the cloud, config-basic, security and MCP pages.</p>
+<p><strong>Verified</strong>:</p>
+<ul><li>the tool set (web search, image generation, code review, editor context) and MCP support</li><li>the three approval modes (Chat / Agent / Agent Full Access) and sandbox defaults</li><li>cloud delegation (Codex Cloud) and local/cloud session-context retention</li><li>the model switcher, the usable-model roster and API-key login</li><li>authorization rides the ChatGPT subscription; license Apache-2.0</li></ul>
+<p><strong>Scope boundary</strong>:</p>
+<ul><li>per-platform implementation differences of the IDE vs CLI sandbox (the official only says OS-level enforcement)</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/claude-code.html">Claude Code (IDE extension)</a></span><span class="rel-n">Also an "extension + CLI" dual-form architecture</span></li>
+<li><span class="rel-t"><a href="/en/coding/zed.html">Zed</a></span><span class="rel-n">The other end of this category: a standalone editor</span></li>
+<li><span class="rel-t"><a href="/en/coding/cline.html">Cline</a></span><span class="rel-n">The other implementation covering all three forms</span></li>
+<li><span class="rel-t"><a href="/en/framework/codex-sdk.html">Codex SDK</a></span><span class="rel-n">Other layer · Frameworks &amp; runtimes</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/baidu-comate.html">Baidu Comate (Wenxin Kuaima)</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Baidu Comate (Wenxin Kuaima) is Baidu's AI coding family: Comate AI IDE </td></tr><tr><td><a href="/en/coding/claude-code.html">Claude Code (IDE extension)</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">One process, three entry points — terminal, IDE and GitHub @claude menti</td></tr><tr><td><a href="/en/coding/cline.html">Cline</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A coding tool with CLI, desktop and editor entry points — CLI, desktop a</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from OpenAI</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/audio/whisper.html"><span class="vp-cat">Audio generation</span>Whisper</a></li><li><a href="/en/chat/chatgpt.html"><span class="vp-cat">General chat</span>ChatGPT</a></li><li><a href="/en/coding/codex-cli.html"><span class="vp-cat">AI coding</span>Codex CLI</a></li><li><a href="/en/coding/openai-dot.html"><span class="vp-cat">AI coding</span>OpenAI Dot</a></li><li><a href="/en/framework/codex-sdk.html"><span class="vp-cat">Frameworks &amp; runtimes</span>Codex SDK</a></li><li><a href="/en/framework/openai-agents-sdk.html"><span class="vp-cat">Frameworks &amp; runtimes</span>OpenAI Agents SDK</a></li><li><a href="/en/safety/openai-evals.html"><span class="vp-cat">Safety &amp; evaluation</span>OpenAI Evals</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

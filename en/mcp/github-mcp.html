@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>GitHub MCP Server | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/mcp/github-mcp.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/mcp/github-mcp.html" property="og:url"/>
+<meta content="GitHub MCP Server | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"GitHub MCP Server | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/mcp/github-mcp.html","sameAs":"https://github.com/github/github-mcp-server","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="GitHub MCP Server | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/mcp/github-mcp.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/github-mcp.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/github-mcp.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/mcp/github-mcp.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">MCP</span>
+</nav>
+<a class="back" href="/en/mcp/">← MCP</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#181717"'>GI</div>
+<div>
+<h1>GitHub MCP Server</h1>
+<div class="vendor is-caps">GitHub</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a> · <a href="#dimension-transport">Transport</a> · <a href="#dimension-auth">Authentication</a> · <a href="#dimension-scope">Permission scope</a></p></nav>
+<div class="badges">
+<span class="tag on">Version control</span>
+<span class="tag on">API</span>
+<span class="tag on">Read and write</span>
+<span class="tag on">Remote</span>
+<span class="tag on">Local</span>
+<span class="tag on">Multi-platform</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>GitHub's own official MCP server — not the archived MCP-org reference server. Ships…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local + cloud · MCP server</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>The "dynamic tool discovery" capability (a <code>--dynamic-toolsets</code> kind of thing): <strong>not stated in the current official README or docs</strong> (checked seven pages: README, server-configuration.md, remote-server.md, insiders-features.md, feature-flags.md, streamable-http.md, scope-filtering.md); the only runtime-adjustable mechanisms are Feature Flags (<code>--features</code> / <code>X-MCP-Features</code>) and Insiders mode</li>
+<li>A tool-level human approval mechanism (not stated officially; the official docs offer only three narrowing controls: read-only / lockdown / OAuth challenges)</li>
+<li>SLA / rate-limit details of the hosted form (neither README nor remote-server.md gives numbers)</li>
+<li>The complete lockdown filtering matrix across tools (the official docs list only a few branches under issue_read / pull_request_read)</li>
+<li>Quota and operational details of the self-hosted HTTP mode behind a reverse proxy (the official docs give config knobs, no capacity numbers)</li>
+</ul>
+</div>
+<div class="panel-lead"><p>GitHub's official MCP server (repository description: "GitHub's official MCP Server"). It connects any MCP client to GitHub's platform: reading repositories and code files, managing issues and PRs, monitoring Actions, inspecting code-scanning / Dependabot findings, and reading notifications.</p>
+<p><strong>Two forms.</strong> The <strong>remote hosted</strong> server (<code>https://api.githubcopilot.com/mcp/</code>, Streamable HTTP) is "hosted by GitHub and provides the easiest method for getting up and running... no local setup or runtime required." The <strong>local</strong> server runs as an stdio process via Docker (<code>ghcr.io/github/github-mcp-server</code>) or a Go binary; GitHub Enterprise Server is only supported locally.</p>
+<p><strong>Toolsets are the headline mechanism</strong>: enable only what you need to help the LLM pick tools and shrink context. Default toolsets are <code>context, repos, issues, pull_requests, users</code>; 20+ groups exist in total, and the remote server adds extras (Copilot Spaces, Support Docs Search, <code>create_pull_request_with_copilot</code>).</p>
+<p><strong>Two caution notes.</strong> read-only mode is a "strict security filter" that takes precedence over everything else (write tools are skipped even if explicitly requested). Lockdown mode is explicitly "a best-effort content filter... <strong>not</strong> an authorization boundary."</p>
+<p>Auth is OAuth (with scope challenges on the remote server) or a PAT (classic PATs get startup scope filtering; fine-grained PATs are not filtered). MIT licensed. Repository metadata (checked 2026-10-08): 33,446★, Go, latest release v2.0.2.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Anyone who wants their MCP client (VS Code, Claude Desktop, Cursor, Windsurf, Codex, Gemini CLI, etc.) to work with GitHub in natural language — reading code and repo structure, managing issues and PRs, watching Actions, triaging code-scanning / Dependabot alerts. Users who do not want to run anything locally — pick the <strong>remote hosted</strong> form. GitHub Enterprise Server users, or anyone needing self-hosted HTTP / offline-controllable setups — pick the <strong>local</strong> form. Security-conscious setups that want read-only mode, toolset trimming and lockdown filtering.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　Hosted on GitHub — direct reachability from mainland fluctuates (200/000 mixed on the same day); npm / PyPI install routes measured stable.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">11 questions, one table</h2>
+<p class="t-section-lead">11 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>It calls no model itself.</strong> It is an interface implementation called by clients — <strong>which model to pick is the client's business.</strong></p>
+<p>It wraps GitHub platform capabilities as MCP tools: repositories, issues, PRs, Actions, code scanning, etc. Two details:</p>
+<ul><li>Tool schemas return typed <code>structuredContent</code> on protocol version <code>2026-07-28</code> and later; older clients fall back to plain text</li></ul>
+<ul><li>Tool descriptions can be overridden via <code>github-mcp-server-config.json</code> or <code>GITHUB_MCP_*</code> environment variables (useful for localization)</li></ul></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>Two run forms: remotely hosted, or a local process.</strong></p>
+<p><strong>Remote hosting</strong> is operated by GitHub itself, endpoint <code>https://api.githubcopilot.com/mcp/</code>.</p>
+<p><strong>The local form</strong> runs three ways:</p>
+<ul><li>Docker image <code>ghcr.io/github/github-mcp-server</code></li><li>A <code>go build</code> binary</li><li>Its built-in HTTP mode <code>github-mcp-server http</code> (default port 8082)</li></ul>
+<p>⚠ <strong>GitHub Enterprise Server does not support remote hosting</strong> (stated explicitly by the official docs). Only the local form works. <code>ghe.com</code> can use remote hosting, but on a separate endpoint.</p>
+<p><strong>The official wording on the remote form</strong>: "the easiest method for getting up and running" "no local setup or runtime required"</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>It never touches your local file system.</strong></p>
+<p>It operates on the GitHub platform: remote repositories, issues, PRs. It has no direct relation to your local git repositories. For local git operations see this site's git entry.</p>
+<p>The only capability close to "files" is <strong>operating on remote repository content</strong>:</p>
+<ul><li><code>get_file_contents</code> — read a file or directory</li><li><code>create_or_update_file</code> / <code>push_files</code> — write files</li><li><code>delete_file</code> — delete a file</li></ul>
+<p>The scope is repos/branches on GitHub. <strong>The container form needs no local repository mount either.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>The remotely hosted form is independent of your client process.</strong> The service lives on GitHub's side; it stays online when you shut down.</p>
+<p><strong>The local form lives and dies with the client</strong> — the stdio child process stops on exit. The self-hosted HTTP mode is a resident service you operate yourself, i.e. <code>github-mcp-server http</code> behind a reverse proxy.</p>
+<p>⚠ <strong>It offers no "background task resumption" semantics.</strong> Its modes are stateful HTTP / stdio sessions; there is no official checkpoint-resume mechanism. "Always on" refers to the availability of the remotely hosted form — and that availability depends on GitHub's service status.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>Toolsets are the core mechanism of this entry.</strong></p>
+<p>Narrowing capability has four layers of control:</p>
+<ul><li><code>--toolsets</code> / <code>GITHUB_TOOLSETS</code> (remote: the <code>X-MCP-Toolsets</code> header, or the <code>/x/{toolset}</code> path)</li><li><code>--tools</code> / <code>GITHUB_TOOLS</code> — down to the individual tool</li><li><code>--exclude-tools</code> — exclude tools</li><li>In the remote form each toolset has its own URL, easy to combine per scenario</li></ul>
+<p><strong>The default toolsets</strong> are 5 groups: context · repos · issues · pull_requests · users.</p>
+<p>Another 20+ groups can be enabled: actions · code_security · dependabot · discussions · gists · git · governance · labels · notifications · orgs · projects · secret_protection · security_advisories · stargazers · code_quality · copilot, etc.</p>
+<p>The remote form also has exclusive toolsets, e.g. Copilot Spaces and GitHub Support Docs Search.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>No cross-session memory.</strong> Each session is independent. State lives on the GitHub platform itself (persistent state of repos, issues, PRs), not in the server.</p>
+<p>One official-specific context control exists. In Insiders mode <code>list_*</code> tools can return CSV (the <code>csv_output</code> feature flag), used to compress list-type responses.</p>
+<p>⚠ <strong>That is a response-format optimization, not a memory mechanism.</strong></p>
+<p><strong>The official wording</strong>: "reduce response context for agents"</p>
+<p>The README provides no built-in memory or retrieval layer.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>Permissions are determined by the GitHub token; the official docs add three narrowing controls.</strong></p>
+<ul><li><strong>① read-only mode</strong> — <code>--read-only</code> / <code>GITHUB_READ_ONLY</code> / <code>X-MCP-Readonly</code></li><li><strong>② lockdown mode</strong> — <code>--lockdown-mode</code> / <code>X-MCP-Lockdown</code></li><li><strong>③ scope filtering</strong> — classic PATs hide tools the token lacks at startup; OAuth uses on-demand scope challenges</li></ul>
+<p>read-only is <strong>an enforced filter with the highest precedence</strong>: even if you explicitly request write tools, they get disabled.</p>
+<p>⚠ <strong>lockdown is not an authorization boundary.</strong> The official docs state it is only a best-effort content filter (filtering content produced by users without push access in public repositories); <strong>it does not change what the underlying credential can read or write</strong>.</p>
+<p><strong>Write and delete capabilities are complete</strong>: create / update / delete file, <code>push_files</code>, <code>merge_pull_request</code>, <code>create_repository</code>, <code>delete_repository</code>, etc. High-risk tools require on-demand authorization (e.g. the <code>delete_repo</code> scope).</p>
+<p>The official docs call read-only a <strong>"strict security filter"</strong></p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p><strong>In one sentence: it lets any MCP client operate GitHub in natural language.</strong></p>
+<p>Clients include VS Code, Claude Desktop, Cursor, Windsurf, Codex, Gemini CLI, etc. What it can do: read code and repository structure, manage issues and PRs, monitor Actions. It can also check code scanning / dependabot security alerts and read notifications.</p>
+<p><strong>The remotely hosted form suits people who do not want to operate it themselves.</strong> <strong>The local Docker form suits</strong>: GitHub Enterprise Server users · people who need self-hosted HTTP · people who want offline control.</p>
+<p><strong>Not a fit</strong> for two kinds of scenarios. First, operating the local file system — that is the filesystem / git server's job. Second, scenarios needing cross-session memory.</p></dd>
+</div>
+<div class="axis" id="dimension-transport">
+<dt>Transport</dt>
+<dd><p><strong>Two forms: local stdio, or remotely hosted HTTP.</strong></p>
+<p>The local form uses <strong>stdio</strong>, two ways to run: the Docker image <code>ghcr.io/github/github-mcp-server</code>, or the <code>github-mcp-server stdio</code> binary.</p>
+<p>The remotely hosted form uses <strong>Streamable HTTP</strong>, endpoint <code>https://api.githubcopilot.com/mcp/</code>.</p>
+<p>You can also self-host the HTTP mode (<code>github-mcp-server http</code>), with OAuth metadata endpoints and scope challenges.</p>
+<p>The remote form accepts URL path modifiers:</p>
+<ul><li><code>/readonly</code> — read-only</li><li><code>/insiders</code> — insider features</li><li><code>/x/{toolset}</code> — expose only one toolset</li><li>These can be combined</li></ul>
+<p><strong>⚠ The permission boundary differs between forms and must be configured separately.</strong></p>
+<p><strong>Verified against</strong>: the official README and remote-server.md (2026-10-08)</p></dd>
+</div>
+<div class="axis" id="dimension-auth">
+<dt>Authentication</dt>
+<dd><p><strong>Local stdio has three authentication methods.</strong></p>
+<ul><li><strong>Browser OAuth</strong> — on github.com the official mirror ships app credentials; the token is kept in memory only</li><li><strong>PAT</strong> — environment variable <code>GITHUB_PERSONAL_ACCESS_TOKEN</code>, <strong>takes precedence over OAuth</strong></li><li><strong>GitHub App</strong> — for non-interactive stdio</li></ul>
+<p><strong>Remote hosting</strong> has two: OAuth (using GitHub credentials, with on-demand scope challenges when a scope is missing), or a PAT (the <code>Authorization: Bearer</code> header).</p>
+<p>⚠ <strong>An easy trap: the two PAT kinds behave differently.</strong></p>
+<ul><li><strong>Fine-grained PATs (<code>github_pat_</code>) do no scope filtering</strong> — all tools are shown, permissions are enforced API-side</li></ul>
+<ul><li>Only <strong>classic PATs (<code>ghp_</code>)</strong> hide tools by scope at startup</li></ul>
+<p>GitHub Enterprise Server / ghe.com require your own OAuth App or GitHub App.</p></dd>
+</div>
+<div class="axis" id="dimension-scope">
+<dt>Permission scope</dt>
+<dd><p><strong>The scope is the permission range of the GitHub token — it can read, and also write and delete.</strong></p>
+<p>Three layers can narrow it: <strong>read-only mode</strong> enforces read-only (highest precedence) · <strong>toolsets trimming</strong> shrinks the exposed surface · <strong>lockdown mode</strong> filters untrusted content (⚠ the official docs stress it is <strong>not an authorization boundary</strong>).</p>
+<p><strong>Write / delete capabilities are complete</strong>, for example:</p>
+<ul><li>Files: <code>create_or_update_file</code> / <code>push_files</code> / <code>delete_file</code></li><li>Repositories: <code>create_repository</code> / <code>delete_repository</code> (requires <code>delete_repo</code>)</li><li>PRs: <code>create_pull_request</code> / <code>merge_pull_request</code></li><li>Others: <code>label_write</code> / <code>projects_write</code> / <code>create_repository_ruleset</code></li></ul>
+<p><strong>There is no independent approval mechanism.</strong> <code>delete_repository</code> goes through multi-round confirmation, but that is interactive elicitation, not an approval layer — do not treat it as one.</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Mistaking it for the archived reference server in the MCP org — that one lives in <code>servers-archived</code>; this is GitHub's official, actively maintained product line</li>
+<li>Treating lockdown mode as a security boundary — the official text says it is best-effort content filtering and does not change what the credentials can read or write</li>
+<li>Assuming read-only is merely a default — it is enforced filtering: write tools stay disabled even when explicitly requested with <code>--tools</code></li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-08。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>github/github-mcp-server · repository (33,871★, MIT, rolling re-check 2026-10-23)</td><td><a href="https://github.com/github/github-mcp-server" rel="noopener" target="_blank">https://github.com/github/github-mcp-server</a></td></tr>
+<tr><td>docs</td><td>Main README (remote/local two forms, full toolsets table, read-only / lockdown, i18n overrides, authentication)</td><td><a href="https://github.com/github/github-mcp-server/blob/main/README.md" rel="noopener" target="_blank">https://github.com/github/github-mcp-server/blob/main/README.md</a></td></tr>
+<tr><td>docs</td><td>Remote Server docs (remote endpoint api.githubcopilot.com/mcp/, URL path modifiers, X-MCP-* headers)</td><td><a href="https://github.com/github/github-mcp-server/blob/main/docs/remote-server.md" rel="noopener" target="_blank">https://github.com/github/github-mcp-server/blob/main/docs/remote-server.md</a></td></tr>
+<tr><td>docs</td><td>Server Configuration guide (configuration matrix for toolsets / tools / exclude / read-only / lockdown / insiders / scope filtering)</td><td><a href="https://github.com/github/github-mcp-server/blob/main/docs/server-configuration.md" rel="noopener" target="_blank">https://github.com/github/github-mcp-server/blob/main/docs/server-configuration.md</a></td></tr>
+<tr><td>docs</td><td>PAT Scope Filtering (classic PAT hides tools by scope, OAuth scope challenge, fine-grained PAT no filtering)</td><td><a href="https://github.com/github/github-mcp-server/blob/main/docs/scope-filtering.md" rel="noopener" target="_blank">https://github.com/github/github-mcp-server/blob/main/docs/scope-filtering.md</a></td></tr>
+<tr><td>docs</td><td>Streamable HTTP Server (self-hosted HTTP mode, OAuth metadata endpoints, scope challenge)</td><td><a href="https://github.com/github/github-mcp-server/blob/main/docs/streamable-http.md" rel="noopener" target="_blank">https://github.com/github/github-mcp-server/blob/main/docs/streamable-http.md</a></td></tr>
+<tr><td>docs</td><td>Insiders Features (CSV output compressing list responses, experimental feature flags)</td><td><a href="https://github.com/github/github-mcp-server/blob/main/docs/insiders-features.md" rel="noopener" target="_blank">https://github.com/github/github-mcp-server/blob/main/docs/insiders-features.md</a></td></tr>
+<tr><td>changelog</td><td>Releases (latest v2.0.2 @ 2026-10-08)</td><td><a href="https://github.com/github/github-mcp-server/releases" rel="noopener" target="_blank">https://github.com/github/github-mcp-server/releases</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" rel="noopener" target="_blank">protocols/mcp/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong>: the focus for this server is "can it be reined in" —</p>
+<div class="tbl-wrap"><table><thead><tr><th>#</th><th>What to test</th><th>Why it is worth testing</th></tr></thead><tbody><tr><td>1</td><td>With only the <code>repos</code> toolset + read-only, are write tools really disabled</td><td>The official docs claim read-only has the highest precedence; needs verification</td></tr><tr><td>2</td><td>Under lockdown, is content from unauthorized users' issues really filtered</td><td>The official docs already say it is not a security boundary; verify its actual strength</td></tr><tr><td>3</td><td>Tool-visibility differences between classic PAT vs fine-grained PAT</td><td>The official docs say fine-grained PATs do no scope filtering — easily misread as "identical permissions"</td></tr><tr><td>4</td><td>Toolset differences between remote hosting and local Docker (Copilot-exclusive tools)</td><td>The two forms expose different tool surfaces; confirm before choosing</td></tr><tr><td>5</td><td>Prerequisites of <code>delete_repository</code>'s multi-round confirmation in HTTP mode</td><td>Requires <code>GITHUB_MCP_SERVER_MRTR_STATE_KEY</code> to be configured, otherwise the tool is not exposed</td></tr></tbody></table></div>
+</div>
+<div class="panel is-slim">
+<h2>⚠ First, the easiest mix-up to clear up</h2>
+<p>It is <strong>not</strong> the archived reference server from the MCP organization. The original <code>github</code> reference server was archived to <a href="https://github.com/modelcontextprotocol/servers-archived/tree/main/src/github" rel="noopener" target="_blank">servers-archived</a>, while this entry refers to <strong>GitHub's own repository <code>github/github-mcp-server</code></strong> — actively maintained (rolling re-check 2026-10-23: latest release v2.0.3 @ 2026-10-21), MIT, 33k+ stars.</p>
+<blockquote>The reason for fixing this entry is direct: the two entries share a name, and searching "github mcp server" hits both "the archived reference implementation" and "GitHub's official active product", whose capabilities and maintenance status are completely different.</blockquote>
+</div>
+<div class="panel is-slim">
+<h2>The two forms</h2>
+<div class="tbl-wrap"><table><thead><tr><th></th><th><strong>Remotely hosted</strong></th><th><strong>Local</strong></th></tr></thead><tbody><tr><td>Endpoint / command</td><td><code>https://api.githubcopilot.com/mcp/</code></td><td>Docker <code>ghcr.io/github/github-mcp-server</code> / <code>github-mcp-server stdio</code></td></tr><tr><td>Transport</td><td>Streamable HTTP</td><td>stdio</td></tr><tr><td>Who operates it</td><td>GitHub</td><td>You</td></tr><tr><td>Authentication</td><td>OAuth / PAT</td><td>OAuth (browser, token in memory only) / PAT</td></tr><tr><td>Prerequisite</td><td>The client supports remote MCP</td><td>Docker or the Go binary</td></tr><tr><td>GHES</td><td><strong>Not supported</strong></td><td>Supported (<code>--gh-host</code> / <code>GITHUB_HOST</code>)</td></tr></tbody></table></div>
+<p>The official positioning of the remote form, original wording: <strong>"the easiest method for getting up and running"</strong>, <strong>"no local setup or runtime required"</strong>; the local form is the fallback for clients that do not support remote MCP / for GHES.</p>
+</div>
+<div class="panel is-slim">
+<h2>Toolsets: the design most worth talking about in this server</h2>
+<p><strong>Only 5 groups load by default</strong> (context / repos / issues / pull_requests / users); the rest must be enabled explicitly — the official rationale is "helping LLMs choose tools and reducing context". The configuration quartet:</p>
+<ul><li><code>--toolsets</code> / <code>GITHUB_TOOLSETS</code> (remote: the <code>X-MCP-Toolsets</code> header or the <code>/x/{toolset}</code> URL)</li><li><code>--tools</code> / <code>GITHUB_TOOLS</code> (down to the individual tool)</li><li><code>--exclude-tools</code> / <code>GITHUB_EXCLUDE_TOOLS</code> (exclusions; takes precedence over the previous two)</li><li>The special value <code>all</code> enables every toolset</li></ul>
+<p><strong>Remote and local toolsets are not identical</strong>: remote additionally has Copilot Spaces and GitHub Support Docs Search, plus the <code>create_pull_request_with_copilot</code> tool that invokes the Copilot coding agent.</p>
+</div>
+<div class="panel is-slim">
+<h2>read-only and lockdown: two switches easy to overestimate</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Mode</th><th>Switch</th><th>Official characterization</th></tr></thead><tbody><tr><td><strong>read-only</strong></td><td><code>--read-only</code> / <code>X-MCP-Readonly</code></td><td><strong>strict security filter</strong>, highest precedence; explicitly requested write tools still get disabled</td></tr><tr><td><strong>lockdown</strong></td><td><code>--lockdown-mode</code> / <code>X-MCP-Lockdown</code></td><td><strong>best-effort content filter, not an authorization boundary</strong></td></tr></tbody></table></div>
+<p>The official docs are concrete about lockdown's boundary. It reduces exactly one prompt-injection risk: <strong>content produced by users without push access in public repositories</strong>. It <strong>does not change what the underlying credential can read or write</strong>. Content hidden from filtered responses may still be reachable through other tools, or by calling the GitHub API directly (<code>github-actions[bot]</code> and <code>copilot</code> are exceptions, always treated as trusted).</p>
+</div>
+<div class="panel is-slim">
+<h2>Authentication and permissions: the token decides everything</h2>
+<ul><li><strong>Classic PAT (<code>ghp_</code>)</strong>: at startup, tools the token lacks are <strong>hidden</strong> based on <code>X-OAuth-Scopes</code>.</li><li><strong>OAuth (remote)</strong>: no pre-hiding; instead a <strong>scope challenge</strong> — when a tool missing a scope is used, authorization is requested on demand.</li><li><strong>Fine-grained PAT (<code>github_pat_</code>) / GitHub App</strong>: <strong>no tool filtering</strong>; everything is shown; permissions are enforced by the GitHub API side.</li></ul>
+<p>The official credential best practices: minimal scopes (<code>repo</code> / <code>read:packages</code> / <code>read:org</code>), separate tokens per environment, regular rotation, no hardcoding. Some hosts such as Windsurf can only hardcode, and the official docs call out that exception too.</p>
+</div>
+<div class="panel is-slim">
+<h2>Verification notes</h2>
+<p>The basis for <code>confidence: partial</code> (2026-10-08):</p>
+<p>All eight dimensions and the three mcp dimensions carry conclusions, but in two places <strong>the official docs themselves have no content</strong>, leaving only "not stated officially": so-called "dynamic tool discovery" cannot be found in current official docs (see unknowns). The official docs also provide no tool-level approval mechanism. These are not evidence gaps but things the official side currently does not provide, which is why it cannot be raised to verified.</p>
+<p><strong>Official pages verified on 2026-10-08</strong>: README (two forms, the full toolsets table, authentication, read-only / lockdown, i18n overrides), docs/remote-server.md (endpoint, URL modifiers, X-MCP-* headers), docs/server-configuration.md, docs/scope-filtering.md, docs/streamable-http.md, docs/insiders-features.md, docs/feature-flags.md; repository metadata verified via the GitHub API (33,871★, MIT, Go, last push 2026-10-22, latest release v2.0.3; rolling re-check 2026-10-23).</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/mcp/git.html">Git MCP Server</a></span><span class="rel-n"><strong>The entry to contrast most</strong>: the git server does <strong>local</strong> repository operations only, with no push/PR, and explicitly notes the original github reference server is archived; this entry is precisely the official replacement for that "remote GitHub operations" role.</span></li>
+<li><span class="rel-t"><a href="/en/mcp/filesystem.html">Filesystem MCP Server</a></span><span class="rel-n">Scope/permission-design contrast: filesystem is a local directory allowlist; github-mcp is a remote GitHub token scope.</span></li>
+<li><span class="rel-t"><a href="/en/mcp/context7.html">Context7</a></span><span class="rel-n">Same-kind contrast: Context7 is purely remotely hosted with no local permission risk; github-mcp is a "local + remote" dual form with full write/delete capability.</span></li>
+<li><span class="rel-t"><a href="/en/coding/copilot.html">GitHub Copilot</a></span><span class="rel-n">Other layer · AI coding</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/mcp/1password-mcp.html">1Password Environments MCP Server</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">1Password official Environments MCP server (local stdio, rides the deskt</td></tr><tr><td><a href="/en/mcp/atlassian-mcp.html">Atlassian Remote MCP Server（Jira/Confluence）</a></td><td>Cloud / API</td><td>Commercial terms</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Atlassian's official Remote MCP server: one endpoint covers Jira + Confl</td></tr><tr><td><a href="/en/mcp/brave-search-mcp.html">Brave Search MCP Server</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Brave's official search MCP server (MIT): an independent retrieval sourc</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from GitHub</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/coding/copilot-cli.html"><span class="vp-cat">AI coding</span>GitHub Copilot CLI</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

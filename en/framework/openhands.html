@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>OpenHands Agent Canvas | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/framework/openhands.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/framework/openhands.html" property="og:url"/>
+<meta content="OpenHands Agent Canvas | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"OpenHands Agent Canvas | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/framework/openhands.html","sameAs":"https://openhands.dev","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="OpenHands Agent Canvas | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/framework/openhands.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/framework/openhands.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/framework/openhands.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/framework/openhands.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Frameworks</span>
+</nav>
+<a class="back" href="/en/framework/">← Frameworks</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#F97316"'>OP</div>
+<div>
+<h1>OpenHands Agent Canvas</h1>
+<div class="vendor is-caps">OpenHands（All-Hands-AI）</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">TypeScript</span>
+<span class="tag on">Python</span>
+<span class="tag on">Open source</span>
+<span class="tag on">MIT</span>
+<span class="tag on">Self-hosted</span>
+<span class="tag on">Platform</span>
+<span class="tag on">WebUI</span>
+<span class="tag on">Scheduling layer</span>
+<span class="tag on">ACP</span>
+<span class="tag on">Sandbox</span>
+<span class="tag on">Scheduled tasks</span>
+<span class="tag on">webhook</span>
+<span class="tag on">Multiple backends</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>It is a self-hosted control centre for agents — the official README now calls it…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · Framework / SDK</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Provider capability alignment of "any LLM" (list verified: verbatim "any model that is supported by litellm")</li>
+<li>End-to-end effect of conversation-context compression (official condenser exists; compression ratio awaits testing)</li>
+<li>Multi-user arrangements in the OSS tier (formal RBAC / SSO in Enterprise; OSS defaults to single user)</li>
+<li>The positioning difference between ACP and MCP (both usable; the boundary is not systematically compared officially)</li>
+<li><strong>The concrete contents of the Enterprise tier</strong> (official docs only mark Custom pricing / Contact Us; quotes not recorded per D9)</li>
+<li>Behavior beyond Individual's daily 10 conversations (disabled / upgrade prompt / other — not written on the official page)</li>
+<li>The sync mechanism for local codebases when the backend is deployed remotely</li>
+<li>The API shape and independent versioning cadence of <code>software-agent-sdk</code></li>
+<li>Resource usage and stability of per-conversation containers under concurrency stress</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>It is a self-hosted control centre for agents</strong> — the official README now calls it <strong>Agent Canvas</strong>.</p>
+<p>It ships as a whole stack: a web GUI, a terminal UI, a CLI and a REST API all live in it. And it drives more than its own agent — Codex, Claude Code and Gemini can all run on top of it.</p>
+<blockquote>Official positioning: The self-hosted developer control center for coding agents and automations. Run OpenHands, Claude Code, Codex, Gemini, or <strong>any ACP-compatible agent</strong> across local, remote, and cloud backends.</blockquote></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p><strong>What it is good for</strong>:</p></div>
+<div><ul><li>Running agents 7×24 on your own server</li><li>Scheduled or webhook triggers (Slack / GitHub / Linear / Notion)</li><li>Managing several agents from one interface, including ACP-compatible ones such as Codex, Claude Code and Gemini</li><li>Per-conversation container isolation</li><li>Deploying the front end separately from the agent runtime</li><li>Long sessions that need the official condenser to hold down context cost</li></ul></div>
+<div><p><strong>What it is not for</strong>:</p></div>
+<div><ul><li>Embedding an agent into your own Python process — use software-agent-sdk or OpenAI Agents SDK for that</li><li>A one-off job on a single machine — it is a whole stack, not a library</li><li>Multi-user, fine-grained permissions — the official comparison table puts Multi-user RBAC in Enterprise, so OSS self-hosting has a single key only</li></ul></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　official site measured 200 direct.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>Official position: any model LiteLLM supports can connect, and it ships its own LiteLLM gateway layer (verified).</strong></p>
+<p><strong>Providers verified working</strong> (selectable in the Basic settings dropdown):</p>
+<ul><li>OpenHands provider</li><li>Anthropic</li><li>OpenAI</li><li>Mistral AI</li></ul>
+<p><strong>How to write a Custom Model</strong>: specify a provider prefix following LiteLLM's provider conventions; there is also a customizable <code>Base URL</code>, through which local and self-hosted models connect. The official docs say saving a local LLM profile first validates against the backend.</p>
+<p><strong>LLM profiles</strong>: up to 10 configurations coexist. Switch mid-session or via <code>/model</code>. The built-in <code>SwitchLLMTool</code> also lets the agent choose dynamically.</p>
+<p>⚠ <strong>Two things the official docs do not give.</strong> One: a complete provider list. Two: alignment data for "any LLM" — i.e. whether tool calling and structured output align. Verification scope: the llm-settings page.</p>
+<p><strong>This item matters especially for this object</strong>: it is simultaneously other agents' scheduling layer. "Codex / Claude Code run on top of it" is a special case — which models are usable is decided by that agent.</p>
+<p><strong>Official LLM settings page, verbatim</strong>: "This can be any model that is supported by litellm"</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>It has four official deployment forms — the most practically valuable part of this object.</strong> All four README Options verified.</p>
+<ul><li><strong>Option 1 local without sandbox</strong>: <code>npm install -g @openhands/agent-canvas</code> then <code>agent-canvas</code>, starts the full local stack, <strong>requires Node.js 24+ and uv</strong>; <code>--frontend-only</code> / <code>--backend-only</code> split it apart</li></ul>
+<ul><li><strong>Option 2 Docker sandbox</strong>: <code>docker run</code> the official image, requires preparing a <code>PROJECTS_PATH</code> host directory beforehand; the agent can access projects under it</li></ul>
+<ul><li><strong>Option 3 per-conversation containers</strong>: <code>OH_CONVERSATION_RUNTIME=docker agent-canvas</code>, each new conversation starts its own container and Agent Server — good for running multiple agents concurrently</li></ul>
+<ul><li><strong>Option 4 from source</strong>: clone + <code>npm install</code> + <code>npm run dev</code></li></ul>
+<p><strong>Entry URL</strong>: <code>http://localhost:8000</code> (the Docker image serves <code>/canvas</code>).</p>
+<p><strong>Backends can be switched remotely</strong> — the core capability of its scheduling layer: officially the Agent Server can run on a laptop / Mac Mini / cloud VM / OpenHands Cloud, and the Canvas frontend switches between multiple Servers.</p>
+<p>On Option 3 the official docs note containers mount the conversation's workspace and persisted state. <strong>Files and conversation history survive container replacement</strong>.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>How much of the local file system is reachable depends on which deployment form you choose — the official docs make this variable explicit.</strong></p>
+<ul><li><strong>No-sandbox form</strong>: the agent has full file-system access; the official docs WARNING twice</li><li><strong>Docker form</strong>: access narrows to the directory mounted at <code>PROJECTS_PATH</code></li><li><strong>Per-conversation container form</strong>: the official docs caution that <strong>conversations sharing the same host workspace still share the same files</strong>; use separate directories or worktrees to avoid conflicting edits</li></ul>
+<ul><li><strong>When the backend is remote</strong> (cloud VM / Cloud backend): the agent runs in a remote workspace; the SDK specifies the remote working directory with <code>Workspace(host=..., working_dir="workspace/project")</code>; file and command operations execute server-side</li></ul>
+<p><strong>The official docs do not describe a mechanism for "auto-syncing a local repo to a remote backend"</strong> (agent-server and runtime pages checked) — the repo must already live remotely, or be moved by you.</p>
+<p><strong>Official WARNING, verbatim</strong>: "This runs the agent-server directly on the machine you're installing on — <strong>the agent will have full access to your filesystem!</strong>"</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>Background tasks are its most prominent strength and its biggest difference from other harness entries.</strong></p>
+<p>The two biggest benefits of running agents on a cloud server: they keep running when you close the laptop, and they are easier to trigger from third-party services like Slack, GitHub, or Datadog.</p>
+<p>The companion is the standalone repo <code>OpenHands/automation</code>, offering two trigger modes:</p>
+<ul><li>schedules</li><li>webhook events</li></ul>
+<p>The official feature table lists integrable third parties: Slack, GitHub, Linear, and Notion.</p>
+<p><strong>Compared with our other objects</strong>: OpenAI Agents SDK, Deep Agents, and Codex SDK keep thread state in their own process / own machine — gone when closed. Only this one markets "the agent keeps running after you close the laptop".</p>
+<p><strong>Official README, verbatim</strong>: it "allows your agents to <strong>continue running even when your laptop is shut</strong>"</p>
+<p>The same page names Slack, GitHub, and Datadog as easier trigger channels.</p>
+<p>Verified <code>OpenHands/automation</code> (2026-10-01): Python, MIT, 32★, active.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>It has two access lines: its own toolset + MCP; plus ACP for scheduling third-party agents.</strong></p>
+<p>① <strong>The default toolset of its own agent (CodeAct / software-agent-sdk)</strong>, listed in the official start-conversation API example:</p>
+<ul><li><code>terminal</code></li><li><code>file_editor</code></li><li><code>task_tracker</code></li><li><code>browser_tool_set</code> (<code>cli_mode</code> can disable browser tools)</li></ul>
+<p>② <strong>MCP support verified</strong>, with an official MCP Servers page:</p>
+<ul><li>CLI uses <code>openhands mcp</code>; Canvas uses <code>Customize &gt; MCP Servers</code></li><li>Transports cover http / sse / stdio</li><li>Auth supports Bearer / API Key / OAuth</li><li>On the SDK side, <code>mcp_config</code> (FastMCP format) injects <code>mcpServers</code></li></ul>
+<p>③ Third-party agents (Claude Code, Codex, Gemini, etc.) are scheduled via <strong>ACP (Agent Client Protocol)</strong>.</p>
+<p><strong>⚠ Correction to the previous version of this dossier</strong>: this object <strong>does not go ACP-only</strong> — MCP is equally an official capability.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>On context, the official docs have an explicit mechanism: the context condenser.</strong> Evidence for this dimension is complete.</p>
+<p>The default implementation is <code>LLMSummarizingCondenser</code> (extends <code>RollingCondenser</code>), with parameters <code>max_size</code> / <code>keep_first</code>. Over threshold it <strong>keeps recent messages intact and only summarizes older content</strong>.</p>
+<p>On the Canvas side the entry is <code>Settings &gt; Condenser</code>; the LLM settings page has "Enable memory condensation" and <strong>"Memory condenser max history size"</strong> toggles.</p>
+<p>The official docs also explain: with a condenser configured, exceeding the window emits a condensation-request event instead of throwing <code>LLMContextWindowExceedError</code>. The agent summarizes old history and continues.</p>
+<p><strong>⚠ Per our "state ≠ context" framing</strong>: run history and persistence across container replacement belong to the state side. The condenser above is the official context-side mechanism. Count them separately.</p>
+<p><strong>Official SDK guide, verbatim</strong>: the context condenser "intelligently summarizing older parts of the conversation while preserving essential information"; over threshold it "Keeps recent messages intact", "Summarizes older content".</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>This is where the official docs are most thorough — and the part that most deserves careful reading.</strong></p>
+<p><strong>Sandbox</strong>: the official docs give two containment measures (see local_files): the Docker sandbox and per-conversation containers. But the official docs also explicitly offer the no-sandbox form, WARNING twice.</p>
+<p><strong>Authentication uses an API key, not a user system</strong>:</p>
+<ul><li>generate a key: <code>openssl rand -base64 32</code>, assign to <code>LOCAL_BACKEND_API_KEY</code></li><li>in <code>--public</code> mode the <strong>key is not baked into the frontend</strong>; users must paste the key manually on first UI open; afterwards every <code>/api/*</code> request carries the <code>X-Session-API-Key</code> header</li></ul>
+<ul><li><strong>loopback-only binding by default</strong> (127.0.0.1). The official rationale: keep the auto-injected session key from being reachable by other machines on the LAN</li></ul>
+<ul><li>when listening on <code>0.0.0.0</code> the key is no longer injected; the same API-key input UI is used instead</li><li>the official docs advise <code>export</code> over command-line arguments for the key, to keep it out of <code>ps aux</code> process listings</li></ul>
+<ul><li><strong>exposing to the public internet carries official firewall requirements</strong> (Cloud Firewall / AWS Security Group / GCP firewall rule)</li></ul>
+<p><strong>⚠ Multi-user and permission tiers are assigned by the official docs to Enterprise.</strong> The official deployment comparison table shows the Open Source tier "Users = 1"; <strong>Multi-user RBAC and SSO/SAML exist only in Enterprise</strong> (the OSS column reads "—").</p>
+<p>So OSS self-hosting includes no user/role/audit system — that session key is all there is. Multi-user tiering and auditing require Enterprise.</p>
+<p><code>docs/SELF_HOSTING.md</code> (verified, 286 lines) covers exactly this API-key mechanism.</p>
+<p><strong>Verified</strong>: enterprise page and deployment comparison table checked.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p><strong>What it can do</strong>:</p>
+<ul><li>Put agents on your own server running 7×24</li><li>Trigger by schedule or webhook (Slack / GitHub / Linear / Notion)</li><li>Manage multiple agent kinds from one UI (including ACP-compatible Codex, Claude Code, Gemini)</li><li>You need per-conversation isolated containers</li><li>Your team deploys frontend/platform separately from the agent runtime</li><li>Long sessions need the official condenser to control context cost</li></ul>
+<p><strong>What it is not for</strong>:</p>
+<ul><li>You just want a lightweight library to embed agents in your own Python process (use software-agent-sdk or OpenAI Agents SDK for that need)</li></ul>
+<ul><li>Ad-hoc single-machine use — it is a whole stack, not a library</li><li>You need multi-user fine-grained permission tiers — the official docs assign Multi-user RBAC to Enterprise; OSS self-hosting has a single key only</li></ul></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>MIT</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Assuming it is a Python SDK — <strong>the main repo is a TypeScript web control centre</strong>; the programming entry point is <code>OpenHands/software-agent-sdk</code> (a further 1,190★)</li>
+<li>Judging by the repo name and description that it is an "AI-driven software development tool" — <strong>the README's front-page title is now Agent Canvas</strong>, and the positioning is a control centre</li>
+<li>Assuming it competes with Codex SDK / Claude Agent SDK — <strong>it is their orchestration layer</strong> (the README says it can run those agents)</li>
+<li>Going straight to Option 1 in production — the official docs put a WARNING on that option: the agent has full access to your filesystem</li>
+<li>Reading <code>--public</code> mode as "more convenient" — it is the safeguard that keeps the key out of the front end, meant for non-local access</li>
+<li>Assuming "has run history" means "has context management" — the former is state; the latter has its own mechanism (LLMSummarizingCondenser / RollingCondenser)</li>
+<li>Assuming it uses ACP only and does not support MCP — the MCP Servers page says both the CLI and the Canvas can configure it (http / sse / stdio plus Bearer / API Key / OAuth); ACP is the separate line for orchestrating third-party agents</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-01。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>OpenHands/OpenHands · repository (Agent Canvas control center, 91,593★, MIT, rolling verification 2026-10-23)</td><td><a href="https://github.com/OpenHands/OpenHands" rel="noopener" target="_blank">https://github.com/OpenHands/OpenHands</a></td></tr>
+<tr><td>docs</td><td>Main README (Agent Canvas positioning, four deployment forms, ACP access, Repository boundaries table)</td><td><a href="https://github.com/OpenHands/OpenHands/blob/main/README.md" rel="noopener" target="_blank">https://github.com/OpenHands/OpenHands/blob/main/README.md</a></td></tr>
+<tr><td>docs</td><td>docs/SELF_HOSTING.md (API key, --public mode, loopback default, firewall requirements)</td><td><a href="https://github.com/OpenHands/OpenHands/blob/main/docs/SELF_HOSTING.md" rel="noopener" target="_blank">https://github.com/OpenHands/OpenHands/blob/main/docs/SELF_HOSTING.md</a></td></tr>
+<tr><td>pricing</td><td>Official pricing page (verified 2026-10-01: Open Source and Cloud Individual both free tiers, Enterprise custom; <strong>Individual Max Daily Conversations = 10</strong> while Open Source is Unlimited; BYOK and "at cost, with no markup"; Enterprise can deploy in the customer's own VPC, SAML/SSO, RBAC, unlimited per-user concurrency)</td><td><a href="https://www.all-hands.dev/pricing" rel="noopener" target="_blank">https://www.all-hands.dev/pricing</a></td></tr>
+<tr><td>repo</td><td>OpenHands/software-agent-sdk · repository (where the Python SDK and Agent Server actually live, 1,190★, MIT)</td><td><a href="https://github.com/OpenHands/software-agent-sdk" rel="noopener" target="_blank">https://github.com/OpenHands/software-agent-sdk</a></td></tr>
+<tr><td>repo</td><td>OpenHands/automation · repository (schedule and webhook dispatch, 32★, MIT)</td><td><a href="https://github.com/OpenHands/automation" rel="noopener" target="_blank">https://github.com/OpenHands/automation</a></td></tr>
+<tr><td>changelog</td><td>Releases (v1.31.0 @ 2026-10-22)</td><td><a href="https://github.com/OpenHands/OpenHands/releases" rel="noopener" target="_blank">https://github.com/OpenHands/OpenHands/releases</a></td></tr>
+<tr><td>docs</td><td>Official docs · LLM settings / LLM profiles (any model supported by litellm, verified providers, up to 10 profiles, memory condensation, verified 2026-10-08)</td><td><a href="https://docs.openhands.dev/openhands/usage/settings/llm-settings" rel="noopener" target="_blank">https://docs.openhands.dev/openhands/usage/settings/llm-settings</a></td></tr>
+<tr><td>docs</td><td>Official docs · Context Condenser (SDK guide: LLMSummarizingCondenser / RollingCondenser, verified 2026-10-08)</td><td><a href="https://docs.openhands.dev/sdk/guides/context-condenser" rel="noopener" target="_blank">https://docs.openhands.dev/sdk/guides/context-condenser</a></td></tr>
+<tr><td>docs</td><td>Official docs · Runtime Architecture (Docker sandbox, volume mounts, RemoteRuntime, verified 2026-10-08)</td><td><a href="https://docs.openhands.dev/openhands/usage/architecture/runtime" rel="noopener" target="_blank">https://docs.openhands.dev/openhands/usage/architecture/runtime</a></td></tr>
+<tr><td>docs</td><td>Official docs · MCP Servers (CLI/Canvas configuration, http/sse/stdio transports and auth, verified 2026-10-08)</td><td><a href="https://docs.openhands.dev/openhands/usage/cli/mcp-servers" rel="noopener" target="_blank">https://docs.openhands.dev/openhands/usage/cli/mcp-servers</a></td></tr>
+<tr><td>docs</td><td>Official docs · Agent Server Package (remote workspace, working_dir, session API key, verified 2026-10-08)</td><td><a href="https://docs.openhands.dev/sdk/arch/agent-server" rel="noopener" target="_blank">https://docs.openhands.dev/sdk/arch/agent-server</a></td></tr>
+<tr><td>docs</td><td>Official docs · OpenHands Enterprise vs OSS deployment comparison table (Multi-user RBAC / SSO-SAML only in Enterprise, OSS Users = 1, verified 2026-10-08)</td><td><a href="https://docs.openhands.dev/enterprise" rel="noopener" target="_blank">https://docs.openhands.dev/enterprise</a></td></tr>
+<tr><td>docs</td><td>Official docs · ACP Agents (pointed to by the README)</td><td><a href="https://docs.openhands.dev/openhands/usage/agent-canvas/acp-agents" rel="noopener" target="_blank">https://docs.openhands.dev/openhands/usage/agent-canvas/acp-agents</a></td></tr>
+<tr><td>repo</td><td>npm package @openhands/agent-canvas (the README's install entry)</td><td><a href="https://www.npmjs.com/package/@openhands/agent-canvas" rel="noopener" target="_blank">https://www.npmjs.com/package/@openhands/agent-canvas</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" rel="noopener" target="_blank">protocols/framework/_protocol.md</a>.</p>
+<p><strong>Suggested runs</strong> (tailored to this object's form):</p>
+<div class="tbl-wrap"><table><thead><tr><th>#</th><th>What to test</th><th>Why it is worth testing</th></tr></thead><tbody><tr><td>1</td><td>Can <code>software-agent-sdk</code> alone (no Canvas) run a minimal agent</td><td>decides whether you need the whole stack at all</td></tr><tr><td>2</td><td>Condenser compression effect and cost change on long (multi-day) tasks</td><td>mechanism known (LLMSummarizingCondenser); compression ratio needs testing</td></tr><tr><td>3</td><td><strong>Real isolation strength of per-conversation containers</strong> (the shared-host-workspace caveat needs testing)</td><td>the official docs already flag the conflict risk</td></tr><tr><td>4</td><td>In Docker form, can the agent escape <code>PROJECTS_PATH</code> to reach other host paths</td><td>sandbox validity is a selection precondition</td></tr><tr><td>5</td><td>Real onboarding cost of attaching Claude Code / Codex as ACP agents</td><td>its most unique selling point; worth it depends on this</td></tr><tr><td>6</td><td>Idempotency and duplicate-trigger handling of webhook triggers</td><td>schedules/webhooks are its flagship scenario</td></tr></tbody></table></div>
+</div>
+<div class="panel is-slim">
+<h2>Form clarification: this is not an SDK, it is a platform — and it sits above others</h2>
+<p>Among our three coding-base forms, it belongs to form 3, <strong>ships a complete runtime</strong>, and is the <strong>only one of those with a Web UI</strong>.</p>
+<h3 class="sub-h">Three perception gaps that are easy to trip on</h3>
+<p><strong>① The main brand is now Agent Canvas, but the repo name hasn't changed.</strong></p>
+<p>Its current positioning is a <strong>control center</strong>. It no longer writes itself as "a development tool". The repo description is still the old one.</p>
+<blockquote>Repo description, verbatim: "🙌 OpenHands: AI-Driven Development"; the README's first-screen title is already Agent Canvas.</blockquote>
+<p><strong>② It runs more than OpenHands' own agent.</strong></p>
+<p>The official docs list four and leave an open condition.</p>
+<blockquote>README, verbatim: "OpenHands, Claude Code, Codex, Gemini, or any ACP-compatible agent"</blockquote>
+<p><strong>It is not a competitor of the Codex SDK or Claude Agent SDK we list</strong> — they are in a scheduler/scheduled relationship.</p>
+<p>So the selection question is not "this or Codex" but "do you want one UI to govern Codex / Claude Code / Gemini".</p>
+<p><strong>③ The real programming entry is in another repo.</strong></p>
+<p>The official three-repo division of labor, from this table:</p>
+<blockquote>The official docs have a Repository boundaries table; this dossier records it verbatim.</blockquote>
+<div class="tbl-wrap"><table><thead><tr><th>Repository</th><th>Responsibility</th><th>Verified (2026-10-01)</th></tr></thead><tbody><tr><td><code>OpenHands/OpenHands</code></td><td>frontend control center, backend selection, local-stack orchestration</td><td>91,593★ · MIT · TypeScript</td></tr><tr><td><code>OpenHands/software-agent-sdk</code></td><td><strong>Python SDK, Agent Server, agents, tools, conversations, workspaces, events</strong></td><td>1,190★ · MIT · Python</td></tr><tr><td><code>OpenHands/automation</code></td><td>schedule dispatch, webhooks, run history, delivery</td><td>32★ · MIT · Python</td></tr></tbody></table></div>
+<blockquote>⚠ <strong>91,593★ is the control center's star count, not the SDK's</strong>. If what you want is "an SDK embedded in your own Python process", that object is <code>software-agent-sdk</code> (1,190★), not this entry. <strong>We did not list it separately this time</strong> — see suggested run #1 below.</blockquote>
+</div>
+<div class="panel is-slim">
+<h2>Tiers: two of three are free, but "free" has a hard cap</h2>
+<p>The official pricing page verified 2026-10-01 leads to a conclusion that may differ from expectations: <strong>there is no paid individual tier.</strong> (Quotes not stored per our price-recording policy; see the official pricing page.)</p>
+<div class="tbl-wrap"><table><thead><tr><th>Tier</th><th>Deployment</th><th>Users</th><th>Daily conversations</th></tr></thead><tbody><tr><td><strong>Open Source</strong> (free)</td><td>local</td><td>1</td><td><strong>Unlimited</strong></td></tr><tr><td><strong>SaaS Individual</strong> (free)</td><td>cloud</td><td>1</td><td><strong>10</strong></td></tr><tr><td><strong>Enterprise</strong> (custom, Contact Us)</td><td>SaaS or <strong>customer's own VPC</strong></td><td>Unlimited</td><td>Unlimited</td></tr></tbody></table></div>
+<p><strong>① The most critical gap: the free cloud tier caps at 10 conversations per day.</strong></p>
+<p>The official comparison table's same column: Open Source = <strong>Unlimited</strong>, Individual = <strong>10</strong>, Enterprise = Unlimited. <strong>"Free" does not mean "unlimited"</strong>. Two roads to unlimited: run locally, or go Enterprise.</p>
+<p><strong>② Individual supports bring-your-own-key (BYOK).</strong></p>
+<p>Without a key you can use the OpenHands LLM provider; generate an API key under Settings &gt; API for the CLI / Local Web UI / Software Agent SDK. The official docs stress it is at cost, zero markup, pay-as-you-go.</p>
+<p><strong>The official docs do not publish an actual unit-price table</strong>; only the no-markup claim is confirmable (we also store no quotes per D9).</p>
+<blockquote>Official FAQ, verbatim: all Open Source and Cloud tiers support bringing your own LLM key; without a key you go through the OpenHands provider, officially emphasized "<strong>at cost, with no markup</strong>".</blockquote>
+<p><strong>③ Individual also has a batch of things the OSS tier lacks</strong>: cloud access (desktop + mobile) and the Cloud API (for automation and scripts), plus Jira and Slack integrations, Secrets, and organization support.</p>
+<p><strong>④ Enterprise is actually a different thing, not "a few more users"</strong>:</p>
+<ul><li>deployable in the <strong>customer's own VPC</strong></li><li>Enterprise SAML/SSO, multi-user RBAC</li><li>centralized team billing</li><li><strong>unlimited concurrent sessions per user</strong></li><li>Large Codebase SDK</li><li><strong>Named Customer Engineer + shared Slack channel + priority support</strong></li></ul>
+<p>Pricing requires contacting sales.</p>
+</div>
+<div class="panel is-slim">
+<h2>Four deployment forms: the most practical part of this object</h2>
+<p>All four Options verified:</p>
+<blockquote>Verification source: the official README Quickstart's four Options.</blockquote>
+<div class="tbl-wrap"><table><thead><tr><th>Form</th><th>Command essentials</th><th>Sandbox</th><th>Needs Node 24+/uv?</th></tr></thead><tbody><tr><td><strong>① local without sandbox</strong></td><td><code>npm i -g @openhands/agent-canvas</code> → <code>agent-canvas</code></td><td>❌ none</td><td>yes</td></tr><tr><td><strong>② Docker sandbox</strong></td><td><code>docker run ... ghcr.io/openhands/agent-canvas:1.31.0</code></td><td>✅ narrowed to <code>PROJECTS_PATH</code></td><td>no</td></tr><tr><td><strong>③ per-conversation containers</strong></td><td><code>OH_CONVERSATION_RUNTIME=docker agent-canvas</code></td><td>✅ per-conversation isolation</td><td>yes + Docker</td></tr><tr><td><strong>④ from source</strong></td><td>clone → <code>npm install</code> → <code>npm run dev</code></td><td>❌ none</td><td>yes</td></tr></tbody></table></div>
+<p><strong>① and ④ carry the same WARNING officially.</strong></p>
+<blockquote>This runs the agent-server directly on the machine you're installing on — <strong>the agent will have full access to your filesystem!</strong></blockquote>
+<p><strong>③ suits concurrency</strong>: each new conversation starts its own container and Agent Server. The official docs specifically note containers mount the conversation's workspace and persisted state. <strong>Files and conversation history survive container replacement.</strong> This is positive evidence for our "reliable long-running" concern.</p>
+<p>But the official docs also caution: <strong>conversations using the same host workspace still share the same files</strong> — use separate directories or worktrees to avoid conflicting edits.</p>
+</div>
+<div class="panel is-slim">
+<h2>Background tasks: its most prominent strength</h2>
+<p>The official wording is direct:</p>
+<blockquote>The most powerful way to run OpenHands is on a server in the cloud. This allows your agents to <strong>continue running even when your laptop is shut</strong>, and makes it easier to trigger your agents through third-party services like Slack, GitHub, and Datadog.</blockquote>
+<p>The companion is the standalone repo <code>OpenHands/automation</code>, offering two trigger modes: <strong>schedules</strong> and <strong>webhooks</strong>. The official feature table lists integrable third parties: <strong>Slack, GitHub, Linear, Notion</strong>.</p>
+<p><strong>Compared with our other objects</strong>: the OpenAI Agents SDK's session and the Codex SDK's thread live in your own process / own machine — gone when closed. <strong>Only this object markets "the agent keeps running after you close the laptop".</strong></p>
+<blockquote>Verified <code>OpenHands/automation</code> (2026-10-01): Python · MIT · 32★ · active.</blockquote>
+</div>
+<div class="panel is-slim">
+<h2>Permissions and security: thorough officially, but pick the right form</h2>
+<p>The key design is <strong>an API key, not a user system</strong>.</p>
+<div class="tbl-wrap"><table><thead><tr><th>Mechanism</th><th>Official wording / parameter</th><th>Purpose</th></tr></thead><tbody><tr><td>key generation</td><td><code>openssl rand -base64 32</code> → <code>LOCAL_BACKEND_API_KEY</code></td><td>256-bit</td></tr><tr><td><code>--public</code> mode</td><td>key <strong>not baked into the frontend</strong>; users paste it on first UI open</td><td>prevents key leakage via frontend code</td></tr><tr><td>request header</td><td>every <code>/api/*</code> carries <code>X-Session-API-Key</code></td><td>session-level auth</td></tr><tr><td>default binding</td><td><strong>loopback-only (127.0.0.1)</strong></td><td>official rationale: keep the auto-injected session key off the LAN</td></tr><tr><td>listen on all interfaces</td><td><code>--host 0.0.0.0</code> or <code>OH_BIND_HOST</code></td><td>then the key is not injected; same input UI instead</td></tr><tr><td>passing the key</td><td>use <code>export</code>, not command-line arguments</td><td><strong>keeps it out of <code>ps aux</code> listings</strong></td></tr><tr><td>public exposure</td><td>official firewall requirements (Cloud Firewall / AWS SG / GCP firewall rule)</td><td></td></tr></tbody></table></div>
+<p><strong>Multi-user and permission tiers verified (2026-10-08)</strong>: formal RBAC / SSO sit in the Enterprise tier; the OSS tier defaults to single user, single session key. <strong>Team-level use requires Enterprise, or do auth at your reverse-proxy layer.</strong></p>
+<blockquote><code>docs/SELF_HOSTING.md</code> (verified, 286 lines) covers only "protecting a single key"; the official enterprise page documents RBAC / SSO.</blockquote>
+</div>
+<div class="panel is-slim">
+<h2>The context dimension: the official condenser (updated 2026-10-08)</h2>
+<p>This kind of object does persistence well — run history, history surviving container replacement. <strong>Handling long conversation context also has an official mechanism</strong>. It is on the SDK side: the context condenser.</p>
+<p>Per our claim "<strong>state ≠ context</strong>":</p>
+<ul><li><strong>state</strong> ✅ official evidence (schedule/webhook triggers, run history, history preserved across container replacement)</li><li><strong>context</strong> ✅ official mechanism (condenser); real compression effect awaits testing</li></ul>
+<p><strong>Persistence ≠ context management</strong> — still two things; but this object can now deliver the latter.</p>
+<blockquote>The official sdk/guides page gives <code>LLMSummarizingCondenser</code> / <code>RollingCondenser</code>.</blockquote>
+</div>
+<div class="panel is-slim">
+<h2>Protocols: MCP and ACP each run one line</h2>
+<p>Both lines sorted out (2026-10-08).</p>
+<p><strong>① MCP</strong> — the official docs have an MCP Servers page:</p>
+<ul><li>CLI uses <code>openhands mcp</code>; Canvas can configure it too</li><li>Transports cover http / sse / stdio</li><li>Auth supports Bearer / API Key / OAuth</li><li>The existing MCP server ecosystem is directly reusable</li></ul>
+<p><strong>② ACP (Agent Client Protocol)</strong> — the README uses it to schedule third-party agents ("Run OpenHands, Claude Code, Codex, Gemini, or any ACP-compatible agent").</p>
+<p><strong>Correction to the previous version</strong>: this object is not ACP-only; MCP is equally an official capability.</p>
+</div>
+<div class="panel is-slim">
+<h2>Verification notes</h2>
+<p>Basis for <code>confidence: partial</code>:</p>
+<p><strong>Why not verified</strong>: no axis is missing. All eight axes were verified to official mechanisms in the 2026-10-08 check (the <code>context</code> side has the official condenser, see axes.context). It stays partial because items remain that <strong>the official docs genuinely don't state, or that need testing</strong>:</p>
+<ul><li>end-to-end effect of context compression</li><li>the local→remote workspace sync mechanism (not stated officially)</li><li>the positioning boundary between ACP and MCP</li><li>the concrete contents of the Enterprise tier (official docs only say Custom pricing / Contact Us)</li></ul>
+<p>Per the v3 rule "say unknown when unknown", it stays partial.</p>
+<p><strong>Verified (this part is solid)</strong>:</p>
+<ul><li>Repository existence and star count (91,593 · rolling verification 2026-10-23), license (MIT, via license API)</li><li>Last push (2026-10-22, still active), latest release <strong>v1.31.0</strong> (releases @ 2026-10-22)</li><li>Full README nine sections (positioning, four-item feature table, Quickstart's four Options, Architecture and Repository boundaries table, More documentation)</li></ul>
+<ul><li>Security-mechanism highlights of the 286-line <code>docs/SELF_HOSTING.md</code></li><li>Repo top-level directory structure (<code>helm/</code>, <code>vercel.json</code>, <code>electron-builder.config.mjs</code>, <code>.openhands/</code>, <code>docker/</code>, etc.)</li></ul>
+<ul><li>Metadata of the <code>software-agent-sdk</code> and <code>automation</code> repos</li></ul>
+<blockquote><code>software-agent-sdk</code> (1,190★ · MIT · Python), <code>automation</code> (32★ · MIT · Python).</blockquote>
+<p><strong>Not verified</strong>:</p>
+<ul><li>Measured effect of conversation-context compression</li><li>The local→remote workspace sync mechanism (not stated officially)</li><li>The API shape of <code>software-agent-sdk</code></li><li>The full configuration format of LLM profiles (the official page has it; details not entered item by item)</li></ul>
+<p><strong>Added the 2026-10-08 check (2026-10-01)</strong>: the official pricing page's three tiers verified — Open Source and Cloud Individual both free tiers, Enterprise custom; <strong>Individual's 10-conversation daily cap</strong> (versus Open Source's Unlimited); Individual supports BYOK; without a key the OpenHands provider applies, officially <strong>at cost, no markup</strong>; Enterprise can deploy in the customer's own VPC, with SAML/SSO, RBAC, unlimited per-user concurrency. Enterprise tier specifics remain unverified (and we store no quote numbers per D9).</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/framework/codex-sdk.html">Codex SDK</a></span><span class="rel-n"><strong>A scheduling relationship, not a competitive one</strong>: the README states plainly that Agent Canvas can run Codex. This dossier is about "who schedules for you"; codex-sdk is about "what gets scheduled".</span></li>
+<li><span class="rel-t"><a href="/en/framework/claude-agent-sdk.html">Claude Agent SDK</a></span><span class="rel-n">Same as above: Claude Code is also one of the agents it declares it can schedule.</span></li>
+<li><span class="rel-t"><a href="/en/framework/deepagents.html">Deep Agents</a></span><span class="rel-n">Both in the batteries-included tier, but deepagents is a library while OpenHands is a whole stack with a Web UI.</span></li>
+<li><span class="rel-t"><a href="/en/framework/langgraph.html">LangGraph</a></span><span class="rel-n">If what you want is "define flows in code" rather than "schedule agents through a UI", an orchestration framework is the matching layer.</span></li>
+<li><span class="rel-t"><a href="/en/coding/opencode.html">OpenCode</a></span><span class="rel-n">Other layer · AI coding</span></li>
+<li><span class="rel-t"><a href="/en/mcp/filesystem.html">Filesystem MCP Server</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/framework/ag2.html">AG2</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">The community continuation of AutoGen after the original repo stalled. T</td></tr><tr><td><a href="/en/framework/crewai.html">CrewAI</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">"Organises multi-agent collaboration through role division and business </td></tr><tr><td><a href="/en/framework/hermes-agent.html">Hermes Agent</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A resident personal assistant with a learning loop — put plainly: a resi</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

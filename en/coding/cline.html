@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Cline | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/cline.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/cline.html" property="og:url"/>
+<meta content="Cline | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Cline | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/coding/cline.html","sameAs":"https://github.com/cline/cline","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Cline | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/cline.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/cline.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/cline.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/cline.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#3EA3FF"'>CL</div>
+<div>
+<h1>Cline</h1>
+<div class="vendor is-caps">Cline Bot</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Coding</span>
+<span class="tag on">Terminal</span>
+<span class="tag on">Local</span>
+<span class="tag on">Open source</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>A coding tool with CLI, desktop and editor entry points — CLI, desktop app and VS…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · In editor</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Tool calling / structured output quality alignment after switching providers (the official gives no comparison)</li>
+<li>Stability expectations for the Desktop form at 0.0.x</li>
+<li>Actual retrieval quality on large repos under the "no full index + ripgrep search" route &gt; The original five items — "provider roster / tool list / context window / cross-session memory / CLI headless approval" — have since been verified against the official docs.cline.bot (Model Selection Guide, Tools reference, Auto Compact, Memory Bank, CLI Overview / Reference); see the axes above.</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>A coding tool with CLI, desktop and editor entry points</strong> — CLI, desktop app and VS Code extension share one open-source core, and the model is selectable.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Users who need one tool across editor, terminal and desktop. People who need model choice (not locked to one vendor). People who need CI/CD integration (CLI headless). People who need reviewable, revertible changes — every edit appears as a diff plus a checkpoint to undo wholesale. People who need periodic automation (cron scheduling that survives restarts).</p></div>
+<div class="warn-p"><p><strong>Not a fit for</strong> requiring approval to behave identically across all forms — the extension form confirms human-in-the-loop, but behaviour under CLI headless was not verified.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　Hosted on GitHub — direct reachability from mainland fluctuates (200/000 mixed on the same day); npm / PyPI install routes measured stable.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>You pick the provider. The official lists 30+, primarily BYOK (bring your own API key).</strong></p>
+<p>The official Model Selection Guide's provider table lists:</p>
+<ul><li><strong>Cline</strong> — no API key needed, just log in</li><li><strong>OpenRouter</strong> / <strong>Anthropic</strong> / <strong>OpenAI</strong></li><li><strong>OpenAI Codex</strong> — use your ChatGPT subscription directly, no API key</li><li><strong>Google Gemini</strong> / <strong>DeepSeek</strong> / <strong>Alibaba Qwen</strong> / <strong>Moonshot</strong> / <strong>Cerebras</strong></li><li><strong>AWS Bedrock</strong></li><li><strong>Ollama</strong> — local models</li></ul>
+<p>The official also has an "all 30+ supported providers" page, additionally covering xAI Grok, Mistral, Groq, Together, Hugging Face, Baseten, SambaNova, Nebius etc.</p>
+<p>Two hookup paths:</p>
+<ul><li>CLI command — <code>cline auth --provider anthropic --apikey sk-... --modelid ...</code></li><li>the official SDK supports OpenAI-compatible endpoints — <code>providerId: "openai-compatible"</code> + <code>baseUrl</code> + <code>apiKey</code></li></ul>
+<p>⚠ <strong>After switching providers, the quality of tool calling and structured output: the official gives no comparison.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>This is the only subject on this site covering all three forms.</strong></p>
+<div class="tbl-wrap"><table><thead><tr><th>Form</th><th>How it runs</th></tr></thead><tbody><tr><td><strong>CLI</strong></td><td><code>npm i -g cline</code>; interactive and fully headless modes, headless for CI/CD and scripts; <code>--workspace /path/to/repo</code> sets the directory</td></tr><tr><td><strong>Desktop App</strong></td><td>native macOS and Windows apps; run agent sessions in any folder; scheduled tasks supported</td></tr><tr><td><strong>VS Code extension</strong></td><td>plus a JetBrains plugin</td></tr></tbody></table></div>
+<p><code>.clinerules</code> is <strong>read jointly by the CLI / VS Code extension / JetBrains plugin</strong>. The three forms share the same open-source core.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>Two features: coordinated changes across the project, and rollbackable checkpoints.</strong></p>
+<p>The README's <strong>"Edits Code Across Your Project"</strong> means: read the project structure, understand relationships between files, then make coordinated changes across the codebase.</p>
+<p><strong>While editing it watches linter and compiler errors</strong>, proactively fixing missing imports, type mismatches and syntax errors — the things that "go wrong without the user ever seeing them".</p>
+<ul><li>In VS Code and JetBrains, <strong>every edit is presented as a diff</strong> — reviewable, modifiable, rollbackable</li><li>all changes carry checkpoint records and can be undone wholesale</li><li>the official Checkpoints page explains it tracks changes with a <strong>shadow Git repository</strong>, <strong>not interfering with your main Git workflow</strong>, creating a checkpoint after each tool call</li></ul>
+<p><strong>Read scope has two tiers</strong>: by default "Read project files" (inside the workspace); "Read all files" (outside the workspace) only takes effect after enabling a base toggle first. Project-level ignores are controlled by <code>.clineignore</code> (the official also shows a hook-enforced approach).</p>
+<p>⚠ <strong>It has no "full semantic index" stage.</strong> The built-in <code>search</code> tool is a "Ripgrep-powered codebase search"; the official advice for large repos is "use search instead of reading many files", and to break tasks down smaller. (checked the Tools page and the Context Window Guide.)</p>
+<p><strong>The official large-repo advice</strong>: Use search instead of reading many files</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>Long-running processes and scheduled tasks are both supported.</strong></p>
+<p>Commands execute directly in the terminal with output visible in real time — installing packages, running builds, running tests, deploying, managing databases. For long-running processes like dev servers, <strong>Cline keeps working in the background and reacts to new output</strong>: compile errors, test failures and service crashes are caught as they happen.</p>
+<p><strong>The Desktop App form additionally has scheduled tasks (schedule routines)</strong>:</p>
+<ul><li>cron scheduling for periodic automation</li><li>examples: daily PR summaries, weekly dependency checks, codebase health reports</li><li><strong>schedules persist across restarts and run independently of any terminal session</strong></li></ul>
+<p>The CLI's headless mode targets CI/CD.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>The built-in tool list has been verified</strong> (official Tools reference, ClineCore runtime):</p>
+<ul><li><code>bash</code> — execute commands</li><li><code>editor</code> — view/edit files</li><li><code>read_files</code> — batch reads</li><li><code>apply_patch</code> — unified-diff patching</li><li><code>search</code> — ripgrep code search</li><li><code>fetch_web</code> — HTTP + HTML-to-markdown</li><li><code>ask_question</code> — ask the user</li></ul>
+<p><strong>MCP is its core extension surface.</strong> The official has an <strong>MCP Marketplace</strong>; the config file is <code>.cline/mcp.json</code>:</p>
+<ul><li>tools are called via <code>use_mcp_tool</code>, resources accessed via <code>access_mcp_resource</code></li><li>transports support <strong>stdio and HTTP</strong></li><li>"MCP Rules" in <code>.clinerules</code> can group dispatch by trigger words</li></ul>
+<p>Other extension mechanisms: <strong>Hooks</strong> (PreToolUse / PostToolUse) · Skills · Workflows · plugins (custom tools registerable, currently limited to SDK / CLI / Kanban).</p>
+<p><strong>The official statement about the MCP Marketplace</strong>: one-click installation experience for hundreds of MCP servers</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>The project-level rules file is <code>.clinerules</code>.</strong></p>
+<p>It defines project-specific rules: coding standards, architecture conventions, deployment flows, testing requirements. <strong>Rules are read automatically by the CLI, VS Code extension and JetBrains plugin.</strong> Skills can additionally let the model load specific rules on demand.</p>
+<p>The Desktop form mentions <strong>"run agent sessions in any folder"</strong>, i.e. cross-folder session management.</p>
+<p><strong>The context mechanism has been verified</strong>: near the limit, <strong>Auto Compact summarizes automatically</strong>. Window size <strong>is decided by the chosen model</strong> — the official lists Claude Sonnet 4.5 at 1M, GPT-5 at 400K, Gemini 2.5 Pro at 1M+.</p>
+<p><strong>Cross-session memory runs on the Memory Bank</strong>: a set of structured markdown files (<code>projectbrief.md</code> / <code>productContext.md</code> / <code>activeContext.md</code> / <code>progress.md</code> etc.) kept in the repo, with reads/writes driven by <code>.clinerules</code> instructions.</p>
+<p>The official also has Focus Chain (todo injection) and <code>/newtask</code>, <code>/smol</code> for context handoff.</p>
+<p><strong>The official wording on Auto Compact</strong>: Creates a comprehensive summary... Replaces the conversation history with the summary</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>A two-level approval design — the finest on this site.</strong></p>
+<p><strong>Level one is the Plan / Act dual mode.</strong> In Plan mode Cline explores the codebase, asks clarifying questions, and lays out a strategy; once aligned, switch to Act mode to execute the plan.</p>
+<p><strong>Level two is "every file edit and terminal command needs approval"</strong>, switchable to auto-approve for autonomous running. The VS Code extension form's wording is <strong>"human-in-the-loop approval"</strong>.</p>
+<p>⚠ <strong>But the CLI / headless default is the opposite. This must be known</strong> (verified against the official CLI Overview and CLI Reference):</p>
+<ul><li><code>--auto-approve &lt;boolean&gt;</code> <strong>defaults to true</strong> — i.e. tools are allowed by default</li><li>with <code>--auto-approve false</code>, every tool call needs approval first</li><li><code>--yolo</code> skips all approvals</li><li><strong>ACP (editor-integration) mode defaults to the opposite</strong>, false</li></ul>
+<p>Also: <strong>the CLI has no shell-command allow/deny list</strong>. The official suggests intercepting with a PreToolUse hook.</p>
+<p><strong>CLI prompt original wording</strong>: Default to start in act mode with auto-approve enabled <strong>VS Code extension wording</strong>: use tools with human-in-the-loop approval</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p><strong>Fits four kinds of people:</strong></p>
+<ul><li>those needing one tool to cover <strong>editor, terminal and desktop</strong> work forms</li><li>those needing <strong>model choice</strong> (not bound to a single vendor)</li><li>those needing <strong>CI/CD integration</strong> (CLI headless)</li><li>those needing a "changes are reviewable and rollbackable" guarantee — diff presentation + wholesale checkpoint undo</li></ul></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Assuming it is a single-form VS Code extension — it actually has CLI, Desktop and extension</li>
+<li>Overlooking headless mode — the CLI form supports CI/CD integration in its own right</li>
+<li>Assuming approval behaves identically across forms: the extension explicitly has human-in-the-loop, but behaviour under CLI headless was not verified</li>
+<li>Assuming auto-commit is by design — by default every edit needs approval, and auto-approve enables unattended runs</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-08。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>Cline · repository README (three-form description)</td><td><a href="https://github.com/cline/cline" rel="noopener" target="_blank">https://github.com/cline/cline</a></td></tr>
+<tr><td>changelog</td><td>Cline · Releases (v4.1.21 / desktop-v0.0.37)</td><td><a href="https://github.com/cline/cline/releases" rel="noopener" target="_blank">https://github.com/cline/cline/releases</a></td></tr>
+<tr><td>docs</td><td>Cline · official docs</td><td><a href="https://docs.cline.bot" rel="noopener" target="_blank">https://docs.cline.bot</a></td></tr>
+<tr><td>docs</td><td>Cline · CLI subproject README</td><td><a href="https://github.com/cline/cline/blob/main/apps/cli/README.md" rel="noopener" target="_blank">https://github.com/cline/cline/blob/main/apps/cli/README.md</a></td></tr>
+<tr><td>docs</td><td>Cline · Model Selection Guide (30+ provider roster, BYOK / Ollama local models)</td><td><a href="https://docs.cline.bot/core-features/model-selection-guide" rel="noopener" target="_blank">https://docs.cline.bot/core-features/model-selection-guide</a></td></tr>
+<tr><td>docs</td><td>Cline · Auto Approve &amp; YOLO (category approvals, inside/outside workspace, command safe / needs approval)</td><td><a href="https://docs.cline.bot/features/auto-approve" rel="noopener" target="_blank">https://docs.cline.bot/features/auto-approve</a></td></tr>
+<tr><td>docs</td><td>Cline · Checkpoints (shadow Git repository, per-step snapshots, three restore classes)</td><td><a href="https://docs.cline.bot/core-workflows/checkpoints" rel="noopener" target="_blank">https://docs.cline.bot/core-workflows/checkpoints</a></td></tr>
+<tr><td>docs</td><td>Cline · Auto Compact (auto summary near the limit, replacing the old truncation)</td><td><a href="https://docs.cline.bot/features/auto-compact" rel="noopener" target="_blank">https://docs.cline.bot/features/auto-compact</a></td></tr>
+<tr><td>docs</td><td>Cline · Memory Bank (cross-session structured markdown memory files)</td><td><a href="https://docs.cline.bot/best-practices/memory-bank" rel="noopener" target="_blank">https://docs.cline.bot/best-practices/memory-bank</a></td></tr>
+<tr><td>docs</td><td>Cline · Tools reference (built-in tool list and tool names)</td><td><a href="https://docs.cline.bot/tools-reference/all-cline-tools" rel="noopener" target="_blank">https://docs.cline.bot/tools-reference/all-cline-tools</a></td></tr>
+<tr><td>docs</td><td>Cline · MCP Marketplace (one-click install for hundreds of MCP servers)</td><td><a href="https://docs.cline.bot/mcp/mcp-marketplace" rel="noopener" target="_blank">https://docs.cline.bot/mcp/mcp-marketplace</a></td></tr>
+<tr><td>docs</td><td>Cline · CLI Overview (headless triggering, --auto-approve defaults to true)</td><td><a href="https://docs.cline.bot/usage/cli-overview" rel="noopener" target="_blank">https://docs.cline.bot/usage/cli-overview</a></td></tr>
+<tr><td>docs</td><td>Cline · CLI Reference (--auto-approve defaults to true, ACP mode defaults to false)</td><td><a href="https://docs.cline.bot/cli/cli-reference" rel="noopener" target="_blank">https://docs.cline.bot/cli/cli-reference</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong>: the measured focus for this tool should be <strong>cross-form consistency</strong> — whether the same task behaves the same across the three forms, and whether approval behavior is consistent.</p>
+</div>
+<div class="panel is-slim">
+<h2>Three forms (explicitly listed in the README)</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Form</th><th>Key capabilities</th></tr></thead><tbody><tr><td><strong>CLI</strong></td><td><code>npm i -g cline</code>; interactive chat or <strong>fully headless</strong>, for CI/CD and scripts</td></tr><tr><td><strong>Desktop App</strong></td><td>native macOS and Windows apps; <strong>run agent sessions in any folder</strong>; <strong>scheduled tasks</strong>; manage models / plugins / <strong>MCP servers</strong></td></tr><tr><td><strong>VS Code extension</strong></td><td>create files, execute commands, browse the web, use tools, <strong>human-in-the-loop approval</strong></td></tr></tbody></table></div>
+<p><strong>This three-form coverage is unique in this category</strong> — other subjects are either IDE + extension (Copilot) or a single editor form (Zed). Aider is CLI-led.</p>
+<p><strong>What it means for users</strong>: usable in the editor, runnable in the terminal, schedulable on the desktop, one and the same core, one and the same configuration habits.</p>
+</div>
+<div class="panel is-slim">
+<h2>Change log: two release lines</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Version</th><th>Date</th></tr></thead><tbody><tr><td><code>desktop-v0.0.37</code></td><td>2026-09-26</td></tr><tr><td><code>desktop-v0.0.36</code></td><td>2026-09-25</td></tr><tr><td><code>v4.1.21</code></td><td>2026-09-24</td></tr></tbody></table></div>
+<p><strong>Note the version numbers are two separate lines</strong>:</p>
+<ul><li><code>v4.x</code> is the main line (extension and CLI)</li><li><code>desktop-v0.0.x</code> is the desktop app, <strong>still at 0.0.x</strong></li></ul>
+<p><strong>That means the desktop app is still early-stage</strong>; stability expectations should be kept separate from the main line.</p>
+</div>
+<div class="panel is-slim">
+<h2>Permission design: explicit human approval</h2>
+<p>VS Code extension form, README original wording:</p>
+<pre class="code"><code>use tools with human-in-the-loop approval</code></pre>
+<p><strong>This is a rare explicit statement in this category</strong> — most tools do not state on the README's first screen that tool execution needs human approval.</p>
+<p><strong>The CLI / headless approval stance has been verified</strong> (official CLI Overview and CLI Reference): the prompt says <strong>"Default to start in act mode with auto-approve enabled"</strong>, <code>--auto-approve &lt;boolean&gt;</code> <strong>defaults to true</strong> — headless runs allow tools by default, <code>--auto-approve false</code> switches to approval before every tool call. <code>--yolo</code> skips all approvals. ACP (editor-integration) mode defaults to the opposite, false. Also: the CLI has no shell-command allow/deny list. The official suggests intercepting with a PreToolUse hook.</p>
+<p><strong>So "approvals are consistent across the three forms" does not hold</strong>: the extension form requires human approval by default, the CLI defaults to autonomous allowance — when crossing forms you must align explicitly via <code>--auto-approve</code>.</p>
+</div>
+<div class="panel is-slim">
+<h2>Two designs worth recording separately</h2>
+<h3 class="sub-h">① Plan / Act dual mode</h3>
+<p>In Plan mode it only explores the codebase, asks questions and lays out a strategy — <strong>it does not execute</strong>; it only acts after switching to Act once aligned. This is the mechanized implementation of "think it through before changing".</p>
+<h3 class="sub-h">② Monitoring linter and compiler errors</h3>
+<p>README original wording:</p>
+<blockquote>It monitors linter and compiler errors as it works, fixing issues like missing imports, type mismatches, and syntax errors before you even see them.</blockquote>
+<p><strong>It proactively fixes "type mismatches" and "missing imports"</strong> — which happens to be the hardest part to judge in this repository's measured task set, and is worth verifying on its own.</p>
+</div>
+<div class="panel is-slim">
+<h2>Permission-grading note</h2>
+<p><code>confidence: partial</code>:</p>
+<ul><li>✅ <strong>Verified (repository and product surface)</strong>: repository, license (Apache-2.0), stars (70,745 · rolling re-check 2026-10-23)</li><li>✅ <strong>Verified (capability surface)</strong>: the three forms' capabilities and their runtime characteristics, the two release lines and dates, the Plan/Act dual mode</li><li>✅ <strong>Verified (permissions and tools surface)</strong>: per-edit approval + auto-approve, diff presentation and checkpoint rollback (shadow Git), linter/compiler error monitoring, <code>.clinerules</code> project rules, Desktop cron scheduling (persists across restarts), MCP management and the MCP Marketplace, <strong>the 30+ provider roster with BYOK / local models</strong>, <strong>the built-in tool list</strong>, <strong>Auto Compact and the Memory Bank</strong>, <strong>CLI / headless approval defaults</strong></li><li>❌ Not verified: tool calling / structured output quality alignment after switching providers; stability expectations for Desktop 0.0.x</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/zed.html">Zed</a></span><span class="rel-n">The other end of this category: editor performance and multi-agent orchestration-led</span></li>
+<li><span class="rel-t"><a href="/en/coding/aider.html">Aider (Watch mode)</a></span><span class="rel-n">Also open source, with Git integration as its core design</span></li>
+<li><span class="rel-t"><a href="/en/coding/kilocode.html">Kilo Code</a></span><span class="rel-n">Same source-code lineage: Roo Code's official shutdown notice names Cline as the alternative; the community kinship between Kilo and Cline is not officially declared — worth contrasting on BYOK and the model surface</span></li>
+<li><span class="rel-t"><a href="/en/mcp/filesystem.html">Filesystem MCP Server</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/baidu-comate.html">Baidu Comate (Wenxin Kuaima)</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Baidu Comate (Wenxin Kuaima) is Baidu's AI coding family: Comate AI IDE </td></tr><tr><td><a href="/en/coding/claude-code.html">Claude Code (IDE extension)</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">One process, three entry points — terminal, IDE and GitHub @claude menti</td></tr><tr><td><a href="/en/coding/codebuddy.html">CodeBuddy</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">CodeBuddy is Tencent Cloud's three-surface coding assistant (plugin / AI</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

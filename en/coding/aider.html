@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Aider (Watch mode) | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/aider.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/aider.html" property="og:url"/>
+<meta content="Aider (Watch mode) | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Aider (Watch mode) | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/coding/aider.html","sameAs":"https://aider.chat/docs/usage/watch.html","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Aider (Watch mode) | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/aider.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/aider.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/aider.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/aider.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#D4A27F"'>AI</div>
+<div>
+<h1>Aider (Watch mode)</h1>
+<div class="vendor is-caps">Aider-AI</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Coding</span>
+<span class="tag on">IDE</span>
+<span class="tag on">Local</span>
+<span class="tag on">Open source</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-warn">Slowing</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+<span class="snap-flag">Upstream slowing</span>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Not an editor plugin but a usage mode — Aider stays resident and watches your files…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · In editor</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Actual time and token cost of Repo Map on large repos (official gives no numbers; pending measurement)</li>
+<li>Which specific operations it asks to confirm by default (<code>--yes-always</code> exists, but the official docs do not enumerate the confirmations item by item)</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>Not an editor plugin but a usage mode</strong> — Aider stays resident and watches your files; add an AI comment in any editor and it responds.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>People who work in whatever editor they like and refuse to move to a dedicated agent interface. People who want lightweight interaction: add a comment, get a response.</p></div>
+<div class="warn-p"><p><strong>Not a fit for</strong> scenarios requiring strict approval — the confirmation mechanism in watch mode was not verified this round, and a resident process makes unconfirmed changes more likely. Also not a fit for cloud background execution; it depends on a local process.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-20</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　aider.chat measured 200 direct.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>Same model entry point as the CLI form: supports cloud and local LLMs, and can connect to almost any model.</strong></p>
+<p><strong>The README's current recommended list is stuck on the previous generation of models</strong> (Claude 3.7 Sonnet / DeepSeek R1 / OpenAI o1, etc.).</p>
+<p>The state of that README matches the project's release state.</p>
+<p><strong>This project has not shipped a release in 13 months.</strong></p>
+<p>So verify this list yourself when using it as a reference.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>It is not an editor plugin; it is a usage mode.</strong></p>
+<p>Aider watches your files in the background.</p>
+<p>You add AI comments in any IDE or text editor, and it responds.</p>
+<p>The official docs page is literally titled "Aider in your IDE".</p>
+<p>But the implementation runs <strong>Aider's own browser UI</strong>.</p>
+<p><strong>This is a different form factor from the "editor extension" approach of Cline / Codex.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>Watch mode monitors changes to <strong>all files inside the git repository</strong> and responds to AI comments.</p>
+<p><strong>Official wording</strong>: "watch all files in your repo"</p>
+<p>(from <code>--watch-files</code> in the official <code>docs/usage/watch.html</code>.)</p>
+<p>Scope is constrained by <code>.gitignore</code> / <code>.aiderignore</code>.</p>
+<ul><li><code>--aiderignore</code> specifies the ignore file; defaults to <code>.aiderignore</code> at the git root</li><li><code>--subtree-only</code> considers only the current subtree</li></ul>
+<p>The repository must be a git repository. The official <code>docs/git.html</code> states: without git, it first asks whether to create one.</p>
+<p><strong>The core Repo Map capability is exactly the same as in the CLI form</strong> — the same mechanism of the same project; official docs at <code>docs/repomap.md</code>.</p>
+<p>It provides context via "a concise map of your whole git repository".</p>
+<p>This map contains the most important classes and functions along with their types and call signatures.</p>
+<p>The map is attached to every change request.</p>
+<p><strong>Its second purpose is especially useful in watch mode</strong>: when writing new code, it helps reuse libraries, modules and abstractions already in the codebase.</p>
+<p>Supports 100+ programming languages.</p>
+<p><strong>The map's token budget is controlled by <code>--map-tokens</code>.</strong></p>
+<p><strong>Refresh frequency is controlled by <code>--map-refresh</code></strong>, with values auto/always/files/manual.</p>
+<p>Actual time and token cost on large repos: <strong>the official docs give no numbers, and this site has not run measurements</strong>.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>The Aider process must stay resident</strong> to respond to comments — this is not the same thing as "background cloud tasks".</p>
+<p><strong>When the process exits, watch stops.</strong></p>
+<p>There is also no cloud form that keeps running after the client closes.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p>The two core capabilities are file editing and Git auto-commit, the same mechanisms as in the CLI form.</p>
+<p><strong>Lint / test commands can be configured to run automatically</strong>.</p>
+<p>Official docs at <code>docs/usage/lint-test.html</code>.</p>
+<ul><li><code>--lint-cmd</code> / <code>--auto-lint</code>: by default run lint on edited files</li><li><code>--test-cmd</code> / <code>--auto-test</code></li><li><code>/run</code>: run a shell command</li><li><code>/web</code>: fetch a web page and convert it to markdown</li><li><code>/paste</code>: paste an image</li></ul>
+<p>In watch mode, you can drag files from the editor into the agent panel, or send the editor selection to the chat.</p>
+<p>Adding a <code># AI</code> comment in a file adds that file to the chat.</p>
+<p><strong>No built-in MCP support</strong> — neither the official options table nor the docs-site navigation has any MCP entry (checked <code>config/options.html</code> and the docs directory).</p>
+<p>So you cannot connect MCP servers.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p>Repo Map provides a whole-repo structural view, attached to every request; see local_files.</p>
+<p><strong>Context overflow is handled by "summarization compression" rather than simple truncation.</strong></p>
+<p>The official option <code>--max-chat-history-tokens</code> is described as:</p>
+<p><strong>Official wording</strong>: "Soft limit on tokens for chat history, after which summarization begins"</p>
+<p>That is, summarization begins once the soft limit is exceeded; summaries are generated by <code>--weak-model</code>.</p>
+<p><code>--map-tokens</code> controls the repo map's token budget.</p>
+<p>Each model's context window and cost come from <code>--model-metadata-file</code>.</p>
+<p>Within a session, <code>/tokens</code> shows usage.</p>
+<p>To free space there are also <code>/drop</code>, <code>/clear</code>, <code>/reset</code>.</p>
+<p><strong>No cross-launch restoration by default</strong> (<code>--restore-chat-history</code> defaults to False).</p>
+<p>Chat history is written to <code>.aider.chat.history.md</code> by default.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>Auto-commit is on by default.</strong></p>
+<p>The official <code>--auto-commits</code> defaults to True: every edit is committed with a sensible commit message.</p>
+<p><code>--dirty-commits</code> defaults to True: existing uncommitted changes are committed first, separating your changes from AI changes.</p>
+<p>The undo path is <strong>git itself</strong> (<code>/undo</code>).</p>
+<p><strong>A confirmation step exists.</strong></p>
+<p>The official docs provide <code>--yes-always</code> (alias <code>--yes</code>).</p>
+<p><strong>Official wording</strong>: "Always say yes to every confirmation"</p>
+<p>Meaning: by default it asks about certain operations; only with this flag does it go fully automatic.</p>
+<p><code>--dry-run</code> previews without changing files.</p>
+<p>Commits skip pre-commit hooks by default (<code>--git-commit-verify</code> defaults to False, i.e. it uses <code>--no-verify</code>).</p>
+<p><strong>No sandboxing mechanism</strong> (the official options table has no sandbox entry).</p>
+<p>Watch mode reuses the same coder.</p>
+<p>The official watch page says it uses <code>/undo</code> to revert and <code>/tokens</code> to manage context.</p>
+<p>So the auto-commit and confirmation mechanics above apply equally.</p>
+<p><strong>The combination of a resident process + auto-commit + explicit flags needed to avoid asking is high-risk.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p><strong>Fits</strong> two kinds of people:</p>
+<ul><li>those who work comfortably in any editor and don't want to switch to a dedicated agent UI</li><li>those who want the lightweight "add a comment → automatic response" interaction</li></ul></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Assuming it is an editor plugin — it is a resident Aider process plus a browser UI</li>
+<li>Treating watch mode as a cloud background job — it needs a local process running the whole time</li>
+<li>Not realising auto-commit applies in watch mode too, which makes it riskier under a resident process</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-08。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>docs</td><td>Aider · official Watch-mode docs (Aider in your IDE)</td><td><a href="https://aider.chat/docs/usage/watch.html" rel="noopener" target="_blank">https://aider.chat/docs/usage/watch.html</a></td></tr>
+<tr><td>repo</td><td>Aider · repository</td><td><a href="https://github.com/Aider-AI/aider" rel="noopener" target="_blank">https://github.com/Aider-AI/aider</a></td></tr>
+<tr><td>changelog</td><td>Aider · Releases (latest v0.86.0 @ 2025-08-09)</td><td><a href="https://github.com/Aider-AI/aider/releases" rel="noopener" target="_blank">https://github.com/Aider-AI/aider/releases</a></td></tr>
+<tr><td>docs</td><td>Aider · options reference (--aiderignore/--auto-commits/--yes-always/--map-tokens/--max-chat-history-tokens)</td><td><a href="https://aider.chat/docs/config/options.html" rel="noopener" target="_blank">https://aider.chat/docs/config/options.html</a></td></tr>
+<tr><td>docs</td><td>Aider · Git integration (auto-commit, dirty commits, /undo, pre-commit hooks skipped by default)</td><td><a href="https://aider.chat/docs/git.html" rel="noopener" target="_blank">https://aider.chat/docs/git.html</a></td></tr>
+<tr><td>docs</td><td>Aider · Linting and testing (--lint-cmd/--test-cmd/--auto-lint/--auto-test)</td><td><a href="https://aider.chat/docs/usage/lint-test.html" rel="noopener" target="_blank">https://aider.chat/docs/usage/lint-test.html</a></td></tr>
+<tr><td>docs</td><td>Aider · Scripting (official help text for --yes/--auto-commits/--dry-run)</td><td><a href="https://aider.chat/docs/scripting.html" rel="noopener" target="_blank">https://aider.chat/docs/scripting.html</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong>: for this tool the focus should be <strong>whether the "resident process + auto-commit" risk is controllable</strong>.</p>
+<p>Run it in a test repository and observe how many unconfirmed commits it produces.</p>
+</div>
+<div class="panel is-slim">
+<h2>Where it sits among IDE forms</h2>
+<p>The IDE form has four variants so far, and this entry is the fourth:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Form</th><th>Representative</th><th>Essence</th></tr></thead><tbody><tr><td>Standalone editor</td><td>Zed</td><td>ships a full editor</td></tr><tr><td>Native desktop app</td><td>Cline Desktop</td><td>does not attach to an editor</td></tr><tr><td>Editor extension</td><td>Codex IDE, Copilot, Cline extension</td><td>installed into an existing editor</td></tr><tr><td><strong>Resident watch mode</strong></td><td><strong>Aider</strong></td><td><strong>runs outside the editor, watching file changes</strong></td></tr></tbody></table></div>
+<p><strong>What makes Aider special</strong>: it does not enter the editor; it watches the changes you make in whatever editor you use.</p>
+<h3 class="sub-h">The official docs' wording</h3>
+<p>The official docs page is titled "Aider in your IDE".</p>
+<p>The English original:</p>
+<pre class="code"><code>Aider can watch your files and respond to AI comments
+you add in your favorite IDE or text editor.</code></pre>
+<p><strong>Note the last half-sentence</strong>: <code>or text editor</code>.</p>
+<p>Even a plain text editor works, because it watches file changes, not editor APIs.</p>
+<p><strong>But the interface is still Aider's own browser UI</strong>, not an in-editor inline display.</p>
+</div>
+<div class="panel is-slim">
+<h2>Relationship to the CLI form</h2>
+<div class="tbl-wrap"><table><thead><tr><th></th><th><a href="/en/coding/aider-cli.html">CLI</a></th><th>Watch mode (this entry)</th></tr></thead><tbody><tr><td>Interaction</td><td>terminal chat</td><td>add AI comments</td></tr><tr><td>Interface</td><td>terminal</td><td>Aider's browser UI</td></tr><tr><td>Process</td><td>ends with the session</td><td><strong>must stay resident</strong></td></tr><tr><td>Repo Map</td><td>yes</td><td>yes (same capability)</td></tr><tr><td>Auto-commit</td><td>yes</td><td>yes (same mechanism)</td></tr><tr><td>Maintenance status</td><td>maintenance</td><td>maintenance (same project)</td></tr></tbody></table></div>
+<p><strong>One project, two usage modes</strong> — not two implementations.</p>
+</div>
+<div class="panel is-slim">
+<h2>Key risk: resident process + auto-commit</h2>
+<p>This entry needs special attention to a combination of three factors.</p>
+<div class="tbl-wrap"><table><thead><tr><th>Factor</th><th>Status</th></tr></thead><tbody><tr><td>Resident process</td><td>must keep running to respond</td></tr><tr><td>Auto-commit</td><td>AI changes go straight into git history (<code>--auto-commits</code> defaults to True)</td></tr><tr><td>Ask each time</td><td>there is a confirmation flag <code>--yes-always</code> (off by default)</td></tr><tr><td></td><td><strong>it asks about certain operations by default</strong></td></tr></tbody></table></div>
+<p><strong>All three combined, the risk is higher than the manually launched CLI usage.</strong></p>
+<p>The three are: resident process, auto-commit by default, and needing an explicit <code>--dry-run</code> or disabled auto-commit to preview.</p>
+<p><strong>Advice</strong>: when first using watch mode, try it in a small repository and make sure git status is clean first.</p>
+</div>
+<div class="panel is-slim">
+<h2>Collection limits</h2>
+<p>Aider's docs site was reachable via curl in this collection environment.</p>
+<p>The official description of watch mode has been confirmed.</p>
+<p><strong>2026-10-08 (2026-10-08) check filled in</strong>:</p>
+<ul><li>watch mode's file scope and ignore rules</li><li>auto-commit and the <code>--yes-always</code> confirmation mechanism</li><li>lint / test commands</li><li>context summarization compression (<code>--max-chat-history-tokens</code>)</li><li>the conclusion that <strong>neither the official docs nor the options table has any MCP entry</strong></li></ul>
+<p>All of the above have been verified against official sources and written into the axes.</p>
+<p><strong>Still pending measurement</strong>: actual time and token cost of Repo Map on large repos (official gives no numbers).</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/aider-cli.html">Aider</a></span><span class="rel-n">the terminal form of the same project</span></li>
+<li><span class="rel-t"><a href="/en/coding/cline.html">Cline</a></span><span class="rel-n">covers three form factors, but the forms are independent of each other</span></li>
+<li><span class="rel-t"><a href="/en/mcp/git.html">Git MCP Server</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/baidu-comate.html">Baidu Comate (Wenxin Kuaima)</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Baidu Comate (Wenxin Kuaima) is Baidu's AI coding family: Comate AI IDE </td></tr><tr><td><a href="/en/coding/claude-code.html">Claude Code (IDE extension)</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">One process, three entry points — terminal, IDE and GitHub @claude menti</td></tr><tr><td><a href="/en/coding/cline.html">Cline</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A coding tool with CLI, desktop and editor entry points — CLI, desktop a</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from Aider-AI</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/coding/aider-cli.html"><span class="vp-cat">AI coding</span>Aider</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>CanaryScan | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/safety/canary-scan.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/safety/canary-scan.html" property="og:url"/>
+<meta content="CanaryScan | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"CanaryScan | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/safety/canary-scan.html","sameAs":"https://github.com/psaintelligence/canary-scan","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-11-06"}</script>
+<meta content="CanaryScan | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/safety/canary-scan.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/safety/canary-scan.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/safety/canary-scan.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/safety/canary-scan.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Safety</span>
+</nav>
+<a class="back" href="/en/safety/">← Safety</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#4F8FD9"'>CA</div>
+<div>
+<h1>CanaryScan</h1>
+<div class="vendor is-caps">PSA Intelligence</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Open source</span>
+<span class="tag on">Local</span>
+<span class="t-state is-warn">Some axes open</span>
+<span class="t-state is-warn">Slowing</span>
+<span class="badge">Checked 2026-11-06</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+<span class="snap-flag">Upstream slowing</span>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>PSA Intelligence's open-source command-line checker: before you or your agent open an…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · CLI</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Not checked · Not checked</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>The official text does not list "prompt-injection text detection" as a channel; the link to the indirect-injection attack surface is this site's reading, not an official statement</li>
+<li>The complete set of supported file formats (the documentation index only gives a "various formats" level statement)</li>
+<li>The concrete criteria behind the severity levels (critical down to info)</li>
+<li>Formal telemetry and network-isolation terms (only the "offline" wording was available today)</li>
+<li>Whether historical baselines / cross-run comparison exist</li>
+<li>Integration with agent runtimes (MCP or other extensions)</li>
+<li>Mainland direct reachability and filing status (recorded as unknown in the cn block)</li>
+</ul>
+</div>
+<div class="panel-lead"><p>PSA Intelligence's open-source command-line checker: before you or your agent open an external document set, it statically finds canaries, trackers, remote beacons and per-recipient fingerprints. It is not a model I/O guardrail or a prompt-injection classifier; it is pre-contact anti-tracking screening.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Fit: a first static check when taking over leaked files, legal disclosure or investigation material, and batch rechecks in a pipeline. Not fit: understanding whether natural-language instructions were tampered with, or real-time interception of model input and output; the official text captured on 2026-11-06 describes its surface as analysis of file structure, metadata, embedded objects and near-duplicate fingerprints.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-11-06</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　PSA Intelligence (the GitHub organisation profile lists Singapore as location); not a domestic product.</dd>
+<dt>Direct access</dt><dd>direct unknown　Only general-network reachability of GitHub / docs site / PyPI was checked today; no mainland direct-access test was run.</dd>
+<dt>CAC filing</dt><dd>filing unknown：The CAC public registry was not searched on the verification day, so filing status has no official basis; the product does not serve the mainland public.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p>Neither the README nor the documentation index reached today treats "whose model" as a configuration item: detection is described as static analysis of raw file structure, metadata, embedded objects and near-duplicate fingerprints. The documentation index states, as of the verification day, offline operation with no LLM and no API key involved. Whether any stage ever consults a model is not stated officially.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p>A local command-line tool with two documented installs: <code>pipx install canary-scan</code> (the README expects you to provide system tools such as exiftool, qpdf, poppler-utils, mupdf-tools, ripgrep, unzip and p7zip) and the container image <code>ghcr.io/psaintelligence/canary-scan:latest</code>, which the README recommends because the image bundles those system tools. PyPI metadata measured today requires Python 3.10 or newer.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>Reading the file set you supply is the core action: the Docker example mounts the data source read-only (<code>-v /mnt/datasource:/data:ro</code>) and writes results to a separate output directory. The README states inspection happens without opening a file in its native viewer, deliberately avoiding remote references that documents may contain. Per-stage artefacts land in <code>.canary-scan/</code>.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p>A batch command run per invocation, not a resident service. No daemon, task queue or incremental-watch mode is stated officially; periodic re-scans have to be scheduled by you.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p>The command surface listed by the documentation index for the day is <code>scan</code>, <code>stage</code>, <code>report</code> and <code>deps</code>, plus <code>--guide</code> for a cheat sheet. Reporting is JSON (the example filters <code>severity=="critical"</code> with jq), so it drops straight into scripts and pipelines. The seven-stage pipeline is inventory, metadata, remote-refs, embedded, stego, uniqueness and report, each writing one JSONL artefact. MCP or other extension points are not stated officially.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p>Each scan is self-contained; there is no session memory. Cross-file linkage comes from the uniqueness stage's near-duplicate fingerprints and the stage artefacts. Historical baselines, cross-run comparison stores and retention policy are not stated officially.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p>Licensed Apache-2.0, with BSD 2-Clause for bundled scripts (see the license field). On data flow: the README and documentation index captured today declare no telemetry, no reporting and no external service calls, with "offline" being the wording given by the documentation index; a formal network-isolation clause is not published. On the supply chain, the official text says third-party Python dependencies are pinned with <code>uv</code>'s <code>exclude-newer</code> to releases no newer than 14 days, and the bundled scripts are fixed at build time via <code>make vendor</code> with provenance recorded.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Fits a static pre-flight over externally supplied document sets (leaks, legal disclosures, investigation material) to find anything that could reveal to the external party that the data source is being examined — tracking pixels, remote templates, beacons, per-recipient fingerprints. Does not fit judgement calls about tampered natural-language instructions, nor runtime interception of model input/output: the official text positions it as pre-contact document inspection, not a model-I/O guardrail.</p></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>Apache-2.0 (per the README License section, the LICENSE file and the PyPI classifier). The README also states the bundled third-party scripts pdfid, pdf-parser and rtfdump are BSD 2-Clause, with provenance recorded in <code>src/canary_scan/bundled/VERSIONS.txt</code>. Open source, with no model or API key required.</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Account and permissions</a> · <a href="/en/mcp/guides/failure-library.html#rate-limit">Rate limits and retries</a> · <a href="/en/mcp/guides/failure-library.html#files">File-reading issues</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>把它当提示注入文本分类器。官方正文列的是 canary、追踪器、信标与指纹四类静态信号</li>
+<li>以为 pipx 装完就能跑。解析依赖 apt 层的 exiftool、qpdf、poppler 等系统工具</li>
+<li>以为扫描会打开文件确认效果：官方设计恰恰是不用原生查看器打开，以免触发远程引用</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-11-06，Content updated 2026-11-06。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>changelog</td><td>CanaryScan · Releases (v0.2.0, 2026-07-20; v0.1.1 to v0.1.4 all on 2026-06-26)</td><td><a href="https://github.com/psaintelligence/canary-scan/releases" rel="noopener" target="_blank">https://github.com/psaintelligence/canary-scan/releases</a></td></tr>
+<tr><td>docs</td><td>CanaryScan · official documentation site (command surface and seven-stage pipeline)</td><td><a href="https://psaintelligence.github.io/canary-scan/" rel="noopener" target="_blank">https://psaintelligence.github.io/canary-scan/</a></td></tr>
+<tr><td>repo</td><td>CanaryScan · repository README (Docker / pipx usage and supply-chain terms)</td><td><a href="https://github.com/psaintelligence/canary-scan" rel="noopener" target="_blank">https://github.com/psaintelligence/canary-scan</a></td></tr>
+<tr><td>docs</td><td>CanaryScan · official LICENSE (Apache-2.0, bundled scripts additionally BSD 2-Clause)</td><td><a href="https://github.com/psaintelligence/canary-scan/blob/main/LICENSE" rel="noopener" target="_blank">https://github.com/psaintelligence/canary-scan/blob/main/LICENSE</a></td></tr>
+<tr><td>docs</td><td>PyPI · canary-scan (0.2.0; requires_python 3.10 or newer)</td><td><a href="https://pypi.org/project/canary-scan/" rel="noopener" target="_blank">https://pypi.org/project/canary-scan/</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not run end-to-end tests: no <code>scan</code> was executed, no stage output structure was verified, and the failure behaviour with missing system dependencies was not observed. The page only organises the official README, the documentation-site index, the LICENSE and PyPI metadata, all fetched 2026-11-06.</p>
+</div>
+<div class="panel is-slim">
+<h2>Official command surface and pipeline</h2>
+<p>Usage points given by the README and docs index (2026-11-06):</p>
+<ul><li>Container: <code>docker run --rm -v /mnt/datasource:/data:ro -v $(pwd)/canary-scan-out:/output ghcr.io/psaintelligence/canary-scan:latest scan /data -o /output</code></li><li>Host: <code>pipx install canary-scan</code>, then install <code>libimage-exiftool-perl qpdf poppler-utils mupdf-tools ripgrep unzip p7zip-full</code>, then <code>canary-scan scan /mnt/datasource</code></li><li>Subcommands: <code>scan</code> / <code>stage</code> / <code>report</code> / <code>deps</code>; <code>--guide</code> prints a cheat sheet</li><li>Seven stages: inventory → metadata → remote-refs → embedded → stego → uniqueness → report, each writing one JSONL file into <code>.canary-scan/</code></li><li>Report: <code>canary-scan-out/canary-scan-report.json</code>; the example filters <code>severity=="critical"</code> with jq</li></ul>
+<p><strong>Supply-chain terms</strong> (key points of the official README): third-party Python dependencies are pinned to releases no newer than 14 days via <code>uv</code>'s <code>exclude-newer</code>; the Didier Stevens scripts are fixed at build time with <code>make vendor</code>, with commit SHA, version and date recorded in <code>src/canary_scan/bundled/VERSIONS.txt</code>.</p>
+</div>
+<div class="panel is-slim">
+<h2>Maintenance status</h2>
+<p>The repository is not archived. GitHub shows the last push and the newest release (v0.2.0) both on 2026-07-20, i.e. more than 90 days before this verification, and the whole release history sits inside the two weeks from 2026-06-26 to 2026-07-20. The entry therefore records lifecycle <code>maintenance</code> with confidence capped at <code>partial</code>: the cadence reading is a snapshot, not an official statement of discontinuation.</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/safety/llm-guard.html">LLM Guard</a></span><span class="rel-n">Same line: LLM Guard (in red-teaming and injection scanning); this entry states only what its own official sources support.</span></li>
+<li><span class="rel-t"><a href="/en/safety/rebuff.html">Rebuff</a></span><span class="rel-n">Same line: Rebuff (in red-teaming and injection scanning); this entry states only what its own official sources support.</span></li>
+<li><span class="rel-t"><a href="/en/safety/garak.html">garak</a></span><span class="rel-n">Same line: garak (in red-teaming and injection scanning); this entry states only what its own official sources support.</span></li>
+<li><span class="rel-t"><a href="/en/framework/openai-agents-sdk.html">OpenAI Agents SDK</a></span><span class="rel-n">Other layer · Frameworks &amp; runtimes</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/safety/garak.html">garak</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">garak is an LLM probe scanner that runs in your own terminal (NVIDIA and</td></tr><tr><td><a href="/en/safety/inspect-ai.html">Inspect</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Inspect is an open evaluation framework from the UK AI Security Institut</td></tr><tr><td><a href="/en/safety/promptfoo.html">promptfoo</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">promptfoo is an evaluation and red-team tool in the terminal. Officially</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

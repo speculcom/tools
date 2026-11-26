@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>LangGraph | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/framework/langgraph.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/framework/langgraph.html" property="og:url"/>
+<meta content="LangGraph | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LangGraph | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/framework/langgraph.html","sameAs":"https://docs.langchain.com/oss/python/langgraph/","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="LangGraph | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/framework/langgraph.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/framework/langgraph.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/framework/langgraph.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/framework/langgraph.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Frameworks</span>
+</nav>
+<a class="back" href="/en/framework/">← Frameworks</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#1C3C3C"'>LA</div>
+<div>
+<h1>LangGraph</h1>
+<div class="vendor is-caps">LangChain Inc</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Python</span>
+<span class="tag on">Open source</span>
+<span class="tag on">MIT</span>
+<span class="tag on">Orchestration framework</span>
+<span class="tag on">Graph execution</span>
+<span class="tag on">Persistence</span>
+<span class="tag on">State management</span>
+<span class="tag on">checkpoint</span>
+<span class="tag on">superstep</span>
+<span class="tag on">durable-execution</span>
+<span class="tag on">HITL</span>
+<span class="tag on">interrupts</span>
+<span class="tag on">Long-term memory</span>
+<span class="tag on">LangChain</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>LangGraph is a low-level orchestration framework for building stateful agents. The…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · Framework / SDK</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Write-conflict and recovery semantics of checkpoints across machines / multi-process concurrency</li>
+<li>Performance and write-volume cost of superstep-level persistence</li>
+<li>The concrete storage backend of long-term memory (the official docs give only the store abstraction, no named backend)</li>
+<li>The re-entry boundary after interrupts modify state</li>
+<li>Free quota and commercial terms of the LangSmith companion (quotes not recorded per our price-recording policy), and whether LangGraph is fully usable without it</li>
+<li>Capability parity between the Python and JS/TS versions</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>LangGraph is a low-level orchestration framework for building stateful agents.</strong></p>
+<p>The official description is deliberately modest — note that word, low-level:</p>
+<blockquote>Low-level orchestration framework for building <strong>stateful</strong> agents.</blockquote>
+<p>It does not claim to be a batteries-included high-level wrapper. It lays the groundwork for long-running, stateful work.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p><strong>Fits</strong>: agent flows that run long and must resume precisely from an interruption; a human stepping into the middle of a flow to change state; managing working memory and cross-session memory separately; an explicit graph structure (branches, loops, subgraphs); teams on Python. <strong>Not a fit</strong>: needing built-in sandboxing or file-level permission boundaries (official docs do not provide such a mechanism — checked the README and the interrupts page); wanting a filesystem and sub-agents out of the box (go with Deep Agents, the higher-level package built on LangGraph); not wanting an extra dependency on the LangChain ecosystem — model access usually goes through it.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　docs.langchain.com measured 200 direct; PyPI install route measured reachable.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>LangGraph does not touch models at all — a design stance of a low-level framework.</strong></p>
+<p>The five capabilities in the official self-description are durable execution / HITL / memory / LangSmith debugging / production deployment. All five are model-agnostic; nowhere is a provider listed. The official overview files "models" under LangChain:</p>
+<p><strong>Official wording</strong>: "starting with models and tools"</p>
+<p>The official overview also states:</p>
+<p><strong>Official wording</strong>: "LangGraph does not abstract prompts or architecture."</p>
+<p>Models usually connect via the LangChain integration layer (<code>init_chat_model</code> or any SDK). But the official docs explicitly say it</p>
+<p><strong>Official wording</strong>: "can be used without LangChain"</p>
+<p>This line is at the end of the official homepage — <strong>not a hard binding</strong>.</p>
+<p><strong>The official docs provide no provider list — models are simply outside its remit.</strong> Neither the overview nor the official homepage lists one.</p>
+<p>⚠ <strong>Our judgment</strong>: it is not model-bound, and the official homepage has no provider list.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>The OSS form is a pure library — no runtime service.</strong></p>
+<p>Installation is just <code>pip install -U langgraph</code>. No CLI to start a service, no container orchestration, no Web UI (the Web UI lives on the Deep Agents / LangSmith side).</p>
+<p><strong>Production deployment points to LangSmith Deployment in the official docs.</strong> The official overview links <strong>"Production-ready deployment"</strong> to LangSmith Deployment. That page defines it as:</p>
+<p><strong>Official wording</strong>: "a workflow orchestration runtime purpose-built for agent workloads"</p>
+<p>It comes with <code>langgraph deploy</code>. Environments come in four tiers: Cloud / Hybrid / self-hosted K8s / Standalone Agent Server. Cloud requires <strong>the Plus tier or above</strong>.</p>
+<p><strong>In other words, hosted execution sits at the commercial-platform layer; OSS itself only covers "you run the process yourself".</strong></p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>⚠ The file system is outside LangGraph's remit.</strong></p>
+<p>The only place the official homepage mentions file systems is recommending Deep Agents as the higher-level package:</p>
+<p><strong>Official wording</strong>: "leverage file systems for complex tasks"</p>
+<p><strong>In other words, file capability is filed under the higher-level wrapper, not the low-level graph engine.</strong></p>
+<p>What LangGraph itself provides is a <strong>state container</strong> — checkpoints store graph state. Whether the agent reads/writes disks, and with which tools, is not its business.</p>
+<p><strong>Our judgment (inference)</strong>: if you want a file system, wire your own tools. Or go up to the Deep Agents layer.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>This is its strongest dimension, with explicit official wording.</strong></p>
+<p>The first feature, <strong>Durable execution</strong>, reads verbatim:</p>
+<p>Build agents that <strong>persist through failures</strong> and can run for extended periods, <strong>automatically resuming from exactly where they left off</strong>.</p>
+<p>The companion is the standalone subpackage <code>langgraph-checkpoint</code>. Check <code>libs/checkpoint</code> — the first paragraph of that subpackage's page:</p>
+<p>Checkpointers provide a persistence layer for LangGraph: they <strong>save graph state at every superstep</strong>, enabling human-in-the-loop, memory between interactions, <strong>durable execution</strong>, and more.</p>
+<p><strong>The persistence granularity is the superstep (one graph step)</strong> —</p>
+<p>not "at session end", not "after each turn"</p>
+<p><strong>The official docs give three persistence backends</strong> (persistence page):</p>
+<ul><li><code>InMemorySaver</code> — stored in RAM; the wording says it "does not persist between restarts"</li></ul>
+<ul><li><code>SqliteSaver</code> — local file, for development</li><li><code>PostgresSaver</code> — production; the wording is "In production, use a checkpointer backed by a database"</li></ul>
+<p>There are also <code>langgraph-checkpoint-*</code> implementations for MongoDB / Redis / Oracle.</p>
+<p><strong>Cross-process recovery relies on the database + the same <code>thread_id</code>.</strong> The official durable-execution page says you can <strong>Official wording</strong>: "resume workflows from the last successful checkpoint"</p>
+<p><code>langgraph&gt;=1.2</code> also adds SIGTERM graceful shutdown (drain, then persist a resumable checkpoint).</p>
+<p><strong>Unknown: conflict semantics of multiple processes writing the same thread concurrently — the official docs do not state it.</strong> ⚠ Neither the persistence nor the checkpointers pages cover this.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>The LangGraph core contains no tool system, but the official ecosystem has a unified MCP access package.</strong></p>
+<p>None of the five official capabilities is a tool system. Tools connect via the LangChain ecosystem, or your own functions — LangGraph handles the graph and state; tools come from LangChain or your functions.</p>
+<p><strong>MCP: the official docs provide <code>langchain-mcp-adapters</code></strong> (the langchain-ai org). The official homepage says of it</p>
+<p><strong>Official wording</strong>: "makes MCP tools compatible with LangChain and LangGraph"</p>
+<p>and <strong>Official wording</strong>: "Convert MCP tools into LangChain tools that can be used with LangGraph agents"</p>
+<p>Multiple MCP servers can be connected. <strong>This is the LangChain ecosystem's unified MCP access layer.</strong></p>
+<p>Note it is a standalone package (<code>pip install langchain-mcp-adapters</code>), not part of the langgraph core.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>LangGraph splits "state" and "memory" into two mechanisms, both with official wording.</strong></p>
+<p>The third feature, <strong>Comprehensive memory</strong>, reads verbatim:</p>
+<p>Create truly stateful agents with both <strong>short-term working memory for ongoing reasoning</strong> and <strong>long-term persistent memory across sessions</strong>.</p>
+<p><strong>Short-term memory</strong>: the official add-memory page gives three trimming techniques — Trim messages / Delete messages / Summarize messages. These three are how short context is managed: trim, delete, summarize. The page positions them as:</p>
+<p><strong>Official wording</strong>: "techniques to manually remove or forget stale information"</p>
+<p><strong>Long-term memory</strong>: a store holding JSON documents. The official docs say it <strong>supports semantic search and content filtering</strong>:</p>
+<p><strong>Official wording</strong>: "supports both semantic search and filtering by content"</p>
+<p>It can recall across threads.</p>
+<p><strong>Unknown: "large tool outputs spilled to disk" — the official docs do not say LangGraph provides it.</strong> ⚠ Neither the memory nor add-memory pages do — that is the higher-level Deep Agents' context-management capability.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>What the official docs give is human-in-the-loop.</strong> It is at the "inspect and modify state" level, not just confirmation.</p>
+<p>The second feature, <strong>Human-in-the-loop</strong>, reads verbatim:</p>
+<p>Seamlessly incorporate human oversight by <strong>inspecting and modifying agent state at any point during execution</strong>.</p>
+<p>The docs are at <code>langgraph/interrupts</code>.</p>
+<p><strong>Compared with other listed objects, this point differs substantively.</strong> The three intervention levels escalate; listed inline because this parser does not support lists inside nested blocks:</p>
+<ul><li><a href="/en/framework/openai-agents-sdk.html">OpenAI Agents SDK</a> guardrails <strong>validate content</strong> (are inputs/outputs compliant)</li><li><a href="/en/framework/google-adk.html">Google ADK</a> Tool Confirmation <strong>intercepts execution</strong> (should this tool run)</li><li><strong>LangGraph interrupts modify state</strong> (inspect and modify graph state at any execution point)</li></ul>
+<p>⚠ <strong>But say clearly: what it explicitly does not give is a sandbox or permission boundary.</strong> The official docs mention no file-system permission model, network access control, or tool-level allowlist. Contrast with OpenHands on our site, which has an explicit Docker sandbox + API-key mechanism. Also contrast with the Codex SDK (three SandboxMode enum values in source). <strong>On this dimension, no official mechanism can currently be found for LangGraph.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p><strong>Four scenarios it fits.</strong></p>
+<ul><li>Agent flows that run long and must resume precisely from the interruption point</li><li>Human intervention mid-flow that modifies state</li><li>Managing "working memory" and "cross-session long-term memory" separately</li><li>You need an explicit graph structure (branches, loops, subgraphs); your team uses Python</li></ul>
+<p><strong>Three scenarios it does not fit.</strong></p>
+<ul><li>You need a built-in sandbox or file-level permission boundary — the official docs provide no such mechanism (README and interrupts page checked)</li><li>You want batteries-included file system and subagents — go to Deep Agents, the higher-level package on LangGraph</li><li>You don't want an extra dependency on the LangChain ecosystem — model access usually goes through it</li></ul></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>MIT</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Treating Deep Agents and LangGraph as two competitors — <strong>Deep Agents is a higher-level package built on LangGraph</strong> (the README says so)</li>
+<li>Using releases/latest to judge the version — <strong>latest on a monorepo is unreliable</strong>: on this entry latest returned <code>cli==0.4.32.dev0</code> (a sub-package dev build); the main package version has to be picked out of the release list (1.2.12 at the time of this check)</li>
+<li>Reading checkpoint persistence as "context management" — a checkpoint stores <strong>graph state</strong>; context compression and memory are a separate layer the README calls memory</li>
+<li>Assuming it ships a filesystem or a tool system — it handles neither; wire up your own, or go through Deep Agents</li>
+<li>Assuming interrupts are a permission guardrail — they "check and modify state"; they do not draw file or network boundaries</li>
+<li>Assuming that installing LangGraph is enough — the official front page points you at LangSmith for debugging and deployment, and that is a commercial product</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-01。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>langchain-ai/langgraph · repository (43,731★, MIT, rolling verification 2026-10-23)</td><td><a href="https://github.com/langchain-ai/langgraph" rel="noopener" target="_blank">https://github.com/langchain-ai/langgraph</a></td></tr>
+<tr><td>docs</td><td>Main README (positioning, Durable execution / HITL / memory capabilities, Deep Agents relationship, Pregel lineage)</td><td><a href="https://github.com/langchain-ai/langgraph/blob/main/README.md" rel="noopener" target="_blank">https://github.com/langchain-ai/langgraph/blob/main/README.md</a></td></tr>
+<tr><td>docs</td><td>libs/checkpoint/README.md (the "save graph state at every superstep" wording)</td><td><a href="https://github.com/langchain-ai/langgraph/blob/main/libs/checkpoint/README.md" rel="noopener" target="_blank">https://github.com/langchain-ai/langgraph/blob/main/libs/checkpoint/README.md</a></td></tr>
+<tr><td>docs</td><td>Official docs · Durable execution</td><td><a href="https://docs.langchain.com/oss/python/langgraph/durable-execution" rel="noopener" target="_blank">https://docs.langchain.com/oss/python/langgraph/durable-execution</a></td></tr>
+<tr><td>docs</td><td>Official docs · Interrupts (HITL)</td><td><a href="https://docs.langchain.com/oss/python/langgraph/interrupts" rel="noopener" target="_blank">https://docs.langchain.com/oss/python/langgraph/interrupts</a></td></tr>
+<tr><td>docs</td><td>Official docs · Memory (short-term working memory vs cross-session long-term memory)</td><td><a href="https://docs.langchain.com/oss/python/langgraph/memory" rel="noopener" target="_blank">https://docs.langchain.com/oss/python/langgraph/memory</a></td></tr>
+<tr><td>docs</td><td>Official docs homepage</td><td><a href="https://docs.langchain.com/oss/python/langgraph/overview" rel="noopener" target="_blank">https://docs.langchain.com/oss/python/langgraph/overview</a></td></tr>
+<tr><td>docs</td><td>Deep Agents docs (the "higher-level package built on LangGraph" the README points to)</td><td><a href="https://docs.langchain.com/oss/python/deepagents/overview" rel="noopener" target="_blank">https://docs.langchain.com/oss/python/deepagents/overview</a></td></tr>
+<tr><td>repo</td><td>langchain-ai/langgraphjs · standalone JS/TS repository</td><td><a href="https://github.com/langchain-ai/langgraphjs" rel="noopener" target="_blank">https://github.com/langchain-ai/langgraphjs</a></td></tr>
+<tr><td>changelog</td><td>Releases (main package 1.2.12 @ 2026-09-21; latest is the subpackage cli==0.4.32.dev0)</td><td><a href="https://github.com/langchain-ai/langgraph/releases" rel="noopener" target="_blank">https://github.com/langchain-ai/langgraph/releases</a></td></tr>
+<tr><td>docs</td><td>Official docs · Persistence (checkpointer vs store, persistence backends, failure recovery, verified 2026-10-08)</td><td><a href="https://docs.langchain.com/oss/python/langgraph/persistence" rel="noopener" target="_blank">https://docs.langchain.com/oss/python/langgraph/persistence</a></td></tr>
+<tr><td>docs</td><td>Official docs · Checkpointers (per-superstep snapshots, durability modes, backend library list)</td><td><a href="https://docs.langchain.com/oss/python/langgraph/checkpointers" rel="noopener" target="_blank">https://docs.langchain.com/oss/python/langgraph/checkpointers</a></td></tr>
+<tr><td>docs</td><td>Official docs · Add memory (short-term Trim/Delete/Summarize, long-term store semantic search)</td><td><a href="https://docs.langchain.com/oss/python/langgraph/add-memory" rel="noopener" target="_blank">https://docs.langchain.com/oss/python/langgraph/add-memory</a></td></tr>
+<tr><td>docs</td><td>LangSmith Deployment (official production hosted runtime, <code>langgraph deploy</code>)</td><td><a href="https://docs.langchain.com/langsmith/deployment" rel="noopener" target="_blank">https://docs.langchain.com/langsmith/deployment</a></td></tr>
+<tr><td>repo</td><td>langchain-ai/langchain-mcp-adapters · official MCP adapter layer</td><td><a href="https://github.com/langchain-ai/langchain-mcp-adapters" rel="noopener" target="_blank">https://github.com/langchain-ai/langchain-mcp-adapters</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" rel="noopener" target="_blank">protocols/framework/_protocol.md</a>.</p>
+<p><strong>Suggested runs</strong> (tailored to orchestration framework + persistence dimensions):</p>
+<div class="tbl-wrap"><table><thead><tr><th>#</th><th>What to test</th><th>Why it is worth testing</th></tr></thead><tbody><tr><td>1</td><td>Kill the process mid long-flow; does recovery truly resume from the interruption point</td><td>"exactly where they left off" is an explicit official promise — must verify</td></tr><tr><td>2</td><td><strong>Write overhead of superstep-granularity persistence on long tasks</strong></td><td>the official docs say every superstep is saved; with many steps the I/O cost is unknown</td></tr><tr><td>3</td><td>Conflict behavior of the Postgres checkpointer under multi-process concurrency</td><td>our biggest worry, unverified</td></tr><tr><td>4</td><td>Graph re-entry behavior after interrupts modify state mid-run</td><td>the official docs say you can modify agent state; the boundary is unverified</td></tr><tr><td>5</td><td>Actual cost of short-term memory trimming (Trim / Delete / Summarize) in long sessions</td><td>the official docs give the techniques; the cost is unverified</td></tr><tr><td>6</td><td>Code-volume difference: minimal LangGraph example vs Deep Agents for the same need</td><td>quantifies just how "low-level" the self-assessment really is</td></tr></tbody></table></div>
+</div>
+<div class="panel is-slim">
+<h2>Its answer on "state" is the most serious</h2>
+<p>Our core claim is "<strong>state ≠ context</strong>". LangGraph is the only listed object that spells this distinction out on its official homepage.</p>
+<h3 class="sub-h">Durable execution: persistence granularity is the superstep</h3>
+<p>The first feature is called <strong>Durable execution</strong>:</p>
+<blockquote>Build agents that <strong>persist through failures</strong> and can run for extended periods, <strong>automatically resuming from exactly where they left off</strong>.</blockquote>
+<p><strong>"exactly where they left off" is the key.</strong> Not restarting from scratch — continuing from the interrupted step.</p>
+<p>The persistence mechanism lives in the standalone subpackage <code>langgraph-checkpoint</code>. Check <code>libs/checkpoint</code> — the first paragraph of that subpackage's page:</p>
+<blockquote>Checkpointers provide a persistence layer for LangGraph: they <strong>save graph state at every superstep</strong>, enabling human-in-the-loop, memory between interactions, <strong>durable execution</strong>, and more.</blockquote>
+<p>⚠ <strong>This is the clearest official definition of "state persistence" we have seen.</strong> The granularity is the <strong>superstep (one graph step)</strong> — not "at session end", not "after each turn". How we record this granularity: <strong>persistence granularity is the superstep</strong> (one graph step). It is not "at session end". Nor is it "after each turn".</p>
+<p>⚠ But honestly: <strong>conflict semantics of cross-machine / multi-process concurrent writes to the same thread are not stated by the official docs</strong>. The persistence document only gives database backends and durability modes (verified 2026-10-08).</p>
+<h3 class="sub-h">State and memory: it splits them into two mechanisms</h3>
+<p>The third feature is called <strong>Comprehensive memory</strong>:</p>
+<blockquote>Create truly stateful agents with both <strong>short-term working memory for ongoing reasoning</strong> and <strong>long-term persistent memory across sessions</strong>.</blockquote>
+<p><strong>The distinction between two time scales is precisely an isomorphic expression of our claim</strong>:</p>
+<ul><li>checkpoint → stores <strong>flow state</strong> (state plane)</li><li>memory → a separate layer, split into <strong>working memory</strong> and <strong>cross-session long-term memory</strong> (memory plane)</li></ul>
+<p>⚠ <strong>The point we most want to stress</strong>: <strong>do not read checkpoint persistence as "context management".</strong> Checkpoints store graph state. How long context gets trimmed is the memory layer's business. The two are strictly recorded apart on this page — which is how the v3 rule "state ≠ context" lands.</p>
+<p>⚠ Three items we have not verified:</p>
+<ul><li>exactly how short-term memory trims context (is it compression/summarization?)</li><li>the storage backend and retrieval method of long-term memory</li><li>whether "large tool outputs spilled to disk", which we care about, falls within its capability</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>A different level of HITL: it can modify state, not just intercept</h2>
+<p>The second feature <strong>Human-in-the-loop</strong> reads verbatim:</p>
+<blockquote>"Seamlessly incorporate human oversight by <strong>inspecting and modifying agent state at any point during execution</strong>."</blockquote>
+<p>Putting the three human-intervention mechanisms we have listed side by side, <strong>the levels escalate</strong>:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Object</th><th>Mechanism</th><th>Intervention point</th></tr></thead><tbody><tr><td>OpenAI Agents SDK</td><td>guardrails</td><td>validates <strong>content</strong> (are inputs/outputs compliant)</td></tr><tr><td>Google ADK</td><td>Tool Confirmation</td><td>intercepts <strong>execution</strong> (should this tool run)</td></tr><tr><td><strong>LangGraph</strong></td><td><strong>interrupts</strong></td><td><strong>modifies state</strong> (inspect and modify graph state at any execution point)</td></tr></tbody></table></div>
+<p>⚠ <strong>But be clear about what it explicitly does not give.</strong> The official docs mention no file-system permission model, network access control, or tool-level allowlist.</p>
+<p>Compare OpenHands on our site (an explicit Docker sandbox + API-key mechanism) and the Codex SDK (three <code>SandboxMode</code> enum values in source) — <strong>on the permission-boundary dimension, no official mechanism can currently be found for LangGraph.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>Selection must-read: it and Deep Agents are layers, not two options</h2>
+<p>This is a relationship we must untangle for readers, or they will double-count.</p>
+<p>The official homepage's first screen carries a TIP pointing to Deep Agents:</p>
+<blockquote>If you're looking to quickly build agents, check out <strong>Deep Agents</strong> — a <strong>higher-level package built on LangGraph</strong> for agents that can plan, use subagents, and leverage file systems for complex tasks.</blockquote>
+<p><strong>In other words: Deep Agents is a higher-level package built on LangGraph.</strong></p>
+<div class="tbl-wrap"><table><thead><tr><th></th><th>LangGraph (this entry)</th><th>Deep Agents (also listed by us)</th></tr></thead><tbody><tr><td>Positioning</td><td>low-level orchestration framework</td><td>batteries-included harness</td></tr><tr><td>Abstraction</td><td>explicit graphs, supersteps</td><td>agent + preset tools</td></tr><tr><td>File system</td><td><strong>not its business</strong> (README files it to the upper layer)</td><td>core selling point</td></tr><tr><td>Subagents</td><td>express them yourself with the graph</td><td>preset</td></tr><tr><td>Memory</td><td>checkpoint + memory, two mechanisms</td><td>persistent memory + summarize</td></tr><tr><td>Fits</td><td>long flows, precise recovery, human state modification</td><td>wanting speed, wanting full features</td></tr></tbody></table></div>
+<p><strong>One-line rule</strong>: want to draw the flow yourself, want precise recovery → LangGraph. Want less wiring, want ready-made capability → Deep Agents (it runs on LangGraph).</p>
+</div>
+<div class="panel is-slim">
+<h2>Tools and file system: explicitly not its business</h2>
+<ul><li><strong>File system</strong>: the only related sentence on the official homepage recommends Deep Agents as the upper-layer package ("leverage file systems for complex tasks") — <strong>file capability belongs to the upper layer, not the graph engine</strong>. What LangGraph gives is a <strong>state container</strong> (checkpoints store graph state).</li></ul>
+<ul><li><strong>Tool system</strong>: none of the five capabilities is a tool system. Tools connect via the LangChain ecosystem.</li></ul>
+<p>⚠ We <strong>do not associate LangGraph with the 9 servers on our MCP site</strong>. There is no evidence LangGraph ships an MCP client.</p>
+</div>
+<div class="panel is-slim">
+<h2>Lineage and ecosystem: whom it drew on</h2>
+<p>The Acknowledgements at the end of the official homepage are informative:</p>
+<blockquote>LangGraph is inspired by <strong><a href="https://research.google.com/pubs/pub37252/" rel="noopener" target="_blank">Pregel</a></strong> and <strong><a href="https://beam.apache.org/" rel="noopener" target="_blank">Apache Beam</a></strong>. The public interface draws inspiration from <strong><a href="https://networkx.org/" rel="noopener" target="_blank">NetworkX</a></strong>. LangGraph is built by LangChain Inc, the creators of LangChain, but <strong>can be used without LangChain</strong>.</blockquote>
+<p><strong>"can be used without LangChain".</strong> This line is our key evidence that it is not hard-bound. Model access usually goes through LangChain, but you can skip it.</p>
+<p>(Pregel is Google's graph-computing paper — the source of the large-scale graph computation approach behind Beam.)</p>
+</div>
+<div class="panel is-slim">
+<h2>Version numbers: a pitfall we hit — beware</h2>
+<p>⚠ <strong>Our test: <code>releases/latest</code> is unreliable for this monorepo.</strong></p>
+<p><code>gh api repos/langchain-ai/langgraph/releases/latest</code> returns <strong><code>cli==0.4.32.dev0</code> (a subpackage dev build)</strong>, not the main package version.</p>
+<p>The correct approach is to list recent releases and pick the main package yourself. Result of this verification (2026-10-01):</p>
+<div class="tbl-wrap"><table><thead><tr><th>tag</th><th>release date</th><th>note</th></tr></thead><tbody><tr><td><code>cli==0.4.32.dev0</code></td><td>2026-09-23</td><td>subpackage dev build, <strong>not the main package</strong></td></tr><tr><td><code>cli==0.4.32</code></td><td>2026-09-23</td><td>subpackage</td></tr><tr><td><strong><code>1.2.12</code></strong></td><td><strong>2026-09-21</strong></td><td><strong>← main package, used by this entry</strong></td></tr><tr><td><code>sdk==0.4.5</code></td><td>2026-09-21</td><td>subpackage</td></tr></tbody></table></div>
+<p>In this monorepo, subpackage tags are named <code>&lt;subpackage&gt;==&lt;version&gt;</code>; the unprefixed one is the main package.</p>
+</div>
+<div class="panel is-slim">
+<h2>Verification notes</h2>
+<p>Basis for <code>confidence: partial</code> (downgraded from verified on 2026-10-03):</p>
+<blockquote><strong>Why downgraded</strong>: the "unknown items" list still contains evidence gaps whose subject is <strong>our site</strong> (e.g. "conflict semantics of multi-process concurrent writes to the same thread", "interrupts re-entry boundary", "commercial terms of the LangSmith companion") — no longer the "official docs don't provide it" kind. Per the v3 rule "say unknown when unknown", marking verified would be inflated — downgraded to partial. <strong>2026-10-08 re-verification</strong>: short-term memory trimming (Trim / Delete / Summarize), long-term memory (store semantic search + content filtering), <code>langchain-mcp-adapters</code>, and "usable without LangChain" — these four have moved out of the gap list.</blockquote>
+<ul><li>✅ Verified: repository existence and star count (43,731 · rolling verification 2026-10-23), license (MIT, via license API),</li></ul>
+<blockquote>last push (2026-10-22, still active), full official homepage (positioning, three core capabilities, the Deep Agents layer relationship, Pregel/Beam/NetworkX lineage, can be used without LangChain), the "save graph state at every superstep" wording in <code>libs/checkpoint/README.md</code>, the 9-subpackage list under <code>libs/</code> (<code>checkpoint</code>, <code>checkpoint-sqlite</code>, <code>checkpoint-postgres</code>, <code>prebuilt</code>, <code>cli</code>, <code>sdk-py</code>, <code>sdk-js</code>, <code>checkpoint-conformance</code>, etc.), 6 releases entries (including the tested record that latest is unreliable)</blockquote>
+<ul><li>⚠ Not verified and <strong>the official docs do not provide it</strong> (not our gap): tool system, file system,</li></ul>
+<blockquote>model provider list — we record these honestly as "outside its remit" rather than "couldn't find it"</blockquote>
+<ul><li>⚠ Not verified and <strong>our gap</strong> (the direct basis for partial):</li></ul>
+<blockquote>the performance cost of superstep persistence, the interrupts re-entry boundary, conflict semantics of multi-process concurrent writes to the same thread (not stated officially), the concrete storage backend of long-term memory, commercial terms of the LangSmith companion, capability parity between the Python and JS/TS versions</blockquote>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/framework/deepagents.html">Deep Agents</a></span><span class="rel-n"><strong>Same company, a layer relationship, not competitors</strong>: the README states plainly that Deep Agents is a higher-level package built on LangGraph (with planning, subagents, file systems). Ready-made vs foundation — this is the comparison table our readers most need to see.</span></li>
+<li><span class="rel-t"><a href="/en/framework/google-adk.html">Google ADK（Agent Development Kit）</a></span><span class="rel-n"><strong>A contrast within the orchestration family</strong>: both are graph-execution orchestration frameworks; ADK gives Workflow Runtime + state management, LangGraph gives checkpoints persisted every superstep.</span></li>
+<li><span class="rel-t"><a href="/en/framework/crewai.html">CrewAI</a></span><span class="rel-n">Also an orchestration framework, different center of abstraction (roles/tasks vs graph nodes).</span></li>
+<li><span class="rel-t"><a href="/en/framework/openai-agents-sdk.html">OpenAI Agents SDK</a></span><span class="rel-n">Opposite form: that one is single-agent primitives + built-in guardrails; this entry is a low-level graph engine + state persistence, and provides no tool system.</span></li>
+<li><span class="rel-t"><a href="/en/mcp/filesystem.html">Filesystem MCP Server</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/framework/ag2.html">AG2</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">The community continuation of AutoGen after the original repo stalled. T</td></tr><tr><td><a href="/en/framework/agentscope.html">AgentScope</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">AgentScope is the flagship domestic multi-agent framework (Apache-2.0, A</td></tr><tr><td><a href="/en/framework/agno.html">Agno (formerly Phidata)</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Agno (formerly Phidata) ships framework + control plane as one: define a</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

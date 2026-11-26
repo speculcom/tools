@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Replit Agent | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/replit-agent.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/replit-agent.html" property="og:url"/>
+<meta content="Replit Agent | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Replit Agent | Tools","applicationCategory":"DeveloperApplication","sameAs":"https://replit.com","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-11-21"}</script>
+<meta content="Replit Agent | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/replit-agent.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/replit-agent.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/replit-agent.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/replit-agent.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#8b7cf8">RE</div>
+<div>
+<h1>Replit Agent</h1>
+<div class="vendor is-caps">Replit</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Closed source</span>
+<span class="tag on">Cloud IDE</span>
+<span class="tag on">Natural-language site building</span>
+<span class="tag on">checkpoint</span>
+<span class="tag on">Background tasks</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-11-21</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Replit Agent is the cloud-IDE agent from plain language to a deployable app: it…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Cloud / API · Vendor cloud</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>The concrete model list behind each mode (the in-account Model selector changes in real time; the account is authoritative)</li>
+<li>Migration boundary for platform-hosted databases/Auth data (code moves via Git; hosted data follows each service's docs)</li>
+<li>Cross-project memory (the official docs do not list a standalone memory product surface; this dossier does not infer one)</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>Replit Agent is the cloud-IDE agent from plain language to a deployable app</strong>: it builds the project, sets up infrastructure, tests, and deploys in one chain; Free/Power/Max modes pick tiers rather than bare models, with checkpoints as the rollback safety net.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Fits: idea straight to a deployable app (database/deploy included), non-engineer prototypes, multiple artifacts sharing one backend. Not a fit: your existing codebase as the main battlefield; fully self-selecting models.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-11-21</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　Replit (US).</dd>
+<dt>Direct access</dt><dd>direct OK　replit.com and docs.replit.com measured 200 direct from mainland (2026-10-21).</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (searched 2026-10-21); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>Choose by "mode" rather than by bare model</strong>: the official docs list four modes — Free/Auto/Power/Max. Free is the free tier within plan allowances, Auto routes automatically, Power/Max are paid tiers (Max uses the strongest frontier models). Which models sit behind each tier is shown live by the in-account Model selector (official framing: the model list is account-specific and shifts with plans and staged rollouts). Enterprise workspaces have only the Auto mode; admins can manage model access via Enterprise model controls.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>Built-in agent in a cloud IDE</strong>: projects, dependencies, databases and deployments all live on Replit cloud. The official docs state the Agent "writes code, sets up infrastructure, tests results" and automatically creates checkpoints you can roll back to. Desktop/mobile are entry points; execution happens in the cloud.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>Code and data default to living in Replit cloud projects, not on your machine. Code and projects migrate through GitHub/GitLab repositories (official Connect your repository / Contribute code); platform-hosted databases, Auth and object storage data move out under each service's docs. External services (BigQuery/Slack/Notion/Linear etc.) are connected via official connectors, pulling data directly from chat.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>There is a background-task surface</strong>: the official docs give quota lines of Core 1 / Pro 10 "Active background tasks" — background tasks are part of the product semantics. Plan mode produces a task list for approval before work starts.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p>The agent ships with the full chain — create projects, install dependencies, test, deploy. The connector surface (BigQuery/Slack/Notion/Linear etc.) follows the official Integrations directory for the day. <strong>MCP both ways: the Agent can connect prelisted or custom MCP servers (official Connect via MCP), and Replit also offers an MCP Server for compatible clients (Connect through MCP).</strong></p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p>Multiple artifacts within a project share the same backend and data (web/mobile/slides/video in one project); checkpoints provide a state-rollback surface. Cross-project memory is not part of the official docs narrative.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p>Account + plan system. Paid actions require confirmation (official FAQ: "paid actions require confirmation before they start"; when the Free tier runs out it offers "Allow once" for one-time approval). Enterprise has model-access controls. Deployment yields a Replit-hosted URL.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Good fit: going from natural language straight to a deployable app (database and deployment included), non-engineers building prototypes, wanting checkpoint rollback as a safety net.</p>
+<p>Not a fit: making your existing codebase the main battlefield (its main axis is idea → new project), wanting full self-selection at the model layer.</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Treating Replit Agent as 'a coding agent installed into your existing repo' — the official positioning is idea-to-new-project (infrastructure included); collaborating on existing codebases is not the docs' main narrative</li>
+<li>Free/Power/Max are modes, not model names — which models sit behind each tier shifts with official changes; don't treat tiers as a fixed model list</li>
+<li>Artifacts and data live in Replit's cloud by default — export/migration paths exist but the boundaries are yours to verify (not verified line by line)</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-11-21，Content updated 2026-11-21。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>official</td><td>Replit Docs · Replit Agent overview (modes / Plan / background tasks / FAQ)</td><td><a href="https://docs.replit.com/features/agent/overview" rel="noopener" target="_blank">https://docs.replit.com/features/agent/overview</a></td></tr>
+<tr><td>changelog</td><td>Replit Docs · Updates (weekly changelog, latest 2026-10-16)</td><td><a href="https://docs.replit.com/updates" rel="noopener" target="_blank">https://docs.replit.com/updates</a></td></tr>
+<tr><td>official</td><td>Replit · official site</td><td><a href="https://replit.com" rel="noopener" target="_blank">https://replit.com</a></td></tr>
+<tr><td>docs</td><td>Replit Docs · Connect via MCP (prelisted/custom MCP servers, direct-fetched 2026-11-21)</td><td><a href="https://docs.replit.com/build/connect-via-mcp" rel="noopener" target="_blank">https://docs.replit.com/build/connect-via-mcp</a></td></tr>
+<tr><td>docs</td><td>Replit Docs · Choose a model (in-account Model selector is authoritative)</td><td><a href="https://docs.replit.com/chat/model-selector" rel="noopener" target="_blank">https://docs.replit.com/chat/model-selector</a></td></tr>
+<tr><td>docs</td><td>Replit Docs · Connect to your repository (GitHub/GitLab migration surface)</td><td><a href="https://docs.replit.com/build/code/connect-your-repository" rel="noopener" target="_blank">https://docs.replit.com/build/code/connect-your-repository</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong> (three, each pointing at something the official readable pages do not give):</p>
+<ul><li><strong>The actual usable amount of the Free tier's five-hour-reset allowance</strong> — the official page only gives the framing "allowances reset every five hours"</li><li><strong>The confirmation interaction details of "Allow once"</strong> (when it prompts, how many times)</li><li><strong>The complete path for exporting/migrating artifacts out</strong> (official migration lines exist; boundaries not verified one by one)</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/devin.html">Devin</a></span><span class="rel-n">Same cloud form: Devin takes your existing repositories and opens PRs; Replit builds new projects from an idea. <a href="/en/coding/lovable.html">Lovable</a> / <a href="/en/coding/bolt-new.html">Bolt.new</a> / <a href="/en/coding/v0.html">v0</a> — same natural-language site-building line, artifacts are exportable codebases; Replit gives a full cloud development environment while those three hide the environment inside a prompt flow.</span></li>
+<li><span class="rel-t"><a href="/en/mcp/supabase-mcp.html">Supabase MCP</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+<li><span class="rel-t"><a href="/en/mcp/linear-mcp.html">Linear MCP</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+<li><span class="rel-t"><a href="/en/mcp/notion-mcp.html">Notion MCP</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/augment-code.html">Augment Code</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Augment Code is the enterprise 'software factory' platform: Cosmos turns</td></tr><tr><td><a href="/en/coding/bolt-new.html">Bolt.new</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Bolt.new is StackBlitz's in-browser full-stack AI builder: it runs on We</td></tr><tr><td><a href="/en/coding/devin.html">Devin</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Devin is the 'ticket in, draft PR out' cloud async software engineer (Co</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

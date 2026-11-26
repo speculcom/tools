@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Jules | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/jules.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/jules.html" property="og:url"/>
+<meta content="Jules | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Jules | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/coding/jules.html","sameAs":"https://jules.google","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Jules | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/jules.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/jules.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/jules.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/jules.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#8b7cf8">JU</div>
+<div>
+<h1>Jules</h1>
+<div class="vendor is-caps">Google</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Coding</span>
+<span class="tag on">Coding agent</span>
+<span class="tag on">Cloud</span>
+<span class="tag on">Vendor cloud</span>
+<span class="tag on">Always-on</span>
+<span class="tag on">Approval</span>
+<span class="tag on">Subscription</span>
+<span class="tag on">Free tier</span>
+<span class="tag on">Parallel</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Nothing installs locally: the work runs on a Google Cloud VM and lands as a pull…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Cloud / API · Vendor cloud</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Blocked · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Jules's current default model and the per-tier model mapping — not stated officially (developers.google.com/jules/api and the Google One AI plans page checked)</li>
+<li>Per-tier daily task counts and concurrency — not stated officially (jules.google pricing page, Google One AI plans page and the GA launch page checked)</li>
+<li>Whether Jules supports connecting MCP servers — not stated officially (Jules API page and official FAQ page checked)</li>
+<li>Context-window size and the implementation of long-term memory</li>
+<li>Per-task duration and concurrency ceiling of the cloud VM</li>
+<li>Whether code hosting beyond GitHub is supported</li>
+</ul>
+</div>
+<div class="panel-lead"><p>Google's asynchronous coding agent: point it at a GitHub repo, and it clones the code into a fresh cloud VM, plans the change, and opens a pull request for review. The difference from the IDE/CLI agents on this site is that the interaction is not live — you approve the plan and walk away. The official REST docs make the default explicit: "By default, sessions created through the API will have their plans automatically approved. If you want to create a session that requires explicit plan approval, set the <code>requirePlanApproval</code> field to <code>true</code>"; and "The <code>automationMode</code> field is optional. By default, no PR will be automatically created." Tiers are bundled, not sold separately: the GA post describes a free "Introductory access to Jules," "Jules in Google AI Pro: 5x higher limits" and "Jules in Google AI Ultra: 20x higher limits," noting that "Specific usage limits are listed at jules.google."</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Self-contained, verifiable work: fixing a named bug, bumping dependencies, adding tests, migrating code snippets, small features — officially delivered as "test verified patches" and "PRs with runnable code and test results," which is exactly what makes it good for "submit the task and come back to a PR."</p></div>
+<div class="warn-p"><p><strong>Not a fit for</strong> work that needs a live shell you can steer while it runs (CLI/IDE agents do that better), or vague, architecture-level tasks that need heavy clarification — the official FAQ itself lists "vague prompts" among the common causes of a failed task.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct blocked　jules.google times out consistently from mainland (000 twice).</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>The model is vendor-assigned; you cannot choose it.</strong></p>
+<p>The only place the readable official pages name a model is the GA launch page. It says Jules uses the advanced reasoning capabilities of Gemini 2.5 Pro. The Google One plan page writes, for the Ultra tier, Jules "access to latest models", meaning <strong>higher tiers get newer models</strong>.</p>
+<p>Which tier maps to which model is not written officially.</p>
+<p>(developers.google.com/jules/api and the Google One AI plans page checked.)</p>
+<p><strong>Official wording</strong>: "Jules now uses the advanced thinking capabilities of Gemini 2.5 Pro"</p>
+<p>This is the exact opposite of the IDE / CLI classes. Those usually offer a selection surface like <code>/model</code>, while <strong>the vendor-cloud form takes the whole "pick a model" decision away</strong>.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>Tasks run on Google's cloud VMs; nothing is installed locally.</strong></p>
+<p>Each task gets a <strong>brand-new</strong> cloud VM: inside it Jules clones your repo, installs dependencies, and changes code.</p>
+<p><strong>Official FAQ wording</strong>: "Each task runs in a fresh virtual machine where Jules clones your repo, installs dependencies, and makes changes based on your prompt" <strong>The official GA launch page lists this as a selling point</strong>: "Tasks run inside a cloud VM, enabling concurrent execution"</p>
+<p>Besides the web app (jules.google), there are two more entry points: the Jules REST API (<code>jules.googleapis.com/v1alpha</code>) and the Jules Tools CLI. <strong>But execution always happens on the vendor cloud; clients only submit and observe.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>By default it is fully isolated from your local machine.</strong></p>
+<p>Jules only clones repos and works inside the cloud VM; it never touches files on your machine. This VM <strong>has internet access</strong> — which is both a capability and a risk surface.</p>
+<p><strong>Official FAQ</strong>: the VM is "executed in a secure, cloud-based virtual machine (VM) with internet access", and users are told to "treat the environment with the same security precautions you would for any public or shared compute surface". <strong>The official pages also warn</strong>: do not commit secrets, tokens and the like into the repo.</p>
+<p>Which repos are visible to Jules is decided by the authorization scope of the Jules GitHub app (the FAQ points to GitHub's applications settings for per-repo adjustment).</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>This is its thickest dimension; the official pages define it as "asynchronous" throughout.</strong></p>
+<p>Jules operates asynchronously, allowing you to focus on other tasks while it works in the background</p>
+<p>You can leave the app after submitting a task</p>
+<p>Just turn on notifications. <strong>Failed tasks retry automatically.</strong></p>
+<p>Jules will retry automatically</p>
+<p>The official 2025-12-10 update adds two proactive capabilities:</p>
+<ul><li><strong>Suggested Tasks</strong> — proactively scans code and proposes improvements across up to five repos, starting with <code>#todos</code></li><li><strong>Scheduled Tasks</strong> — runs automatically at your defined cadence, e.g. dependency checks, weekly routines</li></ul>
+<p>Scheduled Tasks ... you can now define the cadence and Jules will perform the task at that time</p>
+<p><strong>Concurrent task counts vary by subscription tier</strong> (concrete numbers live on the official plan page; this site does not store them per the price-recording policy).</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>The tool surface centers on execution capability inside the cloud VM plus GitHub integration.</strong></p>
+<p>The official FAQ and GA page confirm the VM's execution capabilities: installing dependencies, running tests, building via setup scripts. Supported languages are JavaScript/TypeScript, Python, Go, Java, Rust.</p>
+<p>language agnostic but works best with</p>
+<p>(in practice it depends on what is installed in the VM.)</p>
+<p><strong>Long-running processes are not supported</strong> — things like <code>npm run dev</code> will not run.</p>
+<p>Long-running processes like dev servers or watch scripts aren't currently supported in setup scripts</p>
+<p>There is also front-end verification: run scripts inside the VM and get screenshots back. See the web-app testing notes on the official launch page.</p>
+<p><strong>Whether Jules supports connecting MCP servers: not stated officially.</strong></p>
+<p>(developers.google.com/jules/api and the official FAQ page checked.)</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>Session / Activity is the unit of context.</strong></p>
+<p>Session — A continuous unit of work within a specific context, similar to a chat session. A session is initiated with a prompt and a source</p>
+<p>Activity — A single unit of work within a Session</p>
+<p>One Session contains multiple activities from both the user and the agent, e.g. plan generation, messages, progress updates.</p>
+<p>In other words, <strong>for programmatic use the context is the pollable "session + activity" state stream</strong>, not a one-shot conversation. Across tasks, the official pages offer <strong>environment snapshot</strong> reuse:</p>
+<p>reusing previous setups so new tasks run faster</p>
+<p><strong>Context-window size and the concrete implementation of long-term memory — no numbers given on the readable official pages; not stated officially.</strong></p>
+<p>(Jules API page and official FAQ page checked.)</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>The core of approval is "plan approval", and the API and web defaults differ.</strong></p>
+<p>By default, sessions created through the API will have their plans automatically approved. If you want to create a session that requires explicit plan approval, set the <code>requirePlanApproval</code> field to <code>true</code></p>
+<p>The web default is:</p>
+<p><strong>Official wording</strong>: "Prompt a task and approve Jules' plan"</p>
+<p><strong>i.e. the programmatic entry skips human approval by default; it must be explicitly turned on.</strong></p>
+<p>How code lands is decided by the <code>automationMode</code> set when creating the session — only <code>AUTO_CREATE_PR</code> opens a PR automatically.</p>
+<p>The <code>automationMode</code> field is optional. By default, no PR will be automatically created</p>
+<p>Repo access follows the authorization scope of the Jules GitHub app.</p>
+<p><strong>Privacy stance: the official FAQ states clearly it does not train on private repo content.</strong></p>
+<p>Jules does not train on private repository content</p>
+<p><strong>Quota boundary</strong>: the concrete task counts for the free tier and Pro / Ultra are not listed on the readable official pages (see the official plan page). But the point that <strong>"quota is counted per task, not per token"</strong> can be read from the official API concept (session is the task unit).</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>The work the official pages scope for it is concrete: hand a task description to a GitHub repo and it does these things:</p>
+<ul><li><strong>Official wording</strong>: "fix bugs, update dependencies, migrate code, and add new features"</li><li>Delivery form <strong>official wording</strong>: "test verified patches", "Open PRs with runnable code and test results"</li></ul>
+<p>So it <strong>fits self-contained, verifiable work</strong>: fixing a clear bug, bumping a dependency, adding tests, migrating code snippets, small-scope new features. It <strong>does not fit</strong>: real-time shell work and high-frequency change-as-it-runs interaction — for that, the CLI / IDE forms in this section are better. It also does not fit vague, architecture-level tasks needing heavy clarification. The official FAQ itself lists "vague prompts" among common causes of task failure.</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Treating the old beta docs' "2 concurrent / 5 total tasks per day" as today's free tier</li>
+<li>Assuming API-created sessions wait for you to approve the plan — they auto-approve by default</li>
+<li>Mistaking Jules for a local/IDE live agent — it is an asynchronous cloud agent</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-08。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>changelog</td><td>Google · Jules official changelog (verified 2026-10-08, official changelog entry)</td><td><a href="https://jules.google/docs/changelog/" rel="noopener" target="_blank">https://jules.google/docs/changelog/</a></td></tr>
+<tr><td>docs</td><td>Google · Jules API (alpha; Sources / Sessions / Activities, X-Goog-Api-Key, plan approval and AUTO_CREATE_PR)</td><td><a href="https://developers.google.com/jules/api" rel="noopener" target="_blank">https://developers.google.com/jules/api</a></td></tr>
+<tr><td>docs</td><td>Google · Jules REST reference (approvePlan / create / list / sendMessage and other methods)</td><td><a href="https://developers.google.com/jules/api/reference/rest" rel="noopener" target="_blank">https://developers.google.com/jules/api/reference/rest</a></td></tr>
+<tr><td>docs</td><td>Google · Jules official docs FAQ / usage limits (cloud VM, internet access, failure retry, no training on private repos)</td><td><a href="https://jules-documentation.web.app/faq" rel="noopener" target="_blank">https://jules-documentation.web.app/faq</a></td></tr>
+<tr><td>pricing</td><td>Google · Google AI plans page (Pro lists Jules extended quota, Ultra lists task and concurrency extensions, captured 2026-10-08)</td><td><a href="https://one.google.com/intl/en_us/about/google-ai-plans/" rel="noopener" target="_blank">https://one.google.com/intl/en_us/about/google-ai-plans/</a></td></tr>
+<tr><td>engineering</td><td>Google · Jules generally available (2025-08-06 GA: free entry with Pro 5x / Ultra 20x quota)</td><td><a href="https://blog.google/technology/google-labs/jules-now-available/" rel="noopener" target="_blank">https://blog.google/technology/google-labs/jules-now-available/</a></td></tr>
+<tr><td>engineering</td><td>Google · Jules proactive-capability update (Suggested Tasks / Scheduled Tasks / Render integration, 2025-12-10)</td><td><a href="https://blog.google/technology/developers/jules-proactive-updates/" rel="noopener" target="_blank">https://blog.google/technology/developers/jules-proactive-updates/</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong> (three items, all pointing at what the readable official pages do not give):</p>
+<ul><li><strong>The real behavior of the plan-approval switch</strong> — the API defaults to auto-approve, the web requires approval; the two defaults differ</li><li><strong>Whether tasks keep running after you close the browser</strong>, and whether a PR really gets opened on completion</li><li><strong>How much the free tier and Pro tier actually differ in task counts</strong> — that number is not on the official pages; only measurement can confirm it</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>The async flow and plan approval (this verification's focus)</h2>
+<p>The official REST docs spell the flow out clearly, and one point is the easiest to misread:</p>
+<p><strong>Official wording</strong>: By default, sessions created through the API will have their plans <strong>Official wording</strong>: automatically approved. If you want to create a session that requires <strong>Official wording</strong>: explicit plan approval, set the <code>requirePlanApproval</code> field to <code>true</code>.</p>
+<p><strong>i.e.: tasks created via the API have their plans auto-approved by default; human gating must be explicitly turned on.</strong> The web default is "Prompt a task and approve Jules' plan".</p>
+<p>PR generation likewise needs an explicit switch:</p>
+<p><strong>Official wording</strong>: The <code>automationMode</code> field is optional. By default, no PR will be <strong>Official wording</strong>: automatically created.</p>
+<p>Only <code>AUTO_CREATE_PR</code> opens PRs automatically.</p>
+<p>Progress comes back as an activity stream. Related API methods and event names:</p>
+<p><strong>Methods</strong>: <code>sessions/{id}:approvePlan</code>, <code>sessions</code>, <code>sessions/{id}:sendMessage</code> <strong>Events</strong>: <code>planGenerated</code> / <code>progressUpdated</code> / <code>sessionCompleted</code> <strong>Artifacts</strong>: <code>bashOutput</code>, <code>changeSet</code> (gitPatch)</p>
+</div>
+<div class="panel is-slim">
+<h2>Verification notes</h2>
+<p>Basis for <code>confidence: partial</code>: the 2026-10-08 check verified the official GA launch page, the Google One plan page, the Jules API and its REST reference, the official FAQ page, and two official blog updates.</p>
+<p><strong>The gaps fall into two classes, and these two classes genuinely are absent from the readable official pages:</strong></p>
+<ul><li>"Numbers": per-tier daily task counts and concurrency (the jules.google pricing page is JS-rendered and could not be captured)</li><li>"Model mapping": the current default model and which model each tier maps to</li><li>Also: whether MCP is supported</li></ul>
+<p>These are recorded as "not stated officially", with the checked pages listed — <strong>no guessing.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/openai-dot.html">OpenAI Dot</a></span><span class="rel-n">also vendor-cloud form; compare "keeps running after shutdown" and the permission layer point by point</span></li>
+<li><span class="rel-t"><a href="/en/coding/meta-muse.html">Meta Muse</a></span><span class="rel-n">also a background always-on agent; approval and memory mechanisms are the main differences</span></li>
+<li><span class="rel-t"><a href="/en/coding/grok-bot.html">xAI Grok Bot</a></span><span class="rel-n">also an async cloud agent; the difference is pay-per-use versus per-action approval</span></li>
+<li><span class="rel-t"><a href="/en/coding/codex-cli.html">Codex CLI</a></span><span class="rel-n">cross-form contrast: Codex also has a cloud task entry, but its primary form is the terminal</span></li>
+<li><span class="rel-t"><a href="/en/mcp/github-mcp.html">GitHub MCP Server</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/augment-code.html">Augment Code</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Augment Code is the enterprise 'software factory' platform: Cosmos turns</td></tr><tr><td><a href="/en/coding/grok-bot.html">xAI Grok Bot</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">The official page explains uses through a list of jobs. It does not disc</td></tr><tr><td><a href="/en/coding/meta-muse.html">Meta Muse</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A design with a separate agent handling approval — two system-isolated t</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from Google</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/automation/vertex-agent-builder.html"><span class="vp-cat">Automation</span>Vertex AI Agent Builder</a></li><li><a href="/en/chat/gemini-chat.html"><span class="vp-cat">General chat</span>Gemini (chat app)</a></li><li><a href="/en/coding/gemini-cli.html"><span class="vp-cat">AI coding</span>Gemini CLI</a></li><li><a href="/en/coding/google-antigravity.html"><span class="vp-cat">AI coding</span>Google Antigravity</a></li><li><a href="/en/framework/google-adk.html"><span class="vp-cat">Frameworks &amp; runtimes</span>Google ADK（Agent Development Kit）</a></li><li><a href="/en/mcp/chrome-devtools-mcp.html"><span class="vp-cat">MCP tools</span>Chrome DevTools MCP</a></li><li><a href="/en/office/google-workspace-gemini.html"><span class="vp-cat">Office &amp; writing</span>Google Workspace Gemini</a></li><li><a href="/en/research/notebooklm.html"><span class="vp-cat">Deep research</span>NotebookLM</a></li><li><a href="/en/video/veo.html"><span class="vp-cat">Video generation</span>Veo (Google)</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

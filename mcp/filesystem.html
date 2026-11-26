@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Filesystem MCP Server — MCP | 投机取巧</title>
-  <meta name="description" content="Filesystem MCP Server（Model Context Protocol）：MCP 官方 reference server 里的文件操作实现。它是「白名单目录」式访问：必须显式声明允许目录，不允许静默访问全盘。" />
-  <link rel="canonical" href="https://tools.specul.com/mcp/filesystem.html" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Filesystem MCP Server" />
-  <meta property="og:url" content="https://tools.specul.com/mcp/filesystem.html" />
-  <meta property="og:title" content="Filesystem MCP Server — MCP | 投机取巧" />
-  <meta property="og:description" content="Filesystem MCP Server（Model Context Protocol）：MCP 官方 reference server 里的文件操作实现。它是「白名单目录」式访问：必须显式声明允许目录，不允许静默访问全盘。" />
-  <meta property="og:image" content="https://specul.com/home-shots/og-home.jpg?v=20261123d" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:locale" content="zh_CN" />
-  <meta property="og:locale:alternate" content="en_US" />
-  <meta name="theme-color" content="#16121f" />
-  <link rel="icon" type="image/png" href="../assets/brand/dandelion-favicon-site.png" />
-  <link rel="apple-touch-icon" href="../assets/brand/dandelion-apple-touch-site.png" />
-  <script src="../brand.js?v=37d1072be69b"></script>
-  <link rel="stylesheet" href="../brand.css?v=37d1072be69b" />
-  <link rel="stylesheet" href="../site.css" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Filesystem MCP Server","applicationCategory":"DeveloperApplication","url":"https://www.npmjs.com/package/@modelcontextprotocol/server-filesystem","sameAs":"https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem","description":"MCP 官方 reference server 里的文件操作实现。它是「白名单目录」式访问：必须显式声明允许目录，不允许静默访问全盘。","dateModified":"2026-10-23"}</script>
-</head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Filesystem MCP Server — MCP | 投机取巧</title>
+<meta content="Filesystem MCP Server（Model Context Protocol）：MCP 官方 reference server 里的文件操作实现。它是「白名单目录」式访问：必须显式声明允许目录，不允许静默访问全盘。" name="description"/>
+<link href="https://tools.specul.com/mcp/filesystem.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Filesystem MCP Server" property="og:site_name"/>
+<meta content="https://tools.specul.com/mcp/filesystem.html" property="og:url"/>
+<meta content="Filesystem MCP Server — MCP | 投机取巧" property="og:title"/>
+<meta content="Filesystem MCP Server（Model Context Protocol）：MCP 官方 reference server 里的文件操作实现。它是「白名单目录」式访问：必须显式声明允许目录，不允许静默访问全盘。" property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="zh_CN" property="og:locale"/>
+<meta content="en_US" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="../assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="../assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="../brand.js?v=37d1072be69b"></script>
+<link href="../brand.css?v=37d1072be69b" rel="stylesheet"/>
+<link href="../site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Filesystem MCP Server","applicationCategory":"DeveloperApplication","url":"https://www.npmjs.com/package/@modelcontextprotocol/server-filesystem","sameAs":"https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem","description":"MCP 官方 reference server 里的文件操作实现。它是「白名单目录」式访问：必须显式声明允许目录，不允许静默访问全盘。","dateModified":"2026-10-23"}</script>
+<link href="https://tools.specul.com/mcp/filesystem.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/filesystem.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/filesystem.html" hreflang="x-default" rel="alternate"/></head>
 <!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
      同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
      而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
@@ -32,370 +32,342 @@
      ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
      （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
 <body class="brand-ambient has-tabbar has-tabbar-1row">
-  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
-  <header class="site-header">
-    <div class="container site-bar">
-      <a class="brand" href="https://specul.com/" title="投机取巧">
-        <span class="brand-dot" aria-hidden="true"></span>
-        <span class="brand-text">
-          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
-          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
-        </span>
-      </a>
-      <nav class="nav-links" aria-label="站点导航">
-        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
-        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
-        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>工具</span><span data-en>Tools</span></a>
-        <a href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a>
-        <a href="https://demos.specul.com/"><span data-zh>作品演示</span><span data-en>Playground</span></a>
-        <a href="https://oss.specul.com/"><span data-zh>开源库</span><span data-en>OSS</span></a>
-        <a href="https://hardware.specul.com/"><span data-zh>硬件算力</span><span data-en>Compute</span></a>
-        <a href="https://papers.specul.com/"><span data-zh>AI 论文</span><span data-en>AI Papers</span></a>
-        <a href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a>
-        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
-      </nav>
-      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+<a class="t-skip" href="#main"><span data-zh="">跳到主要内容</span><span data-en="">Skip to main content</span></a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" data-en-name="Speculative Speculation" data-zh-name="投机取巧" id="markName">投机取巧</span>
+<span class="brand-sub" data-en-sub="" data-zh-sub="Speculative Speculation" id="markSub">Speculative Speculation</span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/"><span data-zh="">首页</span><span data-en="">Home</span></a>
+<a href="https://learn.specul.com/"><span data-zh="">学 AI</span><span data-en="">Learn</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span data-zh="">工具</span><span data-en="">Tools</span></a>
+<a href="https://models.specul.com/"><span data-zh="">模型</span><span data-en="">Models</span></a>
+<a href="https://demos.specul.com/"><span data-zh="">作品演示</span><span data-en="">Playground</span></a>
+<a href="https://oss.specul.com/"><span data-zh="">开源库</span><span data-en="">OSS</span></a>
+<a href="https://hardware.specul.com/"><span data-zh="">硬件算力</span><span data-en="">Compute</span></a>
+<a href="https://papers.specul.com/"><span data-zh="">AI 论文</span><span data-en="">AI Papers</span></a>
+<a href="https://chain.specul.com/"><span data-zh="">链</span><span data-en="">Chain</span></a>
+<a href="https://nav.specul.com/"><span data-zh="">AI 导航</span><span data-en="">AI Directory</span></a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
            放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
            （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
            链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
-      <span class="nav-tools">
-        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
-        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
-        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
-      </span>
-      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+<span class="nav-tools">
+<a aria-label="搜索" class="icon-btn" data-ui-aria-label-en="Search" data-ui-aria-label-zh="搜索" data-ui-title-en="Search all sites" data-ui-title-zh="搜索全站" href="https://specul.com/search.html" title="搜索全站"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="Switch to English" class="icon-btn" href="/en/mcp/filesystem.html" hreflang="en" id="langBtn" lang="en" title="Switch to English">EN</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
            行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
            无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
            「导航被藏进一个点了没反应的按钮」。 -->
-      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
-        <i></i><i></i><i></i>
-      </button>
-    </div>
-  </header>
-  <div class="nav-scrim"></div>
-  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
-    <div class="nav-drawer-h">
-      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
-      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
-      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
-    </div>
-    <nav class="nav-drawer-list">
-      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>工具</span><span data-en>Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://models.specul.com/"><span><span data-zh>模型</span><span data-en>Models</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://demos.specul.com/"><span><span data-zh>作品演示</span><span data-en>Playground</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://oss.specul.com/"><span><span data-zh>开源库</span><span data-en>OSS</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://hardware.specul.com/" class="nav-group-start"><span><span data-zh>硬件算力</span><span data-en>Compute</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://papers.specul.com/"><span><span data-zh>AI 论文</span><span data-en>AI Papers</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://chain.specul.com/"><span><span data-zh>链</span><span data-en>Chain</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://nav.specul.com/" class="nav-group-start" data-nav-group="external"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">↗</span></a>
-    </nav>
-    <div class="nav-drawer-foot">
-      <p><span data-zh>内容站覆盖学、用、选、跑；AI 导航是站外的 AI 网站目录，点出去看。</span><span data-en>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</span></p>
-      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
-    </div>
-  </aside>
-  <main id="main">
-    <div class="container detail">
-      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
-        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
-        <span aria-current="page">MCP</span>
-      </nav>
-      <a class="back" href="./">← MCP</a>
-
-      <div class="detail-head">
-        <div class="mark" style="--card-accent:&quot;#4A90D9&quot;" aria-hidden="true"><span data-zh>FS</span><span data-en>FI</span></div>
-        <div>
-          <h1><span data-zh>Filesystem MCP Server</span><span data-en>Filesystem MCP Server</span></h1>
-          <div class="vendor is-caps">Model Context Protocol</div>
-        </div>
-      </div>
-
-      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a> · <a href="#dimension-transport"><span data-zh>传输方式</span><span data-en>Transport</span></a> · <a href="#dimension-auth"><span data-zh>认证机制</span><span data-en>Authentication</span></a> · <a href="#dimension-scope"><span data-zh>权限范围</span><span data-en>Permission scope</span></a></p></nav>
-      <div class="badges">
-        <span class="tag on"><span data-zh>文件</span><span data-en>Files</span></span>
-        <span class="tag on"><span data-zh>本地</span><span data-en>Local</span></span>
-        <span class="tag on"><span data-zh>只读</span><span data-en>Read-only</span></span>
-        <span class="tag on"><span data-zh>读写</span><span data-en>Read and write</span></span>
-        <span class="t-state is-ok"><span data-zh>8 项已核</span><span data-en>8 axes checked</span></span>
-        <span class="t-state is-ok"><span data-zh>活跃</span><span data-en>Active</span></span>
-        <span class="badge"><span data-zh>最后核验</span><span data-en>Checked</span> 2026-10-23</span>
-      </div>
-
-      <p class="t-sm"><span data-zh>两个标签分开读：左边讲这页的证据是否齐，右边讲上游产品还在不在更新。停更不等于资料残缺；证据齐也不等于产品还活跃。</span><span data-en>Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</span></p>
-      <section class="snapshot" aria-label="决策快照" data-ui-aria-label-zh="决策快照" data-ui-aria-label-en="Decision snapshot">
-      <div class="snap-head">
-        <h2><span data-zh>30 秒判断：它能不能进你的候选名单</span><span data-en>30-second check: should it make your shortlist?</span></h2>
-        
-      </div>
-      <div class="snap-grid">
-        <div class="snap-item"><span class="snap-k"><span data-zh>一句话</span><span data-en>In one line</span></span><p><span data-zh>MCP 官方 reference server 里的文件操作实现。它是「白名单目录」式访问：必须显式声明允许目录，不允许静默访问全盘。</span><span data-en>The file-operation implementation among MCP's official reference servers, requiring…</span></p></div>
-        <div class="snap-item"><span class="snap-k"><span data-zh>怎么用它</span><span data-en>How you use it</span></span><p><span data-zh>本地 / 自托管</span><span data-en>Local / self-hosted</span> · <span data-zh>MCP 服务</span><span data-en>MCP server</span></p></div>
-        <div class="snap-item"><span class="snap-k"><span data-zh>许可 / 商用</span><span data-en>Licence / commercial use</span></span><p><span data-zh>未核</span><span data-en>Not checked</span></p><small><span data-zh>商用前读原文，别只看标签</span><span data-en>Read the original licence before commercial use</span></small></div>
-        <div class="snap-item"><span class="snap-k"><span data-zh>中国大陆</span><span data-en>Mainland China</span></span><p><span data-zh>大陆可直连</span><span data-en>Direct in mainland</span> · <span data-zh>未见于备案</span><span data-en>Not in filing list</span></p></div>
-      </div>
-      <p class="snap-note"><span data-zh>这四张卡只帮你快速排除，不替你做决定；真正的差别在下面 8 个问题和来源里。</span><span data-en>These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</span></p>
-    </section>
-            <div class="panel is-slim">
-        <h2 id="known-unknowns"><span data-zh>未确认的信息</span><span data-en>Information not confirmed</span></h2>
-        <span data-zh>
-        <ul>
-          <li>最低协议版本要求（仓库未声明）</li>
-          <li>是否支持 Streamable HTTP（仓库未声明）</li>
-          <li>输出结构的具体 schema（需读源码或实测）</li>
-          <li>各工具在路径不存在时的错误信息质量</li>
-        </ul></span><span data-en>
-        <ul>
-          <li>Minimum protocol version requirement (not declared in the repo)</li>
-          <li>Whether Streamable HTTP is supported (not declared in the repo)</li>
-          <li>The concrete schema of output structures (requires reading source or measuring)</li>
-          <li>The quality of error messages from each tool when a path does not exist</li>
-        </ul></span>
-      </div>
-
-
-            
-      <div class="panel-lead"><span data-zh><p>MCP 官方 reference server 里的文件操作实现。<strong>它是「白名单目录」式访问：必须显式声明允许目录，不允许静默访问全盘</strong>。</p></span><span data-en><p>The file-operation implementation among MCP&#39;s official reference servers, <strong>requiring allowed directories to be declared explicitly, with no silent whole-disk access</strong>.</p></span></div>
-
-            <div class="panel is-slim">
-        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
-<span data-zh>        <div><p>让 Agent 在明确指定的目录内读写文本与媒体文件。需要目录边界清晰、 且不需要删除操作时。</p></div>
-        <div class="warn-p"><p><strong>不适合</strong>需要删除操作、需要跨目录聚合， 或需要任意路径访问的场景——本 server 的设计目标就是收紧这个边界。</p></div></span><span data-en>        <div><p>Scenarios where an agent must read or write within explicitly declared directories.</p></div>
-        <div class="warn-p"><p><strong>Not a fit for</strong> open-ended exploration of the filesystem — allowed directories must be declared, there is no silent whole-disk access.</p></div></span>
-      </div>
-
-            <div class="panel">
-        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-10-20</span></h2>
-        <dl class="cn-rows">
-          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>国外主体（网信办公示名单未见对应备案主体）。</span><span data-en>foreign entity (no matching filing entity in the CAC registry).</span></dd>
-          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>官网仓库在 GitHub，大陆直连波动（同日实测 200/000 混合）；npm / PyPI 安装源实测稳定可达。</span><span data-en>Hosted on GitHub — direct reachability from mainland fluctuates (200/000 mixed on the same day); npm / PyPI install routes measured stable.</span></dd>
-          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>未见于备案名单</span><span data-en>not in filing list</span>：<span data-zh>未见于网信办公示名单（2026-10-20 检索 13 批附件，https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm）；该产品未面向大陆公众提供服务，备案不适用。</span><span data-en>not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</span></dd>
-        </dl>
-        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
-      </div>
-
-
-      <div class="block-head">
-        <h2 class="t-h2"><span data-zh>11 个问题，一张表</span><span data-en>11 questions, one table</span></h2>
-        <p class="t-section-lead">11 <span data-zh>个问题</span><span data-en>questions</span>, <span data-zh>与同类对象逐项可比</span><span data-en>each comparable item by item with its peers</span>.</p>
-      </div>
-      <dl class="axes">
-        <div class="axis" id="dimension-model_access">
-          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
-          <dd><span data-zh><p>本身不调用模型，是被客户端调用的接口实现。</p>
-            <p>依赖 @modelcontextprotocol/sdk（npm 2026.8.31 实测 ^1.30.0）； 协议版本在 initialize 握手时由 SDK 与客户端协商，不绑定单一版本。</p></span><span data-en><p>It calls no model itself; it is an interface implementation called by clients. It depends on @modelcontextprotocol/sdk (npm measured 2026.8.31: ^1.30.0); the protocol version is negotiated between SDK and client at the initialize handshake, not pinned to a single version.</p></span></dd>
-        </div>
-        <div class="axis" id="dimension-runtime">
-          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
-          <dd><span data-zh><p>本地 Node.js 子进程，通过 stdio 与客户端通信。 生命周期绑定客户端进程，客户端退出即停止。</p></span><span data-en><p>A local Node.js child process communicating with the client over stdio. Its lifecycle is bound to the client process — it stops when the client exits.</p></span></dd>
-        </div>
-        <div class="axis" id="dimension-local_files">
-          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
-          <dd><span data-zh><p>核心能力。<strong>默认不支持无限制访问</strong>： 必须通过命令行参数指定允许目录，或客户端支持 Roots 协议动态下发。 <strong>若无参数启动且客户端不支持 roots，server 在初始化阶段直接报错。</strong></p></span><span data-en><p>The core capability. <strong>Unrestricted access is not the default</strong>: allowed directories must be given via command-line arguments, or delivered dynamically if the client supports the Roots protocol. <strong>If started with no arguments and the client does not support roots, the server errors out directly at initialization.</strong></p></span></dd>
-        </div>
-        <div class="axis" id="dimension-background">
-          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
-          <dd><span data-zh><p>不支持。本地 stdio 进程随客户端生死， 无独立守护或云端执行形态。</p></span><span data-en><p>Not supported. A local stdio process lives and dies with the client; there is no standalone daemon or cloud-execution form.</p></span></dd>
-        </div>
-        <div class="axis" id="dimension-tools">
-          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
-          <dd><span data-zh><p>提供 11 个工具：read_text_file、read_media_file、read_multiple_files、</p>
-            <p>write_file、edit_file、create_directory、list_directory、</p>
-            <p>list_directory_with_sizes、move_file、search_files、directory_tree。</p>
-            <p>输出为结构化内容，可直接消费。</p></span><span data-en><p>It provides 11 tools: read_text_file, read_media_file, read_multiple_files,</p>
-            <p>write_file, edit_file, create_directory, list_directory,</p>
-            <p>list_directory_with_sizes, move_file, search_files, directory_tree. Output is structured content, ready for direct consumption.</p></span></dd>
-        </div>
-        <div class="axis" id="dimension-context">
-          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
-          <dd><span data-zh><p>无状态。每次调用独立，不保留会话记忆。 list_allowed_directories 可查询当前生效目录。</p></span><span data-en><p>Stateless. Each call is independent; no session memory is kept. list_allowed_directories can query the currently effective directories.</p></span></dd>
-        </div>
-        <div class="axis" id="dimension-permissions">
-          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
-          <dd><span data-zh><p><strong>无独立审批机制</strong>，权限边界完全由允许目录决定。 全部文件操作限制在允许目录内，越界会被拒绝。</p>
-            <p><strong>注意：提供 write_file / edit_file / move_file / create_directory， 属可写但无删除工具的组合。</strong></p></span><span data-en><p><strong>No separate approval mechanism</strong>; the permission boundary is defined entirely by the allowed directories. All file operations are confined to the allowed directories; anything outside is rejected.</p>
-            <p><strong>Note: it provides write_file / edit_file / move_file / create_directory — a combination that is writable but has no delete tool.</strong></p></span></dd>
-        </div>
-        <div class="axis" id="dimension-fit">
-          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
-          <dd><span data-zh><p>让 Agent 安全读写指定目录内的文本与媒体文件。 不适合需要删除操作或需要跨目录聚合的场景。</p></span><span data-en><p>Lets an Agent safely read and write text and media files inside specified directories. Not a fit for scenarios needing delete operations or cross-directory aggregation.</p></span></dd>
-        </div>
-        <div class="axis" id="dimension-transport">
-          <dt><span data-zh>传输方式</span><span data-en>Transport</span></dt>
-          <dd><span data-zh><p>仅 stdio。本地 Node.js 进程，通过标准输入输出通信。</p>
-            <p>官方 README（2026-10-08 全文核验）只给两种本地启动方式。 即 npx 与 Docker。它没有远程传输的官方配置。 目录控制走命令行参数或 MCP Roots（可动态更新）。</p></span><span data-en><p>stdio only. A local Node.js process communicating over standard input/output. The official README (full-text verified 2026-10-08) gives only two local launch methods: npx and Docker. There is no official configuration for a remote transport. Directory control goes through command-line arguments or MCP Roots (dynamically updatable).</p></span></dd>
-        </div>
-        <div class="axis" id="dimension-auth">
-          <dt><span data-zh>认证机制</span><span data-en>Authentication</span></dt>
-          <dd><span data-zh><p>无独立认证层。stdio 形态继承启动它的客户端用户的全部文件权限。 权限边界靠目录白名单实现，不靠认证机制。</p></span><span data-en><p>No separate authentication layer. In stdio form it inherits all file permissions of the client user that launches it. The permission boundary is not an auth mechanism but a directory allowlist.</p></span></dd>
-        </div>
-        <div class="axis" id="dimension-scope">
-          <dt><span data-zh>权限范围</span><span data-en>Permission scope</span></dt>
-          <dd><span data-zh><p><strong>默认范围窄且强制显式</strong>：必须通过命令行参数指定允许目录， 或客户端支持 Roots 协议动态下发。 无参数且客户端不支持 roots 时，server 初始化即报错。</p>
-            <p><strong>不提供删除工具</strong>；提供写入、编辑、移动、建目录。 可用 list_allowed_directories 查询当前生效目录。</p></span><span data-en><p><strong>The default scope is narrow and explicitly forced</strong>: allowed directories must be given via command-line arguments, or delivered dynamically if the client supports the Roots protocol. With no arguments and no client roots support, the server errors out at initialization.</p>
-            <p><strong>No delete tool is provided</strong>; write, edit, move and create-directory are. list_allowed_directories can query the currently effective directories.</p></span></dd>
-        </div>
-      </dl>
-
-      
-
-      <nav class="panel is-slim" aria-label="使用排查" data-ui-aria-label-zh="使用排查" data-ui-aria-label-en="Troubleshooting">
-        <h2><span data-zh>使用时遇到问题</span><span data-en>When something fails</span></h2>
-        <p><a href="../mcp/guides/failure-library.html#auth"><span data-zh>身份与权限</span><span data-en>Authentication and permissions</span></a> · <a href="../mcp/guides/failure-library.html#tool-input"><span data-zh>工具输入错误</span><span data-en>Invalid tool inputs</span></a> · <a href="../mcp/guides/failure-library.html#json"><span data-zh>输出格式错误</span><span data-en>Invalid output format</span></a></p>
-      </nav>
-
-            <div class="panel warn">
-        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
-        <ul>
-
-          <li><span data-zh>以为官方仓库的 server 可以直接上生产，README 明确声明仅供参考实现</span><span data-en>Assuming the official repo&#39;s server is production-ready — the README states it is a reference implementation only</span></li>
-          <li><span data-zh>不传目录参数就启动，会在初始化阶段报错而不是静默访问全盘</span><span data-en>Starting it without a directory argument — it errors at initialisation rather than silently touching the whole disk</span></li>
-          <li><span data-zh>以为没给 write 类工具就不能改文件，write_file / edit_file 确实可写</span><span data-en>Assuming that withholding write tools prevents file changes — write_file / edit_file do write</span></li>
-        </ul>
-      </div>
-
-
-
-
-      <div class="panel">
-        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
-        <p class="t-sm"><span data-zh>最后核验</span><span data-en>Checked</span> 2026-10-23，<span data-zh>内容更新</span><span data-en>Content updated</span> 2026-10-08。<span data-zh>只说明这页最后核验的日期，不代表每个字段都在同一天重新查过。</span><span data-en>This is the date of the entry, not a claim that every field was rechecked that day.</span></p>
-        <table class="src">
-          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
-          <tbody>
-            <tr><td>changelog</td><td><span data-zh>MCP · Servers Releases（2026.8.31 / 2026.8.18 / 2026.7.10）</span><span data-en>MCP · Servers Releases (2026.8.31 / 2026.8.18 / 2026.7.10)</span></td><td><a href="https://github.com/modelcontextprotocol/servers/releases" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers/releases</a></td></tr>
-            <tr><td>changelog</td><td><span data-zh>MCP · Filesystem 目录变更历史</span><span data-en>MCP · Filesystem directory change history</span></td><td><a href="https://github.com/modelcontextprotocol/servers/commits/main/src/filesystem" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers/commits/main/src/filesystem</a></td></tr>
-            <tr><td>docs</td><td><span data-zh>MCP · Filesystem Server</span><span data-en>MCP · Filesystem Server</span></td><td><a href="https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem</a></td></tr>
-            <tr><td>repo</td><td><span data-zh>MCP · Servers 仓库 README（含生产环境免责声明）</span><span data-en>MCP · Servers repo README (with production-use disclaimer)</span></td><td><a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener">https://github.com/modelcontextprotocol/servers</a></td></tr>
-            <tr><td>docs</td><td><span data-zh>MCP · 规范</span><span data-en>MCP · specification</span></td><td><a href="https://modelcontextprotocol.io/specification" target="_blank" rel="noopener">https://modelcontextprotocol.io/specification</a></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-            <div class="panel is-slim">
-        <h2><span data-zh>实测记录</span><span data-en>Test notes</span></h2>
-        <span data-zh><p>本档未在真实客户端逐项跑通；工具清单与权限来自官方 README。</p></span><span data-en><p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" target="_blank" rel="noopener">protocols/mcp/_protocol.md</a>.</p></span>
-      </div>
-
-
-            <div class="panel is-slim">
-        <h2><span data-zh>变更记录说明</span><span data-en>Change-log notes</span></h2>
-        <span data-zh><p><strong>本对象无独立 changelog 页</strong>。变更记录看 MCP servers 仓库的 releases 页。目录级改动看该目录的 commit 历史：</p>
-            <div class="tbl-wrap"><table><thead><tr><th>日期</th><th>类型</th><th>内容</th></tr></thead><tbody><tr><td>2026-09-03</td><td>fix</td><td>声明 zod 运行时依赖</td></tr><tr><td>2026-08-30</td><td>fix</td><td>拒绝 POSIX 下的 Windows 路径</td></tr><tr><td>2026-08-28</td><td>fix</td><td><code>create_directory</code> 不创建父目录</td></tr></tbody></table></div>
-            <p>仓库整体 releases：2026.8.31 / 2026.8.18 / 2026.7.10。</p>
-            <p><strong>注意 08-30 那个修复</strong>。它说明 filesystem server 在不同平台路径语义上出过问题。这是实测时值得关注的点。</p></span><span data-en><p><strong>This object has no standalone changelog page</strong>. Change records are on the MCP servers repo&#39;s releases page. Directory-level changes are in that directory&#39;s commit history:</p>
-            <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Type</th><th>Content</th></tr></thead><tbody><tr><td>2026-09-03</td><td>fix</td><td>Declare the zod runtime dependency</td></tr><tr><td>2026-08-30</td><td>fix</td><td>Reject Windows paths under POSIX</td></tr><tr><td>2026-08-28</td><td>fix</td><td><code>create_directory</code> does not create parent directories</td></tr></tbody></table></div>
-            <p>Repo-wide releases: 2026.8.31 / 2026.8.18 / 2026.7.10.</p>
-            <p><strong>Note the 08-30 fix</strong>. It shows the filesystem server had path-semantics issues across platforms — a point worth watching during measurement.</p></span>
-      </div>
-      <div class="panel is-slim">
-        <h2><span data-zh>官方声明：reference server 不适合生产环境</span><span data-en>⚠ Production-use disclaimer (applies to all official reference servers)</span></h2>
-        <span data-zh><p>MCP servers 仓库 README 原文：</p>
-            <blockquote>The servers in this repository are intended as <strong>reference implementations</strong> to demonstrate MCP features and SDK usage. They are meant to serve as educational examples for developers building their own MCP servers, <strong>not as production-ready solutions</strong>. Developers should evaluate their own security requirements and implement appropriate safeguards based on their specific threat model and use case.</blockquote>
-            <p><strong>翻译</strong>：本仓库的 server 是<strong>参考实现</strong>，用于演示 MCP 特性与 SDK 用法。 它面向正在构建自己 MCP server 的开发者，<strong>不是生产就绪方案</strong>。 使用者需自行评估安全需求并按自身威胁模型实现防护。</p>
-            <blockquote><strong>注意</strong>：这句话适用于本分区所有官方 reference server， 每个条目的正文都应保留这一提示。</blockquote></span><span data-en><p>The MCP servers repo README, original wording:</p>
-            <blockquote>The servers in this repository are intended as <strong>reference implementations</strong> to demonstrate MCP features and SDK usage. They are meant to serve as educational examples for developers building their own MCP servers, <strong>not as production-ready solutions</strong>. Developers should evaluate their own security requirements and implement appropriate safeguards based on their specific threat model and use case.</blockquote>
-            <blockquote><strong>Note</strong>: this statement applies to every official reference server in this section;</blockquote>
-            <p>each entry&#39;s body should keep this reminder.</p></span>
-      </div>
-      <div class="panel is-slim">
-        <h2><span data-zh>权限设计实测记录</span><span data-en>Permission-design test notes</span></h2>
-        <span data-zh><p>这是本 server 最有价值的设计细节。</p>
-            <div class="tbl-wrap"><table><thead><tr><th>场景</th><th>行为</th></tr></thead><tbody><tr><td>启动时传目录参数</td><td>以参数为允许目录</td></tr><tr><td>启动时不传参数 + 客户端支持 Roots</td><td>客户端 roots <strong>完全替换</strong>服务端目录</td></tr><tr><td>启动时不传参数 + 客户端不支持 Roots</td><td><strong>初始化阶段报错</strong></td></tr><tr><td>运行时客户端 roots 变更</td><td>通过 <code>roots/list_changed</code> 通知更新，无需重启</td></tr></tbody></table></div>
-            <p><strong>&quot;无参数 + 不支持 roots = 启动失败&quot;这个设计值得肯定</strong>—— 它把一个潜在的权限失控（无限制文件访问）变成了显式的失败。</p></span><span data-en><p>This is the most valuable design detail of this server.</p>
-            <div class="tbl-wrap"><table><thead><tr><th>Scenario</th><th>Behaviour</th></tr></thead><tbody><tr><td>Directory arguments passed at launch</td><td>The arguments become the allowed directories</td></tr><tr><td>No arguments + client supports Roots</td><td>Client roots <strong>fully replace</strong> server-side directories</td></tr><tr><td>No arguments + client lacks Roots</td><td><strong>Error at initialization</strong></td></tr><tr><td>Client roots change at runtime</td><td>Updated via <code>roots/list_changed</code> notification, no restart needed</td></tr></tbody></table></div>
-            <p><strong>The &quot;no arguments + no roots support = startup failure&quot; design deserves credit</strong> — it turns a potential permission escape (unrestricted file access) into an explicit failure.</p></span>
-      </div>
-      <div class="panel is-slim">
-        <h2><span data-zh>工具清单</span><span data-en>Tool inventory</span></h2>
-        <span data-zh><div class="tbl-wrap"><table><thead><tr><th>类别</th><th>工具</th></tr></thead><tbody><tr><td>读</td><td><code>read_text_file</code> <code>read_media_file</code> <code>read_multiple_files</code></td></tr><tr><td>写</td><td><code>write_file</code> <code>edit_file</code></td></tr><tr><td>目录</td><td><code>create_directory</code> <code>list_directory</code> <code>list_directory_with_sizes</code> <code>move_file</code> <code>directory_tree</code></td></tr><tr><td>检索</td><td><code>search_files</code></td></tr></tbody></table></div>
-            <p><strong>注意</strong>：<strong>没有删除工具</strong>。这是有意的权限收敛设计。</p></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Category</th><th>Tools</th></tr></thead><tbody><tr><td>Read</td><td><code>read_text_file</code> <code>read_media_file</code> <code>read_multiple_files</code></td></tr><tr><td>Write</td><td><code>write_file</code> <code>edit_file</code></td></tr><tr><td>Directory</td><td><code>create_directory</code> <code>list_directory</code> <code>list_directory_with_sizes</code> <code>move_file</code> <code>directory_tree</code></td></tr><tr><td>Search</td><td><code>search_files</code></td></tr></tbody></table></div>
-            <p><strong>Note</strong>: <strong>there is no delete tool</strong>. This is a deliberate permission-narrowing design.</p></span>
-      </div>
-
-            <div class="panel is-slim">
-        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
-        <ul class="rel-list">
-          <li><span class="rel-t"><a href="./git.html"><span data-zh>Git MCP Server</span><span data-en>Git MCP Server</span></a></span><span class="rel-n"><span data-zh>版本控制方向</span><span data-en>The version-control direction</span></span></li>
-          <li><span class="rel-t"><a href="./memory.html"><span data-zh>Memory MCP Server</span><span data-en>Knowledge Graph Memory Server</span></a></span><span class="rel-n"><span data-zh>跨会话记忆方向</span><span data-en>The cross-session memory direction</span></span></li>
-          <li><span class="rel-t"><a href="/coding/claude-code-cli.html"><span data-zh>Claude Code CLI</span><span data-en>Claude Code CLI</span></a></span><span class="rel-n"><span data-zh>另一层 · AI 编程</span><span data-en>Other layer · AI coding</span></span></li>
-        </ul>
-      </div>
-
-
-      <section class="section peer-section" id="peers">
-      <div class="container">
-        <div class="matrix-head">
-          <p class="kicker"><span data-zh>同类对照</span><span data-en>Same-category peers</span></p>
-          <h2><span data-zh>先看这三个，再决定要不要往下读</span><span data-en>Look at these three before reading further</span></h2>
-          <p class="section-desc"><span data-zh>按用途重合度挑的，不是排名。先比「跑在哪 / 许可 / 状态」，三项里有一项不合格就可以跳过。</span><span data-en>Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</span></p>
-        </div>
-        <div class="table-wrap">
-          <table class="cmp peer-table">
-            <thead><tr><th><span data-zh>对象</span><span data-en>Object</span></th><th><span data-zh>跑在哪</span><span data-en>Where</span></th><th><span data-zh>许可</span><span data-en>Licence</span></th><th><span data-zh>证据 / 状态</span><span data-en>Evidence / status</span></th><th><span data-zh>适合做什么</span><span data-en>What it is for</span></th></tr></thead>
-            <tbody><tr><td><a href="./1password-mcp.html"><span data-zh>1Password Environments MCP Server</span><span data-en>1Password Environments MCP Server</span></a></td><td><span data-zh>本地 / 自托管</span><span data-en>Local / self-hosted</span></td><td><span data-zh>开源许可</span><span data-en>Open licence</span></td><td><span data-zh>8 项已核</span><span data-en>8 questions checked</span><br><span class="td-vendor"><span data-zh>活跃</span><span data-en>Active</span></span></td><td class="td-fit"><span data-zh>1Password 官方 Environments MCP server（本地 stdio，随桌面应用）：凭据类</span><span data-en>1Password official Environments MCP server (local stdio, rides the deskt</span></td></tr><tr><td><a href="./atlassian-mcp.html"><span data-zh>Atlassian Remote MCP Server（Jira/Confluence）</span><span data-en>Atlassian Remote MCP Server（Jira/Confluence）</span></a></td><td><span data-zh>云端 / API</span><span data-en>Cloud / API</span></td><td><span data-zh>商业条款</span><span data-en>Commercial terms</span></td><td><span data-zh>8 项已核</span><span data-en>8 questions checked</span><br><span class="td-vendor"><span data-zh>活跃</span><span data-en>Active</span></span></td><td class="td-fit"><span data-zh>Atlassian 官方 Remote MCP server：一个端点接 Jira+Confluence 两面—</span><span data-en>Atlassian's official Remote MCP server: one endpoint covers Jira + Confl</span></td></tr><tr><td><a href="./brave-search-mcp.html"><span data-zh>Brave Search MCP Server</span><span data-en>Brave Search MCP Server</span></a></td><td><span data-zh>本地 / 自托管</span><span data-en>Local / self-hosted</span></td><td><span data-zh>开源许可</span><span data-en>Open licence</span></td><td><span data-zh>8 项已核</span><span data-en>8 questions checked</span><br><span class="td-vendor"><span data-zh>活跃</span><span data-en>Active</span></span></td><td class="td-fit"><span data-zh>Brave 官方搜索 MCP server（MIT）：给 agent 补一路独立检索源（web/新闻/图像/地点</span><span data-en>Brave's official search MCP server (MIT): an independent retrieval sourc</span></td></tr></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-      <section class="section vendor-section" id="vendor">
-      <div class="container">
-        <div class="vendor-head">
-          <p class="kicker"><span data-zh>同厂牌</span><span data-en>Same vendor</span></p>
-          <h2><span data-zh>Model Context Protocol 还有这些</span><span data-en>More from Model Context Protocol</span></h2>
-          <p class="section-desc"><span data-zh>同一个厂牌的产品常被切到不同类目；这里一次列全，省得你跨五个站自己拼。</span><span data-en>One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</span></p>
-        </div>
-        <ul class="vendor-list"><li><a href="/mcp/everything.html"><span class="vp-cat"><span data-zh>MCP 工具</span><span data-en>MCP tools</span></span><span data-zh>Everything MCP Server</span><span data-en>Everything MCP Server</span></a></li><li><a href="/mcp/fetch.html"><span class="vp-cat"><span data-zh>MCP 工具</span><span data-en>MCP tools</span></span><span data-zh>Fetch MCP Server</span><span data-en>Fetch MCP Server</span></a></li><li><a href="/mcp/git.html"><span class="vp-cat"><span data-zh>MCP 工具</span><span data-en>MCP tools</span></span><span data-zh>Git MCP Server</span><span data-en>Git MCP Server</span></a></li><li><a href="/mcp/memory.html"><span class="vp-cat"><span data-zh>MCP 工具</span><span data-en>MCP tools</span></span><span data-zh>Knowledge Graph Memory Server</span><span data-en>Knowledge Graph Memory Server</span></a></li><li><a href="/mcp/sequential-thinking.html"><span class="vp-cat"><span data-zh>MCP 工具</span><span data-en>MCP tools</span></span><span data-zh>Sequential Thinking MCP Server</span><span data-en>Sequential Thinking MCP Server</span></a></li><li><a href="/mcp/time.html"><span class="vp-cat"><span data-zh>MCP 工具</span><span data-en>MCP tools</span></span><span data-zh>Time MCP Server</span><span data-en>Time MCP Server</span></a></li></ul>
-        
-      </div>
-    </section>
-
-      <p class="fine mt-6">
-        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
-        <span data-zh>判断标准与方法说明见仓库内</span><span data-en>For the judging criteria and method notes, see</span> <code>METHODOLOGY.md</code>.
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name"><span data-zh="">投机取巧</span><span data-en="">Speculative Speculation</span></span>
+<span class="brand-sub" data-en-sub="" data-zh-sub="Speculative Speculation">Speculative Speculation</span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/"><span><span data-zh="">首页</span><span data-en="">Home</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/"><span><span data-zh="">学 AI</span><span data-en="">Learn</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span><span data-zh="">工具</span><span data-en="">Tools</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/"><span><span data-zh="">模型</span><span data-en="">Models</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/"><span><span data-zh="">作品演示</span><span data-en="">Playground</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/"><span><span data-zh="">开源库</span><span data-en="">OSS</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/"><span><span data-zh="">硬件算力</span><span data-en="">Compute</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/"><span><span data-zh="">AI 论文</span><span data-en="">AI Papers</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/"><span><span data-zh="">链</span><span data-en="">Chain</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/"><span><span data-zh="">AI 导航</span><span data-en="">AI Directory</span></span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p><span data-zh="">内容站覆盖学、用、选、跑；AI 导航是站外的 AI 网站目录，点出去看。</span><span data-en="">Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</span></p>
+<nav><a href="https://specul.com/legal.html"><span data-zh="">法律条款</span><span data-en="">Legal terms</span></a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="面包屑" class="crumbs" data-ui-aria-label-en="Breadcrumb" data-ui-aria-label-zh="面包屑">
+<a href="https://tools.specul.com/"><span data-zh="">AI 工具</span><span data-en="">AI Tools</span></a>
+<span aria-current="page">MCP</span>
+</nav>
+<a class="back" href="./">← MCP</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#4A90D9"'><span data-zh="">FS</span><span data-en="">FI</span></div>
+<div>
+<h1><span data-zh="">Filesystem MCP Server</span><span data-en="">Filesystem MCP Server</span></h1>
+<div class="vendor is-caps">Model Context Protocol</div>
+</div>
+</div>
+<nav aria-label="档案目录" class="panel is-slim" data-ui-aria-label-en="Profile contents" data-ui-aria-label-zh="档案目录"><p><span data-zh="">先看你关心的部分</span><span data-en="">Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh="">模型与开放条件</span><span data-en="">Model &amp; openness</span></a> · <a href="#dimension-runtime"><span data-zh="">运行位置</span><span data-en="">Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh="">本地文件</span><span data-en="">Local files</span></a> · <a href="#dimension-background"><span data-zh="">关机后的任务</span><span data-en="">Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh="">工具与扩展</span><span data-en="">Tools &amp; extensions</span></a> · <a href="#dimension-context"><span data-zh="">上下文与记忆</span><span data-en="">Context &amp; memory</span></a> · <a href="#dimension-permissions"><span data-zh="">权限与限制</span><span data-en="">Permissions &amp; limits</span></a> · <a href="#dimension-fit"><span data-zh="">适合什么任务</span><span data-en="">Best for</span></a> · <a href="#dimension-transport"><span data-zh="">传输方式</span><span data-en="">Transport</span></a> · <a href="#dimension-auth"><span data-zh="">认证机制</span><span data-en="">Authentication</span></a> · <a href="#dimension-scope"><span data-zh="">权限范围</span><span data-en="">Permission scope</span></a></p></nav>
+<div class="badges">
+<span class="tag on"><span data-zh="">文件</span><span data-en="">Files</span></span>
+<span class="tag on"><span data-zh="">本地</span><span data-en="">Local</span></span>
+<span class="tag on"><span data-zh="">只读</span><span data-en="">Read-only</span></span>
+<span class="tag on"><span data-zh="">读写</span><span data-en="">Read and write</span></span>
+<span class="t-state is-ok"><span data-zh="">8 项已核</span><span data-en="">8 axes checked</span></span>
+<span class="t-state is-ok"><span data-zh="">活跃</span><span data-en="">Active</span></span>
+<span class="badge"><span data-zh="">最后核验</span><span data-en="">Checked</span> 2026-10-23</span>
+</div>
+<p class="t-sm"><span data-zh="">两个标签分开读：左边讲这页的证据是否齐，右边讲上游产品还在不在更新。停更不等于资料残缺；证据齐也不等于产品还活跃。</span><span data-en="">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</span></p>
+<section aria-label="决策快照" class="snapshot" data-ui-aria-label-en="Decision snapshot" data-ui-aria-label-zh="决策快照">
+<div class="snap-head">
+<h2><span data-zh="">30 秒判断：它能不能进你的候选名单</span><span data-en="">30-second check: should it make your shortlist?</span></h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k"><span data-zh="">一句话</span><span data-en="">In one line</span></span><p><span data-zh="">MCP 官方 reference server 里的文件操作实现。它是「白名单目录」式访问：必须显式声明允许目录，不允许静默访问全盘。</span><span data-en="">The file-operation implementation among MCP's official reference servers, requiring…</span></p></div>
+<div class="snap-item"><span class="snap-k"><span data-zh="">怎么用它</span><span data-en="">How you use it</span></span><p><span data-zh="">本地 / 自托管</span><span data-en="">Local / self-hosted</span> · <span data-zh="">MCP 服务</span><span data-en="">MCP server</span></p></div>
+<div class="snap-item"><span class="snap-k"><span data-zh="">许可 / 商用</span><span data-en="">Licence / commercial use</span></span><p><span data-zh="">未核</span><span data-en="">Not checked</span></p><small><span data-zh="">商用前读原文，别只看标签</span><span data-en="">Read the original licence before commercial use</span></small></div>
+<div class="snap-item"><span class="snap-k"><span data-zh="">中国大陆</span><span data-en="">Mainland China</span></span><p><span data-zh="">大陆可直连</span><span data-en="">Direct in mainland</span> · <span data-zh="">未见于备案</span><span data-en="">Not in filing list</span></p></div>
+</div>
+<p class="snap-note"><span data-zh="">这四张卡只帮你快速排除，不替你做决定；真正的差别在下面 8 个问题和来源里。</span><span data-en="">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</span></p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns"><span data-zh="">未确认的信息</span><span data-en="">Information not confirmed</span></h2>
+<span data-zh="">
+<ul>
+<li>最低协议版本要求（仓库未声明）</li>
+<li>是否支持 Streamable HTTP（仓库未声明）</li>
+<li>输出结构的具体 schema（需读源码或实测）</li>
+<li>各工具在路径不存在时的错误信息质量</li>
+</ul></span><span data-en="">
+<ul>
+<li>Minimum protocol version requirement (not declared in the repo)</li>
+<li>Whether Streamable HTTP is supported (not declared in the repo)</li>
+<li>The concrete schema of output structures (requires reading source or measuring)</li>
+<li>The quality of error messages from each tool when a path does not exist</li>
+</ul></span>
+</div>
+<div class="panel-lead"><span data-zh=""><p>MCP 官方 reference server 里的文件操作实现。<strong>它是「白名单目录」式访问：必须显式声明允许目录，不允许静默访问全盘</strong>。</p></span><span data-en=""><p>The file-operation implementation among MCP's official reference servers, <strong>requiring allowed directories to be declared explicitly, with no silent whole-disk access</strong>.</p></span></div>
+<div class="panel is-slim">
+<h2><span data-zh="">适合与不适合</span><span data-en="">When to use it, when not to</span></h2>
+<span data-zh=""> <div><p>让 Agent 在明确指定的目录内读写文本与媒体文件。需要目录边界清晰、 且不需要删除操作时。</p></div>
+<div class="warn-p"><p><strong>不适合</strong>需要删除操作、需要跨目录聚合， 或需要任意路径访问的场景——本 server 的设计目标就是收紧这个边界。</p></div></span><span data-en=""> <div><p>Scenarios where an agent must read or write within explicitly declared directories.</p></div>
+<div class="warn-p"><p><strong>Not a fit for</strong> open-ended exploration of the filesystem — allowed directories must be declared, there is no silent whole-disk access.</p></div></span>
+</div>
+<div class="panel">
+<h2><span data-zh="">中文生态</span><span data-en="">China availability</span> <span class="panel-note"><span data-zh="">国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en="">domestic / direct access / CAC filing · snapshot</span> 2026-10-20</span></h2>
+<dl class="cn-rows">
+<dt><span data-zh="">出品属地</span><span data-en="">Origin</span></dt><dd><span data-zh="">国外出品</span><span data-en="">foreign-made</span>　<span data-zh="">国外主体（网信办公示名单未见对应备案主体）。</span><span data-en="">foreign entity (no matching filing entity in the CAC registry).</span></dd>
+<dt><span data-zh="">国内使用</span><span data-en="">Direct access</span></dt><dd><span data-zh="">大陆可直连</span><span data-en="">direct OK</span>　<span data-zh="">官网仓库在 GitHub，大陆直连波动（同日实测 200/000 混合）；npm / PyPI 安装源实测稳定可达。</span><span data-en="">Hosted on GitHub — direct reachability from mainland fluctuates (200/000 mixed on the same day); npm / PyPI install routes measured stable.</span></dd>
+<dt><span data-zh="">备案状态</span><span data-en="">CAC filing</span></dt><dd><span data-zh="">未见于备案名单</span><span data-en="">not in filing list</span>：<span data-zh="">未见于网信办公示名单（2026-10-20 检索 13 批附件，https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm）；该产品未面向大陆公众提供服务，备案不适用。</span><span data-en="">not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</span></dd>
+</dl>
+<p class="cn-foot"><span data-zh="">备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en="">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+</div>
+<div class="block-head">
+<h2 class="t-h2"><span data-zh="">11 个问题，一张表</span><span data-en="">11 questions, one table</span></h2>
+<p class="t-section-lead">11 <span data-zh="">个问题</span><span data-en="">questions</span>, <span data-zh="">与同类对象逐项可比</span><span data-en="">each comparable item by item with its peers</span>.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt><span data-zh="">模型与开放条件</span><span data-en="">Model &amp; openness</span></dt>
+<dd><span data-zh=""><p>本身不调用模型，是被客户端调用的接口实现。</p>
+<p>依赖 @modelcontextprotocol/sdk（npm 2026.8.31 实测 ^1.30.0）； 协议版本在 initialize 握手时由 SDK 与客户端协商，不绑定单一版本。</p></span><span data-en=""><p>It calls no model itself; it is an interface implementation called by clients. It depends on @modelcontextprotocol/sdk (npm measured 2026.8.31: ^1.30.0); the protocol version is negotiated between SDK and client at the initialize handshake, not pinned to a single version.</p></span></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt><span data-zh="">运行位置</span><span data-en="">Where it runs</span></dt>
+<dd><span data-zh=""><p>本地 Node.js 子进程，通过 stdio 与客户端通信。 生命周期绑定客户端进程，客户端退出即停止。</p></span><span data-en=""><p>A local Node.js child process communicating with the client over stdio. Its lifecycle is bound to the client process — it stops when the client exits.</p></span></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt><span data-zh="">本地文件</span><span data-en="">Local files</span></dt>
+<dd><span data-zh=""><p>核心能力。<strong>默认不支持无限制访问</strong>： 必须通过命令行参数指定允许目录，或客户端支持 Roots 协议动态下发。 <strong>若无参数启动且客户端不支持 roots，server 在初始化阶段直接报错。</strong></p></span><span data-en=""><p>The core capability. <strong>Unrestricted access is not the default</strong>: allowed directories must be given via command-line arguments, or delivered dynamically if the client supports the Roots protocol. <strong>If started with no arguments and the client does not support roots, the server errors out directly at initialization.</strong></p></span></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt><span data-zh="">关机后的任务</span><span data-en="">Tasks after shutdown</span></dt>
+<dd><span data-zh=""><p>不支持。本地 stdio 进程随客户端生死， 无独立守护或云端执行形态。</p></span><span data-en=""><p>Not supported. A local stdio process lives and dies with the client; there is no standalone daemon or cloud-execution form.</p></span></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt><span data-zh="">工具与扩展</span><span data-en="">Tools &amp; extensions</span></dt>
+<dd><span data-zh=""><p>提供 11 个工具：read_text_file、read_media_file、read_multiple_files、</p>
+<p>write_file、edit_file、create_directory、list_directory、</p>
+<p>list_directory_with_sizes、move_file、search_files、directory_tree。</p>
+<p>输出为结构化内容，可直接消费。</p></span><span data-en=""><p>It provides 11 tools: read_text_file, read_media_file, read_multiple_files,</p>
+<p>write_file, edit_file, create_directory, list_directory,</p>
+<p>list_directory_with_sizes, move_file, search_files, directory_tree. Output is structured content, ready for direct consumption.</p></span></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt><span data-zh="">上下文与记忆</span><span data-en="">Context &amp; memory</span></dt>
+<dd><span data-zh=""><p>无状态。每次调用独立，不保留会话记忆。 list_allowed_directories 可查询当前生效目录。</p></span><span data-en=""><p>Stateless. Each call is independent; no session memory is kept. list_allowed_directories can query the currently effective directories.</p></span></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt><span data-zh="">权限与限制</span><span data-en="">Permissions &amp; limits</span></dt>
+<dd><span data-zh=""><p><strong>无独立审批机制</strong>，权限边界完全由允许目录决定。 全部文件操作限制在允许目录内，越界会被拒绝。</p>
+<p><strong>注意：提供 write_file / edit_file / move_file / create_directory， 属可写但无删除工具的组合。</strong></p></span><span data-en=""><p><strong>No separate approval mechanism</strong>; the permission boundary is defined entirely by the allowed directories. All file operations are confined to the allowed directories; anything outside is rejected.</p>
+<p><strong>Note: it provides write_file / edit_file / move_file / create_directory — a combination that is writable but has no delete tool.</strong></p></span></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt><span data-zh="">适合什么任务</span><span data-en="">Best for</span></dt>
+<dd><span data-zh=""><p>让 Agent 安全读写指定目录内的文本与媒体文件。 不适合需要删除操作或需要跨目录聚合的场景。</p></span><span data-en=""><p>Lets an Agent safely read and write text and media files inside specified directories. Not a fit for scenarios needing delete operations or cross-directory aggregation.</p></span></dd>
+</div>
+<div class="axis" id="dimension-transport">
+<dt><span data-zh="">传输方式</span><span data-en="">Transport</span></dt>
+<dd><span data-zh=""><p>仅 stdio。本地 Node.js 进程，通过标准输入输出通信。</p>
+<p>官方 README（2026-10-08 全文核验）只给两种本地启动方式。 即 npx 与 Docker。它没有远程传输的官方配置。 目录控制走命令行参数或 MCP Roots（可动态更新）。</p></span><span data-en=""><p>stdio only. A local Node.js process communicating over standard input/output. The official README (full-text verified 2026-10-08) gives only two local launch methods: npx and Docker. There is no official configuration for a remote transport. Directory control goes through command-line arguments or MCP Roots (dynamically updatable).</p></span></dd>
+</div>
+<div class="axis" id="dimension-auth">
+<dt><span data-zh="">认证机制</span><span data-en="">Authentication</span></dt>
+<dd><span data-zh=""><p>无独立认证层。stdio 形态继承启动它的客户端用户的全部文件权限。 权限边界靠目录白名单实现，不靠认证机制。</p></span><span data-en=""><p>No separate authentication layer. In stdio form it inherits all file permissions of the client user that launches it. The permission boundary is not an auth mechanism but a directory allowlist.</p></span></dd>
+</div>
+<div class="axis" id="dimension-scope">
+<dt><span data-zh="">权限范围</span><span data-en="">Permission scope</span></dt>
+<dd><span data-zh=""><p><strong>默认范围窄且强制显式</strong>：必须通过命令行参数指定允许目录， 或客户端支持 Roots 协议动态下发。 无参数且客户端不支持 roots 时，server 初始化即报错。</p>
+<p><strong>不提供删除工具</strong>；提供写入、编辑、移动、建目录。 可用 list_allowed_directories 查询当前生效目录。</p></span><span data-en=""><p><strong>The default scope is narrow and explicitly forced</strong>: allowed directories must be given via command-line arguments, or delivered dynamically if the client supports the Roots protocol. With no arguments and no client roots support, the server errors out at initialization.</p>
+<p><strong>No delete tool is provided</strong>; write, edit, move and create-directory are. list_allowed_directories can query the currently effective directories.</p></span></dd>
+</div>
+</dl>
+<nav aria-label="使用排查" class="panel is-slim" data-ui-aria-label-en="Troubleshooting" data-ui-aria-label-zh="使用排查">
+<h2><span data-zh="">使用时遇到问题</span><span data-en="">When something fails</span></h2>
+<p><a href="../mcp/guides/failure-library.html#auth"><span data-zh="">身份与权限</span><span data-en="">Authentication and permissions</span></a> · <a href="../mcp/guides/failure-library.html#tool-input"><span data-zh="">工具输入错误</span><span data-en="">Invalid tool inputs</span></a> · <a href="../mcp/guides/failure-library.html#json"><span data-zh="">输出格式错误</span><span data-en="">Invalid output format</span></a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn"><span data-zh="">头号误解</span><span data-en="">Top misconception</span></h2>
+<ul>
+<li><span data-zh="">以为官方仓库的 server 可以直接上生产，README 明确声明仅供参考实现</span><span data-en="">Assuming the official repo's server is production-ready — the README states it is a reference implementation only</span></li>
+<li><span data-zh="">不传目录参数就启动，会在初始化阶段报错而不是静默访问全盘</span><span data-en="">Starting it without a directory argument — it errors at initialisation rather than silently touching the whole disk</span></li>
+<li><span data-zh="">以为没给 write 类工具就不能改文件，write_file / edit_file 确实可写</span><span data-en="">Assuming that withholding write tools prevents file changes — write_file / edit_file do write</span></li>
+</ul>
+</div>
+<div class="panel">
+<h2><span data-zh="">证据来源</span><span data-en="">Evidence sources</span></h2>
+<p class="t-sm"><span data-zh="">最后核验</span><span data-en="">Checked</span> 2026-10-23，<span data-zh="">内容更新</span><span data-en="">Content updated</span> 2026-10-08。<span data-zh="">只说明这页最后核验的日期，不代表每个字段都在同一天重新查过。</span><span data-en="">This is the date of the entry, not a claim that every field was rechecked that day.</span></p>
+<table class="src">
+<thead><tr><th class="w-20"><span data-zh="">类型</span><span data-en="">Type</span></th><th class="w-52"><span data-zh="">名称</span><span data-en="">Name</span></th><th><span data-zh="">链接</span><span data-en="">Link</span></th></tr></thead>
+<tbody>
+<tr><td>changelog</td><td><span data-zh="">MCP · Servers Releases（2026.8.31 / 2026.8.18 / 2026.7.10）</span><span data-en="">MCP · Servers Releases (2026.8.31 / 2026.8.18 / 2026.7.10)</span></td><td><a href="https://github.com/modelcontextprotocol/servers/releases" rel="noopener" target="_blank">https://github.com/modelcontextprotocol/servers/releases</a></td></tr>
+<tr><td>changelog</td><td><span data-zh="">MCP · Filesystem 目录变更历史</span><span data-en="">MCP · Filesystem directory change history</span></td><td><a href="https://github.com/modelcontextprotocol/servers/commits/main/src/filesystem" rel="noopener" target="_blank">https://github.com/modelcontextprotocol/servers/commits/main/src/filesystem</a></td></tr>
+<tr><td>docs</td><td><span data-zh="">MCP · Filesystem Server</span><span data-en="">MCP · Filesystem Server</span></td><td><a href="https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem" rel="noopener" target="_blank">https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem</a></td></tr>
+<tr><td>repo</td><td><span data-zh="">MCP · Servers 仓库 README（含生产环境免责声明）</span><span data-en="">MCP · Servers repo README (with production-use disclaimer)</span></td><td><a href="https://github.com/modelcontextprotocol/servers" rel="noopener" target="_blank">https://github.com/modelcontextprotocol/servers</a></td></tr>
+<tr><td>docs</td><td><span data-zh="">MCP · 规范</span><span data-en="">MCP · specification</span></td><td><a href="https://modelcontextprotocol.io/specification" rel="noopener" target="_blank">https://modelcontextprotocol.io/specification</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2><span data-zh="">实测记录</span><span data-en="">Test notes</span></h2>
+<span data-zh=""><p>本档未在真实客户端逐项跑通；工具清单与权限来自官方 README。</p></span><span data-en=""><p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" rel="noopener" target="_blank">protocols/mcp/_protocol.md</a>.</p></span>
+</div>
+<div class="panel is-slim">
+<h2><span data-zh="">变更记录说明</span><span data-en="">Change-log notes</span></h2>
+<span data-zh=""><p><strong>本对象无独立 changelog 页</strong>。变更记录看 MCP servers 仓库的 releases 页。目录级改动看该目录的 commit 历史：</p>
+<div class="tbl-wrap"><table><thead><tr><th>日期</th><th>类型</th><th>内容</th></tr></thead><tbody><tr><td>2026-09-03</td><td>fix</td><td>声明 zod 运行时依赖</td></tr><tr><td>2026-08-30</td><td>fix</td><td>拒绝 POSIX 下的 Windows 路径</td></tr><tr><td>2026-08-28</td><td>fix</td><td><code>create_directory</code> 不创建父目录</td></tr></tbody></table></div>
+<p>仓库整体 releases：2026.8.31 / 2026.8.18 / 2026.7.10。</p>
+<p><strong>注意 08-30 那个修复</strong>。它说明 filesystem server 在不同平台路径语义上出过问题。这是实测时值得关注的点。</p></span><span data-en=""><p><strong>This object has no standalone changelog page</strong>. Change records are on the MCP servers repo's releases page. Directory-level changes are in that directory's commit history:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Type</th><th>Content</th></tr></thead><tbody><tr><td>2026-09-03</td><td>fix</td><td>Declare the zod runtime dependency</td></tr><tr><td>2026-08-30</td><td>fix</td><td>Reject Windows paths under POSIX</td></tr><tr><td>2026-08-28</td><td>fix</td><td><code>create_directory</code> does not create parent directories</td></tr></tbody></table></div>
+<p>Repo-wide releases: 2026.8.31 / 2026.8.18 / 2026.7.10.</p>
+<p><strong>Note the 08-30 fix</strong>. It shows the filesystem server had path-semantics issues across platforms — a point worth watching during measurement.</p></span>
+</div>
+<div class="panel is-slim">
+<h2><span data-zh="">官方声明：reference server 不适合生产环境</span><span data-en="">⚠ Production-use disclaimer (applies to all official reference servers)</span></h2>
+<span data-zh=""><p>MCP servers 仓库 README 原文：</p>
+<blockquote>The servers in this repository are intended as <strong>reference implementations</strong> to demonstrate MCP features and SDK usage. They are meant to serve as educational examples for developers building their own MCP servers, <strong>not as production-ready solutions</strong>. Developers should evaluate their own security requirements and implement appropriate safeguards based on their specific threat model and use case.</blockquote>
+<p><strong>翻译</strong>：本仓库的 server 是<strong>参考实现</strong>，用于演示 MCP 特性与 SDK 用法。 它面向正在构建自己 MCP server 的开发者，<strong>不是生产就绪方案</strong>。 使用者需自行评估安全需求并按自身威胁模型实现防护。</p>
+<blockquote><strong>注意</strong>：这句话适用于本分区所有官方 reference server， 每个条目的正文都应保留这一提示。</blockquote></span><span data-en=""><p>The MCP servers repo README, original wording:</p>
+<blockquote>The servers in this repository are intended as <strong>reference implementations</strong> to demonstrate MCP features and SDK usage. They are meant to serve as educational examples for developers building their own MCP servers, <strong>not as production-ready solutions</strong>. Developers should evaluate their own security requirements and implement appropriate safeguards based on their specific threat model and use case.</blockquote>
+<blockquote><strong>Note</strong>: this statement applies to every official reference server in this section;</blockquote>
+<p>each entry's body should keep this reminder.</p></span>
+</div>
+<div class="panel is-slim">
+<h2><span data-zh="">权限设计实测记录</span><span data-en="">Permission-design test notes</span></h2>
+<span data-zh=""><p>这是本 server 最有价值的设计细节。</p>
+<div class="tbl-wrap"><table><thead><tr><th>场景</th><th>行为</th></tr></thead><tbody><tr><td>启动时传目录参数</td><td>以参数为允许目录</td></tr><tr><td>启动时不传参数 + 客户端支持 Roots</td><td>客户端 roots <strong>完全替换</strong>服务端目录</td></tr><tr><td>启动时不传参数 + 客户端不支持 Roots</td><td><strong>初始化阶段报错</strong></td></tr><tr><td>运行时客户端 roots 变更</td><td>通过 <code>roots/list_changed</code> 通知更新，无需重启</td></tr></tbody></table></div>
+<p><strong>"无参数 + 不支持 roots = 启动失败"这个设计值得肯定</strong>—— 它把一个潜在的权限失控（无限制文件访问）变成了显式的失败。</p></span><span data-en=""><p>This is the most valuable design detail of this server.</p>
+<div class="tbl-wrap"><table><thead><tr><th>Scenario</th><th>Behaviour</th></tr></thead><tbody><tr><td>Directory arguments passed at launch</td><td>The arguments become the allowed directories</td></tr><tr><td>No arguments + client supports Roots</td><td>Client roots <strong>fully replace</strong> server-side directories</td></tr><tr><td>No arguments + client lacks Roots</td><td><strong>Error at initialization</strong></td></tr><tr><td>Client roots change at runtime</td><td>Updated via <code>roots/list_changed</code> notification, no restart needed</td></tr></tbody></table></div>
+<p><strong>The "no arguments + no roots support = startup failure" design deserves credit</strong> — it turns a potential permission escape (unrestricted file access) into an explicit failure.</p></span>
+</div>
+<div class="panel is-slim">
+<h2><span data-zh="">工具清单</span><span data-en="">Tool inventory</span></h2>
+<span data-zh=""><div class="tbl-wrap"><table><thead><tr><th>类别</th><th>工具</th></tr></thead><tbody><tr><td>读</td><td><code>read_text_file</code> <code>read_media_file</code> <code>read_multiple_files</code></td></tr><tr><td>写</td><td><code>write_file</code> <code>edit_file</code></td></tr><tr><td>目录</td><td><code>create_directory</code> <code>list_directory</code> <code>list_directory_with_sizes</code> <code>move_file</code> <code>directory_tree</code></td></tr><tr><td>检索</td><td><code>search_files</code></td></tr></tbody></table></div>
+<p><strong>注意</strong>：<strong>没有删除工具</strong>。这是有意的权限收敛设计。</p></span><span data-en=""><div class="tbl-wrap"><table><thead><tr><th>Category</th><th>Tools</th></tr></thead><tbody><tr><td>Read</td><td><code>read_text_file</code> <code>read_media_file</code> <code>read_multiple_files</code></td></tr><tr><td>Write</td><td><code>write_file</code> <code>edit_file</code></td></tr><tr><td>Directory</td><td><code>create_directory</code> <code>list_directory</code> <code>list_directory_with_sizes</code> <code>move_file</code> <code>directory_tree</code></td></tr><tr><td>Search</td><td><code>search_files</code></td></tr></tbody></table></div>
+<p><strong>Note</strong>: <strong>there is no delete tool</strong>. This is a deliberate permission-narrowing design.</p></span>
+</div>
+<div class="panel is-slim">
+<h2><span data-zh="">相关条目</span><span data-en="">Related entries</span></h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="./git.html"><span data-zh="">Git MCP Server</span><span data-en="">Git MCP Server</span></a></span><span class="rel-n"><span data-zh="">版本控制方向</span><span data-en="">The version-control direction</span></span></li>
+<li><span class="rel-t"><a href="./memory.html"><span data-zh="">Memory MCP Server</span><span data-en="">Knowledge Graph Memory Server</span></a></span><span class="rel-n"><span data-zh="">跨会话记忆方向</span><span data-en="">The cross-session memory direction</span></span></li>
+<li><span class="rel-t"><a href="/coding/claude-code-cli.html"><span data-zh="">Claude Code CLI</span><span data-en="">Claude Code CLI</span></a></span><span class="rel-n"><span data-zh="">另一层 · AI 编程</span><span data-en="">Other layer · AI coding</span></span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker"><span data-zh="">同类对照</span><span data-en="">Same-category peers</span></p>
+<h2><span data-zh="">先看这三个，再决定要不要往下读</span><span data-en="">Look at these three before reading further</span></h2>
+<p class="section-desc"><span data-zh="">按用途重合度挑的，不是排名。先比「跑在哪 / 许可 / 状态」，三项里有一项不合格就可以跳过。</span><span data-en="">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</span></p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th><span data-zh="">对象</span><span data-en="">Object</span></th><th><span data-zh="">跑在哪</span><span data-en="">Where</span></th><th><span data-zh="">许可</span><span data-en="">Licence</span></th><th><span data-zh="">证据 / 状态</span><span data-en="">Evidence / status</span></th><th><span data-zh="">适合做什么</span><span data-en="">What it is for</span></th></tr></thead>
+<tbody><tr><td><a href="./1password-mcp.html"><span data-zh="">1Password Environments MCP Server</span><span data-en="">1Password Environments MCP Server</span></a></td><td><span data-zh="">本地 / 自托管</span><span data-en="">Local / self-hosted</span></td><td><span data-zh="">开源许可</span><span data-en="">Open licence</span></td><td><span data-zh="">8 项已核</span><span data-en="">8 questions checked</span><br/><span class="td-vendor"><span data-zh="">活跃</span><span data-en="">Active</span></span></td><td class="td-fit"><span data-zh="">1Password 官方 Environments MCP server（本地 stdio，随桌面应用）：凭据类</span><span data-en="">1Password official Environments MCP server (local stdio, rides the deskt</span></td></tr><tr><td><a href="./atlassian-mcp.html"><span data-zh="">Atlassian Remote MCP Server（Jira/Confluence）</span><span data-en="">Atlassian Remote MCP Server（Jira/Confluence）</span></a></td><td><span data-zh="">云端 / API</span><span data-en="">Cloud / API</span></td><td><span data-zh="">商业条款</span><span data-en="">Commercial terms</span></td><td><span data-zh="">8 项已核</span><span data-en="">8 questions checked</span><br/><span class="td-vendor"><span data-zh="">活跃</span><span data-en="">Active</span></span></td><td class="td-fit"><span data-zh="">Atlassian 官方 Remote MCP server：一个端点接 Jira+Confluence 两面—</span><span data-en="">Atlassian's official Remote MCP server: one endpoint covers Jira + Confl</span></td></tr><tr><td><a href="./brave-search-mcp.html"><span data-zh="">Brave Search MCP Server</span><span data-en="">Brave Search MCP Server</span></a></td><td><span data-zh="">本地 / 自托管</span><span data-en="">Local / self-hosted</span></td><td><span data-zh="">开源许可</span><span data-en="">Open licence</span></td><td><span data-zh="">8 项已核</span><span data-en="">8 questions checked</span><br/><span class="td-vendor"><span data-zh="">活跃</span><span data-en="">Active</span></span></td><td class="td-fit"><span data-zh="">Brave 官方搜索 MCP server（MIT）：给 agent 补一路独立检索源（web/新闻/图像/地点</span><span data-en="">Brave's official search MCP server (MIT): an independent retrieval sourc</span></td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker"><span data-zh="">同厂牌</span><span data-en="">Same vendor</span></p>
+<h2><span data-zh="">Model Context Protocol 还有这些</span><span data-en="">More from Model Context Protocol</span></h2>
+<p class="section-desc"><span data-zh="">同一个厂牌的产品常被切到不同类目；这里一次列全，省得你跨五个站自己拼。</span><span data-en="">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</span></p>
+</div>
+<ul class="vendor-list"><li><a href="/mcp/everything.html"><span class="vp-cat"><span data-zh="">MCP 工具</span><span data-en="">MCP tools</span></span><span data-zh="">Everything MCP Server</span><span data-en="">Everything MCP Server</span></a></li><li><a href="/mcp/fetch.html"><span class="vp-cat"><span data-zh="">MCP 工具</span><span data-en="">MCP tools</span></span><span data-zh="">Fetch MCP Server</span><span data-en="">Fetch MCP Server</span></a></li><li><a href="/mcp/git.html"><span class="vp-cat"><span data-zh="">MCP 工具</span><span data-en="">MCP tools</span></span><span data-zh="">Git MCP Server</span><span data-en="">Git MCP Server</span></a></li><li><a href="/mcp/memory.html"><span class="vp-cat"><span data-zh="">MCP 工具</span><span data-en="">MCP tools</span></span><span data-zh="">Knowledge Graph Memory Server</span><span data-en="">Knowledge Graph Memory Server</span></a></li><li><a href="/mcp/sequential-thinking.html"><span class="vp-cat"><span data-zh="">MCP 工具</span><span data-en="">MCP tools</span></span><span data-zh="">Sequential Thinking MCP Server</span><span data-en="">Sequential Thinking MCP Server</span></a></li><li><a href="/mcp/time.html"><span class="vp-cat"><span data-zh="">MCP 工具</span><span data-en="">MCP tools</span></span><span data-zh="">Time MCP Server</span><span data-en="">Time MCP Server</span></a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+<span data-zh="">本页由</span><span data-en="">This page is generated from the</span> <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> <span data-zh="">数据层生成（CC BY 4.0）。</span><span data-en="">data layer (CC BY 4.0).</span>
+<span data-zh="">判断标准与方法说明见仓库内</span><span data-en="">For the judging criteria and method notes, see</span> <code>METHODOLOGY.md</code>.
       </p>
-    </div>
-  </main>
-  <footer class="site-footer foot-single">
-    <div class="container foot-line">
-      <div class="foot-brand">
-        <span class="foot-brand-main">
-          <span class="brand-dot" aria-hidden="true"></span>
-          <span class="foot-copy"><span data-zh>投机取巧 · specul.com</span><span data-en>Specul · specul.com</span></span>
-        </span>
-        <span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt"><span data-zh>内容 CC BY 4.0</span><span data-en>Content CC BY 4.0</span></a><span class="sep" aria-hidden="true">·</span><a href="https://specul.com/LICENSE.txt"><span data-zh>代码 MIT</span><span data-en>Code MIT</span></a><span class="sep" aria-hidden="true">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>源码</span><span data-en>Source</span></a></span>
-      </div>
-      <nav class="foot-sites" aria-label="Footer site links">
-        <a class="site-link" href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://tools.specul.com/"><span data-zh>工具</span><span data-en>Tools</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://demos.specul.com/"><span data-zh>演示</span><span data-en>Demos</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://oss.specul.com/"><span data-zh>开源</span><span data-en>OSS</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://hardware.specul.com/"><span data-zh>算力</span><span data-en>Compute</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://papers.specul.com/"><span data-zh>论文</span><span data-en>Papers</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://nav.specul.com/"><span data-zh>导航</span><span data-en>Directory</span></a>
-      </nav>
-      <nav class="foot-legal" aria-label="Legal and corrections">
-        <a href="https://specul.com/legal.html"><span data-zh>法律</span><span data-en>Legal</span></a><span class="sep" aria-hidden="true">·</span>
-        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私</span><span data-en>Privacy</span></a><span class="sep" aria-hidden="true">·</span>
-        <a href="https://specul.com/correct.html"><span data-zh>纠错</span><span data-en>Corrections</span></a>
-      </nav>
-    </div>
-  </footer>
-<nav class="nav-tabbar nav-tabbar-1row" aria-label="快捷导航">
-    <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
-    <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学AI</span><span data-en>Learn</span></a>
-    <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
-    <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
-    <a href="https://demos.specul.com/"><span class="ti" aria-hidden="true">▷</span><span data-zh>演示</span><span data-en>Demos</span></a>
-    <a href="https://oss.specul.com/"><span class="ti" aria-hidden="true">▧</span><span data-zh>开源</span><span data-en>OSS</span></a>
-    <a href="https://hardware.specul.com/"><span class="ti" aria-hidden="true">▣</span><span data-zh>算力</span><span data-en>Chips</span></a>
-    <a href="https://papers.specul.com/"><span class="ti" aria-hidden="true">▥</span><span data-zh>论文</span><span data-en>Papers</span></a>
-    <a href="https://chain.specul.com/"><span class="ti" aria-hidden="true">◇</span><span data-zh>链</span><span data-en>Chain</span></a>
-    <a href="https://nav.specul.com/" data-nav-group="external"><span class="ti" aria-hidden="true">↗</span><span data-zh>导航</span><span data-en>Nav</span></a>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy"><span data-zh="">投机取巧 · specul.com</span><span data-en="">Specul · specul.com</span></span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt"><span data-zh="">内容 CC BY 4.0</span><span data-en="">Content CC BY 4.0</span></a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt"><span data-zh="">代码 MIT</span><span data-en="">Code MIT</span></a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank"><span data-zh="">源码</span><span data-en="">Source</span></a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/"><span data-zh="">首页</span><span data-en="">Home</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/"><span data-zh="">学 AI</span><span data-en="">Learn</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/"><span data-zh="">工具</span><span data-en="">Tools</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/"><span data-zh="">模型</span><span data-en="">Models</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/"><span data-zh="">演示</span><span data-en="">Demos</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/"><span data-zh="">开源</span><span data-en="">OSS</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/"><span data-zh="">算力</span><span data-en="">Compute</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/"><span data-zh="">论文</span><span data-en="">Papers</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/"><span data-zh="">链</span><span data-en="">Chain</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/"><span data-zh="">导航</span><span data-en="">Directory</span></a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/legal.html"><span data-zh="">法律</span><span data-en="">Legal</span></a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/legal.html#s8"><span data-zh="">隐私</span><span data-en="">Privacy</span></a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/correct.html"><span data-zh="">纠错</span><span data-en="">Corrections</span></a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/"><span aria-hidden="true" class="ti">◎</span><span data-zh="">首页</span><span data-en="">Home</span></a>
+<a href="https://learn.specul.com/"><span aria-hidden="true" class="ti">▤</span><span data-zh="">学AI</span><span data-en="">Learn</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span aria-hidden="true" class="ti">◈</span><span data-zh="">工具</span><span data-en="">Tools</span></a>
+<a href="https://models.specul.com/"><span aria-hidden="true" class="ti">▦</span><span data-zh="">模型</span><span data-en="">Models</span></a>
+<a href="https://demos.specul.com/"><span aria-hidden="true" class="ti">▷</span><span data-zh="">演示</span><span data-en="">Demos</span></a>
+<a href="https://oss.specul.com/"><span aria-hidden="true" class="ti">▧</span><span data-zh="">开源</span><span data-en="">OSS</span></a>
+<a href="https://hardware.specul.com/"><span aria-hidden="true" class="ti">▣</span><span data-zh="">算力</span><span data-en="">Chips</span></a>
+<a href="https://papers.specul.com/"><span aria-hidden="true" class="ti">▥</span><span data-zh="">论文</span><span data-en="">Papers</span></a>
+<a href="https://chain.specul.com/"><span aria-hidden="true" class="ti">◇</span><span data-zh="">链</span><span data-en="">Chain</span></a>
+<a data-nav-group="external" href="https://nav.specul.com/"><span aria-hidden="true" class="ti">↗</span><span data-zh="">导航</span><span data-en="">Nav</span></a>
 </nav>
 </body>
 </html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Kiro | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/kiro.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/kiro.html" property="og:url"/>
+<meta content="Kiro | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Kiro | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/coding/kiro.html","sameAs":"https://kiro.dev","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Kiro | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/kiro.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/kiro.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/kiro.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/kiro.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#8b7cf8">KI</div>
+<div>
+<h1>Kiro</h1>
+<div class="vendor is-caps">AWS</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Coding</span>
+<span class="tag on">IDE</span>
+<span class="tag on">Multiple models</span>
+<span class="tag on">Hybrid</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>AWS's agentic engineering environment: one unified harness across IDE, CLI, Web and…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · In editor</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Whether own API keys (BYOK) and local models are supported — not stated officially (/docs/models and /pricing checked)</li>
+<li>Whether IDE code indexing is uploaded to the cloud — the official site does not disclose index location (codebase indexing and how-kiro-works checked)</li>
+<li>Automatic compaction trigger thresholds per model (no numbers given officially)</li>
+<li>The full capability boundary of Crew (the 2026-10-08 check only captured the homepage entry and changelog entries)</li>
+</ul>
+</div>
+<div class="panel-lead"><p>Kiro is a desktop IDE — officially "a desktop development environment built on a VS Code foundation" — but it is framed as one agent, every surface: the IDE, CLI, Web and Mobile apps are all front ends to the same unified agent harness, connected over the open Agent Client Protocol (ACP). Its headline workflow is spec-driven development, turning a prompt into "requirements, architectural designs, and sequenced tasks", and its cloud sandbox sessions keep working "whether or not you're connected".</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Teams doing formal engineering delivery in the AWS ecosystem who want specs before implementation. People who need a cloud session that keeps running after they close the laptop (Cloud Sessions, up to 10 concurrent). Teams that want steering and permission rules shipped with the repository (<code>.kiro/</code> is committable and consistent across surfaces). Free tier suits low-volume trials (50 credits/month, limited to open-weight models and Claude Sonnet 4.5).</p></div>
+<div class="warn-p"><p><strong>Not a fit for</strong> anyone who needs their own API key or local models — neither the official models page nor the pricing page documents BYOK; nor for heavy users who need a transparent quota figure, since credits are consumed by model multiplier (up to 4.4x) with no fixed request-count equivalent.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　official site measured 200 direct.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>Models come through Amazon Bedrock; several vendors are selectable, but it depends on which tier you buy.</strong></p>
+<p>The free tier can only use open-weight models and Claude Sonnet 4.5. Premium models (including Auto, Sonnet 5, Opus 5) require a paid tier.</p>
+<p>The list on the official models page:</p>
+<ul><li><strong>Auto</strong> — automatic routing</li><li><strong>OpenAI</strong> — GPT-5.6 (Sol / Terra / Luna)</li><li><strong>Anthropic Claude</strong> — Opus 5.5 / 5 / 4.8 / 4.7 / 4.6 / 4.5; Sonnet 5.5 / 5 / 4.6 / 4.5 / 4.0; Haiku 4.5</li></ul>
+<ul><li><strong>Open-weight</strong> — DeepSeek 3.2, MiniMax M2.5 / M2.1, GLM-5, Qwen3 Coder Next</li></ul>
+<p>Billing is by credit multiplier: Auto is the 1.0x baseline, GPT-5.6 Sol tops out at 4.4x.</p>
+<p>Regionally, GPT-5.6 is always served from the US. The rest follow your profile region (US / EU). Claude Fable 5.1 is an Enterprise preview.</p>
+<p><strong>Whether you can bring your own API key (BYOK): not stated officially.</strong></p>
+<p>(models and pricing pages checked.)</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>A standalone desktop IDE; the official wording explicitly says "a desktop development environment built on a VS Code foundation"</strong> — not an extension inside someone else's editor. But the official positioning is "one agent, every surface": IDE / CLI / Web / Mobile are all front ends of one unified agent harness; local clients go over stdio via the <strong>Agent Client Protocol (ACP)</strong>, while Web / Mobile connect over WebSocket to cloud sandboxes. <strong>The IDE and CLI run the harness locally by default</strong>, with tools operating on local files and shell. Both can also create and attach Cloud Sessions inside cloud sandboxes. Because the boundary is standard ACP, the official pages say JetBrains IDEs and Zed can also use Kiro as their agent.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>It reaches your workspace files through the IDE.</p>
+<p><strong>Code understanding has two layers.</strong> The first is built-in Tree-sitter, covering 18 languages, providing fuzzy symbol search, document outlines, AST structural search and rewrite, and codebase overviews. These work across surfaces. The second layer is <strong>LSP (optional)</strong>: find references, go to definition, rename, diagnostics, hover docs — but only in the IDE and CLI, and you install the language servers yourself.</p>
+<p><strong>Indexing has its own page</strong>: opening a project automatically indexes source, docs, configuration and dependencies; file changes or external edits trigger incremental re-indexing. Manual Force Re-Index / Rebuild is also available. To keep the agent off certain files, exclude them with <code>.kiroignore</code> (gitignore style).</p>
+<p><strong>Whether the index is uploaded to the cloud: not stated officially.</strong></p>
+<p>(codebase indexing and how-kiro-works pages checked.)</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>Close the laptop and the task keeps running — that is its most distinctive point.</strong></p>
+<p>Sessions run in vendor-hosted cloud sandboxes and belong to the <strong>account</strong>, not to one app. So IDE / CLI / Web / Mobile can all attach to the same session; you can close the lid and pick it up from your phone or a terminal.</p>
+<p>Hard numbers given officially:</p>
+<ul><li>Up to <strong>10</strong> concurrent Cloud Sessions</li><li>Cloud compute carries <strong>no extra charge</strong> (included in existing plans)</li><li>Creating from the IDE needs IDE v1.0.293+; from the CLI needs CLI v2.17+</li></ul>
+<p>However, the harness running <strong>locally</strong> still depends on your own machine and stops when you exit.</p>
+<p><strong>Official Cloud sessions page wording</strong>: "The agent keeps working in the sandbox whether or not you're connected"</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p>Four built-in tool classes: files, shell, web, code.</p>
+<p><strong>The extension mechanisms form a system</strong>, six in total:</p>
+<ul><li><strong>MCP</strong> — local stdio and remote HTTP/SSE; supports server-provided prompts / resources and elicitation; <code>kiro://</code> one-click install links</li></ul>
+<ul><li><strong>Powers</strong> — MCP servers packaged with knowledge, loaded on demand</li><li><strong>Skills</strong> — open-standard portable instruction packs</li><li><strong>Custom agents and sub-agents</strong></li><li><strong>Specs</strong></li><li><strong>Hooks</strong></li></ul>
+<p>The Hook trigger points are fully listed officially: Prompt Submit, Agent Stop, Session Start, Session End (CLI V3), Agent Spawn, Pre / Post Tool Use, File Create / Save / Delete, Pre / Post Task Execution, Manual.</p>
+<p>The CLI also has headless mode (<code>--no-interactive</code>, with an API key) for CI/CD.</p>
+<p><strong>⚠ The Mobile surface does not support MCP or local file tools.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>Specs are its signature.</strong> Each spec generates three files, following "requirements → design → tasks":</p>
+<ul><li><code>requirements.md</code> (or <code>bugfix.md</code>)</li><li><code>design.md</code></li><li><code>tasks.md</code> — supports wave-parallel execution along the dependency graph</li></ul>
+<p><strong>Steering provides persistent project context.</strong> It lives in two places: workspace <code>.kiro/steering/</code>, global <code>~/.kiro/steering/</code>. Three base files ship built in: product / tech / structure. Four inclusion modes are supported — always / fileMatch / manual / auto — and <code>AGENTS.md</code> is compatible.</p>
+<p>Other context-related capabilities: subagents (each with its own context window). There is also compaction (auto-summarizing older history, <strong>one-way and not reversible</strong>) · checkpoints / rewind · <code>/sessions</code> for session management. The CLI additionally has an experimental knowledge base (semantic retrieval).</p>
+<p><strong>Concrete context-window numbers are not broken out in the official docs.</strong> (compaction and models pages checked.)</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>Permissions are capability-based, not a two-state trust/untrust model.</strong> Rules are written in YAML, configured per capability with match / exclude, effect taking <code>deny</code> / <code>ask</code> / <code>allow</code>, with precedence <strong>deny &gt; ask &gt; allow</strong>.</p>
+<p>Capabilities listed officially:</p>
+<ul><li>Files: <code>fs_read</code> / <code>fs_write</code></li><li>Execution: <code>shell</code> / <code>sandbox_network</code></li><li>Networking: <code>web_fetch</code> / <code>web_search</code></li><li>Extensions: <code>mcp</code> / <code>subagent</code> / <code>skill</code> / <code>power</code></li><li>Other: <code>context</code> / <code>diagnostics</code></li></ul>
+<p>Six scopes in total: Kiro hardcoded, administration, user, workspace, agent, session.</p>
+<p>The IDE additionally has Agent Autonomy with Autopilot / Supervised tiers. <strong>Workspaces are untrusted by default.</strong> Before trust, repo-local agents, steering, MCP and Skills are not loaded. <strong>In headless mode, every <code>ask</code> is treated as <code>deny</code>.</strong></p>
+<p><strong>Official permissions page wording</strong>: capability-based, "replacing older binary trust models"</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Fits three kinds of people:</p>
+<ul><li>Teams doing formal engineering delivery in the AWS ecosystem who want "spec first, implementation second"</li><li><strong>People who need cloud sessions to keep running after shutdown</strong> (Cloud sessions, up to 10 concurrent)</li><li>Teams that want steering and permission rules <strong>distributed with the repo</strong> (<code>.kiro/</code> is committable, consistent across surfaces)</li></ul>
+<p>For a low-volume trial, the Free tier suffices: 50 credits per month, limited to open-weight models and Sonnet 4.5.</p>
+<p><strong>Does not fit</strong> two kinds of people. First, those wanting to plug in their own API keys or run local models — neither the official models nor pricing pages has any BYOK statement. Second, heavy users who need transparent quota accounting — credits are consumed at model multipliers, and no "fixed request count" conversion is given officially.</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Treating Kiro as an IDE-only tool: there is also CLI / Web / Mobile and Crew, and a Cloud Session keeps running after shutdown</li>
+<li>Assuming credits are model-specific — Kiro uses one credit pool and each model consumes it by a multiplier (up to 4.4x)</li>
+<li>Taking Kiro Free as a long-term free tier — it is 50 credits/month, limited to open-weight models and specific Claude models</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-08。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>changelog</td><td>Kiro · Changelog (IDE 1.2 / CLI 2.27 / Workflows / Opus 5.5, body captured 2026-10-08)</td><td><a href="https://kiro.dev/changelog/" rel="noopener" target="_blank">https://kiro.dev/changelog/</a></td></tr>
+<tr><td>pricing</td><td>Kiro · official pricing page (Free / Pro / Pro+ / Pro Max / Power five tiers + credit notes, verified 2026-10-08)</td><td><a href="https://kiro.dev/pricing/" rel="noopener" target="_blank">https://kiro.dev/pricing/</a></td></tr>
+<tr><td>docs</td><td>Kiro · official docs home</td><td><a href="https://kiro.dev/docs/" rel="noopener" target="_blank">https://kiro.dev/docs/</a></td></tr>
+<tr><td>docs</td><td>Kiro · How Kiro works (unified harness, ACP, where each surface runs)</td><td><a href="https://kiro.dev/docs/how-kiro-works/" rel="noopener" target="_blank">https://kiro.dev/docs/how-kiro-works/</a></td></tr>
+<tr><td>docs</td><td>Kiro · Specs (requirements / design / tasks three-part structure and parallel tasks)</td><td><a href="https://kiro.dev/docs/specs/" rel="noopener" target="_blank">https://kiro.dev/docs/specs/</a></td></tr>
+<tr><td>docs</td><td>Kiro · Steering (workspace / global steering, four inclusion modes, AGENTS.md)</td><td><a href="https://kiro.dev/docs/steering/" rel="noopener" target="_blank">https://kiro.dev/docs/steering/</a></td></tr>
+<tr><td>docs</td><td>Kiro · Hook triggers (Prompt Submit / Pre Tool Use / File Save and the full trigger set)</td><td><a href="https://kiro.dev/docs/hooks/types/" rel="noopener" target="_blank">https://kiro.dev/docs/hooks/types/</a></td></tr>
+<tr><td>docs</td><td>Kiro · MCP (stdio / HTTP / SSE, <code>kiro://</code> install links)</td><td><a href="https://kiro.dev/docs/mcp/" rel="noopener" target="_blank">https://kiro.dev/docs/mcp/</a></td></tr>
+<tr><td>docs</td><td>Kiro · Models (multi-vendor model list and credit multipliers)</td><td><a href="https://kiro.dev/docs/models/" rel="noopener" target="_blank">https://kiro.dev/docs/models/</a></td></tr>
+<tr><td>docs</td><td>Kiro · Permissions (capability-based rules and six scopes)</td><td><a href="https://kiro.dev/docs/permissions/" rel="noopener" target="_blank">https://kiro.dev/docs/permissions/</a></td></tr>
+<tr><td>docs</td><td>Kiro · Cloud sessions (cloud sandbox, 10 concurrent, cross-surface)</td><td><a href="https://kiro.dev/docs/cloud-sessions/" rel="noopener" target="_blank">https://kiro.dev/docs/cloud-sessions/</a></td></tr>
+<tr><td>docs</td><td>Kiro · Code intelligence (Tree-sitter / LSP two layers)</td><td><a href="https://kiro.dev/docs/tools/code-intelligence/" rel="noopener" target="_blank">https://kiro.dev/docs/tools/code-intelligence/</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong>: focus on two things.</p>
+<ul><li><strong>The actual output quality of the spec three-part structure</strong></li><li><strong>State integrity when a Cloud Session created from the IDE is picked back up from a phone after closing the local machine</strong></li></ul>
+<p>These two are the strongest promises the official pages make.</p>
+</div>
+<div class="panel is-slim">
+<h2>Four surfaces, one harness</h2>
+<p>The official pages state the form clearly — "one agent, available everywhere you work":</p>
+<div class="tbl-wrap"><table><thead><tr><th>surface</th><th>official positioning</th></tr></thead><tbody><tr><td><strong>IDE</strong></td><td>a standalone desktop IDE based on VS Code (built on a VS Code foundation)</td></tr><tr><td><strong>CLI</strong></td><td>a terminal TUI, plus headless mode for CI/CD</td></tr><tr><td><strong>Web</strong></td><td>a cloud agent in the browser, running in a hosted sandbox</td></tr><tr><td><strong>Mobile</strong></td><td>start and steer sessions from your phone</td></tr></tbody></table></div>
+<p><strong>Key design: the IDE / CLI run the harness locally by default; Web / Mobile run in cloud sandboxes.</strong> But all four are front ends of the same harness, connected by the open protocol <strong>ACP</strong>. Hence the official claim that JetBrains IDEs and Zed can also use Kiro as their agent.</p>
+</div>
+<div class="panel is-slim">
+<h2>The signature: spec-driven development</h2>
+<p>The official homepage wording: turn a prompt into "requirements, architectural designs, and sequenced tasks". Each spec lands as three files:</p>
+<ul><li><code>requirements.md</code> (or <code>bugfix.md</code>) — user stories and acceptance criteria</li><li><code>design.md</code> — technical architecture, sequence diagrams and implementation considerations</li><li><code>tasks.md</code> — discrete trackable tasks, supporting wave-parallel execution along the dependency graph</li></ul>
+<p>The supporting cast includes <strong>steering files</strong> (persistent project context in <code>.kiro/steering/</code>, four inclusion modes) and <strong>agent hooks</strong> (a dozen-plus trigger points, from File Save to Pre Task Execution).</p>
+</div>
+<div class="panel is-slim">
+<h2>Verification notes</h2>
+<p>Why this entry is <code>confidence: partial</code>:</p>
+<ul><li>✅ Verified: the five-tier structure and credit rules, the model list and multipliers, the specs / steering / hooks structure, MCP transport types, capability-based permissions, Cloud sessions concurrency numbers, the "built on a VS Code foundation" form statement</li></ul>
+<ul><li>❌ Not obtained: whether BYOK / own keys are supported, whether IDE indexing goes to the cloud, compaction trigger thresholds, the full Crew capability surface</li></ul>
+<p><strong>Verified pages</strong>: official pages checked the 2026-10-08 check: kiro.dev/pricing, /changelog, /docs, /docs/how-kiro-works, /docs/specs, /docs/steering, /docs/hooks/types, /docs/mcp, /docs/models, /docs/permissions, /docs/cloud-sessions, /docs/tools/code-intelligence.</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/cursor.html">Cursor</a></span><span class="rel-n">also a VS Code-derived standalone IDE; compare "cloud agent keeps running after shutdown" against Kiro's Cloud Session</span></li>
+<li><span class="rel-t"><a href="/en/coding/codex-ide.html">Codex (IDE extension)</a></span><span class="rel-n">contrast point: Codex is an extension inside an existing editor, Kiro a standalone IDE with its own harness</span></li>
+<li><span class="rel-t"><a href="/en/coding/windsurf.html">Windsurf / Devin Desktop</a></span><span class="rel-n">also a standalone-IDE form; compare each product's cloud and permission designs</span></li>
+<li><span class="rel-t"><a href="/en/coding/amazon-q-developer.html">Amazon Q Developer</a></span><span class="rel-n">same-vendor handover line: the AWS official notice ends Q Developer IDE plugin support on 2027-04-30 and names Kiro as the successor for agentic coding/chat/MCP; Q CLI has become Kiro CLI</span></li>
+<li><span class="rel-t"><a href="/en/mcp/context7.html">Context7</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/baidu-comate.html">Baidu Comate (Wenxin Kuaima)</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Baidu Comate (Wenxin Kuaima) is Baidu's AI coding family: Comate AI IDE </td></tr><tr><td><a href="/en/coding/claude-code.html">Claude Code (IDE extension)</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">One process, three entry points — terminal, IDE and GitHub @claude menti</td></tr><tr><td><a href="/en/coding/cline.html">Cline</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A coding tool with CLI, desktop and editor entry points — CLI, desktop a</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from AWS</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/automation/bedrock-agents.html"><span class="vp-cat">Automation</span>Bedrock Agents / AgentCore</a></li><li><a href="/en/coding/amazon-q-developer.html"><span class="vp-cat">AI coding</span>Amazon Q Developer</a></li><li><a href="/en/framework/strands-agents.html"><span class="vp-cat">Frameworks &amp; runtimes</span>Strands Agents SDK</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

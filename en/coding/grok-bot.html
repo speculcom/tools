@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>xAI Grok Bot | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/grok-bot.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/grok-bot.html" property="og:url"/>
+<meta content="xAI Grok Bot | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"xAI Grok Bot | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/coding/grok-bot.html","sameAs":"https://x.ai/news/introducing-grok-bot","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-11-11"}</script>
+<meta content="xAI Grok Bot | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/grok-bot.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/grok-bot.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/grok-bot.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/grok-bot.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#000000"'>XA</div>
+<div>
+<h1>xAI Grok Bot</h1>
+<div class="vendor is-caps">xAI</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Coding agent</span>
+<span class="tag on">Cloud</span>
+<span class="tag on">Vendor cloud</span>
+<span class="tag on">Always-on</span>
+<span class="tag on">Parallel</span>
+<span class="tag on">Role-based</span>
+<span class="tag on">1.0</span>
+<span class="tag on">TeamBots</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-11-11</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>The official page explains uses through a list of jobs. It does not discuss mechanism…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Cloud / API · Vendor cloud</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Blocked · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li><strong>Which underlying model</strong> — not named officially</li>
+<li><strong>Whether there is an auto-reviewer</strong> — Dot has one; Grok Bot's launch pages do not describe it</li>
+<li><strong>How credentials are kept</strong> — only the spec's "Never store credentials" is known; the technical method is unstated</li>
+<li><strong>Whether there is a customizable permission-rule UI</strong> — the spec gives a list but does not say users can configure their own</li>
+<li><strong>Whether there are audit logs</strong> — not described officially</li>
+<li>Whether that Bot behavior spec is product-level enforcement or a per-Bot constraint — the document does not state its scope</li>
+<li>Concrete numbers for the independent usage</li>
+<li>Existence and boundary of a free tier — the official pages only say it is billed separately from the main plan, not whether it can be used free</li>
+<li>Regional availability — official wording covers surfaces only, no country list</li>
+<li>The permission level of tools during autonomous background work (read-only or read-write)</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>The official page explains uses through a list of jobs.</strong> It does not discuss mechanism — it just lists nine roles: sales leads, site building, inbox triage, meeting attendance and more.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p><strong>A fit if you pick tools by job to be done.</strong> The official list of nine jobs is usable directly as selection criteria (see the tools field): sales leads, site building, inbox and subscription cleanup, customer service, game assets, office scheduling, inbox, meeting attendance, refund follow-up.</p></div>
+<div class="warn-p"><p><strong>Not a fit for four kinds of people:</strong></p></div>
+<div><ul><li>Anyone who needs a checkable, configurable approval mechanism — this entry's most obvious weakness</li><li>Anyone who needs local file read/write</li><li>Anyone who needs to confirm the underlying model — the official pages do not name it</li><li>Non-English-speaking users — the official pages only name platforms (desktop and iOS), with <strong>no country list</strong></li></ul></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct blocked　x.ai times out consistently from mainland (000 twice on the same day).</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>The official pages name no underlying model and never say whether the model can be swapped.</strong></p>
+<p>(x.ai's "Introducing Grok Bot" and "Grok Bot is now included with more plans" pages both checked.)</p>
+<p>Parallel in-site evidence: the same-period <strong>Introducing Grok 4.6</strong> page writes:</p>
+<p><strong>Official wording</strong>: "a particular focus on long-running agents"</p>
+<p>This matches Grok Bot's always-on positioning.</p>
+<p><strong>But the two pages never name each other.</strong></p>
+<p>So this site does not write "Grok Bot runs on 4.6" (R5: no inference).</p>
+<p>Compared with the other two:</p>
+<ul><li>OpenAI Dot — explicitly names GPT‑6 Astra</li><li>Meta Muse — explicitly names Muse Spark</li><li>Grok Bot — blank</li></ul>
+<p><strong>Whether the model can be swapped, and to which ones, is not stated officially.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>The form factor is isomorphic with the other two: its own cloud computer, always on.</strong></p>
+<p>Official wording:</p>
+<p>They have their own computer, work inside tools and apps like you do, and keep working 24/7</p>
+<p>Another post writes:</p>
+<p>They have their own computer in the cloud. It's always on, with browser and terminal access</p>
+<p><strong>Having a terminal is one distinguishable difference between this entry and the other two.</strong></p>
+<p>The official wording says browser <strong>and terminal</strong> access, while both Dot and Muse officially mention only the browser.</p>
+<p>The difference the official pages stress is "work happens in the actual tool instead of a chat draft":</p>
+<p>They sign into your apps and work happens in the actual tool instead of a chat draft</p>
+<p>Available surfaces: official wording says desktop and iOS.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>The official pages never mention the local file system; its workspace is its own cloud machine.</strong></p>
+<p>The official wording uses single quotes, citing the same sentence as elsewhere:</p>
+<p>They have their own computer. It's always on, with browser and terminal access</p>
+<p>The workspace visible indirectly is the signed-in apps — official examples include audit email, Drive, and paid subscriptions, plus:</p>
+<p>Works across apps and inboxes</p>
+<p>That shows it really does touch mail and cloud drive.</p>
+<p><strong>Permission granularity and whether there is full sync are not stated officially.</strong></p>
+<p>(Two launch pages and the x.ai/bot governance spec checked.)</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>The official pages give a duration promise directly: 24/7.</strong></p>
+<p>Launch page wording:</p>
+<p>keep working 24/7</p>
+<p>Another post's wording:</p>
+<p>Bots work across apps and inboxes, keep going when you step away, and only pull you in for judgment calls</p>
+<p><strong>The clearest sentence in this dimension is "only pull you in for judgment calls".</strong></p>
+<p>It pins the callback condition to "when judgment is needed", not periodic reporting.</p>
+<p>There is also an official hardening mechanism:</p>
+<p>Ask a Bot to follow along the next time you do the job, so it can run on its own after that</p>
+<p>i.e. teach it once, then it runs by itself.</p>
+<p>And it is explicitly parallelizable:</p>
+<p>Stand up a researcher, writer, and chief of staff. Put them in a group chat so they pass work between themselves</p>
+<p><strong>The permission level of tools during autonomous background work (read-only or read-write) is not stated officially.</strong></p>
+<p>(Two launch pages and the x.ai/bot governance spec checked — the latter only lists must-approve actions, not permission levels.)</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>The official pages replace a capability table with a list of "routine jobs", and that list is itself the selection basis.</strong></p>
+<p>The jobs listed in official wording:</p>
+<p>Bots doing today</p>
+<p>The list (nine roles):</p>
+<ul><li>Sales prospector — sales leads</li><li>Website builder — site building</li><li>Digital declutterer — digital cleanup</li><li>Customer support — support</li><li>Game artist — game art</li><li>Office manager — office scheduling</li><li>Inbox manager — inbox</li><li>Meeting stand-in — meeting proxy</li><li>Refunds manager — refund chasing</li></ul>
+<p>Specific external services named officially: payments provider, Gmail, Slack, ServiceTitan, Quo, client portal, Drive. (named officially)</p>
+<p><strong>It is the only one of the three that never mentions payment checkout — the official Grok Bot launch page does not say it can check out directly.</strong></p>
+<p>Meta Muse explicitly names Stripe Link; Dot does not mention it. <strong>This site does not infer; it only records that the official pages do not mention it.</strong></p>
+<p>The "Website builder" entry officially writes purchases the domain and deploys the final version — <strong>procurement is involved</strong>, and approval ownership is not separately stated.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>The official framing is interaction memory, not context window.</strong></p>
+<p>Official wording:</p>
+<p>They remember conversations, learn how you like things done, and get sharper the more work together</p>
+<p>The entry point is a single text thread:</p>
+<p>A text-thread UX. Message a Bot the way you would message someone on your team, from mobile or desktop, so you can pick up the same thread on either — with nothing to set up first</p>
+<p><strong>i.e. the same conversation thread continues across devices.</strong></p>
+<p>Multi-Bot collaboration has its own description: they pass work to each other in a group chat, with the user not in the middle.</p>
+<p><strong>Context-window size, and how memory is stored and deleted, are not stated officially.</strong></p>
+<p>(Two launch pages and the x.ai/bot governance spec checked. By contrast Meta Muse officially provides deletion and a forget skill — this is a conspicuous information gap in this entry.)</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>Only one approval layer is written on the launch pages: "callback equals approval". A Bot governance spec on the official domain adds the must-approve action list.</strong></p>
+<p>Verification supplemented 2026-10-03; the nature of that spec is discussed in the body section "How to read that governance spec".</p>
+<p>Three points verified on the launch pages:</p>
+<ol><li value="1">Callback equals approval — "only come back when something needs your approval", "Leaves every send for you to approve in your inbox or navigator"</li><li value="2">Routine jobs carry conservative verbs — declutterer "Only discards or unsubscribes if you say so"; refunds manager "Comes back with the refund or discount it recovered" — it does not execute refunds itself, it brings the result back</li><li value="3">One design worth noting — Website builder officially writes "Helps configure plugins, delivers a live URL, and adds redirect rules", <strong>it even changes DNS redirects, yet the official site does not list it as an approval-required item</strong></li></ol>
+<p><strong>The Bot governance spec on the official domain <code>x.ai/bot/…</code> gives an explicit approval list.</strong></p>
+<p>Original prefix:</p>
+<p>Explicit approval required before…</p>
+<p>Must-approve actions:</p>
+<ul><li>Creating / editing / duplicating / hiding / deleting a Bot</li><li>Saving or materially modifying a Skill</li><li>Creating / enabling / editing / pausing a Routine</li><li>Creating or changing group chats</li><li>Installing or authenticating connectors</li><li><strong>Expanding permissions</strong></li><li>Writing to external sources</li><li>Sending or publishing</li><li>Contacting external people</li><li><strong>Purchases, transfers, price changes, commercial commitments</strong></li><li>Deleting or overwriting data</li><li>Changing production environments</li><li>Accepting legal terms</li><li>Sensitive hiring / medical / legal / financial decisions</li><li>Creating public share links or marketplace submissions</li></ul>
+<p>Three behavioral rules directly relevant to this dossier:</p>
+<ol><li value="1">Silence is not consent — official wording "<strong>Do not infer approval from silence, vague agreement, a previous approval, another version, or an example</strong>"</li><li value="2">Approval does not spill over — official wording "Approval applies only to the <strong>exact action, target, scope, version, configuration, connection, permission, and schedule</strong>"</li><li value="3">Deletion requires a human — official wording "<strong>Never delete a Bot automatically</strong>" plus "Agents cannot be deleted by another agent; <strong>the user deletes from the sidebar</strong>"</li></ol>
+<p>There are also two credential rules:</p>
+<p><strong>Never store credentials</strong></p>
+<p>Never request passwords, passkeys, 2FA, private keys, recovery codes, payment confirmations, or API secrets in chat</p>
+<p><strong>Product-level mechanisms are not stated officially.</strong></p>
+<p>Four things the official pages do not state.</p>
+<p>A customizable permission-rule UI, an auto-reviewer, audit logs. And the technical custody method for credentials.</p>
+<p>One more unstated item: whether that spec is product-level enforcement or a constraint on individual Bots.</p>
+<p>What was found is a Bot behavior spec, not a product-mechanism document.</p>
+<p>(Two launch pages and the x.ai/bot spec checked.)</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p><strong>Fits people who pick agents by job role.</strong></p>
+<p>The official pages give a role-based jobs list (see the tools axis), usable as a checklist: sales leads, site building, inbox cleanup, customer support, game art, office scheduling, inbox, meeting stand-in, refund chasing.</p>
+<p><strong>Does not fit four kinds of people:</strong></p>
+<ul><li>People who need the permission mechanism inspectable and configurable — this entry's most obvious shortcoming</li><li>People who need local file read/write</li><li>People who need the underlying model confirmed — not published officially</li><li>Users outside English-speaking regions — official wording covers only desktop and iOS; <strong>the regional statement goes only to surfaces, with no country list</strong></li></ul></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Treating "separate usage" as free — the official pages only say it is billed apart from the main plan</li>
+<li>Expecting to look up approval granularity and credential handling — the release page does not state them and this entry does not fill them in</li>
+<li>Inferring from Grok 4.6's "focus on long-running agents" that this is what it runs — neither page names the other</li>
+<li>Assuming it only works with SuperGrok — the official pages have already extended it to all Cursor tiers</li>
+<li>Assuming it can pay directly the way Muse can — the official Grok Bot page never mentions payment or checkout</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-11-11，Content updated 2026-11-23。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>official</td><td>xAI · Introducing Grok Bot 1.0 (x.ai/news index, 2026-11-11; Team Bots, proactive work)</td><td><a href="https://x.ai/news" rel="noopener" target="_blank">https://x.ai/news</a></td></tr>
+<tr><td>official</td><td>xAI · Introducing Grok Bot (official launch page, 2026-08-11 beta launch)</td><td><a href="https://x.ai/news/introducing-grok-bot" rel="noopener" target="_blank">https://x.ai/news/introducing-grok-bot</a></td></tr>
+<tr><td>changelog</td><td>xAI · Grok Bot is now included with more plans (official scope-expansion notice)</td><td><a href="https://x.ai/news/grok-bot-more-plans" rel="noopener" target="_blank">https://x.ai/news/grok-bot-more-plans</a></td></tr>
+<tr><td>docs</td><td>xAI · Bot behavior governance spec (public page on x.ai/bot, <strong>adds the must-approve action list</strong>; its nature is a behavioral constraint, not product documentation — see body section "How to read that governance spec")</td><td><a href="https://x.ai/bot/KZ9xav0Qad1U5QigEn7rh" rel="noopener" target="_blank">https://x.ai/bot/KZ9xav0Qad1U5QigEn7rh</a></td></tr>
+<tr><td>official</td><td>xAI · Introducing Grok 4.6 (<strong>used only to confirm the underlying model is not named</strong>; the two pages never cross-reference)</td><td><a href="https://x.ai/news/grok-4-6" rel="noopener" target="_blank">https://x.ai/news/grok-4-6</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong>: if you can subscribe to any SuperGrok or Cursor tier, the single most valuable thing to test in this entry is the <strong>approval trigger point</strong>.</p>
+<p>The official pages only say "needs your approval", so whether "Website builder buying a domain" actually pops an approval prompt is the only way to fill this gap.</p>
+<p><strong>Do not test benchmarks</strong>: like the other two it installs nothing locally, so there is no local benchmark to run.</p>
+</div>
+<div class="panel is-slim">
+<h2>The evidence method must be stated first (different from the other two)</h2>
+<p><strong>This entry could not be captured directly from the official pages; the body text comes from domain-scoped search.</strong></p>
+<div class="tbl-wrap"><table><thead><tr><th>Dossier</th><th>Evidence method</th></tr></thead><tbody><tr><td>OpenAI Dot</td><td>Playwright direct capture of openai.com, 5,166 words checked section by section</td></tr><tr><td>Meta Muse</td><td>Playwright direct capture of about.fb.com, 7,655 words checked section by section</td></tr><tr><td><strong>This entry</strong></td><td><strong>Direct capture of x.ai hit ERR_CONNECTION_TIMED_OUT; body text comes from official-page content returned by domain-scoped search (<code>allowed_domains: x.ai</code>)</strong></td></tr></tbody></table></div>
+<p><strong>Why it still counts as an official source:</strong> the search was restricted to the <code>x.ai</code> domain, and the returned body is that domain's page content, not third-party retelling.</p>
+<p><strong>But to be honest: no direct recapture verification was possible.</strong></p>
+<p>(Verified scope covers only the body returned by the search. Verbatim quoting requires re-verification.)</p>
+<p>This also directly determines the conclusion of the <code>permissions</code> axis — see below.</p>
+</div>
+<div class="panel is-slim">
+<h2>Of the three, only this entry cannot find the approval mechanism</h2>
+<p>This is the single most important thing this dossier should say up front.</p>
+<p>The three vendors' mechanism comparison:</p>
+<div class="tbl-wrap"><table><thead><tr><th></th><th>OpenAI Dot</th><th>Meta Muse</th><th><strong>Grok Bot</strong></th></tr></thead><tbody><tr><td>Approval mechanism</td><td>Auto-review + custom rules + <strong>sensitive actions always human</strong></td><td><strong>Independent Sentinel agent</strong>, system-level isolation</td><td><strong>Not described on the launch pages</strong>; the in-domain Bot spec lists must-approve actions</td></tr><tr><td>Credentials</td><td>Uses stored passwords without exposing them to the model</td><td>Secure Credentials Store</td><td><strong>Not described on the launch pages</strong>; the spec only says "Never store credentials"</td></tr><tr><td>Audit</td><td>Activity view</td><td>Full trace, including "plans to do"</td><td><strong>Not described on the launch pages</strong></td></tr></tbody></table></div>
+<p><strong>The "callback equals approval" layer is verified:</strong></p>
+<blockquote>only come back when something needs your approval  Leaves every send for you to approve in your inbox or navigator</blockquote>
+<p><strong>Supplemented 2026-10-03: the in-domain Bot behavior spec adds approval granularity (which actions require approval).</strong></p>
+<p>But it does <strong>not</strong> add "whether users can configure their own rules", "audit logs", or "how credentials are kept".</p>
+<p>So the last two rows of the table above still read "not described on the launch pages", and that is accurate.</p>
+<p><strong>The selection implication still holds, but the reason changes.</strong></p>
+<p>If "is the approval mechanism inspectable and configurable" is a hard requirement, this entry <strong>still cannot be answered completely from official material</strong> — what was found is a Bot behavior spec, not a product-mechanism document.</p>
+<p>For an answer you must ask xAI; do not assume "it should be there".</p>
+</div>
+<div class="panel is-slim">
+<h2>How to read that governance spec (important — do not mistake it for product mechanics)</h2>
+<p>There is a public Bot behavior spec on the <code>x.ai</code> domain (<code>x.ai/bot/…</code>) containing a fairly complete approval list.</p>
+<p><strong>It fills the approval granularity missing from the launch pages, but its nature must be made clear.</strong></p>
+<div class="tbl-wrap"><table><thead><tr><th></th><th>Content</th></tr></thead><tbody><tr><td>What it <strong>is</strong></td><td>A <strong>behavioral-constraint statement</strong> for one Bot — how it should act, what it should ask first</td></tr><tr><td>What it ❌ <strong>is not</strong></td><td>Not product documentation; not a product-level permission-mechanism statement; it does not mean all Bots are bound by the same ruleset; it cannot answer "can rules be configured in the user UI"</td></tr></tbody></table></div>
+<p><strong>Why this distinction matters:</strong></p>
+<p>It tells you "<strong>how this Bot is required to behave</strong>", not "<strong>what this product lets you configure</strong>".</p>
+<p>What users really want to know is "can I decide myself which actions need approval" — <strong>this document does not answer that question</strong>, so <code>permissions</code> still cannot count as filled.</p>
+<p><strong>But two of its designs deserve separate note</strong>, and they form interesting contrasts with the other two vendors:</p>
+<ol><li value="1"><strong>"Do not infer approval from silence"</strong> — silence is not consent. This is stricter than Dot's two tiers of "Ask for some actions / Always ask": <strong>xAI explicitly forbids inferring consent from "not objecting", at the spec level.</strong></li><li value="2"><strong>"Approval applies only to the exact action, target, scope, version, configuration, connection, permission, and schedule"</strong> — <strong>approval is pinned to the single action and single configuration; it does not spill into the next time.</strong> This contrasts with Muse's granularity options:</li></ol>
+<ul><li>Allow once / for this task / for this site / Always allow</li></ul>
+<p>These are two different granularity philosophies: Muse offers <strong>validity-duration options</strong>, while this Grok Bot spec recognizes <strong>one-time approval only</strong>.</p>
+<p><strong>Three-vendor approval model comparison (after the supplement)</strong></p>
+<div class="tbl-wrap"><table><thead><tr><th></th><th>Approval granularity</th><th>Does silence count as consent</th><th>Duration options</th></tr></thead><tbody><tr><td>OpenAI Dot</td><td>Custom rules + built-in floor + auto-review</td><td>No statement seen</td><td>No statement seen</td></tr><tr><td>Meta Muse</td><td>Five-tier options</td><td>No statement seen</td><td>Yes (once / task / site / always)</td></tr><tr><td><strong>Grok Bot</strong></td><td><strong>Spec lists must-approve actions</strong></td><td><strong>Explicitly not</strong></td><td><strong>Single-use approval only</strong></td></tr></tbody></table></div>
+</div>
+<div class="panel is-slim">
+<h2>Two details worth noting separately</h2>
+<h3 class="sub-h">① Routine jobs use conservative verbs</h3>
+<p>Official wording:</p>
+<pre class="code"><code>Digital declutterer — Audits email, Drive, and paid subscriptions around the clock.
+Only discards or unsubscribes if you say so.
+
+Refunds manager — Finds the claim, files it, and follows it through.
+Comes back with the refund or discount it recovered.</code></pre>
+<p>The declutterer <strong>audits continuously but discards only if you say so</strong>. The refunds manager <strong>runs the whole process but brings the result back to you</strong>.</p>
+<p><strong>In the official descriptions none of these jobs "execute on its own"</strong> — this is the behavioral boundary as presented by the official page text, not speculation.</p>
+<h3 class="sub-h">② But the Website builder entry does both purchasing and deploying</h3>
+<p>Official wording:</p>
+<pre class="code"><code>Website builder — Builds the site, purchases the domain, and deploys
+the final version. Helps configure plugins, delivers a live URL,
+and adds redirect rules.</code></pre>
+<p><strong>Buying the domain + going live + changing redirects are all done, and the official site does not list it as an approval-required item.</strong></p>
+<p>This is inconsistent with the conservative wording of ①.</p>
+<p><strong>This site records the inconsistency as-is</strong> — no cover-up for the vendor, and no verdict that an approval is missing either (approval may live in the product rather than on the launch page).</p>
+</div>
+<div class="panel is-slim">
+<h2>Underlying model: not named officially, so this dossier does not infer</h2>
+<ul><li>OpenAI Dot: explicitly GPT‑6 Astra</li><li>Meta Muse: explicitly Muse Spark</li><li><strong>Grok Bot: the official pages give no model name</strong></li></ul>
+<p>In-site one can see the Grok 4.6 launch page writing "a particular focus on long-running agents", and Grok Bot is exactly the always-on type — <strong>but the two pages never name each other.</strong></p>
+<p>So this site does not write "Grok Bot runs on 4.6".</p>
+<p><strong>Reason</strong>: the v3 rule "give the basis for judgment, not false conclusions" — "two products' positioning matches" is not evidence for "the same model".</p>
+</div>
+<div class="panel is-slim">
+<h2>Billing: a different structure from the other two</h2>
+<p><strong>This official statement is repeated on both official pages — a point the vendor stresses.</strong></p>
+<blockquote>Grok Bot comes with its own usage, separate from your Grok and Cursor plans, so anything you hand off to a Bot won't count against your existing usage.</blockquote>
+<p>The three vendors' structures compared:</p>
+<div class="tbl-wrap"><table><thead><tr><th></th><th>Dot</th><th>Muse</th><th>Grok Bot</th></tr></thead><tbody><tr><td>What you buy</td><td>Bundled with Pro / Business Premium</td><td>Most needs free + subscription tiers</td><td>Bundled with SuperGrok / Cursor tiers</td></tr><tr><td>Relation to main-plan quota</td><td>Dot chats don't count; tasks handed to Codex <strong>do count</strong></td><td>Not stated officially</td><td><strong>Independent usage, separate from the main plan</strong></td></tr></tbody></table></div>
+<p><strong>The three use three different structures — do not assume "vendor-cloud agents are all the same".</strong></p>
+<p>⚠ <strong>The concrete numbers for the independent usage are given by neither official page</strong>; check the official site yourself.</p>
+</div>
+<div class="panel is-slim">
+<h2>The 1.0 update (11 November 2026)</h2>
+<p>xAI moved Grok Bot to 1.0 on 11 November 2026. The official heading says "Bots now work with your whole team, take on work without being asked, and get more done, faster". The update turns the product from a single-person always-on Bot into a team-shared Bot:</p>
+<ul><li><strong>Team Bots</strong>: give a Bot files, apps and domain knowledge, then share it with the team so everyone starts from the same context; the Team Bot keeps learning while it collaborates.</li><li><strong>Proactive work</strong>: 1.0 explicitly says "take on work without being asked", rather than only waiting for a user command. This is the same line as "keep working 24/7" on the launch page.</li><li><strong>More job-shaped launches</strong>: "Grok Bot for Accounting" on 16 November 2026 is a post-1.0 accounting-team use case, showing the vendor sells by job rather than by feature.</li><li><strong>Still no model name</strong>: neither the 1.0 page nor the launch page says which Grok model the Bot runs on; this dossier continues not to infer.</li></ul>
+<p>Selection impact: if you want a team-shared, always-on workspace, 1.0 is more worth a look than the launch version. If you need an auditable product-level permission configuration, 1.0 still does not give a complete answer, and that remains this entry's biggest shortfall.</p>
+</div>
+<div class="panel is-slim">
+<h2>Collection limitations</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Page</th><th>Status</th></tr></thead><tbody><tr><td>Introducing Grok Bot</td><td>⚠️ Direct capture timed out (ERR_CONNECTION_TIMED_OUT); body from x.ai domain-scoped search</td></tr><tr><td>Grok Bot is now included with more plans</td><td>⚠️ Same as above</td></tr><tr><td>Introducing Grok 4.6</td><td>⚠️ Same as above; <strong>used only to confirm "not named officially"</strong>, never to infer the model</td></tr><tr><td><code>x.ai/bot/…</code> Bot behavior spec</td><td>✅ <strong>Body captured 2026-10-03</strong>, adding <code>permissions</code> approval granularity (nature is behavioral constraint, see body)</td></tr></tbody></table></div>
+<p><strong>None of the three launch pages could be directly recaptured for verification</strong> — one reason this entry's confidence is partial.</p>
+<p><strong>Change on 2026-10-03</strong>: an in-domain Bot behavior spec body was found, moving <code>permissions</code> from "completely absent from official pages" to "a must-approve action list exists, but product-level mechanisms (configurable rules / audit logs / credential custody) still have no official statement".</p>
+<p><strong>Therefore confidence remains partial.</strong></p>
+<p>But the gap has narrowed from "the whole permission mechanism is blank" to the single item "product-level permission mechanisms and audit logs".</p>
+<p><strong>None of the three pages could be directly recaptured</strong> — the main reason confidence is set to partial. Also the permission mechanism itself is simply not written on the official pages, so even direct capture could not fill it.</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/openai-dot.html">OpenAI Dot</a></span><span class="rel-n">released the same period; the most complete permission information of the three</span></li>
+<li><span class="rel-t"><a href="/en/coding/meta-muse.html">Meta Muse</a></span><span class="rel-n">released the same period; Sentinel as an independent veto layer</span></li>
+<li><span class="rel-t"><a href="/en/coding/codex-ide.html">Codex (IDE extension)</a></span><span class="rel-n">the local-CLI contrast (the machine is yours)</span></li>
+<li><span class="rel-t"><a href="/en/mcp/playwright.html">Playwright MCP Server</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/augment-code.html">Augment Code</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Augment Code is the enterprise 'software factory' platform: Cosmos turns</td></tr><tr><td><a href="/en/coding/jules.html">Jules</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Nothing installs locally: the work runs on a Google Cloud VM and lands a</td></tr><tr><td><a href="/en/coding/meta-muse.html">Meta Muse</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A design with a separate agent handling approval — two system-isolated t</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from xAI</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/chat/grok-chat.html"><span class="vp-cat">General chat</span>Grok</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Coding agents: terminal vs IDE vs cloud | Tools</title>
+<meta content="Fix the execution surface first (terminal, IDE, cloud), then compare permission models, background continuation and repo context; each candidate gets its…" name="description"/>
+<link href="https://tools.specul.com/en/mcp/guides/compare-coding-agents.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/mcp/guides/compare-coding-agents.html" property="og:url"/>
+<meta content="Coding agents: terminal vs IDE vs cloud | Tools" property="og:title"/>
+<meta content="Fix the execution surface first (terminal, IDE, cloud), then compare permission models, background continuation and repo context; each candidate gets its…" property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Coding agents: terminal vs IDE vs cloud","description":"Fix the execution surface first (terminal, IDE, cloud), then compare permission models, background continuation and repo context; each candidate gets its…","dateModified":"2026-11-03"}</script>
+<meta content="Coding agents: terminal vs IDE vs cloud | Tools" name="twitter:title"/><meta content="Fix the execution surface first (terminal, IDE, cloud), then compare permission models, background continuation and repo context; each candidate gets its…" name="twitter:description"/><link href="https://tools.specul.com/mcp/guides/compare-coding-agents.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/guides/compare-coding-agents.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/guides/compare-coding-agents.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/mcp/guides/compare-coding-agents.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<a class="back" href="/en/mcp/">← Guides</a>
+<div class="detail-head">
+<div>
+<h1>Coding agents: terminal vs IDE vs cloud</h1>
+<div class="vendor is-caps">Planning</div>
+</div>
+</div>
+<div class="panel-lead"><p>Fix the execution surface first (terminal, IDE, cloud), then compare permission models, background continuation and repo context; each candidate gets its conditions and one line on when to pick another.</p></div>
+<nav aria-label="Article contents" class="panel is-slim"><p>On this page</p><ul><li><a href="#guide-section-0">Pick the surface first</a></li><li><a href="#guide-section-1">Six dimensions</a></li><li><a href="#guide-section-2">When each fits</a></li><li><a href="#guide-section-3">Dated facts</a></li><li><a href="#guide-section-4">Common misreads</a></li></ul></nav>
+<div class="panel is-slim" id="guide-section-0">
+<h2>Pick the surface first</h2>
+<p>First distinguish three execution surfaces for a coding agent. Price and model choice come after deciding where work runs:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Surface</th><th>Examples</th><th>Execution location</th><th>Work to consider</th></tr></thead><tbody><tr><td>Terminal</td><td>Claude Code CLI, Codex CLI, Gemini CLI</td><td>Your shell and repository</td><td>Existing repositories, scripting, inspectable commands</td></tr><tr><td>IDE</td><td>Cursor, GitHub Copilot, Antigravity</td><td>Editor process or vendor cloud</td><td>Editing with completion and inline diffs</td></tr><tr><td>Cloud</td><td>Devin, Cursor Cloud Agents</td><td>Vendor workspace</td><td>Delegated issues and work continuing after the laptop closes</td></tr></tbody></table></div>
+<p><strong>Ask whether changes run on your machine or in a vendor cloud.</strong> This can eliminate unsuitable candidates before other comparisons.</p>
+</div>
+<div class="panel is-slim" id="guide-section-1">
+<h2>Six dimensions</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Dimension</th><th>Claude Code CLI</th><th>Codex CLI</th><th>Gemini CLI</th><th>Cursor</th><th>Devin</th><th>Antigravity</th></tr></thead><tbody><tr><td>Surface</td><td>Terminal</td><td>Terminal</td><td>Terminal</td><td>IDE and cloud</td><td>Cloud workspace</td><td>Desktop / CLI / IDE / SDK</td></tr><tr><td>Permissions</td><td>Configurable granularity, documented in docs and CHANGELOG</td><td>Execution approvals; app-server architecture</td><td>Non-interactive scripting for CI</td><td>Editor approvals and cloud controls</td><td>Cloud sandbox, issue assignment</td><td>Three documented command-execution policies</td></tr><tr><td>Continuation</td><td>Local process</td><td>Thread continuation</td><td>Script mode</td><td>Cloud work can continue after the laptop closes</td><td>Asynchronous work</td><td>Persistent harness</td></tr><tr><td>Model line in snapshot</td><td>Anthropic</td><td>OpenAI</td><td>Gemini</td><td>Multiple models</td><td>Vendor-managed</td><td>Gemini</td></tr><tr><td>Licence/source</td><td>Source-visible, All rights reserved</td><td>Repository available</td><td>Apache-2.0</td><td>Closed-source</td><td>Closed-source</td><td>Closed-source</td></tr><tr><td>Pricing basis</td><td>Subscription or API; official pricing tiers</td><td>ChatGPT tier or API key</td><td>Free quota and paid API</td><td>Hobby / Pro / Teams / Enterprise</td><td>Team quotation</td><td>Google AI plan</td></tr></tbody></table></div>
+<p>No prices are collected here. Current tier names and quotas must be checked on each official pricing page.</p>
+</div>
+<div class="panel is-slim" id="guide-section-2">
+<h2>When each fits</h2>
+<p><strong>Claude Code CLI</strong>: a candidate for working in an existing repository with commands visible in a terminal. Check authorisation for commands, files and tools. Its default model line in this snapshot is Anthropic; other model requirements need separate configuration checks. Consider Cursor or Copilot for IDE completion, or Gemini CLI for an Apache-2.0 CLI you can modify.</p>
+<p><strong>Codex CLI</strong>: a candidate for the OpenAI ecosystem, thread continuation and scripting. Rust implementation and the app server are recorded architectural features. Consider Claude Code CLI when the team's requirements are tied to Anthropic.</p>
+<p><strong>Gemini CLI</strong>: Apache-2.0, launchable through <code>npx</code>, with MCP and non-interactive scripting for CI and teaching. For a permission-control comparison, examine Claude Code CLI's specific settings and change records.</p>
+<p><strong>Cursor</strong>: a candidate for an IDE workflow alongside cloud continuation. Official documentation distinguishes cloud VMs from tool execution on self-hosted machines. Self-hosted execution does not establish that model requests, logs and all other data stay offline; inspect network settings and terms separately. Consider a CLI when you only need a terminal.</p>
+<p><strong>Devin</strong>: a candidate for delegating issues to a cloud workspace and reviewing draft PRs afterwards, with Slack / Linear / Jira integrations. If work must run locally without outbound data, investigate the actual local execution and data path of terminal or IDE options.</p>
+<p><strong>Antigravity</strong>: a candidate for sharing a harness across desktop, CLI, IDE extension and Python SDK, with three documented command policies in this snapshot. If you only need an editor workflow, compare Cursor's IDE form.</p>
+</div>
+<div class="panel is-slim" id="guide-section-3">
+<h2>Dated facts</h2>
+<ol><li value="1">Gemini CLI is Apache-2.0-licensed and supports <code>npx</code> startup and MCP (repository README; October 2026 snapshot).</li><li value="2">Cursor Cloud Agents run in isolated cloud VMs without requiring the local machine to stay online; a separate self-hosted machine execution path is documented. Execution location alone does not prove end-to-end offline processing (official Cloud Agents documentation; this item rechecked 2026-11-04).</li><li value="3">Antigravity explicitly documents three command-execution policies (release notes checked 2026-10-13).</li><li value="4">Claude Code CLI has a separate CHANGELOG and Atom feed; source is visible but the licence is All rights reserved (repository snapshot).</li><li value="5">Codex CLI is implemented in Rust, with app-server architecture and thread continuation recorded in its repository and releases.</li></ol>
+<p>These entries distinguish earlier verification snapshots from the scoped recheck of item 2. Use official releases for publication dates; a scoped recheck is not a new full-guide verification.</p>
+</div>
+<div class="panel is-slim" id="guide-section-4">
+<h2>Common misreads</h2>
+<ul><li>Terminal execution does not establish safe execution. Default confirmations and allowlists are different permission designs.</li><li>Cloud continuation does not remove review; a draft PR still needs inspection.</li><li>An open-source CLI does not establish model-weight rights; their licences are separate.</li><li>MCP support does not make tools ready for unrestricted use. Inspect each server's permissions and data scope.</li></ul>
+</div>
+<nav aria-label="What to do next" class="panel is-slim">
+<h2>What to do next</h2><ul>
+<li><a href="/en/mcp/guides/playbook-fix-a-bug.html">Work through a bug-fix workflow</a></li>
+<li><a href="https://learn.specul.com/en/guide/%E6%80%8E%E4%B9%88%E9%AA%8C%E8%AF%81%20AI%20%E7%9A%84%E8%BE%93%E5%87%BA/">Verify the result and its sources</a></li>
+<li><a href="/en/mcp/guides/failure-library.html#by-symptom">Troubleshoot by symptom</a></li>
+</ul></nav>
+<div class="panel is-slim">
+<h2>Sources</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Source</th><th>URL</th></tr></thead><tbody>
+<tr><td>Anthropic: Claude Code repository and CHANGELOG (source-visible, All rights reserved; October 2026 snapshot)</td><td><a href="https://github.com/anthropics/claude-code" rel="noopener" target="_blank">https://github.com/anthropics/claude-code</a></td></tr>
+<tr><td>OpenAI: Codex CLI repository and releases (Rust, app server; October 2026 snapshot)</td><td><a href="https://github.com/openai/codex" rel="noopener" target="_blank">https://github.com/openai/codex</a></td></tr>
+<tr><td>Google: Gemini CLI repository (Apache-2.0, npx, MCP; October 2026 snapshot)</td><td><a href="https://github.com/google-gemini/gemini-cli" rel="noopener" target="_blank">https://github.com/google-gemini/gemini-cli</a></td></tr>
+<tr><td>Cursor: official documentation (Cloud Agent execution location and network controls; scoped recheck 2026-11-04)</td><td><a href="https://cursor.com/docs" rel="noopener" target="_blank">https://cursor.com/docs</a></td></tr>
+<tr><td>Devin: official documentation (cloud workspaces and issues to draft PRs)</td><td><a href="https://docs.devin.ai/" rel="noopener" target="_blank">https://docs.devin.ai/</a></td></tr>
+<tr><td>Google Antigravity: official site (shared harness across desktop, CLI, IDE and SDK; checked 2026-10-13)</td><td><a href="https://antigravity.google/" rel="noopener" target="_blank">https://antigravity.google/</a></td></tr>
+</tbody></table></div>
+<p class="guide-foot">Source snapshot: 2026-11-03; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</p>
+</div>
+<p class="t-sm topics-line">This page appears in: <a href="https://specul.com/en/topic-code.html">Write code with AI</a> · <a href="https://specul.com/en/topic-game.html">Make games with AI</a> · <a href="https://specul.com/en/topic-prompts.html">Use AI well</a></p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

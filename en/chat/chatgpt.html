@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>ChatGPT | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/chat/chatgpt.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/chat/chatgpt.html" property="og:url"/>
+<meta content="ChatGPT | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"ChatGPT | Tools","applicationCategory":"DeveloperApplication","sameAs":"https://chatgpt.com/","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-11-19"}</script>
+<meta content="ChatGPT | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/chat/chatgpt.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/chat/chatgpt.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/chat/chatgpt.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/chat/chatgpt.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Chat</span>
+</nav>
+<a class="back" href="/en/chat/">← Chat</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#f5c542">CH</div>
+<div>
+<h1>ChatGPT</h1>
+<div class="vendor is-caps">OpenAI</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Cloud</span>
+<span class="tag on">Multimodal</span>
+<span class="tag on">Memory</span>
+<span class="tag on">Commercial</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-11-19</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>OpenAI’s general-purpose chat assistant: web, apps and desktop fully covered, model…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Cloud / API · Web service</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Commercial terms</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Blocked · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>The full boundary of the cross-session memory feature (per the official help pages; not item-by-item verified by this site)</li>
+</ul>
+</div>
+English summaries and interface labels are available. Detailed source notes below are currently in Chinese.
+<div class="panel-lead"><p>OpenAI’s general-purpose chat assistant: web, apps and desktop fully covered, model family split by subscription tier — and the data-training toggle is its most commonly misread clause.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>General Q&amp;A, writing and file analysis where you accept cloud processing. Users who want “conversations never trained on” should turn off the data-improvement toggle or use Temporary Chat; enterprise data goes through the Team/Enterprise/API line.</p></div>
+<div class="warn-p"><p><strong>Not a fit for</strong> running locally or freely swapping models — see the local model runners and open-source frameworks.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-20</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct blocked　chatgpt.com times out consistently from mainland (000 twice).</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p>The model family is disclosed in official release notes and routed by tier: GPT-6.2 Astra (complex professional work) and GPT-6.2 Sol (speed/cost balance on multistep tasks) launched on 2026-11-17; GPT-6 Astra and GPT-6.1 Sol/Terra remain listed. Models selectable in chat and tier routing follow the official release notes.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p>Web, iOS/Android, macOS/Windows desktop apps; all generation and retrieval are processed on OpenAI's cloud — no model runs locally. Desktop quick-chat/screenshot features are just entry points; processing still happens in the cloud.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>Can upload files, images and audio (audio upload per release notes 2026-10-06: transcription, summarization, Q&amp;A); uploaded content is stored in the OpenAI account — ownership and retention are covered by the permissions dimension.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p>Chats return instantly; the Codex Cloud line explicitly says "tasks can continue while your computer sleeps" (release notes 2026-09-29). The chat product itself has no offline-continuation form.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p>Official connectors (Gmail/Calendar etc.) and partner Apps; built-in feature lines like Slides/Sites/Finances; a separate API line exists. Plugins are disclosed on the Codex line; the consumer chat surface extends mainly via official connectors.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p>Has memory and Projects for organizing history; temporary chats leave no history and build no memory. The full boundary of cross-session memory is per the official help pages.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p>Official policy pages: personal services may use chats for model training by default; you can turn this off under "Settings → Data controls" or choose "Don't use my content for training" in the privacy portal; temporary chats are not used for training; Team/Enterprise/API do not train by default (API requires explicit opt-in); for the thumbs up/down feedback you submit, the whole related conversation may still be used for training.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Suits "ask anything a bit" general Q&amp;A and writing, provided you accept cloud processing. For sensitive content, turn off the training switch first or use temporary chat; enterprise data goes through Team/Enterprise/API. For local processing or swappable models, closed cloud assistants like this are not suitable.</p></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>Official Terms of Use, 'Ownership of content': as between you and OpenAI you retain Input ownership and own the Output — 'We hereby assign to you all our right, title, and interest, if any, in and to Output.' Outputs may not be unique; the assignment does not extend to other users' outputs. No tier gate on commercial use, subject to the Usage Policies.</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Account and permissions</a> · <a href="/en/mcp/guides/failure-library.html#rate-limit">Rate limits and retries</a> · <a href="/en/mcp/guides/failure-library.html#files">File-reading issues</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Treating "turn off training" as temporary chat — two separate mechanisms; the switch only affects future chats</li>
+<li>Assuming feedback (thumbs up/down) is exempt from the training switch — the official docs say the whole related conversation may be used</li>
+<li>Applying consumer terms to API/Enterprise — the two lines have different data terms</li>
+<li>Still looking for ChatGPT Atlas — the official notice says it was retired on 2026-08-09 and browser-agent capability moved into ChatGPT and Codex</li>
+<li>Assuming DALL·E GPT is still the live image entry — the official notice retired it on 2026-08-30; use ChatGPT Images</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-11-19，Content updated 2026-11-19。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>changelog</td><td>OpenAI Help · ChatGPT release notes (official changelog; body captured 2026-11-03, incl. Atlas retirement, ChatGPT Work and DALL·E GPT retirement)</td><td><a href="https://help.openai.com/zh-hans-cn/articles/6825453-chatgpt-%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E" rel="noopener" target="_blank">https://help.openai.com/zh-hans-cn/articles/6825453-chatgpt-%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E</a></td></tr>
+<tr><td>changelog</td><td>OpenAI Help · ChatGPT Atlas release notes (Atlas version record, last entry 2026-03-10)</td><td><a href="https://help.openai.com/zh-hans-cn/articles/12591856-chatgpt-atlas-release-notes" rel="noopener" target="_blank">https://help.openai.com/zh-hans-cn/articles/12591856-chatgpt-atlas-release-notes</a></td></tr>
+<tr><td>changelog</td><td>OpenAI Help · ChatGPT agent release notes (launched 2025-07-17; Enterprise+Edu 2025-08-08)</td><td><a href="https://help.openai.com/zh-hans-cn/articles/11794368-chatgpt-agent-release-notes" rel="noopener" target="_blank">https://help.openai.com/zh-hans-cn/articles/11794368-chatgpt-agent-release-notes</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Introducing deep research (released 2025-02-02; 2026-02-10 update added MCP/app connections and trusted-site limits)</td><td><a href="https://openai.com/index/introducing-deep-research/" rel="noopener" target="_blank">https://openai.com/index/introducing-deep-research/</a></td></tr>
+<tr><td>docs</td><td>OpenAI · ChatGPT Images 2.0 is here (2026-04-21)</td><td><a href="https://openai.com/zh-Hans-CN/index/introducing-chatgpt-images-2-0/" rel="noopener" target="_blank">https://openai.com/zh-Hans-CN/index/introducing-chatgpt-images-2-0/</a></td></tr>
+<tr><td>docs</td><td>OpenAI · How your data is used to improve model performance (official policy page, snapshot-verified 2026-10-20)</td><td><a href="https://openai.com/policies/how-your-data-is-used-to-improve-model-performance" rel="noopener" target="_blank">https://openai.com/policies/how-your-data-is-used-to-improve-model-performance</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Terms of Use (content-ownership and assignment clauses, verified via search snapshot 2026-10-21)</td><td><a href="https://openai.com/policies/row-terms-of-use/" rel="noopener" target="_blank">https://openai.com/policies/row-terms-of-use/</a></td></tr>
+<tr><td>pricing</td><td>OpenAI · ChatGPT Pricing (pricing page pointer, D9: this site does not collect price numbers)</td><td><a href="https://openai.com/chatgpt/" rel="noopener" target="_blank">https://openai.com/chatgpt/</a></td></tr>
+<tr><td>changelog</td><td>OpenAI Help · Model release notes (2026-11-17: GPT-6.2 Astra / Sol live)</td><td><a href="https://help.openai.com/zh-hant/articles/9624314-model-release-notes" rel="noopener" target="_blank">https://help.openai.com/zh-hant/articles/9624314-model-release-notes</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The coding-oriented test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a> (the coding task suite does not apply to chat products).</p>
+</div>
+<div class="panel is-slim">
+<h2>第一次怎么用</h2>
+<ol><li value="1">登录后先开设置里的数据开关。把「用于改进服务」与「训练」分别看清楚，再决定是否关闭。</li><li value="2">上传一个真实文件（PDF 或表格），要求它先给目录与结论，再逐段引用原文。</li><li value="3">需要多步研究时，明确写「先列检索计划，再执行，最后给带日期的来源表」。</li><li value="4">要图像就直说尺寸、风格与用途。图像 2.0 已并入主产品，不需要另找入口。</li><li value="5">需要浏览器操作时注意。Atlas 已于 2026-08-09 停运，能力并入 ChatGPT / Codex，入口变了。</li></ol>
+<pre class="code"><code>请基于我上传的文件回答，规则：
+1) 先列 3 条结论，每条后面标原文页码；
+2) 再列文件里没有覆盖的问题，写「未找到」；
+3. 不要引用文件之外的信息。</code></pre>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/chat/claude-chat.html">Claude (chat app)</a></span><span class="rel-n">Also general chat; the training opt-out mechanism and the "safety-review exception" differ</span></li>
+<li><span class="rel-t"><a href="/en/chat/gemini-chat.html">Gemini (chat app)</a></span><span class="rel-n">Ecosystem-integration route: the counterpart choice for Google-family users</span></li>
+<li><span class="rel-t"><a href="/en/chat/doubao-chat.html">Doubao</a></span><span class="rel-n">Chinese-context counterpart: App training switch is self-service, API does not train by default</span></li>
+<li><span class="rel-t"><a href="/en/coding/openai-dot.html">OpenAI Dot</a></span><span class="rel-n">Other layer · AI coding</span></li>
+<li><span class="rel-t"><a href="/en/coding/codex-cli.html">Codex CLI</a></span><span class="rel-n">Other layer · AI coding</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/chat/chatglm-chat.html">ChatGLM (Zhipu Qingyan)</a></td><td>Local / self-hosted</td><td>Commercial terms</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Zhipu Qingyan (ChatGLM) is the domestic chat product built on long-docum</td></tr><tr><td><a href="/en/chat/claude-chat.html">Claude (chat app)</a></td><td>Cloud / API</td><td>Commercial terms</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A general chat app strong on long-form and writing quality: memory is an</td></tr><tr><td><a href="/en/chat/deepseek-chat.html">DeepSeek Chat</a></td><td>Local / self-hosted</td><td>Commercial terms</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">DeepSeek is the domestic chat product built on reasoning-first Q&amp;A with </td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from OpenAI</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/audio/whisper.html"><span class="vp-cat">Audio generation</span>Whisper</a></li><li><a href="/en/coding/codex-cli.html"><span class="vp-cat">AI coding</span>Codex CLI</a></li><li><a href="/en/coding/codex-ide.html"><span class="vp-cat">AI coding</span>Codex (IDE extension)</a></li><li><a href="/en/coding/openai-dot.html"><span class="vp-cat">AI coding</span>OpenAI Dot</a></li><li><a href="/en/framework/codex-sdk.html"><span class="vp-cat">Frameworks &amp; runtimes</span>Codex SDK</a></li><li><a href="/en/framework/openai-agents-sdk.html"><span class="vp-cat">Frameworks &amp; runtimes</span>OpenAI Agents SDK</a></li><li><a href="/en/safety/openai-evals.html"><span class="vp-cat">Safety &amp; evaluation</span>OpenAI Evals</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

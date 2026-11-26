@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Hermes Agent | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/framework/hermes-agent.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/framework/hermes-agent.html" property="og:url"/>
+<meta content="Hermes Agent | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Hermes Agent | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/framework/hermes-agent.html","sameAs":"https://hermes-agent.nousresearch.com/","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Hermes Agent | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/framework/hermes-agent.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/framework/hermes-agent.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/framework/hermes-agent.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/framework/hermes-agent.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Frameworks</span>
+</nav>
+<a class="back" href="/en/framework/">← Frameworks</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#FFD700"'>HE</div>
+<div>
+<h1>Hermes Agent</h1>
+<div class="vendor is-caps">Nous Research</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Python</span>
+<span class="tag on">Open source</span>
+<span class="tag on">MIT</span>
+<span class="tag on">General-purpose harness</span>
+<span class="tag on">General-purpose assistant</span>
+<span class="tag on">Always-on</span>
+<span class="tag on">Cross-platform messaging</span>
+<span class="tag on">Scheduled tasks</span>
+<span class="tag on">MCP</span>
+<span class="tag on">Subagents</span>
+<span class="tag on">RPC</span>
+<span class="tag on">Skills system</span>
+<span class="tag on">Memory</span>
+<span class="tag on">Context compression</span>
+<span class="tag on">Permission approval</span>
+<span class="tag on">Self-hosted</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>A resident personal assistant with a learning loop — put plainly: a resident…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · Framework / SDK</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Wake latency and cross-hibernation state consistency on serverless backends</li>
+<li>The actual context savings of "zero-context-cost"</li>
+<li>The boundary of skill self-improvement (can it learn itself crooked?)</li>
+<li>Where Honcho user-modeling data goes, and privacy</li>
+<li>The exact relationship between Hermes and OpenClaw (team, rename, migration completeness)</li>
+<li>Nous Portal's <strong>official</strong> tiers and quota numbers (not published on the official site; third-party figures unconfirmed)</li>
+<li>The actual burn rate of the Nous Portal credit system (how many days of long agent loops drain one tier — third-party claims unproven)</li>
+<li>The difference between Nous Portal and OpenRouter (both credit-based, but different model catalogs and tool gateways)</li>
+<li>Reliability of local / self-hosted models across backends (the full provider list is verified)</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>Hermes Agent is a resident cross-platform personal assistant that accumulates its own skills from experience.</strong> It is not tied to your laptop — the official README says:</p>
+<blockquote><strong>The self-improving AI agent</strong> built by Nous Research. It's the only agent with a <strong>built-in learning loop</strong> — it creates skills from experience, improves them during use, <strong>nudges itself to persist knowledge</strong>, searches its own past conversations, and builds a deepening model of who you are across sessions. Run it on a $5 VPS, a GPU cluster, or serverless infrastructure that costs nearly nothing when idle. <strong>It's not tied to your laptop</strong> — talk to it from Telegram while it works on a cloud VM.</blockquote>
+<p>⚠ <strong>This site's position on "the only agent"</strong>: that is the <strong>vendor's own marketing line</strong>. This site <strong>ran no cross-product comparison to test whether "only" holds</strong>. It is recorded as a vendor claim, not as this site's conclusion.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p><strong>A fit for these six cases.</strong></p></div>
+<div><ul><li>A <strong>resident cross-platform personal assistant</strong> (six platforms: Telegram / Discord / Slack / WhatsApp / Signal / Email)</li><li>Running it on a cloud VM or serverless, rather than tied to your laptop</li><li>Scheduled tasks that must run unattended</li><li>Cross-session memory and self-accumulating skills</li><li>Using your own endpoint or multiple providers such as OpenRouter</li><li>Command-level approval plus DM pairing as a security boundary</li></ul></div>
+<div class="warn-p"><p><strong>Not a fit for these four cases.</strong></p></div>
+<div><ul><li>Coding tasks only — it is a general assistant; coding is one of many things</li><li>Using it as an embedded SDK — it is a complete runtime, not a library</li><li>A detailed "state vs context" layered guarantee — it has many mechanisms, but the vendor does not split them along those two layers</li></ul></div>
+<div><p>⚠ <strong>Unknown: enterprise multi-user and audit. The vendor provides no separate documentation.</strong></p></div>
+<div><blockquote>Checked the security and messaging pages: both cover only single-owner allowlist / DM pairing authorization, not multi-tenant audit.</blockquote></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　official site measured 200 direct.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>The official docs give four paths and stress there is no lock-in.</strong></p>
+<p>This is the most blunt statement of model freedom among everything we list.</p>
+<p><strong>README original</strong>:</p>
+<p>"Use any model you want — <strong>Nous Portal</strong>, <strong>OpenRouter, OpenAI, your own endpoint</strong>, and many others. <strong>Switch with <code>hermes model</code> — no code changes, no lock-in.</strong>"</p>
+<p><strong>The "your own endpoint" clause matters most to our readers.</strong> Self-built gateways and self-hosted inference connect directly.</p>
+<p><strong>Switching models needs no code change — one runtime command</strong>: <code>/model [provider:model]</code>. The same command works in the CLI and on messaging platforms. (See the CLI vs Messaging comparison table on the site.)</p>
+<p><strong>The full provider list is verified</strong>, from the official <code>docs/integrations/providers</code>. The official docs list 40+ in total:</p>
+<ul><li>Nous Portal — officially billed as "300+ frontier agentic models"</li><li>OpenRouter, Anthropic, GitHub Copilot</li><li>xAI Grok, Google Gemini / Vertex AI</li><li>AWS Bedrock, Azure AI Foundry</li><li>DeepSeek, Hugging Face, NVIDIA Build</li><li>Local / self-hosted: Ollama, LM Studio, and <strong>Custom Endpoint</strong></li></ul>
+<p>For Custom Endpoint config the official docs say:</p>
+<p>"saved in <code>config.yaml</code>"</p>
+<p><strong>The official positioning of that page, verbatim</strong>:</p>
+<p>"from cloud APIs ... to self-hosted endpoints like <strong>Ollama and vLLM</strong>, to advanced routing and fallback configurations."</p>
+<p>⚠ <strong>Unknown: capability alignment after switching models, and behavior differences of local quantized models across backends — the official docs give no conclusion.</strong></p>
+<p>We have not run measured tests either.</p>
+<p><strong>Verified</strong>: providers page and configuration page both checked.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>It provides six terminal backends, plugin backends and two entry points.</strong></p>
+<p><strong>README original list</strong> (2026-10-23 rolling-verification edition):</p>
+<p>"<strong>terminal backends</strong> — <strong>local, Docker, SSH, Modal, Daytona, and Vercel Sandbox</strong> — <strong>plus plugin backends such as Singularity/Apptainer</strong>."</p>
+<p>⚠ The older README (verified 2026-10-01) said "<strong>Seven terminal backends</strong> — local, Docker, SSH, Singularity, Modal, Daytona, and Vercel Sandbox" — <strong>Singularity has since been moved by the official docs into plugin backends</strong>; we record the current wording.</p>
+<p>The official docs also single out two backends: Daytona and Modal. They bring serverless persistence.</p>
+<p>"your agent's environment <strong>hibernates when idle and wakes on demand</strong>, costing nearly nothing between sessions"</p>
+<p><strong>There are two entry points.</strong> The README has a dedicated CLI vs Messaging comparison table:</p>
+<ul><li>Terminal TUI: launch <code>hermes</code></li><li>Messaging platforms: run the gateway first, then chat from Telegram / Discord / Slack / WhatsApp / Signal / Email, plus Home Assistant</li></ul>
+<p>⚠ <strong>This is the most valuable cell on our site.</strong> It is the only listed product that explicitly says "the agent can run on a cloud VM while you direct it from Telegram".</p>
+<p>That is the same need as OpenHands' "the agent keeps running after you close the laptop". The difference: OpenHands makes it an optional deployment, Hermes makes it the default form.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>Local-file capability comes indirectly: through terminal backends, not the framework itself.</strong></p>
+<p>Isolation mechanisms are covered under the permissions axis.</p>
+<p><strong>The workspace is determined by the chosen backend.</strong> The official <code>terminal.backend</code> <strong>defaults to <code>local</code></strong>.</p>
+<p><strong>Official label, verbatim</strong>: "Run on your machine (default)"</p>
+<p><code>terminal.backend</code> decides the workspace. The working directory is decided by <code>cwd</code>.</p>
+<p>Each backend provides one layer of isolation:</p>
+<ul><li>Docker / SSH</li><li>Modal / Daytona / Vercel</li><li>Singularity (current README wording files it under plugin backends)</li></ul>
+<p><strong>Context Files are an official first-class concept; format and precedence verified.</strong> (docs <code>features/context-files</code>) Supported filenames:</p>
+<ul><li><code>.hermes.md</code> / <code>HERMES.md</code></li><li><code>AGENTS.md</code>, <code>AGENTS.override.md</code></li><li><code>CLAUDE.md</code></li><li><code>SOUL.md</code></li><li><code>.cursorrules</code>, <code>.cursor/rules/*.mdc</code></li></ul>
+<p><strong>Precedence is first match wins.</strong> Order, verbatim:</p>
+<p><code>.hermes.md</code> → <code>AGENTS.override.md</code> → <code>AGENTS.md</code> → <code>CLAUDE.md</code> → <code>.cursorrules</code>. <code>SOUL.md</code> is the identity file and is always loaded separately.</p>
+<p>In a git repo, the whole <code>AGENTS.md</code> chain merges <strong>git root → working directory</strong>. Subdirectory context is also discovered progressively during a session. The per-file word cap is floor 20,000 / ceiling 500,000.</p>
+<p><strong>File access has boundaries.</strong> Layer 8 of the security page governs the terminal backend's working-directory parameter:</p>
+<p><strong>Official wording</strong>: "validated against an allowlist to prevent shell injection"</p>
+<p>Layer 3 of the security page says <code>write_file</code> and <code>patch</code> have a denylist. There is also an optional write sandbox.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>The official docs describe three background-task mechanisms.</strong></p>
+<p><strong>① Built-in cron scheduler.</strong> Official feature-table wording:</p>
+<p>"Built-in <strong>cron scheduler</strong> with delivery to any platform. Daily reports, nightly backups, weekly audits — all in natural language, <strong>running unattended</strong>."</p>
+<p>(docs <code>features/cron</code>)</p>
+<p><strong>② Serverless hibernate-and-wake.</strong> Daytona / Modal / Vercel backends hibernate when idle and wake on demand; the official phrase is exactly these words: <strong>Official wording</strong>: "hibernates when idle and wakes on demand"</p>
+<p><strong>③ A resident gateway process.</strong> Once the gateway runs, multiple messaging platforms can trigger it any time.</p>
+<p><strong>Catch-up and re-run mechanics are officially documented</strong> (<code>features/cron</code>):</p>
+<ul><li>There is a <strong>misfire catch-up</strong> scan</li><li>After <code>resume</code>, "the next tick fires one <strong>catch-up run</strong>"</li><li>Catch-up can be disabled: <code>cron.catch_up_missed: false</code></li><li>While globally paused via <code>hermes pause</code>, the hosted cron's fire webhook returns <code>503 Retry-After: 60</code> so the scheduler re-delivers</li></ul>
+<ul><li>Officially: "nothing is lost: due work catches up on the first tick"</li><li>Running tasks are "never killed"</li></ul>
+<p>The gateway side also has an <strong>event-loop liveness watchdog</strong>. After 3 consecutive unresponsive probes it exits with code 75 and the supervisor restarts it. There is also a 60s heartbeat.</p>
+<p>⚠ <strong>Unknown: state consistency across hibernate/wake — the official docs do not state it.</strong></p>
+<p><strong>Verified</strong>: <code>features/cron</code>, <code>features/tools</code>, <code>user-guide/messaging</code> — three pages checked.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>The official docs say it has 40+ tools and explicitly support MCP.</strong></p>
+<p>The docs directory has a dedicated "<strong>Tools &amp; Toolsets</strong>" page, subtitle verbatim:</p>
+<p>"<strong>40+ tools</strong>, toolset system, <strong>terminal backends</strong>"</p>
+<p>(docs <code>features/tools</code>)</p>
+<p><strong>MCP Integration is also its own docs page</strong>, verbatim:</p>
+<p>"Connect <strong>any MCP server</strong> for extended capabilities"</p>
+<p>(docs <code>features/mcp</code>)</p>
+<p><strong>One capability is quite unusual: subagent RPC.</strong> Official wording:</p>
+<p>"Spawn <strong>isolated subagents</strong> for parallel workstreams. <strong>Write Python scripts that call tools via RPC</strong>, collapsing multi-step pipelines into <strong>zero-context-cost turns</strong>."</p>
+<p>⚠ <strong>How we read "zero-context-cost":</strong> moving multi-step pipelines out of the context for execution — i.e. only the result is returned to the context. ⚠ <strong>The official docs give no concrete context-savings figure; we mark this as inference.</strong></p>
+<p>The community also maintains an MCP server for controlling the Linux desktop, named <code>computer-use-linux</code>. It uses the AT-SPI accessibility tree + Wayland/X11 input + screenshots.</p>
+<p>The README explicitly says it is for <strong>"Hermes and other MCP hosts"</strong>.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>⚠ This is the dimension our site cares about most, and also the one this product markets hardest — they must be kept apart.</strong></p>
+<p>First, the official claims.</p>
+<p>README feature table, the "A closed learning loop" row, verbatim:</p>
+<p>"Agent-curated memory with <strong>periodic nudges</strong>. Autonomous skill creation after complex tasks. <strong>Skills self-improve during use.</strong> <strong>FTS5 session search with LLM summarization for cross-session recall.</strong> Honcho dialectic user modeling. Compatible with the agentskills.io open standard."</p>
+<p><strong>But placing each official mechanism into its proper bucket shows this is not one dimension but three.</strong></p>
+<div class="tbl-wrap"><table><thead><tr><th>Official claim</th><th>Our categorization</th><th>Note</th></tr></thead><tbody><tr><td>periodic nudges (self-prompting)</td><td>state plane</td><td>a mechanism trigger, not a compression algorithm</td></tr><tr><td>FTS5 session search + LLM summarization</td><td><strong>context plane ✅</strong></td><td>retrieval + summarization — <strong>this is genuine context management</strong></td></tr><tr><td>Skills (autonomous creation + self-improvement during use)</td><td>its own layer</td><td>procedural memory, distinct from conversation context</td></tr><tr><td>Honcho dialectic user modeling</td><td>its own layer</td><td>long-term modeling of the user</td></tr></tbody></table></div>
+<p><strong>Key distinction: compression is explicitly user-triggered.</strong> There is a dedicated <code>/compress</code> command, in both the CLI and messaging platforms, listed alongside <code>/usage</code> and <code>/insights</code> in the comparison table. That means: <strong>no trigger, no compression</strong> — it is not automatic.</p>
+<p><strong>There is also a set of evidence that comes down to filenames.</strong> From the "Migrating from OpenClaw" section, an unusually concrete first-party official list:</p>
+<ul><li><code>SOUL.md</code> — persona</li><li><code>MEMORY.md</code> and <code>USER.md</code> — memory entries</li><li><code>AGENTS.md</code> — workspace instructions</li><li><code>~/.hermes/skills/openclaw-imports/</code> — skills directory</li></ul>
+<p><strong>This shows memory is plaintext markdown files — readable and portable.</strong> For our readers this is an important advantage.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>The official docs have a standalone "Security" section that splits the permissions surface into eight layers.</strong></p>
+<p><strong>The eight layers, verbatim</strong>:</p>
+<ul><li>user authorization (allowlists, DM pairing)</li><li>dangerous command approval</li><li>file write safety</li><li>container isolation</li><li>MCP credential filtering</li><li>context file scanning</li><li>cross-session isolation</li><li>input sanitization</li></ul>
+<p>Item-by-item verification (official <code>user-guide/security</code>):</p>
+<p><strong>① Command approval (defaults verified).</strong> <code>approvals.mode</code> has three settings, <strong>default <code>smart</code></strong>.</p>
+<ul><li><code>smart</code> — a helper LLM assesses risk; low-risk commands auto-approved, genuinely dangerous auto-denied, uncertain cases escalated to manual</li></ul>
+<ul><li><code>manual</code> — ask every time</li><li><code>off</code> — equivalent to <code>--yolo</code></li></ul>
+<p>Timeout defaults to <code>300</code> seconds; <strong>no reply means fail-closed</strong>.</p>
+<p>There is also an always-active hardline blocklist. It includes:</p>
+<ul><li><code>rm -rf /</code></li><li>fork bombs</li><li><code>dd</code> to block devices, etc.</li></ul>
+<p>Neither <code>--yolo</code> nor <code>approvals.mode: off</code> can bypass it.</p>
+<p>There are also <strong>user-editable deny rules</strong>: <code>approvals.deny</code>. They use fnmatch globs, case-insensitive. You can write "yolo except these".</p>
+<p><strong>② DM pairing (deny by default).</strong> The authorization check runs in this order:</p>
+<ul><li>platform allow-all</li><li><strong>DM pairing approved list</strong></li><li>platform allowlist (<code>TELEGRAM_ALLOWED_USERS</code> etc.)</li><li>global allowlist</li><li>global allow-all</li><li><strong>Default: deny</strong></li></ul>
+<p>The pairing flow uses an 8-digit code:</p>
+<p><code>hermes pairing approve &lt;platform&gt; &lt;code&gt;</code> <code>unauthorized_dm_behavior</code> defaults to <code>pair</code>. It can also be <code>ignore</code> / <code>decline</code>. Pairing codes expire after 1 hour, are rate-limited, and 5 failures lock for 1 hour.</p>
+<p><strong>③ Container isolation (off by default).</strong> <code>terminal.backend</code> defaults to <code>local</code>. Container isolation activates only when switching to specific backends:</p>
+<ul><li>docker / ssh / singularity</li><li>modal / daytona / vercel</li></ul>
+<p>When enabled, the official docs list a full set of Docker hardening flags:</p>
+<ul><li><code>--cap-drop ALL</code></li><li><code>--security-opt no-new-privileges</code></li><li><code>--pids-limit 256</code></li><li>noexec tmpfs, etc.</li></ul>
+<p><strong>The migration script touches secrets.</strong> <code>hermes claw migrate</code> imports API keys from five services:</p>
+<ul><li>Telegram</li><li>OpenRouter / OpenAI</li><li>Anthropic</li><li>ElevenLabs</li></ul>
+<p>The official docs provide <code>--dry-run</code> preview.</p>
+<p>⚠ <strong>Unknown: gateway port security — the official docs have no dedicated section.</strong></p>
+<p>The dashboard side has OAuth / self-hosted OIDC authentication.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p><strong>Six scenarios it fits.</strong></p>
+<ul><li>You want a <strong>resident cross-platform personal assistant</strong> (six platforms: Telegram / Discord / Slack / WhatsApp / Signal / Email)</li></ul>
+<ul><li>You want it on a cloud VM or serverless, not tied to your laptop</li><li>You need scheduled tasks running unattended</li><li>You need cross-session memory and self-accumulating skills</li><li>You want a self-built endpoint or multi-provider setups like OpenRouter</li><li>You need command-level approval and DM pairing as the security boundary</li></ul>
+<p><strong>Three scenarios it does not fit.</strong></p>
+<ul><li>Coding-only work — it is a general assistant; coding is just one thing it does</li><li>Using it as an embedded SDK — it is a full runtime, not a library</li><li>You need detailed "state vs context" layering guarantees — it has many mechanisms, but the official docs do not organize them along those two layers</li></ul>
+<p>⚠ <strong>Enterprise multi-user and auditing: the official docs provide no dedicated documentation.</strong></p>
+<p><strong>Security and messaging pages checked</strong>: they cover only single-owner allowlist / DM pairing authorization, not multi-tenant auditing.</p></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>MIT</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Using it as a programming framework — <strong>it is a general personal assistant</strong>; coding is one of many things it does, and its form is nothing like LangGraph/CrewAI</li>
+<li>Taking "the only agent with a built-in learning loop" as this site's conclusion — <strong>that is the vendor's marketing line; this site ran no cross-product comparison</strong></li>
+<li>Reading the terminal backend list as a deployment-mode list — the official text says terminal backends (the backend that executes tools), and Modal/Daytona there provide <strong>sleep</strong>, not always-on; the list itself changes (Singularity moved from the main list to plugin backends)</li>
+<li>Assuming <code>/compress</code> is automatic — <strong>it is an explicit command</strong>; nothing is compressed unless you trigger it</li>
+<li>Overlooking DM pairing — for an agent that reaches six messaging platforms and touches your filesystem, who can command it is the central safety question</li>
+<li>Running <code>hermes claw migrate</code> without reading the dry-run first — the command touches API keys (the README lists five providers)</li>
+<li>Migrating without confirming — this site's view of the Hermes / OpenClaw relationship was not verified; it records only the README's first-hand facts</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-23。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>NousResearch/hermes-agent · repository (256,242★, MIT, rolling verification 2026-10-23)</td><td><a href="https://github.com/NousResearch/hermes-agent" rel="noopener" target="_blank">https://github.com/NousResearch/hermes-agent</a></td></tr>
+<tr><td>docs</td><td>Main README (positioning, six-item feature table with terminal-backend list and learning loop, CLI vs Messaging comparison table, docs directory, security and MCP pages, OpenClaw migration list)</td><td><a href="https://github.com/NousResearch/hermes-agent/blob/main/README.md" rel="noopener" target="_blank">https://github.com/NousResearch/hermes-agent/blob/main/README.md</a></td></tr>
+<tr><td>docs</td><td>Official docs homepage</td><td><a href="https://hermes-agent.nousresearch.com/docs/" rel="noopener" target="_blank">https://hermes-agent.nousresearch.com/docs/</a></td></tr>
+<tr><td>docs</td><td>LLM and Model Providers (official provider list of 40+, Nous Portal 300+ models, Ollama / LM Studio / vLLM / Custom Endpoint)</td><td><a href="https://hermes-agent.nousresearch.com/docs/integrations/providers" rel="noopener" target="_blank">https://hermes-agent.nousresearch.com/docs/integrations/providers</a></td></tr>
+<tr><td>docs</td><td>Tools &amp; Toolsets (40+ tools, seven terminal backends, container security, background process management)</td><td><a href="https://hermes-agent.nousresearch.com/docs/user-guide/features/tools" rel="noopener" target="_blank">https://hermes-agent.nousresearch.com/docs/user-guide/features/tools</a></td></tr>
+<tr><td>docs</td><td>Security (Command approval / DM pairing / container isolation)</td><td><a href="https://hermes-agent.nousresearch.com/docs/user-guide/security" rel="noopener" target="_blank">https://hermes-agent.nousresearch.com/docs/user-guide/security</a></td></tr>
+<tr><td>docs</td><td>Memory (Persistent memory, user profiles, best practices)</td><td><a href="https://hermes-agent.nousresearch.com/docs/user-guide/features/memory" rel="noopener" target="_blank">https://hermes-agent.nousresearch.com/docs/user-guide/features/memory</a></td></tr>
+<tr><td>docs</td><td>MCP Integration (Connect any MCP server)</td><td><a href="https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp" rel="noopener" target="_blank">https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp</a></td></tr>
+<tr><td>docs</td><td>Tools &amp; Toolsets (40+ tools, toolset system, terminal backends)</td><td><a href="https://hermes-agent.nousresearch.com/docs/user-guide/features/tools" rel="noopener" target="_blank">https://hermes-agent.nousresearch.com/docs/user-guide/features/tools</a></td></tr>
+<tr><td>docs</td><td>Cron Scheduling (Scheduled tasks with platform delivery)</td><td><a href="https://hermes-agent.nousresearch.com/docs/user-guide/features/cron" rel="noopener" target="_blank">https://hermes-agent.nousresearch.com/docs/user-guide/features/cron</a></td></tr>
+<tr><td>docs</td><td>Context Files (Project context that shapes every conversation)</td><td><a href="https://hermes-agent.nousresearch.com/docs/user-guide/features/context-files" rel="noopener" target="_blank">https://hermes-agent.nousresearch.com/docs/user-guide/features/context-files</a></td></tr>
+<tr><td>docs</td><td>Skills System (Procedural memory, Skills Hub)</td><td><a href="https://hermes-agent.nousresearch.com/docs/user-guide/features/skills" rel="noopener" target="_blank">https://hermes-agent.nousresearch.com/docs/user-guide/features/skills</a></td></tr>
+<tr><td>docs</td><td>Nous Portal (can skip API-key collection)</td><td><a href="https://portal.nousresearch.com" rel="noopener" target="_blank">https://portal.nousresearch.com</a></td></tr>
+<tr><td>pricing</td><td>Nous Portal homepage (verified 2026-10-01: <strong>qualitative wording only, zero price numbers</strong>; original text includes "with free options and Portal-only discounts"; the <code>/pricing</code> path returns 404, so we conclude the official docs do not publish pricing)</td><td><a href="https://portal.nousresearch.com/" rel="noopener" target="_blank">https://portal.nousresearch.com/</a></td></tr>
+<tr><td>docs</td><td>agentskills.io open standard (officially claimed compatible)</td><td><a href="https://agentskills.io" rel="noopener" target="_blank">https://agentskills.io</a></td></tr>
+<tr><td>changelog</td><td>Releases (v2026.9.24 @ 2026-09-24)</td><td><a href="https://github.com/NousResearch/hermes-agent/releases" rel="noopener" target="_blank">https://github.com/NousResearch/hermes-agent/releases</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" rel="noopener" target="_blank">protocols/framework/_protocol.md</a>.</p>
+<p><strong>Suggested runs</strong> (tailored to the general-assistant + resident form):</p>
+<div class="tbl-wrap"><table><thead><tr><th>#</th><th>What to test</th><th>Why it is worth testing</th></tr></thead><tbody><tr><td>1</td><td><strong>Default state of DM pairing and command approval</strong></td><td>the precondition of deployment safety, and our biggest gap</td></tr><tr><td>2</td><td>Actual information retention after <code>/compress</code></td><td>our most-watched dimension, but compression is manually triggered</td></tr><tr><td>3</td><td>Wake latency and state consistency after Modal/Daytona hibernation</td><td>the official docs stress cost savings, but wake experience decides daily usability</td></tr><tr><td>4</td><td>One round with a local quantized model via a self-built endpoint</td><td>the README explicitly supports it; a combination our readers care about</td></tr><tr><td>5</td><td>How much subagent RPC's "zero context cost" actually saves</td><td>the official claim is unquantified</td></tr><tr><td>6</td><td>Cron task behavior after a gateway restart</td><td>the core reliability question for unattended scenarios</td></tr><tr><td>7</td><td>Using it for coding-only vs a dedicated coding framework</td><td>it positions itself as a general assistant; we owe an honest judgment</td></tr></tbody></table></div>
+</div>
+<div class="panel is-slim">
+<h2>First selection reminder: it is not a coding framework</h2>
+<p>This is the single thing this page most needs to say up front. <strong>Hermes is not on the same layer as the other harnesses we list:</strong></p>
+<div class="tbl-wrap"><table><thead><tr><th>Object</th><th>Positioning</th><th>Entry</th></tr></thead><tbody><tr><td>LangGraph / Google ADK / CrewAI</td><td>orchestration frameworks for coding tasks</td><td>Python code</td></tr><tr><td>Deep Agents</td><td>batteries-included harness for coding</td><td>Python code</td></tr><tr><td>OpenHands</td><td>self-hosted agent control center</td><td>Web UI</td></tr><tr><td><strong>Hermes Agent</strong></td><td><strong>a resident cross-platform personal assistant</strong></td><td><strong>TUI + six messaging platforms</strong></td></tr></tbody></table></div>
+<p>Coding is just one thing Hermes can do. The official description of it:</p>
+<blockquote>"runs anywhere, not just your laptop"</blockquote>
+<p>The messaging entry points are six: <strong>Telegram, Discord, Slack</strong>, <strong>WhatsApp, Signal, Email</strong>. It can also connect to Home Assistant.</p>
+<p>⚠ <strong>One more piece of predecessor information we must record.</strong> The README has a standalone <strong>"Migrating from OpenClaw"</strong> section. <code>hermes setup</code> auto-detects <code>~/.openclaw</code> and offers migration.</p>
+<p>⚠ <strong>Unknown: the relationship between Hermes and OpenClaw (same team? a rename?) is not verified by us.</strong> <strong>We record only the README's first-party facts.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>Both forms are first-class citizens</h2>
+<blockquote>The README has a full CLI vs Messaging comparison table. The two entry points:</blockquote>
+<div class="tbl-wrap"><table><thead><tr><th>Operation</th><th>CLI</th><th>Messaging platforms</th></tr></thead><tbody><tr><td>Start</td><td><code>hermes</code></td><td><code>hermes gateway setup</code> + <code>gateway start</code>, then message the bot</td></tr><tr><td>New session</td><td><code>/new</code>, <code>/reset</code></td><td>same</td></tr><tr><td>Switch model</td><td><code>/model [provider:model]</code></td><td>same</td></tr><tr><td>Compress context</td><td><code>/compress</code></td><td><code>/compress</code></td></tr><tr><td>Usage &amp; insights</td><td><code>/usage</code>, <code>/insights [--days N]</code></td><td>same</td></tr><tr><td>Skills</td><td><code>/skills</code> or <code>/&lt;skill-name&gt;</code></td><td><code>/&lt;skill-name&gt;</code></td></tr><tr><td>Interrupt current work</td><td><code>Ctrl+C</code> or send a new message</td><td><code>/stop</code> or send a new message</td></tr></tbody></table></div>
+<p><strong><code>/compress</code> is an explicit command on both sides</strong> — see the context section below.</p>
+</div>
+<div class="panel is-slim">
+<h2>The terminal-backend list: its most unique cell</h2>
+<blockquote>README original (2026-10-23 rolling-verification edition):</blockquote>
+<blockquote><strong>terminal backends</strong> — <strong>local, Docker, SSH, Modal, Daytona, and Vercel Sandbox</strong> — <strong>plus plugin backends such as Singularity/Apptainer</strong>. Daytona and Modal offer <strong>serverless persistence</strong> — your agent's environment <strong>hibernates when idle and wakes on demand</strong>, costing nearly nothing between sessions.</blockquote>
+<p>⚠ <strong>Three things to make clear.</strong></p>
+<p><strong>① These are terminal backends — meaning "where tools execute", not a deployment-method list.</strong> local runs on your machine, Docker is a container, SSH is a remote machine, Modal/Daytona/Vercel are serverless.</p>
+<p><strong>② The list itself changes.</strong> When verified on 2026-10-01 the README said "Seven terminal backends" and listed Singularity in the main list; on the 2026-10-23 rolling verification Singularity had moved to plugin backends (such as Singularity/Apptainer), leaving six in the main list. Cite such lists with the verification date.</p>
+<p><strong>③ "Hibernates when idle" is not the same as "always resident".</strong> The official word is hibernate; waking has latency. State consistency during hibernation is not verified by us.</p>
+<p>Compare <a href="/en/framework/openhands.html">OpenHands</a>: it also leads with "the agent keeps running after you close the laptop". The difference is that there it is an <strong>optional deployment form</strong>, while Hermes makes it the <strong>default form</strong>.</p>
+</div>
+<div class="panel is-slim">
+<h2>Memory and context: the most mechanisms, but the official docs don't split the two layers we care about</h2>
+<p>This is the dimension this product markets hardest, and the one we must carefully take apart.</p>
+<p><strong>Official claim</strong> (feature table, the "A closed learning loop" row, verbatim):</p>
+<blockquote>Agent-curated memory with <strong>periodic nudges</strong>. Autonomous skill creation after complex tasks. <strong>Skills self-improve during use.</strong> <strong>FTS5 session search with LLM summarization for cross-session recall.</strong> Honcho dialectic user modeling. Compatible with the agentskills.io open standard.</blockquote>
+<p><strong>Placing each official mechanism into its proper bucket shows three different dimensions mixed into one sentence:</strong></p>
+<div class="tbl-wrap"><table><thead><tr><th>Official claim</th><th>Our categorization</th><th>Note</th></tr></thead><tbody><tr><td>periodic nudges (self-prompting)</td><td>state plane</td><td>a mechanism trigger, not a compression algorithm</td></tr><tr><td><strong>FTS5 session search + LLM summarization</strong></td><td><strong>context plane ✅</strong></td><td>retrieval + summarization — <strong>this is genuine context management</strong></td></tr><tr><td>Skills (autonomous creation + self-improvement during use)</td><td>its own layer</td><td>procedural memory, distinct from conversation context</td></tr><tr><td>Honcho dialectic user modeling</td><td>its own layer</td><td>long-term modeling of the user</td></tr></tbody></table></div>
+<p><strong>Key distinction: compression is explicitly triggered.</strong> <code>/compress</code> exists in both the CLI and messaging platforms. It sits alongside <code>/usage</code> and <code>/insights</code>. <strong>No trigger, no compression.</strong></p>
+<h3 class="sub-h">Memory is plaintext markdown files (an important advantage)</h3>
+<p>From the migration list in the <strong>"Migrating from OpenClaw"</strong> section — unusually concrete first-party file-level evidence:</p>
+<div class="tbl-wrap"><table><thead><tr><th>File / directory</th><th>Content</th></tr></thead><tbody><tr><td><code>SOUL.md</code></td><td>persona file</td></tr><tr><td><code>MEMORY.md</code>, <code>USER.md</code></td><td>memory entries</td></tr><tr><td><code>AGENTS.md</code></td><td>workspace instructions</td></tr><tr><td><code>~/.hermes/skills/openclaw-imports/</code></td><td>user-created skills</td></tr></tbody></table></div>
+<p><strong>Memory is readable, diffable, hand-editable markdown</strong> — not a black box inside a database.</p>
+<p>There is also a separate <strong>Context Files</strong> concept. (docs <code>features/context-files</code>) The official definition:</p>
+<blockquote>"Project context that shapes <strong>every</strong> conversation"</blockquote>
+<p>i.e. project context files affect every conversation.</p>
+<p><strong>Its format and precedence are verified</strong>: first match wins. <code>.hermes.md</code> → <code>AGENTS.override.md</code> → <code>AGENTS.md</code> → <code>CLAUDE.md</code> → <code>.cursorrules</code>. <strong><code>SOUL.md</code> is always loaded separately as the identity file.</strong> (see axes.local_files)</p>
+</div>
+<div class="panel is-slim">
+<h2>Permissions: six platform entry points make "who can command it" the core question</h2>
+<p>The README's docs directory has a standalone <strong>Security</strong> section, subtitle verbatim:</p>
+<blockquote><strong>Command approval, DM pairing, container isolation</strong></blockquote>
+<p><strong>Item by item.</strong></p>
+<p><strong>① Command approval — command-level approval.</strong> <strong>Default <code>smart</code></strong>: a helper LLM assesses risk; low-risk auto-approved, dangerous auto-denied, uncertain escalated to manual. Timeout <code>300</code> seconds, fail-closed. There is also an always-active hardline blocklist, unaffected by those two switches.</p>
+<p>Users can also write their own deny rules: <code>approvals.deny</code>. They use fnmatch globs, case-insensitive.</p>
+<p><strong>This is not on the same layer as other products' approaches.</strong></p>
+<ul><li>OpenHands uses an API-key mechanism</li><li>Codex SDK has four <code>ApprovalMode</code> values</li></ul>
+<p><strong>② DM pairing — private-chat pairing: only paired users can command it.</strong> <strong>Deny by default</strong>: in the authorization-check order, the pairing approved list sits before the platform allowlist. If nothing matches, deny. The pairing flow uses an 8-digit code:</p>
+<ul><li><code>hermes pairing approve &lt;platform&gt; &lt;code&gt;</code></li></ul>
+<blockquote><strong>With six messaging entry points, this item is extremely important.</strong> For an agent that takes instructions over Telegram / WhatsApp and acts on the file system, <strong>"who can give it orders" is the most critical security question</strong> — which is why we list it separately.</blockquote>
+<p><strong>③ Container isolation — off by default.</strong> <code>terminal.backend</code> defaults to <code>local</code>. Isolation activates when switching to this backend group:</p>
+<ul><li>docker / ssh</li><li>singularity</li><li>modal / daytona / vercel</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Tools: 40+ with MCP support, plus one very unusual capability</h2>
+<blockquote>README docs directory (subtitle verbatim as verified on 2026-10-08):</blockquote>
+<div class="tbl-wrap"><table><thead><tr><th>Docs section</th><th>Official subtitle</th></tr></thead><tbody><tr><td>Tools &amp; Toolsets</td><td>"<strong>40+ tools</strong>, toolset system, terminal backends"</td></tr><tr><td>MCP Integration</td><td>"Connect <strong>any MCP server</strong> for extended capabilities"</td></tr><tr><td>Cron Scheduling</td><td>"Scheduled tasks with platform delivery"</td></tr></tbody></table></div>
+<p><strong>The unusual capability: subagent RPC.</strong></p>
+<blockquote>Official wording:</blockquote>
+<blockquote>Spawn <strong>isolated subagents</strong> for parallel workstreams. <strong>Write Python scripts that call tools via RPC</strong>, collapsing multi-step pipelines into <strong>zero-context-cost turns</strong>.</blockquote>
+<p>⚠ <strong>We read "zero-context-cost" as "multi-step pipelines execute outside the context; only the result is returned"</strong> (a reasonable reading of it). <strong>But the official docs give no concrete context-savings figure — marked as inference, not an official statement.</strong></p>
+<p>The community also maintains a Linux-desktop-control MCP server: <code>computer-use-linux</code>. Its capability list:</p>
+<ul><li>AT-SPI accessibility tree</li><li>Wayland/X11 input</li><li>screenshots</li><li>window targeting</li></ul>
+<blockquote>The README explicitly says it is for "Hermes and other MCP hosts" — a real-world case of the MCP ecosystem.</blockquote>
+</div>
+<div class="panel is-slim">
+<h2>Scheduled tasks: the third guarantee of the resident form</h2>
+<blockquote>README feature table, verbatim:</blockquote>
+<blockquote>Built-in <strong>cron scheduler</strong> with delivery to any platform. Daily reports, nightly backups, weekly audits — all in <strong>natural language</strong>, <strong>running unattended</strong>.</blockquote>
+<p><strong>The official docs give three layers for residency</strong>:</p>
+<ul><li>① built-in cron</li><li>② serverless hibernate-and-wake</li><li>③ a resident gateway process (multi-platform triggering any time)</li></ul>
+<p><strong>Cron catch-up / re-run is verified.</strong></p>
+<ul><li>There is a misfire catch-up scan</li><li>Catch-up can be disabled: <code>cron.catch_up_missed</code></li><li>While globally paused via <code>hermes pause</code>, the hosted cron's fire webhook re-delivers with <code>503 Retry-After: 60</code></li><li>Running tasks are "never killed"</li></ul>
+<p>The gateway side has an event-loop liveness watchdog and a 60s heartbeat.</p>
+<p>⚠ <strong>Unknown: state consistency across hibernate/wake — the official docs do not state it.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>The migration script touches secrets: use dry-run</h2>
+<p>The migration list covered by <code>hermes claw migrate</code> includes:</p>
+<blockquote><strong>API keys</strong> — allowlisted secrets (<strong>Telegram, OpenRouter, OpenAI, Anthropic, ElevenLabs</strong>)</blockquote>
+<p><strong>In other words, the migration script itself touches keys from five services.</strong> The official remedy:</p>
+<pre class="code"><code>hermes claw migrate --dry-run              # preview what would migrate
+hermes claw migrate --preset user-data     # do not import keys</code></pre>
+<p><strong>Dry-run before running — that is the usage the official docs themselves design.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>Verification notes</h2>
+<p>Basis for <code>confidence: partial</code>:</p>
+<p><strong>Why not verified.</strong></p>
+<ul><li><code>model_access</code>: capability alignment after switching models not verified</li><li><code>background</code>: hibernate/wake latency and cross-hibernation state consistency not stated by the official docs</li><li>"zero-context-cost" and the real-world effect of Honcho / skills not verified</li></ul>
+<blockquote>2026-10-08 additions: the three permission mechanisms' defaults, the context-files format and precedence under local_files, and the cron catch-up semantics are all verified, see above.</blockquote>
+<p><strong>Verified:</strong></p>
+<ul><li>Repository existence and star count (256,242 · rolling verification 2026-10-23, <strong>the highest among everything we list</strong>)</li><li>License (MIT, via the license API), last push (2026-10-22, still active)</li><li>Latest release <strong>v0.22.4</strong> (releases @ 2026-10-21) — ⚠ version naming has switched from date-style (v2026.9.24) to semver (v0.22.x); the switch happened between 2026-10-08 and 2026-10-12 (v2026.9.24 is followed directly by v0.21.6)</li><li>README full text 243 lines. It contains the positioning paragraph, the six-item feature table with terminal-backend wording (current wording: six in the main list + plugin backends)</li><li>It also has a full CLI vs Messaging comparison table</li><li>A fourteen-section docs directory, the OpenClaw migration list, community and license sections</li><li>The repo has Chinese and Spanish README variants, and a Nous Portal entry</li></ul>
+<p><strong>Not verified:</strong></p>
+<ul><li>Capability alignment after switching models, and local-model reliability</li><li>Hibernate/wake latency and cross-hibernation state consistency</li><li>The quantified value of "zero-context-cost"</li><li>The real-world effect of Honcho user modeling and skill self-improvement</li><li>The exact relationship between Hermes and OpenClaw</li></ul>
+<p><strong>Added the 2026-10-08 check (2026-10-01)</strong>: the <strong>official-site status</strong> of Nous Portal billing is verified — <strong>the official site does not publish pricing</strong> (the homepage has only qualitative wording, not a single number; <code>/pricing</code> returns 404). Third-party figures circulate but are <strong>not confirmed by the official docs</strong> — per our price-recording policy we do not record those numbers.</p>
+<p><strong>Status of this item</strong>: moved from "entirely unverified" to "verified that the official site does not publish pricing".</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/framework/openhands.html">OpenHands Agent Canvas</a></span><span class="rel-n"><strong>The same residency need, different form</strong>: both lead with "the agent keeps running after you close the laptop". OpenHands is a control center with a Web UI plus scheduled/webhook triggers; this object is TUI + six messaging platforms + built-in cron, and positions itself as a general assistant rather than pure coding.</span></li>
+<li><span class="rel-t"><a href="/en/framework/deepagents.html">Deep Agents</a></span><span class="rel-n">Same general-harness family, but Deep Agents targets coding tasks (filesystem + subagents are its selling points) while this object targets a resident cross-platform personal assistant.</span></li>
+<li><span class="rel-t"><a href="/en/framework/langgraph.html">LangGraph</a></span><span class="rel-n"><strong>The memory-and-state dividing line</strong>: LangGraph explicitly separates working memory from persistent memory, with checkpoints persisted every superstep; this object has richer mechanisms but the official docs don't split those two layers, and its memory is plaintext markdown files.</span></li>
+<li><span class="rel-t"><a href="/en/mcp/memory.html">Knowledge Graph Memory Server</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/framework/ag2.html">AG2</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">The community continuation of AutoGen after the original repo stalled. T</td></tr><tr><td><a href="/en/framework/crewai.html">CrewAI</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">"Organises multi-agent collaboration through role division and business </td></tr><tr><td><a href="/en/framework/smolagents.html">smolagents</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A thin agent library from Hugging Face — it lets agents think in code. I</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

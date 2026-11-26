@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Browserbase MCP Server | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/mcp/browserbase-mcp.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/mcp/browserbase-mcp.html" property="og:url"/>
+<meta content="Browserbase MCP Server | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Browserbase MCP Server | Tools","applicationCategory":"DeveloperApplication","sameAs":"https://docs.browserbase.com/integrations/mcp/introduction","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-31"}</script>
+<meta content="Browserbase MCP Server | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/mcp/browserbase-mcp.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/browserbase-mcp.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/browserbase-mcp.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/mcp/browserbase-mcp.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">MCP</span>
+</nav>
+<a class="back" href="/en/mcp/">← MCP</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#22d3c5">BR</div>
+<div>
+<h1>Browserbase MCP Server</h1>
+<div class="vendor is-caps">Browserbase</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a> · <a href="#dimension-transport">Transport</a> · <a href="#dimension-auth">Authentication</a> · <a href="#dimension-scope">Permission scope</a></p></nav>
+<div class="badges">
+<span class="tag on">MCP</span>
+<span class="tag on">Browser automation</span>
+<span class="tag on">Cloud browser</span>
+<span class="tag on">Stagehand</span>
+<span class="tag on">Remote-hosted</span>
+<span class="tag on">Archived repo</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-31</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Browserbase official MCP server: cloud browser + Stagehand natural-language page…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Cloud / API · MCP server</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Rate/session-duration/concurrency quotas on the hosted line (the docs have account-tier wording, kept at category level; per D9 and snapshot discipline no numbers are recorded)</li>
+<li>The model list supported by the self-hosted line's --modelName switch and each provider's key requirements (the README gives only the mechanism)</li>
+<li>Retention period and compliance boundaries of cloud session content on Browserbase's side (the ToS surface was kept at the official category level)</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>Browserbase official MCP server</strong>: cloud browser + Stagehand natural-language page driving, 6 tools (start/end/navigate/act/observe/extract). The core two-wording of this dossier: <strong>the GitHub self-hosted repo is archived</strong> (the README top states plainly it is archival-only, not representative of the current implementation) — <strong>the current line is the hosted mcp.browserbase.com/mcp</strong>, and the product itself is active (docs live, npm 3.0.0, underlying Stagehand 25,883★ pushed 2026-10-30). Self-hosting only means "the server process is on your machine"; the browser session still lives on Browserbase cloud and the API key is still required.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Fits: cloud browser without local setup, natural-language act/observe/extract, hosted convenience (the vendor covers Gemini costs). Not a fit: wanting an open-source auditable full implementation (the current implementation is closed on the hosted side); local-only browser automation (Playwright MCP is more direct).</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-31</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　Browserbase, Inc. (US, cloud browser infrastructure vendor).</dd>
+<dt>Direct access</dt><dd>direct OK　browserbase.com and docs.browserbase.com returned 200 direct; mcp.browserbase.com/mcp returned 400 direct (endpoint exists, auth required); the GitHub repo and raw README were reachable direct (2026-10-31).</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (searched 2026-10-31); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">11 questions, one table</h2>
+<p class="t-section-lead">11 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>It needs an external model to run Stagehand</strong> — on the hosted line Browserbase itself covers the LLM costs for Gemini (the official README states the hosted version "provides the LLM costs for Gemini"); the self-hosted line requires your own GEMINI_API_KEY (switch models with --modelName plus the matching key). It is a browser-automation-plus-model hybrid, not a pure interface wrapper.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p>The current flagship is the <strong>official hosted remote server</strong> (https://mcp.browserbase.com/mcp, streamable-http); the self-hosted line goes through npm (@browserbasehq/mcp 3.0.0, 2026-03-31) or cloning the GitHub repo. <strong>The GitHub repo browserbase/mcp-server-browserbase is archived</strong> (API-verified archived=true, 3,397★, last push 2026-07-20) — the README top states plainly it is "no longer maintained, kept for historical purposes, not representative of current production services"; the underlying Stagehand repo remains active (MIT 25,883★, pushed 2026-10-30).</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>Reads and writes no local files — the artifacts are page state and extraction results (text/structured data) inside a cloud browser session. The self-hosted line runs on your machine, but the browser itself is still a Browserbase cloud session (BROWSERBASE_API_KEY required).</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p>The browser session lives on Browserbase's cloud (start creates/reuses a session, end closes it); no local background process. The session lifecycle is managed explicitly by tool calls, not persistent.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>6 tools</strong> (README wording; hosted and self-hosted share the same set): start (create/reuse a session) / end (close the session) / navigate (go to a URL) / act (manipulate the page from a natural-language instruction) / observe (observe actionable elements) / extract (extract page data per instruction). The act/observe/extract trio is driven by Stagehand's act-and-observe paradigm.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p>No server-side cross-session memory; the context is the current Browserbase browser session (start can reuse an existing one). In-session page state is naturally continuous; nothing persists across sessions.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p>The hosted line needs a Browserbase account (API key + project id, configured in the client); the self-hosted line needs the BROWSERBASE_API_KEY/BROWSERBASE_PROJECT_ID/GEMINI_API_KEY environment variables. <strong>act manipulates real web pages</strong> (clicks/form filling) — gate the authorization boundary per target site; cloud session content is retained on Browserbase's side, so sensitive flows need your own assessment.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Fits: agents wanting "cloud browser + natural-language web driving" (no local browser to set up); the hosted line for easy onboarding with the vendor covering LLM costs. Not a fit: wanting an open-source auditable full implementation (the GitHub repo is archived; the current implementation is closed on the hosted side); scenarios that only need local browser automation (Playwright MCP is more direct).</p></dd>
+</div>
+<div class="axis" id="dimension-transport">
+<dt>Transport</dt>
+<dd><p><strong>streamable-http</strong> (hosted https://mcp.browserbase.com/mcp, officially recommended) + <strong>stdio</strong> (npx @browserbasehq/mcp self-hosted); the README states both STDIO and SHTTP transports are supported, recommending SHTTP via the hosted line. Verified: repo README (fetched via GitHub API raw 2026-10-31) + the docs.browserbase.com MCP page (200 direct).</p></dd>
+</div>
+<div class="axis" id="dimension-auth">
+<dt>Authentication</dt>
+<dd><p>Browserbase account credentials (BROWSERBASE_API_KEY + BROWSERBASE_PROJECT_ID); the self-hosted line adds a model key (GEMINI_API_KEY by default). The hosted endpoint measured 400 direct (exists, requires a proper MCP handshake and auth — not a dead link).</p></dd>
+</div>
+<div class="axis" id="dimension-scope">
+<dt>Permission scope</dt>
+<dd><p>Read surface (navigate/observe/extract) + <strong>web write surface (act clicks and fills forms)</strong>; no local file write surface. Cloud browser sessions can carry login state — gate the "touching things on a web page" boundary per the target site's authorization.</p></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>Self-hosted repo Apache-2.0 (GitHub API verified 2026-10-31); the hosted line is a closed service (Browserbase ToS).</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Treating the GitHub repo as the current implementation — the repo is archived (stated plainly at the README top); the official recommendation is the hosted line mcp.browserbase.com/mcp; "repo archived != product discontinued" is this dossier's core two-wording</li>
+<li>Thinking self-hosting needs no Browserbase account — self-hosting only puts the server process on your machine; the browser session still lives on Browserbase cloud and the API key is still required</li>
+<li>Thinking it needs no model key at all — the self-hosted line requires your own GEMINI_API_KEY (or a swapped model with its key); only the hosted line has the vendor covering Gemini costs</li>
+<li>Treating act as a safe action — it clicks and fills forms on real web pages; login-state and write-operation risks are gated per target site</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-31，Content updated 2026-10-31。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>docs</td><td>Browserbase · official docs MCP integration page (hosted endpoint and configuration line; 200 direct)</td><td><a href="https://docs.browserbase.com/integrations/mcp/introduction" rel="noopener" target="_blank">https://docs.browserbase.com/integrations/mcp/introduction</a></td></tr>
+<tr><td>repo</td><td>browserbase/mcp-server-browserbase · repository (archived=true; Apache-2.0; 3,397★, last push 2026-07-20, GitHub API verified; README-top archive notice + 6-tool table + hosted recommendation)</td><td><a href="https://github.com/browserbase/mcp-server-browserbase" rel="noopener" target="_blank">https://github.com/browserbase/mcp-server-browserbase</a></td></tr>
+<tr><td>changelog</td><td>GitHub commits · mcp-server-browserbase (change-record line before the repo was archived)</td><td><a href="https://github.com/browserbase/mcp-server-browserbase/commits/main" rel="noopener" target="_blank">https://github.com/browserbase/mcp-server-browserbase/commits/main</a></td></tr>
+<tr><td>changelog</td><td>npm · @browserbasehq/mcp (self-hosted release line: 3.0.0, 2026-03-31)</td><td><a href="https://www.npmjs.com/package/@browserbasehq/mcp" rel="noopener" target="_blank">https://www.npmjs.com/package/@browserbasehq/mcp</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" rel="noopener" target="_blank">protocols/mcp/_protocol.md</a>.</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/mcp/playwright.html">Playwright MCP Server</a></span><span class="rel-n">A browser-automation contrast: Playwright drives a local browser as a pure interface with no model; Browserbase is a cloud session plus Stagehand model-driving.</span></li>
+<li><span class="rel-t"><a href="/en/mcp/firecrawl-mcp.html">Firecrawl MCP Server</a></span><span class="rel-n">Both are official web-facing servers: Firecrawl leans "read" (search/fetch/crawl/monitor), Browserbase leans "manipulate pages".</span></li>
+<li><span class="rel-t"><a href="/en/coding/cursor.html">Cursor</a></span><span class="rel-n">Other layer · AI coding</span></li>
+<li><span class="rel-t"><a href="/en/coding/claude-code.html">Claude Code (IDE extension)</a></span><span class="rel-n">Other layer · AI coding</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/mcp/1password-mcp.html">1Password Environments MCP Server</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">1Password official Environments MCP server (local stdio, rides the deskt</td></tr><tr><td><a href="/en/mcp/atlassian-mcp.html">Atlassian Remote MCP Server（Jira/Confluence）</a></td><td>Cloud / API</td><td>Commercial terms</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Atlassian's official Remote MCP server: one endpoint covers Jira + Confl</td></tr><tr><td><a href="/en/mcp/brave-search-mcp.html">Brave Search MCP Server</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Brave's official search MCP server (MIT): an independent retrieval sourc</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

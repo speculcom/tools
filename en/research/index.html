@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>AI search &amp; research | Tools</title>
+<meta content='Web-search Q&amp;A, academic retrieval, and AI-native research/notebook workbenches — products that "find answers, read papers, organize notes". Each…' name="description"/>
+<link href="https://tools.specul.com/en/research/" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/research/" property="og:url"/>
+<meta content="AI search &amp; research | Tools" property="og:title"/>
+<meta content='Web-search Q&amp;A, academic retrieval, and AI-native research/notebook workbenches — products that "find answers, read papers, organize notes". Each…' property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"AI search & research | Tools","description":"Web-search Q&A, academic retrieval, and AI-native research/notebook workbenches — products that \"find answers, read papers, organize notes\". Each…","url":"https://tools.specul.com/en/research/","isPartOf":{"@type":"WebSite","name":"AI search & research | Tools","url":"https://tools.specul.com/en/research/"},"about":[{"@type":"SoftwareApplication","name":"AI search & research | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"AI search & research | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"AI search & research | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"AI search & research | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"AI search & research | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"AI search & research | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"AI search & research | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"AI search & research | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"AI search & research | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"AI search & research | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"AI search & research | Tools","applicationCategory":"DeveloperApplication"}]}</script>
+<meta content="AI search &amp; research | Tools" name="twitter:title"/><meta content='Web-search Q&amp;A, academic retrieval, and AI-native research/notebook workbenches — products that "find answers, read papers, organize notes". Each…' name="twitter:description"/><link href="https://tools.specul.com/research/" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/research/" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/research/" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/research/" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<section class="hero">
+<div class="container">
+<p class="kicker">AI Tools</p>
+<h1 class="t-hero">AI search &amp; research</h1>
+<p class="lede">Web-search Q&amp;A, academic retrieval, and AI-native research/notebook workbenches — products that "find answers, read papers, organize notes". Each vendor's "deep research" mode is not filed separately (it lives in the chat entry's capability axes); pure retrieval-API infrastructure goes to the nav site.</p>
+</div>
+</section>
+<nav aria-label="Tool categories" class="part-bar">
+<div class="container">
+<a href="/en/coding/" style="--pa:var(--pa-coding)" title="Installed in an editor, a terminal, or a vendor cloud"><b>Coding</b></a>
+<a href="/en/chat/" style="--pa:var(--pa-chat)" title="General-purpose chat products, Chinese ones included"><b>Chat</b></a>
+<a href="/en/image/" style="--pa:var(--pa-image)" title="Text-to-image and image workbenches"><b>Image</b></a>
+<a href="/en/video/" style="--pa:var(--pa-video)" title="Text-to-video and digital humans"><b>Video</b></a>
+<a href="/en/audio/" style="--pa:var(--pa-audio)" title="Music generation, TTS and transcription"><b>Audio</b></a>
+<a aria-current="page" href="/en/research/" style="--pa:var(--pa-research)" title="AI search, academic retrieval, research workbenches"><b>Research</b></a>
+<a href="/en/office/" style="--pa:var(--pa-office)" title="Docs, sheets, slides, meetings, translation and email"><b>Office</b></a>
+<a href="/en/automation/" style="--pa:var(--pa-automation)" title="Visual AI workflows and agents"><b>Automation</b></a>
+<a href="/en/framework/" style="--pa:var(--pa-framework)" title="Runtimes, orchestration frameworks, SDKs, robotics stacks"><b>Frameworks</b></a>
+<a href="/en/mcp/" style="--pa:var(--pa-mcp)" title="Fill the gap — MCP tools an agent can install"><b>MCP</b></a>
+<a href="/en/runner/" style="--pa:var(--pa-runner)" title="Run open-weight models on your own machine"><b>Runners</b></a>
+<a href="/en/safety/" style="--pa:var(--pa-safety)" title="Constrain it, measure it, trace it back"><b>Safety</b></a>
+</div>
+</nav>
+<section class="section human-section" id="human">
+<div class="container">
+<div class="human-head">
+<p class="kicker">In plain words</p>
+<h2>AI search &amp; research: who it works for</h2>
+</div>
+<div class="human-grid">
+<article class="human-card">
+<span class="hc-no">01</span>
+<h3>Who it is for</h3>
+<p>People researching, reading papers or writing sourced briefs.</p>
+</article>
+<article class="human-card">
+<span class="hc-no">02</span>
+<h3>When not to use it</h3>
+<p>You need it to replace peer review, or to guarantee a correct conclusion.</p>
+</article>
+<article class="human-card human-asks">
+<span class="hc-no">03</span>
+<h3>Three questions before paying</h3>
+<ol><li>Can citations be opened, and which databases are covered?</li><li>Does it turn an abstract into a fake quotation?</li><li>Does it give counter-evidence alongside the conclusion?</li></ol>
+</article>
+</div>
+<div class="human-stats">
+<div class="hstat"><b>11</b><span>entries</span></div>
+<div class="hstat ok"><b>11</b><span>evidence checked</span></div>
+<div class="hstat cool"><b>0</b><span>local or hybrid</span></div>
+<div class="hstat cool"><b>6</b><span>direct in mainland</span></div>
+<div class="hstat"><b>0</b><span>upstream changed</span></div>
+</div>
+<div class="shape-panel">
+<div class="shape-copy">
+<h3>What this category actually looks like</h3>
+<p>Four slices from existing fields: how you use it, where it runs, whether it is still updated and how much is checked. See what dominates, then narrow with the filters above.</p>
+</div>
+<div class="shape-grid">
+<div class="shape-item">
+<div class="shape-item-head"><span>How you use it</span><small>11</small></div>
+<div aria-label="How you use it" class="shape-track" role="img"><i class="seg sf-1" style="width:100%" title="Web service 11"></i></div>
+<div class="shape-legend"><span class="shape-lg"><b class="dot sf-1"></b>Web service <em>11</em></span></div>
+</div>
+<div class="shape-item">
+<div class="shape-item-head"><span>Where it runs</span><small>11</small></div>
+<div aria-label="Where it runs" class="shape-track" role="img"><i class="seg sd-1" style="width:100%" title="Cloud / API 11"></i></div>
+<div class="shape-legend"><span class="shape-lg"><b class="dot sd-1"></b>Cloud / API <em>11</em></span></div>
+</div>
+<div class="shape-item">
+<div class="shape-item-head"><span>Still updated</span><small>11</small></div>
+<div aria-label="Still updated" class="shape-track" role="img"><i class="seg sl-1" style="width:100%" title="Active 11"></i></div>
+<div class="shape-legend"><span class="shape-lg"><b class="dot sl-1"></b>Active <em>11</em></span></div>
+</div>
+<div class="shape-item">
+<div class="shape-item-head"><span>How much checked</span><small>11</small></div>
+<div aria-label="How much checked" class="shape-track" role="img"><i class="seg sc-1" style="width:100%" title="8 checked 11"></i></div>
+<div class="shape-legend"><span class="shape-lg"><b class="dot sc-1"></b>8 checked <em>11</em></span></div>
+</div>
+</div>
+</div>
+<div class="job-panel">
+<div class="job-panel-head">
+<h3>What people mainly use these for</h3>
+<p>Tagged by job; one entry can appear under several jobs, so the total can exceed the entry count.</p>
+</div>
+<div class="job-bars"><div class="jb-row"><span class="jb-l">Research</span><span class="jb-track"><i style="width:100%"></i></span><span class="jb-n">11</span></div><div class="jb-row"><span class="jb-l">Build agents</span><span class="jb-track"><i style="width:18%"></i></span><span class="jb-n">2</span></div><div class="jb-row"><span class="jb-l">Office work</span><span class="jb-track"><i style="width:9%"></i></span><span class="jb-n">1</span></div></div>
+</div>
+<details class="all-table">
+<summary><span class="at-title">All 11 in one table</span><span class="at-hint">Grouped by form; compare how you use it, licence, mainland access, how much is checked side by side</span><span aria-hidden="true" class="at-arrow">↓</span></summary>
+<div class="table-wrap">
+<table class="cmp at">
+<thead><tr><th>Object</th><th>How</th><th>Licence</th><th>Mainland</th><th>Evidence</th></tr></thead>
+<tbody><tr class="at-group"><td colspan="5">Web service <span>11</span></td></tr><tr><td><a href="/en/research/metaso.html">Metaso AI Search</a><small>秘塔科技（上海秘塔网络科技）</small></td><td>Cloud / API<br/><span class="at-sub">Web service</span></td><td>Commercial terms</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/research/tiangong.html">Tiangong AI Search</a><small>昆仑万维</small></td><td>Cloud / API<br/><span class="at-sub">Web service</span></td><td>Commercial terms</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/research/andi.html">Andi Search</a><small>Andi</small></td><td>Cloud / API<br/><span class="at-sub">Web service</span></td><td>Commercial terms</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/research/consensus.html">Consensus</a><small>Consensus</small></td><td>Cloud / API<br/><span class="at-sub">Web service</span></td><td>Commercial terms</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/research/devv.html">Devv</a><small>Devv AI</small></td><td>Cloud / API<br/><span class="at-sub">Web service</span></td><td>Commercial terms</td><td>Blocked</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/research/elicit.html">Elicit</a><small>Elicit</small></td><td>Cloud / API<br/><span class="at-sub">Web service</span></td><td>Commercial terms</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/research/genspark.html">Genspark</a><small>Genspark</small></td><td>Cloud / API<br/><span class="at-sub">Web service</span></td><td>Commercial terms</td><td>Not checked</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/research/kagi.html">Kagi</a><small>Kagi</small></td><td>Cloud / API<br/><span class="at-sub">Web service</span></td><td>Restricted</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/research/notebooklm.html">NotebookLM</a><small>Google</small></td><td>Cloud / API<br/><span class="at-sub">Web service</span></td><td>Commercial terms</td><td>Not checked</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/research/perplexity.html">Perplexity</a><small>Perplexity AI</small></td><td>Cloud / API<br/><span class="at-sub">Web service</span></td><td>Commercial terms</td><td>Blocked</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/research/you-com.html">You.com</a><small>You.com</small></td><td>Cloud / API<br/><span class="at-sub">Web service</span></td><td>Commercial terms</td><td>Blocked</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr></tbody>
+</table>
+</div>
+<p class="at-note">Only fields already in the entry are shown. Anything unchecked says “not checked”; nothing is guessed. Open an entry for the eight questions and sources.</p>
+</details>
+</div>
+</section>
+<section class="section" id="filter">
+<div class="container">
+<h2>All objects</h2>
+<p class="section-desc">Everything answers the same set of questions. Open any object to see its full record across Model &amp; openness / Where it runs / Local files / Tasks after shutdown / Tools &amp; extensions / Context &amp; memory / Permissions &amp; limits / Best for, with source links and a list of unknowns.</p>
+<div class="afilter" role="search">
+<label class="af-f"><span class="af-h">Narrow down first</span>
+<input autocomplete="off" class="aq" placeholder="Cursor · Claude · Aider" type="search"/></label>
+<label class="af-f"><span class="af-h">Main job</span>
+<select class="asel-job" data-attr="job" data-multi="1"><option value="">All</option><option value="agent">Build agents</option><option value="office">Office work</option><option value="research">Research</option></select></label>
+<label class="af-f"><span class="af-h">Licence / commercial use</span>
+<select class="asel-license" data-attr="license"><option value="">All</option><option value="restricted">Restricted</option><option value="terms">Commercial terms</option></select></label>
+<label class="af-f"><span class="af-h">Cost</span>
+<select class="asel-cost" data-attr="cost"><option value="">All</option><option value="freemium">Free tier</option><option value="paid">Paid</option><option value="unknown">Not checked</option></select></label>
+<label class="af-f"><span class="af-h">Origin</span>
+<select class="asel-cnorigin" data-attr="data-cn-origin"><option value="">All</option><option value="foreign">foreign-made</option><option value="domestic">domestic</option></select></label>
+<label class="af-f"><span class="af-h">Direct access</span>
+<select class="asel-cndirect" data-attr="data-cn-direct"><option value="">All</option><option value="yes">direct OK</option><option value="no">direct blocked</option><option value="unknown">direct unknown</option></select></label>
+<label class="af-f"><span class="af-h">Filing</span>
+<select class="asel-cnfiling" data-attr="data-cn-filing"><option value="">All</option><option value="not-filed">not in filing list</option><option value="unknown">filing unknown</option><option value="filed">filed</option></select></label>
+<label class="af-f"><span class="af-h">Sort</span>
+<select class="asel-sort"><option value="">Default</option><option value="done-desc">Completeness high–low</option><option value="done-asc">Completeness low–high</option></select></label>
+<span aria-live="polite" class="acount"></span>
+</div>
+<div class="grid">
+<article class="card" data-blob="andi search andi search andi **andi 走「直接生成答案」的 ai 原生搜索路线**：它直接用自研架构生成答案并标注来源。
+不包装传统检索结果
+免费无广告+不追踪隐私叙事；小团队产品的持续性要列风险项。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="unknown" data-deploy="cloud" data-done="8" data-family="" data-job="research" data-license="terms" data-lifecycle="active" data-name="Andi Search" data-total="8" data-track="web" data-vendor-key="andi" style="--card-accent:#38bdf8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">AN</div>
+<div class="card-id">
+<h3><a href="/en/research/andi.html">Andi Search</a></h3>
+<div class="vendor">Andi</div>
+</div>
+</div>
+<p class="tagline">Andi takes the "generate the answer directly" AI-native search</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="Andi Search details" class="more" href="/en/research/andi.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="consensus consensus consensus **consensus 回答「科学界怎么说」**：consensus meter 把多篇研究的结论极性统计成摘要。
+快速判断实证领域共识方向；但计数不等权，meter 不是定论。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="freemium" data-deploy="cloud" data-done="8" data-family="" data-job="research" data-license="terms" data-lifecycle="active" data-name="Consensus" data-total="8" data-track="web" data-vendor-key="consensus" style="--card-accent:#38bdf8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">CO</div>
+<div class="card-id">
+<h3><a href="/en/research/consensus.html">Consensus</a></h3>
+<div class="vendor">Consensus</div>
+</div>
+</div>
+<p class="tagline">Consensus answers "what does the scientific literature say": t</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="Consensus details" class="more" href="/en/research/consensus.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="devv devv devv ai **devv 是开发者向的 ai 搜索问答**：代码问题→实时抓官方文档→带链接答案；
+它答代码问题但不改代码库。
+与 coding 大类的边界就在这条线上。" data-cn-direct="no" data-cn-filing="unknown" data-cn-origin="domestic" data-conf="verified" data-cost="freemium" data-deploy="cloud" data-done="7" data-family="" data-job="research office" data-license="terms" data-lifecycle="active" data-name="Devv" data-total="8" data-track="web" data-vendor-key="devv ai" style="--card-accent:#38bdf8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">DE</div>
+<div class="card-id">
+<h3><a href="/en/research/devv.html">Devv</a></h3>
+<div class="vendor">Devv AI</div>
+</div>
+</div>
+<p class="tagline">A developer-facing AI search Q&amp;A: coding questions → live fetc</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="Devv details" class="more" href="/en/research/devv.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="elicit elicit elicit **elicit 是学术文献的「检索 + 结构化抽取」工作台**：路径是研究问题、论文筛选、抽取表与带引用综述。
+**依据：** 系统性综述流程的 ai 化；每个单元格仍要回原文核。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="freemium" data-deploy="cloud" data-done="7" data-family="" data-job="research" data-license="terms" data-lifecycle="active" data-name="Elicit" data-total="8" data-track="web" data-vendor-key="elicit" style="--card-accent:#38bdf8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">EL</div>
+<div class="card-id">
+<h3><a href="/en/research/elicit.html">Elicit</a></h3>
+<div class="vendor">Elicit</div>
+</div>
+</div>
+<p class="tagline">An academic-literature "retrieve + structured extraction" work</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="Elicit details" class="more" href="/en/research/elicit.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="genspark genspark genspark **genspark 是「搜索→报告→幻灯片」一条龙的研究 agent**：sparkpage 会重组检索结果。
+slides/sheets/网站直接出产物。
+agent 形态意味着过程黑箱度要心里有数。" data-cn-direct="unknown" data-cn-filing="unknown" data-cn-origin="foreign" data-conf="verified" data-cost="unknown" data-deploy="cloud" data-done="8" data-family="" data-job="research agent" data-license="terms" data-lifecycle="active" data-name="Genspark" data-total="8" data-track="web" data-vendor-key="genspark" style="--card-accent:#38bdf8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">GE</div>
+<div class="card-id">
+<h3><a href="/en/research/genspark.html">Genspark</a></h3>
+<div class="vendor">Genspark</div>
+</div>
+</div>
+<p class="tagline">A research agent doing "search → report → slides" end to end: </p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="Genspark details" class="more" href="/en/research/genspark.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="kagi kagi kagi **kagi 是「付费换隐私」的自建索引搜索引擎**：无广告无追踪是主轴。
+ai 答案层（fastgpt/teclis）
+是附加——它与「ai 搜索」的顺序正好相反。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="paid" data-deploy="cloud" data-done="8" data-family="" data-job="research" data-license="restricted" data-lifecycle="active" data-name="Kagi" data-total="8" data-track="web" data-vendor-key="kagi" style="--card-accent:#38bdf8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">KA</div>
+<div class="card-id">
+<h3><a href="/en/research/kagi.html">Kagi</a></h3>
+<div class="vendor">Kagi</div>
+</div>
+</div>
+<p class="tagline">A self-built-index search engine where you pay for privacy: no</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="Kagi details" class="more" href="/en/research/kagi.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="秘塔 ai 搜索 metaso ai search 秘塔科技（上海秘塔网络科技） **秘塔 ai 搜索是「没有广告，直达结果」的中文 ai 搜索**：它走自研 metallm，这在国内少见。
+六路检索、学术中文库细分、大纲/脑图结构化输出；国内直连可用。" data-cn-direct="yes" data-cn-filing="filed" data-cn-origin="domestic" data-conf="verified" data-cost="unknown" data-deploy="cloud" data-done="7" data-family="" data-job="research" data-license="terms" data-lifecycle="active" data-name="秘塔 AI 搜索" data-total="8" data-track="web" data-vendor-key="秘塔科技" style="--card-accent:#38bdf8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">ME</div>
+<div class="card-id">
+<h3><a href="/en/research/metaso.html">Metaso AI Search</a></h3>
+<div class="vendor">Metaso (Shanghai Metaso Network Technology)</div>
+</div>
+</div>
+<p class="tagline">The Chinese AI search that "skips ads, goes straight to result</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="Metaso AI Search details" class="more" href="/en/research/metaso.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="notebooklm notebooklm google **一句话**：notebooklm 条目保留原名供识别。
+2026-11-04 官方帮助已使用 gemini notebook 名称。
+这里记录来源问答与笔记流程。
+不据帮助名称推断所有账号已迁移。" data-cn-direct="unknown" data-cn-filing="unknown" data-cn-origin="foreign" data-conf="verified" data-cost="unknown" data-deploy="cloud" data-done="8" data-family="" data-job="research" data-license="terms" data-lifecycle="active" data-name="NotebookLM" data-total="8" data-track="web" data-vendor-key="google" style="--card-accent:#38bdf8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">NO</div>
+<div class="card-id">
+<h3><a href="/en/research/notebooklm.html">NotebookLM</a></h3>
+<div class="vendor">Google</div>
+</div>
+</div>
+<p class="tagline">This entry retains NotebookLM for identification. Official hel</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="NotebookLM details" class="more" href="/en/research/notebooklm.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="perplexity perplexity perplexity ai **perplexity 是「答案带来源角标」的 ai 搜索旗舰**：多模型路由+自研线。
+comet 浏览器把检索延伸成
+**依据：** agent 浏览；「带来源」是招牌，但角标背后的原文仍要自己核。" data-cn-direct="no" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="freemium" data-deploy="cloud" data-done="8" data-family="" data-job="research" data-license="terms" data-lifecycle="active" data-name="Perplexity" data-total="8" data-track="web" data-vendor-key="perplexity ai" style="--card-accent:#38bdf8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">PE</div>
+<div class="card-id">
+<h3><a href="/en/research/perplexity.html">Perplexity</a></h3>
+<div class="vendor">Perplexity AI</div>
+</div>
+</div>
+<p class="tagline">The flagship of "answers with source footnotes" AI search: mul</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="Perplexity details" class="more" href="/en/research/perplexity.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="天工 ai 搜索 tiangong ai search 昆仑万维 **天工从「ai 搜索」长成了「超级智能体」**：搜索打底。
+文档/ppt/表格/网页多模式直接出产物
+「做同款」模板复用；国产直连可用。" data-cn-direct="yes" data-cn-filing="filed" data-cn-origin="domestic" data-conf="verified" data-cost="freemium" data-deploy="cloud" data-done="8" data-family="" data-job="research agent" data-license="terms" data-lifecycle="active" data-name="天工 AI 搜索" data-total="8" data-track="web" data-vendor-key="昆仑万维" style="--card-accent:#38bdf8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">TI</div>
+<div class="card-id">
+<h3><a href="/en/research/tiangong.html">Tiangong AI Search</a></h3>
+<div class="vendor">Kunlun Tech</div>
+</div>
+</div>
+<p class="tagline">Tiangong grew from "AI search" into a "super agent": search as</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="Tiangong AI Search details" class="more" href="/en/research/tiangong.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="you.com you.com you.com **you.com 的重心已经从消费端 ai 搜索转向企业检索基础设施**：（ari/research api）：
+消费端 answer engine 仍在运营。
+但选型要把「消费端长期性」列为风险项。" data-cn-direct="no" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="freemium" data-deploy="cloud" data-done="8" data-family="" data-job="research" data-license="terms" data-lifecycle="active" data-name="You.com" data-total="8" data-track="web" data-vendor-key="you.com" style="--card-accent:#38bdf8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">YO</div>
+<div class="card-id">
+<h3><a href="/en/research/you-com.html">You.com</a></h3>
+<div class="vendor">You.com</div>
+</div>
+</div>
+<p class="tagline">You.com has shifted its center of gravity from consumer AI sea</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="You.com details" class="more" href="/en/research/you-com.html">Details →</a>
+</div>
+</article>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<h2>What to look at when choosing</h2>
+<p class="section-desc">
+Every tool is broken down by the same questions, so you can compare them side by side.
+Open any entry to see the official wording and link; disagree and check it yourself.
+</p>
+<div class="t-mesh axis-mesh">
+<div class="axis-cell">
+<span class="t-index">01</span>
+<h3 class="axis-name">Model &amp; openness</h3>
+<p class="axis-ask">Whose model does it use? Can you switch to a third party? How is multi-model routing configured?</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">02</span>
+<h3 class="axis-name">Where it runs</h3>
+<p class="axis-ask">Local, cloud or hybrid? Is the index local or remote? Remote control is not the same as cloud execution.</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">03</span>
+<h3 class="axis-name">Local files</h3>
+<p class="axis-ask">How wide an area can it reach? How does it read large files you have not opened? How capable is it at the symbol level?</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">04</span>
+<h3 class="axis-name">Tasks after shutdown</h3>
+<p class="axis-ask">Does it keep running once the computer is off? This is the most common misconception about local forms.</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">05</span>
+<h3 class="axis-name">Tools &amp; extensions</h3>
+<p class="axis-ask">How wide is the toolchain: MCP · LSP · plugins · hooks · custom instructions?</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">06</span>
+<h3 class="axis-name">Context &amp; memory</h3>
+<p class="axis-ask">Indexing algorithm, context window, session resume and fork, and the boundary of cross-session memory.</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">07</span>
+<h3 class="axis-name">Permissions &amp; limits</h3>
+<p class="axis-ask">Sandbox and approval boundaries, credential handling, whether data leaves your machine, and how quota is charged.</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">08</span>
+<h3 class="axis-name">Best for</h3>
+<p class="axis-ask">What tasks is it best at? When should you not use it?</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<h2>All data at a glance</h2>
+<p class="section-desc">The same table side by side. Click an object name to see per-cell evidence.</p>
+<div class="table-wrap">
+<table class="cmp">
+<thead>
+<tr>
+<th>Object</th><th>Form</th><th>Vendor</th><th>Best for</th><th>Checked</th><th>Evidence / still updated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/en/research/andi.html"><span class="td-mark" style="--card-accent:#38bdf8">AN</span>Andi Search</a></td>
+<td class="td-vendor">Web service</td>
+<td class="td-vendor">Andi</td>
+<td class="td-fit">Light research that wants direct answers with an explanatory style, tr</td>
+<td class="td-date">2026-11-21</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/research/consensus.html"><span class="td-mark" style="--card-accent:#38bdf8">CO</span>Consensus</a></td>
+<td class="td-vendor">Web service</td>
+<td class="td-vendor">Consensus</td>
+<td class="td-fit">"What does science say" questions (medical/nutrition/climate and other</td>
+<td class="td-date">2026-11-21</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/research/devv.html"><span class="td-mark" style="--card-accent:#38bdf8">DE</span>Devv</a></td>
+<td class="td-vendor">Web service</td>
+<td class="td-vendor">Devv AI</td>
+<td class="td-fit">Looking up API usage/errors/library docs (answers carry official-doc l</td>
+<td class="td-date">2026-10-22</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/research/elicit.html"><span class="td-mark" style="--card-accent:#38bdf8">EL</span>Elicit</a></td>
+<td class="td-vendor">Web service</td>
+<td class="td-vendor">Elicit</td>
+<td class="td-fit">Systematic reviews and literature surveys (medical/social-science/ML E</td>
+<td class="td-date">2026-10-22</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/research/genspark.html"><span class="td-mark" style="--card-accent:#38bdf8">GE</span>Genspark</a></td>
+<td class="td-vendor">Web service</td>
+<td class="td-vendor">Genspark</td>
+<td class="td-fit">"Search → report → slides" end to end, research delivery that wants fi</td>
+<td class="td-date">2026-11-21</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/research/kagi.html"><span class="td-mark" style="--card-accent:#38bdf8">KA</span>Kagi</a></td>
+<td class="td-vendor">Web service</td>
+<td class="td-vendor">Kagi</td>
+<td class="td-fit">Users willing to pay for ad-free/tracking-free search, "search + full-</td>
+<td class="td-date">2026-11-21</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/research/metaso.html"><span class="td-mark" style="--card-accent:#38bdf8">ME</span>Metaso AI Search</a></td>
+<td class="td-vendor">Web service</td>
+<td class="td-vendor">Metaso (Shanghai Metaso Network Technology)</td>
+<td class="td-fit">Deep Chinese research retrieval (ad-free straight to results), Chinese</td>
+<td class="td-date">2026-10-22</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/research/notebooklm.html"><span class="td-mark" style="--card-accent:#38bdf8">NO</span>NotebookLM</a></td>
+<td class="td-vendor">Web service</td>
+<td class="td-vendor">Google</td>
+<td class="td-fit">Fits sourced Q&amp;A and note organization. Check account, region, source </td>
+<td class="td-date">2026-11-04</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/research/perplexity.html"><span class="td-mark" style="--card-accent:#38bdf8">PE</span>Perplexity</a></td>
+<td class="td-vendor">Web service</td>
+<td class="td-vendor">Perplexity AI</td>
+<td class="td-fit">Sourced factual Q&amp;A, quick research entry points, English-first retrie</td>
+<td class="td-date">2026-10-22</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/research/tiangong.html"><span class="td-mark" style="--card-accent:#38bdf8">TI</span>Tiangong AI Search</a></td>
+<td class="td-vendor">Web service</td>
+<td class="td-vendor">Kunlun Tech</td>
+<td class="td-fit">Chinese search plus office artifacts in one chain (PPT/spreadsheet/doc</td>
+<td class="td-date">2026-10-22</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/research/you-com.html"><span class="td-mark" style="--card-accent:#38bdf8">YO</span>You.com</a></td>
+<td class="td-vendor">Web service</td>
+<td class="td-vendor">You.com</td>
+<td class="td-fit">Enterprise retrieval-infrastructure procurement evaluation (ARI/Resear</td>
+<td class="td-date">2026-11-21</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<h2>Why there is no overall ranking</h2>
+<p class="section-desc">This is not an omission but a deliberate methodological choice.</p>
+<div class="panel">
+<ul>
+<li><strong>No shared measurement, no score.</strong> Benchmarks across tools use different rules — different questions, budgets and environments. A 90 and a B 88 are not comparable.</li>
+<li><strong>"Unknown" is a legitimate answer.</strong> If it cannot be found, we write "unknown" and explain why, instead of filling the gap with guesses. Missing information is itself information.</li>
+<li>Every field carries a source link, so you can go back to the original.</li>
+<li><strong>A recent check does not mean it stays valid.</strong> When upstream archives or changes, the entry is marked <code>active</code> / <code>maintenance</code> / <code>archived</code>.</li>
+<li><strong>Families are not mixed.</strong> Ready-made tools, things you build yourself, and plug-in-and-run components are three different roles with different ways of judging them; forcing them into one master table would manufacture false comparability.</li>
+</ul>
+</div>
+<div class="panel">
+<h2>How to read the confidence marks</h2>
+<p class="t-sm mb-3">Both the detail pages and the table above carry <code>confidence</code>, which reflects <strong>how complete this site's data is</strong>, not a judgement of the product.</p>
+<table class="src is-flush">
+<tbody>
+<tr><th class="w-24"><span class="td-conf verified">verified</span></th><td>all 8 dimensions have official sources and were updated within 90 days</td></tr>
+<tr><th><span class="td-conf partial">partial</span></th><td>some dimensions are marked unknown, the official docs were unreachable, or the info is over 90 days old</td></tr>
+<tr><th><span class="td-conf stale">stale</span></th><td>the vendor has shipped a significant change that this site has not updated yet</td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel">
+<h2>Current completeness on this site</h2>
+<p class="t-sm mb-2">
+Recheck this figure with <code>node scripts/audit-gaps.mjs</code>.
+Computed from current data; info dated 2026-11-21:
+</p>
+<table class="src is-flush mb-3">
+<thead><tr><th>Category</th><th>Filled</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td class="nw">Deep research</td>
+<td class="nw"><strong>85/88</strong></td>
+<td class="td-vendor">Retrieval and ranking internals are mostly undisclosed; filing numbers, official announcements and terms pages are the verifiable parts</td></tr>
+</tbody>
+</table>
+<p><strong class="em">Site-wide 2270/2352 dimensions filled（97%）</strong></p>
+<p class="t-sm">
+The remaining gaps fall into three kinds: <strong>not disclosed by the vendor</strong> (indexing algorithms, sandbox internals are simply not documented), <strong>requires measurement</strong> (behaviour on very large repositories, CI without a TTY), and <strong>unreachable through objective channels</strong>.
+</p>
+<p class="t-sm">
+We chose to leave a blank rather than fill in "supported" — the cost of an error is ultimately borne by whoever uses it.
+</p>
+</div>
+<div class="panel">
+<h2>Sources and how to re-check them</h2>
+<p>All data comes from the open-source repository <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">speculcom/ai-handbook</a> (CC BY 4.0).</p>
+<p>Every entry is plain Markdown plus frontmatter, carrying dimension records and an evidence chain with links, checked dates and confidence marks. The repository contains:</p>
+<ul>
+<li><code>tools/METHODOLOGY.md</code> —— the methodology charter and core rules</li>
+<li><code>tools/axes/</code> —— the definition and decision criteria for each dimension (with positive and negative examples)</li>
+<li><code>tools/SCHEMA.md</code> —— the data-format spec and build validation rules</li>
+<li><code>tools/protocols/&lt;category&gt;/_protocol.md</code> —— the measurement protocol (<strong>not yet run</strong>, so this site has no measured conclusions)</li>
+</ul>
+<p class="t-sm">Found an error or have new evidence? Open an issue or a PR — each correction notes its basis and blast radius.</p>
+</div>
+</div>
+</section>
+<p class="t-sm topics-line">This page appears in: <a href="https://specul.com/en/topic-research.html">Research with AI</a></p>
+<!-- B2：索引页筛选与排序（脚本读独立文件 agent-filter.js，作用域 .afilter） -->
+<script>/* 工具站客户端筛选与排序（2026-11-21 扩展）
+ *
+ * 作用域：`.afilter`
+ *   搜索     data-blob
+ *   分组     data-attr（形态 / 抽象层；tools 页没有这一项）
+ *   证据     data-conf
+ *   用途     data-job（空格分隔多值，按 token 匹配）
+ *   部署     data-deploy（单值）
+ *   许可     data-license（单值）
+ *   费用     data-cost（单值）
+ *   中文生态 data-cn-origin / data-cn-direct / data-cn-filing
+ *   排序     data-done & data-total（只在同一 .grid 内重排）
+ *
+ * URL 可还原：?q=&form=&conf=&life=&job=&deploy=&license=&cost=&cnorigin=&cndirect=&cnfiling=&sort=
+ */
+(function () {
+  'use strict';
+
+  var box = document.querySelector('.afilter');
+  if (!box) return;
+
+  var q = box.querySelector('.aq');
+  var selForm = box.querySelector('.asel-form');
+  var selConf = box.querySelector('.asel-conf');
+  var selLife = box.querySelector('.asel-life');
+  var selSort = box.querySelector('.asel-sort');
+  var facetSels = [
+    { el: box.querySelector('.asel-job'), attr: 'data-job', key: 'job', multi: true },
+    { el: box.querySelector('.asel-deploy'), attr: 'data-deploy', key: 'deploy', multi: false },
+    { el: box.querySelector('.asel-license'), attr: 'data-license', key: 'license', multi: false },
+    { el: box.querySelector('.asel-cost'), attr: 'data-cost', key: 'cost', multi: false },
+  ].filter(function (x) { return x.el; });
+  var cnSels = [
+    { el: box.querySelector('.asel-cnorigin'), attr: 'data-cn-origin', key: 'cnorigin' },
+    { el: box.querySelector('.asel-cndirect'), attr: 'data-cn-direct', key: 'cndirect' },
+    { el: box.querySelector('.asel-cnfiling'), attr: 'data-cn-filing', key: 'cnfiling' },
+  ].filter(function (x) { return x.el; });
+  var count = box.querySelector('.acount');
+  var allCards = Array.prototype.slice.call(document.querySelectorAll('.grid > .card'));
+  if (!allCards.length) return;
+
+  function param(n) {
+    try { return new URLSearchParams(location.search).get(n) || ''; } catch (e) { return ''; }
+  }
+  function writeUrl() {
+    try {
+      var u = new URL(location.href);
+      var vals = {
+        q: q ? q.value.trim() : '',
+        form: selForm ? selForm.value : '',
+        conf: selConf ? selConf.value : '',
+        life: selLife ? selLife.value : '',
+        sort: selSort ? selSort.value : ''
+      };
+      facetSels.forEach(function (x) { vals[x.key] = x.el.value; });
+      cnSels.forEach(function (x) { vals[x.key] = x.el.value; });
+      Object.keys(vals).forEach(function (k) {
+        if (vals[k]) u.searchParams.set(k, vals[k]); else u.searchParams.delete(k);
+      });
+      history.replaceState(null, '', u.toString());
+    } catch (e) { /* file:// 等场景静默降级：功能可用，地址栏不同步 */ }
+  }
+
+  function ratio(c) {
+    var d = Number(c.getAttribute('data-done') || 0);
+    var t = Number(c.getAttribute('data-total') || 0);
+    return t ? d / t : 0;
+  }
+
+  function matchFacet(c, x) {
+    var want = x.el.value;
+    if (!want) return true;
+    var have = c.getAttribute(x.attr) || '';
+    if (x.multi) return have.split(/\s+/).indexOf(want) !== -1;
+    return have === want;
+  }
+
+  function apply() {
+    var term = q ? q.value.trim().toLowerCase() : '';
+    var form = selForm ? selForm.value : '';
+    var formAttr = selForm ? (selForm.getAttribute('data-attr') || 'track') : 'track';
+    var conf = selConf ? selConf.value : '';
+    var life = selLife ? selLife.value : '';
+    var shown = 0;
+    allCards.forEach(function (c) {
+      var okQ = !term || (c.getAttribute('data-blob') || '').indexOf(term) !== -1;
+      var okForm = !form || c.getAttribute('data-' + formAttr) === form;
+      var okConf = !conf || c.getAttribute('data-conf') === conf;
+      var okLife = !life || c.getAttribute('data-lifecycle') === life;
+      var okFacet = facetSels.every(function (x) { return matchFacet(c, x); });
+      var okCn = cnSels.every(function (x) {
+        return !x.el.value || (c.getAttribute(x.attr) || '') === x.el.value;
+      });
+      var on = okQ && okForm && okConf && okLife && okFacet && okCn;
+      c.hidden = !on;
+      if (on) shown++;
+    });
+    Array.prototype.slice.call(document.querySelectorAll('.fam-block')).forEach(function (b) {
+      var vis = Array.prototype.slice.call(b.querySelectorAll('.card')).some(function (c) { return !c.hidden; });
+      b.hidden = !vis;
+    });
+    if (count) {
+      count.textContent = shown + ' / ' + allCards.length;
+      count.setAttribute('data-zh', shown + ' / ' + allCards.length + ' 份档案');
+      count.setAttribute('data-en', shown + ' / ' + allCards.length + ' entries');
+    }
+  }
+
+  function sort() {
+    var mode = selSort ? selSort.value : '';
+    if (!mode) return;
+    Array.prototype.slice.call(document.querySelectorAll('.grid')).forEach(function (g) {
+      var cards = Array.prototype.slice.call(g.children).filter(function (c) { return c.classList.contains('card'); });
+      if (cards.length < 2) return;
+      cards.sort(function (a, b) {
+        var d = ratio(b) - ratio(a);
+        if (mode.indexOf('asc') !== -1) d = -d;
+        return d || (a.getAttribute('data-name') || '').localeCompare(b.getAttribute('data-name') || '', 'zh');
+      });
+      cards.forEach(function (c) { g.appendChild(c); });
+    });
+  }
+
+  function restore(el, key) {
+    if (!el) return;
+    var v = param(key);
+    if (!v) return;
+    var found = Array.prototype.some.call(el.options, function (o) { return o.value === v; });
+    if (!found) {
+      var extra = document.createElement('option');
+      extra.value = v; extra.textContent = v;
+      el.appendChild(extra);
+    }
+    el.value = v;
+  }
+
+  if (q) q.value = param('q');
+  restore(selForm, 'form');
+  restore(selConf, 'conf');
+  restore(selLife, 'life');
+  restore(selSort, 'sort');
+  facetSels.forEach(function (x) { restore(x.el, x.key); });
+  cnSels.forEach(function (x) { restore(x.el, x.key); });
+
+  if (q) q.addEventListener('input', function () { apply(); writeUrl(); });
+  if (selForm) selForm.addEventListener('change', function () { apply(); writeUrl(); });
+  if (selConf) selConf.addEventListener('change', function () { apply(); writeUrl(); });
+  if (selLife) selLife.addEventListener('change', function () { apply(); writeUrl(); });
+  facetSels.forEach(function (x) { x.el.addEventListener('change', function () { apply(); writeUrl(); }); });
+  cnSels.forEach(function (x) { x.el.addEventListener('change', function () { apply(); writeUrl(); }); });
+  if (selSort) selSort.addEventListener('change', function () { sort(); writeUrl(); });
+
+  sort();
+  apply();
+})();
+</script>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

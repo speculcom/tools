@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Selected by overlap in jobs, not ranked. Compare w | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/v0.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/v0.html" property="og:url"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare w | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Selected by overlap in jobs, not ranked. Compare w | Tools","applicationCategory":"DeveloperApplication","sameAs":"https://v0.app","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-22"}</script>
+<meta content="Selected by overlap in jobs, not ranked. Compare w | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/v0.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/v0.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/v0.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/v0.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#8b7cf8">V0</div>
+<div>
+<h1>v0</h1>
+<div class="vendor is-caps">Vercel</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Outside China</span>
+<span class="tag on">Free + paid</span>
+<span class="tag on">Web</span>
+<span class="tag on">Next.js</span>
+<span class="tag on">Vercel</span>
+<span class="tag on">Sandbox</span>
+<span class="tag on">MCP</span>
+<span class="tag on">GitHub sync</span>
+<span class="tag on">Preinstalled agents</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-22</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>v0 is Vercel's prompt-to-full-stack platform: chats generate Next.js apps, a VM…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Cloud / API · Vendor cloud</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Cross-session memory mechanism (outside the official product pages)</li>
+<li>Whether build tasks keep running after the page is closed (outside the official product pages)</li>
+<li>The complete allowance-difference table across free/paid plans (the pricing page exists; kept at official category level)</li>
+<li>The complete selectable model list on the chat-generation side (the picker changes with plans and the gateway catalog; kept at official category level)</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>v0 is Vercel's prompt-to-full-stack platform</strong>: chats generate Next.js apps, a VM sandbox runs a real terminal with pre-installed agents (claude is ready to use), GitHub sync moves code into your repo, and publishing runs through the Vercel deployment chain — Ask/Auto/Full permission tiers, custom models are Enterprise-side.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Fits: Next.js/Vercel-stack teams (the deployment chain is natively wired), wanting a real terminal and pre-installed agents in a sandbox, enterprise seats unified with the Vercel account system. Not a fit: stacks outside the Next.js/Vercel ecosystem (the deployment chain is part of the product semantics); non-Enterprise teams wanting custom models.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-22</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　Vercel (US).</dd>
+<dt>Direct access</dt><dd>direct OK　v0.app / v0.dev (307 to v0.app) / v0.dev/docs measured 200 direct from mainland (2026-10-22).</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (searched 2026-10-22); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>Official "Choosing models" page</strong>: pick the v0 model in the in-chat model picker, or add custom models from the AI Gateway catalog. The updated picker and custom models target Enterprise teams (custom models need team-owner approval). The model in a session follows the most recent response until you switch. In-app AI features have a separate ai-models integration page (Grok/fal/Deep Infra etc.).</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>Web form (v0.app); VM-backed chats run in isolated VMs on Vercel Sandbox</strong> (official sandbox page: hosts project files / runs previews / executes commands; state does not leak between chats; it replaces the older in-browser environment). Coding agents are pre-installed in the sandbox (official page: run CLIs like claude directly in the terminal, alongside v0's built-in assistant in the same project).</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>Projects live on the v0 platform. The GitHub integration is an official page: code goes into your repositories, branch isolation, PRs and CI follow the standard flow; existing GitHub repositories can be imported (git-import page). <strong>The official states explicitly that GitHub sync only moves code — it does not grant deployment permission via GitHub</strong> (deployment permission follows Vercel roles).</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>The deployment line is persistent</strong>: preview deployments build per branch, publish updates the Vercel production deployment (official deployments page); deployment errors can be diagnosed and fixed via "Fix with v0" reading the logs (agentic-features page). <strong>Whether build tasks keep running after the page is closed: outside the official product pages.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>Agent capabilities are official pages</strong>: web search, browser use, terminal commands, error fixing, external tool integration — all inside the sandbox. Two MCP lines (bring-your-own MCP servers with a preset list / Remote MCP via Marketplace integrations). Database integrations: Supabase/Blob/Neon/Upstash; Figma import; v0 itself can also act as an MCP server called by other agents.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p>The code viewer (browse/edit code, review changes, add comments as next-round context); Design mode visually selects elements, edits styles and writes back to code; projects organize multiple chats. <strong>Cross-session memory: outside the official product pages.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>Tool-call permissions have three modes (Ask/Auto/Full) + Agent Permissions rules</strong> (MCP page and agentic-features page framing). The enterprise side goes through Vercel Enterprise: seats/v0 roles (Builder etc.) and Vercel team roles are managed separately (enterprise page). Security page official framing: do not trust LLM-generated code — security analysis before execution, sandbox isolation, input validation, adversarial testing.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Good fit: Next.js/Vercel-stack teams (the deployment chain is natively connected), wanting real terminals and pre-installed agents inside a sandbox, unifying enterprise seats with the Vercel account system.</p>
+<p>Not a fit: stacks outside the Next.js/Vercel ecosystem (the deployment line is part of the product semantics), non-Enterprise wanting custom models.</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>The deployment chain is bound to Vercel: publishing goes through the Vercel project and domains (official deployments page) — GitHub sync only moves code; deployment via GitHub/Vercel CLI follows your Vercel role, two permission systems not to be conflated (the official page warns explicitly)</li>
+<li>Custom models (the AI Gateway catalog) are an Enterprise-team feature requiring owner approval — the model menu on regular plans is narrower than the docs read like</li>
+<li>The sandbox has two generations: VM-backed and the older in-browser one (the official sandbox page states the replacement) — 'runs in the browser' behavior described in older tutorials may be outdated</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-22，Content updated 2026-10-22。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>official</td><td>v0 docs · Quickstart (product entry v0.app / main workflow)</td><td><a href="https://v0.dev/docs/quickstart" rel="noopener" target="_blank">https://v0.dev/docs/quickstart</a></td></tr>
+<tr><td>official</td><td>v0 docs · Sandbox (Vercel Sandbox VM / replaces the in-browser environment)</td><td><a href="https://v0.dev/docs/sandbox" rel="noopener" target="_blank">https://v0.dev/docs/sandbox</a></td></tr>
+<tr><td>official</td><td>v0 docs · Agentic features (search / browser / terminal / error fixing / permission modes)</td><td><a href="https://v0.dev/docs/agentic-features" rel="noopener" target="_blank">https://v0.dev/docs/agentic-features</a></td></tr>
+<tr><td>official</td><td>v0 docs · Choosing models (picker / AI Gateway / Enterprise gating)</td><td><a href="https://v0.dev/docs/model-picker" rel="noopener" target="_blank">https://v0.dev/docs/model-picker</a></td></tr>
+<tr><td>official</td><td>v0 docs · GitHub (sync and the deployment-permission separation warning)</td><td><a href="https://v0.dev/docs/github" rel="noopener" target="_blank">https://v0.dev/docs/github</a></td></tr>
+<tr><td>official</td><td>v0 docs · Security (threat model / sandboxed-execution framing)</td><td><a href="https://v0.dev/docs/security" rel="noopener" target="_blank">https://v0.dev/docs/security</a></td></tr>
+<tr><td>official</td><td>v0 docs · Pre-installed Agents (running claude etc. inside the sandbox)</td><td><a href="https://v0.dev/docs/pre-installed-agents" rel="noopener" target="_blank">https://v0.dev/docs/pre-installed-agents</a></td></tr>
+<tr><td>changelog</td><td>Vercel Changelog · v0-related entries (product-change announcement channel)</td><td><a href="https://vercel.com/changelog?q=v0" rel="noopener" target="_blank">https://vercel.com/changelog?q=v0</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong> (three, each pointing at something the official readable pages do not give):</p>
+<ul><li><strong>The actual interception granularity of Ask/Auto/Full on terminal commands</strong> (the official gives mode definitions, not a per-command-class matrix)</li><li><strong>How much context the pre-installed claude and v0's built-in assistant can see of each other when running in parallel on one project</strong></li><li><strong>Migration behavior for existing projects on the old in-browser sandbox</strong> (the official page only says it was replaced; no guidance for existing projects)</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/lovable.html">Lovable</a></span><span class="rel-n">Same product category: Lovable ships its own backend and multi-Git-platform sync; v0 binds the Vercel deployment chain.</span></li>
+<li><span class="rel-t"><a href="/en/coding/bolt-new.html">Bolt.new</a></span><span class="rel-n">Same product category: Bolt runs WebContainers in the browser; v0 has switched to Vercel Sandbox VMs.</span></li>
+<li><span class="rel-t"><a href="/en/coding/codex-ide.html">Codex (IDE extension)</a></span><span class="rel-n">Ecosystem interop comparison: v0's sandbox pre-installs claude; the Codex extension installs the agent into your IDE.</span></li>
+<li><span class="rel-t"><a href="/en/mcp/supabase-mcp.html">Supabase MCP</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/augment-code.html">Augment Code</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Augment Code is the enterprise 'software factory' platform: Cosmos turns</td></tr><tr><td><a href="/en/coding/kilocode.html">Kilo Code</a></td><td>Local + cloud</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Kilo Code is a leading open-source coding agent (MIT): VS Code/JetBrains</td></tr><tr><td><a href="/en/coding/qoder.html">Qoder</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Qoder is the Alibaba-affiliated international Qoder line (qoder.com, spl</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from Vercel</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/framework/vercel-ai-sdk.html"><span class="vp-cat">Frameworks &amp; runtimes</span>Vercel AI SDK 7</a></li><li><a href="/en/framework/vercel-eve.html"><span class="vp-cat">Frameworks &amp; runtimes</span>Vercel eve (1.0)</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

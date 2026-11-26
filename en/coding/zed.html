@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Zed | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/zed.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/zed.html" property="og:url"/>
+<meta content="Zed | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Zed | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/coding/zed.html","sameAs":"https://zed.dev","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Zed | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/zed.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/zed.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/zed.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/zed.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#3AB7FF"'>ZE</div>
+<div>
+<h1>Zed</h1>
+<div class="vendor is-caps">Zed Industries</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Coding</span>
+<span class="tag on">IDE</span>
+<span class="tag on">Local</span>
+<span class="tag on">Collaboration</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Not "yet another AI coding tool" but an orchestration layer for three agent paths …</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · In editor</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>The actual behavior of the three agent paths "after the client closes" Zed Agent is known to bind to the client being online. External / Terminal depend on the attached agent.</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>Not "yet another AI coding tool" but an orchestration layer for three agent paths</strong> — use Zed's native agent in the same editor, or attach Claude / Codex / OpenCode / Copilot / Cursor.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Scenarios where editor performance (Rust), syntactic parsing accuracy (Tree-sitter) and multi-user collaboration matter. <strong>Users who want to mix the native agent with external CLI agents in one editor</strong> — this is its most distinctive value.</p></div>
+<div class="warn-p"><p><strong>Not a fit for</strong> people looking for an editor whose only selling point is built-in AI — Zed positions itself as an orchestration layer for agents, not as "I ship my own model". Also not a fit if you need hands-on measurements of large-repository behaviour — the indexing strategy is not publicly documented.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　official site measured 200 direct.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>The official docs list 5 model-access paths</strong> (docs/src/ai/llm-providers.md):</p>
+<ul><li>Zed-Hosted Models — billed through Zed</li><li>API Access — your own provider quota, including Anthropic-compatible and OpenAI-compatible</li><li>Existing Subscription — reuse a paid ChatGPT / Claude / Copilot etc.</li><li>Gateway — routed via gateways like OpenRouter / Bedrock / Vercel</li><li><strong>Local Model</strong> — running locally or self-hosted</li></ul>
+<p><strong>Path choice is up to the user, not a bound single provider.</strong> <code>llm-providers.md</code> lists these five item by item.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>A local desktop application, written in Rust.</strong></p>
+<p>The official self-description: from the creators of Atom and Tree-sitter, leading with performance and multiplayer collaboration.</p>
+<p><strong>Verification record</strong>: the docs include <code>dev-containers.md</code> (dev containers). There is also a <code>toolchains.md</code> (toolchain management) page.</p>
+<p>Closing the app stops it.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>Reads and writes the workspace directly, <strong>with multi-root support</strong>.</p>
+<p>Can also open remote folders via SSH / WSL, i.e. remote development.</p>
+<p>File-tree scanning is controlled by <code>file_scan_exclusions</code> and <code>project_panel.hide_gitignore</code>. Symbol capability comes from Tree-sitter parsing and language servers (LSP). Edit prediction has its own separate provider.</p>
+<p>The agent's built-in retrieval has four kinds: grep (regex), find_path (glob), list_directory, read_file.</p>
+<p><strong>No codebase vectorized semantic index found officially</strong> (Tools page checked).</p>
+<p><strong>The official docs state the large-repo limit explicitly</strong>: huge directories with &gt;100,000 files open at once perform poorly. The official advice is to open only specific projects or subdirectories (remote development page).</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p>A local desktop app; agent threads run inside the local process. Remote hosts can be your own SSH / WSL hosts.</p>
+<p><strong>Bound to the client being online.</strong> While a thread runs, Zed asks the system not to sleep. This preserves long turns (<code>agent.prevent_idle_sleep</code>).</p>
+<p>Remote development puts language servers, tasks and terminals on <strong>your own remote server</strong>. The official docs note <strong>since v0.157 it no longer relays through Zed servers</strong>.</p>
+<p><strong>No "keeps running after shutdown / vendor-hosted background task" capability found officially</strong> (Agent Panel page checked).</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>MCP support is explicit.</strong></p>
+<p>The official docs <code>mcp.md</code> states <strong>Tools and Prompts</strong> are the two supported protocol features. Discovery / Sampling / Elicitation are not yet covered; the official docs welcome contributions.</p>
+<p>It also handles <code>notifications/tools/list_changed</code> — when a server adds/removes/changes tools at runtime, Zed reloads the list automatically without restarting the server.</p>
+<p>MCP has two integration paths:</p>
+<ul><li>install as an extension</li><li>add local / remote servers under Settings → AI → MCP Servers</li></ul>
+<p>Popular extension servers listed officially: Context7, GitHub, Puppeteer, Gem, Brave Search, Framelink Figma, Resend and more.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>Zed Agent's context is composed of instructions + skills + MCP</strong> (see the Zed Agent row in agents.md).</p>
+<p><strong>Compaction policy</strong>: officially, threads auto-compact when approaching the threshold. Default trigger at 90% (<code>agent.auto_compact</code>). It summarizes earlier messages and replaces them in the model context. The thread shows "Context Compacted", expandable.</p>
+<p><code>/compact</code> also compacts manually. The threshold is configurable: percentage / positive tokens / negative remaining tokens.</p>
+<p>When the model window is too small (&lt;80000 tokens) auto-compaction is disabled. The official hint is to start a new thread via New From Summary.</p>
+<p>@-mention can add files, directories, symbols, past threads, skills, diagnostics, branch diffs and URLs.</p>
+<p>Parallel multi-threads (each with its own context window) and Checkpoints per-message rollback are also supported.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>Tool permissions are controlled by Zed's official config</strong> (<code>tool-permissions</code> page; since v0.224.0 by <code>agent.tool_permissions.default</code>).</p>
+<p>Three values: <code>"allow"</code> / <code>"deny"</code> / <code>"confirm"</code>, with default set to confirm. Per-tool regex patterns can be configured: <code>always_allow</code> / <code>always_deny</code> / <code>always_confirm</code>.</p>
+<p>Precedence: always_deny &gt; always_confirm &gt; always_allow &gt; tool default &gt; global default.</p>
+<p>There are also hardcoded safety rules (<code>rm -rf /</code>, <code>rm -rf ~</code> etc.), <strong>not overridable</strong>.</p>
+<p>Managed tools include:</p>
+<ul><li>terminal, edit_file, write_file</li><li>delete_path, move_path, copy_path, create_directory</li><li>fetch, search_web, skill</li><li>MCP (<code>mcp:&lt;server&gt;:&lt;tool&gt;</code>)</li></ul>
+<p><strong>There is also an OS-level sandbox</strong> (<code>sandboxing</code> page): Zed Agent only, covering <code>terminal</code> and <code>fetch</code>, restricting writes outside the project and outbound network by default.</p>
+<p><strong>Permission boundaries follow the agent path</strong> (agents.md):</p>
+<ul><li>Zed Agent — uses Zed-configured providers and native tools</li><li>External Agents — use the ACP agent process's own auth/config</li><li>Terminal Threads — use the native CLI's auth/config</li></ul>
+<p>Privacy: officially Zed states it does not store prompts or code context; telemetry can be turned off.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Fits scenarios that value editor performance (Rust), parsing accuracy (Tree-sitter) and multiplayer collaboration.</p>
+<p><strong>Also fits users who want to mix multiple CLI Agents in one editor</strong> — Claude / Codex / OpenCode / Copilot / Cursor can all be attached.</p>
+<p>This is Zed's most unique value: it is an <strong>orchestration layer</strong> for agents, not a single agent.</p>
+<p>Does not fit users looking for "the editor ships its own AI" as the sole selling point — Zed positions itself as the orchestration layer.</p>
+<p>Also does not fit people who need measured runs to know large-repo behavior — the indexing strategy is not disclosed officially.</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Treating Zed as yet another AI coding tool — it is an orchestration layer for three agent paths, and can use Claude / Codex / OpenCode / Cursor</li>
+<li>Assuming the model is locked in — there are five integration paths, including local models and reusing an existing subscription</li>
+<li>Choosing External Agent and assuming Zed governs permissions — they are determined by that agent's own auth/config</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-08。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>docs</td><td>Zed · LLM Providers (five model-access paths)</td><td><a href="https://zed.dev/docs/ai/llm-providers" rel="noopener" target="_blank">https://zed.dev/docs/ai/llm-providers</a></td></tr>
+<tr><td>docs</td><td>Zed · Agents (comparison of the three agent paths)</td><td><a href="https://zed.dev/docs/ai/agents" rel="noopener" target="_blank">https://zed.dev/docs/ai/agents</a></td></tr>
+<tr><td>docs</td><td>Zed · MCP (supported protocol features and MCP behavior across the three agent paths)</td><td><a href="https://zed.dev/docs/ai/mcp" rel="noopener" target="_blank">https://zed.dev/docs/ai/mcp</a></td></tr>
+<tr><td>changelog</td><td>Zed · Releases (v1.21.0 @ 2026-09-23)</td><td><a href="https://github.com/zed-industries/zed/releases" rel="noopener" target="_blank">https://github.com/zed-industries/zed/releases</a></td></tr>
+<tr><td>repo</td><td>Zed · repository</td><td><a href="https://github.com/zed-industries/zed" rel="noopener" target="_blank">https://github.com/zed-industries/zed</a></td></tr>
+<tr><td>docs</td><td>Zed · docs site</td><td><a href="https://zed.dev/docs" rel="noopener" target="_blank">https://zed.dev/docs</a></td></tr>
+<tr><td>docs</td><td>Zed · Agent Panel (threads, checkpoints, auto-compaction, @-mention, token usage)</td><td><a href="https://zed.dev/docs/ai/agent-panel" rel="noopener" target="_blank">https://zed.dev/docs/ai/agent-panel</a></td></tr>
+<tr><td>docs</td><td>Zed · Tool Permissions (allow/deny/confirm, regex patterns, built-in safety rules)</td><td><a href="https://zed.dev/docs/ai/tool-permissions" rel="noopener" target="_blank">https://zed.dev/docs/ai/tool-permissions</a></td></tr>
+<tr><td>docs</td><td>Zed · Agent Sandboxing (Zed Agent only, terminal/fetch, out-of-project writes and egress restricted by default)</td><td><a href="https://zed.dev/docs/ai/sandboxing" rel="noopener" target="_blank">https://zed.dev/docs/ai/sandboxing</a></td></tr>
+<tr><td>docs</td><td>Zed · Tools (built-in read/search/edit/terminal tool list)</td><td><a href="https://zed.dev/docs/ai/tools" rel="noopener" target="_blank">https://zed.dev/docs/ai/tools</a></td></tr>
+<tr><td>docs</td><td>Zed · Remote Development (remote SSH server, no Zed relay since v0.157, large-directory limits)</td><td><a href="https://zed.dev/docs/remote-development" rel="noopener" target="_blank">https://zed.dev/docs/remote-development</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs.</p>
+<p>The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong>: the testing focus for this tool should be <strong>mixed-agent scenarios</strong>. E.g. attach Claude Code inside Zed to do the T01 task, compared against using the Claude Code CLI directly. What to verify: whether "orchestration layer + external agent" is handier than pure CLI, or just one extra shell.</p>
+</div>
+<div class="panel is-slim">
+<h2>The most important finding: Zed itself uses the word "harness"</h2>
+<p><strong>The official <code>agents.md</code> treats "agent path" and "harness" as the same thing.</strong></p>
+<p><strong>Official wording</strong>: "An agent path is sometimes called <strong>a harness</strong>." "It is the way agentic work is started, displayed, configured, and controlled in Zed."</p>
+<p><strong>This sentence lands AgentClash's "Harness chapter" into product documentation.</strong> Comparing Agent products and comparing Harnesses are not two different things. AgentClash distinguishes them because they sit at different layers. And Zed explicitly says <strong>"an agent path is sometimes called a harness"</strong>.</p>
+</div>
+<div class="panel is-slim">
+<h2>Three agent paths (official table wording)</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Agent path</th><th>Runs in</th><th>Uses</th><th>Fits</th></tr></thead><tbody><tr><td><strong>Zed Agent</strong></td><td>Agent Panel + Threads sidebar</td><td>Zed-configured LLM providers, native tools, skills, instructions, MCP</td><td>wanting Zed's native integration</td></tr><tr><td><strong>External Agents</strong></td><td>Agent Panel + Threads sidebar</td><td><strong>the ACP agent process and its own auth/config</strong></td><td>wanting Claude, Codex, OpenCode, Copilot, Cursor, Pi etc.</td></tr><tr><td><strong>Terminal Threads</strong></td><td>Threads sidebar + terminal</td><td><strong>the native CLI / TUI's auth/config</strong></td><td>keeping that tool's command-line experience</td></tr></tbody></table></div>
+<p><strong>This table carries a lot of information</strong>:</p>
+<ul><li>External Agents explicitly support <strong>Claude, Codex, OpenCode, Copilot, Cursor</strong> — all objects collected in this repository</li><li><strong>who decides permissions — look at columns two and three</strong> — choose External Agent and auth/config belongs to that agent</li><li>Zed positions itself as the layer for "how agents are started, displayed, configured, controlled"</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Five model-access paths (unique in this track)</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Path</th><th>Fits</th><th>Source of truth</th></tr></thead><tbody><tr><td><strong>Zed-Hosted Models</strong></td><td>letting Zed bill on your behalf</td><td>Account &amp; Billing</td></tr><tr><td><strong>API Access</strong></td><td>already have provider quota</td><td>includes Anthropic-compatible / OpenAI-compatible</td></tr><tr><td><strong>Existing Subscription</strong></td><td><strong>already paying for ChatGPT / Claude / Copilot</strong></td><td>reuse the subscription</td></tr><tr><td><strong>Gateway</strong></td><td>routing via OpenRouter / Bedrock / Vercel</td><td>gateway config</td></tr><tr><td><strong>Local Model</strong></td><td><strong>running locally or self-hosted</strong></td><td>local config</td></tr></tbody></table></div>
+<p><strong>Paths 3 and 5 are the differentiators</strong>:</p>
+<ul><li>reusing an existing subscription = marginal cost can be 0</li><li>local models = data never leaves the machine</li></ul>
+<p><strong>Another distinction the official docs make explicit</strong>:</p>
+<p><strong>Official wording</strong>: "Model access paths do not configure External Agents or Terminal Threads." "External Agents and Terminal Threads usually own their own model access, auth, and configuration."</p>
+<p><strong>That is: Zed's model settings do not reach external agents.</strong> This is an easy point to misunderstand.</p>
+</div>
+<div class="panel is-slim">
+<h2>The exact scope of MCP support</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Status</th></tr></thead><tbody><tr><td><strong>Tools</strong></td><td>✅ supported</td></tr><tr><td><strong>Prompts</strong></td><td>✅ supported</td></tr><tr><td>Discovery / Sampling / Elicitation</td><td>❌ not yet covered (contributions welcome officially)</td></tr><tr><td><code>notifications/tools/list_changed</code></td><td>✅ handled — a server changing its tool list at runtime <strong>auto-reloads, no restart</strong></td></tr></tbody></table></div>
+<p><strong>Two integration paths</strong>:</p>
+<ol><li value="1">install as an <strong>extension</strong> (officially listed: Context7 / GitHub / Puppeteer / Gem / Brave Search / Figma / Resend etc.)</li><li value="2">add local or remote servers under <strong>Settings → AI → MCP Servers</strong></li></ol>
+<p><strong>MCP behaves differently across the three agent paths</strong>:</p>
+<div class="tbl-wrap"><table><thead><tr><th>agent path</th><th>MCP behavior</th></tr></thead><tbody><tr><td>Zed Agent</td><td>uses Zed-configured MCP servers directly</td></tr><tr><td>External Agents</td><td>Zed <strong>can forward configured servers via ACP</strong>; the agent can also read its own native MCP config</td></tr><tr><td>Terminal Threads</td><td><strong>the native CLI/TUI reads its own MCP config</strong></td></tr></tbody></table></div>
+</div>
+<div class="panel is-slim">
+<h2>Relationship with this site's other sections</h2>
+<p>Zed's External Agents directly involve multiple objects collected in this repository:</p>
+<div class="tbl-wrap"><table><thead><tr><th>agent path in Zed</th><th>corresponding entries in this repository</th></tr></thead><tbody><tr><td>External Agents list</td><td><a href="/en/coding/claude-code.html">Claude Code</a> · <a href="/en/coding/codex-ide.html">Codex IDE</a> · <a href="/en/coding/cline.html">Cline</a> · <a href="/en/coding/copilot.html">Copilot</a> · <a href="/en/coding/cursor.html">Cursor</a></td></tr><tr><td>Terminal Threads</td><td>CLI-form objects in this repository's <a href="/coding/index.html">agents section</a></td></tr><tr><td>MCP extensions</td><td><a href="/mcp/index.html">tools section</a></td></tr></tbody></table></div>
+<p><strong>This makes Zed a crossroads of this repository.</strong> It draws the boundary between the two forms of the agents section (IDE extension / terminal) and the tools section (MCP extensions) most clearly.</p>
+</div>
+<div class="panel is-slim">
+<h2>Collection limits (stated honestly)</h2>
+<p><strong>This pass read the official docs one by one from <code>docs/src/ai/</code> in the <code>zed-industries/zed</code> repository.</strong> All eight dimensions have been verified against official mechanics. Including the 5 model-access paths, tool permissions and the OS-level sandbox, auto-compaction, MCP, multi-root and remote development.</p>
+<p><strong>Still not verified</strong> (not given officially or needs measured runs):</p>
+<ul><li>the actual behavior of the three agent paths "after the client closes"</li></ul>
+<p>Zed Agent is known to bind to the client being online. External / Terminal depend on the attached agent's own configuration.</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/cline.html">Cline</a></span><span class="rel-n">also covers three forms, but the forms are Zed Agent / external / terminal rather than an editor extension</span></li>
+<li><span class="rel-t"><a href="/en/coding/claude-code.html">Claude Code (IDE extension)</a></span><span class="rel-n">can run as one of Zed's External Agents</span></li>
+<li><span class="rel-t"><a href="/en/coding/aider.html">Aider (Watch mode)</a></span><span class="rel-n">same "editor-external watch mode" line of thinking</span></li>
+<li><span class="rel-t"><a href="/en/mcp/filesystem.html">Filesystem MCP Server</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/copilot.html">GitHub Copilot</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A coding tool integrated with the GitHub ecosystem — website, CLI and ma</td></tr><tr><td><a href="/en/coding/warp.html">Warp</a></td><td>Cloud / API</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">An open-source Agentic Development Environment — the vendor's own wordin</td></tr><tr><td><a href="/en/coding/devin-bots.html">Devin Bots</a></td><td>Cloud / API</td><td>Commercial terms</td><td>Some questions open<br/><span class="td-vendor">Active</span></td><td class="td-fit">Devin Bots turns task assignment into goal ownership: each Bot is a pers</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

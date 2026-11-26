@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Fetch MCP Server | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/mcp/fetch.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/mcp/fetch.html" property="og:url"/>
+<meta content="Fetch MCP Server | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Fetch MCP Server | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/mcp/fetch.html","sameAs":"https://github.com/modelcontextprotocol/servers/tree/main/src/fetch","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Fetch MCP Server | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/mcp/fetch.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/fetch.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/fetch.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/mcp/fetch.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">MCP</span>
+</nav>
+<a class="back" href="/en/mcp/">← MCP</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#FF6B6B"'>FE</div>
+<div>
+<h1>Fetch MCP Server</h1>
+<div class="vendor is-caps">Model Context Protocol</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a> · <a href="#dimension-transport">Transport</a> · <a href="#dimension-auth">Authentication</a> · <a href="#dimension-scope">Permission scope</a></p></nav>
+<div class="badges">
+<span class="tag on">Retrieval</span>
+<span class="tag on">Network</span>
+<span class="tag on">Read-only</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>A reference server that converts web pages to Markdown, with an explicit security…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Not checked · MCP server</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Whether Streamable HTTP is supported (not declared in the repo)</li>
+<li>Whether there are timeout and retry policies</li>
+<li>Truncation behaviour on very large pages</li>
+<li>Authentication configuration in the container form</li>
+</ul>
+</div>
+<div class="panel-lead"><p>A reference server that converts web pages to Markdown, <strong>with an explicit security warning in its official README: it can reach local and internal IPs</strong>.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Scenarios needing to pull a web page's content as Markdown for an agent to read.</p></div>
+<div class="warn-p"><p><strong>Not a fit for</strong> anything where reaching local or internal network addresses matters — <strong>the official README carries an explicit security warning on exactly this point.</strong></p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-20</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　Hosted on GitHub — direct reachability from mainland fluctuates (200/000 mixed on the same day); npm / PyPI install routes measured stable.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">11 questions, one table</h2>
+<p class="t-section-lead">11 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p>It calls no model itself; it is an interface implementation called by clients. Its core is converting web-page HTML into Markdown for LLM consumption.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p>A local <strong>Python</strong> process communicating over stdio. It depends on the Python MCP SDK 1.x (requires mcp<strong>=1.29.0,</strong>2); SDK 2.0 renamed the APIs this server uses.</p>
+<p>A 2026-08-30 fix addressed security and compatibility issues of container bind mounts under Docker / Podman / SELinux.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>No file read/write tools.</strong> The core capability is web fetching; local files are not involved.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p>Not supported. A single fetch is a synchronous operation, ending with the client process.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p>It provides the fetch tool to retrieve web content and convert it to Markdown. Output is converted text; <strong>its degree of structure depends on the target page itself</strong>.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p>Stateless. Each call is independent; no fetch history is kept.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>The official docs warn explicitly about the security risk</strong>: the README states this server <strong>can access local/internal IP addresses and may represent a security risk</strong>. Use with caution and make sure no sensitive data is exposed. There is no separate approval mechanism, and the target-address range cannot be restricted.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Converts public web content to Markdown for an Agent to read. <strong>Not a fit for environments with intranet access</strong>, nor for pages requiring login state.</p></dd>
+</div>
+<div class="axis" id="dimension-transport">
+<dt>Transport</dt>
+<dd><p>Supports stdio, <strong>and offers container deployment (Docker / Podman)</strong>. The 2026-08-30 fix addressed bind-mount security and compatibility (including SELinux).</p>
+<p>The official README (full-text verification 2026-10-08) gives only local-process integration: uvx / pip / Docker; there is no official launch method for a remote transport.</p></dd>
+</div>
+<div class="axis" id="dimension-auth">
+<dt>Authentication</dt>
+<dd><p>No separate authentication layer. In stdio form it inherits the client user's permissions. <strong>Authentication configuration for the container form is not stated in the repo.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-scope">
+<dt>Permission scope</dt>
+<dd><p><strong>The highest-risk class</strong>: no file scope (files are not involved), but <strong>the network range cannot be narrowed</strong> — the official warning says it can access local/internal IPs. No address allowlist, no approval mechanism. An assessment is mandatory before using it in production or in environments hosting intranet services.</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Enabling it directly where the intranet is reachable — the official docs warn it can reach local and internal IPs</li>
+<li>Assuming it fetches pages behind a login — it is a stateless fetch</li>
+<li>Assuming the output is clean Markdown — the structure varies with the target page</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-08。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>docs</td><td>MCP · Fetch Server (with the official security warning)</td><td><a href="https://github.com/modelcontextprotocol/servers/tree/main/src/fetch" rel="noopener" target="_blank">https://github.com/modelcontextprotocol/servers/tree/main/src/fetch</a></td></tr>
+<tr><td>changelog</td><td>MCP · Fetch directory change history</td><td><a href="https://github.com/modelcontextprotocol/servers/commits/main/src/fetch" rel="noopener" target="_blank">https://github.com/modelcontextprotocol/servers/commits/main/src/fetch</a></td></tr>
+<tr><td>changelog</td><td>MCP · Servers Releases</td><td><a href="https://github.com/modelcontextprotocol/servers/releases" rel="noopener" target="_blank">https://github.com/modelcontextprotocol/servers/releases</a></td></tr>
+<tr><td>repo</td><td>MCP · Servers repo README (production-use disclaimer)</td><td><a href="https://github.com/modelcontextprotocol/servers" rel="noopener" target="_blank">https://github.com/modelcontextprotocol/servers</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/mcp/_protocol.md" rel="noopener" target="_blank">protocols/mcp/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong>: measurement of this server <strong>should not be done in environments containing sensitive intranet services</strong>. Verify fetch success rate and output quality in an isolated container or test network.</p>
+</div>
+<div class="panel is-slim">
+<h2>⚠ The official security warning (original wording)</h2>
+<blockquote><strong>CAUTION</strong> This server can access local/internal IP addresses and may represent a security risk. Exercise caution when using this MCP server to ensure this does not expose any sensitive data.</blockquote>
+<p><strong>This is the clearest self-flagged risk by the official side in this entire section</strong>, and the site considers it the most valuable first-hand information — such warnings are rare; most comparable tools only write "be careful when using".</p>
+</div>
+<div class="panel is-slim">
+<h2>Why this risk deserves its own section</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Scenario</th><th>Risk</th></tr></thead><tbody><tr><td>Intranet has database admin panels (<code>10.x</code> / <code>192.168.x</code>)</td><td>The Agent may fetch intranet pages</td></tr><tr><td>Cloud metadata services (e.g. <code>169.254.169.254</code>)</td><td>Instance metadata and credentials may be obtained</td></tr><tr><td>A dev server runs on the local machine</td><td>Local service responses may be fetched</td></tr><tr><td>The Agent is lured into fetching a malicious URL</td><td>Intranet topology can be probed</td></tr></tbody></table></div>
+<p><strong>The key point</strong>: there is no address allowlist and no approval mechanism. Once enabled, the Agent has a channel for probing the intranet.</p>
+</div>
+<div class="panel is-slim">
+<h2>Change-log notes</h2>
+<p><strong>This object has no standalone changelog page</strong>; change records are in the directory's commit history:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Content</th></tr></thead><tbody><tr><td>2026-08-30</td><td>Fix container bind-mount security and compatibility (Docker / Podman / SELinux)</td></tr><tr><td>2026-08-18</td><td>Document the Python MCP 1.x version requirement</td></tr><tr><td>2026-08-18</td><td>Pin the dependency <code>mcp&gt;=1.29.0,&lt;2</code></td></tr><tr><td>2026-07-29</td><td>Batch uv dependency updates</td></tr></tbody></table></div>
+<p><strong>Two entries worth noting</strong>:</p>
+<ul><li><strong>The 08-18 version pin</strong>: SDK 2.0 renamed the APIs this server uses, and the official side pins it to 1.x. If your environment has SDK 2.x installed, this server may fail to start.</li></ul>
+<ul><li><strong>The 08-30 container fix</strong> is the same commit (#2205) as git / time, showing these three servers shared a containerization problem.</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Output-quality assessment</h2>
+<p><strong>Output structure depends on the target page itself</strong>; there is no unified schema:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Target page type</th><th>Output quality</th></tr></thead><tbody><tr><td>Documentation sites (regular structure)</td><td>good</td></tr><tr><td>Blog article bodies</td><td>medium</td></tr><tr><td>Single-page apps (content rendered by JS)</td><td><strong>poor</strong> — the body text cannot be fetched</td></tr><tr><td>Pages requiring login</td><td><strong>fails</strong></td></tr><tr><td>Pure images / PDFs</td><td>unusable</td></tr></tbody></table></div>
+<p><strong>This is not a defect of the server, but it defines the tool's applicability boundary.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>Deployment advice</h2>
+<p>If you really need it, consider it only under these conditions:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Condition</th><th>Explanation</th></tr></thead><tbody><tr><td>Isolated network environment</td><td>not on the same segment as intranet services</td></tr><tr><td>or containerized with egress restricted</td><td>allowlist outbound, only target domains permitted</td></tr><tr><td>and no intranet-access requirement is accepted</td><td>because it cannot be restricted</td></tr></tbody></table></div>
+<p><strong>Note</strong>: containerization alone does not solve this risk — inside a container the host network is still reachable unless network policies are configured.</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/mcp/sequential-thinking.html">Sequential Thinking MCP Server</a></span><span class="rel-n">The lowest permission-risk contrast</span></li>
+<li><span class="rel-t"><a href="/en/mcp/filesystem.html">Filesystem MCP Server</a></span><span class="rel-n">The file direction, with more conservative permission design</span></li>
+<li><span class="rel-t"><a href="/en/coding/grok-bot.html">xAI Grok Bot</a></span><span class="rel-n">Other layer · AI coding</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/mcp/context7.html">Context7</a></td><td>Not checked</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A remotely hosted documentation service — version-aware library document</td></tr><tr><td><a href="/en/mcp/shopify-mcp.html">Shopify Dev MCP Server</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Shopify official Dev MCP server (npm ISC, local stdio, no auth): gives y</td></tr><tr><td><a href="/en/mcp/1password-mcp.html">1Password Environments MCP Server</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">1Password official Environments MCP server (local stdio, rides the deskt</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from Model Context Protocol</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/mcp/everything.html"><span class="vp-cat">MCP tools</span>Everything MCP Server</a></li><li><a href="/en/mcp/filesystem.html"><span class="vp-cat">MCP tools</span>Filesystem MCP Server</a></li><li><a href="/en/mcp/git.html"><span class="vp-cat">MCP tools</span>Git MCP Server</a></li><li><a href="/en/mcp/memory.html"><span class="vp-cat">MCP tools</span>Knowledge Graph Memory Server</a></li><li><a href="/en/mcp/sequential-thinking.html"><span class="vp-cat">MCP tools</span>Sequential Thinking MCP Server</a></li><li><a href="/en/mcp/time.html"><span class="vp-cat">MCP tools</span>Time MCP Server</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

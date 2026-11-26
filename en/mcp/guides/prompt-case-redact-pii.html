@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Redact sensitive fields | Tools</title>
+<meta content="Output redacted text and a field log; do not guess unlisted fields." name="description"/>
+<link href="https://tools.specul.com/en/mcp/guides/prompt-case-redact-pii.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/mcp/guides/prompt-case-redact-pii.html" property="og:url"/>
+<meta content="Redact sensitive fields | Tools" property="og:title"/>
+<meta content="Output redacted text and a field log; do not guess unlisted fields." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Redact sensitive fields","description":"Output redacted text and a field log; do not guess unlisted fields.","dateModified":"2026-11-07"}</script>
+<meta content="Redact sensitive fields | Tools" name="twitter:title"/><meta content="Output redacted text and a field log; do not guess unlisted fields." name="twitter:description"/><link href="https://tools.specul.com/mcp/guides/prompt-case-redact-pii.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/guides/prompt-case-redact-pii.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/guides/prompt-case-redact-pii.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/mcp/guides/prompt-case-redact-pii.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<a class="back" href="/en/mcp/">← Guides</a>
+<div class="detail-head">
+<div>
+<h1>Redact sensitive fields</h1>
+<div class="vendor is-caps">Prompts &amp; workflows · Prompt case</div>
+</div>
+</div>
+<div class="panel-lead"><p>Output redacted text and a field log; do not guess unlisted fields.</p></div>
+<div class="panel is-slim">
+<p>Prompt effect has not been tested.</p>
+<p class="t-xs">A prompt is a re-runnable template, not a promise of results. Changing the model, version or input can change the outcome. Use the checkpoints on this page to verify it yourself, and treat the official sources as evidence of mechanism rather than a guarantee of effect.</p>
+</div>
+<nav aria-label="Article contents" class="panel is-slim"><p>On this page</p><ul><li><a href="#guide-section-0">Task and inputs</a></li><li><a href="#guide-section-1">The prompt</a></li><li><a href="#guide-section-2">Expected output shape</a></li><li><a href="#guide-section-3">Checkpoints</a></li><li><a href="#guide-section-4">Failure branches</a></li><li><a href="#guide-section-5">Sources and limits</a></li></ul></nav>
+<div class="panel is-slim" id="guide-section-0">
+<h2>Task and inputs</h2>
+<p>Output redacted text and a field log; do not guess unlisted fields. Inputs: Source text, sensitive-field list, and redaction format.</p>
+</div>
+<div class="panel is-slim" id="guide-section-1">
+<h2>The prompt</h2>
+<pre class="code"><code>Redact the source according to {fields}. Output redacted_text and redactions[] with field, location and replacement. Handle only listed fields; put suspected but unlisted fields in review[] without redacting them. replacement uses {format} and must not retain reversible original values.</code></pre>
+<p>Replace {field} placeholders with the current inputs before running.</p>
+</div>
+<div class="panel is-slim" id="guide-section-2">
+<h2>Expected output shape</h2>
+<p>redacted_text, redactions[], and review[].</p>
+</div>
+<div class="panel is-slim" id="guide-section-3">
+<h2>Checkpoints</h2>
+<ul><li>Listed fields are replaced irreversibly.</li><li>Review items are not handled without authorisation.</li><li>Locations link back to the source.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-4">
+<h2>Failure branches</h2>
+<ul><li>Missed redaction: extend the field list and rerun.</li><li>Over-redaction: move unlisted items back to review.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-5">
+<h2>Sources and limits</h2>
+<p>This site has not tested the effect of this prompt. See the sources for the mechanism; changing model, version or input can change the result.</p>
+</div>
+<nav aria-label="What to do next" class="panel is-slim">
+<h2>What to do next</h2><ul>
+<li><a href="/en/mcp/guides/toolkit-worksheets.html">Record constraints, acceptance and unknowns</a></li>
+<li><a href="https://learn.specul.com/en/guide/%E6%80%8E%E4%B9%88%E9%AA%8C%E8%AF%81%20AI%20%E7%9A%84%E8%BE%93%E5%87%BA/">Verify the result and its sources</a></li>
+<li><a href="/en/mcp/guides/failure-library.html#by-symptom">Troubleshoot by symptom</a></li>
+</ul></nav>
+<div class="panel is-slim">
+<h2>Sources</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Source</th><th>URL</th></tr></thead><tbody>
+<tr><td>OpenAI Cookbook: How to use guardrails (official repository raw, fetched 200 on 2026-11-07)</td><td><a href="https://raw.githubusercontent.com/openai/openai-cookbook/main/examples/How_to_use_guardrails.ipynb" rel="noopener" target="_blank">https://raw.githubusercontent.com/openai/openai-cookbook/main/examples/How_to_use_guardrails.ipynb</a></td></tr>
+</tbody></table></div>
+<p class="guide-foot">Source snapshot: 2026-11-07; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</p>
+</div>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

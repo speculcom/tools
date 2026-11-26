@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>CrewAI | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/framework/crewai.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/framework/crewai.html" property="og:url"/>
+<meta content="CrewAI | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"CrewAI | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/framework/crewai.html","sameAs":"https://crewai.com","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="CrewAI | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/framework/crewai.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/framework/crewai.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/framework/crewai.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/framework/crewai.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Frameworks</span>
+</nav>
+<a class="back" href="/en/framework/">← Frameworks</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#EB6658"'>CR</div>
+<div>
+<h1>CrewAI</h1>
+<div class="vendor is-caps">CrewAI Inc</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Python</span>
+<span class="tag on">Open source</span>
+<span class="tag on">MIT</span>
+<span class="tag on">Orchestration framework</span>
+<span class="tag on">Multi-agent</span>
+<span class="tag on">Crew</span>
+<span class="tag on">Flow</span>
+<span class="tag on">Event-driven</span>
+<span class="tag on">State management</span>
+<span class="tag on">MCP</span>
+<span class="tag on">A2A</span>
+<span class="tag on">Ollama</span>
+<span class="tag on">Local models</span>
+<span class="tag on">Role assignments</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>"Organises multi-agent collaboration through role division and business process" …</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · Framework / SDK</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Tool calling / structured output reliability after switching providers (not stated officially)</li>
+<li>Default permissions under container deployment (not stated officially; Files page and FileReadTool page checked)</li>
+<li>Whether OSS has an official network-access-control mechanism (not stated officially)</li>
+<li>The A2A (Agent-to-Agent) specification and ecosystem status (external protocol, outside this site's research scope)</li>
+<li>AMP Enterprise tier contents (officially labeled Custom only)</li>
+<li>Beyond negotiating with Enterprise, whether Basic's 50/month cap has a self-serve add-on path (the official comparison table shows "—" in that column)</li>
+<li>The practical usability threshold of MCP / A2A integration</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>CrewAI is a Python framework that orchestrates multi-agent work through two metaphors: role division and business process.</strong> The official description reads: "Framework for orchestrating <strong>role-playing</strong>, autonomous AI agents."</p>
+<p><strong>The word "role-playing" makes people underrate it.</strong> The same README also says production-grade, and promises plainly:</p>
+<blockquote>"Move from experiment to production <strong>without changing frameworks</strong>."</blockquote></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p><strong>Fits</strong>: tasks that can be expressed as "a team with defined roles" (Crews); business logic that stays in ordinary Python with explicit control over the execution path (Flows); running on local models (the official docs name Ollama and LM Studio); needing MCP and A2A; a Python stack.</p></div>
+<div class="warn-p"><p><strong>Not a fit</strong>: requiring process- or container-level sandboxing, or network access control — the official docs provide no such mechanism, guardrails only validate task output, and file tools are confined to <code>base_dir</code>; needing working memory and long-term memory managed separately — CrewAI has unified them into one <code>Memory</code> class, the opposite of LangGraph's split design; needing a genuinely vendor-hosted background — it is a pure library, so you deploy it to your own server or VPC.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　official site measured 200 direct.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>Its model-access path is the most concrete. Defaults to the OpenAI API, and local models are officially named via the Ollama tool.</strong></p>
+<p>The README writes in this order. Default OpenAI, plus several connection options, e.g. local models via the Ollama tool.</p>
+<p>"CrewAI supports using various LLMs through a variety of connection options. By default your agents will use the <strong>OpenAI API</strong> when querying the model. However, there are several other ways to allow your agents to connect to models. For example, you can configure your agents to use a <strong>local model via the Ollama tool</strong>."</p>
+<p>The FAQ adds one more: <strong>LM Studio</strong> can also be connected.</p>
+<p><strong>Official wording</strong>: "Tools like Ollama and LM Studio allow seamless integration"</p>
+<p><strong>This is especially valuable for this site's readers</strong>: among the three orchestration frameworks, for running local quantized models, only CrewAI names concrete tools at README-first-screen level.</p>
+<p><strong>The full provider list is verified</strong> (official <code>learn/llm-connections</code> page), in two classes:</p>
+<ul><li><strong>native SDK integration, 5 vendors</strong> — OpenAI, Anthropic, Google Gemini, Azure, AWS Bedrock</li><li><strong>the rest fall back to LiteLLM</strong>, installed via <code>uv add 'crewai[litellm]'</code>. The official page additionally names individually: Ollama, Mistral, Groq, Cohere, Hugging Face, Replicate, Together AI, Cloudflare Workers AI, DeepInfra, SambaNova, Nebius, NVIDIA NIMs.</li></ul>
+<p>This list ends with "And many more!", pointing to the LiteLLM Providers docs for the full list</p>
+<p>Also, <strong>the official page states the default model verbatim</strong>:</p>
+<p><strong>Official wording</strong>: "By default, CrewAI uses the <code>gpt-4o-mini</code> model."</p>
+<p>It is decided by <code>OPENAI_MODEL_NAME</code>; unset means gpt-4o-mini. Two ways to switch: pass a string identifier (<code>llm='claude-2'</code>), or use the <code>LLM</code> class with model / base_url / api_key. The local snippet is given in full officially:</p>
+<p><strong>Official example</strong>: <code>LLM(model="ollama/llama3.2", base_url="http://localhost:11434")</code></p>
+<p><strong>Unknown: tool calling / structured output reliability after switching providers, not stated officially.</strong> (<code>learn/llm-connections</code> and <code>concepts/llms</code> pages checked; no cross-provider reliability comparison.)</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>It is a pure library; the official line is "from prototype to production without changing frameworks."</strong></p>
+<p>Install is a pip package (README Getting Started uses pip install + the crewai CLI); there is no hosted service.</p>
+<p>"Move from experiment to production <strong>without changing frameworks</strong>."</p>
+<p><strong>State persistence is positioned officially as "add as your system grows"</strong>; both README quotes carry that qualifier:</p>
+<p>"Add tools, memory, <strong>checkpointing</strong>, and async execution <strong>as your system grows</strong>"</p>
+<p>"Add deterministic steps, human input, structured outputs, and <strong>checkpointing as your system grows</strong>"</p>
+<p>That is README positioning language.</p>
+<p><strong>The mechanism itself is documented in detail officially</strong>. See the official <code>concepts/checkpointing</code> page:</p>
+<ul><li><strong>granularity</strong>: event-driven, default <code>on_events=["task_completed"]</code>, i.e. <strong>one checkpoint per completed task</strong>; <code>CheckpointConfig</code> can change frequency and caps</li></ul>
+<ul><li><strong>two storage backends</strong>: <code>JsonProvider</code> (one file per checkpoint, default, under <code>./.checkpoints/</code>), <code>SqliteProvider</code> (a single SQLite database, WAL enabled, suited to high frequency)</li></ul>
+<ul><li><strong>switches</strong>: <code>Crew</code> / <code>Flow</code> / <code>Agent</code> all accept <code>checkpoint</code>; children inherit parents by default, and can pass <code>False</code> to opt out</li></ul>
+<p>The granularity is "each completed task / method" — exactly the checkpoint granularity this site looks for.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>The framework itself ships no filesystem capability; file read/write comes from tools — but the tools' default boundary is clear.</strong></p>
+<p><strong>The default boundary is verified</strong> (official FileReadTool page). Paths passed in at runtime <strong>must fall inside <code>base_dir</code></strong>. <code>base_dir</code> defaults to the current working directory. <code>..</code> and symlinks are resolved before validation,</p>
+<p>so they cannot be used to escape</p>
+<p>Two exceptions:</p>
+<ul><li>a <code>file_path</code> hardcoded in the constructor is a developer declaration and <strong>may bypass that limit</strong>, but only that one file is allowed</li><li>opening a wider range requires an explicit <code>base_dir='/data'</code></li></ul>
+<p>Two environment variables manage the escape hatch and the lockdown:</p>
+<ul><li>escape hatch <code>CREWAI_TOOLS_ALLOW_UNSAFE_PATHS=true</code> — process-level.</li></ul>
+<p>The official docs say it also turns off SSRF protection for all crewai-tools; not recommended</p>
+<ul><li>managed worker apps lock it down with <code>CREWAI_TOOLS_FORCE_SAFE_PATHS=true</code></li></ul>
+<p>There is also a set of <strong>multimodal file inputs</strong> (<code>crewai[file-processing]</code> extra, <code>Files</code> page, <strong>early access</strong>). Images / PDFs / audio / video / text can be passed.</p>
+<p><strong>Unknown: default permissions under container deployment, not stated officially.</strong> (Files page and FileReadTool page checked.)</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>It does not host a background.</strong> The library provides no vendor-managed execution environment — for "keeps running after the computer shuts down", you must run the process on your own servers / VPC. The AMP commercial side separately offers Cron scheduling.</p>
+<p><strong>Flow's state management is explicit official wording.</strong> The README describes Flow as "event-driven workflows with <strong>state, branching, routing</strong>", and the FAQ says Flow suits "detailed execution paths and <strong>secure state management</strong>".</p>
+<p><strong>State is explicit and structured</strong> (example code in the README's "Using Crews and Flows Together" section).</p>
+<p><code>class MarketState(BaseModel)</code>, with Flow[MarketState] reading and writing <code>self.state.sentiment</code> and similar fields directly, branching on numeric thresholds of <code>self.state.confidence</code>.</p>
+<p><strong>This is the "state" this site looks for</strong>: explicit, structured, branchable.</p>
+<p><strong>Persistence and cross-process recovery verified</strong> (official <code>concepts/checkpointing</code>, <code>concepts/flows</code> pages):</p>
+<ul><li><strong>Flow's <code>@persist</code> decorator</strong>: officially "automatically persists all flow method states", default backend <code>SQLiteFlowPersistence</code></li></ul>
+<ul><li><strong>resume</strong>: <code>kickoff(inputs={"id": &lt;uuid&gt;})</code> — same <code>flow_uuid</code> continues the history</li><li><strong>fork</strong>: <code>kickoff(restore_from_state_id=&lt;uuid&gt;)</code> — new <code>state.id</code>, original history untouched</li><li><strong>checkpoint restore</strong>: crew / flow / agent checkpoints can be restored from <code>./.checkpoints/</code>; the <code>crewai checkpoint</code> CLI provides resume / fork</li></ul></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>The official docs explicitly list MCP and A2A — one of its strengths.</strong></p>
+<p>"Use tools, <strong>memory, knowledge, checkpointing</strong>, async execution, and <strong>MCP/A2A support</strong> for more capable production agents."</p>
+<p><strong>MCP is a core dependency, not an optional extra.</strong> The official <code>lib/crewai/pyproject.toml</code> <code>[project] dependencies</code> pins <code>mcp~=1.28.1</code> directly.</p>
+<p><strong>A2A is the optional extra</strong>: <code>a2a = ["a2a-sdk~=0.3.10", ...]</code>. This matches the OpenAI Agents SDK putting <code>mcp&gt;=1.19.0</code> in <code>dependencies</code> — a core capability.</p>
+<p>The MCP integration surface:</p>
+<ul><li><strong>three transports</strong>: stdio / SSE / Streamable HTTP (one page each)</li><li><strong>DSL field</strong> <code>mcps=</code>; multi-server aggregation via <code>MCPServerAdapter</code></li><li>there is also an MCP security dedicated page</li><li><strong>built-in tools</strong> are <code>crewai-tools</code> (officially a 75+ OSS catalog, install <code>crewai[tools]</code>)</li></ul>
+<p>Additionally, CrewAI hosts its own documentation MCP server (<code>docs.crewai.com/mcp</code>), queryable by AI coding assistants for its API details (the <code>ask-docs</code> mentioned in the README's "Build with AI" section).</p>
+<p><strong>The A2A (Agent-to-Agent) specification and ecosystem remain an external protocol</strong>: this site only records <strong>"the official docs have an <code>a2a</code> extra and a batch of A2A events"</strong>; the protocol spec is outside this site's research scope.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>It provides a unified memory system plus separate knowledge. The mechanism is verified.</strong></p>
+<p>Two memory-related statements in the README:</p>
+<ul><li>Key Features' "memory, <strong>knowledge</strong>, checkpointing"</li><li>the agent-config checklist in the "Build with AI" section: "Configuring agents — role, goal, backstory, tools, LLMs, <strong>memory</strong>, guardrails"</li></ul>
+<p><strong>The mechanism is verified, and it overturns the old judgment</strong> (official <code>concepts/memory</code> page). The official docs now have a <strong>unified <code>Memory</code> class</strong>.</p>
+<p><strong>Official wording</strong>: "a single <code>Memory</code> class that replaces separate short-term, long-term, entity, and external memory types with one intelligent API"</p>
+<p>That is, <strong>the old entry's "official docs do not distinguish working / long-term memory" is outdated</strong>.</p>
+<p>The concrete mechanism:</p>
+<ul><li><strong>scopes</strong>: a hierarchical scope tree (filesystem-like, e.g. <code>/agent/researcher</code>). Crew-level is shared by default. Agents can take a private subtree via <code>memory.scope("/agent/x")</code>. <code>slice()</code> provides cross-branch read-only / read-write views.</li></ul>
+<ul><li><strong>storage backend</strong>: a vector store under the platform directory, ChromaDB by default, path changeable via <code>CREWAI_STORAGE_DIR</code>.</li></ul>
+<p>The knowledge store officially "uses the same storage system as memory"</p>
+<ul><li><strong>pruning is not simple truncation</strong>: retrieval uses a composite <code>semantic + recency + importance</code> score. Writes go through LLM extraction of atomic facts + consolidation/dedup (when similarity crosses the threshold, the LLM decides keep / update / delete)</li></ul>
+<ul><li><strong>knowledge vs memory</strong>: knowledge is a RAG fact base (separate collection, agent/crew two levels). Memory is the unified cross-task record store. The two share vector storage but serve different purposes.</li></ul></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>Guardrails are "task output validation", not a permission boundary — this differs from the old judgment.</strong></p>
+<p>Official <code>concepts/tasks</code> page "Task Guardrails" wording:</p>
+<p><strong>Official wording</strong>: "validate and transform task outputs before they are passed to the next task"</p>
+<p>Two implementation styles:</p>
+<ul><li><strong>functional</strong> — pass a <code>guardrail=</code> callback returning <code>(bool, result)</code>, deterministic validation</li><li><strong>LLM-style</strong> — pass a string description; an <code>LLMGuardrail</code> is auto-built, judged by the task's agent's LLM</li><li><strong>related fields</strong> — <code>guardrail</code> / <code>guardrails</code> / <code>guardrail_max_retries</code> (<strong>default 3</strong>)</li></ul>
+<p><strong>Key judgment: it only gates outputs</strong> (task products), <strong>not</strong> two-way validation, and it <strong>does not change state</strong>:</p>
+<ul><li><strong>not</strong> the OpenAI Agents SDK style of input + output two-way validation</li><li><strong>not</strong> ADK's Tool Confirmation pre-execution check</li><li><strong>not</strong> LangGraph's interrupts changing state</li></ul>
+<p>So in the comparison table CrewAI should read "validates task outputs, retries on failure".</p>
+<p><strong>Sandbox: OSS has no process / container-level sandbox.</strong> The boundary comes from the tools themselves — file tools restrict paths to <code>base_dir</code> by default. Default is cwd, see the local_files axis. MCP security is officially stated as a matter of "trust", with no built-in protection.</p>
+<p><strong>Unknown: network access control has no official mechanism</strong> (tasks page and <code>mcp/security</code> page checked). RBAC / SSO / PII redaction belong to the AMP commercial side; the open-source version does not have them.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p><strong>Fits three scenarios.</strong></p>
+<ul><li>tasks expressible as "a team with role division" (Crews)</li><li>needing business logic to stay in plain Python with explicit control of execution paths (Flows)</li><li>wanting to run on local models (officially naming Ollama / LM Studio); needing MCP and A2A integration; Python stacks</li></ul>
+<p><strong>Does not fit three scenarios.</strong> All on the same negative list:</p>
+<ul><li>needing process / container-level sandboxing or network access control — no official mechanism; guardrails only validate task outputs, file tools only limit <code>base_dir</code></li></ul>
+<ul><li>needing "working memory" and "cross-session long-term memory" managed separately — CrewAI has unified them into one Memory class, no longer typed, the opposite of LangGraph's typed route</li></ul>
+<ul><li>needing a vendor-hosted true background — pure library; deploy it yourself to your own servers / VPC</li></ul></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>MIT</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Assuming it is a role-play toy — the official positioning is production-grade, and the README states "Move from experiment to production without changing frameworks"</li>
+<li>Taking Crew Control Plane's capabilities as built into the open version — tracing, centralised control, enterprise security, 24×7 support and local/cloud deployment are CrewAI AMP selling points</li>
+<li>Treating guardrails as a permission boundary — the official docs state they validate task output only, never input, and there is no sandbox</li>
+<li>Assuming memory and knowledge are two separate memory systems — knowledge is a RAG fact store, memory is the unified record store</li>
+<li>Assuming checkpointing is a later concern — the official docs already ship Json and Sqlite backends plus a resume CLI, so it can be enabled on demand</li>
+<li>Assuming a Flow gives you vendor-hosted background execution — Flow provides state management; the process still runs on your own machine</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-08。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>crewAIInc/crewAI · repository (60,002★, MIT, rolling check 2026-10-23)</td><td><a href="https://github.com/crewAIInc/crewAI" rel="noopener" target="_blank">https://github.com/crewAIInc/crewAI</a></td></tr>
+<tr><td>docs</td><td>Main README (Crews/Flows dual abstraction, seven Key Features, Crew Control Plane commercial section, model access, FAQ)</td><td><a href="https://github.com/crewAIInc/crewAI/blob/main/README.md" rel="noopener" target="_blank">https://github.com/crewAIInc/crewAI/blob/main/README.md</a></td></tr>
+<tr><td>docs</td><td>Official docs · Connect CrewAI to LLMs (full provider list; 5 native + LiteLLM fallback; default gpt-4o-mini)</td><td><a href="https://docs.crewai.com/en/learn/llm-connections" rel="noopener" target="_blank">https://docs.crewai.com/en/learn/llm-connections</a></td></tr>
+<tr><td>docs</td><td>Official docs · Checkpointing (event-driven, default per-task-completion checkpoints, Json/Sqlite backends, resume/fork, CLI)</td><td><a href="https://docs.crewai.com/en/concepts/checkpointing" rel="noopener" target="_blank">https://docs.crewai.com/en/concepts/checkpointing</a></td></tr>
+<tr><td>docs</td><td>Official docs · Flows (state management, @persist, SQLiteFlowPersistence, resume/fork semantics)</td><td><a href="https://docs.crewai.com/en/concepts/flows" rel="noopener" target="_blank">https://docs.crewai.com/en/concepts/flows</a></td></tr>
+<tr><td>docs</td><td>Official docs · Memory (unified Memory class, scope/slice, composite scoring, consolidation)</td><td><a href="https://docs.crewai.com/en/concepts/memory" rel="noopener" target="_blank">https://docs.crewai.com/en/concepts/memory</a></td></tr>
+<tr><td>docs</td><td>Official docs · Tasks (Task Guardrails: functional/LLM-style, validates task outputs only, default 3 retries)</td><td><a href="https://docs.crewai.com/en/concepts/tasks" rel="noopener" target="_blank">https://docs.crewai.com/en/concepts/tasks</a></td></tr>
+<tr><td>docs</td><td>Official docs · Knowledge (storage same system as memory, ChromaDB default, separate collection)</td><td><a href="https://docs.crewai.com/en/concepts/knowledge" rel="noopener" target="_blank">https://docs.crewai.com/en/concepts/knowledge</a></td></tr>
+<tr><td>docs</td><td>Official docs · MCP security (trust model, no built-in protection, risk list)</td><td><a href="https://docs.crewai.com/en/mcp/security" rel="noopener" target="_blank">https://docs.crewai.com/en/mcp/security</a></td></tr>
+<tr><td>docs</td><td>Official docs · FileReadTool (base_dir path sandbox, cwd default, escape-hatch env var)</td><td><a href="https://docs.crewai.com/en/tools/file-document/filereadtool" rel="noopener" target="_blank">https://docs.crewai.com/en/tools/file-document/filereadtool</a></td></tr>
+<tr><td>docs</td><td>Official docs · Agent Capabilities (five capability classes: Tools/MCPs/Apps/Skills/Knowledge)</td><td><a href="https://docs.crewai.com/en/concepts/agent-capabilities" rel="noopener" target="_blank">https://docs.crewai.com/en/concepts/agent-capabilities</a></td></tr>
+<tr><td>repo</td><td>lib/crewai/pyproject.toml (core dependencies include mcp~=1.28.1; a2a an optional extra)</td><td><a href="https://github.com/crewAIInc/crewAI/blob/main/lib/crewai/pyproject.toml" rel="noopener" target="_blank">https://github.com/crewAIInc/crewAI/blob/main/lib/crewai/pyproject.toml</a></td></tr>
+<tr><td>docs</td><td>CrewAI AMP (commercial control plane; page not captured in the 2026-10-08 pass)</td><td><a href="https://crewai.com" rel="noopener" target="_blank">https://crewai.com</a></td></tr>
+<tr><td>pricing</td><td>CrewAI official pricing page (verified 2026-10-01: <strong>only Basic and Enterprise two tiers</strong>, Basic 50/month hard cap with add-on column "—", Enterprise deployable on customer's own VPC/infrastructure, 45-day onboarding, SSO/RBAC/PII redaction etc. Enterprise-only items; the six tiers on third-party sites do not exist)</td><td><a href="https://crewai.com/pricing" rel="noopener" target="_blank">https://crewai.com/pricing</a></td></tr>
+<tr><td>changelog</td><td>Releases (1.15.23 @ 2026-09-28)</td><td><a href="https://github.com/crewAIInc/crewAI/releases" rel="noopener" target="_blank">https://github.com/crewAIInc/crewAI/releases</a></td></tr>
+<tr><td>repo</td><td>crewAI-examples · official example collection</td><td><a href="https://github.com/crewAIInc/crewAI-examples" rel="noopener" target="_blank">https://github.com/crewAIInc/crewAI-examples</a></td></tr>
+<tr><td>docs</td><td>CrewAI documentation MCP server (mentioned in the README's "Build with AI" section)</td><td><a href="https://docs.crewai.com/mcp" rel="noopener" target="_blank">https://docs.crewai.com/mcp</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs.</p>
+<p>The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" rel="noopener" target="_blank">protocols/framework/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong> (tailored to the orchestration-framework + role-abstraction dimensions):</p>
+<div class="tbl-wrap"><table><thead><tr><th>#</th><th>What to test</th><th>Why it is worth testing</th></tr></thead><tbody><tr><td>1</td><td>Implementing the same requirement with Crew vs Flow — how much code volume and readability differ</td><td>verifies whether the dual abstraction really has distinct uses</td></tr><tr><td>2</td><td>Attach a local quantized model via Ollama and run a full Crew</td><td>officially named as supported; real feasibility deserves verification</td></tr><tr><td>3</td><td><strong>Guardrails in practice</strong>: LLM-style misjudgment rate, whether 3 retries suffice</td><td>mechanism known (output validation); misjudgment rate needs measurement</td></tr><tr><td>4</td><td>Checkpointing in practice: does resume after interruption really skip completed tasks</td><td>the official docs describe the mechanism; real behavior needs verifying</td></tr><tr><td>5</td><td>Overhead of passing information between Crew members (the token cost of role-playing)</td><td>role collaboration usually eats tokens; needs measuring</td></tr><tr><td>6</td><td>Real success rate of Flow state cross-process recovery after a crash</td><td>compare against LangGraph's superstep persistence</td></tr></tbody></table></div>
+</div>
+<div class="panel is-slim">
+<h2>The dual abstraction is its most useful contrast axis</h2>
+<p>The first two Key Features in the README are exactly this contrast:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Official sentence</th><th>Abstraction</th><th>Fits</th></tr></thead><tbody><tr><td><strong>Crews for autonomy</strong>: Model teams of specialized AI agents with <strong>roles, goals, tools, and tasks</strong></td><td>roles/goals/tasks</td><td>collaboration needing flexible decision-making</td></tr><tr><td><strong>Flows for control</strong>: Build event-driven workflows with <strong>state, branching, routing</strong></td><td>events/state/branching/routing</td><td>needing precise control of execution paths</td></tr></tbody></table></div>
+<p>The FAQ states the division of labor even more plainly:</p>
+<blockquote>Crews provide <strong>autonomous agent collaboration</strong>, ideal for tasks requiring flexible decision-making and dynamic interaction. Flows offer <strong>precise, event-driven control</strong>, ideal for managing detailed execution paths and <strong>secure state management</strong>. You can seamlessly combine both.</blockquote>
+<p><strong>This passage is the single most useful sentence in this site's orchestration family</strong> — "flexible use Crew, precise use Flow, mix freely" helps people decide better than any "what framework is it" answer.</p>
+</div>
+<div class="panel is-slim">
+<h2>State: Flow's state management is explicit and structured</h2>
+<p>The README example code (the <code>Using Crews and Flows Together</code> section) makes state a Pydantic model:</p>
+<pre class="code"><code>class MarketState(BaseModel):
+    ...
+
+class AdvancedAnalysisFlow(Flow[MarketState]):
+    def run(self):
+        self.state.sentiment = "analyzing"
+        if self.state.confidence &gt; 0.8:
+            ...
+        elif self.state.confidence &gt; 0.5:
+            ...</code></pre>
+<p><strong>This is the "state" this site looks for</strong> — explicit, structured, branchable on numeric thresholds.</p>
+<p><strong>Persistence and cross-process recovery verified on 2026-10-08</strong> (official <code>concepts/checkpointing</code>, <code>concepts/flows</code> pages). The README writes checkpointing as <strong>add-on as needed</strong>. Both quotes carry the qualifier:</p>
+<ul><li>"Add tools, memory, <strong>checkpointing</strong>, and async execution <strong>as your system grows</strong>"</li><li>"Add deterministic steps, human input, structured outputs, and <strong>checkpointing as your system grows</strong>"</li></ul>
+<p>That is README positioning language; <strong>the mechanism itself is documented in detail officially</strong>:</p>
+<ul><li><strong>checkpoint granularity</strong>: event-driven, default <code>on_events=["task_completed"]</code>, i.e. <strong>one checkpoint per completed task</strong>.</li><li><strong>persistence backends</strong>: <code>JsonProvider</code> (one file per checkpoint, default) or <code>SqliteProvider</code> (single DB, WAL enabled).</li><li><strong>cross-process recovery</strong>: restorable from <code>./.checkpoints/</code> or the SQLite DB; Flow additionally has <code>@persist</code> (default <code>SQLiteFlowPersistence</code>), <code>kickoff(inputs={"id": ...})</code> resumes, <code>restore_from_state_id=</code> forks.</li></ul>
+<ul><li><strong>CLI</strong>: <code>crewai checkpoint</code> provides a resume / fork TUI.</li></ul>
+<p><strong>This forms the most worth-watching contrast pair in this site's orchestration family with <a href="/en/framework/langgraph.html">LangGraph</a></strong>:</p>
+<div class="tbl-wrap"><table><thead><tr><th></th><th>LangGraph</th><th>CrewAI</th></tr></thead><tbody><tr><td>state persistence</td><td>✅ <strong>persists at every superstep</strong> (official wording: save graph state at every superstep)</td><td>✅ persists per completed task (event-driven, default <code>task_completed</code>)</td></tr><tr><td>persistence granularity</td><td>superstep (one graph step)</td><td>task (or custom events, e.g. <code>method_execution_finished</code>)</td></tr><tr><td>persistence backends</td><td>separate subpackages (SQLite / Postgres)</td><td><code>JsonProvider</code> / <code>SqliteProvider</code>; Flow uses <code>SQLiteFlowPersistence</code></td></tr><tr><td>cross-process recovery</td><td>officially promises "resuming from exactly where they left off"</td><td>restore / fork from checkpoints, CLI can resume</td></tr></tbody></table></div>
+</div>
+<div class="panel is-slim">
+<h2>Model access: the one of the three whose README names a local-model tool on the first screen orchestration frameworks</h2>
+<p><strong>Defaults to the OpenAI API; local models go through the Ollama tool.</strong> README "Connecting Your Crew to a Model" wording:</p>
+<blockquote>By default your agents will use the <strong>OpenAI API</strong> when querying the model. However, there are several other ways... For example, you can configure your agents to use a <strong>local model via the Ollama tool</strong>.</blockquote>
+<p>The FAQ adds that <strong>LM Studio</strong> can also be connected.</p>
+<p><strong>This point has practical value for this site's readers</strong>: to run an orchestration framework on local quantized models, CrewAI is the only one of the three orchestration objects naming concrete tools at README-first-screen level.</p>
+<p><strong>The full provider list verified on 2026-10-08</strong> (official <code>learn/llm-connections</code> page):</p>
+<ul><li><strong>native SDK integration, 5 vendors</strong> — OpenAI, Anthropic, Google Gemini, Azure, AWS Bedrock</li><li><strong>the rest fall back to LiteLLM</strong> (<code>uv add 'crewai[litellm]'</code>). The official page additionally names individually: Ollama, Mistral, Groq, Cohere, Hugging Face, Replicate, Together AI, Cloudflare, DeepInfra, SambaNova, Nebius, NVIDIA NIMs, ending with "And many more!" pointing to the full list</li></ul>
+<p><strong>Default model</strong>: page wording "By default, CrewAI uses the <code>gpt-4o-mini</code> model." (decided by <code>OPENAI_MODEL_NAME</code>). Switching: a string identifier or the <code>LLM</code> class.</p>
+<p><strong>Unknown: tool calling / structured output reliability after switching providers, not stated officially.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>Tools: both MCP and A2A are written in</h2>
+<p>One Key Features sentence verbatim:</p>
+<blockquote>Use tools, <strong>memory, knowledge, checkpointing</strong>, async execution, and <strong>MCP/A2A support</strong> for more capable production agents.</blockquote>
+<p><strong>MCP is a core dependency</strong>: the official <code>lib/crewai/pyproject.toml</code> <code>[project] dependencies</code> pins <code>mcp~=1.28.1</code>. <strong>A2A is the optional extra</strong> (<code>a2a = ["a2a-sdk~=0.3.10", ...]</code>). This matches the OpenAI Agents SDK putting <code>mcp&gt;=1.19.0</code> in <code>dependencies</code> — a core capability.</p>
+<p>The MCP integration surface:</p>
+<ul><li>three transports: <strong>stdio / SSE / Streamable HTTP</strong> (one page each)</li><li>DSL field <code>mcps=</code>, multi-server aggregation <code>MCPServerAdapter</code></li><li>an MCP security dedicated page</li><li>built-in tools <code>crewai-tools</code> (officially a 75+ OSS catalog, install <code>crewai[tools]</code>)</li></ul>
+<p><strong>The A2A (Agent-to-Agent) specification and ecosystem remain an external protocol</strong>; this site only records <strong>"the official docs have an <code>a2a</code> extra and a batch of A2A events"</strong>; the protocol spec is outside this site's research scope.</p>
+<p>There is also an interesting detail: CrewAI hosts its own documentation MCP server (<code>docs.crewai.com/mcp</code>). The README's "Build with AI" section mentions an <code>ask-docs</code> config: <strong>"query CrewAI's live documentation MCP server for the latest API details"</strong> (translated) <strong>It feeds AI coding assistants with its own MCP server. This is a real dogfooding case of MCP.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>The permissions dimension: guardrails is "task output validation", not a permission boundary</h2>
+<p>The 2026-10-08 check verified this dimension, <strong>and the conclusion differs from the old judgment</strong>. The official <code>concepts/tasks</code> page "Task Guardrails" wording:</p>
+<blockquote>validate and transform task outputs before they are passed to the next task</blockquote>
+<p>Two implementation styles: <strong>functional</strong> (pass a <code>guardrail=</code> callback returning <code>(bool, result)</code>) and <strong>LLM-style</strong> (pass a string description; an <code>LLMGuardrail</code> is auto-built, judged by the task's agent's LLM); fields <code>guardrail</code> / <code>guardrails</code> / <code>guardrail_max_retries</code> (<strong>default 3</strong>). Against other objects on this site:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Object</th><th>Mechanism</th><th>Layer</th></tr></thead><tbody><tr><td>OpenAI Agents SDK</td><td>guardrails (input + output two-way validation)</td><td>validates <strong>content</strong></td></tr><tr><td>Google ADK</td><td>Tool Confirmation</td><td>gates <strong>execution</strong></td></tr><tr><td>LangGraph</td><td>interrupts</td><td>changes <strong>state</strong></td></tr><tr><td><strong>CrewAI</strong></td><td><strong>guardrails (validates task outputs only, retries on failure)</strong></td><td>validates <strong>products</strong></td></tr></tbody></table></div>
+<p><strong>It only gates outputs, not inputs</strong>; OSS also has <strong>no process / container-level sandbox</strong>. The boundary comes from the tools: file tools limit <code>base_dir</code> by default (default cwd), and MCP security is officially stated as a matter of "trust", with no built-in protection. <strong>Unknown: network access control has no official mechanism</strong>. Enterprise-grade permissions require AMP (RBAC / SSO / PII redaction).</p>
+</div>
+<div class="panel is-slim">
+<h2>Memory: a unified Memory system, mechanism verified (old judgment void)</h2>
+<p>The 2026-10-08 check verified the official <code>concepts/memory</code> page. <strong>The official docs have unified memory into a single <code>Memory</code> class</strong>.</p>
+<blockquote>a single <code>Memory</code> class that replaces separate short-term, long-term, entity, and external memory types with one intelligent API</blockquote>
+<p>That is, <strong>the old entry's "official docs do not distinguish working / long-term memory" is outdated</strong> — now it is "unified into one API", not "no typing". This is exactly opposite to <a href="/en/framework/langgraph.html">LangGraph</a>'s typed route.</p>
+<ul><li><strong>scopes</strong>: a hierarchical scope tree (<code>/agent/researcher</code> etc.), Crew-level shared by default, agents take private subtrees via <code>memory.scope()</code>. <code>slice()</code> provides cross-branch read-only or read-write views.</li></ul>
+<ul><li><strong>storage backend</strong>: a vector store under the platform directory (ChromaDB by default, changeable via <code>CREWAI_STORAGE_DIR</code>).</li><li><strong>not truncation-based</strong>: retrieval uses a composite <code>semantic + recency + importance</code> score; writes go through LLM extraction of atomic facts + consolidation/dedup (past the threshold the LLM decides keep/update/delete).</li></ul>
+<ul><li><strong>knowledge vs memory</strong>: knowledge is a RAG fact base (separate collection, agent/crew two levels), memory is the unified cross-task record store; they share vector storage but serve different purposes.</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>The commercial line: Crew Control Plane (AMP) must be kept distinct</h2>
+<p>The README has a standalone Crew Control Plane Key Features section; all seven items are commercial-product features:</p>
+<ul><li>Tracing &amp; Observability (live metrics, logs, traces)</li><li>Unified Control Plane (centralized management and scaling)</li><li>Seamless Integrations (enterprise system integration)</li><li><strong>Advanced Security</strong> (official wording: "Built-in robust security and compliance measures")</li><li>24/7 Support (dedicated enterprise support)</li><li><strong>On-premise and Cloud Deployment Options</strong> (CrewAI AMP's two deployment forms)</li></ul>
+<p><strong>Note the "Advanced Security" item</strong> — if one of your reasons for using CrewAI is permission boundaries, <strong>the open-source version does not have this item</strong>.</p>
+<h3 class="sub-h">AMP tiers: the official page has only two tiers, and that itself is a pitfall</h3>
+<p>Verified on the official pricing page 2026-10-01: <strong>only two tiers</strong> (quotes not stored per the price-recording policy; see the official page):</p>
+<div class="tbl-wrap"><table><thead><tr><th>Tier</th><th>Executions</th><th>Seats</th></tr></thead><tbody><tr><td><strong>Basic</strong> (free tier)</td><td><strong>50/month, the cap is 50</strong></td><td>1</td></tr><tr><td><strong>Enterprise</strong> (custom)</td><td>"Sized to workflow" + Flexible overage</td><td>unlimited</td></tr></tbody></table></div>
+<p><strong>Basic includes</strong>:</p>
+<ul><li>Visual editor + AI copilot, GitHub integration, <strong>Export as MCP server</strong>, Export as UI component</li><li>Guardrails, Human-in-the-loop input, Cron scheduling</li><li>Tracing, OpenTelemetry, LLM testing, AI agent training</li><li>Usage dashboard, Token count, auto-scaling, community support</li></ul>
+<p><strong>Unlocked only by Enterprise</strong>:</p>
+<ul><li>SSO (MS Entra / Okta), RBAC, workload identity, PII redaction, policies</li><li>enterprise connectors, dedicated VPC / NAT, dedicated support</li><li>Slack/Teams support, on-site support and training, deployment and onboarding, monthly development hours</li></ul>
+<p>Enterprise onboarding takes <strong>45 days</strong>; forward deployed engineering and training are <strong>purchased separately as needed</strong>.</p>
+<p><strong>Three conclusions that must be read out</strong>:</p>
+<p><strong>Conclusion one: Basic has no self-serve add-on path.</strong></p>
+<p>Basic's add-on column reads "—". In the official comparison table the Basic row reads <strong>"Maximum executions = 50", "Additional executions = —"</strong>. <strong>Beyond 50/month, the self-serve way out is basically only negotiating with Enterprise.</strong></p>
+<p><strong>Conclusion two: deployment form is genuinely delivered on the commercial side.</strong></p>
+<p>Enterprise explicitly supports deploying on CrewAI cloud. It also supports your own VPC / your own infrastructure. This also delivers the README's original line:</p>
+<blockquote>On-premise and Cloud Deployment Options</blockquote>
+<p><strong>The official page also contains no forced-online-authorization wording.</strong></p>
+<p><strong>Conclusion three: third-party quote sites are untrustworthy.</strong></p>
+<p>During verification, several third-party sources gave tiers and quotes that <strong>do not exist on the official pricing page at all</strong> (one source itself notes "that tier comes from a third-party aggregator, not on the official page"). <strong>This site collects only facts readable on official pages</strong> — per the price-recording policy, this site does not even store official quotes, only links to the official page.</p>
+</div>
+<div class="panel is-slim">
+<h2>Verification notes</h2>
+<p>Basis for <code>confidence: partial</code>:</p>
+<p><strong>Why still partial (after the 2026-10-08 check)</strong>: all eight dimensions have moved from "unverified" to conclusions, but three items are <strong>genuinely not written officially</strong> and can only be recorded as "not stated officially" — tool calling / structured output reliability after switching providers, default permissions under container deployment, whether OSS has an official network-access-control mechanism.</p>
+<p>Additionally the A2A spec is an external protocol, and AMP Enterprise is only labeled Custom officially. These are not "we failed to find it" — the official docs themselves do not give them, so it is not enough to raise to verified.</p>
+<p><strong>Official sources filled in during 2026-10-08 the 2026-10-08 check</strong>:</p>
+<ul><li><code>concepts/checkpointing</code> (persistence granularity / backends / recovery / fork)</li><li><code>concepts/flows</code> (<code>@persist</code> and <code>SQLiteFlowPersistence</code>)</li><li><code>learn/llm-connections</code> (provider list and default model <code>gpt-4o-mini</code>)</li><li><code>concepts/memory</code> (unified Memory, scope, storage and consolidation)</li><li><code>concepts/tasks</code> (Task Guardrails mechanism)</li><li><code>concepts/knowledge</code> (storage relationship with memory)</li><li><code>mcp/security</code> (MCP security has no built-in protection)</li><li>the <code>FileReadTool</code> page (<code>base_dir</code> path sandbox)</li><li><code>lib/crewai/pyproject.toml</code> (<code>mcp~=1.28.1</code> in core dependencies, <code>a2a</code> an optional extra)</li></ul>
+<p>Verified (existing): repository exists and star count (60,002 · rolling check 2026-10-23), license (MIT, via the license API), last push (2026-10-22, still active), latest version <strong>1.15.28</strong> (releases @ 2026-10-14), key README passages (dual abstraction, seven Key Features, model access, Crews/Flows FAQ, the MarketState structured-state example, Telemetry and License sections).</p>
+<p><strong>Added the 2026-10-08 check (2026-10-01)</strong>: CrewAI AMP tier structure. The official page has two tiers, already written into the body table. Enterprise deployment forms (customer's own VPC / own infrastructure). No forced-online-authorization wording.</p>
+<p><strong>Verification method</strong>: first tried rendered fetch of <code>crewai.com/pricing</code>, timed out, switched to WebFetch to take the official page body directly.</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/framework/google-adk.html">Google ADK（Agent Development Kit）</a></span><span class="rel-n"><strong>Orchestration-family contrast</strong>: both do graph/flow orchestration; ADK uses Workflow Runtime nodes and routing, CrewAI uses the Crew (role collaboration) + Flow (event-driven) dual abstraction. CrewAI additionally gives MCP/A2A support.</span></li>
+<li><span class="rel-t"><a href="/en/framework/langgraph.html">LangGraph</a></span><span class="rel-n"><strong>State-persistence route contrast</strong>: LangGraph persists at every superstep; CrewAI is event-driven, persisting per completed task by default, with Json/Sqlite backends, resumable/forkable. Both routes now have explicit official mechanisms.</span></li>
+<li><span class="rel-t"><a href="/en/framework/deepagents.html">Deep Agents</a></span><span class="rel-n">Both on the "quick start" side, but different abstractions: Deep Agents is a batteries-included harness; CrewAI is an orchestration framework with the Crew/Flow dual abstraction.</span></li>
+<li><span class="rel-t"><a href="/en/framework/openai-agents-sdk.html">OpenAI Agents SDK</a></span><span class="rel-n">The negative contrast: that one is single-agent primitives + input/output two-way guardrails; CrewAI's guardrail validates task outputs only (and has no sandbox).</span></li>
+<li><span class="rel-t"><a href="/en/mcp/filesystem.html">Filesystem MCP Server</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/framework/ag2.html">AG2</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">The community continuation of AutoGen after the original repo stalled. T</td></tr><tr><td><a href="/en/framework/hermes-agent.html">Hermes Agent</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A resident personal assistant with a learning loop — put plainly: a resi</td></tr><tr><td><a href="/en/framework/smolagents.html">smolagents</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A thin agent library from Hugging Face — it lets agents think in code. I</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

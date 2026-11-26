@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Augment Code | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/augment-code.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/augment-code.html" property="og:url"/>
+<meta content="Augment Code | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Augment Code | Tools","applicationCategory":"DeveloperApplication","sameAs":"https://www.augmentcode.com","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-11-21"}</script>
+<meta content="Augment Code | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/augment-code.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/augment-code.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/augment-code.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/augment-code.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#8b7cf8">AU</div>
+<div>
+<h1>Augment Code</h1>
+<div class="vendor is-caps">Augment Code</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Outside China</span>
+<span class="tag on">Enterprise</span>
+<span class="tag on">Cloud agent</span>
+<span class="tag on">CLI</span>
+<span class="tag on">IDE extension</span>
+<span class="tag on">MCP</span>
+<span class="tag on">In-house model routing</span>
+<span class="tag on">Acquisition transition</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-11-21</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Augment Code is the enterprise 'software factory' platform: Cosmos turns…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Cloud / API · Vendor cloud</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Brand and contract details after the Harness integration (the official announcement covers assets and team joining; specific migration follows the sales contract)</li>
+<li>Code storage region and retention policy of the hosted cloud sandbox (the Enterprise pricing page lists Data Residency options; specific regions and retention follow the contract)</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>Augment Code is an enterprise 'software factory' platform</strong>: Cosmos chains plan-implement-review-feedback into repeatable agent loops, Environments run on Augment-hosted cloud, your own infrastructure (self-hosted daemons) or your laptop, the Code Context Engine plugs into other agents via MCP, and the model menu is among the broadest (including the proprietary Prism router) — <strong>per the 2026-10-08 official notice, Cosmos, Auggie CLI and the Context Engine assets are joining Harness</strong>.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Fits: enterprise cross-SDLC agent pipelines, self-hosted environments running agents on your own infrastructure, a broad frontier-model menu with transparent token-based billing. Not a fit: looking for a personal free tier on-ramp (the mainline is enterprise delivery with token billing); needing fully stable product ownership (mid-transition into Harness).</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-11-21</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　Augment Code (US enterprise AI-coding company); since 2026-10 its Cosmos, Auggie CLI and Context Engine assets are joining Harness (also a US enterprise software company).</dd>
+<dt>Direct access</dt><dd>direct OK　augmentcode.com / docs.augmentcode.com measured 200 direct from mainland (2026-10-22).</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (searched 2026-10-22); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p>The official Available Models page lists the full roster: the Anthropic Claude family (Fable 5.1/5, Opus 5/4.8/4.7/4.6, Sonnet 5.5/5, Haiku 4.5), Google Gemini (3.8/3.7 Flash, 3.1 Pro), OpenAI GPT (6.1 Sol, 6 Astra, 5.6 Sol/Terra/Luna, 5.5), xAI Grok 4.6/4.5, Zhipu GLM 5.3 Flash/5.2 and Moonshot Kimi K3/K2.7 Code (hosted on Fireworks/Baseten), plus in-house Prism (a model ensemble combining Claude and GPT; the Prism option routes across curated model families). Billing is token-based (Token-Based Pricing page: three segments — LLM tokens + Cosmos compute + service fee).</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p>The main line is the Cosmos platform (official Introduction: five building blocks — Environments/Experts/Sessions/Capabilities/Triggers): it chains plan-implement-review-feedback into a repeatable Software Factory workflow (four official loops: Requirements→Ticket, Ticket→PR, PR→Merge, Signal→Ticket). Environments come in three flavors: Augment-hosted cloud sandbox, your own VM/physical machine (self-hosted daemon), or even your local laptop. There is also the Auggie CLI (terminal agent: repo implementation / code exploration / running tests / CI automation) and IDE extension surfaces for VS Code / JetBrains.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>IDE extensions and the Auggie CLI work on local codebases; Cosmos's Environments decide where the code lives — hosted cloud sandbox, self-hosted daemon (running on your own infrastructure, configured via daemon-config.json for workspace and isolation) or local. The self-hosted surface is an official first-class citizen (the official page explicitly says own virtual or physical infrastructure).</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p>Cosmos leads with long-horizon multi-step delivery: durable environments, scheduled automations, cross-repo cross-tool coordination (wording from the official llms.txt usage guide); Triggers wire events into the loop. The official narrative is an "always-on software delivery system" — running continuously from spec to verification.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p>The MCP surface has multiple official pages: Cosmos Experts connect MCP servers (MCP Registry), CLI/IDE-side MCP configuration, Context Engine MCP (plugging the context engine into any agent via MCP), MCP context hookup for Code Review; the official side also ships a Docs MCP server (Streamable HTTP) so external agents can query Augment docs.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p>The signature is the Code Context Engine: the official stance is a world-class context engine with structured cross-codebase understanding; it is exported as MCP for other agents to use (Context Engine MCP page). Wisdom-class context (PR history, business requirements) is expanded on the Software Factory loop pages.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p>Enterprise positioning (the enterprise-grade stance runs through the official docs): Trust Center and Status Page entries sit in the navigation; the Analytics API uses scoped OAuth tokens or service-account bearer tokens, with write permissions requested on demand (per the official llms.txt). Tool permissions are enforced in the Auggie CLI and Cosmos cloud agents, but not in the IDE extension (official Tool Permissions page); Standard and Business cap at 50 seats while Enterprise is custom (official Pricing page).</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Good fit: the enterprise "software factory" narrative — agent pipelines across the SDLC (ticket→PR→merge→monitor), self-hosted environments running agents on your own infrastructure, one of the fullest frontier-model rosters (with in-house Prism routing). Not a fit: looking for a personal free tier to get started (the main line is enterprise delivery with token billing); readers who need product ownership to be stable — since 2026-10 the Cosmos/Auggie CLI/Context Engine assets have been joining Harness.</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>The 2026-10-08 official blog 'Augment Code's next chapter': Cosmos, Auggie CLI, the Code Context Engine and related technology are joining Harness, with the team moving along — product continuity runs through Harness; recognize both Augment and Harness names when searching</li>
+<li>The website and docs are still live and selling Cosmos (measured 200 on 2026-10-22) — 'acquired assets' does not mean 'shut down', but the official notice gives no complete roadmap for brand and ownership going forward</li>
+<li>Billing is three-part token-based (LLM tokens + Cosmos compute + service fee) — different from monthly-credit tools; check the Token-Based Pricing page before comparing costs</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-11-21，Content updated 2026-11-21。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>official</td><td>Augment Code Docs · Introduction (Cosmos five building blocks / IDE and CLI entry points)</td><td><a href="https://docs.augmentcode.com/introduction" rel="noopener" target="_blank">https://docs.augmentcode.com/introduction</a></td></tr>
+<tr><td>official</td><td>Augment Code Docs · Available Models (full model roster and Prism routing)</td><td><a href="https://docs.augmentcode.com/models/available-models" rel="noopener" target="_blank">https://docs.augmentcode.com/models/available-models</a></td></tr>
+<tr><td>official</td><td>Augment Code Docs · Token-Based Pricing (three-segment billing stance)</td><td><a href="https://docs.augmentcode.com/models/token-based-pricing" rel="noopener" target="_blank">https://docs.augmentcode.com/models/token-based-pricing</a></td></tr>
+<tr><td>official</td><td>Augment Code Docs · Self-Hosted Environments (agents on your own infrastructure)</td><td><a href="https://docs.augmentcode.com/cosmos/environments/daemons" rel="noopener" target="_blank">https://docs.augmentcode.com/cosmos/environments/daemons</a></td></tr>
+<tr><td>official</td><td>Augment Code Docs · Software Factory Overview (the four official loops)</td><td><a href="https://docs.augmentcode.com/cosmos/software-factory/overview" rel="noopener" target="_blank">https://docs.augmentcode.com/cosmos/software-factory/overview</a></td></tr>
+<tr><td>official</td><td>Augment Code blog · Augment Code's next chapter (2026-10-08 announcement of assets joining Harness)</td><td><a href="https://www.augmentcode.com/blog" rel="noopener" target="_blank">https://www.augmentcode.com/blog</a></td></tr>
+<tr><td>changelog</td><td>Augment Code · Changelog (changelog)</td><td><a href="https://www.augmentcode.com/changelog" rel="noopener" target="_blank">https://www.augmentcode.com/changelog</a></td></tr>
+<tr><td>official</td><td>Augment Code official site (Cosmos / software-factory narrative)</td><td><a href="https://www.augmentcode.com" rel="noopener" target="_blank">https://www.augmentcode.com</a></td></tr>
+<tr><td>pricing</td><td>Augment Code · Pricing (Standard/Business/Enterprise, up to 50 seats, Data Residency, direct-fetched 2026-11-21)</td><td><a href="https://www.augmentcode.com/pricing" rel="noopener" target="_blank">https://www.augmentcode.com/pricing</a></td></tr>
+<tr><td>docs</td><td>Augment Code Docs · Tool Permissions (CLI/cloud agents enforced; IDE extension not enforced)</td><td><a href="https://docs.augmentcode.com/cli/permissions" rel="noopener" target="_blank">https://docs.augmentcode.com/cli/permissions</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong> (three, each pointing at something the official readable pages do not give):</p>
+<ul><li><strong>Actual changes to the purchase/renewal path after the Harness integration</strong> (the announcement only covers assets and team joining; no customer migration details)</li><li><strong>Isolation and audit behavior of the self-hosted daemon in real CI</strong> (there is an official daemon-config page; not measured)</li><li><strong>Actual transparency of Prism routing's model choice</strong> (can you see which model each request lands on)</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/devin.html">Devin</a></span><span class="rel-n">Same "async delivery agent" narrative: Devin leads with a cloud autonomous engineer; Augment leads with enterprise SDLC pipelines and self-hosted.</span></li>
+<li><span class="rel-t"><a href="/en/coding/cursor.html">Cursor</a></span><span class="rel-n">Both multi-model coding platforms: Cursor centers on the editor; Augment centers on the Cosmos pipeline and the Context Engine.</span></li>
+<li><span class="rel-t"><a href="/en/coding/claude-code-cli.html">Claude Code CLI</a></span><span class="rel-n">Terminal-agent counterpart: Auggie CLI and Claude Code both enter CI/CD — worth contrasting their context engines.</span></li>
+<li><span class="rel-t"><a href="/en/mcp/context7.html">Context7</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/v0.html">v0</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">v0 is Vercel's prompt-to-full-stack platform: chats generate Next.js app</td></tr><tr><td><a href="/en/coding/kilocode.html">Kilo Code</a></td><td>Local + cloud</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Kilo Code is a leading open-source coding agent (MIT): VS Code/JetBrains</td></tr><tr><td><a href="/en/coding/qoder.html">Qoder</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Qoder is the Alibaba-affiliated international Qoder line (qoder.com, spl</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

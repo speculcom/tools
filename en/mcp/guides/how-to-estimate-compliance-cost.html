@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>How to estimate compliance effort | Tools</title>
+<meta content="Break compliance into countable work items — gap analysis, evidence production, review rounds and upkeep cycles — then apply your own unit rates." name="description"/>
+<link href="https://tools.specul.com/en/mcp/guides/how-to-estimate-compliance-cost.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/mcp/guides/how-to-estimate-compliance-cost.html" property="og:url"/>
+<meta content="How to estimate compliance effort | Tools" property="og:title"/>
+<meta content="Break compliance into countable work items — gap analysis, evidence production, review rounds and upkeep cycles — then apply your own unit rates." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to estimate compliance effort","description":"Break compliance into countable work items — gap analysis, evidence production, review rounds and upkeep cycles — then apply your own unit rates.","dateModified":"2026-11-06"}</script>
+<meta content="How to estimate compliance effort | Tools" name="twitter:title"/><meta content="Break compliance into countable work items — gap analysis, evidence production, review rounds and upkeep cycles — then apply your own unit rates." name="twitter:description"/><link href="https://tools.specul.com/mcp/guides/how-to-estimate-compliance-cost.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/guides/how-to-estimate-compliance-cost.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/guides/how-to-estimate-compliance-cost.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/mcp/guides/how-to-estimate-compliance-cost.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<a class="back" href="/en/mcp/">← Guides</a>
+<div class="detail-head">
+<div>
+<h1>How to estimate compliance effort</h1>
+<div class="vendor is-caps">Cost control</div>
+</div>
+</div>
+<div class="panel-lead"><p>Break compliance into countable work items — gap analysis, evidence production, review rounds and upkeep cycles — then apply your own unit rates.</p></div>
+<nav aria-label="Article contents" class="panel is-slim"><p>On this page</p><ul><li><a href="#guide-section-0">What this guide covers</a></li><li><a href="#guide-section-1">Who this is for</a></li><li><a href="#guide-section-2">Prerequisites</a></li><li><a href="#guide-section-3">Four work items</a></li><li><a href="#guide-section-4">Six steps</a></li><li><a href="#guide-section-5">Worked example: estimating one release</a></li><li><a href="#guide-section-6">Acceptance</a></li><li><a href="#guide-section-7">Troubleshooting branches</a></li><li><a href="#guide-section-8">Next steps</a></li><li><a href="#guide-section-9">What was verified and what is not</a></li></ul></nav>
+<div class="panel is-slim" id="guide-section-0">
+<h2>What this guide covers</h2>
+<p><strong>Compliance effort is countable work, not one mysterious overhead line.</strong> This guide computes mechanisms only: which actions need people, how many rounds, how often they repeat. No prices are recorded here, and this site does not fill in unit rates for you — those belong to your contract and payroll basis. When an estimate is unclear, the usual cause is unsplit work items rather than arithmetic.</p>
+</div>
+<div class="panel is-slim" id="guide-section-1">
+<h2>Who this is for</h2>
+<ul><li>You need a budget and staffing plan for shipping one AI feature.</li><li>Someone asks "how long and how many people", and you cannot show the basis.</li><li>You already have a data-flow map and evaluation records and want them to feed the budget conversation.</li><li>A vendor hands over certificates, and you must estimate what your side still has to do.</li></ul>
+<p>Not a fit: treating an estimate as a legal-obligation judgement. Scope follows current law and contract; this guide reaches no legal conclusion.</p>
+</div>
+<div class="panel is-slim" id="guide-section-2">
+<h2>Prerequisites</h2>
+<ol><li value="1">One sentence of product framing: who uses it, for which tasks, whether it touches consequential decisions.</li><li value="2">A data-flow map including its unknown cells (make one first — see the matching guide).</li><li value="3">An inventory of existing controls: permissions, logs, evaluation, guardrails, each with a status.</li><li value="4">Your own unit of measure: person-days, per-run, per-week upkeep — pick one and state it.</li><li value="5">A checkable assumption list, each item marked as illustrative or as sourced.</li></ol>
+</div>
+<div class="panel is-slim" id="guide-section-3">
+<h2>Four work items</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Content</th><th>How to measure</th><th>Frequently undercounted</th></tr></thead><tbody><tr><td>Gap analysis</td><td>Compare existing controls against requirements line by line</td><td>Number of lines x time per line</td><td>Assuming one pass is enough</td></tr><tr><td>Evidence production</td><td>Logs, evaluation records, maps, policy documents</td><td>Number of deliverables</td><td>Ignoring rework and format alignment</td></tr><tr><td>Review rounds</td><td>Legal, security and business each review once</td><td>Rounds x hours per round</td><td>Counting only one round</td></tr><tr><td>Upkeep cycle</td><td>Redo checks after version changes</td><td>Times per year x effort per pass</td><td>Treating upkeep as free</td></tr></tbody></table></div>
+<p>Risk tier changes the scale of the first three items. The European Commission AI Act page describes four risk levels and states that prohibited practices apply from February 2025 (page fetched 2026-11-06). Which tier your product falls into, and which duties follow, needs current text plus your business facts; this guide draws no conclusion.</p>
+<p>Framework documents help with structure, not with scope. Both NIST pages describe themselves as voluntary tools: the AI Risk Management Framework for AI risk, the Privacy Framework for privacy risk. Voluntary does not mean free — building to their structure consumes the same four items.</p>
+</div>
+<div class="panel is-slim" id="guide-section-4">
+<h2>Six steps</h2>
+<ol><li value="1">Fix scope: cost only the feature shipping in this version; do not fold in a company-wide programme.</li><li value="2">Enumerate lines: translate requirements into concrete control points in your system, one per row.</li><li value="3">Mark status: label each line as present, partial or missing, citing the page or configuration location.</li><li value="4">Estimate effort: fill rounds and hours for the partial and missing lines, marking assumptions as illustrative.</li><li value="5">Add upkeep: set the cadence from your release rhythm and state what triggers a redo.</li><li value="6">List the uncertainties: separate the assumptions that swing the result, and say what information would settle them.</li></ol>
+<p>Step 3 saves real time, because most disputes come from "I thought we already had that". Tool-side upkeep has explicit switches: the Purview documentation states that lineage extraction can be disabled, that scan scope and frequency need planning, and that historical lineage requires periodic cleanup. Those are workload levers, not prices — estimate them against your own accounts and data volume.</p>
+</div>
+<div class="panel is-slim" id="guide-section-5">
+<h2 id="worked-example">Worked example: estimating one release</h2>
+<p>All figures are illustrative assumptions that show the arithmetic; they are not vendor quotations or any team's real person-days.</p>
+<ul><li>Input: an internal reporting assistant for operations staff. It reads customer email bodies, outputs only aggregates, and does not modify records.</li><li>Processing, split into four items (illustrative assumptions): Gap analysis: 32 control points at about 0.25 person-days each = 8 person-days; evidence production: 6 deliverables (flow map, log sample, evaluation record, policy note, permission table, review record) with one rework round = 12 person-days; review rounds: legal, security and business, 2 person-days each = 6 person-days; upkeep: one redo per quarter at 3 person-days = 12 person-days per year.</li><li>Judging the result (example): 26 person-days for the first pass, 12 per year for upkeep. The decisive uncertainty is whether customer email bodies form a data category that triggers extra duties — if they do, evidence production and review rounds both have to be recomputed.</li><li>What to do after a failure: Turn that uncertainty into two actions: confirm the data-category call with legal, confirm the processor role with the vendor; before the answer lands, present two cases (yes / no) instead of a fake midpoint; once settled, update the assumption list and the verification date, keeping the estimate traceable.</li></ul>
+<p>Unit rates are yours to enter: convert person-days into your own basis and then multiply. This page gives no amounts and assumes no exchange rate, tax or discount.</p>
+</div>
+<div class="panel is-slim" id="guide-section-6">
+<h2>Acceptance</h2>
+<ul><li>[ ] Every work item points to a specific control line or deliverable</li><li>[ ] Assumptions are labelled illustrative or sourced, never mixed in one line</li><li>[ ] At least one uncertainty names the information and the owner needed to resolve it</li><li>[ ] Upkeep states what triggers a redo, not only a cadence</li><li>[ ] The estimate contains no price figures; unit rates stay with the person filling it in</li><li>[ ] A reviewer can recompute the same totals from your table</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-7">
+<h2>Troubleshooting branches</h2>
+<ul><li>Actual cost lands far above the estimate: rework rounds are usually missing, and format alignment is a real work item.</li><li>Two estimates differ by an order of magnitude: check whether one covers this version and the other covers the whole programme.</li><li>Asked for "one firm number": give a range plus the decisive assumptions; a single point is false precision.</li><li>Certificates treated as savings: a management-system certificate shows a process exists; it does not remove your evidence work.</li><li>Tool switches uncounted: scan frequency, lineage extraction and log retention all generate upkeep work.</li><li>Administration scattered: enterprise roles, retention and audit settings often span several surfaces, so list them from the current administrator guide before costing the hours (existing in-repo source, rechecked 2026-11-03).</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-8">
+<h2>Next steps</h2>
+<ol><li value="1">Align the estimate table with the data-flow map so row numbers reference each other.</li><li value="2">Feed the deliverable list into release checks, so evidence is not assembled at the last minute.</li><li value="3">When reporting upward, present ranges and decisive assumptions rather than a single figure.</li><li value="4">Review quarterly: have the risk tier, tool switches or release rhythm changed.</li></ol>
+</div>
+<div class="panel is-slim" id="guide-section-9">
+<h2>What was verified and what is not</h2>
+<p>On 2026-11-06 four official sources were fetched directly: the European Commission AI Act policy page, the NIST AI RMF page, the NIST Privacy Framework page and the Microsoft Purview Data Map documentation. The fifth is an in-repo source that keeps its 2026-11-03 recheck record and was not refetched today.</p>
+<p>Unknowns:</p>
+<ul><li>Which obligations apply to your product — this needs current legal text plus your business facts, and no legal conclusion is drawn here.</li><li>Whether enforcement timetables in your jurisdiction shift — the Commission page carries dates, and later amendments were not tracked.</li><li>Your team's real person-day consumption — only your own records can give that, and the illustrative figures form no baseline.</li><li>Which services and legal entities a vendor certificate covers — the certificate and its scope statement would need reading.</li></ul>
+</div>
+<nav aria-label="What to do next" class="panel is-slim">
+<h2>What to do next</h2><ul>
+<li><a href="/en/mcp/guides/toolkit-worksheets.html">Record constraints, acceptance and unknowns</a></li>
+<li><a href="https://learn.specul.com/en/guide/%E6%80%8E%E4%B9%88%E9%AA%8C%E8%AF%81%20AI%20%E7%9A%84%E8%BE%93%E5%87%BA/">Verify the result and its sources</a></li>
+<li><a href="/en/mcp/guides/failure-library.html#by-symptom">Troubleshoot by symptom</a></li>
+</ul></nav>
+<div class="panel is-slim">
+<h2>Sources</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Source</th><th>URL</th></tr></thead><tbody>
+<tr><td>European Commission · AI Act policy page (direct fetch 200 on 2026-11-06)</td><td><a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" rel="noopener" target="_blank">https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai</a></td></tr>
+<tr><td>NIST AI Risk Management Framework official page (direct fetch 200 on 2026-11-06)</td><td><a href="https://www.nist.gov/itl/ai-risk-management-framework" rel="noopener" target="_blank">https://www.nist.gov/itl/ai-risk-management-framework</a></td></tr>
+<tr><td>NIST Privacy Framework official page (direct fetch 200 on 2026-11-06)</td><td><a href="https://www.nist.gov/privacy-framework" rel="noopener" target="_blank">https://www.nist.gov/privacy-framework</a></td></tr>
+<tr><td>Microsoft Purview Data Map official documentation (scan scope and lineage upkeep) (direct fetch 200 on 2026-11-06)</td><td><a href="https://learn.microsoft.com/en-us/purview/data-map" rel="noopener" target="_blank">https://learn.microsoft.com/en-us/purview/data-map</a></td></tr>
+<tr><td>Claude · Enterprise Administrator Guide (existing in-repo source, rechecked 2026-11-03)</td><td><a href="https://claude.com/resources/tutorials/claude-enterprise-administrator-guide" rel="noopener" target="_blank">https://claude.com/resources/tutorials/claude-enterprise-administrator-guide</a></td></tr>
+</tbody></table></div>
+<p class="guide-foot">Source snapshot: 2026-11-06; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</p>
+</div>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

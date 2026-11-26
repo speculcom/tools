@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Planning for agents | Tools</title>
+<meta content="Plan first or decide as you go — how to choose a planning pattern, and why plans fail." name="description"/>
+<link href="https://tools.specul.com/en/mcp/guides/planning.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/mcp/guides/planning.html" property="og:url"/>
+<meta content="Planning for agents | Tools" property="og:title"/>
+<meta content="Plan first or decide as you go — how to choose a planning pattern, and why plans fail." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Planning for agents","description":"Plan first or decide as you go — how to choose a planning pattern, and why plans fail.","dateModified":"2026-10-30"}</script>
+<meta content="Planning for agents | Tools" name="twitter:title"/><meta content="Plan first or decide as you go — how to choose a planning pattern, and why plans fail." name="twitter:description"/><link href="https://tools.specul.com/mcp/guides/planning.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/guides/planning.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/guides/planning.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/mcp/guides/planning.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<a class="back" href="/en/mcp/">← Guides</a>
+<div class="detail-head">
+<div>
+<h1>Planning for agents</h1>
+<div class="vendor is-caps">Planning</div>
+</div>
+</div>
+<div class="panel-lead"><p>Plan first or decide as you go — how to choose a planning pattern, and why plans fail.</p></div>
+<nav aria-label="Article contents" class="panel is-slim"><p>On this page</p><ul><li><a href="#guide-section-0">What this guide covers</a></li><li><a href="#guide-section-1">Pattern one: fixed paths</a></li><li><a href="#guide-section-2">Pattern two: decide as you go</a></li><li><a href="#guide-section-3">Human checkpoints</a></li><li><a href="#guide-section-4">Why plans fail</a></li></ul></nav>
+<div class="panel is-slim" id="guide-section-0">
+<h2>What this guide covers</h2>
+<p><strong>Planning means deciding the step sequence first, then executing step by step.</strong> The opposite is deciding as you go: each round the model looks only at the current situation and picks the next step. The two paradigms have no superiority — only fit — and the criterion is: <strong>can the number of steps be stated in advance.</strong></p>
+</div>
+<div class="panel is-slim" id="guide-section-1">
+<h2>Pattern one: fixed paths</h2>
+<p>Anthropic calls systems with a predefinable flow workflows. <strong>Anthropic official text</strong>: "Workflows are systems where LLMs and tools are orchestrated through predefined code paths."</p>
+<p><strong>Anthropic official text</strong>: the contrasting agent is "LLMs dynamically direct their own processes and tool usage". The three planning patterns that follow:</p>
+<p><strong>Prompt chaining</strong>: decompose the task into a fixed sequence of subtasks, each step's output feeding the next. <strong>Anthropic official text</strong>: "Prompt chaining decomposes a task into a sequence of steps, where each LLM call processes the output of the previous one." The price is latency; what you gain is each step becoming simpler and more controllable. The official advice adds programmatic checks (gates) at intermediate steps to confirm the flow is still on track.</p>
+<p><strong>Routing</strong>: classify first, then branch. Fits "inputs have clear categories, each category handled differently" scenarios.</p>
+<p><strong>Orchestrator-workers</strong>: a central LLM dynamically decomposes tasks, dispatches workers, then synthesizes results. Fits cases where <strong>subtasks cannot be enumerated in advance</strong> — like changing code: how many files to touch and how to change each one only becomes clear after seeing the task. The official docs draw the key difference from parallelization: <strong>Anthropic official text</strong>: "the key difference from parallelization is its flexibility— subtasks aren't pre-defined, but determined by the orchestrator based on the specific input."</p>
+</div>
+<div class="panel is-slim" id="guide-section-2">
+<h2>Pattern two: decide as you go</h2>
+<p>When must you abandon a fixed flow? The official criterion:</p>
+<blockquote>"Agents can be used for open-ended problems where it's difficult or impossible to predict the required number of steps, and where you can't hardcode a fixed path."</blockquote>
+<p>If the step count cannot be stated, don't draw a flowchart. But deciding-as-you-go has three old problems: drifting off course, looping, quitting halfway. The matching engineering answer is adding a <strong>feedback loop</strong> to execution.</p>
+<p>Anthropic's evaluator-optimizer is one LLM generating, another LLM evaluating and giving feedback, polishing in a loop. The two fit signals the official docs give: feedback can materially improve the output; the model can produce that feedback itself.</p>
+<p>The Reflexion paper (arXiv 2303.11366) systematizes feedback. The agent verbally reviews task feedback, stores the reflection text in an episodic memory buffer, and reads the lessons before attempting a similar task next time. The paper reports 91% pass@1 on the HumanEval coding benchmark, beating GPT-4's 80% at the time. Note these are paper results on a specific benchmark, not a general promise.</p>
+</div>
+<div class="panel is-slim" id="guide-section-3">
+<h2>Human checkpoints</h2>
+<p>Making the flow interruptible and resumable is the most practical engineering investment in planning. <a href="/en/framework/langgraph.html">LangGraph</a>'s official docs list human-in-the-loop alongside fault tolerance and time travel as checkpointer uses: only with state snapshots can you pause at a step for human approval and continue from the origin.</p>
+<p>Key steps go to the flow, dangerous steps stay with humans. How to judge a dangerous step: irreversible, costs money, or goes outbound.</p>
+</div>
+<div class="panel is-slim" id="guide-section-4">
+<h2>Why plans fail</h2>
+<ol><li value="1">Stale plans: the environment changed, the old plan runs to the end anyway.</li><li value="2">Over-planning: writing a five-thousand-word plan for something doable in five minutes.</li><li value="3">Fake feedback: the evaluator only says "looks good", the optimization loop spins in place.</li><li value="4">No recovery point: it crashes halfway and you can only start over.</li></ol>
+<p><strong>The general principle, from Anthropic official text</strong>: "Success in the LLM space isn't about building the most sophisticated system. It's about building the right system for your needs." Start from the simplest prompt with solid evaluation; add multi-step systems only when the simple approach stops being enough.</p>
+</div>
+<nav aria-label="What to do next" class="panel is-slim">
+<h2>What to do next</h2><ul>
+<li><a href="/en/mcp/guides/toolkit-worksheets.html">Record constraints, acceptance and unknowns</a></li>
+<li><a href="https://learn.specul.com/en/guide/%E6%80%8E%E4%B9%88%E9%AA%8C%E8%AF%81%20AI%20%E7%9A%84%E8%BE%93%E5%87%BA/">Verify the result and its sources</a></li>
+<li><a href="/en/mcp/guides/failure-library.html#by-symptom">Troubleshoot by symptom</a></li>
+</ul></nav>
+<div class="panel is-slim">
+<h2>Sources</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Source</th><th>URL</th></tr></thead><tbody>
+<tr><td>Anthropic engineering blog · Building effective agents (official page verified via WebFetch on 2026-10-30)</td><td><a href="https://www.anthropic.com/engineering/building-effective-agents" rel="noopener" target="_blank">https://www.anthropic.com/engineering/building-effective-agents</a></td></tr>
+<tr><td>Reflexion paper (arXiv 2303.11366, abstract page direct-fetched 2026-10-30)</td><td><a href="https://arxiv.org/abs/2303.11366" rel="noopener" target="_blank">https://arxiv.org/abs/2303.11366</a></td></tr>
+<tr><td>LangGraph official docs · Persistence (direct fetch 200 on 2026-10-30)</td><td><a href="https://docs.langchain.com/oss/python/langgraph/persistence" rel="noopener" target="_blank">https://docs.langchain.com/oss/python/langgraph/persistence</a></td></tr>
+</tbody></table></div>
+<p class="guide-foot">Source snapshot: 2026-10-30; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</p>
+</div>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

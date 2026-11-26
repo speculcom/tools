@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Toolkit: prompt and context — 深水指南 | 投机取巧</title>
-  <meta name="description" content="工具箱：提示词、上下文预算、RAG 清单、选型表：四个可直接复制的文本块：提示词结构、上下文预算表、RAG 分块与重排清单、模型选型工作表。" />
-  <link rel="canonical" href="https://tools.specul.com/mcp/guides/toolkit-prompt-context.html" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Toolkit: prompt and context" />
-  <meta property="og:url" content="https://tools.specul.com/mcp/guides/toolkit-prompt-context.html" />
-  <meta property="og:title" content="Toolkit: prompt and context — 深水指南 | 投机取巧" />
-  <meta property="og:description" content="工具箱：提示词、上下文预算、RAG 清单、选型表：四个可直接复制的文本块：提示词结构、上下文预算表、RAG 分块与重排清单、模型选型工作表。" />
-  <meta property="og:image" content="https://specul.com/home-shots/og-home.jpg?v=20261123d" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:locale" content="zh_CN" />
-  <meta property="og:locale:alternate" content="en_US" />
-  <meta name="theme-color" content="#16121f" />
-  <link rel="icon" type="image/png" href="../../assets/brand/dandelion-favicon-site.png" />
-  <link rel="apple-touch-icon" href="../../assets/brand/dandelion-apple-touch-site.png" />
-  <script src="../../brand.js?v=37d1072be69b"></script>
-  <link rel="stylesheet" href="../../brand.css?v=37d1072be69b" />
-  <link rel="stylesheet" href="../../site.css" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Toolkit: prompt and context","description":"Four copyable text blocks: a prompt structure, a context budget table, a RAG chunking/reranking checklist and a model selection worksheet.","dateModified":"2026-11-03"}</script>
-</head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Toolkit: prompt and context — 深水指南 | 投机取巧</title>
+<meta content="工具箱：提示词、上下文预算、RAG 清单、选型表：四个可直接复制的文本块：提示词结构、上下文预算表、RAG 分块与重排清单、模型选型工作表。" name="description"/>
+<link href="https://tools.specul.com/mcp/guides/toolkit-prompt-context.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Toolkit: prompt and context" property="og:site_name"/>
+<meta content="https://tools.specul.com/mcp/guides/toolkit-prompt-context.html" property="og:url"/>
+<meta content="Toolkit: prompt and context — 深水指南 | 投机取巧" property="og:title"/>
+<meta content="工具箱：提示词、上下文预算、RAG 清单、选型表：四个可直接复制的文本块：提示词结构、上下文预算表、RAG 分块与重排清单、模型选型工作表。" property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="zh_CN" property="og:locale"/>
+<meta content="en_US" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="../../assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="../../assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="../../brand.js?v=37d1072be69b"></script>
+<link href="../../brand.css?v=37d1072be69b" rel="stylesheet"/>
+<link href="../../site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Toolkit: prompt and context","description":"Four copyable text blocks: a prompt structure, a context budget table, a RAG chunking/reranking checklist and a model selection worksheet.","dateModified":"2026-11-03"}</script>
+<link href="https://tools.specul.com/mcp/guides/toolkit-prompt-context.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/guides/toolkit-prompt-context.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/guides/toolkit-prompt-context.html" hreflang="x-default" rel="alternate"/></head>
 <!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
      同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
      而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
@@ -32,91 +32,87 @@
      ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
      （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
 <body class="brand-ambient has-tabbar has-tabbar-1row">
-  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
-  <header class="site-header">
-    <div class="container site-bar">
-      <a class="brand" href="https://specul.com/" title="投机取巧">
-        <span class="brand-dot" aria-hidden="true"></span>
-        <span class="brand-text">
-          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
-          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
-        </span>
-      </a>
-      <nav class="nav-links" aria-label="站点导航">
-        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
-        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
-        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>工具</span><span data-en>Tools</span></a>
-        <a href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a>
-        <a href="https://demos.specul.com/"><span data-zh>作品演示</span><span data-en>Playground</span></a>
-        <a href="https://oss.specul.com/"><span data-zh>开源库</span><span data-en>OSS</span></a>
-        <a href="https://hardware.specul.com/"><span data-zh>硬件算力</span><span data-en>Compute</span></a>
-        <a href="https://papers.specul.com/"><span data-zh>AI 论文</span><span data-en>AI Papers</span></a>
-        <a href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a>
-        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
-      </nav>
-      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+<a class="t-skip" href="#main"><span data-zh="">跳到主要内容</span><span data-en="">Skip to main content</span></a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" data-en-name="Speculative Speculation" data-zh-name="投机取巧" id="markName">投机取巧</span>
+<span class="brand-sub" data-en-sub="" data-zh-sub="Speculative Speculation" id="markSub">Speculative Speculation</span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/"><span data-zh="">首页</span><span data-en="">Home</span></a>
+<a href="https://learn.specul.com/"><span data-zh="">学 AI</span><span data-en="">Learn</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span data-zh="">工具</span><span data-en="">Tools</span></a>
+<a href="https://models.specul.com/"><span data-zh="">模型</span><span data-en="">Models</span></a>
+<a href="https://demos.specul.com/"><span data-zh="">作品演示</span><span data-en="">Playground</span></a>
+<a href="https://oss.specul.com/"><span data-zh="">开源库</span><span data-en="">OSS</span></a>
+<a href="https://hardware.specul.com/"><span data-zh="">硬件算力</span><span data-en="">Compute</span></a>
+<a href="https://papers.specul.com/"><span data-zh="">AI 论文</span><span data-en="">AI Papers</span></a>
+<a href="https://chain.specul.com/"><span data-zh="">链</span><span data-en="">Chain</span></a>
+<a href="https://nav.specul.com/"><span data-zh="">AI 导航</span><span data-en="">AI Directory</span></a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
            放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
            （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
            链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
-      <span class="nav-tools">
-        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
-        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
-        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
-      </span>
-      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+<span class="nav-tools">
+<a aria-label="搜索" class="icon-btn" data-ui-aria-label-en="Search" data-ui-aria-label-zh="搜索" data-ui-title-en="Search all sites" data-ui-title-zh="搜索全站" href="https://specul.com/search.html" title="搜索全站"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="Switch to English" class="icon-btn" href="/en/mcp/guides/toolkit-prompt-context.html" hreflang="en" id="langBtn" lang="en" title="Switch to English">EN</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
            行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
            无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
            「导航被藏进一个点了没反应的按钮」。 -->
-      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
-        <i></i><i></i><i></i>
-      </button>
-    </div>
-  </header>
-  <div class="nav-scrim"></div>
-  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
-    <div class="nav-drawer-h">
-      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
-      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
-      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
-    </div>
-    <nav class="nav-drawer-list">
-      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>工具</span><span data-en>Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://models.specul.com/"><span><span data-zh>模型</span><span data-en>Models</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://demos.specul.com/"><span><span data-zh>作品演示</span><span data-en>Playground</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://oss.specul.com/"><span><span data-zh>开源库</span><span data-en>OSS</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://hardware.specul.com/" class="nav-group-start"><span><span data-zh>硬件算力</span><span data-en>Compute</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://papers.specul.com/"><span><span data-zh>AI 论文</span><span data-en>AI Papers</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://chain.specul.com/"><span><span data-zh>链</span><span data-en>Chain</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://nav.specul.com/" class="nav-group-start" data-nav-group="external"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">↗</span></a>
-    </nav>
-    <div class="nav-drawer-foot">
-      <p><span data-zh>内容站覆盖学、用、选、跑；AI 导航是站外的 AI 网站目录，点出去看。</span><span data-en>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</span></p>
-      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
-    </div>
-  </aside>
-  <main id="main">
-    <div class="container detail">
-      <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
-      <div class="detail-head">
-        <div>
-          <h1><span data-zh>工具箱：提示词、上下文预算、RAG 清单、选型表</span><span data-en>Toolkit: prompt and context</span></h1>
-          <div class="vendor is-caps"><span data-zh>规划</span><span data-en>Planning</span></div>
-        </div>
-      </div>
-      <div class="panel-lead"><span data-zh><p>四个可直接复制的文本块：提示词结构、上下文预算表、RAG 分块与重排清单、模型选型工作表。</p></span><span data-en><p>Four copyable text blocks: a prompt structure, a context budget table, a RAG chunking/reranking checklist and a model selection worksheet.</p></span></div>
-
-
-
-
-      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>怎么用这页</span><span data-en>How to use</span></a></li><li><a href="#guide-section-1"><span data-zh>常见误用</span><span data-en>Common misuses</span></a></li><li><a href="#guide-section-2"><span data-zh>已填示例：把活动资料写成通知</span><span data-en>Filled example: turn event notes into a notice</span></a></li></ul></nav>
-      <div class="panel is-slim" id="guide-section-0">
-        <h2><span data-zh>怎么用这页</span><span data-en>How to use</span></h2>
-        <span data-zh><p>模板内的比例、样本数、阈值和权限策略是示例。请按任务、授权与风险确定实际条件；填完表格不等于已经通过验收。</p>
-            <p>四个块都是纯文本，复制到你的文档或仓库里改。括号里是占位，不是可直接运行的代码。</p>
-            <h3 class="sub-h">1. 提示词结构模板</h3>
-            <pre class="code"><code>角色：你是【角色】，只负责【任务范围】。
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name"><span data-zh="">投机取巧</span><span data-en="">Speculative Speculation</span></span>
+<span class="brand-sub" data-en-sub="" data-zh-sub="Speculative Speculation">Speculative Speculation</span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/"><span><span data-zh="">首页</span><span data-en="">Home</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/"><span><span data-zh="">学 AI</span><span data-en="">Learn</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span><span data-zh="">工具</span><span data-en="">Tools</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/"><span><span data-zh="">模型</span><span data-en="">Models</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/"><span><span data-zh="">作品演示</span><span data-en="">Playground</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/"><span><span data-zh="">开源库</span><span data-en="">OSS</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/"><span><span data-zh="">硬件算力</span><span data-en="">Compute</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/"><span><span data-zh="">AI 论文</span><span data-en="">AI Papers</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/"><span><span data-zh="">链</span><span data-en="">Chain</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/"><span><span data-zh="">AI 导航</span><span data-en="">AI Directory</span></span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p><span data-zh="">内容站覆盖学、用、选、跑；AI 导航是站外的 AI 网站目录，点出去看。</span><span data-en="">Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</span></p>
+<nav><a href="https://specul.com/legal.html"><span data-zh="">法律条款</span><span data-en="">Legal terms</span></a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<a class="back" href="../">← <span data-zh="">深水指南</span><span data-en="">Guides</span></a>
+<div class="detail-head">
+<div>
+<h1><span data-zh="">工具箱：提示词、上下文预算、RAG 清单、选型表</span><span data-en="">Toolkit: prompt and context</span></h1>
+<div class="vendor is-caps"><span data-zh="">规划</span><span data-en="">Planning</span></div>
+</div>
+</div>
+<div class="panel-lead"><span data-zh=""><p>四个可直接复制的文本块：提示词结构、上下文预算表、RAG 分块与重排清单、模型选型工作表。</p></span><span data-en=""><p>Four copyable text blocks: a prompt structure, a context budget table, a RAG chunking/reranking checklist and a model selection worksheet.</p></span></div>
+<nav aria-label="文章目录" class="panel is-slim" data-ui-aria-label-en="Article contents" data-ui-aria-label-zh="文章目录"><p><span data-zh="">按问题阅读</span><span data-en="">On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh="">怎么用这页</span><span data-en="">How to use</span></a></li><li><a href="#guide-section-1"><span data-zh="">常见误用</span><span data-en="">Common misuses</span></a></li><li><a href="#guide-section-2"><span data-zh="">已填示例：把活动资料写成通知</span><span data-en="">Filled example: turn event notes into a notice</span></a></li></ul></nav>
+<div class="panel is-slim" id="guide-section-0">
+<h2><span data-zh="">怎么用这页</span><span data-en="">How to use</span></h2>
+<span data-zh=""><p>模板内的比例、样本数、阈值和权限策略是示例。请按任务、授权与风险确定实际条件；填完表格不等于已经通过验收。</p>
+<p>四个块都是纯文本，复制到你的文档或仓库里改。括号里是占位，不是可直接运行的代码。</p>
+<h3 class="sub-h">1. 提示词结构模板</h3>
+<pre class="code"><code>角色：你是【角色】，只负责【任务范围】。
 输入：用户给出【输入类型】；缺失信息请先问，不要猜。
 约束：
 - 必须引用【允许的知识源】，找不到就写「未找到」。
@@ -127,8 +123,8 @@
 2) 依据（每条带来源与日期）
 3) 未确认项（没有就写「无」）
 拒答条件：【列出不该回答的问题】</code></pre>
-            <h3 class="sub-h">2. 上下文预算表</h3>
-            <pre class="code"><code>| 槽位            | 预算占比 | 内容                         |
+<h3 class="sub-h">2. 上下文预算表</h3>
+<pre class="code"><code>| 槽位            | 预算占比 | 内容                         |
 |-----------------|----------|------------------------------|
 | 系统指令        | 10%      | 角色、约束、输出格式         |
 | 任务与示例      | 30%      | 当前任务、1–3 个正例/反例    |
@@ -137,8 +133,8 @@
 | 保留余量        | 10%      | 给输出与重试                 |
 
 按任务调整：先移除无关历史与重复内容，保留必要证据和边界，并为输出留空间。</code></pre>
-            <h3 class="sub-h">3. RAG 分块与重排清单</h3>
-            <pre class="code"><code>- [ ] 分块按语义，不按固定字数；每块保留原文标题与 URL
+<h3 class="sub-h">3. RAG 分块与重排清单</h3>
+<pre class="code"><code>- [ ] 分块按语义，不按固定字数；每块保留原文标题与 URL
 - [ ] 每块不超过【N】字，超长再拆，不截断句子
 - [ ] 表格与代码单独成块，不混进段落
 - [ ] 元数据至少含：来源、日期、版本、章节
@@ -147,8 +143,8 @@
 - [ ] 冲突来源同时保留，标红，不合并
 - [ ] 回答必须引用块编号；无命中写「未找到」
 - [ ] 每次更新文档跑一遍回归问题集</code></pre>
-            <h3 class="sub-h">4. 模型选型工作表</h3>
-            <pre class="code"><code>| 约束             | 你的答案 | 排除的产品 |
+<h3 class="sub-h">4. 模型选型工作表</h3>
+<pre class="code"><code>| 约束             | 你的答案 | 排除的产品 |
 |------------------|----------|------------|
 | 硬件（显存/平台）|          |            |
 | 数据能否出网     |          |            |
@@ -159,9 +155,9 @@
 | 中文/多语言要求  |          |            |
 | 必须接的生态     |          |            |
 
-结论：主选【 】，备选【 】；理由写三条，不写「综合最强」。</code></pre></span><span data-en><p>Copy these four plain-text blocks into your document or repository and replace bracketed fields. They are templates, not runnable code. Budget percentages are illustrative, not universal settings.</p>
-            <h3 class="sub-h">1. Prompt structure</h3>
-            <pre class="code"><code>Role: [role], limited to [task scope].
+结论：主选【 】，备选【 】；理由写三条，不写「综合最强」。</code></pre></span><span data-en=""><p>Copy these four plain-text blocks into your document or repository and replace bracketed fields. They are templates, not runnable code. Budget percentages are illustrative, not universal settings.</p>
+<h3 class="sub-h">1. Prompt structure</h3>
+<pre class="code"><code>Role: [role], limited to [task scope].
 Input: [input type]; ask about missing information rather than guessing.
 Constraints:
 - Cite [permitted sources]; write “not found” if unsupported.
@@ -172,8 +168,8 @@ Output:
 2) Evidence (source and date for each)
 3) Unknowns (or “none”)
 Refusal conditions: [questions outside scope]</code></pre>
-            <h3 class="sub-h">2. Context budget</h3>
-            <pre class="code"><code>Slot | Illustrative share | Content
+<h3 class="sub-h">2. Context budget</h3>
+<pre class="code"><code>Slot | Illustrative share | Content
 System instructions | 10% | Role, constraints, format
 Task/examples | 30% | Current task and 1–3 contrasting examples
 Retrieved material | 40% | Passages with source IDs
@@ -182,8 +178,8 @@ Headroom | 10% | Output and retries
 
 Adjust to the task: remove unrelated history and repetition first;
 preserve necessary evidence and boundaries, and reserve output space.</code></pre>
-            <h3 class="sub-h">3. Chunking/reranking checklist</h3>
-            <pre class="code"><code>- [ ] Preserve meaning, titles and source URLs when chunking
+<h3 class="sub-h">3. Chunking/reranking checklist</h3>
+<pre class="code"><code>- [ ] Preserve meaning, titles and source URLs when chunking
 - [ ] Split long chunks at sentence boundaries; set [N] for the task
 - [ ] Keep tables/code intact where their meaning requires it
 - [ ] Keep source, date, version and section metadata
@@ -192,8 +188,8 @@ preserve necessary evidence and boundaries, and reserve output space.</code></pr
 - [ ] Preserve conflicting sources separately
 - [ ] Cite passage IDs; say “not found” without evidence
 - [ ] Recheck fixed questions after document updates</code></pre>
-            <h3 class="sub-h">4. Model-selection worksheet</h3>
-            <pre class="code"><code>Constraint | Your answer | Excluded products
+<h3 class="sub-h">4. Model-selection worksheet</h3>
+<pre class="code"><code>Constraint | Your answer | Excluded products
 Hardware/VRAM/platform | |
 Outbound data allowed | |
 Commercial/self-hosted licensing | |
@@ -204,80 +200,80 @@ Chinese/multilingual needs | |
 Required integrations | |
 
 Primary: [ ]; fallback: [ ]; give three specific reasons, not “best overall”.</code></pre></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-1">
-        <h2><span data-zh>常见误用</span><span data-en>Common misuses</span></h2>
-        <span data-zh><ul><li>把模板当提示词直接跑：占位符没填，模型会自由发挥。</li><li>预算表只算输入：输出与重试也要留余量。</li><li>RAG 只调 topK：不重排、不去重，噪声会挤掉正确块。</li><li>选型表只填一半：未填的约束会在上线后变成返工。</li></ul></span><span data-en><ul><li>Leaving placeholders unfilled does not give a model a concrete task.</li><li>Budget output and retries as well as input.</li><li>Adjusting top-K alone may leave ranking, duplication or evidence problems unresolved.</li><li>Unresolved selection constraints should remain visible rather than becoming hidden launch assumptions.</li></ul></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-2">
-        <h2 id="worked-example"><span data-zh>已填示例：把活动资料写成通知</span><span data-en>Filled example: turn event notes into a notice</span></h2>
-        <span data-zh><p>以下为虚构教学材料，不是模型运行记录。</p>
-            <p><strong>输入</strong>：周六 14:00，社区阅览室，旧书交换。未提供费用、电话、报名链接。</p>
-            <p><strong>完整提示</strong>：仅依据上面三项资料，写一段不超过 100 字的通知。不要新增事实；未提供的报名信息不写。输出标题和两句正文。</p>
-            <p><strong>可接受的示例</strong>：旧书交换活动。周六 14:00，欢迎到社区阅览室参加旧书交换。</p>
-            <p><strong>检查</strong>：时间、地点、活动名称各核对一次；出现“免费”“扫码报名”或电话号码，先删除或补来源。材料没有给出这些信息。</p>
-            <p><strong>交接记录</strong>：已确认三项事实；未确认费用与联系方式；下一步是核对排版和发布渠道。若需要补充报名信息，先取得真实资料，再改提示。</p></span><span data-en><p>This is a fictional teaching example, not a model execution record.</p>
-            <p><strong>Input</strong>: Saturday 14:00, community reading room, used-book exchange. No fee, contact number or registration URL was supplied.</p>
-            <p><strong>Complete prompt</strong>: Use only those facts to write a notice under 100 Chinese characters. Add no facts and omit unspecified registration details. Return a title and two sentences.</p>
-            <p><strong>Acceptable example</strong>: Used-book exchange. Join the exchange at the community reading room on Saturday at 14:00.</p>
-            <p><strong>Check</strong> time, venue and event name. Remove or substantiate “free,” a signup link or a telephone number: none was supplied.</p>
-            <p><strong>Handoff</strong>: three facts confirmed; fees and contacts unresolved; next check layout and publication channel. Obtain actual registration details before adding them.</p></span>
-      </div>
-<nav class="panel is-slim" aria-label="接下来做什么" data-ui-aria-label-zh="接下来做什么" data-ui-aria-label-en="What to do next">
-<h2><span data-zh>接下来做什么</span><span data-en>What to do next</span></h2><ul>
-<li><a href="toolkit-worksheets.html"><span data-zh>记录约束、验收与未确认项</span><span data-en>Record constraints, acceptance and unknowns</span></a></li>
-<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh>核对结果与来源</span><span data-en>Verify the result and its sources</span></a></li>
-<li><a href="failure-library.html#by-symptom"><span data-zh>按症状排查失败</span><span data-en>Troubleshoot by symptom</span></a></li>
+</div>
+<div class="panel is-slim" id="guide-section-1">
+<h2><span data-zh="">常见误用</span><span data-en="">Common misuses</span></h2>
+<span data-zh=""><ul><li>把模板当提示词直接跑：占位符没填，模型会自由发挥。</li><li>预算表只算输入：输出与重试也要留余量。</li><li>RAG 只调 topK：不重排、不去重，噪声会挤掉正确块。</li><li>选型表只填一半：未填的约束会在上线后变成返工。</li></ul></span><span data-en=""><ul><li>Leaving placeholders unfilled does not give a model a concrete task.</li><li>Budget output and retries as well as input.</li><li>Adjusting top-K alone may leave ranking, duplication or evidence problems unresolved.</li><li>Unresolved selection constraints should remain visible rather than becoming hidden launch assumptions.</li></ul></span>
+</div>
+<div class="panel is-slim" id="guide-section-2">
+<h2 id="worked-example"><span data-zh="">已填示例：把活动资料写成通知</span><span data-en="">Filled example: turn event notes into a notice</span></h2>
+<span data-zh=""><p>以下为虚构教学材料，不是模型运行记录。</p>
+<p><strong>输入</strong>：周六 14:00，社区阅览室，旧书交换。未提供费用、电话、报名链接。</p>
+<p><strong>完整提示</strong>：仅依据上面三项资料，写一段不超过 100 字的通知。不要新增事实；未提供的报名信息不写。输出标题和两句正文。</p>
+<p><strong>可接受的示例</strong>：旧书交换活动。周六 14:00，欢迎到社区阅览室参加旧书交换。</p>
+<p><strong>检查</strong>：时间、地点、活动名称各核对一次；出现“免费”“扫码报名”或电话号码，先删除或补来源。材料没有给出这些信息。</p>
+<p><strong>交接记录</strong>：已确认三项事实；未确认费用与联系方式；下一步是核对排版和发布渠道。若需要补充报名信息，先取得真实资料，再改提示。</p></span><span data-en=""><p>This is a fictional teaching example, not a model execution record.</p>
+<p><strong>Input</strong>: Saturday 14:00, community reading room, used-book exchange. No fee, contact number or registration URL was supplied.</p>
+<p><strong>Complete prompt</strong>: Use only those facts to write a notice under 100 Chinese characters. Add no facts and omit unspecified registration details. Return a title and two sentences.</p>
+<p><strong>Acceptable example</strong>: Used-book exchange. Join the exchange at the community reading room on Saturday at 14:00.</p>
+<p><strong>Check</strong> time, venue and event name. Remove or substantiate “free,” a signup link or a telephone number: none was supplied.</p>
+<p><strong>Handoff</strong>: three facts confirmed; fees and contacts unresolved; next check layout and publication channel. Obtain actual registration details before adding them.</p></span>
+</div>
+<nav aria-label="接下来做什么" class="panel is-slim" data-ui-aria-label-en="What to do next" data-ui-aria-label-zh="接下来做什么">
+<h2><span data-zh="">接下来做什么</span><span data-en="">What to do next</span></h2><ul>
+<li><a href="toolkit-worksheets.html"><span data-zh="">记录约束、验收与未确认项</span><span data-en="">Record constraints, acceptance and unknowns</span></a></li>
+<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh="">核对结果与来源</span><span data-en="">Verify the result and its sources</span></a></li>
+<li><a href="failure-library.html#by-symptom"><span data-zh="">按症状排查失败</span><span data-en="">Troubleshoot by symptom</span></a></li>
 </ul></nav>
-      <div class="panel is-slim">
-        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
-        <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
-          <tr><td><span data-zh>本站 · 深水指南（上下文工程、RAG 全链路、选型方法；2026-11-03）</span><span data-en>This site: context, retrieval and selection methods (2026-11-03)</span></td><td><a href="https://tools.specul.com/mcp/guides/planning.html" target="_blank" rel="noopener"><span data-zh>https://tools.specul.com/mcp/guides/planning.html</span><span data-en>https://tools.specul.com/mcp/guides/planning.html</span></a></td></tr>
-        </tbody></table></div>
-        <p class="guide-foot"><span data-zh>资料快照日期：2026-11-03；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Source snapshot: 2026-11-03; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
-      </div>
-      <p class="t-sm topics-line"><span data-zh>这页出现在主题：</span><span data-en>This page appears in: </span><a href="https://specul.com/topic-prompts.html"><span data-zh>把 AI 用对</span><span data-en>Use AI well</span></a></p>
-    </div>
-  </main>
-  <footer class="site-footer foot-single">
-    <div class="container foot-line">
-      <div class="foot-brand">
-        <span class="foot-brand-main">
-          <span class="brand-dot" aria-hidden="true"></span>
-          <span class="foot-copy"><span data-zh>投机取巧 · specul.com</span><span data-en>Specul · specul.com</span></span>
-        </span>
-        <span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt"><span data-zh>内容 CC BY 4.0</span><span data-en>Content CC BY 4.0</span></a><span class="sep" aria-hidden="true">·</span><a href="https://specul.com/LICENSE.txt"><span data-zh>代码 MIT</span><span data-en>Code MIT</span></a><span class="sep" aria-hidden="true">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>源码</span><span data-en>Source</span></a></span>
-      </div>
-      <nav class="foot-sites" aria-label="Footer site links">
-        <a class="site-link" href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://tools.specul.com/"><span data-zh>工具</span><span data-en>Tools</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://demos.specul.com/"><span data-zh>演示</span><span data-en>Demos</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://oss.specul.com/"><span data-zh>开源</span><span data-en>OSS</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://hardware.specul.com/"><span data-zh>算力</span><span data-en>Compute</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://papers.specul.com/"><span data-zh>论文</span><span data-en>Papers</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://nav.specul.com/"><span data-zh>导航</span><span data-en>Directory</span></a>
-      </nav>
-      <nav class="foot-legal" aria-label="Legal and corrections">
-        <a href="https://specul.com/legal.html"><span data-zh>法律</span><span data-en>Legal</span></a><span class="sep" aria-hidden="true">·</span>
-        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私</span><span data-en>Privacy</span></a><span class="sep" aria-hidden="true">·</span>
-        <a href="https://specul.com/correct.html"><span data-zh>纠错</span><span data-en>Corrections</span></a>
-      </nav>
-    </div>
-  </footer>
-<nav class="nav-tabbar nav-tabbar-1row" aria-label="快捷导航">
-    <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
-    <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学AI</span><span data-en>Learn</span></a>
-    <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
-    <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
-    <a href="https://demos.specul.com/"><span class="ti" aria-hidden="true">▷</span><span data-zh>演示</span><span data-en>Demos</span></a>
-    <a href="https://oss.specul.com/"><span class="ti" aria-hidden="true">▧</span><span data-zh>开源</span><span data-en>OSS</span></a>
-    <a href="https://hardware.specul.com/"><span class="ti" aria-hidden="true">▣</span><span data-zh>算力</span><span data-en>Chips</span></a>
-    <a href="https://papers.specul.com/"><span class="ti" aria-hidden="true">▥</span><span data-zh>论文</span><span data-en>Papers</span></a>
-    <a href="https://chain.specul.com/"><span class="ti" aria-hidden="true">◇</span><span data-zh>链</span><span data-en>Chain</span></a>
-    <a href="https://nav.specul.com/" data-nav-group="external"><span class="ti" aria-hidden="true">↗</span><span data-zh>导航</span><span data-en>Nav</span></a>
+<div class="panel is-slim">
+<h2><span data-zh="">出处</span><span data-en="">Sources</span></h2>
+<div class="tbl-wrap"><table><thead><tr><th><span data-zh="">来源</span><span data-en="">Source</span></th><th><span data-zh="">链接</span><span data-en="">URL</span></th></tr></thead><tbody>
+<tr><td><span data-zh="">本站 · 深水指南（上下文工程、RAG 全链路、选型方法；2026-11-03）</span><span data-en="">This site: context, retrieval and selection methods (2026-11-03)</span></td><td><a href="https://tools.specul.com/mcp/guides/planning.html" rel="noopener" target="_blank"><span data-zh="">https://tools.specul.com/mcp/guides/planning.html</span><span data-en="">https://tools.specul.com/mcp/guides/planning.html</span></a></td></tr>
+</tbody></table></div>
+<p class="guide-foot"><span data-zh="">资料快照日期：2026-11-03；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en="">Source snapshot: 2026-11-03; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
+</div>
+<p class="t-sm topics-line"><span data-zh="">这页出现在主题：</span><span data-en="">This page appears in: </span><a href="https://specul.com/topic-prompts.html"><span data-zh="">把 AI 用对</span><span data-en="">Use AI well</span></a></p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy"><span data-zh="">投机取巧 · specul.com</span><span data-en="">Specul · specul.com</span></span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt"><span data-zh="">内容 CC BY 4.0</span><span data-en="">Content CC BY 4.0</span></a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt"><span data-zh="">代码 MIT</span><span data-en="">Code MIT</span></a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank"><span data-zh="">源码</span><span data-en="">Source</span></a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/"><span data-zh="">首页</span><span data-en="">Home</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/"><span data-zh="">学 AI</span><span data-en="">Learn</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/"><span data-zh="">工具</span><span data-en="">Tools</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/"><span data-zh="">模型</span><span data-en="">Models</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/"><span data-zh="">演示</span><span data-en="">Demos</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/"><span data-zh="">开源</span><span data-en="">OSS</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/"><span data-zh="">算力</span><span data-en="">Compute</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/"><span data-zh="">论文</span><span data-en="">Papers</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/"><span data-zh="">链</span><span data-en="">Chain</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/"><span data-zh="">导航</span><span data-en="">Directory</span></a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/legal.html"><span data-zh="">法律</span><span data-en="">Legal</span></a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/legal.html#s8"><span data-zh="">隐私</span><span data-en="">Privacy</span></a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/correct.html"><span data-zh="">纠错</span><span data-en="">Corrections</span></a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/"><span aria-hidden="true" class="ti">◎</span><span data-zh="">首页</span><span data-en="">Home</span></a>
+<a href="https://learn.specul.com/"><span aria-hidden="true" class="ti">▤</span><span data-zh="">学AI</span><span data-en="">Learn</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span aria-hidden="true" class="ti">◈</span><span data-zh="">工具</span><span data-en="">Tools</span></a>
+<a href="https://models.specul.com/"><span aria-hidden="true" class="ti">▦</span><span data-zh="">模型</span><span data-en="">Models</span></a>
+<a href="https://demos.specul.com/"><span aria-hidden="true" class="ti">▷</span><span data-zh="">演示</span><span data-en="">Demos</span></a>
+<a href="https://oss.specul.com/"><span aria-hidden="true" class="ti">▧</span><span data-zh="">开源</span><span data-en="">OSS</span></a>
+<a href="https://hardware.specul.com/"><span aria-hidden="true" class="ti">▣</span><span data-zh="">算力</span><span data-en="">Chips</span></a>
+<a href="https://papers.specul.com/"><span aria-hidden="true" class="ti">▥</span><span data-zh="">论文</span><span data-en="">Papers</span></a>
+<a href="https://chain.specul.com/"><span aria-hidden="true" class="ti">◇</span><span data-zh="">链</span><span data-en="">Chain</span></a>
+<a data-nav-group="external" href="https://nav.specul.com/"><span aria-hidden="true" class="ti">↗</span><span data-zh="">导航</span><span data-en="">Nav</span></a>
 </nav>
 </body>
 </html>

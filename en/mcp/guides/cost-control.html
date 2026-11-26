@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Cost control for agents | Tools</title>
+<meta content="Where the money goes and how to curb it: token accounting, prefix caching, context bloat, and step caps — mechanisms only, no prices." name="description"/>
+<link href="https://tools.specul.com/en/mcp/guides/cost-control.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/mcp/guides/cost-control.html" property="og:url"/>
+<meta content="Cost control for agents | Tools" property="og:title"/>
+<meta content="Where the money goes and how to curb it: token accounting, prefix caching, context bloat, and step caps — mechanisms only, no prices." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Cost control for agents","description":"Where the money goes and how to curb it: token accounting, prefix caching, context bloat, and step caps — mechanisms only, no prices.","dateModified":"2026-10-30"}</script>
+<meta content="Cost control for agents | Tools" name="twitter:title"/><meta content="Where the money goes and how to curb it: token accounting, prefix caching, context bloat, and step caps — mechanisms only, no prices." name="twitter:description"/><link href="https://tools.specul.com/mcp/guides/cost-control.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/guides/cost-control.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/guides/cost-control.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/mcp/guides/cost-control.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<a class="back" href="/en/mcp/">← Guides</a>
+<div class="detail-head">
+<div>
+<h1>Cost control for agents</h1>
+<div class="vendor is-caps">Cost control</div>
+</div>
+</div>
+<div class="panel-lead"><p>Where the money goes and how to curb it: token accounting, prefix caching, context bloat, and step caps — mechanisms only, no prices.</p></div>
+<nav aria-label="Article contents" class="panel is-slim"><p>On this page</p><ul><li><a href="#guide-section-0">What this guide covers</a></li><li><a href="#guide-section-1">First, account for it</a></li><li><a href="#guide-section-2">Lever one: prefix caching</a></li><li><a href="#guide-section-3">Lever two: context hygiene</a></li><li><a href="#guide-section-4">Lever three: block before you pay</a></li><li><a href="#guide-section-5">Hidden costs</a></li></ul></nav>
+<div class="panel is-slim" id="guide-section-0">
+<h2>What this guide covers</h2>
+<p><strong>An agent's cost is tokens times steps, times the context each step carries.</strong> Three factors, three levers: cut useless tokens, shorten the context, cap the steps. This guide covers only mechanisms and practices, and cites no price numbers — for actual prices go to each vendor's official pricing page.</p>
+</div>
+<div class="panel is-slim" id="guide-section-1">
+<h2>First, account for it</h2>
+<p>If you don't know where the money goes, saving is out of the question. OpenAI's caching docs model the minimal accounting unit: each response's usage reports four token classes separately — input, output, cache write, cache read. Build the ledger on these four first, then talk optimization — otherwise you can't even tell "did the cache hit at all".</p>
+<p>A typical cost structure:</p>
+<ol><li value="1">Input tokens: longer history costs more; in multi-turn conversations this is often the bulk.</li><li value="2">Output tokens: usually pricier per token than input, but the total is controllable.</li><li value="3">Steps: every agent step is a full call; loop ten times, pay ten times.</li><li value="4">Tool round-trips: every tool call's definition and result enter the context.</li></ol>
+</div>
+<div class="panel is-slim" id="guide-section-2">
+<h2>Lever one: prefix caching</h2>
+<p>Sending the same content to the model over and over is the biggest waste. Mainstream vendors' answer is <strong>prefix caching</strong>: cache and reuse the exactly-identical opening of requests.</p>
+<p><strong>OpenAI</strong>: caching applies automatically to eligible requests, no code changes. A hit requires the prefix to match exactly. <strong>OpenAI official text</strong>: "Cache hits are only possible for exact prefix matches within a prompt."</p>
+<p>The official advice: put static content (instructions, examples) at the start of the prompt, changing content (user information) at the end. On GPT-5.6 and later models explicit cache breakpoints are also supported, and <code>prompt_cache_key</code> routes requests sharing a long prefix together. Caching is bucketed in the usage ledger as <code>cached_tokens</code>.</p>
+<p><strong>Anthropic</strong>: mark cache breakpoints with <code>cache_control</code>; cacheable parts include tool definitions, the system prompt, and conversation messages. There is a minimum-length threshold; below it caching is silently skipped, no error. Caches have a lifetime — short by default, renewed on hit.</p>
+<p>The cache is organized in the hierarchy tools → system → messages; changing a layer invalidates that layer and everything after it. The <code>cache_creation_input_tokens</code> and <code>cache_read_input_tokens</code> in responses are the ledger of caching's effect.</p>
+<p>Two universal disciplines: <strong>static first, change last</strong>; <strong>confirm the hit before celebrating</strong> — lots of creation and little reading means the prefix never stayed stable.</p>
+</div>
+<div class="panel is-slim" id="guide-section-3">
+<h2>Lever two: context hygiene</h2>
+<p>Context bloat is the invisible driver of agent cost. Several documented measures:</p>
+<p><strong>Summary continuation</strong>: compress a long conversation into a summary and continue, rather than continuing in full. That is compression, not memory — see the boundary discussion in the <a href="/en/mcp/guides/agent-memory.html">memory systems</a> guide.</p>
+<p><strong>Recall on demand</strong>: do not stuff whole knowledge-base articles into the prompt; retrieve only when needed — the RAG-server approach, see the <a href="/en/mcp/context7.html">context7</a> dossier.</p>
+<p><strong>Wrap up promptly</strong>: stop when the task is done; don't let the agent idle through "one more check". Step caps must be hard-set at the harness layer; do not count on the model's self-discipline.</p>
+<p><strong>Tier the models</strong>: use fast small models for simple steps (classification, extraction), big models only for hard ones. <strong>OpenAI official text</strong>: the guardrails docs' example uses a fast economical model to check first, "saving time and money", standing in front of the expensive model.</p>
+</div>
+<div class="panel is-slim" id="guide-section-4">
+<h2>Lever three: block before you pay</h2>
+<p>The cheapest call is the one that never happens. The OpenAI Agents SDK's guardrails have two execution modes with completely different cost semantics.</p>
+<p><strong>Parallel execution</strong> (default): the guardrail and the agent run together, lowest latency. But when it trips, the agent may already have burned tokens and executed tools.</p>
+<p><strong>Blocking execution</strong>: the guardrail finishes first, the agent starts after. Trip and halt — no tokens spent, no tool side effects. <strong>OpenAI official text</strong>: blocking execution "is ideal for cost optimization and when you want to avoid potential side effects from tool calls". For "malicious input should never reach the expensive model" scenarios, blocking execution is the clearly cheaper choice.</p>
+<p>Note output guardrails do not support the parallel flag — they always run after the agent completes.</p>
+</div>
+<div class="panel is-slim" id="guide-section-5">
+<h2>Hidden costs</h2>
+<p><strong>Anthropic official text</strong>: "Agentic systems often trade latency and cost for better task performance."</p>
+<p>Latency is also a cost — users who cannot wait will leave. And the rework cost of compounding errors: one step wrong, every later step wrong, and the bill for ten reruns can exceed one big-model answer done directly. Do the total accounting first, then decide which segment to save.</p>
+</div>
+<nav aria-label="What to do next" class="panel is-slim">
+<h2>What to do next</h2><ul>
+<li><a href="/en/mcp/guides/cost-calculator.html">Enter and recalculate cost assumptions</a></li>
+<li><a href="https://learn.specul.com/en/guide/%E6%80%8E%E4%B9%88%E9%AA%8C%E8%AF%81%20AI%20%E7%9A%84%E8%BE%93%E5%87%BA/">Verify the result and its sources</a></li>
+<li><a href="/en/mcp/guides/failure-library.html#by-symptom">Troubleshoot by symptom</a></li>
+</ul></nav>
+<div class="panel is-slim">
+<h2>Sources</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Source</th><th>URL</th></tr></thead><tbody>
+<tr><td>OpenAI official docs · Prompt caching (verified via official-page snapshot 2026-10-30, fetched 200 via proxy; direct access still blocked by Cloudflare)</td><td><a href="https://developers.openai.com/docs/guides/prompt-caching" rel="noopener" target="_blank">https://developers.openai.com/docs/guides/prompt-caching</a></td></tr>
+<tr><td>Anthropic official docs · Prompt caching (verified via official-page snapshot 2026-10-30, fetched 200 via proxy; direct access still blocked by regional policy)</td><td><a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching" rel="noopener" target="_blank">https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching</a></td></tr>
+<tr><td>OpenAI Agents SDK official docs · Guardrails (direct fetch 200 on 2026-10-30)</td><td><a href="https://openai.github.io/openai-agents-python/guardrails/" rel="noopener" target="_blank">https://openai.github.io/openai-agents-python/guardrails/</a></td></tr>
+<tr><td>Anthropic engineering blog · Building effective agents (official page verified via WebFetch on 2026-10-30)</td><td><a href="https://www.anthropic.com/engineering/building-effective-agents" rel="noopener" target="_blank">https://www.anthropic.com/engineering/building-effective-agents</a></td></tr>
+</tbody></table></div>
+<p class="guide-foot">Source snapshot: 2026-10-30; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</p>
+</div>
+<p class="t-sm topics-line">This page appears in: <a href="https://specul.com/en/topic-music.html">Make music with AI</a></p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

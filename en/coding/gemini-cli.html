@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Gemini CLI | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/gemini-cli.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/gemini-cli.html" property="og:url"/>
+<meta content="Gemini CLI | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Gemini CLI | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/coding/gemini-cli.html","sameAs":"https://github.com/google-gemini/gemini-cli","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Gemini CLI | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/gemini-cli.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/gemini-cli.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/gemini-cli.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/gemini-cli.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#4285F4"'>GE</div>
+<div>
+<h1>Gemini CLI</h1>
+<div class="vendor is-caps">Google</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Coding</span>
+<span class="tag on">Terminal</span>
+<span class="tag on">Local</span>
+<span class="tag on">Open source</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Google's official open-source terminal agent — npx, no install required. Explicit MCP…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · CLI</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>The concrete available model list and version mapping — the official README does not list them fully (configuration page checked)</li>
+<li>The semantic-indexing (RAG) algorithm and large-repo performance — not stated officially</li>
+</ul>
+</div>
+<div class="panel-lead"><p>Google's official open-source terminal agent — npx, no install required. Explicit MCP support, plus a non-interactive script mode.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Three scenarios fit:</p></div>
+<div><ul><li>You want a quick trial without installing anything (npx leaves no install footprint)</li><li>You need MCP extensions, especially wiring Gemini's multimodal generation (Imagen / Veo / Lyria) into an agent workflow</li><li>You need scripted non-interactive runs, for example in CI</li></ul></div>
+<div><p>Three kinds of people also fit:</p></div>
+<div><ul><li>Anyone who needs a large context window — 1M tokens, one of the few in this track that states a limit</li><li>Anyone who needs a revert guarantee — shadow Git checkpoints plus <code>/restore</code></li><li>Anyone who needs a project-level long-term instruction file — GEMINI.md</li></ul></div>
+<div class="warn-p"><p><strong>Not a fit for</strong> treating quota as unlimited. The free tier has clear daily limits: 6,000 code requests + 240 chats/day. And CLI and agent-mode quota are counted together.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　Hosted on GitHub — direct reachability from mainland fluctuates (200/000 mixed on the same day); npm / PyPI install routes measured stable.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>Uses Google's own Gemini family</strong>; models can be switched. The context ceiling is explicitly stated as 1M tokens.</p>
+<p><strong>README first-screen wording</strong>: "Powerful Gemini 3 models: Access to improved reasoning and 1M token context window"</p>
+<p><strong>Switching models</strong>: specify via <code>gemini -m gemini-2.5-flash</code> on the command line. When signing in with a Gemini API Key, the official description is:</p>
+<p><strong>"Model selection</strong>: Choose specific Gemini models"</p>
+<p><strong>Three access modes</strong> (README "Authentication Options"):</p>
+<ul><li><strong>Google account OAuth login</strong> — the free tier uses this: 60 requests/min, 1,000 requests/day, no key to manage</li><li><strong>Gemini API Key</strong> — get a key in AI Studio, pay per usage</li><li><strong>Vertex AI</strong> — for enterprises, requires a project and region</li></ul>
+<p><strong>Model routing</strong>: Plan Mode can use <code>general.plan.modelRouting</code>. It switches automatically between Pro (planning) and Flash (implementation). There is also experimental Local Model Routing (Gemma).</p>
+<p><strong>The exact list of switchable models on the CLI side and their version mapping: the official docs do not give a complete list.</strong> (Repository docs and the reference/configuration page both checked.)</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>A local process, running in the terminal, launchable without installation via npx.</strong></p>
+<p>The official docs make "no installation" a first-screen selling point of the repository — this is how it lowers the entry barrier.</p>
+<p><strong>README wording</strong>: "Using npx (no installation required)"</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>Built-in file tools default to the workspace as root, with a clear boundary.</strong></p>
+<p><strong>Official "File system tools" page wording</strong>: All file system tools operate within a <code>rootDirectory</code> (the current working directory or workspace root) for security</p>
+<p>Tool set:</p>
+<ul><li><code>list_directory</code></li><li><code>read_file</code> — supports text / images / audio / PDF</li><li><code>write_file</code></li><li><code>replace</code></li><li><code>glob</code></li><li><code>grep_search</code></li></ul>
+<p>Which ones need your nod to act:</p>
+<ul><li><code>write_file</code> and <code>replace</code> — officially marked "Requires manual user approval"</li></ul>
+<p><strong>Extending directories</strong>: launch with <code>gemini --include-directories ../lib,../docs</code>. Within a session use <code>/directory add &lt;path&gt;</code> (disabled under restricted sandbox configs).</p>
+<p><strong>Ignore boundary</strong>: respects <code>.gitignore</code>, and supports <code>.geminiignore</code> with the same syntax.</p>
+<p><strong>Changes are revertible</strong>: when you approve a file-changing tool, the CLI commits a snapshot. It lands in a shadow Git repository, not interfering with your own project repo. <code>/restore</code> reverts.</p>
+<p><strong>The repo location recorded on the checkpointing page</strong>: <code>~/.gemini/history/&lt;project_hash&gt;</code></p>
+<p><strong>Original wording</strong>: "It does <strong>not</strong> interfere with your own project's Git repository"</p>
+<p><strong>The semantic-indexing (Code Customization / RAG) algorithm and large-repo time cost are not stated officially.</strong> (file-system and configuration pages checked; only debug switches like <code>general.logRagSnippets</code> exist.)</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>A local CLI; it cannot keep running after shutdown.</strong></p>
+<p><strong>Non-interactive / headless is scripting, not background.</strong> It still runs on your own machine.</p>
+<p><strong>Official "Headless mode" page wording</strong>: "Headless mode provides a programmatic interface to Gemini CLI... without an interactive terminal UI"</p>
+<p>Triggers:</p>
+<ul><li>non-TTY environments</li><li><code>-p/--prompt</code></li></ul>
+<p>Output can be JSON or stream-json for CI and automation to consume.</p>
+<p><strong>The execution environment is yours</strong>: the official docs provide no vendor-hosted resident execution environment. The GitHub Action in the repository also runs on your repo's CI runners.</p>
+<p><strong>Interruption is recoverable</strong>: checkpointing and <code>/chat save</code> / <code>/resume</code> can save and restore sessions. The switch is <code>general.checkpointing.enabled</code>. <code>general.sessionRetention</code> defaults to 30 days. Expired sessions are cleaned up automatically.</p>
+<p><strong>Quota</strong> is exactly the daily request ceilings in the official usage policy. The official docs set no separate cloud quota.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>MCP is explicitly supported and is one of its headline features.</strong></p>
+<p><strong>README wording</strong>: "🔌 Extensible: MCP (Model Context Protocol) support for custom capabilities"</p>
+<p>MCP has its own docs page: <code>/docs/tools/mcp-server</code>. The example it gives is using MCP to connect multimodal generation:</p>
+<p>"Use MCP servers to connect new capabilities, including media generation with Imagen, Veo or Lyria"</p>
+<p>This example deserves its own note: here MCP is not just connecting tools, it can also connect Google's multimodal generation capabilities (image / video / audio). This usage is not emphasized on the first screen of other CLI tools' repositories.</p>
+<p>Built-in tool list:</p>
+<ul><li><strong>Google Search grounding</strong></li><li><strong>shell</strong></li></ul>
+<p>There is also <strong>non-interactive mode for script automation</strong>. The official docs have a dedicated section <strong>"Non-interactive mode for scripts"</strong>.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>1M-token context + layered GEMINI.md context + automatic history compression — all three have dedicated official pages.</strong></p>
+<p><strong>Context window</strong>: the README first screen says Gemini 3 models with 1M token context window.</p>
+<p><strong>Context layers</strong> (official "GEMINI.md" page):</p>
+<ul><li>① global <code>~/.gemini/GEMINI.md</code></li><li>② <code>GEMINI.md</code> in workspace directories and their parents</li><li>③ JIT — when a tool accesses a directory, it scans that directory's and its ancestors' <code>GEMINI.md</code> (up to the trusted root)</li></ul>
+<p>The file name can be changed via <code>context.fileName</code> (e.g. AGENTS.md / CONTEXT.md).</p>
+<p><strong>GEMINI.md page</strong>: supports imports via <code>@file.md</code> syntax. <code>/memory show</code> and <code>/memory reload</code> inspect and reload.</p>
+<p><strong>Compaction strategy verified</strong> (official core page):</p>
+<p>"When a conversation approaches the token limit... the core automatically compresses the conversation history"</p>
+<p>The threshold is controlled by <code>model.compressionThreshold</code>. The default is 0.5. You can also <code>/compress</code> to manually replace the whole context with a summary.</p>
+<p><strong>Cross-session memory</strong>: the official Memory tool writes durable facts into <code>GEMINI.md</code> (project / global two levels), injected into later sessions via the layered context. Token caching is only available to API key / Vertex users.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>Sandbox, approvals and trusted folders each have dedicated official pages — the most finely documented permission surface in this section.</strong></p>
+<p><strong>Sandbox</strong>: the official "Sandboxing" page gives these mechanisms.</p>
+<ul><li>macOS Seatbelt — default profile <code>permissive-open</code>: deny by default, writes limited to the project directory, but reads and network allowed</li><li>Docker / Podman</li><li>native Windows</li><li>gVisor / runsc</li><li>LXC / LXD (experimental)</li></ul>
+<p>Enabling:</p>
+<ul><li><code>-s/--sandbox</code></li><li><code>GEMINI_SANDBOX</code></li><li><code>tools.sandbox</code></li></ul>
+<p>Tool-level additionally has <code>security.toolSandboxing</code>.</p>
+<p><strong>Sandbox expansion</strong>: when a command fails due to permission limits, a <strong>"Sandbox Expansion Request"</strong> pops up. Approving case by case relaxes it temporarily. Out-of-bounds directories can be mounted via <code>SANDBOX_MOUNTS</code>.</p>
+<p><strong>Approval modes</strong> (configuration page): <code>general.defaultApprovalMode</code> has three values:</p>
+<ul><li><code>default</code> — ask each time</li><li><code>auto_edit</code></li><li><code>plan</code> — read-only</li></ul>
+<p><code>--yolo</code> (auto-approve everything) can only be enabled on the command line.</p>
+<p><strong>Policy engine</strong> ("Policy engine" page): <code>~/.gemini/policies/*.toml</code> defines <code>allow</code> / <code>deny</code> / <code>ask_user</code> via rules. Match conditions can key on tool name, arguments, approval mode, and interactive / non-interactive environment. Rules have four tiers: Default / Extension / User / Admin. Admin can force-override.</p>
+<p><strong>Trusted Folders</strong>: <strong>off by default</strong>. The switch is <code>security.folderTrust.enabled</code>. When untrusted it enters safe mode — ignoring workspace <code>.gemini/settings.json</code> and <code>.env</code>, disabling tool auto-accept, not connecting MCP, not loading custom commands. To bypass in CI there are two routes:</p>
+<ul><li><code>--skip-trust</code></li><li><code>GEMINI_CLI_TRUST_WORKSPACE=true</code></li></ul>
+<p>The configuration page also has an environment-variable redaction section.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Fits three scenarios:</p>
+<ul><li>wanting an install-free quick trial (npx, leaving no installation trace)</li><li>needing MCP extensions, especially wiring Gemini's multimodal generation (Imagen / Veo / Lyria) into an agent workflow</li><li>needing scripted non-interactive runs, e.g. wiring into CI</li></ul>
+<p>Three more kinds of people also fit:</p>
+<ul><li>those needing a large context window — 1M tokens, one of the few in this section with an explicit ceiling stated</li><li>those needing a "changes are revertible" guarantee — shadow-Git checkpoints plus <code>/restore</code></li><li>those needing a project-level standing instruction file — GEMINI.md</li></ul>
+<p><strong>Not a fit</strong> for treating the quota as unlimited. The free tier has explicit daily ceilings: 6,000 code requests + 240 chats/day. And CLI and proxy-mode quotas are counted together.</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Assuming open source means unlimited use — the free tier has clear daily limits (6,000 code requests + 240 chats/day)</li>
+<li>Assuming the npx form pollutes your local environment — it runs temporarily with no install</li>
+<li>Overlooking MCP support — the repository README lists it explicitly as an extensibility feature</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-09-29。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>Google · Gemini CLI repository README</td><td><a href="https://github.com/google-gemini/gemini-cli" rel="noopener" target="_blank">https://github.com/google-gemini/gemini-cli</a></td></tr>
+<tr><td>changelog</td><td>Google · Gemini CLI Releases</td><td><a href="https://github.com/google-gemini/gemini-cli/releases" rel="noopener" target="_blank">https://github.com/google-gemini/gemini-cli/releases</a></td></tr>
+<tr><td>docs</td><td>Google · Gemini CLI official documentation</td><td><a href="https://google-gemini.github.io/gemini-cli/" rel="noopener" target="_blank">https://google-gemini.github.io/gemini-cli/</a></td></tr>
+<tr><td>docs</td><td>Official docs · Sandboxing (-s/GEMINI_SANDBOX, Seatbelt default profile permissive-open, Docker/Podman/Windows/gVisor/LXC, toolSandboxing, Sandbox Expansion)</td><td><a href="https://www.geminicli.com/docs/cli/sandbox" rel="noopener" target="_blank">https://www.geminicli.com/docs/cli/sandbox</a></td></tr>
+<tr><td>docs</td><td>Official docs · Trusted Folders (off by default, safe-mode prohibitions, --skip-trust, GEMINI_CLI_TRUST_WORKSPACE)</td><td><a href="https://www.geminicli.com/docs/cli/trusted-folders" rel="noopener" target="_blank">https://www.geminicli.com/docs/cli/trusted-folders</a></td></tr>
+<tr><td>docs</td><td>Official docs · Policy Engine (~/.gemini/policies/*.toml, allow/deny/ask_user tiers)</td><td><a href="https://www.geminicli.com/docs/reference/policy-engine" rel="noopener" target="_blank">https://www.geminicli.com/docs/reference/policy-engine</a></td></tr>
+<tr><td>docs</td><td>Official docs · GEMINI.md (three-layer context hierarchy, @file.md imports, context.fileName, /memory)</td><td><a href="https://www.geminicli.com/docs/cli/gemini-md" rel="noopener" target="_blank">https://www.geminicli.com/docs/cli/gemini-md</a></td></tr>
+<tr><td>docs</td><td>Official docs · Core (chat history compression: automatic compaction, model.compressionThreshold)</td><td><a href="https://www.geminicli.com/docs/core" rel="noopener" target="_blank">https://www.geminicli.com/docs/core</a></td></tr>
+<tr><td>docs</td><td>Official docs · Headless mode (-p/--prompt, JSON / stream-json, exit codes)</td><td><a href="https://www.geminicli.com/docs/cli/headless" rel="noopener" target="_blank">https://www.geminicli.com/docs/cli/headless</a></td></tr>
+<tr><td>docs</td><td>Official docs · Checkpointing (shadow-Git snapshot on approving file-changing tools, /restore, off by default)</td><td><a href="https://www.geminicli.com/docs/cli/checkpointing" rel="noopener" target="_blank">https://www.geminicli.com/docs/cli/checkpointing</a></td></tr>
+<tr><td>docs</td><td>Official docs · File system tools (tool set, rootDirectory boundary, write/replace need approval)</td><td><a href="https://www.geminicli.com/docs/tools/file-system" rel="noopener" target="_blank">https://www.geminicli.com/docs/tools/file-system</a></td></tr>
+<tr><td>docs</td><td>Official docs · Memory files (durable facts written into GEMINI.md, project/global two levels)</td><td><a href="https://www.geminicli.com/docs/tools/memory" rel="noopener" target="_blank">https://www.geminicli.com/docs/tools/memory</a></td></tr>
+<tr><td>docs</td><td>Official docs · Ignoring files (.geminiignore)</td><td><a href="https://www.geminicli.com/docs/cli/gemini-ignore" rel="noopener" target="_blank">https://www.geminicli.com/docs/cli/gemini-ignore</a></td></tr>
+<tr><td>docs</td><td>Official docs · Token caching (API key / Vertex users only)</td><td><a href="https://www.geminicli.com/docs/cli/token-caching" rel="noopener" target="_blank">https://www.geminicli.com/docs/cli/token-caching</a></td></tr>
+<tr><td>docs</td><td>Official docs · Configuration (approval mode, sandbox, checkpointing, sessionRetention, context.fileName, RAG logging switch)</td><td><a href="https://www.geminicli.com/docs/reference/configuration" rel="noopener" target="_blank">https://www.geminicli.com/docs/reference/configuration</a></td></tr>
+<tr><td>docs</td><td>Google · Gemini CLI MCP Server docs</td><td><a href="https://www.geminicli.com/docs/tools/mcp-server" rel="noopener" target="_blank">https://www.geminicli.com/docs/tools/mcp-server</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong>: focus on three things (capabilities officially advertised but not yet verified here):</p>
+<ol><li value="1"><strong>the actual startup speed of npx no-install launch</strong></li><li value="2"><strong>whether non-interactive mode really works in CI (no TTY) environments</strong></li><li value="3"><strong>shadow-Git checkpoint behavior on Windows</strong> — the docs say the path is <code>~/.gemini/history/</code>; whether Windows has compatibility issues is pending verification</li></ol>
+</div>
+<div class="panel is-slim">
+<h2>Release-channel note</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Version</th><th>Date</th></tr></thead><tbody><tr><td><code>v0.63.0-nightly.20260929.gfe6350238</code></td><td>2026-09-29</td></tr></tbody></table></div>
+<p><strong>Note the version shape</strong>: it publishes <code>nightly</code> tags, with the commit hash embedded in the version number. That means it follows nightly rolling releases. When citing a version number, write it in full — do not abbreviate to <code>v0.63.0</code>. Nightly patch contents differ day by day.</p>
+</div>
+<div class="panel is-slim">
+<h2>Three explicit engineering capabilities</h2>
+<h3 class="sub-h">① npx, no installation</h3>
+<blockquote>README wording: "Using npx (no installation required)"</blockquote>
+<p>This is a design that lowers the usage barrier — good for quick trials or temporary use, leaving no installation trace locally.</p>
+<h3 class="sub-h">② MCP support is an officially labeled core feature</h3>
+<p><strong>MCP is marked as a core feature</strong>, symbolized by that plug icon:</p>
+<blockquote>"🔌 Extensible: MCP (Model Context Protocol) support for custom capabilities"</blockquote>
+<p><strong>It also uses MCP to connect multimodal generation</strong>:</p>
+<blockquote>"Use MCP servers to connect new capabilities, including media generation with Imagen, Veo or Lyria"</blockquote>
+<p><strong>This example deserves its own note</strong>: MCP here is not just connecting tools; it can also connect Google's multimodal generation capabilities (image / video / audio). This is a usage other CLI tools do not emphasize on their repository first screens.</p>
+<p>The official docs have a dedicated page: <code>/docs/tools/mcp-server</code></p>
+<h3 class="sub-h">③ Non-interactive mode</h3>
+<p>The README has a dedicated section <strong>"Non-interactive mode for scripts"</strong>, positioned as workflow automation.</p>
+<p><strong>This is the only one of the three CLI tools that spells out non-interactive capability on the repository first screen</strong> — a signal of CI-integration friendliness.</p>
+</div>
+<div class="panel is-slim">
+<h2>Permission-grading note</h2>
+<p>Why <code>confidence: partial</code>:</p>
+<ul><li>✅ <strong>verified</strong>: repository, license (Apache-2.0), version shape and date, star count (107,524 · rolling check 2026-10-23), MCP support and its docs page, non-interactive mode, npx install method, the official example of MCP connecting multimodal generation</li></ul>
+<ul><li>✅ <strong>added in the 2026-10-08 round</strong>: quota policy (Code Assist individuals 6,000/240 etc.), three access modes and <code>-m</code> model switching, GEMINI.md three-layer context and automatic history compression, sandbox / approvals / trusted folders / policy engine permission mechanics</li></ul>
+<ul><li>❌ <strong>not verified</strong>: the complete list of switchable models on the CLI side and version mapping (not fully listed officially), the semantic-indexing (RAG) algorithm and large-repo time cost (not stated officially)</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Two things worth noting separately</h2>
+<h3 class="sub-h">① Checkpoints use shadow Git, not polluting your repo</h3>
+<p>When you approve a file-changing tool (<code>write_file</code> / <code>replace</code>), the CLI commits a snapshot.</p>
+<ul><li>the snapshot repo lives at <code>~/.gemini/history/&lt;project_hash&gt;</code></li><li>it is a <strong>separate Git repository</strong>; it will not touch your project repo</li><li>to revert, use <code>/restore</code></li></ul>
+<p>The source is the checkpointing doc:</p>
+<blockquote>original wording: "It does <strong>not</strong> interfere with your own project's Git repository"</blockquote>
+<p>This is one of the few in this section that builds the "safety net" into the mechanism — most tools rely on "auto-committing into your repo" or "letting you undo yourself".</p>
+<h3 class="sub-h">② GEMINI.md is the project-level standing instruction</h3>
+<p>It is like writing "how this project does things" into a file; multiple forms (CLI / VS Code / JetBrains) all read it. This is the same class of mechanism as Cline's <code>.clinerules</code> and Claude Code's CLAUDE.md — <strong>worth a cross-tool comparison</strong>.</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/codex-cli.html">Codex CLI</a></span><span class="rel-n">the analogous OpenAI official tool</span></li>
+<li><span class="rel-t"><a href="/en/coding/crush.html">Crush</a></span><span class="rel-n">a similar tool; its MCP transport documentation is more granular</span></li>
+<li><span class="rel-t"><a href="/en/framework/google-adk.html">Google ADK（Agent Development Kit）</a></span><span class="rel-n">Other layer · Frameworks &amp; runtimes</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/amp.html">Amp</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Sourcegraph's Amp: a frontier coding agent spanning CLI + cloud orbs + r</td></tr><tr><td><a href="/en/coding/claude-code-cli.html">Claude Code CLI</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A terminal coding and tool-execution product, with a CHANGELOG and Atom </td></tr><tr><td><a href="/en/coding/codex-cli.html">Codex CLI</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">OpenAI's official terminal coding agent, written in Rust, architecturall</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from Google</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/automation/vertex-agent-builder.html"><span class="vp-cat">Automation</span>Vertex AI Agent Builder</a></li><li><a href="/en/chat/gemini-chat.html"><span class="vp-cat">General chat</span>Gemini (chat app)</a></li><li><a href="/en/coding/google-antigravity.html"><span class="vp-cat">AI coding</span>Google Antigravity</a></li><li><a href="/en/coding/jules.html"><span class="vp-cat">AI coding</span>Jules</a></li><li><a href="/en/framework/google-adk.html"><span class="vp-cat">Frameworks &amp; runtimes</span>Google ADK（Agent Development Kit）</a></li><li><a href="/en/mcp/chrome-devtools-mcp.html"><span class="vp-cat">MCP tools</span>Chrome DevTools MCP</a></li><li><a href="/en/office/google-workspace-gemini.html"><span class="vp-cat">Office &amp; writing</span>Google Workspace Gemini</a></li><li><a href="/en/research/notebooklm.html"><span class="vp-cat">Deep research</span>NotebookLM</a></li><li><a href="/en/video/veo.html"><span class="vp-cat">Video generation</span>Veo (Google)</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

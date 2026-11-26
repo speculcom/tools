@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>n8n | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/automation/n8n.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/automation/n8n.html" property="og:url"/>
+<meta content="n8n | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"n8n | Tools","applicationCategory":"DeveloperApplication","sameAs":"https://n8n.io","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-30"}</script>
+<meta content="n8n | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/automation/n8n.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/automation/n8n.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/automation/n8n.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/automation/n8n.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Automation</span>
+</nav>
+<a class="back" href="/en/automation/">← Automation</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#a3e635">N8</div>
+<div>
+<h1>n8n</h1>
+<div class="vendor is-caps">n8n GmbH</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Low-code</span>
+<span class="tag on">Workflows</span>
+<span class="tag on">fair-code</span>
+<span class="tag on">Self-hosted</span>
+<span class="tag on">MCP</span>
+<span class="tag on">Integration ecosystem</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-30</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>n8n is an automation-first low-code workflow platform — AI is one node type among…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · Web service</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Restricted</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>The full LLM-provider catalog covered by AI nodes (official nodes docs official docs do not itemize every sub-detail)</li>
+<li>Cross-workflow persistent memory mechanisms (no official documentation found)</li>
+<li>The exact count behind the official "hundreds of integrations" (official docs do not itemize every sub-detail)</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>n8n is an automation-first low-code workflow platform</strong> — AI is one node type among many, not its identity. The most misread part is the license: source is public, but it is <strong>fair-code (Sustainable Use License)</strong>, not OSI open source.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>A fit for: cross-system automation as the main axis, embedding AI nodes into existing flows, self-hosting for data control. <strong>Not a fit for</strong> packaging n8n into your product and selling it to clients (requires a commercial agreement); pure code orchestration (go to the framework category); out-of-the-box multi-tenant SaaS (Community has no sharing).</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-30</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　n8n GmbH (Berlin).</dd>
+<dt>Direct access</dt><dd>direct OK　docs.n8n.io / support.n8n.io measured 200 direct (2026-10-21).</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (searched 2026-10-21); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p>The platform ships no model itself; AI nodes reach external LLMs via per-vendor credentials (OpenAI, Anthropic, Google etc. through the LangChain node family and dedicated nodes); the node coverage list has not been verified item by item — the official nodes docs are authoritative. When self-hosted, model credentials live on your own instance.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p>Two official forms: self-hosted (Docker/npm, free Community edition with no execution cap) and n8n Cloud managed subscription. Self-hosted queue mode (worker scaling) is included in Community; multi-main HA belongs to paid tiers (official choose-n8n framing, 2026-10 third-party paraphrase cross-checked against official docs).</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>A self-hosted instance runs on your own machine/server — workflow data, credentials and execution logs all land in your own environment; external storage for binary data (S3 etc.) is a paid tier. In the Cloud form, data sits in n8n's cloud.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p>Workflows are executed by the instance: a continuously running self-hosted instance carries scheduled and webhook triggers; the official docs provide Cron/queue mechanisms. "Keeps running when your laptop is off" depends on where you run the instance — the platform does not hold executions for you after shutdown.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p>The core is the integration-node ecosystem (officially "hundreds of integrations", official docs do not itemize every sub-detail); MCP is named explicitly in the official license FAQ ("configuring workflows through the n8n editor, your UI, the n8n API, MCP or an AI agent" is one of the commercial-license scenarios) — MCP is an officially supported usage surface.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p>In-workflow data transformation and sub-workflow passing are the main axis; cross-workflow persistent memory mechanisms have not been verified item by item (unknown means unknown). Credentials and execution data persist per instance.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p>Self-hosted permission boundary = your instance boundary; in Community, workflows/credentials are accessible only to their creator and the instance owner (sharing is a paid tier). Enterprise SSO/RBAC unlocks via Business/Enterprise license keys. The license boundary matters more than the permission boundary: SUL's three restrictions see the license field.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Fits: cross-system automation as the main axis, embedding AI nodes into existing flows, self-hosting to control data. Does not fit: wrapping n8n into your product to sell to customers (needs a commercial agreement); pure-code orchestration (go to framework); out-of-the-box multi-tenant SaaS (Community has no sharing).</p></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>Sustainable Use License (fair-code, not OSI open source): free to use, modify and redistribute for internal business or non-commercial purposes; distribution must be free of charge and non-commercial; offering n8n for others to build on, or hosting it for pay, requires a commercial agreement; files containing .ee. fall under the n8n Enterprise License.</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Account and permissions</a> · <a href="/en/mcp/guides/failure-library.html#rate-limit">Rate limits and retries</a> · <a href="/en/mcp/guides/failure-library.html#files">File-reading issues</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Reading “source available” as “open source” — SUL is fair-code with hard limits beyond internal business use</li>
+<li>Hosting n8n for clients for money — explicitly not allowed under SUL, needs the n8n Embed agreement</li>
+<li>Assuming Community supports team workflow sharing — sharing/projects/SSO are paid tiers</li>
+<li>Treating AI capability as a standalone product — n8n's axis is automation; AI is one node type</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-30，Content updated 2026-10-21。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>docs</td><td>n8n · Community license official page (SUL's three restrictions, the .ee. file exception, and the lineage from the old Apache+Commons Clause)</td><td><a href="https://docs.n8n.io/n8n-community-license" rel="noopener" target="_blank">https://docs.n8n.io/n8n-community-license</a></td></tr>
+<tr><td>docs</td><td>n8n help center · Which license do I need (internal-business-use case rulings, MCP named explicitly, customers may not open the editor)</td><td><a href="https://support.n8n.io/article/can-i-use-your-license-for-my-use-case" rel="noopener" target="_blank">https://support.n8n.io/article/can-i-use-your-license-for-my-use-case</a></td></tr>
+<tr><td>repo</td><td>n8n-io/n8n · repository (208,219★, last push 2026-10-21, verified via GitHub API)</td><td><a href="https://github.com/n8n-io/n8n" rel="noopener" target="_blank">https://github.com/n8n-io/n8n</a></td></tr>
+<tr><td>changelog</td><td>n8n · Release notes (version iteration records entry point)</td><td><a href="https://docs.n8n.io/release-notes/" rel="noopener" target="_blank">https://docs.n8n.io/release-notes/</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The closest test protocol is the code-side <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" rel="noopener" target="_blank">protocols/framework/_protocol.md</a> (the tool-calling and credential-boundary sections are reusable; no workflow-platform-specific protocol exists on this site yet).</p>
+</div>
+<div class="panel is-slim">
+<h2>The license is the page to read first</h2>
+<p>The official Community license page states SUL's three restrictions (key points paraphrased): use only for <strong>your own internal business or non-commercial personal purposes</strong>; redistribution must be <strong>free of charge and non-commercial</strong>; the license and copyright notices may not be removed. Files whose names contain <code>.ee.</code> fall under the Enterprise License.</p>
+<p>The official help center adds case-law-style guidance: running workflows for a client on your own instance while the client only receives the results — allowed; the client entering the editor or configuring workflows through your UI/API/MCP/AI agent — requires a commercial agreement (n8n Embed).</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/framework/openai-agents-sdk.html">OpenAI Agents SDK</a></span><span class="rel-n">Code-first vs canvas-first contrast: the same "let AI call tools to do work" — one side writes code, the other drags nodes.</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/automation/activepieces.html">Activepieces</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Activepieces is an open-source low-code automation platform: MIT Expat f</td></tr><tr><td><a href="/en/automation/autogpt.html">AutoGPT (now the Experts AI-team platform)</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">AutoGPT's current form is "your team of AI Experts" (same-day homepage h</td></tr><tr><td><a href="/en/automation/dify.html">Dify</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Dify is the China-origin, globally-facing agentic workflow platform: pro</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Claude Agent SDK | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/framework/claude-agent-sdk.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/framework/claude-agent-sdk.html" property="og:url"/>
+<meta content="Claude Agent SDK | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Claude Agent SDK | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/framework/claude-agent-sdk.html","sameAs":"https://platform.claude.com/docs/en/agent-sdk/python","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Claude Agent SDK | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/framework/claude-agent-sdk.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/framework/claude-agent-sdk.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/framework/claude-agent-sdk.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/framework/claude-agent-sdk.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Frameworks</span>
+</nav>
+<a class="back" href="/en/framework/">← Frameworks</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#D97757"'>CL</div>
+<div>
+<h1>Claude Agent SDK</h1>
+<div class="vendor is-caps">Anthropic</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Python</span>
+<span class="tag on">Open source</span>
+<span class="tag on">MIT</span>
+<span class="tag on">Coding framework</span>
+<span class="tag on">CLI wrapper</span>
+<span class="tag on">hooks</span>
+<span class="tag on">Permission chain</span>
+<span class="tag on">Claude only</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>The Python programming interface to Claude Code — a polished coding CLI turned into…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · Framework / SDK</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>The specific constraints of Anthropic's Commercial Terms (especially customer-facing scenarios)</li>
+<li>The TypeScript version's authorization status</li>
+<li>Multi-process concurrency semantics of session persistence</li>
+<li>The exact shape and limits of session forking</li>
+<li>All <code>permission_mode</code> values and the precedence details of <code>can_use_tool</code></li>
+<li>Compatibility differences between the bundled CLI version and a system-installed version</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>What it is</strong>: the Python programming interface to Claude Code. It turns a polished coding CLI into an object you can drive from Python. It is not a framework for building your own agent. <strong>It is also the only coding base among our ten objects that cannot switch models</strong> — every trade-off below follows from that.</p>
+<blockquote>Official README, first line: "Python SDK for Claude Agent."</blockquote></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p><strong>One line: it is a coding agent that has already been polished.</strong></p></div>
+<div><p><strong>Swapping models and shaping the agent loop are the two things it cannot do.</strong></p></div>
+<div><p><strong>Fits</strong>:</p></div>
+<div><ul><li>you want a coding agent that has already been polished — tool set, permission chain, hooks and session fork all included</li><li>your team works in Python</li><li>you are happy handing reasoning entirely to Claude</li></ul></div>
+<div class="warn-p"><p><strong>Not a fit</strong>:</p></div>
+<div><ul><li>you need a different model / self-hosted weights — <strong>ruled out outright</strong></li><li>you need a framework-level custom agent loop — the loop shape is decided by Claude Code</li><li>you need multi-agent orchestration — it has no first-class agents-as-tools delegation</li></ul></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　docs site measured 200 direct.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>Claude only — there is no second path.</strong></p>
+<ul><li><code>pyproject.toml</code> has no optional dependencies like litellm / any-llm</li><li>every other harness on this site can attach self-hosted models (Ollama / vLLM / llama.cpp); this SDK cannot</li></ul>
+<p>⚠ <strong>This is its most fundamental difference from the other nine objects.</strong></p>
+<p>The local-quantization route recommended by the model layer (<code>models.specul.com</code>) does not work here.</p>
+<p><strong>Verified</strong>: the README contains no provider-agnostic wording.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>A two-layer structure: "you operate a Python process + it drives a CLI subprocess."</strong></p>
+<p><strong>Actual form</strong>: a pip package containing the Claude Code CLI.</p>
+<p>The CLI then connects to the Anthropic API. In other words it is not "a library" but "a library with a CLI inside".</p>
+<p><strong>The CLI defaults to the bundled version but can point at a system install</strong>:</p>
+<ul><li>switch to a locally installed CLI: <code>ClaudeAgentOptions(cli_path="/path/to/claude")</code></li><li>working directory: <code>ClaudeAgentOptions(cwd="/path/to/project")</code></li></ul>
+<p><strong>Verified</strong>: the README states the CLI ships bundled with the wheel; <code>_cli_version.py</code> has <code>__cli_version__ = "2.1.286"</code>.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>The default is the full file toolset, starting at full permissions.</strong></p>
+<p><strong>README wording</strong>:</p>
+<p>By default, Claude has access to the <strong>full Claude Code toolset</strong> (Read, Write, Edit, Bash, and others).</p>
+<ul><li>working directory: <code>ClaudeAgentOptions(cwd="/path/to/project")</code></li></ul>
+<p>⚠ <strong>This is the biggest risk difference vs other objects on this site</strong>: by default it can read files, edit files and run Bash.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>Kill the process and it stops — true "runs after shutdown" does not exist.</strong></p>
+<p>But sessions have official persistence and resume semantics. <strong>Storage location verified</strong>:</p>
+<p><code>~/.claude/projects/&lt;encoded-cwd&gt;/*.jsonl</code>; with <code>CLAUDE_CONFIG_DIR</code> set, under its <code>projects/</code>.</p>
+<p><strong>Resume comes in three flavors</strong>:</p>
+<ul><li><code>continue_conversation=True</code>: resume the most recent session</li><li><code>resume=&lt;session_id&gt;</code>: resume a specific session</li><li><code>fork_session=True</code>: fork</li></ul>
+<p><strong>Official note on <code>resume</code></strong>: "picks up with full context from wherever the session left off"</p>
+<p><strong>Official sessions page wording</strong>:</p>
+<p><strong>Official wording</strong>: "A session is the conversation history the SDK accumulates... The SDK writes it to disk automatically"</p>
+<p><strong>One session equals one <code>claude</code> CLI subprocess</strong>; when the process stops, the loop stops.</p>
+<p>Cross-host resume means mirroring transcripts to shared storage. The adapter is <code>SessionStore</code>.</p>
+<p>⚠ The official docs remind: session persistence covers the <strong>conversation</strong>, not the filesystem.</p>
+<p>For file rollback use file checkpointing.</p>
+<p><strong>Official wording</strong>: "Sessions persist the conversation, not the filesystem"</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>Two entry points with different capabilities — a key design detail.</strong></p>
+<ul><li><code>query()</code>: one-way prompting, can only use the CLI's built-in toolset</li><li><code>ClaudeSDKClient</code>: two-way conversation, <strong>additionally unlocks custom tools and hooks</strong></li></ul>
+<p><strong>Custom tools are "in-process MCP servers"</strong> — official wording:</p>
+<p>"in-process MCP servers that run directly within your Python application"</p>
+<p><strong>The official list of benefits has five items</strong>:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Benefit</th><th>Note</th></tr></thead><tbody><tr><td>No subprocess management</td><td>same process as the app, no subprocess management</td></tr><tr><td>Better performance</td><td>tool calls with no IPC overhead</td></tr><tr><td>Simpler deployment</td><td>single process instead of multiple</td></tr><tr><td>Easier debugging</td><td>all code in one process</td></tr><tr><td>Type safety</td><td>typed direct Python function calls</td></tr></tbody></table></div>
+<p><strong>External MCP servers are still supported; the two can be mixed.</strong></p>
+<p>The <code>mcp_servers</code> dict can hold at the same time:</p>
+<ul><li>the output of <code>create_sdk_mcp_server(...)</code></li><li><code>{"type":"stdio", ...}</code> external servers</li></ul></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>An easily overlooked mechanism: the system-prompt snapshot semantics.</strong></p>
+<p><strong>Claude Code builds it on the session's first request, then reuses it on every later request.</strong></p>
+<p><strong>It is still reused after resuming a session.</strong></p>
+<p><strong>Changing a custom prompt does not take effect immediately.</strong></p>
+<p>The same goes for changed <code>append</code> text of the <code>claude_code</code> preset.</p>
+<p><strong>You must wait for the session to be compacted, or start a new session.</strong></p>
+<p>Unless <code>snapshot</code> is set to <code>False</code> (needs CLI 2.1.257+).</p>
+<p><strong>This is essentially an "immutable context snapshot" design.</strong></p>
+<p>It guarantees prompt determinism; the cost is delayed change effect.</p>
+<p>This connects directly to this site's "state ≠ context" discussion.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>Conclusion first: everything is open by default; you tighten permissions yourself.</strong></p>
+<p>The official evaluation chain is the most detailed one seen on this site so far. <strong>README wording</strong>:</p>
+<p><code>allowed_tools</code> is a permission allowlist: listed tools are auto-approved, and unlisted tools fall through to <code>permission_mode</code> and <code>can_use_tool</code> for a decision. <strong>It does not remove tools from Claude's toolset.</strong> To block specific tools, use <code>disallowed_tools</code>.</p>
+<p>Which unpacks into four points:</p>
+<ul><li><code>allowed_tools</code> is an <strong>admission allowlist</strong>: listed = auto-approved</li><li>unlisted tools fall through to <code>permission_mode</code> and <code>can_use_tool</code></li><li><strong>it does not remove tools from the toolset</strong></li><li>to actually disable a tool, use <code>disallowed_tools</code></li></ul>
+<p><strong>Hooks provide deterministic interception</strong>:</p>
+<ul><li>they are "Python functions invoked by Claude Code *applying* them (not Claude)"</li><li>interception point: <code>PreToolUse</code> returning <code>permissionDecision: "deny"</code> plus a reason</li><li>official example: blocking Bash commands</li></ul>
+<p>⚠ <strong>The default starting point is all tools + no sandbox</strong>; tightening requires deliberate configuration.</p>
+<p><strong>Three switches</strong>:</p>
+<ul><li><code>disallowed_tools</code></li><li>hooks</li><li><code>permission_mode</code></li></ul></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p><strong>In one line: it is an already-polished coding agent.</strong></p>
+<p><strong>Swapping models and customizing loop shape — it cannot do that.</strong></p>
+<p><strong>Fits</strong>:</p>
+<ul><li>wanting an <strong>already-polished coding agent</strong> — toolset, permission chain, hooks, session fork all present</li><li>teams using Python</li><li>being willing to hand reasoning entirely to Claude</li></ul>
+<p><strong>Does not fit</strong>:</p>
+<ul><li>needing to swap models / attach self-hosted weights — <strong>ruled out outright</strong></li><li>needing framework-level custom agent loops — the loop shape is decided by Claude Code</li><li>needing multi-agent orchestration — it has no first-class agents-as-tools delegation mechanism</li></ul></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>MIT</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Assuming it is "Anthropic's version of the OpenAI Agents SDK" — <strong>it is not</strong>. It is the SDK for the Claude Code CLI; its capabilities come from that CLI, not from the framework</li>
+<li>Assuming <code>allowed_tools</code> restricts the toolset — the official docs state "It does not remove tools from Claude's toolset"; use <code>disallowed_tools</code> to disable</li>
+<li>Assuming the default is safe — the default is the <strong>full toolset (Read/Write/Edit/Bash)</strong>, with no sandbox layer</li>
+<li>Assuming a system prompt change takes effect immediately — a snapshot freezes it. It lands only after a compact or a new session (unless snapshot=False)</li>
+<li>Assuming MIT means no additional terms — Anthropic's commercial terms still apply (see the body above)</li>
+<li>Assuming the TypeScript build is licensed like the Python one: <strong>verification found no LICENSE file in the TS build, and the licence API returns null</strong>. Its licensing status is unknown (checked 2026-09-30)</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-09-30。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>Claude Agent SDK for Python · repository</td><td><a href="https://github.com/anthropics/claude-agent-sdk-python" rel="noopener" target="_blank">https://github.com/anthropics/claude-agent-sdk-python</a></td></tr>
+<tr><td>docs</td><td>Official docs (Python)</td><td><a href="https://platform.claude.com/docs/en/agent-sdk/python" rel="noopener" target="_blank">https://platform.claude.com/docs/en/agent-sdk/python</a></td></tr>
+<tr><td>docs</td><td>Permission guide (the authoritative statement of the evaluation order)</td><td><a href="https://platform.claude.com/docs/en/agent-sdk/permissions" rel="noopener" target="_blank">https://platform.claude.com/docs/en/agent-sdk/permissions</a></td></tr>
+<tr><td>docs</td><td>Hooks (official dedicated chapter)</td><td><a href="https://platform.claude.com/docs/en/agent-sdk/hooks" rel="noopener" target="_blank">https://platform.claude.com/docs/en/agent-sdk/hooks</a></td></tr>
+<tr><td>docs</td><td>Claude Code toolset list (tools available to Claude)</td><td><a href="https://code.claude.com/docs/en/settings#tools-available-to-claude" rel="noopener" target="_blank">https://code.claude.com/docs/en/settings#tools-available-to-claude</a></td></tr>
+<tr><td>docs</td><td>Modifying system prompts (the authoritative statement of snapshot semantics)</td><td><a href="https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts" rel="noopener" target="_blank">https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts</a></td></tr>
+<tr><td>docs</td><td>Work with sessions (session write-to-disk location, continue/resume/fork, cross-host SessionStore, verified 2026-10-08)</td><td><a href="https://code.claude.com/docs/en/agent-sdk/sessions" rel="noopener" target="_blank">https://code.claude.com/docs/en/agent-sdk/sessions</a></td></tr>
+<tr><td>docs</td><td>Hosting the Agent SDK (subprocess model, local-disk state, cross-host persistence, verified 2026-10-08)</td><td><a href="https://code.claude.com/docs/en/agent-sdk/hosting" rel="noopener" target="_blank">https://code.claude.com/docs/en/agent-sdk/hosting</a></td></tr>
+<tr><td>docs</td><td>Anthropic Commercial Terms (pointed to by the README's final section, key to authorization)</td><td><a href="https://www.anthropic.com/legal/commercial-terms" rel="noopener" target="_blank">https://www.anthropic.com/legal/commercial-terms</a></td></tr>
+<tr><td>changelog</td><td>Releases (0.2.163 @ 2026-09-30)</td><td><a href="https://github.com/anthropics/claude-agent-sdk-python/releases" rel="noopener" target="_blank">https://github.com/anthropics/claude-agent-sdk-python/releases</a></td></tr>
+<tr><td>changelog</td><td>CHANGELOG (breaking changes from Claude Code SDK &lt;0.1.0)</td><td><a href="https://github.com/anthropics/claude-agent-sdk-python/blob/main/CHANGELOG.md" rel="noopener" target="_blank">https://github.com/anthropics/claude-agent-sdk-python/blob/main/CHANGELOG.md</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs.</p>
+<p>The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" rel="noopener" target="_blank">protocols/framework/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong>:</p>
+<div class="tbl-wrap"><table><thead><tr><th>#</th><th>What to test</th><th>Why it is worth testing</th></tr></thead><tbody><tr><td>1</td><td>How much a pip install actually pulls in (including the bundled CLI's size)</td><td>the CLI ships with the package; deployment-size impact unknown</td></tr><tr><td>2</td><td>Which directories the agent can actually reach under default config</td><td>default full toolset with no sandbox; the boundary needs measuring</td></tr><tr><td>3</td><td>Whether <code>disallowed_tools</code> or hooks take effect first</td><td>the README only gives an evaluation-order overview; only measurement tells</td></tr><tr><td>4</td><td>What granularity resume restores session state to</td><td>this site's top concern: "reliable long-running operation"</td></tr><tr><td>5</td><td>How long after changing the system prompt it takes effect (test compact trigger conditions)</td><td>the boundary of snapshot semantics</td></tr></tbody></table></div>
+</div>
+<div class="panel is-slim">
+<h2>⚠ First, the most misunderstood point: it wraps a CLI, it is not a framework</h2>
+<p><strong>The README's first line already says it</strong>:</p>
+<blockquote>Python SDK for Claude Agent. <strong>The Claude Code CLI is automatically bundled with the package</strong> — no separate installation required!</blockquote>
+<p><strong>Which CLI is bundled has an exact record</strong>:</p>
+<blockquote>verified <code>_cli_version.py</code>: <code>__cli_version__ = "2.1.286"</code> (the exact bundled CLI version).</blockquote>
+<p><strong>This means the capability boundary is fixed</strong>:</p>
+<div class="tbl-wrap"><table><thead><tr><th>What you might think</th><th>Reality</th></tr></thead><tbody><tr><td>importing an agent framework</td><td>importing a <strong>wheel containing a CLI</strong>, which then connects to the API</td></tr><tr><td>the agent loop is defined by the SDK</td><td><strong>the agent loop is defined by the Claude Code CLI</strong></td></tr><tr><td>you can change the agent's shape</td><td>you can only configure the switches it exposes via options</td></tr></tbody></table></div>
+<p><strong>The fundamental difference vs the OpenAI Agents SDK</strong>:</p>
+<ul><li>the latter is a framework that builds its own agent loop (primitives-only)</li><li>this SDK is the SDK-ification of an existing CLI</li></ul>
+<p><strong>This is the contrast pair this site most needs to make clear.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>The only coding base of the ten that cannot swap models</h2>
+<p><strong>The provider-swap path is closed on this SDK.</strong></p>
+<div class="tbl-wrap"><table><thead><tr><th></th><th>OpenAI Agents SDK</th><th>Claude Agent SDK</th></tr></thead><tbody><tr><td>provider</td><td>provider-agnostic, 100+</td><td><strong>Claude only</strong></td></tr><tr><td>swapping to self-hosted weights</td><td>possible (litellm / any-llm extra)</td><td><strong>not possible</strong></td></tr><tr><td>agent loop</td><td>the SDK gives primitives</td><td>the CLI decides the shape</td></tr></tbody></table></div>
+<p>⚠ <strong>This directly closes one of this site's recommended routes.</strong></p>
+<ul><li>the model layer (<code>models.specul.com</code>) mainly recommends local quantized models + Ollama/vLLM self-hosting</li><li><strong>it does not work on this SDK</strong> — to use local weights you must switch solutions</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Permissions: the official docs give a full evaluation chain, but the default is wide open</h2>
+<p><strong>The official docs give a complete permission evaluation chain — the most detailed one seen on this site so far.</strong></p>
+<p><strong>This README passage is the authoritative statement</strong>:</p>
+<blockquote><code>allowed_tools</code> is a permission allowlist: listed tools are <strong>auto-approved</strong>, and unlisted tools fall through to <code>permission_mode</code> and <code>can_use_tool</code> for a decision. <strong>It does not remove tools from Claude's toolset.</strong> To block specific tools, use <code>disallowed_tools</code>.</blockquote>
+<p>Translated into a table:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Mechanism</th><th>Role</th><th>Commonly misunderstood</th></tr></thead><tbody><tr><td><code>allowed_tools</code></td><td><strong>admission allowlist</strong>, listed = auto-approved</td><td>⚠ <strong>does not remove tools from the toolset</strong></td></tr><tr><td><code>permission_mode</code></td><td>unlisted tools are decided here</td><td>e.g. <code>acceptEdits</code> auto-accepts file edits</td></tr><tr><td><code>can_use_tool</code></td><td>custom callback function</td><td>the official docs give the full evaluation order</td></tr><tr><td><code>disallowed_tools</code></td><td><strong>actually disables</strong> tools</td><td>to truly block, use this</td></tr><tr><td><strong>hooks</strong></td><td><code>PreToolUse</code> returns <code>deny</code> plus a reason</td><td><strong>deterministic interception, executed by the application layer, not the model layer</strong></td></tr></tbody></table></div>
+<p><strong>⚠ The default starting state must be known</strong>:</p>
+<blockquote>By default, Claude has access to the <strong>full Claude Code toolset</strong> (Read, Write, Edit, Bash, and others).</blockquote>
+<p><strong>By default it has Read / Write / Edit / Bash, with no sandbox layer.</strong></p>
+<p>Tightening requires deliberate configuration, three switches:</p>
+<ul><li><code>disallowed_tools</code></li><li>hooks</li><li><code>permission_mode</code></li></ul>
+<p><strong>The positioning of hooks deserves its own note</strong>:</p>
+<ul><li>they are "Python functions invoked by Claude Code *applying* them (<strong>not</strong> Claude)"</li><li>interception happens in deterministic code, not by relying on the model to self-restrain</li></ul>
+<p><strong>Contrast with Deep Agents</strong>:</p>
+<ul><li>that one's stance is "trust the LLM, don't expect the model to self-restrain"</li><li><strong>Anthropic's answer</strong>: put interception in the application layer</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Custom tools = in-process MCP servers (a tidy design)</h2>
+<p><strong>Custom tools are not plain function calls but "in-process MCP servers."</strong></p>
+<p><strong>Official wording</strong>:</p>
+<blockquote>"<strong>in-process MCP servers</strong> that run directly within your Python application"</blockquote>
+<p><strong>The official list of benefits has five items</strong>:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Benefit</th><th>Note</th></tr></thead><tbody><tr><td>No subprocess management</td><td>same process as the app, no subprocess management</td></tr><tr><td>Better performance</td><td>tool calls with no IPC overhead</td></tr><tr><td>Simpler deployment</td><td>single process instead of multiple</td></tr><tr><td>Easier debugging</td><td>all code in one process</td></tr><tr><td>Type safety</td><td>typed direct Python function calls</td></tr></tbody></table></div>
+<p><strong>External MCP servers are still supported; the two can be mixed.</strong></p>
+<p>The <code>mcp_servers</code> dict can hold at the same time:</p>
+<ul><li>the output of <code>create_sdk_mcp_server(...)</code></li><li><code>{"type":"stdio", ...}</code> external servers</li></ul>
+<p>⚠ <strong>Note the capability boundary</strong>:</p>
+<ul><li>custom tools and hooks are only available under <code>ClaudeSDKClient</code></li><li><code>query()</code> cannot use them</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>"State ≠ context": a counterintuitive snapshot design here</h2>
+<p><strong>The system prompt has "snapshot" semantics.</strong></p>
+<p>Changing the prompt mid-session does not take effect immediately.</p>
+<p><strong>README wording</strong>:</p>
+<blockquote>Claude Code builds the system prompt on a session's <strong>first</strong> request, <strong>records it</strong>, and reuses it on every later request, <strong>including after you resume the session</strong>. A changed custom prompt, or changed <code>append</code> text... then has no effect <strong>until the session is compacted or you start a new session</strong>. To rebuild the prompt on every request instead... set <code>snapshot</code> to <code>False</code>.</blockquote>
+<p><strong>To rebuild every time, explicitly set <code>snapshot: False</code>.</strong></p>
+<p>This needs CLI 2.1.257+.</p>
+<p><strong>The README also records a historical bug</strong>:</p>
+<blockquote>"Before 2.1.265, a session with an <code>append</code> or custom prompt recorded it only when <code>snapshot</code> was True"</blockquote>
+<p><strong>This is essentially an "immutable context snapshot"</strong>: it guarantees prompt determinism; the cost is delayed changes.</p>
+<p><strong>Relationship to this site's stance</strong>:</p>
+<ul><li>other harnesses discuss "how to compact/persist context"</li><li>this one discusses "<strong>how to freeze context</strong>"</li></ul>
+<p><strong>It keeps the prompt constant within one session</strong>, avoiding unpredictable behavior from prompt drift.</p>
+<p>This is a <strong>third approach, recorded here for the first time on this site</strong> (marked as this site's observation, not official wording).</p>
+</div>
+<div class="panel is-slim">
+<h2>The licensing truth: MIT, but not "no additional conditions"</h2>
+<p><strong>Conclusion: the repository is MIT, but usage is still governed by Anthropic's Commercial Terms.</strong></p>
+<p><strong>README final-section wording</strong>:</p>
+<blockquote>Use of this SDK is governed by Anthropic's <strong>Commercial Terms of Service</strong>, including when you use it to power products and services that you make available to your own customers and end users, <strong>except to the extent a specific component or dependency is covered by a different license</strong>.</blockquote>
+<p><strong>The repository license marker is MIT.</strong></p>
+<blockquote>the license API confirms <code>spdx_id: MIT</code>.</blockquote>
+<p><strong>But usage is governed by Anthropic's Commercial Terms.</strong></p>
+<p>Especially the clause about "using it to power products/services for your own customers".</p>
+<p>⚠ <strong>This site's note</strong>: this is not "not open source", nor "cannot be used commercially".</p>
+<p>But <strong>you must read those commercial terms before building a product</strong>; the MIT marker alone is not a complete authorization judgment.</p>
+<p><strong>One verification finding attached</strong>:</p>
+<ul><li>the TypeScript repository: <code>anthropics/claude-agent-sdk-typescript</code></li><li>1,780★, active</li><li><strong>no LICENSE file, the license API returns <code>null</code></strong></li></ul>
+<p>Whether its authorization status matches the Python version is <strong>not verified</strong>.</p>
+<p>The Python version is MIT + commercial terms; the TS version has <strong>no file to check</strong>.</p>
+<p>If selecting the TS version, <strong>authorization needs separate confirmation</strong>.</p>
+</div>
+<div class="panel is-slim">
+<h2>Appendix: the repository description fields are empty</h2>
+<p><strong>Two metadata fields are empty; recorded as-is.</strong></p>
+<blockquote>verified: <code>description</code> is <code>null</code> (GitHub API), and <code>homepage</code> is also null. The docs entry is in the README's first line: <code>platform.claude.com/docs/en/agent-sdk/python</code>.</blockquote>
+<p><strong>Recording it this way prevents readers from assuming the missing information is because we did not check.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>Verification notes</h2>
+<p>Basis for <code>confidence: partial</code>.</p>
+<p><strong>Downgrade time</strong>: 2026-10-03, downgraded from verified to partial.</p>
+<blockquote><strong>Why downgraded</strong>: the subject of the ❌ items below is <strong>this site's evidence gap</strong>, not "not provided officially". Per the v3 rule "say unknown when unknown", marking verified while these items exist would be inflated, hence partial.</blockquote>
+<p><strong>Three main gaps</strong>:</p>
+<ul><li>the specific clauses of Anthropic's Commercial Terms</li><li>the TS version's license status</li><li>hooks' lifecycle boundaries</li></ul>
+<p><strong>Verified</strong>:</p>
+<ul><li>✅ repository exists and star count (8,334 · rolling check 2026-10-23)</li><li>✅ license (license API returns MIT)</li><li>✅ last push (2026-10-22, still active)</li><li>✅ latest version <strong>0.2.173</strong> (<strong>released 2026-10-22</strong>)</li><li>✅ bundled CLI version <strong>2.1.286</strong> (<code>_cli_version.py</code> verbatim)</li><li>✅ full README — permission evaluation chain, hooks positioning, error-type list, default full toolset wording</li><li>✅ full README — custom tools as in-process MCP servers, system-prompt snapshot semantics</li><li>✅ the licensing final-section verbatim</li><li>✅ the <strong>0.2.162</strong> recorded in the v3 plan has been overtaken (latest 0.2.173 at the 2026-10-23 rolling check)</li></ul>
+<p><strong>⚠ Anomaly findings</strong>:</p>
+<ul><li>repository <code>description</code> and <code>homepage</code> are both <code>null</code></li><li>the TS version has no LICENSE file; the license API returns <code>null</code></li></ul>
+<p><strong>❌ Not verified</strong>:</p>
+<ul><li>the specific clauses of Anthropic's Commercial Terms (original text not read; legal territory)</li><li>multi-process concurrency semantics of sessions</li><li>the exact shape and limits of session forking</li><li>the full precedence chain of <code>can_use_tool</code> and <code>permission_mode</code> (the README gives an overview only; details are in the permissions chapter)</li></ul>
+<p><strong>One plan-data correction</strong>:</p>
+<p>v3 plan §2.2 recorded v0.2.162.</p>
+<p>At verification time <strong>v0.2.163</strong> had been released, later than the plan was written.</p>
+<p><strong>This again confirms "snapshots go stale; verification must happen live."</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/framework/openai-agents-sdk.html">OpenAI Agents SDK</a></span><span class="rel-n"><strong>The pair this site should contrast most</strong>: both from model vendors, both in the "coding base" tier. The OpenAI side is a build-your-own-loop framework + provider-agnostic; the Anthropic side is a CLI's SDK + Claude only.</span></li>
+<li><span class="rel-t"><a href="/en/framework/codex-sdk.html">Codex SDK</a></span><span class="rel-n">The third vendor's same-tier choice. <strong>The three are three answers to the same question</strong>: build your own framework / wrap a CLI / wrap a CLI.</span></li>
+<li><span class="rel-t"><a href="/en/framework/deepagents.html">Deep Agents</a></span><span class="rel-n">Permission-philosophy contrast: "trust the LLM" vs "deterministic interception at the application layer"</span></li>
+<li><span class="rel-t"><a href="/en/framework/hermes-agent.html">Hermes Agent</a></span><span class="rel-n">Opposite routes, different vendors (this site's former is Anthropic, the latter Nous Research): that one is a self-hosting-first general harness; this entry only wraps Anthropic's own CLI.</span></li>
+<li><span class="rel-t"><a href="/en/coding/claude-code-cli.html">Claude Code CLI</a></span><span class="rel-n">Other layer · AI coding</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/framework/codex-sdk.html">Codex SDK</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">"Turns the Codex CLI into an object you can drive inside a Node process"</td></tr><tr><td><a href="/en/framework/dspy.html">DSPy</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">DSPy turns 'tuning prompts' into a programming problem (MIT, Stanford NL</td></tr><tr><td><a href="/en/framework/pydantic-ai.html">Pydantic AI</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Pydantic AI is the type-safe Python agent loop — official README: "Pydan</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from Anthropic</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/chat/claude-chat.html"><span class="vp-cat">General chat</span>Claude (chat app)</a></li><li><a href="/en/coding/claude-code-cli.html"><span class="vp-cat">AI coding</span>Claude Code CLI</a></li><li><a href="/en/coding/claude-code.html"><span class="vp-cat">AI coding</span>Claude Code (IDE extension)</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

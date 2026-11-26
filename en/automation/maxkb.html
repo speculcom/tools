@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>MaxKB | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/automation/maxkb.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/automation/maxkb.html" property="og:url"/>
+<meta content="MaxKB | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"MaxKB | Tools","applicationCategory":"DeveloperApplication","sameAs":"https://maxkb.cn","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-30"}</script>
+<meta content="MaxKB | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/automation/maxkb.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/automation/maxkb.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/automation/maxkb.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/automation/maxkb.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Automation</span>
+</nav>
+<a class="back" href="/en/automation/">← Automation</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#a3e635">MA</div>
+<div>
+<h1>MaxKB</h1>
+<div class="vendor is-caps">Fit2Cloud (China-origin)</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">China-origin</span>
+<span class="tag on">Low-code</span>
+<span class="tag on">RAG</span>
+<span class="tag on">Knowledge base</span>
+<span class="tag on">Self-hosted</span>
+<span class="tag on">Open source</span>
+<span class="tag on">GPL-3.0</span>
+<span class="tag on">MCP</span>
+<span class="tag on">Enterprise-focused</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-30</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>MaxKB is Fit2Cloud's China-origin open-source enterprise agent platform (same-day…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · Web service</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Filed</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Community vs Professional/Enterprise feature split (outside the official pages)</li>
+<li>Connector/plugin list (kept at official category level)</li>
+<li>Training-use toggle path and default state (kept at official category level)</li>
+<li>Whether a hosted SaaS form exists (self-hosting is the main form; the hosted surface kept at official category level)</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>MaxKB is Fit2Cloud's China-origin open-source enterprise agent platform</strong> (same-day official blog framing: four capabilities — RAG retrieval-augmented generation + workflow orchestration + Skills + MCP tool calling): GPL-3.0 open-source self-hosting is the main form (★23,081 verified same day), with <strong>two deep-synthesis algorithm filing entries on record</strong> (service provider + technology supporter, 16th batch, 2026-03-12) — a China-origin compliance narrative sample for "data never leaves the intranet" scenarios.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Fits: intranet self-hosted KB Q&amp;A (data never leaves the domain), a China-origin open-source option with MCP + workflow orchestration, a filed-compliance narrative. Not a fit: permissive licensing (GPL-3.0 copyleft), casual personal use (enterprise-delivery oriented).</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-30</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>domestic　Hangzhou Fit2Cloud Information Technology Co., Ltd. (on record in the filing list parsed same day); open-source project 1Panel-dev/MaxKB.</dd>
+<dt>Direct access</dt><dd>direct OK　the GitHub repo and docs.fit2cloud.com/maxkb measured 200 direct from mainland (2026-10-30); maxkb.cn measured 403 direct (Cloudflare-style block, not a dead link; reachable via proxy) — acquisition paths go by the repo and docs domains.</dd>
+<dt>CAC filing</dt><dd>Filed：<code>CAC algorithm filing no. 330106491701101260019 / 330106491701101260027</code>　·　filed 2026-03-12　·　the 16th "Domestic Deep-Synthesis Service Algorithm Filing List" (publicized 2026-03-12) was downloaded and parsed same day, two entries on record: row 605 "MaxKB multimodal generative synthesis algorithm-1" as service provider = Hangzhou Fit2Cloud Information Technology Co., Ltd. (MaxKB agent platform, website/other, CAC algorithm filing no. 330106491701101260019); row 750 as service technology supporter (CAC algorithm filing no. 330106491701101260027); consistent with Fit2Cloud's official blog announcement. This is the deep-synthesis algorithm filing category, not generative-AI service filing.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p>The platform ships no in-house model — it connects to various mainstream LLMs (same-day official blog wording); the self-hosted form can attach local models (paired with runner-class tools); the hosted/commercial editions' built-in model list kept at official category level.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p>Open-source self-hosting is the main current form (1Panel-dev/MaxKB repo direct 200, pushed same day 2026-10-30; releases v2.10.8-lts 2026-10-22); one-click deployment via the 1Panel app store is on record (Fit2Cloud ecosystem); official docs live at docs.fit2cloud.com/maxkb (direct 200).</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>In the self-hosted form data lives on your own machines (deployment docs on record) — the core difference from hosted products: knowledge-base files and chat logs all stay inside your own deployment; the commercial editions' data surface kept at official category level.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p>The product's main axis is enterprise knowledge-base Q&amp;A (RAG) + workflow orchestration + Skills + MCP tool calling (four capabilities on record in the same-day official blog); scheduling and background-execution details kept at official category level.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p>MCP tool calling is an officially stated capability (same-day blog: "supports RAG, workflow orchestration, Skills and MCP tool calling"); workflow node surfaces are on record in the docs; the concrete connector list kept at official category level.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p>The knowledge base (RAG) is the core persistent knowledge surface; multi-turn context on record; cross-application memory details kept at official category level.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p>GPL-3.0 strong copyleft — derivative-distribution obligations differ from the Apache family (embedding into closed-source products requires assessing the propagation surface); two deep-synthesis algorithm filing entries on record (see the cn block: both the service-provider and the technology-supporter roles are filed); training-use toggle path kept at official category level.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Fits: intranet self-hosted KB Q&amp;A (data never leaves the domain), a China-origin open-source option with MCP tool calling and workflow orchestration, a filed-compliance narrative (two algorithm-filing entries on record). Not a fit: permissive licensing (GPL-3.0 copyleft), casual personal use (enterprise-delivery oriented).</p></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>GPL-3.0 (GitHub API verified same day: license=GPL-3.0, 1Panel-dev/MaxKB); Fit2Cloud also sells commercial Professional/Enterprise editions (same-day official blog: 1,000+ paying Professional/Enterprise users).</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Account and permissions</a> · <a href="/en/mcp/guides/failure-library.html#rate-limit">Rate limits and retries</a> · <a href="/en/mcp/guides/failure-library.html#files">File-reading issues</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li><strong>Mind the filing category</strong>: MaxKB passed the <strong>deep-synthesis service algorithm filing</strong> (16th batch, publicized 2026-03-12, two entries: service provider + technology supporter) — not generative-AI service filing; the two are different categories</li>
+<li>maxkb.cn measures 403 direct from mainland (Cloudflare-style block, not a dead link; reachable via proxy) — don't judge reachability by the site entry alone; the repo and docs domains (GitHub/docs.fit2cloud.com) measure 200 direct</li>
+<li>GPL-3.0 ≠ the Apache family — before embedding MaxKB into a closed-source product you must assess copyleft distribution obligations; a completely different compliance path from Dify/FastGPT's Apache + extra terms</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-30，Content updated 2026-10-30。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>1Panel-dev/MaxKB · official repo (GPL-3.0, GitHub API verified same day: ★23,081 / pushed 2026-10-30; releases v2.10.8-lts 2026-10-22)</td><td><a href="https://github.com/1Panel-dev/MaxKB" rel="noopener" target="_blank">https://github.com/1Panel-dev/MaxKB</a></td></tr>
+<tr><td>filing</td><td>CAC · Domestic Deep-Synthesis Service Algorithm Filing List (March 2026 / 16th batch, downloaded and parsed same day: MaxKB service-provider entry 605, filing no. 330106491701101260019; technology-supporter entry 750, filing no. 330106491701101260027; entity Hangzhou Fit2Cloud Information Technology Co., Ltd.; announcement portal beian.cac.gov.cn)</td><td><a href="https://www.cac.gov.cn/cms/pub/interact/downloadfile.jsp?filepath=NUtqEIwGiCjGm2Bhl20cvBy2HA04djr0wEW/PdA55oAbv1GA808enWaX/u3kfDU0BMF2l/f0eo8c5GOkAvXc~jZS2/Bjnic3oqu3HpPj8kk=&amp;fText=%E5%A2%83%E5%86%85%E6%B7%B1%E5%BA%A6%E5%90%88%E6%88%90%E6%9C%8D%E5%8A%A1%E7%AE%97%E6%B3%95%E5%A4%87%E6%A1%88%E6%B8%85%E5%8D%95%EF%BC%882026%E5%B9%B43%E6%9C%88%EF%BC%89" rel="noopener" target="_blank">https://www.cac.gov.cn/cms/pub/interact/downloadfile.jsp?filepath=NUtqEIwGiCjGm2Bhl20cvBy2HA04djr0wEW/PdA55oAbv1GA808enWaX/u3kfDU0BMF2l/f0eo8c5GOkAvXc~jZS2/Bjnic3oqu3HpPj8kk=&amp;fText=%E5%A2%83%E5%86%85%E6%B7%B1%E5%BA%A6%E5%90%88%E6%88%90%E6%9C%8D%E5%8A%A1%E7%AE%97%E6%B3%95%E5%A4%87%E6%A1%88%E6%B8%85%E5%8D%95%EF%BC%882026%E5%B9%B43%E6%9C%88%EF%BC%89</a></td></tr>
+<tr><td>official</td><td>Fit2Cloud official blog · MaxKB passed the deep-synthesis algorithm filing (16th-batch framing + four-capability positioning, on record via same-day search)</td><td><a href="https://blog.fit2cloud.com/?p=019d00c3-6400-7681-a025-e75e0318ee45" rel="noopener" target="_blank">https://blog.fit2cloud.com/?p=019d00c3-6400-7681-a025-e75e0318ee45</a></td></tr>
+<tr><td>docs</td><td>MaxKB · official docs (docs.fit2cloud.com/maxkb, direct-fetched 200 on 2026-10-30)</td><td><a href="https://docs.fit2cloud.com/maxkb/" rel="noopener" target="_blank">https://docs.fit2cloud.com/maxkb/</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This profile is based on official docs and records no local measured runs. The coding-oriented test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a> (the coding task suite does not apply to agent platforms).</p>
+<p><strong>Suggested measurements</strong> (three, all pointing at things the official readable pages do not give):</p>
+<ul><li><strong>Workflow nodes vs Dify/FastGPT capability deltas</strong> (three China-origin peers; the cross-comparison surface is outside the official pages)</li><li><strong>The live Skills/MCP calling boundaries</strong> (officially stated capability; the concrete list and stability kept at official category level)</li><li><strong>Feature split between Community and Professional/Enterprise editions</strong> (commercial editions exist; the split is outside the official pages)</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/automation/fastgpt.html">FastGPT</a></span><span class="rel-n">Also a China-origin open-source RAG Q&amp;A platform: FastGPT is Apache + extra terms with a big community ecosystem; MaxKB is GPL-3.0 with enterprise delivery and a filing narrative.</span></li>
+<li><span class="rel-t"><a href="/en/automation/dify.html">Dify</a></span><span class="rel-n">China-origin open-source agent platform contrast: Dify is the general canvas going global; MaxKB targets intranet enterprise delivery.</span></li>
+<li><span class="rel-t"><a href="/en/runner/ollama.html">Ollama</a></span><span class="rel-n">The local-model layer contrast: self-hosted MaxKB can attach local models; model runners belong to the runner class.</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/automation/dify.html">Dify</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Dify is the China-origin, globally-facing agentic workflow platform: pro</td></tr><tr><td><a href="/en/automation/fastgpt.html">FastGPT</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">FastGPT is a China-origin open-source RAG knowledge-base Q&amp;A and app-bui</td></tr><tr><td><a href="/en/automation/lindy.html">Lindy</a></td><td>Cloud / API</td><td>Commercial terms</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Lindy is a cloud automation platform packaged as "hiring an AI employee"</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Junie | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/junie.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/junie.html" property="og:url"/>
+<meta content="Junie | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Junie | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/coding/junie.html","sameAs":"https://www.jetbrains.com/junie/","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Junie | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/junie.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/junie.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/junie.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/junie.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#8b7cf8">JU</div>
+<div>
+<h1>Junie</h1>
+<div class="vendor is-caps">JetBrains</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Coding</span>
+<span class="tag on">IDE</span>
+<span class="tag on">Multiple models</span>
+<span class="tag on">Local</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>JetBrains' official "AI coding agent" — a plugin inside JetBrains IDEs (with a…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · In editor</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Not checked · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Subscription price in USD (the official page presented CNY annual pricing in the 2026-10-08 check; this site does not convert)</li>
+<li>Concrete parameters of context-window size and compaction strategy (no numbers given officially)</li>
+<li>Machine models and model range supported by Junie Local</li>
+<li>Per-JetBrains-AI-tier availability details for Junie (not stated officially; the 2026-10-08 check only captured the licensing page's exclusion of the Enterprise tier)</li>
+</ul>
+</div>
+<div class="panel-lead"><p>Junie is JetBrains' coding agent, installed as a plugin — the official install page states "The Junie plugin is not bundled and not enabled in JetBrains IDEs by default" — and extended in March 2026 by a standalone Junie CLI for the terminal, any IDE, CI/CD and GitHub / GitLab. Its official framing is LLM-agnostic: "Junie supports all the top-performing models from OpenAI, Anthropic, Google, and Grok." On the IDE side it plans before it codes and, since GA, drives your IDE's real debugger rather than adding <code>println</code>.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>People already using JetBrains IDEs (IntelliJ IDEA / PyCharm / WebStorm / GoLand and more) who want an agent in the same environment. Teams that value "plan before code" and multi-model / BYOK flexibility. Anyone who needs the same agent in the terminal or CI/CD (Junie CLI).</p></div>
+<div class="warn-p"><p><strong>Not a fit for</strong> users in Mainland China — the official licensing page states "Junie coding agent is not available to users in Mainland China due to regional restrictions"; nor for AI Enterprise tier users (that page states the tier does not currently include Junie), nor for anyone who needs a vendor-hosted cloud background environment.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct unknown　junie.jetbrains.com returns 403 to curl both direct and proxied (anti-bot) — reachability cannot be judged by this method.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>Conclusion: no model lock-in; you can bring your own API key, and local models work too.</strong></p>
+<p>The official pages position it as LLM-agnostic. The Junie CLI launch blog states it bluntly:</p>
+<p><strong>Official wording</strong>: "Junie supports all the top-performing models from OpenAI, Anthropic, Google, and Grok"</p>
+<p>Official pricing builds <strong>BYOK</strong> (bring your own API key) into the model. The site and pricing page list two more routes:</p>
+<ul><li>Local models — via OpenAI-compatible APIs, including Ollama and LM Studio</li><li>Third-party cloud models — OpenAI / Anthropic / Google / xAI</li></ul>
+<p><strong>The IDE-side default model has changed.</strong> The help page Models (revised 2025-10-14) says Default is OpenAI's GPT-5. The 2026-08-17 official blog then says the default became Gemini 3.7 Flash.</p>
+<p><strong>The local-inference story also changed over time.</strong> The help page then said "local models cannot be used in offline mode yet". Junie Local from 2026-08 supports running Qwen3.6-27B on your own machine.</p>
+<p><strong>The concrete model list and per-tier availability are not given in full on any single official page.</strong> (help Models page and the AI pricing page checked.)</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>It is a plugin, not a standalone editor; there is also a standalone Junie CLI.</strong></p>
+<p>The official Install page states:</p>
+<p><strong>Official wording</strong>: "The Junie plugin is not bundled and not enabled in JetBrains IDEs by default"</p>
+<p>Hosts cover the whole JetBrains family plus Android Studio:</p>
+<ul><li>CLion, GoLand, IntelliJ IDEA, PhpStorm, PyCharm Pro</li><li>Rider, RubyMine, RustRover, WebStorm and Android Studio</li></ul>
+<p>The official pages also give per-IDE minimum versions. E.g. IDEA Ultimate / PyCharm Pro / WebStorm / GoLand need 2024.3.2+.</p>
+<p><strong>The second leg is Junie CLI</strong> (entered Beta in 2026-03). It runs in terminals, any IDE, CI/CD and GitHub / GitLab. ReSharper 2026.2 brings it into Visual Studio (Preview). Since 2026-08 there is also Junie Local with on-device inference.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>It only touches files in your current project; leaving the project needs separate approval.</strong></p>
+<p>After each run, Junie lists the files added and modified. Every file has a diff-view link. In the Done panel you can <strong>selectively roll back file by file</strong>. Then you decide to accept or reject the whole run. Output of the commands it runs can be seen in Junie's terminal.</p>
+<p><strong>"Outside the project" is an explicit boundary.</strong> The Action Allowlist has two separate rules, both requiring approval by default:</p>
+<ul><li>"Read outside project"</li><li>"Write outside project"</li></ul>
+<p>To limit which files and directories it handles, use <code>.aiignore</code>. Its syntax is the same as gitignore. The official pages warn: <strong>it protects content only; file names and directory names remain visible.</strong></p>
+<p><strong>Implementation details of the IDE semantic index are not broken out officially.</strong> (the aiignore and diffs-and-review pages checked.)</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>There is no vendor-hosted background: tasks run inside the environment you have open.</strong></p>
+<p>The IDE form depends on the IDE process staying open. In this form the official pages describe no vendor-hosted "keeps running after shutdown" background. In Code mode it can autonomously run multi-step tasks, tests and builds — but all of that happens in your open IDE and on your machine.</p>
+<p><strong>Junie CLI extends the runtime surface to terminals, CI/CD and GitHub / GitLab.</strong> Those are "your own execution environments", not a vendor sandbox.</p>
+<p>The official blog also says Junie can:</p>
+<p><strong>Official wording</strong>: "run long tasks while you focus on other things"</p>
+<p>But no background concurrency or duration quota is given officially.</p>
+<p><strong>A vendor-hosted background execution environment: not stated officially.</strong> (the modes, licensing and CLI launch blog checked.)</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>Capabilities are layered by mode; the signature move is using the real debugger.</strong></p>
+<p>Four modes:</p>
+<ul><li><strong>Code mode</strong> — breaks work into a multi-step plan and executes autonomously: runs commands, creates files, edits code, runs tests</li><li><strong>Ask mode</strong> — read-only exploration and analysis</li><li><strong>Plan mode</strong> — first produces an editable structured plan, then implements</li><li><strong>Auto</strong> — it picks</li></ul>
+<p><strong>Debugging is not adding logs — it genuinely takes over the debug session.</strong> Since the GA release, Junie can start or take over debug sessions. It sets breakpoints in project code, library code and even decompiled <code>.class</code> files. It can inspect stack frames and thread state, and evaluate expressions.</p>
+<p><strong>Official wording</strong>: "uses the debugger, not println"</p>
+<p>There is also PR review and git workflows. And <code>/demo</code>: runs through a feature and produces video / screenshots / an HTML report.</p>
+<p><strong>MCP is officially supported, but currently only the stdio transport.</strong> <code>mcp.json</code> comes in two levels: global <code>~/.junie/mcp.json</code>, project <code>.junie/mcp</code>. It can auto-recommend relevant servers.</p>
+<p><strong>Official wording</strong>: "Only MCP servers that use the Standard Input/Output (stdio) transport type are currently supported"</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>Plans are committable artifacts; Guidelines are persistent context.</strong></p>
+<p>Plan mode's plan is not a throwaway conversation. Plan documents live in <code>.junie/plans</code> and can be committed to version control. They are paginated by product requirements, technical design, delivery phases (optionally a test strategy). When requirements are vague, Junie asks back first and only implements after confirmation.</p>
+<p><code>.junie/guidelines.md</code> is the persistent layer. It is added to every task, can be version-controlled and reused. The official pages also mention a junie-guidelines directory.</p>
+<p>The official pages also call Junie <strong>context-aware by default</strong> and say it does next-task prediction. Connected to a JetBrains IDE, it adds semantic refactoring and smart search.</p>
+<p><strong>Context window and compaction strategy — no numbers given officially.</strong> (customize-guidelines and the out-of-beta blog checked.)</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>By default every action needs approval.</strong> <strong>Brave Mode opens everything at once, but the official pages do not recommend it.</strong></p>
+<p>The official pages split actions into safe and sensitive.</p>
+<p><strong>Official wording</strong>: "Most terminal commands, code execution, and execution of MCP tools are considered to be sensitive actions, and Junie by default requires explicit approval from the user"</p>
+<p>Brave Mode can release all sensitive actions in one switch.</p>
+<p><strong>Official wording</strong>: "using brave mode is not recommended"</p>
+<p>The Action Allowlist whitelists by type:</p>
+<ul><li>Terminal (regex supported), RunTest, Build, Preview</li><li>MCP, Read outside project, Write outside project</li><li>Edit build scripts — it can trigger code execution, so it gets its own gate</li></ul>
+<p><code>ls</code> / <code>cd</code> / <code>pwd</code> need no confirmation by default.</p>
+<p><code>.aiignore</code> protects file content. But the official pages note: Brave Mode, or commands matching the allowlist, can bypass it.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p><strong>Fits three kinds of people, does not fit three others.</strong></p>
+<p>Fits:</p>
+<ul><li>People already on JetBrains IDEs (IntelliJ IDEA / PyCharm / WebStorm / GoLand etc.)</li><li>Teams that value "plan first, code second" plus multi-model / BYOK</li><li>People who need the same agent reused in terminals or CI/CD (Junie CLI)</li></ul>
+<p>Does not fit:</p>
+<ul><li>Users in mainland China</li><li>AI Enterprise tier users (the official pages state that tier does not include Junie for now)</li><li>People who need a vendor-hosted cloud background</li></ul>
+<p>The mainland-China point is a hard rule on the official licensing page:</p>
+<p><strong>Official wording</strong>: "Junie coding agent is not available to users in Mainland China due to regional restrictions"</p>
+<p>This form also has no official "keeps running after shutdown" story.</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Assuming Junie is a standalone IDE — it is a plugin inside JetBrains IDEs (plus a separate CLI form)</li>
+<li>Assuming Junie is available under the AI Enterprise tier — the official page states that tier does not currently include Junie</li>
+<li>Assuming MCP remote servers work — the docs state only the stdio transport is currently supported</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-08。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>docs</td><td>JetBrains · Junie official product page ("smart coding agent" positioning and supported IDE list)</td><td><a href="https://www.jetbrains.com/junie/" rel="noopener" target="_blank">https://www.jetbrains.com/junie/</a></td></tr>
+<tr><td>docs</td><td>JetBrains · Junie help docs (Modes / Guidelines / Action Allowlist / .aiignore / MCP / Models)</td><td><a href="https://www.jetbrains.com/help/junie/get-started-with-junie.html" rel="noopener" target="_blank">https://www.jetbrains.com/help/junie/get-started-with-junie.html</a></td></tr>
+<tr><td>pricing</td><td>JetBrains · AI in IDEs pricing page (AI Free / Pro / Ultimate with credits quotas, verified 2026-10-08)</td><td><a href="https://www.jetbrains.com/ai-ides/buy/" rel="noopener" target="_blank">https://www.jetbrains.com/ai-ides/buy/</a></td></tr>
+<tr><td>docs</td><td>JetBrains · Licensing and subscriptions (quota cycles, regional restrictions, AI Enterprise tier excludes Junie)</td><td><a href="https://www.jetbrains.com/help/junie/licensing-and-subscriptions.html" rel="noopener" target="_blank">https://www.jetbrains.com/help/junie/licensing-and-subscriptions.html</a></td></tr>
+<tr><td>docs</td><td>JetBrains · MCP docs (stdio only; global and project-level mcp.json)</td><td><a href="https://www.jetbrains.com/help/junie/model-context-protocol-mcp.html" rel="noopener" target="_blank">https://www.jetbrains.com/help/junie/model-context-protocol-mcp.html</a></td></tr>
+<tr><td>docs</td><td>JetBrains · Action Allowlist and Brave Mode (approval for sensitive actions)</td><td><a href="https://www.jetbrains.com/help/junie/user-approval.html" rel="noopener" target="_blank">https://www.jetbrains.com/help/junie/user-approval.html</a></td></tr>
+<tr><td>changelog</td><td>JetBrains · Official blog: Junie out of beta (2026-06-17, Plan mode / real debugger)</td><td><a href="https://blog.jetbrains.com/junie/2026/06/junie-coding-agent-out-of-beta/" rel="noopener" target="_blank">https://blog.jetbrains.com/junie/2026/06/junie-coding-agent-out-of-beta/</a></td></tr>
+<tr><td>changelog</td><td>JetBrains · Official blog: Junie CLI enters beta (2026-03-09, LLM-agnostic / BYOK)</td><td><a href="https://blog.jetbrains.com/junie/2026/03/junie-cli-the-llm-agnostic-coding-agent-is-now-in-beta/" rel="noopener" target="_blank">https://blog.jetbrains.com/junie/2026/03/junie-cli-the-llm-agnostic-coding-agent-is-now-in-beta/</a></td></tr>
+<tr><td>changelog</td><td>JetBrains · Junie official blog index (change source)</td><td><a href="https://blog.jetbrains.com/junie/" rel="noopener" target="_blank">https://blog.jetbrains.com/junie/</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong>: focus on two things.</p>
+<p>First, whether Plan mode's plan documents can be reused as committable artifacts. Second, whether agentic debugging beats "add logging" on real failing cases.</p>
+</div>
+<div class="panel is-slim">
+<h2>Form factor: two legs — plugin + CLI</h2>
+<p><strong>Conclusion first: it is a plugin, not a standalone editor.</strong></p>
+<p>The official Install page states:</p>
+<blockquote>The Junie plugin is not bundled and not enabled in JetBrains IDEs by default.</blockquote>
+<p>Hosts cover the whole JetBrains family plus Android Studio:</p>
+<ul><li>CLion, GoLand, IntelliJ IDEA, PhpStorm</li><li>PyCharm Pro, Rider, RubyMine, RustRover, WebStorm</li></ul>
+<p><strong>Since 2026-03 there is the additional Junie CLI leg.</strong> The official blog says this moves Junie from "IDE-native AI" to "ecosystem-level AI". It works in terminals, any IDE, CI/CD and GitHub / GitLab. ReSharper 2026.2 further brings Junie into Visual Studio (Preview).</p>
+</div>
+<div class="panel is-slim">
+<h2>Key designs: Plan mode and the real debugger</h2>
+<p><strong>Plan mode makes the "plan" a first-class artifact</strong> (new in the GA release). The output is a structured document covering product requirements, technical design, delivery phases (optionally a test strategy). Documents live in <code>.junie/plans</code> and can be committed. When requirements are vague it asks back first and implements only after confirmation. The official usage advice is concrete: use a strong model for the plan, a cheap model for implementation.</p>
+<p><strong>Agentic debugging</strong>: the official wording is that Junie "opens the debugger" rather than adding <code>println</code>. It can start / take over debug sessions and set breakpoints in project code, library code and even decompiled <code>.class</code> files. It can also inspect stack frames and thread state, and evaluate expressions.</p>
+</div>
+<div class="panel is-slim">
+<h2>Verification notes</h2>
+<p>This entry is <code>confidence: partial</code>, for the following reasons.</p>
+<p><strong>Verified</strong></p>
+<ul><li>Supported IDE hosts and minimum versions</li><li>Capabilities such as Plan mode, the real debugger and <code>/demo</code></li><li>The permission mechanism of Action Allowlist and Brave Mode</li><li>MCP stdio-only</li><li>The boundary of <code>.aiignore</code></li><li>Credits quotas of AI Free / Pro / Ultimate</li><li>"The AI Enterprise tier does not include Junie"</li></ul>
+<p><strong>Not obtained</strong></p>
+<ul><li>Context window and compaction parameters</li><li>The full applicability scope of Junie Local</li></ul>
+<p>Official pages verified on 2026-10-08:</p>
+<blockquote>jetbrains.com/junie/, /help/junie/ (get-started, install, modes, customize-guidelines, user-approval, aiignore, model-context-protocol-mcp, models, licensing-and-subscriptions, diffs-and-review), /ai-ides/buy/, blog.jetbrains.com/junie/.</blockquote>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/copilot.html">GitHub Copilot</a></span><span class="rel-n">also a plugin installable into multiple IDEs; compare permissions and MCP (Copilot supports remote MCP, Junie is stdio-only)</span></li>
+<li><span class="rel-t"><a href="/en/coding/claude-code.html">Claude Code (IDE extension)</a></span><span class="rel-n">also a dual "IDE extension + CLI" form; compare the two products' permission and context designs</span></li>
+<li><span class="rel-t"><a href="/en/coding/cursor.html">Cursor</a></span><span class="rel-n">contrast point: Cursor is a standalone VS Code-derived IDE, Junie is a plugin inside JetBrains IDEs</span></li>
+<li><span class="rel-t"><a href="/en/mcp/filesystem.html">Filesystem MCP Server</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/baidu-comate.html">Baidu Comate (Wenxin Kuaima)</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Baidu Comate (Wenxin Kuaima) is Baidu's AI coding family: Comate AI IDE </td></tr><tr><td><a href="/en/coding/claude-code.html">Claude Code (IDE extension)</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">One process, three entry points — terminal, IDE and GitHub @claude menti</td></tr><tr><td><a href="/en/coding/cline.html">Cline</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A coding tool with CLI, desktop and editor entry points — CLI, desktop a</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

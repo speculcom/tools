@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>LLM Guard | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/safety/llm-guard.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/safety/llm-guard.html" property="og:url"/>
+<meta content="LLM Guard | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LLM Guard | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/safety/llm-guard.html","sameAs":"https://github.com/protectai/llm-guard","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-11-06"}</script>
+<meta content="LLM Guard | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/safety/llm-guard.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/safety/llm-guard.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/safety/llm-guard.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/safety/llm-guard.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Safety</span>
+</nav>
+<a class="back" href="/en/safety/">← Safety</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#D96C4F"'>LL</div>
+<div>
+<h1>LLM Guard</h1>
+<div class="vendor is-caps">Protect AI</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Open source</span>
+<span class="tag on">Local</span>
+<span class="tag on">Hybrid</span>
+<span class="t-state is-warn">Some axes open</span>
+<span class="t-state is-stop">Archived</span>
+<span class="badge">Checked 2026-11-06</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+<span class="snap-flag">Upstream archived</span>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Protect AI's open-source LLM input/output scanning toolkit: one side screens prompts…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · Local app</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Not checked · Not checked</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>The exact model weights or external inference services each scanner needs (captured only at documentation-index level today)</li>
+<li>Telemetry, log retention and the scope of sending text onward</li>
+<li>Support for file-shaped inputs (attachments, directories) and temp-file behaviour</li>
+<li>Default thresholds and default on-fail actions per scanner</li>
+<li>Whether any hosted tier exists (the README only leaves a "Production Support" contact route)</li>
+<li>The Python-version conflict: README says 3.9+, PyPI metadata says <strong>=3.10 and </strong>3.13</li>
+<li>MCP or other extension points</li>
+<li>Mainland direct reachability and filing status (recorded as unknown in the cn block)</li>
+</ul>
+</div>
+<div class="panel-lead"><p>Protect AI's open-source LLM input/output scanning toolkit: one side screens prompts (injection, invisible text, secrets, toxicity, banned topics), the other screens completions (bias, malicious links, sensitive data, factual consistency). It is a scanner collection you deploy, not a hosted guardrail service.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Fit: teams embedding pre- and post-checks in their own pipeline and willing to own dependencies and model downloads; the docs give two forms, a Python library and an API server. Not fit: expecting continued upstream updates, since the README warning says the project is archived and the Hugging Face models are unmaintained. Also not for readers looking for detection-rate numbers: the official material only lists channels, and this site runs no end-to-end tests.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-11-06</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　Protect AI (GitHub organisation "Protect AI", a US-based company); not a domestic product.</dd>
+<dt>Direct access</dt><dd>direct unknown　Only general-network reachability of GitHub / docs site / PyPI was checked today; no mainland direct-access test was run, so this stays unknown.</dd>
+<dt>CAC filing</dt><dd>filing unknown：The CAC public registry was not searched on the verification day, so filing status has no official basis; the product does not serve the mainland public.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p>It guards the text going into the model and the text coming back, not any vendor's model itself. The README's starter example goes through ChatGPT / the OpenAI API (examples/openai_api.py), and the documentation index lists two delivery forms as of the verification day: a Python library and an API server. Which scanners need downloaded local weights and which need an external inference service was only captured at documentation-index level; not verified item by item, recorded as unknown.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p>Self-hosted: <code>pip install llm-guard</code> runs in your own environment; the README requires Python 3.9 or newer, while the PyPI package metadata measured today states <strong>=3.10 and </strong>3.13 (the two disagree; logged in the unknowns list). The docs index also gives an API server path, i.e. hosting the scanners inside your own service as pre/post checks. No vendor-side computation is described in the official text.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>Both the README and the documentation index describe the object of processing as prompt / completion text; no capability to read workspace files or traverse directories is declared. Support for file-shaped inputs (attachments, directories) and any temp-file behaviour on disk is not stated officially.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p>As a library it lives and dies with your process; as an API server it is a service you keep resident, with start/stop and scaling in your hands. Managed queues, continuation after shutdown and asynchronous tasks are not stated officially.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p>The README lists 15 Prompt scanners and 21 Output scanners, covering input channels such as PromptInjection, InvisibleText, Secrets, Anonymize, Toxicity, BanTopics, Regex and TokenLimit, and output channels such as Bias, MaliciousURLs, Sensitive, FactualConsistency, Relevance, JSON and LanguageSame. The documented configuration model is thresholds plus mask / block / answer style disposition actions. MCP integration is not stated officially.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p>Detection operates on the single text passed in; no session memory, cross-turn context or historical attack store is described officially. Context-length limits are set by scanners like TokenLimit; the concrete defaults were not verified and are recorded as unknown.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p>The licence is MIT (see the license field, judged against the official LICENSE text), so commercial use and redistribution are permitted with the copyright notice retained. Data flow is the dimension with the biggest gap here: neither the README nor the documentation index captured today states telemetry, log retention, or the scope of sending text to third parties, so it is recorded as unknown. Compliance certifications (SOC 2 class) were not mentioned on the pages reached. The repository is archived and the official text says it is no longer actively maintained.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Fits teams that want input/output checks wired into their own pipeline, can own dependencies and model downloads themselves, and accept that the ruleset stops being updated. Does not fit deployments needing continued security-rule maintenance or a hosted SLA, nor readers looking for detection or bypass rates — this site runs no end-to-end tests and quotes no vendor numbers.</p></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>MIT (official LICENSE opens with "The MIT License (MIT)"; copyright line "Copyright (c) Protect AI. All rights reserved."). Open source; usable after <code>pip install llm-guard</code>, with no vendor API key stated as a runtime prerequisite; advanced scanners install dependencies on demand.</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Account and permissions</a> · <a href="/en/mcp/guides/failure-library.html#rate-limit">Rate limits and retries</a> · <a href="/en/mcp/guides/failure-library.html#files">File-reading issues</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>把 README 的扫描器清单当成检测能力承诺——官方只列通道，不列命中率</li>
+<li>以为上游仍在维护：仓库与关联 Hugging Face 模型均已宣布归档</li>
+<li>Python 版本要求 README 与 PyPI 元数据不一致，装不上先看包元数据</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-11-06，Content updated 2026-11-06。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>changelog</td><td>LLM Guard · docs-site changelog (reachability confirmed 2026-11-06)</td><td><a href="https://protectai.github.io/llm-guard/changelog/" rel="noopener" target="_blank">https://protectai.github.io/llm-guard/changelog/</a></td></tr>
+<tr><td>changelog</td><td>LLM Guard · repository commit history (main branch, last push 2026-07-08)</td><td><a href="https://github.com/protectai/llm-guard/commits/main" rel="noopener" target="_blank">https://github.com/protectai/llm-guard/commits/main</a></td></tr>
+<tr><td>docs</td><td>LLM Guard · official documentation (deployment forms and scanner configuration)</td><td><a href="https://protectai.github.io/llm-guard/" rel="noopener" target="_blank">https://protectai.github.io/llm-guard/</a></td></tr>
+<tr><td>repo</td><td>LLM Guard · repository README (with the archive warning and the scanner lists)</td><td><a href="https://github.com/protectai/llm-guard" rel="noopener" target="_blank">https://github.com/protectai/llm-guard</a></td></tr>
+<tr><td>docs</td><td>LLM Guard · official LICENSE (MIT text)</td><td><a href="https://github.com/protectai/llm-guard/blob/main/LICENSE" rel="noopener" target="_blank">https://github.com/protectai/llm-guard/blob/main/LICENSE</a></td></tr>
+<tr><td>docs</td><td>PyPI · llm-guard (0.3.16, released 2025-05-19; requires_python constraint)</td><td><a href="https://pypi.org/project/llm-guard/" rel="noopener" target="_blank">https://pypi.org/project/llm-guard/</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not run end-to-end tests: no scanner was executed against samples, and no threshold or disposition action was observed in practice. Everything here is assembled from the official README, the documentation index and the LICENSE / PyPI metadata (fetched 2026-11-06). The scanner-channel section is a transcription of the README list and implies no measured hit or block behaviour.</p>
+</div>
+<div class="panel is-slim">
+<h2>Declared detection channels (transcribed from the README)</h2>
+<p>Prompt scanners (15 items): Anonymize, BanCode, BanCompetitors, BanSubstrings, BanTopics, Code, Gibberish, InvisibleText, Language, PromptInjection, Regex, Secrets, Sentiment, TokenLimit, Toxicity.</p>
+<p>Output scanners (21 items): BanCode, BanCompetitors, BanSubstrings, BanTopics, Bias, Code, Deanonymize, JSON, Language, LanguageSame, MaliciousURLs, NoRefusal, ReadingTime, FactualConsistency, Gibberish, Regex, Relevance, Sensitive, Sentiment, Toxicity, URLReachability.</p>
+<blockquote>This table is only the <strong>capability surface the official text declares</strong>. This site ran none of these items and quotes no hit-rate numbers, official or third-party.</blockquote>
+</div>
+<div class="panel is-slim">
+<h2>Archive status and what it means for selection</h2>
+<p>The warning block at the top of the README, original wording (fetched 2026-11-06):</p>
+<blockquote>THIS PROJECT HAS BEEN ARCHIVED. This project and its associated models on Hugging Face are no longer under active development or maintained.</blockquote>
+<p>Corroborating verifiable facts: the repository's <code>archived</code> flag is true, the last push was 2026-07-08, and the newest PyPI release 0.3.16 dates to 2025-05-19. The entry therefore records lifecycle <code>archived</code> with confidence capped at <code>partial</code>.</p>
+<p>The selection implication is <strong>a transfer of maintenance duty</strong>: rulesets, dependencies and security fixes all become your responsibility.</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/safety/rebuff.html">Rebuff</a></span><span class="rel-n">Same line: Rebuff (in guardrails and content filtering); this entry states only what its own official sources support.</span></li>
+<li><span class="rel-t"><a href="/en/safety/canary-scan.html">CanaryScan</a></span><span class="rel-n">Same line: CanaryScan (in guardrails and content filtering); this entry states only what its own official sources support.</span></li>
+<li><span class="rel-t"><a href="/en/safety/nemo-guardrails.html">NeMo Guardrails</a></span><span class="rel-n">Same line: NeMo Guardrails (in guardrails and content filtering); this entry states only what its own official sources support.</span></li>
+<li><span class="rel-t"><a href="/en/framework/langchain.html">LangChain</a></span><span class="rel-n">Other layer · Frameworks &amp; runtimes</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/safety/arize-phoenix.html">Arize Phoenix</a></td><td>Local / self-hosted</td><td>Commercial terms</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Phoenix is an open-licensed observability and evaluation platform that r</td></tr><tr><td><a href="/en/safety/langfuse.html">Langfuse</a></td><td>Local + cloud</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Langfuse is an open-source observability and evaluation platform. Its co</td></tr><tr><td><a href="/en/safety/litellm.html">LiteLLM Proxy (AI Gateway)</a></td><td>Local + cloud</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">It is a self-deployed unified entry point, with governance on keys and b</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from Protect AI</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/safety/rebuff.html"><span class="vp-cat">Safety &amp; evaluation</span>Rebuff</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

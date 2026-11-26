@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>AI tools</title>
+<meta content="The number counts entries that match both; tap it to open a filtered list." name="description"/>
+<link href="https://tools.specul.com/en/" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/" property="og:url"/>
+<meta content="AI tools" property="og:title"/>
+<meta content="The number counts entries that match both; tap it to open a filtered list." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"AI tools","description":"The number counts entries that match both; tap it to open a filtered list.","url":"https://tools.specul.com/en/","inLanguage":"en","publisher":{"@type":"Organization","name":"AI tools","url":"https://tools.specul.com/en/"}}</script>
+<meta content="AI tools" name="twitter:title"/><meta content="The number counts entries that match both; tap it to open a filtered list." name="twitter:description"/><link href="https://tools.specul.com/" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<section class="site-hero">
+<div class="container">
+<h1>AI tools</h1>
+<p class="site-hero-deck">282 tool profiles, filtered by task, category and constraint.</p>
+</div>
+</section>
+<section class="section decision-section decision-top" id="decision">
+<div class="container">
+<div class="decision-top-head">
+<p class="kicker">Not sure which one</p>
+<h2>Choose, cost, then check the licence</h2>
+<p>You do not need to memorise 12 categories. Three steps: narrow to three candidates, cost it with your own assumptions, then read the licence before commercial use.</p>
+</div>
+<div class="decision-grid">
+<a class="decision-card decision-card-link" href="/en/finder/">
+<span class="ds-no">01</span>
+<h3>Narrow to 3 candidates by task</h3>
+<p>State the job, monthly budget, mainland access or local runtime. Anything that fails a hard constraint is out — no “it may support it later”.</p>
+<span class="decision-go">Open the AI finder →</span>
+</a>
+<a class="decision-card decision-card-link" href="/en/costs/">
+<span class="ds-no">02</span>
+<h3>Work out the monthly cost</h3>
+<p>Subscriptions, API calls, overage and local power are calculated separately. Each group stands alone; blank prices are yours to fill, not a fake quote.</p>
+<span class="decision-go">Open the cost sheet →</span>
+</a>
+<a class="decision-card decision-card-link" href="https://models.specul.com/en/license.html">
+<span class="ds-no">03</span>
+<h3>Check the licence and commercial boundary</h3>
+<p>Commercial use, attribution, MAU thresholds and distillation limits — read the original. Open source does not mean unrestricted use; this page is not legal advice.</p>
+<span class="decision-go">Open the licence checker →</span>
+</a>
+</div>
+<p class="decision-top-note">Already know the product? <a href="https://specul.com/en/search.html?site=agent">Search the 282 tool profiles →</a></p>
+</div>
+</section>
+<section class="section matrix-section" id="task-map">
+<div class="container">
+<div class="matrix-head">
+<h2>Where your job lands</h2>
+<p class="section-desc">The number counts entries that match both; tap it to open a filtered list.</p>
+</div>
+<div class="table-wrap matrix-wrap">
+<table class="task-matrix">
+<thead><tr><th class="tm-corner">Job → / category ↓</th><th><a href="/en/coding/">AI coding</a></th><th><a href="/en/chat/">Chat assistants</a></th><th><a href="/en/image/">AI image creation</a></th><th><a href="/en/video/">AI video creation</a></th><th><a href="/en/audio/">AI audio &amp; voice</a></th><th><a href="/en/research/">AI search &amp; research</a></th><th><a href="/en/office/">Office &amp; writing</a></th><th><a href="/en/automation/">AI automation &amp; workflows</a></th><th><a href="/en/framework/">Frameworks &amp; runtimes</a></th><th><a href="/en/mcp/">MCP tools</a></th><th><a href="/en/runner/">Local model runners</a></th><th><a href="/en/safety/">AI safety &amp; evaluation</a></th><th class="tm-total">Total</th></tr></thead>
+<tbody><tr><th class="tm-task"><a href="https://specul.com/en/topic-code.html">Code / build a page</a></th><td class="tm-cell has" style="--heat:100%"><a href="/en/coding/?job=code" title="AI coding · Code / build a page: 42 entries">42</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/chat/?job=code" title="Chat assistants · Code / build a page: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/image/?job=code" title="AI image creation · Code / build a page: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/video/?job=code" title="AI video creation · Code / build a page: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/audio/?job=code" title="AI audio &amp; voice · Code / build a page: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/research/?job=code" title="AI search &amp; research · Code / build a page: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/office/?job=code" title="Office &amp; writing · Code / build a page: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/automation/?job=code" title="AI automation &amp; workflows · Code / build a page: 0 entries">·</a></td><td class="tm-cell has" style="--heat:25%"><a href="/en/framework/?job=code" title="Frameworks &amp; runtimes · Code / build a page: 6 entries">6</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/mcp/?job=code" title="MCP tools · Code / build a page: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/runner/?job=code" title="Local model runners · Code / build a page: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/safety/?job=code" title="AI safety &amp; evaluation · Code / build a page: 0 entries">·</a></td><td class="tm-total">48</td></tr><tr><th class="tm-task"><a href="https://specul.com/en/topic-video.html">Video</a></th><td class="tm-cell" style="--heat:0%"><a href="/en/coding/?job=video" title="AI coding · Video: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/chat/?job=video" title="Chat assistants · Video: 0 entries">·</a></td><td class="tm-cell has" style="--heat:16%"><a href="/en/image/?job=video" title="AI image creation · Video: 2 entries">2</a></td><td class="tm-cell has" style="--heat:41%"><a href="/en/video/?job=video" title="AI video creation · Video: 14 entries">14</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/audio/?job=video" title="AI audio &amp; voice · Video: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/research/?job=video" title="AI search &amp; research · Video: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/office/?job=video" title="Office &amp; writing · Video: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/automation/?job=video" title="AI automation &amp; workflows · Video: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/framework/?job=video" title="Frameworks &amp; runtimes · Video: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/mcp/?job=video" title="MCP tools · Video: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/runner/?job=video" title="Local model runners · Video: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/safety/?job=video" title="AI safety &amp; evaluation · Video: 0 entries">·</a></td><td class="tm-total">16</td></tr><tr><th class="tm-task"><a href="https://specul.com/en/topic-game.html">Games</a></th><td class="tm-cell" style="--heat:0%"><a href="/en/coding/?job=game" title="AI coding · Games: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/chat/?job=game" title="Chat assistants · Games: 0 entries">·</a></td><td class="tm-cell has" style="--heat:14%"><a href="/en/image/?job=game" title="AI image creation · Games: 1 entry">1</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/video/?job=game" title="AI video creation · Games: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/audio/?job=game" title="AI audio &amp; voice · Games: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/research/?job=game" title="AI search &amp; research · Games: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/office/?job=game" title="Office &amp; writing · Games: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/automation/?job=game" title="AI automation &amp; workflows · Games: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/framework/?job=game" title="Frameworks &amp; runtimes · Games: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/mcp/?job=game" title="MCP tools · Games: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/runner/?job=game" title="Local model runners · Games: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/safety/?job=game" title="AI safety &amp; evaluation · Games: 0 entries">·</a></td><td class="tm-total">1</td></tr><tr><th class="tm-task"><a href="https://specul.com/en/topic-music.html">Music</a></th><td class="tm-cell" style="--heat:0%"><a href="/en/coding/?job=music" title="AI coding · Music: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/chat/?job=music" title="Chat assistants · Music: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/image/?job=music" title="AI image creation · Music: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/video/?job=music" title="AI video creation · Music: 0 entries">·</a></td><td class="tm-cell has" style="--heat:20%"><a href="/en/audio/?job=music" title="AI audio &amp; voice · Music: 4 entries">4</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/research/?job=music" title="AI search &amp; research · Music: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/office/?job=music" title="Office &amp; writing · Music: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/automation/?job=music" title="AI automation &amp; workflows · Music: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/framework/?job=music" title="Frameworks &amp; runtimes · Music: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/mcp/?job=music" title="MCP tools · Music: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/runner/?job=music" title="Local model runners · Music: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/safety/?job=music" title="AI safety &amp; evaluation · Music: 0 entries">·</a></td><td class="tm-total">4</td></tr><tr><th class="tm-task"><a href="https://specul.com/en/topic-research.html">Research / reports</a></th><td class="tm-cell" style="--heat:0%"><a href="/en/coding/?job=research" title="AI coding · Research / reports: 0 entries">·</a></td><td class="tm-cell has" style="--heat:16%"><a href="/en/chat/?job=research" title="Chat assistants · Research / reports: 2 entries">2</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/image/?job=research" title="AI image creation · Research / reports: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/video/?job=research" title="AI video creation · Research / reports: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/audio/?job=research" title="AI audio &amp; voice · Research / reports: 0 entries">·</a></td><td class="tm-cell has" style="--heat:35%"><a href="/en/research/?job=research" title="AI search &amp; research · Research / reports: 11 entries">11</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/office/?job=research" title="Office &amp; writing · Research / reports: 0 entries">·</a></td><td class="tm-cell has" style="--heat:18%"><a href="/en/automation/?job=research" title="AI automation &amp; workflows · Research / reports: 3 entries">3</a></td><td class="tm-cell has" style="--heat:25%"><a href="/en/framework/?job=research" title="Frameworks &amp; runtimes · Research / reports: 6 entries">6</a></td><td class="tm-cell has" style="--heat:18%"><a href="/en/mcp/?job=research" title="MCP tools · Research / reports: 3 entries">3</a></td><td class="tm-cell has" style="--heat:14%"><a href="/en/runner/?job=research" title="Local model runners · Research / reports: 1 entry">1</a></td><td class="tm-cell has" style="--heat:14%"><a href="/en/safety/?job=research" title="AI safety &amp; evaluation · Research / reports: 1 entry">1</a></td><td class="tm-total">27</td></tr><tr><th class="tm-task"><a href="https://specul.com/en/topic-office.html">Office / sheets / meetings</a></th><td class="tm-cell has" style="--heat:20%"><a href="/en/coding/?job=office" title="AI coding · Office / sheets / meetings: 4 entries">4</a></td><td class="tm-cell has" style="--heat:20%"><a href="/en/chat/?job=office" title="Chat assistants · Office / sheets / meetings: 4 entries">4</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/image/?job=office" title="AI image creation · Office / sheets / meetings: 0 entries">·</a></td><td class="tm-cell has" style="--heat:14%"><a href="/en/video/?job=office" title="AI video creation · Office / sheets / meetings: 1 entry">1</a></td><td class="tm-cell has" style="--heat:14%"><a href="/en/audio/?job=office" title="AI audio &amp; voice · Office / sheets / meetings: 1 entry">1</a></td><td class="tm-cell has" style="--heat:14%"><a href="/en/research/?job=office" title="AI search &amp; research · Office / sheets / meetings: 1 entry">1</a></td><td class="tm-cell has" style="--heat:43%"><a href="/en/office/?job=office" title="Office &amp; writing · Office / sheets / meetings: 15 entries">15</a></td><td class="tm-cell has" style="--heat:20%"><a href="/en/automation/?job=office" title="AI automation &amp; workflows · Office / sheets / meetings: 4 entries">4</a></td><td class="tm-cell has" style="--heat:14%"><a href="/en/framework/?job=office" title="Frameworks &amp; runtimes · Office / sheets / meetings: 1 entry">1</a></td><td class="tm-cell has" style="--heat:18%"><a href="/en/mcp/?job=office" title="MCP tools · Office / sheets / meetings: 3 entries">3</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/runner/?job=office" title="Local model runners · Office / sheets / meetings: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/safety/?job=office" title="AI safety &amp; evaluation · Office / sheets / meetings: 0 entries">·</a></td><td class="tm-total">34</td></tr><tr><th class="tm-task"><a href="https://specul.com/en/topic-prompts.html">Prompts</a><span class="tm-empty">No entries yet</span></th><td class="tm-cell" style="--heat:0%"><a href="/en/coding/?job=prompts" title="AI coding · Prompts: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/chat/?job=prompts" title="Chat assistants · Prompts: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/image/?job=prompts" title="AI image creation · Prompts: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/video/?job=prompts" title="AI video creation · Prompts: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/audio/?job=prompts" title="AI audio &amp; voice · Prompts: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/research/?job=prompts" title="AI search &amp; research · Prompts: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/office/?job=prompts" title="Office &amp; writing · Prompts: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/automation/?job=prompts" title="AI automation &amp; workflows · Prompts: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/framework/?job=prompts" title="Frameworks &amp; runtimes · Prompts: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/mcp/?job=prompts" title="MCP tools · Prompts: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/runner/?job=prompts" title="Local model runners · Prompts: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/safety/?job=prompts" title="AI safety &amp; evaluation · Prompts: 0 entries">·</a></td><td class="tm-total">0</td></tr><tr><th class="tm-task"><a href="https://specul.com/en/topic-robot.html">Robots / hardware</a></th><td class="tm-cell" style="--heat:0%"><a href="/en/coding/?job=robot" title="AI coding · Robots / hardware: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/chat/?job=robot" title="Chat assistants · Robots / hardware: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/image/?job=robot" title="AI image creation · Robots / hardware: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/video/?job=robot" title="AI video creation · Robots / hardware: 0 entries">·</a></td><td class="tm-cell has" style="--heat:14%"><a href="/en/audio/?job=robot" title="AI audio &amp; voice · Robots / hardware: 1 entry">1</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/research/?job=robot" title="AI search &amp; research · Robots / hardware: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/office/?job=robot" title="Office &amp; writing · Robots / hardware: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/automation/?job=robot" title="AI automation &amp; workflows · Robots / hardware: 0 entries">·</a></td><td class="tm-cell has" style="--heat:37%"><a href="/en/framework/?job=robot" title="Frameworks &amp; runtimes · Robots / hardware: 12 entries">12</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/mcp/?job=robot" title="MCP tools · Robots / hardware: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/runner/?job=robot" title="Local model runners · Robots / hardware: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/safety/?job=robot" title="AI safety &amp; evaluation · Robots / hardware: 0 entries">·</a></td><td class="tm-total">13</td></tr><tr><th class="tm-task"><a href="https://specul.com/en/topic-agent.html">Build agents</a></th><td class="tm-cell has" style="--heat:31%"><a href="/en/coding/?job=agent" title="AI coding · Build agents: 9 entries">9</a></td><td class="tm-cell has" style="--heat:18%"><a href="/en/chat/?job=agent" title="Chat assistants · Build agents: 3 entries">3</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/image/?job=agent" title="AI image creation · Build agents: 0 entries">·</a></td><td class="tm-cell has" style="--heat:14%"><a href="/en/video/?job=agent" title="AI video creation · Build agents: 1 entry">1</a></td><td class="tm-cell has" style="--heat:16%"><a href="/en/audio/?job=agent" title="AI audio &amp; voice · Build agents: 2 entries">2</a></td><td class="tm-cell has" style="--heat:16%"><a href="/en/research/?job=agent" title="AI search &amp; research · Build agents: 2 entries">2</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/office/?job=agent" title="Office &amp; writing · Build agents: 0 entries">·</a></td><td class="tm-cell has" style="--heat:46%"><a href="/en/automation/?job=agent" title="AI automation &amp; workflows · Build agents: 16 entries">16</a></td><td class="tm-cell has" style="--heat:77%"><a href="/en/framework/?job=agent" title="Frameworks &amp; runtimes · Build agents: 31 entries">31</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/mcp/?job=agent" title="MCP tools · Build agents: 0 entries">·</a></td><td class="tm-cell has" style="--heat:14%"><a href="/en/runner/?job=agent" title="Local model runners · Build agents: 1 entry">1</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/safety/?job=agent" title="AI safety &amp; evaluation · Build agents: 0 entries">·</a></td><td class="tm-total">65</td></tr><tr><th class="tm-task"><a href="https://specul.com/en/topic-local.html">Run models locally</a></th><td class="tm-cell has" style="--heat:14%"><a href="/en/coding/?job=local" title="AI coding · Run models locally: 1 entry">1</a></td><td class="tm-cell has" style="--heat:14%"><a href="/en/chat/?job=local" title="Chat assistants · Run models locally: 1 entry">1</a></td><td class="tm-cell has" style="--heat:18%"><a href="/en/image/?job=local" title="AI image creation · Run models locally: 3 entries">3</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/video/?job=local" title="AI video creation · Run models locally: 0 entries">·</a></td><td class="tm-cell has" style="--heat:16%"><a href="/en/audio/?job=local" title="AI audio &amp; voice · Run models locally: 2 entries">2</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/research/?job=local" title="AI search &amp; research · Run models locally: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/office/?job=local" title="Office &amp; writing · Run models locally: 0 entries">·</a></td><td class="tm-cell has" style="--heat:25%"><a href="/en/automation/?job=local" title="AI automation &amp; workflows · Run models locally: 6 entries">6</a></td><td class="tm-cell has" style="--heat:22%"><a href="/en/framework/?job=local" title="Frameworks &amp; runtimes · Run models locally: 5 entries">5</a></td><td class="tm-cell has" style="--heat:14%"><a href="/en/mcp/?job=local" title="MCP tools · Run models locally: 1 entry">1</a></td><td class="tm-cell has" style="--heat:56%"><a href="/en/runner/?job=local" title="Local model runners · Run models locally: 21 entries">21</a></td><td class="tm-cell has" style="--heat:35%"><a href="/en/safety/?job=local" title="AI safety &amp; evaluation · Run models locally: 11 entries">11</a></td><td class="tm-total">51</td></tr><tr><th class="tm-task"><a href="https://specul.com/en/topic-speech.html">Speech / dubbing</a></th><td class="tm-cell" style="--heat:0%"><a href="/en/coding/?job=speech" title="AI coding · Speech / dubbing: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/chat/?job=speech" title="Chat assistants · Speech / dubbing: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/image/?job=speech" title="AI image creation · Speech / dubbing: 0 entries">·</a></td><td class="tm-cell has" style="--heat:14%"><a href="/en/video/?job=speech" title="AI video creation · Speech / dubbing: 1 entry">1</a></td><td class="tm-cell has" style="--heat:48%"><a href="/en/audio/?job=speech" title="AI audio &amp; voice · Speech / dubbing: 17 entries">17</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/research/?job=speech" title="AI search &amp; research · Speech / dubbing: 0 entries">·</a></td><td class="tm-cell has" style="--heat:16%"><a href="/en/office/?job=speech" title="Office &amp; writing · Speech / dubbing: 2 entries">2</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/automation/?job=speech" title="AI automation &amp; workflows · Speech / dubbing: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/framework/?job=speech" title="Frameworks &amp; runtimes · Speech / dubbing: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/mcp/?job=speech" title="MCP tools · Speech / dubbing: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/runner/?job=speech" title="Local model runners · Speech / dubbing: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/safety/?job=speech" title="AI safety &amp; evaluation · Speech / dubbing: 0 entries">·</a></td><td class="tm-total">20</td></tr><tr><th class="tm-task"><a href="https://specul.com/en/topic-eval.html">Eval / release</a></th><td class="tm-cell" style="--heat:0%"><a href="/en/coding/?job=eval" title="AI coding · Eval / release: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/chat/?job=eval" title="Chat assistants · Eval / release: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/image/?job=eval" title="AI image creation · Eval / release: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/video/?job=eval" title="AI video creation · Eval / release: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/audio/?job=eval" title="AI audio &amp; voice · Eval / release: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/research/?job=eval" title="AI search &amp; research · Eval / release: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/office/?job=eval" title="Office &amp; writing · Eval / release: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/automation/?job=eval" title="AI automation &amp; workflows · Eval / release: 0 entries">·</a></td><td class="tm-cell has" style="--heat:18%"><a href="/en/framework/?job=eval" title="Frameworks &amp; runtimes · Eval / release: 3 entries">3</a></td><td class="tm-cell has" style="--heat:16%"><a href="/en/mcp/?job=eval" title="MCP tools · Eval / release: 2 entries">2</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/runner/?job=eval" title="Local model runners · Eval / release: 0 entries">·</a></td><td class="tm-cell has" style="--heat:37%"><a href="/en/safety/?job=eval" title="AI safety &amp; evaluation · Eval / release: 12 entries">12</a></td><td class="tm-total">17</td></tr><tr><th class="tm-task"><a href="https://specul.com/en/topic-image.html">Images / design</a></th><td class="tm-cell" style="--heat:0%"><a href="/en/coding/?job=image" title="AI coding · Images / design: 0 entries">·</a></td><td class="tm-cell has" style="--heat:14%"><a href="/en/chat/?job=image" title="Chat assistants · Images / design: 1 entry">1</a></td><td class="tm-cell has" style="--heat:43%"><a href="/en/image/?job=image" title="AI image creation · Images / design: 15 entries">15</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/video/?job=image" title="AI video creation · Images / design: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/audio/?job=image" title="AI audio &amp; voice · Images / design: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/research/?job=image" title="AI search &amp; research · Images / design: 0 entries">·</a></td><td class="tm-cell has" style="--heat:18%"><a href="/en/office/?job=image" title="Office &amp; writing · Images / design: 3 entries">3</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/automation/?job=image" title="AI automation &amp; workflows · Images / design: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/framework/?job=image" title="Frameworks &amp; runtimes · Images / design: 0 entries">·</a></td><td class="tm-cell has" style="--heat:14%"><a href="/en/mcp/?job=image" title="MCP tools · Images / design: 1 entry">1</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/runner/?job=image" title="Local model runners · Images / design: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/safety/?job=image" title="AI safety &amp; evaluation · Images / design: 0 entries">·</a></td><td class="tm-total">20</td></tr><tr><th class="tm-task"><a href="https://specul.com/en/topic-3d.html">3D / digital humans</a></th><td class="tm-cell" style="--heat:0%"><a href="/en/coding/?job=3d" title="AI coding · 3D / digital humans: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/chat/?job=3d" title="Chat assistants · 3D / digital humans: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/image/?job=3d" title="AI image creation · 3D / digital humans: 0 entries">·</a></td><td class="tm-cell has" style="--heat:20%"><a href="/en/video/?job=3d" title="AI video creation · 3D / digital humans: 4 entries">4</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/audio/?job=3d" title="AI audio &amp; voice · 3D / digital humans: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/research/?job=3d" title="AI search &amp; research · 3D / digital humans: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/office/?job=3d" title="Office &amp; writing · 3D / digital humans: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/automation/?job=3d" title="AI automation &amp; workflows · 3D / digital humans: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/framework/?job=3d" title="Frameworks &amp; runtimes · 3D / digital humans: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/mcp/?job=3d" title="MCP tools · 3D / digital humans: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/runner/?job=3d" title="Local model runners · 3D / digital humans: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/safety/?job=3d" title="AI safety &amp; evaluation · 3D / digital humans: 0 entries">·</a></td><td class="tm-total">4</td></tr><tr><th class="tm-task"><a href="https://specul.com/en/topic-data.html">Data / training</a></th><td class="tm-cell" style="--heat:0%"><a href="/en/coding/?job=data" title="AI coding · Data / training: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/chat/?job=data" title="Chat assistants · Data / training: 0 entries">·</a></td><td class="tm-cell has" style="--heat:22%"><a href="/en/image/?job=data" title="AI image creation · Data / training: 5 entries">5</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/video/?job=data" title="AI video creation · Data / training: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/audio/?job=data" title="AI audio &amp; voice · Data / training: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/research/?job=data" title="AI search &amp; research · Data / training: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/office/?job=data" title="Office &amp; writing · Data / training: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/automation/?job=data" title="AI automation &amp; workflows · Data / training: 0 entries">·</a></td><td class="tm-cell has" style="--heat:14%"><a href="/en/framework/?job=data" title="Frameworks &amp; runtimes · Data / training: 1 entry">1</a></td><td class="tm-cell has" style="--heat:18%"><a href="/en/mcp/?job=data" title="MCP tools · Data / training: 3 entries">3</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/runner/?job=data" title="Local model runners · Data / training: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/safety/?job=data" title="AI safety &amp; evaluation · Data / training: 0 entries">·</a></td><td class="tm-total">9</td></tr><tr><th class="tm-task"><a href="https://specul.com/en/topic-safety.html">Safety / compliance</a></th><td class="tm-cell has" style="--heat:14%"><a href="/en/coding/?job=safety" title="AI coding · Safety / compliance: 1 entry">1</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/chat/?job=safety" title="Chat assistants · Safety / compliance: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/image/?job=safety" title="AI image creation · Safety / compliance: 0 entries">·</a></td><td class="tm-cell has" style="--heat:14%"><a href="/en/video/?job=safety" title="AI video creation · Safety / compliance: 1 entry">1</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/audio/?job=safety" title="AI audio &amp; voice · Safety / compliance: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/research/?job=safety" title="AI search &amp; research · Safety / compliance: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/office/?job=safety" title="Office &amp; writing · Safety / compliance: 0 entries">·</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/automation/?job=safety" title="AI automation &amp; workflows · Safety / compliance: 0 entries">·</a></td><td class="tm-cell has" style="--heat:16%"><a href="/en/framework/?job=safety" title="Frameworks &amp; runtimes · Safety / compliance: 2 entries">2</a></td><td class="tm-cell has" style="--heat:14%"><a href="/en/mcp/?job=safety" title="MCP tools · Safety / compliance: 1 entry">1</a></td><td class="tm-cell" style="--heat:0%"><a href="/en/runner/?job=safety" title="Local model runners · Safety / compliance: 0 entries">·</a></td><td class="tm-cell has" style="--heat:64%"><a href="/en/safety/?job=safety" title="AI safety &amp; evaluation · Safety / compliance: 25 entries">25</a></td><td class="tm-total">30</td></tr></tbody>
+</table>
+</div>
+<div class="tm-mobile">
+<p class="tm-mobile-head">On phones each job shows three categories; tap one to filter.</p>
+<div class="tm-mrow"><a class="tm-mjob" href="https://specul.com/en/topic-code.html">Code / build a page</a><div class="tm-mlist"><a href="/en/coding/?job=code"><b>AI coding</b><span>42</span></a><a href="/en/framework/?job=code"><b>Frameworks &amp; runtimes</b><span>6</span></a></div></div><div class="tm-mrow"><a class="tm-mjob" href="https://specul.com/en/topic-video.html">Video</a><div class="tm-mlist"><a href="/en/video/?job=video"><b>AI video creation</b><span>14</span></a><a href="/en/image/?job=video"><b>AI image creation</b><span>2</span></a></div></div><div class="tm-mrow"><a class="tm-mjob" href="https://specul.com/en/topic-game.html">Games</a><div class="tm-mlist"><a href="/en/image/?job=game"><b>AI image creation</b><span>1</span></a></div></div><div class="tm-mrow"><a class="tm-mjob" href="https://specul.com/en/topic-music.html">Music</a><div class="tm-mlist"><a href="/en/audio/?job=music"><b>AI audio &amp; voice</b><span>4</span></a></div></div><div class="tm-mrow"><a class="tm-mjob" href="https://specul.com/en/topic-research.html">Research / reports</a><div class="tm-mlist"><a href="/en/research/?job=research"><b>AI search &amp; research</b><span>11</span></a><a href="/en/framework/?job=research"><b>Frameworks &amp; runtimes</b><span>6</span></a><a href="/en/automation/?job=research"><b>AI automation &amp; workflows</b><span>3</span></a></div></div><div class="tm-mrow"><a class="tm-mjob" href="https://specul.com/en/topic-office.html">Office / sheets / meetings</a><div class="tm-mlist"><a href="/en/office/?job=office"><b>Office &amp; writing</b><span>15</span></a><a href="/en/coding/?job=office"><b>AI coding</b><span>4</span></a><a href="/en/chat/?job=office"><b>Chat assistants</b><span>4</span></a></div></div><div class="tm-mrow"><a class="tm-mjob" href="https://specul.com/en/topic-prompts.html">Prompts</a><div class="tm-mlist"><span class="tm-mnone">No entries yet; use the job page above for background</span></div></div><div class="tm-mrow"><a class="tm-mjob" href="https://specul.com/en/topic-robot.html">Robots / hardware</a><div class="tm-mlist"><a href="/en/framework/?job=robot"><b>Frameworks &amp; runtimes</b><span>12</span></a><a href="/en/audio/?job=robot"><b>AI audio &amp; voice</b><span>1</span></a></div></div><div class="tm-mrow"><a class="tm-mjob" href="https://specul.com/en/topic-agent.html">Build agents</a><div class="tm-mlist"><a href="/en/framework/?job=agent"><b>Frameworks &amp; runtimes</b><span>31</span></a><a href="/en/automation/?job=agent"><b>AI automation &amp; workflows</b><span>16</span></a><a href="/en/coding/?job=agent"><b>AI coding</b><span>9</span></a></div></div><div class="tm-mrow"><a class="tm-mjob" href="https://specul.com/en/topic-local.html">Run models locally</a><div class="tm-mlist"><a href="/en/runner/?job=local"><b>Local model runners</b><span>21</span></a><a href="/en/safety/?job=local"><b>AI safety &amp; evaluation</b><span>11</span></a><a href="/en/automation/?job=local"><b>AI automation &amp; workflows</b><span>6</span></a></div></div><div class="tm-mrow"><a class="tm-mjob" href="https://specul.com/en/topic-speech.html">Speech / dubbing</a><div class="tm-mlist"><a href="/en/audio/?job=speech"><b>AI audio &amp; voice</b><span>17</span></a><a href="/en/office/?job=speech"><b>Office &amp; writing</b><span>2</span></a><a href="/en/video/?job=speech"><b>AI video creation</b><span>1</span></a></div></div><div class="tm-mrow"><a class="tm-mjob" href="https://specul.com/en/topic-eval.html">Eval / release</a><div class="tm-mlist"><a href="/en/safety/?job=eval"><b>AI safety &amp; evaluation</b><span>12</span></a><a href="/en/framework/?job=eval"><b>Frameworks &amp; runtimes</b><span>3</span></a><a href="/en/mcp/?job=eval"><b>MCP tools</b><span>2</span></a></div></div><div class="tm-mrow"><a class="tm-mjob" href="https://specul.com/en/topic-image.html">Images / design</a><div class="tm-mlist"><a href="/en/image/?job=image"><b>AI image creation</b><span>15</span></a><a href="/en/office/?job=image"><b>Office &amp; writing</b><span>3</span></a><a href="/en/chat/?job=image"><b>Chat assistants</b><span>1</span></a></div></div><div class="tm-mrow"><a class="tm-mjob" href="https://specul.com/en/topic-3d.html">3D / digital humans</a><div class="tm-mlist"><a href="/en/video/?job=3d"><b>AI video creation</b><span>4</span></a></div></div><div class="tm-mrow"><a class="tm-mjob" href="https://specul.com/en/topic-data.html">Data / training</a><div class="tm-mlist"><a href="/en/image/?job=data"><b>AI image creation</b><span>5</span></a><a href="/en/mcp/?job=data"><b>MCP tools</b><span>3</span></a><a href="/en/framework/?job=data"><b>Frameworks &amp; runtimes</b><span>1</span></a></div></div><div class="tm-mrow"><a class="tm-mjob" href="https://specul.com/en/topic-safety.html">Safety / compliance</a><div class="tm-mlist"><a href="/en/safety/?job=safety"><b>AI safety &amp; evaluation</b><span>25</span></a><a href="/en/framework/?job=safety"><b>Frameworks &amp; runtimes</b><span>2</span></a><a href="/en/coding/?job=safety"><b>AI coding</b><span>1</span></a></div></div>
+</div>
+<div class="matrix-note">How to read: find your job row, then look at the two or three categories with the largest numbers. Do not read it corner to corner like an exam.</div>
+</div>
+</section>
+<nav aria-label="Tool categories" class="part-bar">
+<div class="container">
+<a href="/en/coding/" style="--pa:var(--pa-coding)" title="Installed in an editor, a terminal, or a vendor cloud"><b>Coding</b></a>
+<a href="/en/chat/" style="--pa:var(--pa-chat)" title="General-purpose chat products, Chinese ones included"><b>Chat</b></a>
+<a href="/en/image/" style="--pa:var(--pa-image)" title="Text-to-image and image workbenches"><b>Image</b></a>
+<a href="/en/video/" style="--pa:var(--pa-video)" title="Text-to-video and digital humans"><b>Video</b></a>
+<a href="/en/audio/" style="--pa:var(--pa-audio)" title="Music generation, TTS and transcription"><b>Audio</b></a>
+<a href="/en/research/" style="--pa:var(--pa-research)" title="AI search, academic retrieval, research workbenches"><b>Research</b></a>
+<a href="/en/office/" style="--pa:var(--pa-office)" title="Docs, sheets, slides, meetings, translation and email"><b>Office</b></a>
+<a href="/en/automation/" style="--pa:var(--pa-automation)" title="Visual AI workflows and agents"><b>Automation</b></a>
+<a href="/en/framework/" style="--pa:var(--pa-framework)" title="Runtimes, orchestration frameworks, SDKs, robotics stacks"><b>Frameworks</b></a>
+<a href="/en/mcp/" style="--pa:var(--pa-mcp)" title="Fill the gap — MCP tools an agent can install"><b>MCP</b></a>
+<a href="/en/runner/" style="--pa:var(--pa-runner)" title="Run open-weight models on your own machine"><b>Runners</b></a>
+<a href="/en/safety/" style="--pa:var(--pa-safety)" title="Constrain it, measure it, trace it back"><b>Safety</b></a>
+</div>
+</nav>
+<section class="vz-section" id="shape">
+<div class="container">
+<div class="vz-head">
+<h2 class="vz-title">More tools than ever; see the category scale first <span class="vz-title-sub">tool landscape</span></h2>
+<p class="vz-dek">See how many options sit in each of the 12 categories, and how agent tools are wired in 2026. For “where does my job land”, use the job matrix below.</p>
+</div>
+<div class="vz-grid"><figure class="vz-card vz-span-7">
+<figcaption class="vz-cap"><span class="vz-no">01</span><span><b>Options per category</b><small>by primary category</small></span></figcaption>
+<div class="vz-plot"><svg aria-label="Horizontal bar chart" class="vz-svg" role="img" viewbox="0 0 720 438" xmlns="http://www.w3.org/2000/svg">
+<line class="vz-gridline" x1="170" x2="710" y1="41" y2="41"></line>
+Coding
+<rect class="vz-bar" height="18" rx="7" style="fill:var(--cat-blue)" width="452.95238095238096" x="170" y="25"></rect>
+<text class="vz-t-strong" text-anchor="end" x="716" y="40">41</text>
+<line class="vz-gridline" x1="170" x2="710" y1="75" y2="75"></line>
+Frameworks
+<rect class="vz-bar" height="18" rx="7" style="fill:var(--cat-violet)" width="464" x="170" y="59"></rect>
+<text class="vz-t-strong" text-anchor="end" x="716" y="74">42</text>
+<line class="vz-gridline" x1="170" x2="710" y1="109" y2="109"></line>
+<text class="vz-t" x="0" y="108">MCP</text>
+<rect class="vz-bar" height="18" rx="7" style="fill:var(--cat-teal)" width="353.5238095238095" x="170" y="93"></rect>
+<text class="vz-t-strong" text-anchor="end" x="716" y="108">32</text>
+<line class="vz-gridline" x1="170" x2="710" y1="143" y2="143"></line>
+Safety &amp; evals
+<rect class="vz-bar" height="18" rx="7" style="fill:var(--cat-rose)" width="276.1904761904762" x="170" y="127"></rect>
+<text class="vz-t-strong" text-anchor="end" x="716" y="142">25</text>
+<line class="vz-gridline" x1="170" x2="710" y1="177" y2="177"></line>
+Automation
+<rect class="vz-bar" height="18" rx="7" style="fill:var(--cat-amber)" width="265.1428571428571" x="170" y="161"></rect>
+<text class="vz-t-strong" text-anchor="end" x="716" y="176">24</text>
+<line class="vz-gridline" x1="170" x2="710" y1="211" y2="211"></line>
+Chat
+<rect class="vz-bar" height="18" rx="7" style="fill:var(--cat-lime)" width="254.09523809523813" x="170" y="195"></rect>
+<text class="vz-t-strong" text-anchor="end" x="716" y="210">23</text>
+<line class="vz-gridline" x1="170" x2="710" y1="245" y2="245"></line>
+Local runners
+<rect class="vz-bar" height="18" rx="7" style="fill:var(--cat-blue)" width="232" x="170" y="229"></rect>
+<text class="vz-t-strong" text-anchor="end" x="716" y="244">21</text>
+<line class="vz-gridline" x1="170" x2="710" y1="279" y2="279"></line>
+Audio
+<rect class="vz-bar" height="18" rx="7" style="fill:var(--cat-violet)" width="187.80952380952382" x="170" y="263"></rect>
+<text class="vz-t-strong" text-anchor="end" x="716" y="278">17</text>
+<line class="vz-gridline" x1="170" x2="710" y1="313" y2="313"></line>
+Images
+<rect class="vz-bar" height="18" rx="7" style="fill:var(--cat-teal)" width="165.71428571428572" x="170" y="297"></rect>
+<text class="vz-t-strong" text-anchor="end" x="716" y="312">15</text>
+<line class="vz-gridline" x1="170" x2="710" y1="347" y2="347"></line>
+Office
+<rect class="vz-bar" height="18" rx="7" style="fill:var(--cat-lime)" width="165.71428571428572" x="170" y="331"></rect>
+<text class="vz-t-strong" text-anchor="end" x="716" y="346">15</text>
+<line class="vz-gridline" x1="170" x2="710" y1="381" y2="381"></line>
+Video
+<rect class="vz-bar" height="18" rx="7" style="fill:var(--cat-amber)" width="154.66666666666666" x="170" y="365"></rect>
+<text class="vz-t-strong" text-anchor="end" x="716" y="380">14</text>
+<line class="vz-gridline" x1="170" x2="710" y1="415" y2="415"></line>
+Research
+<rect class="vz-bar" height="18" rx="7" style="fill:var(--cat-rose)" width="121.52380952380953" x="170" y="399"></rect>
+<text class="vz-t-strong" text-anchor="end" x="716" y="414">11</text></svg></div>
+<p class="vz-foot">Each tool has one primary category to avoid double counting. More options do not mean better tools; they mean more to compare.</p>
+</figure><figure class="vz-card vz-span-5">
+<figcaption class="vz-cap"><span class="vz-no">02</span><span><b>Protocol timeline</b><small>MCP / Skills / AG-UI</small></span></figcaption>
+<div class="vz-plot"><svg aria-label="Timeline" class="vz-svg" role="img" viewbox="0 0 560 263" xmlns="http://www.w3.org/2000/svg">
+<text class="vz-t-dim" text-anchor="end" x="104" y="27">2026-11</text>
+<line class="vz-axis" x1="120" x2="120" y1="10" y2="54"></line>
+<circle cx="120" cy="22" r="6" style="fill:var(--cat-teal)"></circle>
+AG-UI 1.0 specification
+Agent ↔ user event stream, HTTP + SSE
+<text class="vz-t-dim" text-anchor="end" x="104" y="76">2026-10-22</text>
+<line class="vz-axis" x1="120" x2="120" y1="59" y2="103"></line>
+<circle cx="120" cy="71" r="6" style="fill:var(--cat-amber)"></circle>
+Agent Skills donated to AAIF
+70+ platforms; the standard moves to AAIF under the Linux Foundation
+<text class="vz-t-dim" text-anchor="end" x="104" y="125">2026-07-28</text>
+<line class="vz-axis" x1="120" x2="120" y1="108" y2="152"></line>
+<circle cx="120" cy="120" r="6" style="fill:var(--cat-violet)"></circle>
+Next MCP specification candidate
+Stateless core, Extensions, Tasks
+<text class="vz-t-dim" text-anchor="end" x="104" y="174">2026-01-26</text>
+<line class="vz-axis" x1="120" x2="120" y1="157" y2="201"></line>
+<circle cx="120" cy="169" r="6" style="fill:var(--cat-blue)"></circle>
+MCP Apps finalised
+ui:// resource + sandboxed iframe + JSON-RPC return
+<text class="vz-t-dim" text-anchor="end" x="104" y="223">2025-12</text>
+<line class="vz-axis" x1="120" x2="120" y1="206" y2="250"></line>
+<circle cx="120" cy="218" r="6" style="fill:var(--cat-lime)"></circle>
+Agent Skills released as an open standard
+One folder + SKILL.md, portable across platforms</svg></div>
+<p class="vz-foot">Official specs or announcements only; a protocol release does not mean products have adopted it.</p>
+</figure><figure class="vz-card vz-span-12">
+<figcaption class="vz-cap"><span class="vz-no">03</span><span><b>Three layers of wiring</b><small>tools &amp; data / agent ↔ agent / agent ↔ user</small></span></figcaption>
+<div class="vz-plot"><div class="vz-wire">
+<div><b>MCP</b><span>agent ↔ tools &amp; data</span><small>A2A handles agent-to-agent; MCP handles tools and context. MCP Apps in 2026 makes “return a UI” a tool capability.</small></div>
+<div><b>A2A</b><span>agent ↔ agent</span><small>Cross-org, cross-framework delegation and discovery; not a replacement for MCP.</small></div>
+<div><b>AG-UI</b><span>agent ↔ user</span><small>One ordered event stream for tokens, tool calls, shared state and interrupts.</small></div>
+</div></div>
+<p class="vz-foot">Three protocols, three boundaries; treating any one as universal wires the wrong thing.</p>
+</figure></div>
+<p class="vz-foot vz-foot-wide">Note: categories count primary categories; protocol dates come from official specs or announcements, never third-party tutorials.</p>
+<p class="vz-more"><a href="/en/2026.html">See what changed in tool protocols in 2026: MCP Apps, Agent Skills, AG-UI, stateless MCP →</a></p>
+</div>
+</section>
+<section class="section" id="collections">
+<div class="container">
+<h2>Five cross-cutting collections</h2>
+<p class="section-desc">Some needs are not solved by one product: browser operation, long-term memory, realtime voice, 3D/avatars and data annotation. These five pages connect tools, frameworks and open-source libraries along one chain without duplicating entries.</p>
+<ul class="reading-actions">
+<li><a href="/en/collection-browser.html">Browser / computer-use agents</a></li>
+<li><a href="/en/collection-memory.html">Agent memory: write, read, forget</a></li>
+<li><a href="/en/collection-realtime.html">Realtime voice: STT, TTS, interruption</a></li>
+<li><a href="/en/collection-3d.html">3D and avatars: geometry, driving, talking heads</a></li>
+<li><a href="/en/collection-annotation.html">Data annotation: image, video, 3D</a></li>
+</ul>
+</div>
+</section>
+<section class="section" id="cost-entry">
+<div class="container">
+<h2>Cost it before you choose</h2>
+<p class="section-desc">The same job has three different cost structures: cloud calls, local running and per-second video. The calculator does not guess rates: enter contract or official billing prices, compute each group separately, then compare.</p>
+<ul class="reading-actions">
+<li><a href="/en/costs/">Open the cost sheet</a></li>
+<li><a href="/en/mcp/guides/cost-calculator.html#cost-workbench">Open the cost workbench (four independent groups)</a></li>
+<li><a href="/en/mcp/guides/cost-control.html">Read the cost-control guide: what usually gets missed</a></li>
+</ul>
+</div>
+</section>
+<section class="section" id="decision-more">
+<div class="container">
+<h2>More ways in: comparisons, task playbooks and the cost workbench</h2>
+<p class="section-desc">Three multi-source comparisons, a task playbook hub, a four-group cost workbench and a licence checker. No first-party benchmarking.</p>
+<ul class="reading-actions">
+<li><a href="/en/compare/ai-search.html">AI search: Perplexity / Kagi / Metaso / Tiangong</a></li>
+<li><a href="/en/compare/coding-agents.html">AI coding: Cursor / Claude Code / Copilot / Qoder CN</a></li>
+<li><a href="/en/compare/meeting-notes.html">Meeting notes: Otter / Fireflies / tl;dv / Feishu / Whisper</a></li>
+<li><a href="/en/finder/">Open the AI finder</a></li>
+<li><a href="/en/costs/">Cost sheet: subscriptions, API, overage</a></li>
+<li><a href="/en/guides/">Task playbook hub</a></li>
+<li><a href="https://models.specul.com/en/license.html">Licence checker: commercial, attribution, MAU</a></li>
+</ul>
+</div>
+</section>
+<section class="section" id="task-practice">
+<div class="container">
+<h2>Practice with sample files</h2>
+<p class="section-desc">Four tasks include fictional inputs, designed references and acceptance checks. Try the inputs first; references are not measured product results.</p>
+<ul class="reading-actions">
+<li><a href="/en/mcp/guides/playbook-pdf-table.html">PDF / scan → checkable table</a></li>
+<li><a href="/en/mcp/guides/playbook-table-merge.html">Multiple tables → accepted rows and exceptions</a></li>
+<li><a href="/en/mcp/guides/playbook-document-review.html">Document versions → located findings</a></li>
+<li><a href="/en/mcp/guides/playbook-meeting-notes.html">Meeting audio → notes and actions</a></li>
+</ul>
+</div>
+</section>
+<section class="section" id="categories">
+<div class="container">
+<h2>Start with what you are looking for</h2>
+<p class="section-desc">Three families = three reader questions. The families are not a directory layer — the directories are the 12 categories; they are just how the home page is arranged, so you can find your question first. Inside any category, the filter bar narrows by mainland access, local runtime, commercial licence and free tier.</p>
+<div class="fam-block" data-family="ready">
+<div class="fam-head">
+<h3>Ready-made <span class="fam-n">162</span></h3>
+<p>"Is there something I can use directly?"</p>
+</div>
+<div class="grid">
+<article class="card" data-cat="coding" style="--card-accent:#8b7cf8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">编</div>
+<div class="card-id">
+<h3><a href="/en/coding/">AI coding</a></h3>
+<!-- tagline 本身就是 bi() 双节点（源码常量，无注入风险），直接透传 -->
+<div class="vendor">Installed in an editor, a terminal, or a vendor cloud</div>
+</div>
+</div>
+<div class="cat-jobs"><span class="cat-job">Code <b>42</b></span><span class="cat-job">Tools / MCP <b>9</b></span><span class="cat-job">Build agents <b>9</b></span></div>
+<div class="card-foot">
+<span class="t-state">42 entries · 40 checked</span>
+<a aria-label="AI coding" class="more" href="/en/coding/">Browse →</a>
+</div>
+</article>
+<article class="card" data-cat="chat" style="--card-accent:#f5c542">
+<div class="card-top">
+<div aria-hidden="true" class="mark">话</div>
+<div class="card-id">
+<h3><a href="/en/chat/">Chat assistants</a></h3>
+<!-- tagline 本身就是 bi() 双节点（源码常量，无注入风险），直接透传 -->
+<div class="vendor">General-purpose chat products, Chinese ones included</div>
+</div>
+</div>
+<div class="cat-jobs"><span class="cat-job">Chat &amp; Q&amp;A <b>23</b></span><span class="cat-job">Office work <b>4</b></span><span class="cat-job">Build agents <b>3</b></span></div>
+<div class="card-foot">
+<span class="t-state">23 entries · 23 checked</span>
+<a aria-label="Chat assistants" class="more" href="/en/chat/">Browse →</a>
+</div>
+</article>
+<article class="card" data-cat="image" style="--card-accent:#f472b6">
+<div class="card-top">
+<div aria-hidden="true" class="mark">图</div>
+<div class="card-id">
+<h3><a href="/en/image/">AI image creation</a></h3>
+<!-- tagline 本身就是 bi() 双节点（源码常量，无注入风险），直接透传 -->
+<div class="vendor">Text-to-image and image workbenches</div>
+</div>
+</div>
+<div class="cat-jobs"><span class="cat-job">Image / design <b>15</b></span><span class="cat-job">Data / training <b>5</b></span><span class="cat-job">Run locally <b>3</b></span></div>
+<div class="card-foot">
+<span class="t-state">15 entries · 15 checked</span>
+<a aria-label="AI image creation" class="more" href="/en/image/">Browse →</a>
+</div>
+</article>
+<article class="card" data-cat="video" style="--card-accent:#fb923c">
+<div class="card-top">
+<div aria-hidden="true" class="mark">视</div>
+<div class="card-id">
+<h3><a href="/en/video/">AI video creation</a></h3>
+<!-- tagline 本身就是 bi() 双节点（源码常量，无注入风险），直接透传 -->
+<div class="vendor">Text-to-video and digital humans</div>
+</div>
+</div>
+<div class="cat-jobs"><span class="cat-job">Video <b>14</b></span><span class="cat-job">3D / avatars <b>4</b></span><span class="cat-job">Tools / MCP <b>2</b></span></div>
+<div class="card-foot">
+<span class="t-state">14 entries · 14 checked</span>
+<a aria-label="AI video creation" class="more" href="/en/video/">Browse →</a>
+</div>
+</article>
+<article class="card" data-cat="audio" style="--card-accent:#34d399">
+<div class="card-top">
+<div aria-hidden="true" class="mark">音</div>
+<div class="card-id">
+<h3><a href="/en/audio/">AI audio &amp; voice</a></h3>
+<!-- tagline 本身就是 bi() 双节点（源码常量，无注入风险），直接透传 -->
+<div class="vendor">Music generation, TTS and transcription</div>
+</div>
+</div>
+<div class="cat-jobs"><span class="cat-job">Speech / voice <b>17</b></span><span class="cat-job">Music <b>4</b></span><span class="cat-job">Build agents <b>2</b></span></div>
+<div class="card-foot">
+<span class="t-state">17 entries · 17 checked</span>
+<a aria-label="AI audio &amp; voice" class="more" href="/en/audio/">Browse →</a>
+</div>
+</article>
+<article class="card" data-cat="research" style="--card-accent:#38bdf8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">搜</div>
+<div class="card-id">
+<h3><a href="/en/research/">AI search &amp; research</a></h3>
+<!-- tagline 本身就是 bi() 双节点（源码常量，无注入风险），直接透传 -->
+<div class="vendor">AI search, academic retrieval, research workbenches</div>
+</div>
+</div>
+<div class="cat-jobs"><span class="cat-job">Research <b>11</b></span><span class="cat-job">Build agents <b>2</b></span><span class="cat-job">Office work <b>1</b></span></div>
+<div class="card-foot">
+<span class="t-state">11 entries · 11 checked</span>
+<a aria-label="AI search &amp; research" class="more" href="/en/research/">Browse →</a>
+</div>
+</article>
+<article class="card" data-cat="office" style="--card-accent:#e0a33a">
+<div class="card-top">
+<div aria-hidden="true" class="mark">办</div>
+<div class="card-id">
+<h3><a href="/en/office/">Office &amp; writing</a></h3>
+<!-- tagline 本身就是 bi() 双节点（源码常量，无注入风险），直接透传 -->
+<div class="vendor">Docs, sheets, slides, meetings, translation and email</div>
+</div>
+</div>
+<div class="cat-jobs"><span class="cat-job">Office work <b>15</b></span><span class="cat-job">Image / design <b>3</b></span><span class="cat-job">Speech / voice <b>2</b></span></div>
+<div class="card-foot">
+<span class="t-state">15 entries · 15 checked</span>
+<a aria-label="Office &amp; writing" class="more" href="/en/office/">Browse →</a>
+</div>
+</article>
+<article class="card" data-cat="safety" style="--card-accent:#f26d6d">
+<div class="card-top">
+<div aria-hidden="true" class="mark">安</div>
+<div class="card-id">
+<h3><a href="/en/safety/">AI safety &amp; evaluation</a></h3>
+<!-- tagline 本身就是 bi() 双节点（源码常量，无注入风险），直接透传 -->
+<div class="vendor">Constrain it, measure it, trace it back</div>
+</div>
+</div>
+<div class="cat-jobs"><span class="cat-job">Safety / compliance <b>25</b></span><span class="cat-job">Eval / release <b>12</b></span><span class="cat-job">Run locally <b>11</b></span></div>
+<div class="card-foot">
+<span class="t-state">25 entries · 18 checked</span>
+<a aria-label="AI safety &amp; evaluation" class="more" href="/en/safety/">Browse →</a>
+</div>
+</article>
+</div>
+</div>
+<div class="fam-block" data-family="build">
+<div class="fam-head">
+<h3>Build your own <span class="fam-n">67</span></h3>
+<p>"I want to build one myself?"</p>
+</div>
+<div class="grid">
+<article class="card" data-cat="automation" style="--card-accent:#a3e635">
+<div class="card-top">
+<div aria-hidden="true" class="mark">流</div>
+<div class="card-id">
+<h3><a href="/en/automation/">AI automation &amp; workflows</a></h3>
+<!-- tagline 本身就是 bi() 双节点（源码常量，无注入风险），直接透传 -->
+<div class="vendor">Visual AI workflows and agents</div>
+</div>
+</div>
+<div class="cat-jobs"><span class="cat-job">Automation <b>24</b></span><span class="cat-job">Build agents <b>16</b></span><span class="cat-job">Run locally <b>6</b></span></div>
+<div class="card-foot">
+<span class="t-state">24 entries · 22 checked</span>
+<a aria-label="AI automation &amp; workflows" class="more" href="/en/automation/">Browse →</a>
+</div>
+</article>
+<article class="card" data-cat="framework" style="--card-accent:#3b82f6">
+<div class="card-top">
+<div aria-hidden="true" class="mark">框</div>
+<div class="card-id">
+<h3><a href="/en/framework/">Frameworks &amp; runtimes</a></h3>
+<!-- tagline 本身就是 bi() 双节点（源码常量，无注入风险），直接透传 -->
+<div class="vendor">Runtimes, orchestration frameworks, SDKs, robotics stacks</div>
+</div>
+</div>
+<div class="cat-jobs"><span class="cat-job">Build agents <b>31</b></span><span class="cat-job">Robots / hardware <b>12</b></span><span class="cat-job">Tools / MCP <b>9</b></span></div>
+<div class="card-foot">
+<span class="t-state">43 entries · 41 checked</span>
+<a aria-label="Frameworks &amp; runtimes" class="more" href="/en/framework/">Browse →</a>
+</div>
+</article>
+</div>
+</div>
+<div class="fam-block" data-family="plug">
+<div class="fam-head">
+<h3>Plug in and run <span class="fam-n">53</span></h3>
+<p>"How do I hook tools into an agent, or run models on my own machine?"</p>
+</div>
+<div class="grid">
+<article class="card" data-cat="mcp" style="--card-accent:#22d3c5">
+<div class="card-top">
+<div aria-hidden="true" class="mark">MCP</div>
+<div class="card-id">
+<h3><a href="/en/mcp/">MCP tools</a></h3>
+<!-- tagline 本身就是 bi() 双节点（源码常量，无注入风险），直接透传 -->
+<div class="vendor">Fill the gap — MCP tools an agent can install</div>
+</div>
+</div>
+<div class="cat-jobs"><span class="cat-job">Tools / MCP <b>32</b></span><span class="cat-job">Research <b>3</b></span><span class="cat-job">Data / training <b>3</b></span></div>
+<div class="card-foot">
+<span class="t-state">32 entries · 32 checked</span>
+<a aria-label="MCP tools" class="more" href="/en/mcp/">Browse →</a>
+</div>
+</article>
+<article class="card" data-cat="runner" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">跑</div>
+<div class="card-id">
+<h3><a href="/en/runner/">Local model runners</a></h3>
+<!-- tagline 本身就是 bi() 双节点（源码常量，无注入风险），直接透传 -->
+<div class="vendor">Run open-weight models on your own machine</div>
+</div>
+</div>
+<div class="cat-jobs"><span class="cat-job">Run locally <b>21</b></span><span class="cat-job">Build agents <b>1</b></span><span class="cat-job">Research <b>1</b></span></div>
+<div class="card-foot">
+<span class="t-state">21 entries · 17 checked</span>
+<a aria-label="Local model runners" class="more" href="/en/runner/">Browse →</a>
+</div>
+</article>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<h2>What to look at when choosing</h2>
+<p class="section-desc">Every entry is broken down by the same questions. Open any tool to see the official wording and link; disagree and check it yourself.</p>
+<div class="t-mesh axis-mesh">
+<div class="axis-cell">
+<span class="t-index">01</span>
+<h3 class="axis-name">Model &amp; openness</h3>
+<p class="axis-ask">Whose model does it use? Can you switch to a third party? How is multi-model routing configured?</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">02</span>
+<h3 class="axis-name">Where it runs</h3>
+<p class="axis-ask">Local, cloud or hybrid? Is the index local or remote? Remote control is not the same as cloud execution.</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">03</span>
+<h3 class="axis-name">Local files</h3>
+<p class="axis-ask">How wide an area can it reach? How does it read large files you have not opened? How capable is it at the symbol level?</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">04</span>
+<h3 class="axis-name">Tasks after shutdown</h3>
+<p class="axis-ask">Does it keep running once the computer is off? This is the most common misconception about local forms.</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">05</span>
+<h3 class="axis-name">Tools &amp; extensions</h3>
+<p class="axis-ask">How wide is the toolchain: MCP · LSP · plugins · hooks · custom instructions?</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">06</span>
+<h3 class="axis-name">Context &amp; memory</h3>
+<p class="axis-ask">Indexing algorithm, context window, session resume and fork, and the boundary of cross-session memory.</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">07</span>
+<h3 class="axis-name">Permissions &amp; limits</h3>
+<p class="axis-ask">Sandbox and approval boundaries, credential handling, whether data leaves your machine, and how quota is charged.</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">08</span>
+<h3 class="axis-name">Best for</h3>
+<p class="axis-ask">What tasks is it best at? When should you not use it?</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="panel">
+<h2>Sources and how to re-check them</h2>
+<p>All data comes from the open-source repository <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">speculcom/ai-handbook</a>（CC BY 4.0）。</p>
+<p>Every entry is plain Markdown plus frontmatter carrying dimension records, an evidence chain, checked dates and a confidence mark. The repository includes METHODOLOGY.md, axes/ (dimension definitions) and SCHEMA.md (data format).</p>
+<p class="t-sm">Found an error or have new evidence? Open an issue or a PR — each correction notes its basis and blast radius.</p>
+</div>
+</div>
+</section>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

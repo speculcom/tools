@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Mastra | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/framework/mastra.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/framework/mastra.html" property="og:url"/>
+<meta content="Mastra | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Mastra | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/framework/mastra.html","sameAs":"https://mastra.ai","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Mastra | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/framework/mastra.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/framework/mastra.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/framework/mastra.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/framework/mastra.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Frameworks</span>
+</nav>
+<a class="back" href="/en/framework/">← Frameworks</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#3b82f6">MA</div>
+<div>
+<h1>Mastra</h1>
+<div class="vendor is-caps">Mastra AI</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">TypeScript</span>
+<span class="tag on">Open source</span>
+<span class="tag on">Apache-2.0</span>
+<span class="tag on">Orchestration framework</span>
+<span class="tag on">Workflows</span>
+<span class="tag on">Graph execution</span>
+<span class="tag on">Event-driven</span>
+<span class="tag on">Multi-agent</span>
+<span class="tag on">State management</span>
+<span class="tag on">Persistence</span>
+<span class="tag on">Self-hosted</span>
+<span class="tag on">MCP</span>
+<span class="tag on">RAG</span>
+<span class="tag on">Retrieval</span>
+<span class="tag on">eval</span>
+<span class="tag on">Context compression</span>
+<span class="tag on">Integration ecosystem</span>
+<span class="tag on">Commercial platform</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Mastra is the batteries-included agent framework for TypeScript - official README…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · Framework / SDK</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Capability alignment of each vendor's tool calling / structured output after switching providers (not stated officially)</li>
+<li>The default boundary of file access in the core framework itself (not stated officially; agents, harness, and deployment pages checked)</li>
+<li>Whether the OSS core has an official network-access-control mechanism (not stated officially)</li>
+<li>Which features beyond the <code>ee/</code> directory fall under the enterprise license (the official README gives directory examples only, no complete feature list)</li>
+<li>Conflict semantics of cross-process / multi-instance concurrent resume of the same snapshot (not stated officially)</li>
+<li>Information loss and cost after Observational Memory compression (not measured by us)</li>
+<li>Real-throughput and overage-billing behavior of each Mastra platform tier under real load (the official docs give billing rules only)</li>
+</ul>
+</div>
+<div class="panel-lead"><p>Mastra is <strong>a TypeScript framework for building AI agents and applications</strong> - official README: "Mastra is a framework for building AI-powered applications and agents with a <strong>modern TypeScript stack</strong>. It includes <strong>everything you need</strong> to go from early prototypes to production-ready applications."</p>
+<p>One package covers Agents, graph Workflows, Memory, RAG, Evals/Scorers, MCP client and server, a built-in Hono server, Studio and observability.</p>
+<p><strong>Model routing is where it goes furthest</strong>: <code>provider/model</code> strings, plus model fallbacks, per-task mix-and-match and <code>requestContext</code>.</p>
+<p><strong>State is separate from context</strong>: workflow snapshots persist across deployments and restarts, while memory covers message history, Observational Memory, working memory and semantic recall.</p>
+<p><strong>The licence splits in two</strong> - the core framework is Apache-2.0, but code under any <code>ee/</code> directory is source-available under the Mastra Enterprise License (the repo licence API returns NOASSERTION). Studio, Observability and hosted deployment are Mastra platform products, billed on Starter $0 / Teams $250 / Enterprise tiers.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p><strong>Fits</strong>:</p></div>
+<div><ul><li><strong>TypeScript / Node teams</strong> that want an out-of-the-box agent framework - Agents, graph Workflows, Memory, RAG, Evals, MCP, a built-in server and Studio all in one package</li><li><strong>Durable runs with suspend/resume</strong> - snapshots live in your own storage and survive restarts</li><li><strong>Wiring up many model providers and local models</strong> (LMStudio is officially recommended)</li><li><strong>Exposing agents and workflows over MCP</strong>, or acting as an MCP client</li><li><strong>Embedding an agent into a Next.js / React app</strong></li></ul></div>
+<div class="warn-p"><p><strong>Not a fit for</strong>:</p></div>
+<div><ul><li><strong>A Python stack</strong> (see <a href="/en/framework/langgraph.html">LangGraph</a> / <a href="/en/framework/pydantic-ai.html">Pydantic AI</a>)</li><li><strong>Wanting a low-level engine you control</strong> - Mastra sits higher, ships a bigger package and more conventions</li><li><strong>Refusing any commercial component</strong> - platform Studio, observability and hosted deployment are separately billed, and <code>ee/</code> needs an enterprise licence</li><li><strong>Needing a framework-provided process sandbox or network policy</strong> - that part is not in the OSS core</li></ul></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　official site measured 200 direct.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>Its answer is model routing, with the most aggressive spec.</strong> Official /models catalog page, verbatim:</p>
+<p>"giving you access to <strong>7815 models from 213 providers</strong> through a single API."</p>
+<p>Usage is a <code>provider/model</code> string. Official examples: <code>openai/gpt-5.6-sol</code>, <code>anthropic/claude-sonnet-4-6</code>, <code>openrouter/anthropic/claude-haiku-4.5</code>.</p>
+<p>When a key is missing, the runtime error names the missing variable.</p>
+<p><strong>Official wording</strong>: "Mastra reads the relevant environment variable (e.g. <code>ANTHROPIC_API_KEY</code>) and routes requests to the provider."</p>
+<p><strong>Official model fallbacks are supported.</strong></p>
+<p>You can also mix-and-match different models per task. And select models dynamically via <code>requestContext</code>.</p>
+<p><strong>Official wording</strong>: "If a provider experiences an outage, Mastra can automatically switch to another provider at the application level"</p>
+<p><strong>Local models are explicitly supported by the official docs.</strong> The /models page has a dedicated section:</p>
+<p><strong>Official wording</strong>: "Use local models with Mastra"</p>
+<p><strong>Official wording</strong>: "Mastra also supports local models like <code>gpt-oss</code>, <code>Qwen3</code>, <code>DeepSeek</code> ... that you run on your own hardware"</p>
+<p>The prerequisite is that the local side provides an <strong>OpenAI-compatible</strong> API server. The official docs <strong>recommend LMStudio</strong>.</p>
+<p><strong>Local example</strong>:</p>
+<ul><li><code>id: "lmstudio/qwen/qwen3-30b-a3b-2507"</code></li><li><code>url: "http://localhost:1234/v1"</code></li></ul>
+<p>⚠ <strong>One place where the official numbers conflict</strong>: the README highlights section says "Connect to <strong>40+ providers</strong>", while the /models catalog page says "213 providers / 7815 models".</p>
+<p><strong>Old wording</strong>: we take the catalog page as authoritative; the README's 40+ is treated as outdated.</p>
+<p><strong>After switching providers, the alignment of each vendor's tool calling / structured output is not stated by the official docs</strong> (/models page checked).</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>It starts as a pure library, but the official docs pave both the "standalone server" and "hosted platform" roads.</strong></p>
+<p>The form is an npm package (<code>@mastra/core</code>; the official <code>.npmrc</code> requires Node.js <code>&gt;=22.13.0</code>).</p>
+<p><strong>Official wording</strong>: "Mastra applications can be deployed to any Node.js-compatible environment."</p>
+<p>Runtime support: Node.js v22.13.0+, Bun, Deno, Cloudflare.</p>
+<p>It <strong>ships a built-in Hono-based server</strong>. <code>mastra build</code> produces a bundle deployable to any VM / container / PaaS, or runs as a standalone server; it can also be embedded in Next.js / React / Node apps.</p>
+<p><strong>Local development</strong>: <code>mastra dev</code>; Studio starts at <code>http://localhost:4111</code>.</p>
+<p><strong>Who runs the agent loop</strong>: by default you do (self-hosted). For hosting there is the Mastra platform Server — <strong>Official wording</strong>: "A production deployment target that runs your Mastra application as an API server".</p>
+<p><strong>Multi-agent concurrent scheduling</strong>: via workflows (built-in execution engine), or deploy to workflow runners like Inngest. Production can run orchestration and cron in separate worker processes (official Workers page).</p>
+<p>In short: "where the code lives" = your process; "whether to host" = an optional platform.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>The core framework does not ship a file system; file capability must be added explicitly.</strong></p>
+<p>Mastra positions itself as an AI application/agent framework. The official docs <strong>do not treat file read/write as a default agent capability</strong>.</p>
+<p><strong>Tool surface</strong>: the README and agents page describe two different tool surfaces. One is <code>createTool()</code> custom tools, the other is MCP.</p>
+<p><strong>The three file paths the official docs give</strong> (harness page and platform page checked):</p>
+<p>① Provide file tools yourself via <code>createTool()</code>.</p>
+<p>② Use the Harness's <strong><code>createCodingAgent()</code></strong> (official harness table). <strong>Official wording</strong>: "Give an agent files, a shell, and the defaults a coding agent needs → <code>createCodingAgent()</code>"</p>
+<p>It "Build a standard agent with a <strong>workspace</strong>, task tracking, and retries already configured".</p>
+<p>③ Use the Mastra platform's <strong>Workspace</strong> (officially each environment gets a managed Workspace):</p>
+<p>"gives agents <strong>a filesystem and sandbox</strong> with no manual configuration"</p>
+<p><strong>The default boundary of file access in the core framework itself (restricted to the project directory? out-of-bounds intercepted?) is not stated by the official docs.</strong></p>
+<p><strong>Verified</strong>: agents page, harness page, deployment page checked. The host permission model sits on the platform Workspace side, not in the OSS core.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>A very strong dimension: durable agents + restart-surviving snapshots are verifiable core mechanisms.</strong> Official suspend-and-resume page, verbatim:</p>
+<p>"Suspension saves the current execution state as a <strong>snapshot</strong>. Later, resume from a specific step ID to restore the exact captured state. Snapshots are stored in your configured storage provider and <strong>persist across deployments and application restarts</strong>."</p>
+<p>Mechanism details:</p>
+<ul><li><code>suspend()</code> pauses within a step and marks the state <code>suspended</code></li><li>workflow-level <code>.sleep()/.sleepUntil()</code> mark <code>waiting</code></li><li><code>resume({ step, resumeData })</code> continues from the pause point; with only a <code>runId</code> you must first <code>createRun({ runId })</code></li><li><code>suspendData</code> can retrieve the data originally passed to <code>suspend()</code> upon resume</li><li><code>workflow.getWorkflowRunById()</code> + <code>createWorkflowStateReader()</code> can recover dangling runs from storage</li></ul>
+<p><strong>The Harness layer adds</strong>:</p>
+<ul><li>Durable Agents: "Persist run state and let clients reconnect to its stream"</li><li>Background Tasks: "Run slow tools, workflows, or subagents without blocking"</li><li>Schedules: cron starts runs</li></ul>
+<p><strong>Hosted background</strong>: the Mastra platform Server provides 24/7 residency (Persistent Server billed per project; unit price on the official page). OSS self-hosting is "you run the process yourself" — stop it and it's gone.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>The tool surface is a three-piece set: custom tools + first-class MCP support + acting as an MCP server. The official docs cover it well.</strong></p>
+<p>Custom tools must use <code>createTool()</code>.</p>
+<p>The official agents page warns explicitly: plain-object tools <strong>fail silently</strong>.</p>
+<p><strong>Official wording</strong>: "silently fail to execute" — requires <code>id</code> / <code>description</code> / <code>inputSchema</code> / <code>execute()</code>.</p>
+<p><strong>MCP is the standalone package <code>@mastra/mcp</code></strong>, with two official classes:</p>
+<ul><li><strong><code>MCPClient</code></strong>: connect to one or more MCP servers</li><li><strong><code>MCPServer</code></strong>: expose Mastra's agents / tools / workflows / prompts / resources as an MCP server</li></ul>
+<p>Official transport examples cover <strong>stdio (<code>command: npx ...</code>) and remote HTTP(S) (<code>url: new URL(...)</code>)</strong>. And registry-access examples for Klavis AI, mcp.run, Composio, Smithery, Ampersand.</p>
+<p>It also distinguishes two tool kinds: <strong>static tools (<code>getTools()</code>, fixed config)</strong> and <strong>dynamic tools (<code>getToolsets()</code>)</strong>: per-user/per-request credentials. Very useful for multi-tenant SaaS.</p>
+<p>There are also <strong>A2A</strong> (<code>@mastra/core</code> exposes the <code>./a2a</code> subpath) and <strong>skills</strong> (<code>./skills</code>) submodules. Subagent/multi-agent delegation is officially called supervisor + subagents (see the delegation notes on the memory page).</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>It splits "memory" into multiple layers, with two separate mechanisms for "state ≠ context".</strong></p>
+<p>Official memory page: stores <strong>message history</strong> by default, with three more opt-in:</p>
+<ul><li><strong>Observational Memory (recommended)</strong>: "Uses background agents to maintain a dense observation log that <strong>replaces raw message history as it grows</strong>. This keeps the context window small while preserving long-term memory."</li></ul>
+<ul><li><strong>Working memory</strong>: structured user data (names, preferences, goals)</li><li><strong>Semantic recall</strong>: recall past messages semantically rather than by keyword</li></ul>
+<p>When over budget, <strong>memory processors</strong> filter / trim / prioritize. Scope is split by two IDs: <code>resource</code> (user/entity) and <code>thread</code> (conversation). Across agents it can be shared or isolated (<code>scope: 'resource' | 'thread'</code>).</p>
+<p><strong>The state side</strong> is the workflow snapshot (suspend/resume, see the background axis) — separate from memory.</p>
+<p><strong>RAG is a standalone system</strong> (<code>@mastra/rag</code>): MDocument chunking (recursive / sliding window), embedding, then into a vector store (officially named: <strong>pgvector, Pinecone, Qdrant, MongoDB</strong>).</p>
+<p>In short: snapshots store flow state. Memory stores conversation and long-term user information. RAG stores external knowledge. The three serve different purposes.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>Authentication is "optional, multi-provider"; HITL is full suspend/resume; sandboxing sits only on the platform side.</strong> Official auth page, verbatim:</p>
+<p>"<strong>Authentication is optional.</strong> If no auth is configured, all routes and Studio are <strong>publicly accessible</strong>."</p>
+<p>Once configured, it locks both the <strong>Studio UI</strong> (login + RBAC) and <strong>API routes</strong>. Custom routes can opt out with <code>requiresAuth: false</code>.</p>
+<ul><li><strong>Built-in</strong>: Simple Auth / JWT</li><li><strong>Third-party</strong>: Auth0, Better Auth, Clerk, Firebase, Google, Okta, Supabase, WorkOS</li><li><strong>Other</strong>: Composite / custom providers</li></ul>
+<p><strong>Checked</strong>: auth page and pricing page.</p>
+<p><strong>Human intervention</strong>: use workflow suspend/resume for approvals (see the background axis). The official docs also have a human-in-the-loop page and AgentController (in-session approvals, queued follow-ups, stopping runs).</p>
+<p><strong>Sandbox</strong>: whether the OSS core provides process/container-level sandboxing is <strong>not stated by the official docs</strong>. Sandbox capability sits in the platform <strong>Workspace</strong> and <code>createCodingAgent()</code>.</p>
+<p><strong>Enterprise permissions</strong> (RBAC, SSO, IAM, network policy) belong to the <code>ee/</code> enterprise license (Self-Hosted Enterprise selling points on the official pricing page).</p>
+<p><strong>Network access control in the core framework is not stated by the official docs</strong> (auth page and pricing page checked).</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p><strong>Fits</strong>:</p>
+<ul><li><strong>TypeScript / Node teams</strong> wanting a batteries-included agent framework — Agents + graph Workflows + Memory + RAG + Evals + MCP + built-in server + Studio all in one package</li></ul>
+<ul><li>You need materialized <strong>suspend/resume and durable runs</strong> (snapshots in your own storage, resumable across restarts)</li><li>You want many model providers and local models (officially recommended: LMStudio)</li><li>You need to expose agents/workflows over MCP, or act as an MCP client</li><li>You want to embed agents in Next.js / React apps</li></ul>
+<p><strong>Does not fit</strong>:</p>
+<ul><li><strong>Python stacks</strong> (look at <a href="/en/framework/langgraph.html">LangGraph</a> / <a href="/en/framework/pydantic-ai.html">Pydantic AI</a>)</li><li>Wanting low-level control over the graph engine and tool surface (Mastra's abstraction is higher, the package bigger, the conventions more)</li><li>Insisting on zero commercial components (platform Studio/observability/hosted deployment are separate paid products; the <code>ee/</code> directory needs an enterprise license)</li><li>Needing framework-shipped process-level sandbox and network policy (that part is not in the OSS core)</li></ul></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>核心 Apache-2.0 + ee/ 目录 Mastra Enterprise License（仓库 license API 返回 NOASSERTION）</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Assuming Mastra is entirely Apache-2.0 and free - the <code>ee/</code> directory is source-available and needs an enterprise licence for production; the repo licence API returns NOASSERTION</li>
+<li>Treating Mastra Studio / observability / hosted deployment as part of the framework - those are Mastra platform products, billed on Starter $0 / Teams $250 / Enterprise tiers</li>
+<li>Taking the README's "40+ providers" as the ceiling - the official <code>/models</code> directory page states 213 providers / 7815 models</li>
+<li>Assuming local models need code changes - the official path is an OpenAI-compatible endpoint with LMStudio recommended, configured via <code>id</code> + <code>url</code></li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-08。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>mastra-ai/mastra · repository (29,020★, NOASSERTION dual license, rolling verification 2026-10-23)</td><td><a href="https://github.com/mastra-ai/mastra" rel="noopener" target="_blank">https://github.com/mastra-ai/mastra</a></td></tr>
+<tr><td>docs</td><td>Repo README (TypeScript positioning, model routing 40+, agents/workflows/HITL/memory/RAG/evals/MCP highlights, Licensing dual-license section)</td><td><a href="https://github.com/mastra-ai/mastra" rel="noopener" target="_blank">https://github.com/mastra-ai/mastra</a></td></tr>
+<tr><td>docs</td><td>Official docs · Model Providers (7815 models / 213 providers, <code>provider/model</code>, fallbacks, local models and LMStudio)</td><td><a href="https://mastra.ai/models" rel="noopener" target="_blank">https://mastra.ai/models</a></td></tr>
+<tr><td>docs</td><td>Official docs · Provider catalog (OpenAI/Anthropic/Google/xAI and other providers with model counts)</td><td><a href="https://mastra.ai/models/providers" rel="noopener" target="_blank">https://mastra.ai/models/providers</a></td></tr>
+<tr><td>docs</td><td>Official docs · Suspend and resume (snapshot stored in storage, resume across restarts, resume/suspendData, state reader)</td><td><a href="https://mastra.ai/docs/workflows/suspend-and-resume" rel="noopener" target="_blank">https://mastra.ai/docs/workflows/suspend-and-resume</a></td></tr>
+<tr><td>docs</td><td>Official docs · Workflows (createStep/createWorkflow, standard JSON Schema, built-in execution engine)</td><td><a href="https://mastra.ai/docs/workflows/overview" rel="noopener" target="_blank">https://mastra.ai/docs/workflows/overview</a></td></tr>
+<tr><td>docs</td><td>Official docs · Memory (message history, Observational Memory, working memory, semantic recall, processors)</td><td><a href="https://mastra.ai/docs/memory/overview" rel="noopener" target="_blank">https://mastra.ai/docs/memory/overview</a></td></tr>
+<tr><td>docs</td><td>Official docs · RAG (MDocument chunking, embedding, pgvector/Pinecone/Qdrant/MongoDB vector stores)</td><td><a href="https://mastra.ai/docs/rag/overview" rel="noopener" target="_blank">https://mastra.ai/docs/rag/overview</a></td></tr>
+<tr><td>docs</td><td>Official docs · Evals (Scorers: model-graded / rule-based / statistical, returning 0-1 scores)</td><td><a href="https://mastra.ai/docs/evals/overview" rel="noopener" target="_blank">https://mastra.ai/docs/evals/overview</a></td></tr>
+<tr><td>docs</td><td>Official docs · MCP Overview (MCPClient / MCPServer, stdio and remote HTTP, registry access, static/dynamic tools)</td><td><a href="https://mastra.ai/docs/tools-mcp/mcp-overview" rel="noopener" target="_blank">https://mastra.ai/docs/tools-mcp/mcp-overview</a></td></tr>
+<tr><td>docs</td><td>Official docs · Deploy (Node/Bun/Deno/Cloudflare, Hono server, Mastra platform, workflow runners, workers)</td><td><a href="https://mastra.ai/docs/deployment/overview" rel="noopener" target="_blank">https://mastra.ai/docs/deployment/overview</a></td></tr>
+<tr><td>docs</td><td>Official docs · Mastra platform (Observability / Studio / Server, hosted Workspace with filesystem and sandbox)</td><td><a href="https://mastra.ai/docs/mastra-platform/overview" rel="noopener" target="_blank">https://mastra.ai/docs/mastra-platform/overview</a></td></tr>
+<tr><td>docs</td><td>Official docs · Harness (Durable Agents, Background Tasks, Schedules, createCodingAgent)</td><td><a href="https://mastra.ai/docs/harness/overview" rel="noopener" target="_blank">https://mastra.ai/docs/harness/overview</a></td></tr>
+<tr><td>docs</td><td>Official docs · Auth (auth optional, public by default, JWT/SSO/RBAC, Studio and API protected together)</td><td><a href="https://mastra.ai/docs/auth/overview" rel="noopener" target="_blank">https://mastra.ai/docs/auth/overview</a></td></tr>
+<tr><td>pricing</td><td>Official pricing page (verified 2026-10-08: Platform three tiers Starter/Teams/Enterprise; Self-Hosted Free and Enterprise; Persistent Server billed per project; Gateway has markup rates)</td><td><a href="https://mastra.ai/pricing" rel="noopener" target="_blank">https://mastra.ai/pricing</a></td></tr>
+<tr><td>changelog</td><td>Releases (@mastra/core 1.75.0 @ 2026-10-07)</td><td><a href="https://github.com/mastra-ai/mastra/releases" rel="noopener" target="_blank">https://github.com/mastra-ai/mastra/releases</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" rel="noopener" target="_blank">protocols/framework/_protocol.md</a>.</p>
+<p><strong>Suggested runs</strong> (tailored to orchestration framework + TS ecosystem dimensions):</p>
+<div class="tbl-wrap"><table><thead><tr><th>#</th><th>What to test</th><th>Why it is worth testing</th></tr></thead><tbody><tr><td>1</td><td>How many files and lines for a minimal agent + workflow</td><td>quantifies the real onboarding cost of "everything you need"</td></tr><tr><td>2</td><td>Kill the process mid-workflow; can the snapshot truly resume from the suspended step</td><td>the official docs promise persist across restarts — must verify</td></tr><tr><td>3</td><td>Run one workflow with a local model via LMStudio</td><td>officially recommended by name; verify real feasibility</td></tr><tr><td>4</td><td>Same task implemented as agent vs workflow — code-volume difference</td><td>tests the official advice "use workflows for explicit flows"</td></tr><tr><td>5</td><td>Information loss and extra LLM cost after Observational Memory compression</td><td>officially recommended as default-on; the cost is unmeasured</td></tr><tr><td>6</td><td>Minimal path from OSS self-hosted <code>mastra build</code> to your own containers</td><td>tests how far "pure library can also go to production" really goes</td></tr></tbody></table></div>
+</div>
+<div class="panel is-slim">
+<h2>The "batteries included" pole of the TypeScript ecosystem</h2>
+<p>In our harness section, the Python side already has a batch of objects: LangGraph / CrewAI / OpenAI Agents SDK / Pydantic AI.</p>
+<p><strong>Mastra is the one that translates the same idea into the TypeScript world.</strong> And its abstraction level is higher:</p>
+<div class="tbl-wrap"><table><thead><tr><th></th><th>LangGraph</th><th><strong>Mastra</strong></th></tr></thead><tbody><tr><td>Language</td><td>Python (plus langgraphjs)</td><td><strong>TypeScript (main game)</strong></td></tr><tr><td>Self-description</td><td>low-level orchestration framework</td><td>"<strong>everything you need</strong>", out-of-the-box</td></tr><tr><td>Graph workflows</td><td>explicit graph / superstep</td><td><code>createWorkflow()</code> + <code>.then()/.branch()/.parallel()</code></td></tr><tr><td>Preset capabilities</td><td>no tools/file system</td><td><strong>Memory / RAG / Evals / MCP / server / Studio all preset</strong></td></tr><tr><td>Commercial line</td><td>LangSmith Deployment</td><td><strong>Mastra platform</strong> (Observability / Studio / Server, YC W25)</td></tr></tbody></table></div>
+<p><strong>One-line rule</strong>: want to draw the flow yourself, want the lowest layer → LangGraph. Want less wiring, want everything out of the box → Mastra.</p>
+</div>
+<div class="panel is-slim">
+<h2>Model routing: the most complete answer to the first decision point</h2>
+<p><strong>Its answer to the first decision point is model routing, and the spec is the most complete: one <code>provider/model</code> string switches providers.</strong> Official /models catalog page, verbatim:</p>
+<blockquote>giving you access to <strong>7815 models from 213 providers</strong> through a single API.</blockquote>
+<p>Usage is a <code>provider/model</code> string. Mastra reads the matching environment variable and routes. The official docs also give three selection modes:</p>
+<ul><li><strong>model fallbacks</strong>: if a provider goes down, switch automatically</li><li>mix-and-match different models per task</li><li>select models dynamically via <code>requestContext</code></li></ul>
+<p><strong>Local models are explicitly supported by the official docs.</strong> The /models page has a dedicated section "Use local models with Mastra":</p>
+<blockquote>Mastra also supports local models like <code>gpt-oss</code>, <code>Qwen3</code>, <code>DeepSeek</code> ... that you run on your own hardware</blockquote>
+<p>The local service must provide an <strong>OpenAI-compatible</strong> API. The official docs <strong>recommend LMStudio</strong>.</p>
+<p><strong>Local example</strong>:</p>
+<ul><li><code>id: "lmstudio/qwen/qwen3-30b-a3b-2507"</code></li><li><code>url: "http://localhost:1234/v1"</code></li></ul>
+<blockquote>⚠ <strong>One official number to calibrate for readers</strong>: the repo README highlights say "Connect to <strong>40+ providers</strong>", while the /models catalog page says <strong>213 providers / 7815 models</strong> — far apart. We take the catalog page as authoritative; the README's 40+ is treated as outdated.</blockquote>
+<p><strong>Unknown</strong>: after switching providers, the alignment of each vendor's tool calling / structured output is not stated by the official docs.</p>
+</div>
+<div class="panel is-slim">
+<h2>State ≠ context: it gives both mechanisms</h2>
+<p><strong>Mastra separates "flow state" from "conversation memory" cleanly — its most memorable design choice.</strong></p>
+<ul><li><strong>Flow state</strong> = the workflow's <strong>snapshot</strong>, granular to the step. Official suspend-and-resume page, verbatim:</li></ul>
+<blockquote>Suspension saves the current execution state as a <strong>snapshot</strong> ... stored in your configured storage provider and <strong>persist across deployments and application restarts</strong>.</blockquote>
+<p>This is exactly the "state persistence that survives process restarts" we look for.</p>
+<ul><li><strong>Conversation/long-term memory</strong> = memory's multiple layers:</li><li>message history (default)</li><li><strong>Observational Memory</strong>: background agents compress old messages into observations, officially recommended</li><li><strong>working memory</strong>: structured user data</li><li><strong>semantic recall</strong>: semantic retrieval</li></ul>
+<p>When over budget, <strong>memory processors</strong> trim.</p>
+<ul><li><strong>External knowledge</strong> = RAG (<code>@mastra/rag</code> + vector stores).</li></ul>
+<p><strong>The three serve different purposes and their storage can be configured separately</strong>. This is exactly the landing form of our "state ≠ context" claim.</p>
+</div>
+<div class="panel is-slim">
+<h2>Tools and MCP: both a client and a server</h2>
+<p><strong>The tool surface is a three-piece set: custom tools, MCP client, MCP server.</strong> The official docs give two classes (standalone package <code>@mastra/mcp</code>):</p>
+<ul><li><strong><code>MCPClient</code></strong>: connect to one or more MCP servers — stdio (<code>command: npx ...</code>) or remote HTTP (<code>url</code>).</li><li><strong><code>MCPServer</code></strong>: expose your own agents / tools / workflows / prompts / resources as an MCP server.</li></ul>
+<p>It also distinguishes two tool kinds:</p>
+<ul><li><strong>Static tools <code>getTools()</code></strong>: fixed config</li><li><strong>Dynamic tools <code>getToolsets()</code></strong>: per-user/per-request credentials</li></ul>
+<p>Official registry-access examples for Klavis AI, mcp.run, Composio, Smithery, Ampersand.</p>
+<p>Custom tools must go through <code>createTool()</code>. The official agents page warns explicitly: plain-object tools <strong>fail silently</strong>.</p>
+</div>
+<div class="panel is-slim">
+<h2>License and commercial line: must be read separately</h2>
+<p><strong>Conclusion first: the core framework is Apache-2.0. The <code>ee/</code> directory is source-available. Production use requires an enterprise license.</strong></p>
+<p>The repo README's Licensing section is clear — it is a <strong>dual license</strong>:</p>
+<blockquote><strong>Apache License 2.0</strong>: The core framework and the vast majority of this codebase is open source under Apache-2.0. <strong>Mastra Enterprise License</strong>: Code in any directory named <code>ee/</code> ... is source-available ... require a valid enterprise license for production use.</blockquote>
+<p>GitHub's license API returns <strong>NOASSERTION</strong> for the whole repo. That is consistent with the dual-license statement: not "no license", but "non-standard dual license".</p>
+<p>The other line is the <strong>Mastra platform</strong> (YC W25). The official pricing page (verified 2026-10-08) splits into two places:</p>
+<ul><li><strong>Platform three tiers</strong>: Starter (free), Teams (paid), Enterprise (custom)</li><li><strong>Self-hosted two tiers</strong>: Free and Enterprise</li></ul>
+<p><strong>Studio, Observability, hosted Server, and 24/7 residency are all platform products</strong> (hosted residency billed per project; unit price on the official page). They are not shipped with the framework. Quotes not stored per our price-recording policy.</p>
+</div>
+<div class="panel is-slim">
+<h2>Verification notes</h2>
+<p>Basis for <code>confidence: partial</code>:</p>
+<p><strong>Why still partial</strong>: all eight axes have been verified to conclusions from official pages. But several items remain that <strong>the official docs genuinely do not state</strong>, recordable only as "not stated officially". <strong>Four in total</strong>:</p>
+<ul><li>After switching providers, the alignment of each vendor's tool calling / structured output</li><li>The default boundary of file access in the core framework itself</li><li>Network access control mechanisms in the OSS core</li><li>The functional boundary of what falls under the enterprise license beyond <code>ee/</code></li></ul>
+<p>These are not "we couldn't find it" — the official docs themselves don't give them, so it cannot rise to verified.</p>
+<blockquote>Official pages checked the 2026-10-08 check: repo README (positioning, highlights, Licensing dual-license section), <code>/models</code> (providers and local models), <code>/models/providers</code>, <code>docs/workflows/overview</code>, <code>docs/workflows/suspend-and-resume</code>, <code>docs/memory/overview</code>, <code>docs/rag/overview</code>, <code>docs/evals/overview</code>, <code>docs/tools-mcp/mcp-overview</code>, <code>docs/deployment/overview</code>, <code>docs/mastra-platform/overview</code>, <code>docs/harness/overview</code>, <code>docs/auth/overview</code>, <code>docs/agents/overview</code>, the official pricing page <code>mastra.ai/pricing</code>, releases (<code>@mastra/core@1.75.0</code> @ 2026-10-07), npm registry (<code>@mastra/core</code> engines Node <code>&gt;=22.13.0</code>). <strong>Verification method</strong>: WebFetch on each official page plus the GitHub API (repo metadata, releases).</blockquote>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/framework/langgraph.html">LangGraph</a></span><span class="rel-n"><strong>The TS-vs-Python head-on shot</strong>: LangGraph is a low-level graph engine (no preset tools/file system); Mastra is TypeScript's batteries-included full-stack framework. Foundation vs out-of-the-box — this is the first comparison table.</span></li>
+<li><span class="rel-t"><a href="/en/framework/pydantic-ai.html">Pydantic AI</a></span><span class="rel-n">The counterpart in another language: Pydantic AI uses Python's type safety for structured output and durable execution; Mastra uses TypeScript's model routing and full-stack capability. Their answers to the "first decision point" differ.</span></li>
+<li><span class="rel-t"><a href="/en/framework/crewai.html">CrewAI</a></span><span class="rel-n">Both batteries-included orchestration frameworks: CrewAI goes with the Crew/Flow business metaphor (Python); Mastra goes with the engineering vocabulary of agents + graph workflows (TypeScript).</span></li>
+<li><span class="rel-t"><a href="/en/framework/openai-agents-sdk.html">OpenAI Agents SDK</a></span><span class="rel-n">The opposite contrast: that one is a primitives-only thin harness; Mastra is a thick framework with memory/RAG/evals/MCP/server all preset.</span></li>
+<li><span class="rel-t"><a href="/en/mcp/filesystem.html">Filesystem MCP Server</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/framework/google-adk.html">Google ADK（Agent Development Kit）</a></td><td>Cloud / API</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">In one line: Google ADK is a code-first agent orchestration framework wh</td></tr><tr><td><a href="/en/framework/ag2.html">AG2</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">The community continuation of AutoGen after the original repo stalled. T</td></tr><tr><td><a href="/en/framework/dspy.html">DSPy</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">DSPy turns 'tuning prompts' into a programming problem (MIT, Stanford NL</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

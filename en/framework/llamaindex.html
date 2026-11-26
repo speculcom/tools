@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>LlamaIndex Framework | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/framework/llamaindex.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/framework/llamaindex.html" property="og:url"/>
+<meta content="LlamaIndex Framework | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LlamaIndex Framework | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/framework/llamaindex.html","sameAs":"https://developers.llamaindex.ai/","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="LlamaIndex Framework | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/framework/llamaindex.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/framework/llamaindex.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/framework/llamaindex.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/framework/llamaindex.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Frameworks</span>
+</nav>
+<a class="back" href="/en/framework/">← Frameworks</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#7C3AED"'>LL</div>
+<div>
+<h1>LlamaIndex Framework</h1>
+<div class="vendor is-caps">LlamaIndex（run-llama）</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Python</span>
+<span class="tag on">Open source</span>
+<span class="tag on">MIT</span>
+<span class="tag on">Orchestration framework</span>
+<span class="tag on">RAG</span>
+<span class="tag on">Data connections</span>
+<span class="tag on">Document parsing</span>
+<span class="tag on">Retrieval</span>
+<span class="tag on">Integration ecosystem</span>
+<span class="tag on">Strategic shift</span>
+<span class="tag on">Commercial platform</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>"A Python library that pulls external data in for retrieval and question answering" …</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · Framework / SDK</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>The official-vs-community ratio of the 300+ integration packages and the maintenance-activity tiering</li>
+<li>End-to-end context trimming of retrieval results (synthesis modes are officially documented; actual behaviour awaits measurement)</li>
+<li>LlamaParse's credits conversion basis (the official page gives unit prices but not per-page consumption)</li>
+<li>How LiteParse integrates with the framework</li>
+<li>Capability alignment of the TypeScript version</li>
+<li>The README itself states it is updated less often than the docs — details require checking the docs site rather than GitHub</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>In one sentence</strong>: LlamaIndex is a Python library. It pulls external data in for retrieval and question answering.</p>
+<p><strong>⚠ But one thing has to be said first.</strong></p>
+<p>The project has explicitly moved its company focus away from "orchestration frameworks":</p>
+<blockquote>The <strong>current focus</strong> of LlamaIndex is to build the best AI-powered engine for <strong>document parsing and extraction</strong>. <strong>LlamaParse</strong> is our <strong>enterprise platform</strong> for agentic OCR, parsing, extraction, indexing and more.  ...the company itself has undergone an <strong>evolution</strong> since when this OSS framework first launched 3 years ago in 2023.  While we still have the OSS framework available as an open toolkit that you're welcome to use, <strong>our primary focus has shifted towards LlamaParse</strong>...</blockquote>
+<p><strong>The selection implication is direct.</strong> The company's resources really have tilted towards document parsing, <strong>but the orchestration capability has not left the OSS</strong>:</p>
+<ul><li>The README puts Workflows in the commercial-platform section (the link points at <code>cloud/llamaagents</code>)</li><li>The official framework docs state that <code>llama-index-core</code> still ships a stable version of Workflows (checked 2026-10-08)</li></ul>
+<p><strong>What it actually provides now, the README itself lists best</strong>:</p>
+<blockquote>- <strong>data connectors</strong> to ingest your existing data sources and data formats (APIs, PDFs, docs, SQL, etc.) - ways to <strong>structure your data</strong> (indices, graphs) - an <strong>advanced retrieval/query interface</strong> over your data - easy <strong>integrations with your outer application framework</strong></blockquote>
+<p><strong>Put together, the OSS framework now really provides five things</strong>: data ingestion, indices / graph structures, a retrieval query interface, 300+ integrations, and Workflows orchestration.</p>
+<p><strong>The value of this entry lies elsewhere</strong> — it meets the v3 rule "a substantive update within 30 days" (pushed 2026-09-29, still active), but its real value is recording that turn honestly: behind 52,377★ the company is heading towards document parsing / agentic OCR, which is LlamaParse and ParseBench territory, not this open-source framework's.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p><strong>Fits</strong>: bringing external data sources in for retrieval and question answering; needing one of the 300+ ready-made integrations; a Python stack; explicitly wanting LlamaParse's parsing capability (that goes through the commercial platform).</p></div>
+<div class="warn-p"><p><strong>Not a fit for</strong>: wanting the commercial platform's managed orchestration and Agent Builder (LlamaAgents); agents that read and write files in your project directory and run commands — that is the Deep Agents "workspace filesystem" category; needing explicit sandbox and permission boundaries — the official framework docs provide no such mechanism; needing managed "keep running after shutdown" execution — that is the LlamaAgents platform side.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　official site measured 200 direct.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>The integration surface is "300+ separate integration packages", not a unified gateway.</strong></p>
+<ul><li>The official integrations page calls them all "community integrations"</li><li>That is, most are community-maintained, not hand-fed by the vendor one by one</li></ul>
+<p>"There are <strong>over 300 LlamaIndex integration packages</strong> that work seamlessly with core, allowing you to build with your <strong>preferred LLM, embedding, and vector store providers</strong>."</p>
+<p>The namespace rule is easy to remember:</p>
+<ul><li>With <code>.core</code> (<code>from llama_index.core.xxx</code>) = core</li><li>Without it (<code>from llama_index.xxx.yyy</code>) = an integration package</li></ul>
+<p>New integrations go through maintainer review.</p>
+<p><strong>The README states</strong>: "some integrations may be declined".</p>
+<p><strong>Unknown: the official docs publish no quality tiering or maintenance-activity grading for the integration packages.</strong> (<strong>Checked</strong> — README and the integrations page.)</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>The OSS form is a pure library with two install tiers; hosted execution lives on the commercial-platform side.</strong></p>
+<p><strong>Two install tiers</strong> (README Getting Started):</p>
+<ul><li><strong>Starter</strong> — <code>llama-index</code> (PyPI): core plus a bundle of common integrations</li><li><strong>Customized</strong> — <code>llama-index-core</code>: core only, then pick packages from the integrations page</li></ul>
+<p><strong>The framework itself is a library you import.</strong> The way in is to connect with your outer application framework, which is also <strong>the fourth item of the README's Proposed Solution</strong>:</p>
+<p>"integrations with your outer application framework"</p>
+<p>The vendor has a separate hosted/deployment path. LlamaAgents' <code>llamactl</code> CLI can be used like this:</p>
+<p><strong>Official wording</strong>: "serve locally, and deploy to LlamaCloud or export for self-hosting"</p>
+<p>LlamaCloud also offers hosted Indexing.</p>
+<ul><li><strong>Hosting is the LlamaCloud / LlamaAgents layer (commercial)</strong></li><li>It is not a run form that ships with the OSS framework</li></ul></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>It reads local files to build indexes, not to give an agent a workspace.</strong></p>
+<p>The official <code>SimpleDirectoryReader</code> docs put it plainly:</p>
+<p>"the simplest way to load data from local files into LlamaIndex"</p>
+<p>Parameters you can pass:</p>
+<ul><li><code>input_dir</code>, <code>recursive=True</code></li><li><code>exclude</code>, <code>required_exts</code>, <code>num_files_limit</code></li><li>Remote file systems go through <code>fsspec</code> (S3, GDrive, etc.)</li></ul>
+<p><strong>Indexes live in memory by default.</strong> Two official example actions:</p>
+<ul><li>Persist: <code>index.storage_context.persist()</code> writes to <code>./storage</code></li><li>Reload: <code>load_index_from_storage</code></li></ul>
+<p><strong>This site records this axis from the "index layer" perspective.</strong></p>
+<p>It is not an "agent workspace" file system. It is local file reading at the "data-source ingestion + indexing" layer.</p>
+<p>It reads disk to turn documents into retrievable indexes. That is not the same thing as Deep Agents' "agent editing files in a workspace".</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>There is no hosted execution that "keeps running after shutdown".</strong> But orchestration (Workflows) really is still in the OSS.</p>
+<p><strong>One spot is easy to misread from the README.</strong> The README lists Workflows under the LlamaParse platform's Agents section, while the official framework docs are explicit:</p>
+<p>"llama-index-core comes with a stable version of Workflows included"</p>
+<p>So orchestration has not been moved out of the OSS. Two entry points:</p>
+<ul><li>Import path <code>llama_index.core.workflow</code></li><li>Also standalone: <code>pip install llama-index-workflows</code></li></ul>
+<p><strong>Background execution is the missing item.</strong> The official framework docs offer no hosted runtime for "keep-running-after-shutdown"; you run the process yourself. For hosting, go through LlamaAgents / <code>llamactl</code>:</p>
+<p>"deploy them to LlamaCloud or your own infrastructure"</p>
+<p>and that is the platform side.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>Two things at the tool layer: community ToolSpecs, plus one official MCP connector package.</strong></p>
+<p>The official tools docs give <code>FunctionTool</code>. There is also <code>QueryEngineTool</code>. Plus <strong>"Community contributed ToolSpecs"</strong>.</p>
+<p>Handling "a tool returns an oversized output" is what Utility Tools do:</p>
+<ul><li><code>OnDemandLoaderTool</code></li><li><code>LoadAndSearchToolSpec</code></li></ul>
+<p><strong>MCP is officially supported, as a separate package.</strong> <strong>Docs wording</strong>: "LlamaIndex provides robust support for consuming MCP servers through the <code>llama-index-tools-mcp</code> package"</p>
+<p>Its MCP surface:</p>
+<ul><li>All three transports supported: SSE / Streamable HTTP / stdio</li><li>A Workflow can be re-published as an MCP server</li><li>The vendor also hosts <code>mcp.llamaindex.ai</code> (a docs-retrieval / LlamaParse MCP service)</li></ul></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>This dimension has concrete official mechanisms; it is not blank.</strong></p>
+<p>The official docs call the framework a "data framework".</p>
+<p>The core is structure your data (indices, graphs). Plus a retrieval/query interface.</p>
+<p>That is, "turn external data into retrievable context".</p>
+<p><strong>How do retrieval results get packed into the context window?</strong> The official answer is the Response Synthesizer:</p>
+<ul><li><code>compact</code> (default) — "stuff as many text ... that can fit within the context window"</li><li><code>refine</code> — refine chunk by chunk</li><li><code>tree_summarize</code> — recursive summarization</li><li><code>simple_summarize</code> — truncate to a single prompt</li></ul>
+<p>That is its context-trimming and summarization mechanism: pack to the window first, split into chunks when it does not fit, compress via the summarize-style modes.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>⚠ This is a clear, major information gap; confirm it yourself before choosing.</strong></p>
+<p><strong>Things the official README never mentions</strong>: sandboxing, a file-permission model, network access controls, human-in-the-loop confirmation — not one.</p>
+<p>Compared against the other orchestration frameworks this site files:</p>
+<ul><li>Google ADK has Tool Confirmation (HITL)</li><li>CrewAI has guardrails (mechanism undocumented)</li><li>LangGraph has interrupts (state can be inspected and modified)</li><li><strong>LlamaIndex — the README does not even name the concept</strong></li></ul>
+<p>⚠ <strong>The nature of the risk surface is different.</strong> Its main battleground is document parsing and RAG; what it handles is usually <strong>user-uploaded data</strong>.</p>
+<p>That is a different class of risk from "an agent touching your local files" (data-leakage surface vs host-operation surface).</p>
+<p>But <strong>the README does not discuss data permissions or isolation</strong>.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p><strong>A fit: bringing external data in for retrieval-augmented Q&amp;A.</strong></p>
+<ul><li>The core task is ingesting external data sources (APIs / PDFs / docs / SQL) for retrieval and Q&amp;A</li><li>You need one of the 300+ ready-made integrations</li><li>The team is on the Python stack</li><li>You explicitly want LlamaParse's parsing capabilities (that goes through the commercial platform)</li></ul>
+<p><strong>Not a fit in three situations.</strong></p>
+<ul><li>You need an agent to read/write files in your own project directory and run commands — that is the Deep Agents class of "workspace file system"</li><li>You need explicit sandboxing and permission boundaries — the official framework docs have no such mechanisms</li><li>You need "hosted continuation after shutdown" — that goes through the LlamaAgents platform side</li></ul></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>MIT</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Reading 52k★ as "an actively developed orchestration framework" — <strong>the official front page states the primary focus has shifted to document parsing</strong></li>
+<li>Assuming workflow / agent orchestration lives in the OSS — the README puts Workflows in the section about the commercial LlamaAgents platform</li>
+<li>Conflating LlamaIndex's "data connectors" with Deep Agents' "filesystem" — the former is data-source ingestion and parsing, the latter is an agent's workspace file operations</li>
+<li>Treating LlamaParse as a free open-source component — it is a commercial platform and you must sign up for a key</li>
+<li>Reading 300+ integrations as equally reliable — the official wording is "work seamlessly"; this site has not measured how well they align</li>
+<li>Missing the NOTE the README writes about itself — "This README is not updated as frequently as the documentation"</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-01。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>run-llama/llama_index · repository (52,625★, MIT, rolling re-check 2026-10-23)</td><td><a href="https://github.com/run-llama/llama_index" rel="noopener" target="_blank">https://github.com/run-llama/llama_index</a></td></tr>
+<tr><td>docs</td><td>Main README (front-page NOTE strategic statement, the two install tiers and namespace rule, the LlamaParse commercial section, the four Proposed Solution items)</td><td><a href="https://github.com/run-llama/llama_index/blob/main/README.md" rel="noopener" target="_blank">https://github.com/run-llama/llama_index/blob/main/README.md</a></td></tr>
+<tr><td>docs</td><td>Official docs · LlamaIndex Framework (pointed to by the README)</td><td><a href="https://developers.llamaindex.ai/python/framework/" rel="noopener" target="_blank">https://developers.llamaindex.ai/python/framework/</a></td></tr>
+<tr><td>docs</td><td>Official docs · LlamaAgents (Workflows / Agent Builder, <strong>commercial-platform side</strong>)</td><td><a href="https://developers.llamaindex.ai/python/llamaagents/overview/" rel="noopener" target="_blank">https://developers.llamaindex.ai/python/llamaagents/overview/</a></td></tr>
+<tr><td>docs</td><td>LlamaParse commercial platform (the README calls it an enterprise platform)</td><td><a href="https://cloud.llamaindex.ai" rel="noopener" target="_blank">https://cloud.llamaindex.ai</a></td></tr>
+<tr><td>pricing</td><td>LlamaParse official pricing page (Free/Starter/Pro credit quotas and add-on caps; prices not stored per our price-recording policy; LiteParse is free OSS, verified 2026-10-01)</td><td><a href="https://www.llamaindex.ai/pricing" rel="noopener" target="_blank">https://www.llamaindex.ai/pricing</a></td></tr>
+<tr><td>repo</td><td>run-llama/liteparse · free fast text parser (a separate official project)</td><td><a href="https://github.com/run-llama/liteparse" rel="noopener" target="_blank">https://github.com/run-llama/liteparse</a></td></tr>
+<tr><td>changelog</td><td>Releases (v0.14.25 @ 2026-09-21)</td><td><a href="https://github.com/run-llama/llama_index/releases" rel="noopener" target="_blank">https://github.com/run-llama/llama_index/releases</a></td></tr>
+<tr><td>docs</td><td>Official docs · Workflows (<code>llama_index.core.workflow</code> still in OSS core, verified 2026-10-08)</td><td><a href="https://developers.llamaindex.ai/python/framework/module_guides/workflow/" rel="noopener" target="_blank">https://developers.llamaindex.ai/python/framework/module_guides/workflow/</a></td></tr>
+<tr><td>docs</td><td>Official docs · MCP (<code>llama-index-tools-mcp</code> consumes MCP; Workflow-to-MCP-server)</td><td><a href="https://developers.llamaindex.ai/python/framework/module_guides/mcp/llamaindex_mcp/" rel="noopener" target="_blank">https://developers.llamaindex.ai/python/framework/module_guides/mcp/llamaindex_mcp/</a></td></tr>
+<tr><td>docs</td><td>Official docs · Response Synthesizers (compact/refine/tree_summarize window packing and summarization)</td><td><a href="https://developers.llamaindex.ai/python/framework/module_guides/querying/response_synthesizers/" rel="noopener" target="_blank">https://developers.llamaindex.ai/python/framework/module_guides/querying/response_synthesizers/</a></td></tr>
+<tr><td>docs</td><td>Official docs · SimpleDirectoryReader (local directory reading, fsspec remote file systems)</td><td><a href="https://developers.llamaindex.ai/python/framework/module_guides/loading/simpledirectoryreader/" rel="noopener" target="_blank">https://developers.llamaindex.ai/python/framework/module_guides/loading/simpledirectoryreader/</a></td></tr>
+<tr><td>docs</td><td>Official docs · community integrations (the 300+ packages are classed as community integrations)</td><td><a href="https://developers.llamaindex.ai/python/framework/community/integrations/" rel="noopener" target="_blank">https://developers.llamaindex.ai/python/framework/community/integrations/</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" rel="noopener" target="_blank">protocols/framework/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong> (tailored to the question "has the strategy really shifted"):</p>
+<div class="tbl-wrap"><table><thead><tr><th>#</th><th>What to test</th><th>Why it is worth testing</th></tr></thead><tbody><tr><td>1</td><td>After installing llama-index-core, check the API shape and version of <code>llama_index.core.workflow</code></td><td>The official docs already state it is still in core; measurement confirms the usable orchestration surface</td></tr><tr><td>2</td><td>Run a minimal "documents → retrieval Q&amp;A" loop on the Starter tier</td><td>Judge whether its current core experience is smooth</td></tr><tr><td>3</td><td>Actual coverage of data ingestion (this time pick one PDF + one SQL)</td><td>"300+ integrations" and "API/PDF/docs/SQL" are different claims — test the concrete ones</td></tr><tr><td>4</td><td>Retrieval quality and structured output after switching to a non-OpenAI provider</td><td>The official page says work seamlessly; that needs verification</td></tr><tr><td>5</td><td>Context trimming of retrieval results on long documents (synthesis modes are officially documented)</td><td>Actual behaviour still awaits measurement</td></tr><tr><td>6</td><td>Compare LlamaIndex OSS vs LlamaParse in practice</td><td>The vendor itself says focus has shifted; how big the gap is needs a first-hand look</td></tr></tbody></table></div>
+</div>
+<div class="panel is-slim">
+<h2>Two install tiers: a clarity that is rare among frameworks</h2>
+<p><strong>The two starting paths the README gives are clearer than many frameworks'.</strong></p>
+<div class="tbl-wrap"><table><thead><tr><th>Tier</th><th>Package</th><th>Suits</th></tr></thead><tbody><tr><td><strong>Starter</strong></td><td><code>llama-index</code></td><td>Core plus a bundle of common integrations, for convenience</td></tr><tr><td><strong>Customized</strong></td><td><code>llama-index-core</code></td><td>Core only, then pick from the integrations page as needed</td></tr></tbody></table></div>
+<p><strong>The namespace rule is worth remembering</strong> (README code example):</p>
+<pre class="code"><code>from llama_index.core.xxx import ClassABC      # with .core = core
+from llama_index.xxx.yyy import SubclassABC    # without = an integration package</code></pre>
+<p>⚠ <strong>One positioning gap</strong>: the README has no CLI launch command, no Web UI, no container deployment example.</p>
+<p>Compare with other objects filed in the same section:</p>
+<ul><li>Google ADK — has <code>adk deploy docker</code> and <code>cloud_run</code></li><li>OpenHands — four deployment forms</li></ul>
+<p><strong>Conclusion: LlamaIndex is a library, not a platform.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>300+ integrations: the strength is also the maintenance burden</h2>
+<p>⚠ <strong>The official wording is "work seamlessly."</strong> This site has not measured cross-provider capability alignment for any of them.</p>
+<p>When choosing, do not just check that a package name exists — also check that integration package's maintenance status and issues.</p>
+</div>
+<div class="panel is-slim">
+<h2>The distinction that matters most: data ingestion ≠ agent file operations</h2>
+<p><strong>This is the spot this site thinks is most easily misread.</strong></p>
+<div class="tbl-wrap"><table><thead><tr><th>Object</th><th>Capability</th><th>Nature</th></tr></thead><tbody><tr><td><strong>LlamaIndex</strong></td><td>data connectors ingest APIs / PDFs / docs / SQL; parsing, indexing, retrieval</td><td><strong>Data-source layer</strong></td></tr><tr><td><strong>Deep Agents</strong></td><td>filesystem; the agent reads/writes files in a workspace</td><td><strong>Workspace layer</strong></td></tr></tbody></table></div>
+<p><strong>Both get called "file-related", but they are completely different things.</strong></p>
+<p>When choosing, first ask which one you need:</p>
+<ul><li>"Turn a pile of documents into a retrievable knowledge base"</li><li>"Let an agent work inside my project directory"</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>The context dimension: it handles "acquisition"; the summarization mechanism has its own docs</h2>
+<p>The official docs position the framework as a "data framework".</p>
+<p>The core is structure your data (indices, graphs). Plus a retrieval/query interface.</p>
+<p><strong>This site's judgement (inference)</strong>: what it solves is "<strong>turning external data into retrievable context</strong>" —</p>
+<p>in this site's coordinate system that belongs to the <strong>context-acquisition layer</strong>.</p>
+<p><strong>Known</strong>: how retrieval results get packed into the context window has a clear official answer.</p>
+<p>The mechanism is the Response Synthesizer; the four modes are in the <code>context</code> dimension.</p>
+<p><strong>Not verified</strong>: end-to-end trimming behaviour. The README itself has no statement about compression / summarization mechanisms.</p>
+</div>
+<div class="panel is-slim">
+<h2>The permissions dimension: the README does not even name the concept</h2>
+<p><strong>This is a gap this site states explicitly.</strong> Compared against the other three in the same section:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Object</th><th>Permission mechanism</th><th>Source</th></tr></thead><tbody><tr><td>Google ADK</td><td>Tool Confirmation (HITL)</td><td>README, explicit</td></tr><tr><td>LangGraph</td><td>interrupts (state inspectable and modifiable)</td><td>README, explicit</td></tr><tr><td>CrewAI</td><td>guardrails (name only)</td><td>config-option list</td></tr><tr><td><strong>LlamaIndex</strong></td><td><strong>None</strong></td><td><strong>No related wording anywhere in the README</strong></td></tr></tbody></table></div>
+<p>⚠ <strong>One supplementary judgement</strong>: its main battleground is document parsing and RAG.</p>
+<p>What it handles is usually <strong>user-uploaded data</strong>.</p>
+<p>That risk surface differs in nature from "an agent touching your local files" (data-leakage surface vs host-operation surface).</p>
+<p>But <strong>the README does not discuss data permissions or isolation</strong>.</p>
+</div>
+<div class="panel is-slim">
+<h2>Verification notes</h2>
+<p><strong>Why it is still <code>confidence: partial</code>.</strong></p>
+<p>The basis is the 2026-10-08 update.</p>
+<p>All three original "why not verified" items have been checked and written into the dimensions:</p>
+<ul><li>① Orchestration is still on the OSS side (<code>llama_index.core.workflow</code>, official framework docs)</li><li>② Permissions dimension (the official docs give no sandbox / permission-convergence mechanisms; conclusion in the permissions dimension)</li><li>③ MCP support (official <code>llama-index-tools-mcp</code>, including SSE / HTTP / stdio)</li></ul>
+<p>Whether <code>confidence</code> gets upgraded is decided uniformly by the upper-level batch; the 2026-10-08 check only updates dimensions and notes.</p>
+<p><strong>Verified (standing record)</strong>:</p>
+<ul><li>Repository existence and star count (52,625 · rolling re-check 2026-10-23)</li><li>Licence (MIT, via the license API)</li><li>Latest push (2026-10-21, still active)</li><li>Latest version <strong>v0.14.25</strong> (releases @ 2026-09-21; no new main-package version at the 2026-10-23 rolling re-check)</li></ul>
+<p><strong>The README is 223 lines in total</strong>, covering:</p>
+<ul><li>The full front-page NOTE strategic statement</li><li>The two install tiers and the namespace rule</li><li>The seven items of the LlamaParse commercial section</li><li>The four Proposed Solution items, the Overview paragraph</li><li>And the README's own note: "not updated as frequently as the documentation"</li></ul>
+<p><strong>Not verified</strong>:</p>
+<ul><li>Quality and maintenance tiering of the 300+ integration packages</li><li>How local models integrate via LiteParse</li><li>End-to-end context trimming of retrieval results</li><li>LlamaParse's credits conversion basis (per-page consumption not published)</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/framework/langgraph.html">LangGraph</a></span><span class="rel-n"><strong>Orchestration-family contrast, and the one that best illustrates the "pivot" question</strong> LangGraph builds state persistence into its core (a checkpoint every superstep), and is fully OSS LlamaIndex's Workflows are likewise still in OSS core The difference is where the company invests, not where the code lives</span></li>
+<li><span class="rel-t"><a href="/en/framework/google-adk.html">Google ADK（Agent Development Kit）</a></span><span class="rel-n">Same orchestration family, but they give different things ADK gives a graph execution engine for agent workflows + three deployment commands LlamaIndex gives data ingestion and retrieval Neither one occupies the "who can connect 300+ integrations" cell</span></li>
+<li><span class="rel-t"><a href="/en/framework/crewai.html">CrewAI</a></span><span class="rel-n">Also an orchestration framework, different centre of abstraction Crew role collaboration / Flow event-driven vs data pipelines and retrieval</span></li>
+<li><span class="rel-t"><a href="/en/framework/deepagents.html">Deep Agents</a></span><span class="rel-n"><strong>The pair that most needs distinguishing</strong> Deep Agents' filesystem is agent workspace file operations LlamaIndex's data connectors are data-source ingestion and parsing; the two are often conflated</span></li>
+<li><span class="rel-t"><a href="/en/mcp/memory.html">Knowledge Graph Memory Server</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/framework/dspy.html">DSPy</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">DSPy turns 'tuning prompts' into a programming problem (MIT, Stanford NL</td></tr><tr><td><a href="/en/framework/haystack.html">Haystack</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Haystack is the RAG framework of the 'retrieval-quality engineering' sch</td></tr><tr><td><a href="/en/framework/langchain.html">LangChain</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">LangChain is the main body of the LLM-app framework ecosystem (MIT, 148k</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

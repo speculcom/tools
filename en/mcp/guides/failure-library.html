@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Troubleshooting and ten evidence misreads | Tools</title>
+<meta content="Diagnose authentication, rate limits, memory, latency, tool inputs, JSON, retrieval and file issues, with ten evidence misreads and a troubleshooting…" name="description"/>
+<link href="https://tools.specul.com/en/mcp/guides/failure-library.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/mcp/guides/failure-library.html" property="og:url"/>
+<meta content="Troubleshooting and ten evidence misreads | Tools" property="og:title"/>
+<meta content="Diagnose authentication, rate limits, memory, latency, tool inputs, JSON, retrieval and file issues, with ten evidence misreads and a troubleshooting…" property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Troubleshooting and ten evidence misreads","description":"Diagnose authentication, rate limits, memory, latency, tool inputs, JSON, retrieval and file issues, with ten evidence misreads and a troubleshooting…","dateModified":"2026-11-03"}</script>
+<meta content="Troubleshooting and ten evidence misreads | Tools" name="twitter:title"/><meta content="Diagnose authentication, rate limits, memory, latency, tool inputs, JSON, retrieval and file issues, with ten evidence misreads and a troubleshooting…" name="twitter:description"/><link href="https://tools.specul.com/mcp/guides/failure-library.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/guides/failure-library.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/guides/failure-library.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/mcp/guides/failure-library.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<a class="back" href="/en/mcp/">← Guides</a>
+<div class="detail-head">
+<div>
+<h1>Troubleshooting and ten evidence misreads</h1>
+<div class="vendor is-caps">Planning</div>
+</div>
+</div>
+<div class="panel-lead"><p>Diagnose authentication, rate limits, memory, latency, tool inputs, JSON, retrieval and file issues, with ten evidence misreads and a troubleshooting record.</p></div>
+<nav aria-label="Article contents" class="panel is-slim"><p>On this page</p><ul><li><a href="#guide-section-0">How to use</a></li><li><a href="#guide-section-1">Choose a symptom</a></li><li><a href="#guide-section-2">401/403: authentication and permissions</a></li><li><a href="#guide-section-3">429: rate limits and retries</a></li><li><a href="#guide-section-4">OOM: separate memory consumers</a></li><li><a href="#guide-section-5">Latency: queue, first token and output</a></li><li><a href="#guide-section-6">Tool failures: validate inputs first</a></li><li><a href="#guide-section-7">JSON: parsing is not schema validation</a></li><li><a href="#guide-section-8">Retrieval: inspect passages before generation</a></li><li><a href="#guide-section-9">Citations: match each claim to evidence</a></li><li><a href="#guide-section-10">Files: inspect format and extraction</a></li><li><a href="#guide-section-11">Troubleshooting record</a></li><li><a href="#guide-section-12">Mistaking n8n for OSI open source</a></li><li><a href="#guide-section-13">Mistaking source-visible for open source</a></li><li><a href="#guide-section-14">Reading the wrong training scope</a></li><li><a href="#guide-section-15">Confusing two Copilot products</a></li><li><a href="#guide-section-16">Assuming Atlas is still live</a></li><li><a href="#guide-section-17">Treating a subscription as a commercial licence</a></li><li><a href="#guide-section-18">Ignoring an irrevocable training licence</a></li><li><a href="#guide-section-19">Treating open weights as free commercial use</a></li><li><a href="#guide-section-20">Skipping terms because the app is closed</a></li><li><a href="#guide-section-21">Ignoring a fixed security issue</a></li><li><a href="#guide-section-22">Four questions</a></li></ul></nav>
+<div class="panel is-slim" id="guide-section-0">
+<h2>How to use</h2>
+<p>Start with one symptom, record evidence that distinguishes causes, change one condition and recheck. Technical branches were prepared against the listed official references on 2026-11-04; no specific product or model was executed, and examples are not incident records. The ten documentary misreads retain their original dossier dates.</p>
+</div>
+<div class="panel is-slim" id="guide-section-1">
+<h2 id="by-symptom">Choose a symptom</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Symptom</th><th>Start here</th></tr></thead><tbody><tr><td>401 / 403</td><td><a href="https://tools.specul.com/en/mcp/guides/failure-library.html#auth" rel="noopener" target="_blank">Authentication and permissions</a></td></tr><tr><td>429 / queued requests</td><td><a href="https://tools.specul.com/en/mcp/guides/failure-library.html#rate-limit" rel="noopener" target="_blank">Rate limits and retries</a></td></tr><tr><td>Model does not fit / OOM</td><td><a href="https://tools.specul.com/en/mcp/guides/failure-library.html#memory" rel="noopener" target="_blank">Capacity</a></td></tr><tr><td>Slow first token / slow output</td><td><a href="https://tools.specul.com/en/mcp/guides/failure-library.html#latency" rel="noopener" target="_blank">Separate latency stages</a></td></tr><tr><td>Tool call fails</td><td><a href="https://tools.specul.com/en/mcp/guides/failure-library.html#tool-input" rel="noopener" target="_blank">Tool inputs</a></td></tr><tr><td>Invalid JSON or fields</td><td><a href="https://tools.specul.com/en/mcp/guides/failure-library.html#json" rel="noopener" target="_blank">Structured output</a></td></tr><tr><td>Expected sources absent</td><td><a href="https://tools.specul.com/en/mcp/guides/failure-library.html#retrieval" rel="noopener" target="_blank">Retrieval</a></td></tr><tr><td>Citation does not support answer</td><td><a href="https://tools.specul.com/en/mcp/guides/failure-library.html#citations" rel="noopener" target="_blank">Citation checks</a></td></tr><tr><td>Upload fails or extraction is blank</td><td><a href="https://tools.specul.com/en/mcp/guides/failure-library.html#files" rel="noopener" target="_blank">Files and formats</a></td></tr></tbody></table></div>
+</div>
+<div class="panel is-slim" id="guide-section-2">
+<h2 id="auth">401/403: authentication and permissions</h2>
+<ul><li><strong>Distinguish</strong>: 401 indicates missing valid authentication; 403 indicates refusal. Read the response for the actual cause.</li><li><strong>Act</strong>: check endpoint, account/project, credential loading and permissions instead of resending unchanged requests.</li><li><strong>Verify</strong>: get a minimal request to that endpoint working, then restore the task. Record error codes and request IDs, excluding credentials.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-3">
+<h2 id="rate-limit">429: rate limits and retries</h2>
+<ul><li><strong>Distinguish</strong>: inspect rate/quota information and actual concurrency/call counts.</li><li><strong>Act</strong>: follow <code>Retry-After</code> when present; cap retries and reduce the sending rate rather than creating a retry storm.</li><li><strong>Verify</strong>: check that the queue drains. Before retrying sends, charges or creates, inspect existing task status and the service's idempotency mechanism.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-4">
+<h2 id="memory">OOM: separate memory consumers</h2>
+<ul><li><strong>Distinguish</strong>: note whether failure occurs loading weights, allocating context or handling concurrent requests. File size is not total running memory.</li><li><strong>Act</strong>: reduce context/concurrency, inspect cache and runtime overhead, then consider a smaller model or another quantisation. vLLM's <code>max_model_len</code> and <code>max_num_seqs</code> are version-specific, not universal runtime flags.</li><li><strong>Verify</strong>: start with one request, increase load gradually and retain the configuration. Loading successfully is not task acceptance.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-5">
+<h2 id="latency">Latency: queue, first token and output</h2>
+<ul><li><strong>Distinguish</strong>: record queueing, loading, first-token delay and sustained output separately.</li><li><strong>Act</strong>: hold model and input fixed; inspect the execution device, process load and logs. Rule out download/load stalls before varying input length or concurrency. Use runtime-specific debugging options.</li><li><strong>Verify</strong>: compare the same stages under equivalent conditions without removing required evidence. No universal speed threshold is supplied here.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-6">
+<h2 id="tool-input">Tool failures: validate inputs first</h2>
+<ul><li><strong>Distinguish</strong>: separate schema errors, missing objects, insufficient permissions and execution failures. Keep the tool's raw error apart from the model's explanation.</li><li><strong>Act</strong>: use a known object and minimal parameters; check required fields, types, enums and tool version. A number represented as a string is not automatically valid.</li><li><strong>Verify</strong>: establish that the tool works before restoring model calls. Check existing results before repeating writes.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-7">
+<h2 id="json">JSON: parsing is not schema validation</h2>
+<ul><li><strong>Distinguish</strong>: check valid JSON, then schema, then factual support.</li><li><strong>Act</strong>: specify required fields, nullable values and extra-property policy. <code>properties</code> alone does not require fields; <code>required</code> does not establish their types. Validate against the schema.</li><li><strong>Verify</strong>: retain missing-field, wrong-type, extra-field and unsupported-value cases. Cap retries and keep failed outputs out of execution tools.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-8">
+<h2 id="retrieval">Retrieval: inspect passages before generation</h2>
+<ul><li><strong>Distinguish</strong>: was the source parsed and indexed, is access allowed, and do retrieved candidates contain the answer? Inspect passage IDs and source text first.</li><li><strong>Act</strong>: fix empty or misaligned extraction before retrieval tuning; inspect keyword retrieval for exact IDs, or reranking/context selection when relevant passages are present but buried.</li><li><strong>Verify</strong>: record retrieval, answer and citation outcomes separately on fixed questions. Fluent output is not proof of retrieval success.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-9">
+<h2 id="citations">Citations: match each claim to evidence</h2>
+<ul><li><strong>Distinguish</strong>: a working link, a relevant page and a supporting passage are different checks.</li><li><strong>Act</strong>: locate a sentence, table row or page for each claim; check version, date, units and scope. Remove unsupported claims or mark them unknown/inferred.</li><li><strong>Verify</strong>: check each claim against the same original text. Preserve conflicting sources rather than merging them into certainty.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-10">
+<h2 id="files">Files: inspect format and extraction</h2>
+<ul><li><strong>Distinguish</strong>: upload failure, unsupported format, a scan without text and misaligned extraction need different fixes.</li><li><strong>Act</strong>: check type, size and page limits; OCR scans and verify table rows/columns. HTTP 415 concerns unsupported media; inspect the service response.</li><li><strong>Verify</strong>: check a nonsensitive one-page sample before the original. Successful upload does not establish correct reading.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-11">
+<h2 id="troubleshooting-record">Troubleshooting record</h2>
+<p>Fill this record without credentials, personal data or complete sensitive logs.</p>
+<pre class="code"><code>Task and expected outcome:
+Product / model / runtime and versions:
+System / hardware / network and date:
+Minimal input and failing steps:
+Raw error code / request ID / stage:
+Causes ruled out and evidence:
+The one condition changed:
+Recheck result and remaining unknowns:
+Next step / rollback:</code></pre>
+<p>Illustration only: if retrieved candidates lack a target ID, inspect parsing/indexing and compare an exact keyword query before changing the generation model.</p>
+</div>
+<div class="panel is-slim" id="guide-section-12">
+<h2>Mistaking n8n for OSI open source</h2>
+<ul><li><strong>Symptom</strong>: treating public source as OSI open source and using it in closed commercial redistribution.</li><li><strong>Cause</strong>: the repository is public, but its fair-code Sustainable Use License has different conditions.</li><li><strong>Avoidance</strong>: inspect the licence and applicable redistribution conditions before use.</li><li><strong>Evidence</strong>: <a href="https://tools.specul.com/en/automation/n8n.html" rel="noopener" target="_blank">n8n dossier</a>, checked 2026-10-30.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-13">
+<h2>Mistaking source-visible for open source</h2>
+<ul><li><strong>Symptom</strong>: assuming a public GitHub repository permits unrestricted modification and redistribution.</li><li><strong>Cause</strong>: repository visibility is not a licence grant; the recorded Claude Code CLI licence is All rights reserved.</li><li><strong>Avoidance</strong>: read LICENSE and README licensing sections, including redistribution restrictions.</li><li><strong>Evidence</strong>: <a href="https://tools.specul.com/en/coding/claude-code-cli.html" rel="noopener" target="_blank">Claude Code CLI dossier</a>, October 2026 snapshot.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-14">
+<h2>Reading the wrong training scope</h2>
+<ul><li><strong>Symptom</strong>: assuming Gemini conversations are excluded because Gmail/Drive source libraries are not directly used for training.</li><li><strong>Cause</strong>: the recorded terms distinguish original connected data from summaries, excerpts and inferences produced during answering.</li><li><strong>Avoidance</strong>: read the applicable privacy notice and Keep Activity controls; follow its instructions for sensitive input.</li><li><strong>Evidence</strong>: <a href="https://tools.specul.com/en/chat/gemini-chat.html" rel="noopener" target="_blank">Gemini dossier</a>, checked 2026-10-21.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-15">
+<h2>Confusing two Copilot products</h2>
+<ul><li><strong>Symptom</strong>: seeking consumer Deep Research or applying consumer terms to enterprise data.</li><li><strong>Cause</strong>: different product surfaces, terms and permissions; the recorded consumer Deep Research retirement is 2026-08-18.</li><li><strong>Avoidance</strong>: distinguish copilot.microsoft.com from M365 and inspect the Researcher path.</li><li><strong>Evidence</strong>: <a href="https://tools.specul.com/en/chat/microsoft-copilot.html" rel="noopener" target="_blank">Microsoft Copilot dossier</a>, checked 2026-10-22.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-16">
+<h2>Assuming Atlas is still live</h2>
+<ul><li><strong>Symptom</strong>: following an old tutorial to an Atlas browser-operation entry point.</li><li><strong>Cause</strong>: old product/news pages remain; the recorded release notes give retirement on 2026-08-09.</li><li><strong>Avoidance</strong>: check current release notes and the ChatGPT / Codex replacement entry points.</li><li><strong>Evidence</strong>: <a href="https://tools.specul.com/en/chat/chatgpt.html" rel="noopener" target="_blank">ChatGPT dossier</a>, checked 2026-11-03.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-17">
+<h2>Treating a subscription as a commercial licence</h2>
+<ul><li><strong>Symptom</strong>: assuming membership permits every commercial use of generated video.</li><li><strong>Cause</strong>: ownership and commercial-use conditions differ; the recorded Kling terms link commercial use to membership.</li><li><strong>Avoidance</strong>: read the relevant licence tier and retain dated terms/plan records.</li><li><strong>Evidence</strong>: <a href="https://tools.specul.com/en/video/kling.html" rel="noopener" target="_blank">Kling dossier</a>, October 2026 snapshot.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-18">
+<h2>Ignoring an irrevocable training licence</h2>
+<ul><li><strong>Symptom</strong>: uploading client assets and later seeking to withdraw training permission.</li><li><strong>Cause</strong>: the recorded Runway terms include an irrevocable training licence without an opt-out.</li><li><strong>Avoidance</strong>: exclude unsuitable sensitive material or prepare an appropriate redacted version; retain the applicable terms.</li><li><strong>Evidence</strong>: <a href="https://tools.specul.com/en/video/runway.html" rel="noopener" target="_blank">Runway dossier</a>, October 2026 snapshot.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-19">
+<h2>Treating open weights as free commercial use</h2>
+<ul><li><strong>Symptom</strong>: downloading Ideogram 4.0 weights for commercial use without checking conditions.</li><li><strong>Cause</strong>: the recorded release distinguishes free non-commercial use from commercial self-hosting licensing.</li><li><strong>Avoidance</strong>: inspect weight licences separately from hosted-service terms and establish permission for the intended use.</li><li><strong>Evidence</strong>: <a href="https://tools.specul.com/en/image/ideogram.html" rel="noopener" target="_blank">Ideogram dossier</a>, October 2026 snapshot.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-20">
+<h2>Skipping terms because the app is closed</h2>
+<ul><li><strong>Symptom</strong>: assuming local LM Studio inference proves all data stays local.</li><li><strong>Cause</strong>: source availability, inference location and complete data egress are different questions. The snapshot did not retrieve full terms, so data paths cannot be inferred from it.</li><li><strong>Avoidance</strong>: inspect the model, runtime, network settings, terms and connections. One successful offline response does not prove all modes stay offline.</li><li><strong>Evidence</strong>: <a href="https://tools.specul.com/en/runner/lm-studio.html" rel="noopener" target="_blank">LM Studio dossier</a>, October 2026 snapshot.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-21">
+<h2>Ignoring a fixed security issue</h2>
+<ul><li><strong>Symptom</strong>: configuring Windsurf Restricted Mode from old version instructions.</li><li><strong>Cause</strong>: the recorded product is now Devin Desktop and has CVE fix records, while older tutorials remain.</li><li><strong>Avoidance</strong>: read official releases and security notices, update, then use the applicable configuration.</li><li><strong>Evidence</strong>: <a href="https://tools.specul.com/en/coding/windsurf.html" rel="noopener" target="_blank">Windsurf dossier</a>, October 2026 snapshot.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-22">
+<h2>Four questions</h2>
+<ol><li value="1"><strong>Is the product active?</strong> Check the date and content of official release notes.</li><li value="2"><strong>Which licence applies?</strong> Separate tool, weight and service terms.</li><li value="3"><strong>Where does data go?</strong> Check training, retention and cross-border handling separately.</li><li value="4"><strong>Where is the evidence?</strong> Retain source URLs and check dates.</li></ol>
+<p>Record critical unknowns affecting the task and obtain evidence before deciding to proceed. Do not turn guesses into satisfied requirements.</p>
+</div>
+<nav aria-label="What to do next" class="panel is-slim">
+<h2>What to do next</h2><ul>
+<li><a href="/en/mcp/guides/toolkit-worksheets.html">Record constraints, acceptance and unknowns</a></li>
+<li><a href="https://learn.specul.com/en/guide/%E6%80%8E%E4%B9%88%E9%AA%8C%E8%AF%81%20AI%20%E7%9A%84%E8%BE%93%E5%87%BA/">Verify the result and its sources</a></li>
+<li><a href="/en/mcp/guides/failure-library.html#by-symptom">Troubleshoot by symptom</a></li>
+</ul></nav>
+<div class="panel is-slim">
+<h2>Sources</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Source</th><th>URL</th></tr></thead><tbody>
+<tr><td>n8n: documentation and licence (fair-code / Sustainable Use License; October 2026 snapshot)</td><td><a href="https://docs.n8n.io/" rel="noopener" target="_blank">https://docs.n8n.io/</a></td></tr>
+<tr><td>Microsoft Support: Deep Research in Microsoft Copilot (recorded consumer retirement 2026-08-18)</td><td><a href="https://support.microsoft.com/en-us/microsoft-copilot/deep-research-in-microsoft-copilot" rel="noopener" target="_blank">https://support.microsoft.com/en-us/microsoft-copilot/deep-research-in-microsoft-copilot</a></td></tr>
+<tr><td>This site: pitfalls in 225 tool dossiers (checks from 2026-10-30 to 2026-11-03)</td><td><a href="https://tools.specul.com/en/" rel="noopener" target="_blank">https://tools.specul.com/</a></td></tr>
+<tr><td>RFC 9110: HTTP status and request semantics (2026-11-04)</td><td><a href="https://www.rfc-editor.org/rfc/rfc9110.html" rel="noopener" target="_blank">https://www.rfc-editor.org/rfc/rfc9110.html</a></td></tr>
+<tr><td>RFC 6585: 429 and Retry-After (2026-11-04)</td><td><a href="https://www.rfc-editor.org/rfc/rfc6585.html" rel="noopener" target="_blank">https://www.rfc-editor.org/rfc/rfc6585.html</a></td></tr>
+<tr><td>vLLM: conserving memory, runtime/version-specific (2026-11-04)</td><td><a href="https://docs.vllm.ai/en/latest/configuration/conserving_memory/" rel="noopener" target="_blank">https://docs.vllm.ai/en/latest/configuration/conserving_memory/</a></td></tr>
+<tr><td>vLLM: troubleshooting and logs, not this site’s execution results (2026-11-04)</td><td><a href="https://docs.vllm.ai/en/latest/usage/troubleshooting/" rel="noopener" target="_blank">https://docs.vllm.ai/en/latest/usage/troubleshooting/</a></td></tr>
+<tr><td>JSON Schema: object properties and required fields (2026-11-04)</td><td><a href="https://json-schema.org/understanding-json-schema/reference/object" rel="noopener" target="_blank">https://json-schema.org/understanding-json-schema/reference/object</a></td></tr>
+<tr><td>This site: RAG end to end, from documents to answers</td><td><a href="https://learn.specul.com/en/guide/RAG%20%E5%85%A8%E9%93%BE%E8%B7%AF%EF%BC%9A%E4%BB%8E%E6%96%87%E6%A1%A3%E5%88%B0%E7%AD%94%E6%A1%88/" rel="noopener" target="_blank">https://learn.specul.com/guide/RAG%20%E5%85%A8%E9%93%BE%E8%B7%AF%EF%BC%9A%E4%BB%8E%E6%96%87%E6%A1%A3%E5%88%B0%E7%AD%94%E6%A1%88/</a></td></tr>
+</tbody></table></div>
+<p class="guide-foot">Source snapshot: 2026-11-03; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</p>
+</div>
+<p class="t-sm topics-line">This page appears in: <a href="https://specul.com/en/topic-code.html">Write code with AI</a> · <a href="https://specul.com/en/topic-office.html">Office documents with AI</a> · <a href="https://specul.com/en/topic-prompts.html">Use AI well</a></p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

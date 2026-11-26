@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>OpenAI Dot | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/openai-dot.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/openai-dot.html" property="og:url"/>
+<meta content="OpenAI Dot | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"OpenAI Dot | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/coding/openai-dot.html","sameAs":"https://openai.com/index/introducing-dots/","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-11-25"}</script>
+<meta content="OpenAI Dot | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/openai-dot.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/openai-dot.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/openai-dot.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/openai-dot.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#10A37F"'>OP</div>
+<div>
+<h1>OpenAI Dot</h1>
+<div class="vendor is-caps">OpenAI</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Coding</span>
+<span class="tag on">Coding agent</span>
+<span class="tag on">Cloud</span>
+<span class="tag on">Vendor cloud</span>
+<span class="tag on">Always-on</span>
+<span class="tag on">Approval</span>
+<span class="tag on">Subscription</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-11-25</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Nothing installs locally; all work happens on OpenAI's cloud machine — the stated…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Cloud / API · Vendor cloud</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Not checked · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Context-window size and the concrete implementation of memory</li>
+<li>Trigger conditions and frequency of "proactive research"</li>
+<li>How far connected apps can actually be read under <strong>read-only</strong> tools (official pages give only negative descriptions)</li>
+<li>Detection rate / false-positive rate of the safety monitoring system (official pages only mention "red-teaming", no numbers)</li>
+<li>Whether the runtime monitor is independent of the model (Muse states Sentinel isolation; Dot does not state)</li>
+<li>Whether "customer content is not used to improve models" also covers the personal and Pro tiers (official pages only name Business/Enterprise/Edu)</li>
+<li>Rollout differences by region/account</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>Nothing installs locally; all work happens on OpenAI's cloud machine</strong> — the stated capability boundary is blunt: a standalone cloud computer plus its own browser plus plugins into 4,000+ apps, and it keeps progressing after you shut down.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p><strong>Fits</strong> (scenarios the vendor itself gives, usable directly as selection criteria): work that is <strong>cross-tool and cross-time</strong> — "hand me the PR for review, with a demo video", "the product scope changed so the release materials keep up", "new data arrived so the paper's charts update themselves".</p></div>
+<div class="warn-p"><p><strong>Not a fit for</strong>: people who want to pick the model themselves (the model is fixed); people whose data must not leave the machine (cloud by default, touching your machine only once authorised); people who want fine-grained control over the flow (the local IDE / CLI forms suit that better).</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct unknown　openai.com returns 403 to curl both direct and proxied (anti-bot) — reachability cannot be judged by this method.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>The model is not user-selectable; it is vendor-assigned</strong> —</p>
+<p><strong>official launch-page wording</strong>: "powered by GPT-6 Astra" (translated).</p>
+<p>i.e.: Dot runs on GPT-6 Astra, with no model-selection entry point.</p>
+<p>This contrasts with the IDE / CLI forms in this section: there the model is usually selectable, while <strong>the vendor-cloud form takes the whole "pick a model" decision away</strong>.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>The answer to "what form is it" is the product itself</strong>:</p>
+<p><strong>official wording</strong>: "a separate computer in the cloud" (translated), with "its own browser" (translated), and "you can open the Dot's computer at any time to check its work" (translated).</p>
+<p>The official pages also state another authorization mode: "you can also authorize Dot to connect to and use your own devices, e.g. a laptop, so it collaborates with you directly in your working environment" (translated) —</p>
+<p><strong>so runtime has two modes</strong>: the vendor cloud VM by default, with optional authorized access to your own machine.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>Fully isolated by default</strong>. Official wording (translated): "unless you choose to connect your own computer, your computer and its contents always remain isolated from it". Dot's files all live in its own cloud environment.</p>
+<p><strong>What it can do once authorized to connect locally — the official security document gives concrete examples</strong> (supplemented 2026-10-03, translated): "you can also choose to connect your own computer so Dot can help in more ways, e.g. <strong>analyzing a spreadsheet saved on your desktop</strong>, or using programming tools installed on the device".</p>
+<p>So local authorization is not one "file access" toggle; it covers <strong>desktop files + development tools installed on the device</strong>.</p>
+<p><strong>Inside the cloud workspace there is another sandbox layer</strong> (translated): "within each Dot's protected workspace, <strong>sandboxing limits the code and tools that Dot can access</strong>, helping contain the blast radius of harmful code or mistaken commands".</p>
+<p><strong>Multi-tenant isolation is also stated</strong> (translated): "isolating different users' cloud environments from each other", and "the environment where Dot runs code is <strong>separate from</strong> the systems that coordinate its work and <strong>enforce key safeguards</strong>".</p>
+<p><strong>⚠ How far read-only tools can actually read inside connected apps still has no quantified official boundary</strong> (only negative descriptions like "cannot send messages or change app content").</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>This dimension is its strongest one; the official pages devote a whole section</strong> (translated): "even when you are not directly interacting with a Dot, it looks in the background for ways to help. We call this 'proactive research'."</p>
+<p>The official pages also state work keeps progressing after you close the app, and <strong>"your Dot can pick up a project and drive it forward autonomously, even while it is juggling several others at the same time"</strong> (translated). <strong>Multi-task parallelism is an officially stated capability, not speculation</strong>.</p>
+<p><strong>Workspaces are persistent</strong> (translated): "each Dot has its own cloud computer where it can browse the web, analyze information, create files and run tools. Even when you are not actively involved, Dots can <strong>keep work moving forward</strong> in these workspaces".</p>
+<p>⚠ <strong>During "proactive research" it uses read-only tools</strong> — official wording (translated): "in doing so it accesses your connected apps through tools with read-only permissions. These tools cannot send messages, change app content, or control your browser or computer".</p>
+<p><strong>This qualifier matters</strong>: background autonomy ≠ background write access. <strong>⚠ Background work does not run unconditionally</strong> (supplemented 2026-10-03): the official security document states monitoring can pause it mid-execution —</p>
+<p>"if safety monitoring detects risk in work a Dot is doing, <strong>it can pause that work</strong> and show you a warning" (translated); the launch-page version says "can pause or stop a Dot's work" (translated). <strong>So the accurate statement of "keeps going after shutdown" is: keeps going, but may be intercepted mid-way.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>The plugin ecosystem is the core selling point</strong>; official wording (translated): "through our plugin ecosystem, they can easily connect to more than 4,000 apps".</p>
+<p>The official pages state the app source is "apps you have connected", with built-in app controls to manage permissions.</p>
+<p>Also: coding tasks can be handed to Codex (at DevDay, Codex itself was also announced going cloud); working with Microsoft to bring dedicated Dots into Agent 365 governance and security controls.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>Context persists across channels</strong> — official wording (translated): "dots keep context across channels, so whichever channel you reach them through, they have the full picture".</p>
+<p>Channels include:</p>
+<ul><li>ChatGPT (desktop/web/mobile)</li><li>Slack</li><li>Teams</li><li>Texting (since 2026-11-13 in beta via iMessage/RCS for some Pro users in the US, Canada and Mexico; plain SMS is not supported)</li><li>Voice calls</li></ul>
+<p><strong>The carrier of cross-channel sharing is stated officially as "projects"</strong> (translated): "you can start a project in ChatGPT, <strong>share context with the team on that project via Slack</strong>, and let the dot keep the work moving" —</p>
+<p>i.e. context hangs on the project rather than on a channel, which is the mechanistic precondition for going cross-channel.</p>
+<p>The official pages stress the learning mechanism: "learns from feedback over long use"; "the more you work together, the more Dot understands your preferences, how you think, and what you consider good work" (translated).</p>
+<p><strong>⚠ Training data is not used to improve models by default, but there is one important exception</strong> (supplemented 2026-10-03, previously missed in this dossier): official wording (translated) "by default, we <strong>do not</strong> use content from ChatGPT Business, Enterprise or Edu workspaces to improve our models".</p>
+<p><strong>The statement is scoped to three workspace tiers</strong> — per the launch page wording, for personal and Pro tiers this page gives <strong>no equivalent statement</strong>, and whether the tiers differ is not explained on the official pages. <strong>Do not generalize "not used for training" to all tiers.</strong></p>
+<p><strong>Context-window size and memory storage implementation — neither official page gives numbers.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>This dossier has the most complete permission information of the three; the official pages have two dedicated sections.</strong></p>
+<p>Three layers:</p>
+<p>① Custom rules — <strong>official wording</strong> (translated): "with custom rules you can allow specific actions, require approval first, or block them", and <strong>"built-in safety requirements always apply"</strong> (i.e. custom rules can only tighten above the official floor, never loosen it);</p>
+<p>② Automated review — <strong>"for actions that could affect your account or share information, Dot runs automated review"</strong> (translated), the official criteria being "whether it matches your instructions, custom rules and safety requirements", and it explicitly states "certain sensitive tasks like changing passwords always require you personally" (translated);</p>
+<p>③ Credential isolation — "when logging into supported sites, Dot can use saved passwords without revealing them to the model" (translated).</p>
+<p><strong>④ Runtime monitoring really does intervene (supplemented 2026-10-03; this layer was previously missing)</strong>: the official security document states (translated) "we also <strong>monitor Dot as it plans and executes actions</strong>, looking for potentially harmful behavior, e.g. going beyond your instructions or attempting to bypass safeguards.</p>
+<p><strong>If safety monitoring detects risk in work a Dot is doing, it can pause that work and show you a warning for you to review</strong>".</p>
+<p><strong>This is evidence of "review" and "execution" being separated</strong> — it does not only gate before actions; it can also stop mid-execution.</p>
+<p>This is the layer closest to Meta Muse's "approval handed to another agent", but the official pages <strong>never state whether this monitor is independent of the model</strong> (Muse explicitly states Sentinel system-level isolation; Dot does not) — <strong>do not fill this in for them.</strong></p>
+<p><strong>Audit surface</strong>: the official pages provide an activity view to follow progress including background work.</p>
+<p>⚠ The same official page also states <strong>"Dots can still make mistakes, so be sure to check work products that could have significant consequences"</strong> (translated).</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>What the official pages give are <strong>role-based scenarios</strong>, worth copying directly as a selection basis (translated):</p>
+<ul><li>turning feedback into tested fixes (delivering a full PR with a demo video)</li><li>adjusting release plans when product scope changes</li><li>re-running analyses and updating paper figures when new evidence arrives</li><li>keeping sales proposals updated as requirements change</li><li>content production running automatically</li></ul>
+<p>Conversely it <strong>does not fit</strong>: people who want to pick their own model; people whose data cannot leave the machine; people needing fine-grained control with takeover at any moment (local IDE/CLI forms fit better).</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Reading "proactive research" as background access to change your things — the official docs limit it to read-only tools</li>
+<li>Assuming custom rules can relax the official limits — the docs state built-in safety requirements always apply</li>
+<li>Treating Dot as a standalone product to subscribe to — it comes with Pro / Business Premium</li>
+<li>Assuming it is on by default in Enterprise — the docs say it is off by default and a workspace admin must enable it</li>
+<li>Generalising "content is not used for training" to every tier — the docs name Business / Enterprise / Edu only</li>
+<li>Assuming background work runs to completion — the docs state safety monitoring can pause it mid-run</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-11-25，Content updated 2026-11-25。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>official</td><td>OpenAI · Introducing Dot (official launch page, 2026-09-29, body of 5,166 words captured section by section)</td><td><a href="https://openai.com/index/introducing-dots/" rel="noopener" target="_blank">https://openai.com/index/introducing-dots/</a></td></tr>
+<tr><td>official</td><td>OpenAI · How we build safety, security and privacy into Dots (official security document, full body captured 2026-10-03: sandboxing / multi-tenant isolation / execution environment separated from safeguards / runtime monitoring can pause work / analyzing desktop spreadsheets after local authorization / official prompt-injection acknowledgment)</td><td><a href="https://openai.com/index/how-we-build-safety-security-and-privacy-into-dots/" rel="noopener" target="_blank">https://openai.com/index/how-we-build-safety-security-and-privacy-into-dots/</a></td></tr>
+<tr><td>official</td><td>OpenAI · DevDay 2026 recap (Dots plan scope and Enterprise beta status)</td><td><a href="https://openai.com/index/devday-2026-recap" rel="noopener" target="_blank">https://openai.com/index/devday-2026-recap</a></td></tr>
+<tr><td>changelog</td><td>OpenAI · Product release notes (Product News and Updates, 2026-09-29 "Introducing Dot")</td><td><a href="https://help.openai.com/en/articles/6825453-chatgpt-release-notes" rel="noopener" target="_blank">https://help.openai.com/en/articles/6825453-chatgpt-release-notes</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Getting started with your dot (rechecked 2026-11-25: texting is in beta via iMessage/RCS for some Pro users in the US, Canada and Mexico; plain SMS is not supported)</td><td><a href="https://help.openai.com/en/articles/20001530-getting-started-with-your-dot" rel="noopener" target="_blank">https://help.openai.com/en/articles/20001530-getting-started-with-your-dot</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong>: the comparison dimensions of these three vendor-cloud agents concentrate in <code>background</code> and <code>permissions</code>; they cannot be installed locally (requires a Pro / Business Premium subscription),</p>
+<p><strong>so measurement must rely on external observation like "is it still moving after I close the client"</strong>, not local benchmarks.</p>
+<ul><li>Form factor and quota accounting are verified; no need to re-test.</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>The fundamental difference from the other two form groups in this section</h2>
+<p>This is not "yet another AI coding tool" but <strong>a different direction</strong>:</p>
+<div class="tbl-wrap"><table><thead><tr><th></th><th>IDE form / CLI form</th><th>Vendor-cloud form (this entry)</th></tr></thead><tbody><tr><td>Installed where</td><td>your machine</td><td>the vendor's cloud VM</td></tr><tr><td>Who picks the model</td><td>usually selectable</td><td><strong>vendor-assigned</strong> (GPT-6 Astra)</td></tr><tr><td>After shutdown</td><td>stops</td><td><strong>keeps running</strong></td></tr><tr><td>Local files</td><td>direct read/write</td><td><strong>isolated by default</strong>; connecting locally needs explicit authorization</td></tr><tr><td>Approval</td><td>confirmed case by case in the chat/terminal</td><td>custom rules + automated review + sensitive actions always human</td></tr></tbody></table></div>
+<p><strong>So its irreplaceable point is not "more features" but "it works even when your machine is offline".</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>Background autonomy ≠ background write access (the easiest point to misread)</h2>
+<p>The official pages devote a whole section to background behavior, worth quoting in full (the source quotes it as a Chinese translation of the official English; rendered back with the (translated) marker):</p>
+<pre class="code"><code>Even when you are not directly interacting with a Dot, it looks in the background
+for ways to help. We call this "proactive research". In doing so, it accesses your
+connected apps through tools with read-only permissions. That means these tools
+cannot send messages, change app content, or control your browser or computer.
+(translated)</code></pre>
+<p><strong>The qualifier is stated clearly</strong>: background autonomous actions get <strong>read-only</strong> tools.</p>
+<p><strong>Put differently</strong>: "it works on its own while I am away" holds; "it sends messages or changes content on my behalf while I am away" does not. If this site previously understood it as the latter, that was reading past the official one-line qualifier.</p>
+</div>
+<div class="panel is-slim">
+<h2>Permissions: three layers, one of which is the official floor</h2>
+<p>The official pages split permissions into three explicit blocks, which is useful for selection (compare layer by layer, no guessing):</p>
+<div class="tbl-wrap"><table><thead><tr><th>Layer</th><th>Key official wording (translated)</th><th>How tight can you set it</th></tr></thead><tbody><tr><td>Custom rules</td><td>"you can allow specific actions, require approval first, or block them"</td><td>entirely yours</td></tr><tr><td>Built-in safety requirements</td><td>"built-in safety requirements always apply"</td><td><strong>the floor; your rules can only tighten above it</strong></td></tr><tr><td>Automated review</td><td>"automated review checks whether it matches your instructions, custom rules and safety requirements"</td><td>criteria include all three above</td></tr></tbody></table></div>
+<p>Plus one hard boundary:</p>
+<pre class="code"><code>Certain sensitive tasks like changing passwords always require you personally. (translated)</code></pre>
+<p><strong>"Custom rules can only tighten above the official floor, never loosen it" is the most valuable information in this layer</strong> — it means when configuring rules you need not worry about setting them too loose; the vendor has a backstop.</p>
+</div>
+<div class="panel is-slim">
+<h2>Credentials: passwords never exposed to the model</h2>
+<pre class="code"><code>When logging into supported sites, Dot can use saved passwords
+without revealing them to the model. (translated)</code></pre>
+<p>This is the same design family as Meta Muse's Secure Credentials Store: <strong>credentials go to a "vault"; the model only gets "permission to finish this task with the credentials"</strong>. Both vendors independently adopted this pattern, worth noting — vendor consensus on agent credentials is converging.</p>
+</div>
+<div class="panel is-slim">
+<h2>Billing: one sentence, but with a trap</h2>
+<pre class="code"><code>Your first Dot is included with Pro or Business Premium plans, at no extra cost. (translated)</code></pre>
+<p><strong>But</strong> the same page has two easy-to-miss qualifiers:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Scenario</th><th>Counted against ChatGPT usage quota?</th></tr></thead><tbody><tr><td>Chats with the Dot itself</td><td><strong>not counted</strong> (official wording translated: "conversations with Dot do not use your ChatGPT usage limits")</td></tr><tr><td>Tasks a Dot starts or manages inside Codex / ChatGPT work</td><td><strong>counted as usual</strong></td></tr></tbody></table></div>
+<p>i.e.: <strong>chatting with your Dot is free, but the work it dispatches on your behalf is billed as usual.</strong></p>
+<p>Also, Enterprise (incl. Edu / Healthcare) is off by default; workspace admins must enable the beta.</p>
+</div>
+<div class="panel is-slim">
+<h2>Collection limitations</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Page</th><th>Status</th></tr></thead><tbody><tr><td>Introducing Dot launch page</td><td>✅ Playwright rendered capture of 5,166 words; all eight dimensions evidenced from the body</td></tr><tr><td>DevDay 2026 recap</td><td>✅ captured (Dots plan scope, Enterprise beta off by default)</td></tr><tr><td>Help Center release notes</td><td>✅ captured (230k words, confirming the 2026-09-29 launch entry)</td></tr><tr><td>Dot security document · how-we-build-safety</td><td>✅ <strong>full page body captured 2026-10-03</strong>, filling the <code>local_files</code> / <code>background</code> / <code>permissions</code> dimensions</td></tr></tbody></table></div>
+<p><strong>⚠ Confidence remains partial, but the gaps have narrowed to two classes</strong>: before the supplement it was "the security document was never read"; now the implementation path of the safety mechanisms is in hand (sandbox / isolation / runtime monitoring / execution-environment separation),</p>
+<p>and what remains genuinely absent from the official pages is: ① <strong>quantified metrics</strong> (detection rate and false-positive rate of the monitoring system, read boundaries of read-only tools); ② <strong>context-window size and memory storage implementation</strong>.</p>
+<p>Two more "the official pages do not say whether this is the case" items must stay unknown: whether the runtime monitor is <strong>independent of the model</strong>, and whether the "content not used to improve models" statement <strong>covers the personal and Pro tiers</strong>.</p>
+</div>
+<div class="panel is-slim">
+<h2>Three hard mechanisms from the security document (this whole block was previously missing)</h2>
+<p>The biggest gain of this supplemental verification was finding the security document itself. It gives three <strong>checkable mechanisms</strong>:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Mechanism</th><th>Key official wording (translated)</th></tr></thead><tbody><tr><td><strong>Workspace sandbox</strong></td><td>"sandboxing limits the code and tools that Dot can access, helping contain the blast radius of harmful code or mistaken commands"</td></tr><tr><td><strong>Multi-tenant isolation</strong></td><td>"isolating different users' cloud environments from each other"</td></tr><tr><td><strong>Execution separated from safeguards</strong></td><td>"the environment where Dot runs code is <strong>separate from</strong> the systems that coordinate its work and enforce key safeguards"</td></tr></tbody></table></div>
+<p>The third is the <strong>same design orientation</strong> as Meta Muse's Sentinel — both vendors place key safeguards outside the model. This is not coincidence; it is a shared convergence point of vendor-cloud agents.</p>
+<p><strong>The official pages also acknowledge prompt injection and its mitigations</strong> (translated): "webpages, emails or documents may contain malicious instructions attempting to redirect the agent's actions or trick it into sharing private information — a problem called <strong>prompt injection</strong>. We combine model-level protections with <strong>tool restrictions, pre-action checks and monitoring</strong>".</p>
+<p><strong>Note this document also holds back</strong>: "human and automated red-teaming help us find weaknesses, improve the model and the systems around it, and <strong>test those improvements again</strong>" — no detection-rate numbers are given anywhere, so gap ① above is <strong>genuinely undisclosed by the vendor</strong>, not something this site failed to find.</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/meta-muse.html">Meta Muse</a></span><span class="rel-n">released the same period, <strong>credential-isolation mechanisms nearly isomorphic</strong> — worth comparing side by side</span></li>
+<li><span class="rel-t"><a href="/en/coding/grok-bot.html">xAI Grok Bot</a></span><span class="rel-n">released the same period, the third vendor's official pages are checkable</span></li>
+<li><span class="rel-t"><a href="/en/coding/codex-ide.html">Codex (IDE extension)</a></span><span class="rel-n">Dot can hand coding tasks to it</span></li>
+<li><span class="rel-t"><a href="/en/coding/cursor.html">Cursor</a></span><span class="rel-n">the local-IDE-form contrast (the machine is yours)</span></li>
+<li><span class="rel-t"><a href="/en/mcp/playwright.html">Playwright MCP Server</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/augment-code.html">Augment Code</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Augment Code is the enterprise 'software factory' platform: Cosmos turns</td></tr><tr><td><a href="/en/coding/grok-bot.html">xAI Grok Bot</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">The official page explains uses through a list of jobs. It does not disc</td></tr><tr><td><a href="/en/coding/jules.html">Jules</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Nothing installs locally: the work runs on a Google Cloud VM and lands a</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from OpenAI</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/audio/whisper.html"><span class="vp-cat">Audio generation</span>Whisper</a></li><li><a href="/en/chat/chatgpt.html"><span class="vp-cat">General chat</span>ChatGPT</a></li><li><a href="/en/coding/codex-cli.html"><span class="vp-cat">AI coding</span>Codex CLI</a></li><li><a href="/en/coding/codex-ide.html"><span class="vp-cat">AI coding</span>Codex (IDE extension)</a></li><li><a href="/en/framework/codex-sdk.html"><span class="vp-cat">Frameworks &amp; runtimes</span>Codex SDK</a></li><li><a href="/en/framework/openai-agents-sdk.html"><span class="vp-cat">Frameworks &amp; runtimes</span>OpenAI Agents SDK</a></li><li><a href="/en/safety/openai-evals.html"><span class="vp-cat">Safety &amp; evaluation</span>OpenAI Evals</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

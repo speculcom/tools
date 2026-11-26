@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>AI task handbooks: 78 step-by-step guides by job | Tools</title>
+<meta content="78 practical AI task guides grouped by meetings, documents, data, research, code, local, support, team rollout, media and methods. Inputs, steps, acceptance checks and failure examples." name="description"/>
+<link href="https://tools.specul.com/en/guides/" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/guides/" property="og:url"/>
+<meta content="Task playbooks: choose by the job, not by the product" property="og:title"/>
+<meta content="78 task playbooks grouped by meetings, documents, spreadsheets, research, coding, local deployment, service, ops, media and methods." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<style>:root { --accent: #22d3c5; }</style>
+<link href="/decision.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Task playbooks: choose by the job, not by the product","url":"https://tools.specul.com/en/guides/","description":"78 task playbooks grouped by meetings, documents, spreadsheets, research, coding, local deployment, service, ops, media and methods."}</script>
+<meta content="Task playbooks: choose by the job, not by the product" name="twitter:title"/><meta content="78 task playbooks grouped by meetings, documents, spreadsheets, research, coding, local deployment, service, ops, media and methods." name="twitter:description"/><link href="https://tools.specul.com/guides/" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/guides/" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/guides/" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/guides/" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main"><section class="decision-hero"><div class="container">
+<p class="kicker">Task handbooks</p>
+<h1>Start with the job in front of you</h1>
+<p class="lede">Not an article list. Guides are grouped by meeting, document, spreadsheet, research, code, local deployment, support and team rollout. Each one carries inputs, steps, acceptance checks and a failure example. 78 guides, all readable now.</p>
+<div class="decision-meta"><span><b>78</b> task guides</span><span><b>10</b> task groups</span><span class="meta-warn">Reference result ≠ product test</span></div>
+</div></section>
+<section class="section"><div class="container">
+<p class="kicker">Pick by task</p><h2>What are you trying to do?</h2>
+<div class="guide-filters" id="guide-filters"><button class="chip is-on" data-g="all" type="button">All 78</button><button class="chip" data-g="meetings" type="button">Meetings &amp; communication 2</button><button class="chip" data-g="docs" type="button">Documents &amp; writing 3</button><button class="chip" data-g="data" type="button">Tables &amp; data 8</button><button class="chip" data-g="research" type="button">Research &amp; retrieval 5</button><button class="chip" data-g="code" type="button">Code &amp; debugging 6</button><button class="chip" data-g="local" type="button">Local &amp; privacy 3</button><button class="chip" data-g="service" type="button">Support &amp; business 1</button><button class="chip" data-g="ops" type="button">Teams &amp; process 1</button><button class="chip" data-g="media" type="button">Images &amp; video 3</button><button class="chip" data-g="methods" type="button">Methods &amp; handbooks 46</button></div>
+<p class="section-desc">Filter to the relevant group, then open a guide and run its inputs and acceptance checks yourself.</p>
+</div></section>
+<section class="section section-inset"><div class="container"><div class="guide-groups"><div class="guide-group" data-group="meetings">
+<div class="guide-group-head"><h2>Meetings &amp; communication</h2><p>Meetings, interviews, customer calls · 2 guides</p></div>
+<div class="guide-grid"><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-04</span></div>
+<h3><a href="/en/mcp/guides/playbook-meeting-notes.html">Playbook: meeting audio to notes and actions</a></h3>
+<p>Use synthetic audio to check names, negation, dates, decisions and proposals; preserve replay locations and leave unassigned owners/deadlines unresolved.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-meeting-actions.html">Meeting action items</a></h3>
+<p>Output an action table; items without a clear owner or deadline are marked pending confirmation.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article></div>
+</div><div class="guide-group" data-group="docs">
+<div class="guide-group-head"><h2>Documents &amp; writing</h2><p>Write, revise, review, send · 3 guides</p></div>
+<div class="guide-grid"><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-04</span></div>
+<h3><a href="/en/mcp/guides/playbook-document-review.html">Playbook: review document changes with evidence</a></h3>
+<p>Use two fictional policy versions to check unit changes, negated conditions and internal conflicts; deliver located questions rather than an assumed approved rewrite.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-doc-review.html">Document clause review</a></h3>
+<p>Output a clause checklist; flag only source-supported issues and give no legal conclusion.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-email-draft.html">Draft an email</a></h3>
+<p>Generate an email draft; add no facts beyond the input and control tone by parameter.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article></div>
+</div><div class="guide-group" data-group="data">
+<div class="guide-group-head"><h2>Tables &amp; data</h2><p>PDFs, spreadsheets, cleaning, reconciliation · 8 guides</p></div>
+<div class="guide-grid"><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-06</span></div>
+<h3><a href="/en/mcp/guides/how-to-map-a-data-flow.html">How to map a data flow</a></h3>
+<p>One pass should show where each field originates, who processes it, where it is stored and when it is deleted — turning "data stays in our domain" into a checkable diagram and table.</p>
+<div class="guide-foot"><span>guardrails</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-04</span></div>
+<h3><a href="/en/mcp/guides/playbook-pdf-table.html">Playbook: turn a PDF or scan into a checkable table</a></h3>
+<p>Distinguish text from image input, retain page and row evidence, and check blanks, leading zeros and amounts. Includes designed references, not OCR results.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-04</span></div>
+<h3><a href="/en/mcp/guides/playbook-table-merge.html">Playbook: merge tables while preserving conflicts</a></h3>
+<p>Practice text keys, duplicates, conflicting amounts, ambiguous dates and unmatched records; deliver clean data, exceptions and reproducible checks.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-evidence-table.html">Evidence table</a></h3>
+<p>Output a claim-evidence-conditions table; unsupported claims are marked.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-pdf-table-extract.html">Extract PDF tables</a></h3>
+<p>Given table text and a field schema, output rows and mark cells that cannot be confirmed.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-spreadsheet-formula.html">Spreadsheet formula</a></h3>
+<p>Output formula, assumptions and a hand-check example; do not pretend the sheet was run.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-table-merge.html">Merge multiple tables</a></h3>
+<p>Output a merged table and conflict log; conflicts are not silently overwritten.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/toolkit-worksheets.html">Toolkit: four worksheets</a></h3>
+<p>Four copyable checklists: project kickoff, pre-publish, model migration assessment and data-leak path review.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article></div>
+</div><div class="guide-group" data-group="research">
+<div class="guide-group-head"><h2>Research &amp; retrieval</h2><p>Find sources, read papers, write briefs · 5 guides</p></div>
+<div class="guide-grid"><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/academic-research-tools.html">A map of academic research tools</a></h3>
+<p>Grouped by four jobs — find papers, read papers, check citation stance, build a review — with the boundaries and official links for Semantic Scholar, Scite, SciSpace and others.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/compare-research-tools.html">Research tools compared</a></h3>
+<p>Choose by search depth, source transparency, source grounding and citation management; search engines, source-set Q&amp;A and literature extraction are three different jobs.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/playbook-research-brief.html">Playbook: producing a checkable research brief</a></h3>
+<p>Five steps — question, search, sources, synthesis, review — with a source and date on every claim, plus tool roles, failure modes and an acceptance list.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-citation-check.html">Check citations one by one</a></h3>
+<p>Output a claim-citation check table; unsupported or misplaced citations are flagged.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-literature-screen.html">Literature screening</a></h3>
+<p>Output a screening table with reasons; use titles/abstracts only and do not invent full-text conclusions.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article></div>
+</div><div class="guide-group" data-group="code">
+<div class="guide-group-head"><h2>Code &amp; debugging</h2><p>Change code, fix bugs, review · 6 guides</p></div>
+<div class="guide-grid"><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/playbook-fix-a-bug.html">Playbook: fixing a real bug with a coding agent</a></h3>
+<p>A six-step flow from repo context and reproduction through planning, editing and testing to review, with permission settings, a cost formula, failure modes and an acceptance list.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-bug-repro.html">Minimal bug reproduction</a></h3>
+<p>Output environment, steps, expected/actual and missing information; do not guess the root cause.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-code-review.html">Code review checklist</a></h3>
+<p>Output an issue list; each item cites diff lines and avoids style-preference ranking.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-refactor-plan.html">Refactoring plan</a></h3>
+<p>Output steps, verification points and rollback conditions; do not promise performance gains.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-test-cases.html">Generate test cases</a></h3>
+<p>Output a test-case table covering normal, boundary and error inputs; do not claim execution.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/selftest-20.html">20-question self-test: fundamentals and evaluation</a></h3>
+<p>Twenty questions on fundamentals, evaluation and selection, with answer points and review links. Exercise scores do not establish deployment or teaching competence.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article></div>
+</div><div class="guide-group" data-group="local">
+<div class="guide-group-head"><h2>Local &amp; privacy</h2><p>Local models, offline work, sensitive data · 3 guides</p></div>
+<div class="guide-grid"><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/api-vs-local.html">API or local inference</a></h3>
+<p>Four axes decide it — cost structure, data and compliance, latency and throughput, model capability and updates. A decision table narrows it to one route.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/compare-local-runners.html">Local runners: Ollama vs LM Studio vs llama.cpp vs vLLM</a></h3>
+<p>Choose by hardware, quantization format, concurrency and serving needs; desktop GUI, single-machine scripting and production serving are three different routes.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/playbook-local-model.html">Playbook: running a model on your own machine</a></h3>
+<p>Five steps — VRAM, quantization tier, runtime, evaluation, monitoring — with a size formula, the quantization index, failure modes and an acceptance list.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article></div>
+</div><div class="guide-group" data-group="service">
+<div class="guide-group-head"><h2>Support &amp; business</h2><p>Support, sales, tickets · 1 guides</p></div>
+<div class="guide-grid"><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/playbook-service-agent.html">Playbook: building and shipping a customer-service agent</a></h3>
+<p>Six stages — intents, knowledge base, tools, guardrails, evaluation, launch — with ecosystem lock-in, licensing, human fallback, an acceptance list and failure modes.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article></div>
+</div><div class="guide-group" data-group="ops">
+<div class="guide-group-head"><h2>Teams &amp; process</h2><p>Rollout, training, 90-day plans · 1 guides</p></div>
+<div class="guide-grid"><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/playbook-team-90days.html">A 90-day team rollout playbook</a></h3>
+<p>A 0–30, 31–60, 61–90 rollout with goals, actions, acceptance points and owners per phase; the permission matrix and audit items follow vendor admin documentation rather than slogans.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article></div>
+</div><div class="guide-group" data-group="media">
+<div class="guide-group-head"><h2>Images &amp; video</h2><p>Images, short video, assets · 3 guides</p></div>
+<div class="guide-grid"><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/compare-media-tools.html">Image and video pipelines</a></h3>
+<p>Split image and video into two chains, then choose by input modality, rights terms and workflow position; each candidate gets its conditions and an alternative.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/media-selection.html">How to choose image, video and audio tools</a></h3>
+<p>Screen for commercial licensing first, then input/output and edit chains, local vs cloud, Chinese and regional access; finally estimate cost by volume.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/playbook-60s-video.html">Playbook: producing a 60-second product video</a></h3>
+<p>Five stages — script, storyboard, generation, editing and rights logging — with per-clip limits, a cost formula, failure modes and a delivery checklist.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article></div>
+</div><div class="guide-group" data-group="methods">
+<div class="guide-group-head"><h2>Methods &amp; handbooks</h2><p>General methods, evaluation, guardrails · 46 guides</p></div>
+<div class="guide-grid"><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-10-30</span></div>
+<h3><a href="/en/mcp/guides/agent-memory.html">Agent memory systems</a></h3>
+<p>In-session state, cross-session facts, and external stores — what each memory layer solves, and the pitfalls they share.</p>
+<div class="guide-foot"><span>memory</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-04</span></div>
+<h3><a href="/en/mcp/guides/changes-2026-q3-q4.html">Q3–Q4 2026 changes and migration notes</a></h3>
+<p>Ten version, entry-point and migration records, distinguishing event dates, effective/unconfirmed dates and post-shutdown migration paths, with implications for earlier choices.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/chat-selection.html">How to choose a chat assistant</a></h3>
+<p>No rankings and no prices: fix four constraints — Chinese, data, price, ecosystem — then narrow to 2–3 candidates by scenario.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/checklist-procurement-access.html">Procurement and access audit checklist</a></h3>
+<p>A vendor questionnaire you can send as-is, covering identity, data, logs, model, contract and exit in six groups, with a permission-matrix template and six quarterly audit items, each answerable from official docs.</p>
+<div class="guide-foot"><span>guardrails</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/cn-availability.html">How to read mainland availability</a></h3>
+<p>Three cn fields in the tool dossiers answer whether a product connects from the mainland, who operates it and whether it is filed; this page gives the counting rules, limits and a self-check method for 225 dossiers, with no real-time guarantee.</p>
+<div class="guide-foot"><span>guardrails</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-04</span></div>
+<h3><a href="/en/mcp/guides/compare-agent-frameworks.html">Agent frameworks: how to choose</a></h3>
+<p>Compare workflow control, session state, tool execution and deployment boundaries; distinguish SDK mechanisms from application configuration.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/compare-browser-agents.html">Browser agents: Playwright, Browserbase, DevTools</a></h3>
+<p>Applicability, capability limits and plan tiers for three browser MCP servers; a one-line choice based on local vs cloud, whether a model is needed and whether performance analysis is required, plus when to switch.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/compare-chat-assistants.html">Chat assistants: ChatGPT vs Gemini vs Claude vs Copilot</a></h3>
+<p>Filter by data terms, research line, ecosystem lock-in and mainland reachability, then pick one primary assistant and one backup by scenario.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/compare-coding-agents.html">Coding agents: terminal vs IDE vs cloud</a></h3>
+<p>Fix the execution surface first (terminal, IDE, cloud), then compare permission models, background continuation and repo context; each candidate gets its conditions and one line on when to pick another.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/cost-calculator.html">Cost formulas: cloud, agents, local and video</a></h3>
+<p>No price figures, only four reproducible formulas and conventions — tokens, seats, local power, video seconds — each with an official pricing pointer.</p>
+<div class="guide-foot"><span>cost</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-10-30</span></div>
+<h3><a href="/en/mcp/guides/cost-control.html">Cost control for agents</a></h3>
+<p>Where the money goes and how to curb it: token accounting, prefix caching, context bloat, and step caps — mechanisms only, no prices.</p>
+<div class="guide-foot"><span>cost</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-10-30</span></div>
+<h3><a href="/en/mcp/guides/evaluation.html">Evaluating agents</a></h3>
+<p>No evaluation, no iteration — offline regression testing, live monitoring, and the pitfalls of evaluators themselves.</p>
+<div class="guide-foot"><span>evaluation</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/exercise-builder.html">Exercise: cited answers from 10 source pages</a></h3>
+<p>A self-contained RAG exercise: use 10 site pages as a corpus and produce 10 answers, a citation table, an evaluation sheet and a failure log, with a rubric and a model-answer outline.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/exercise-creator.html">Exercise: three assets from one official source</a></h3>
+<p>Take one official product page and produce a short post, an image prompt and a 30-second script, plus a five-claim fact table and two rejected claims; the rubric checks citations, boundaries and consistency.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/exercise-manager.html">Exercise: a one-page vendor decision memo</a></h3>
+<p>Compare API usage with self-hosting on three cost dimensions and deliver a one-page decision memo, a score sheet, five due-diligence questions and an exit plan; the rubric checks conventions, reproducibility and exit paths.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/failure-library.html">Troubleshooting and ten evidence misreads</a></h3>
+<p>Diagnose authentication, rate limits, memory, latency, tool inputs, JSON, retrieval and file issues, with ten evidence misreads and a troubleshooting record.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-10-30</span></div>
+<h3><a href="/en/mcp/guides/guardrails.html">Guardrails for agents</a></h3>
+<p>Input, output, and tool-level defenses, tripwires that halt on trigger, and the cost trade-off between parallel and blocking checks.</p>
+<div class="guide-foot"><span>guardrails</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-06</span></div>
+<h3><a href="/en/mcp/guides/how-to-build-a-minimal-eval-pipeline.html">How to build a minimal evaluation pipeline</a></h3>
+<p>Five parts — sample set, batch run, graders, records and comparison — enough for one afternoon, extend only when it pays off.</p>
+<div class="guide-foot"><span>evaluation</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-06</span></div>
+<h3><a href="/en/mcp/guides/how-to-estimate-compliance-cost.html">How to estimate compliance effort</a></h3>
+<p>Break compliance into countable work items — gap analysis, evidence production, review rounds and upkeep cycles — then apply your own unit rates.</p>
+<div class="guide-foot"><span>cost</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-06</span></div>
+<h3><a href="/en/mcp/guides/how-to-pick-guardrails.html">How to pick guardrails for an agent</a></h3>
+<p>Split checks across input, output, tool and dialog-policy layers, then use false-block and miss counts to decide where each check belongs and what it inspects.</p>
+<div class="guide-foot"><span>guardrails</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-06</span></div>
+<h3><a href="/en/mcp/guides/how-to-prepare-a-red-team.html">How to prepare a red-team session</a></h3>
+<p>Fix scope, harm list and record format first, let a team probe separately, then turn findings into measurable risk items instead of reading one session as proof of safety.</p>
+<div class="guide-foot"><span>guardrails</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-06</span></div>
+<h3><a href="/en/mcp/guides/how-to-read-a-third-party-safety-report.html">How to read a third-party safety report</a></h3>
+<p>Read external safety reports along subject, version, task definition and claim boundary, turning "it passed" into "what passed, under which conditions".</p>
+<div class="guide-foot"><span>guardrails</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-06</span></div>
+<h3><a href="/en/mcp/guides/how-to-vet-an-ai-vendor-questionnaire.html">How to vet an AI vendor questionnaire</a></h3>
+<p>Every answer must be pointable to a document: six question groups, a three-way verdict, exceptions moved into the contract annex. Verbal promises count as unknown.</p>
+<div class="guide-foot"><span>guardrails</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-06</span></div>
+<h3><a href="/en/mcp/guides/how-to-wire-evals-into-release.html">How to wire evaluations into release</a></h3>
+<p>A passing pipeline does not by itself stop a bad release. This guide covers where to gate, how to fail, which exceptions get signed off, and how to roll back.</p>
+<div class="guide-foot"><span>evaluation</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-10-30</span></div>
+<h3><a href="/en/mcp/guides/orchestration.html">Multi-agent orchestration</a></h3>
+<p>How multiple agents divide work, hand off, and merge results — and when not to go multi-agent at all.</p>
+<div class="guide-foot"><span>orchestration</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-10-30</span></div>
+<h3><a href="/en/mcp/guides/planning.html">Planning for agents</a></h3>
+<p>Plan first or decide as you go — how to choose a planning pattern, and why plans fail.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-api-contract.html">API contract</a></h3>
+<p>Output request/response schemas and an error table; mark undefined items unknown.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-eval-rubric.html">Evaluation rubric</a></h3>
+<p>Output dimensions and observable criteria; no total-score ranking.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-json-schema.html">JSON field validation</a></h3>
+<p>Output schema and validation report; valid format does not mean factual correctness.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-log-triage.html">Log triage</a></h3>
+<p>Output a triage table with evidence lines; do not assert root cause directly.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-redact-pii.html">Redact sensitive fields</a></h3>
+<p>Output redacted text and a field log; do not guess unlisted fields.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-report-outline.html">Report outline</a></h3>
+<p>Output an outline and required evidence per section; do not fill unsupported content.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-repro-checklist.html">Reproduction checklist</a></h3>
+<p>Output data, code, environment and metric checks; state not reproduced when applicable.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-slides-brief.html">Slide brief</a></h3>
+<p>Output per-slide title, points, source and checks; do not exaggerate effects.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-sql-explain.html">Explain SQL</a></h3>
+<p>Output semantic explanation, index checks and risks; do not pretend EXPLAIN was run.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-summarize-long.html">Layered long-document summary</a></h3>
+<p>Output an overview, section points and open questions; each point carries a paragraph locator.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt case</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-case-translate-terminology.html">Terminology-consistent translation</a></h3>
+<p>Output translation and term mapping; unlisted terms are marked for review rather than coined freely.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt guide</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-guide-anatomy.html">Anatomy of a prompt</a></h3>
+<p>Break a prompt into roles, instructions, delimiters, examples, and reasoning — what each block does, where it goes, and how it fails.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt guide</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-guide-context.html">Context is a budget, not a warehouse</a></h3>
+<p>Bigger windows still dilute attention — static content up front, just-in-time retrieval, compaction and notes spend tokens where signal is highest.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt guide</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-guide-evaluation.html">Define failure before improving</a></h3>
+<p>The evaluation flywheel in three steps — annotate failures by hand, build automatic graders, calibrate the LLM judge — so every prompt change is comparable.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt guide</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-guide-iteration.html">How to iterate on prompts</a></h3>
+<p>Prompt changes need baselines and measurement — manual comparison, meta-prompting, automated search, and generate-evaluate loops, with mechanisms and costs.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt guide</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-guide-safety.html">Boundaries of prompt safety</a></h3>
+<p>Injection attacks exploit the blurred boundary between data and instructions — separation, guardrails, and least privilege each block a layer, each with costs and failure modes.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Prompt guide</span><span class="guide-date">2026-11-07</span></div>
+<h3><a href="/en/mcp/guides/prompt-guide-structured-output.html">Three gates of structured output</a></h3>
+<p>Prompt-level requests, API-level schema constraints, and protocol-side validation each cover one stretch — valid format never means correct content.</p>
+<div class="guide-foot"><span>prompts</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/toolkit-agent-ops.html">Toolkit: agent ops checklists</a></h3>
+<p>Four copyable text blocks: an evaluation rubric, a four-layer guardrail checklist, a service acceptance sheet and an incident review checklist.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/toolkit-prompt-context.html">Toolkit: prompt and context</a></h3>
+<p>Four copyable text blocks: a prompt structure, a context budget table, a RAG chunking/reranking checklist and a model selection worksheet.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article><article class="guide-card">
+<div class="guide-top"><span class="guide-kind">Methodology</span><span class="guide-date">2026-11-03</span></div>
+<h3><a href="/en/mcp/guides/toolkit-rights-cost.html">Toolkit: rights and cost</a></h3>
+<p>Four copyable text blocks: an agent permission matrix, a model licence checklist, a video rights log and a cost formula template.</p>
+<div class="guide-foot"><span>planning</span><span>Open →</span></div>
+</article></div>
+</div></div></div></section></main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

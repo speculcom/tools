@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Deep Agents | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/framework/deepagents.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/framework/deepagents.html" property="og:url"/>
+<meta content="Deep Agents | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Deep Agents | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/framework/deepagents.html","sameAs":"https://github.com/langchain-ai/deepagents","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Deep Agents | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/framework/deepagents.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/framework/deepagents.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/framework/deepagents.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/framework/deepagents.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Frameworks</span>
+</nav>
+<a class="back" href="/en/framework/">← Frameworks</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#10A37F"'>DE</div>
+<div>
+<h1>Deep Agents</h1>
+<div class="vendor is-caps">LangChain</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Python</span>
+<span class="tag on">Open source</span>
+<span class="tag on">MIT</span>
+<span class="tag on">General-purpose harness</span>
+<span class="tag on">Long-running tasks</span>
+<span class="tag on">Subagents</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Deep Agents is a general-purpose agent harness from LangChain. It ships with…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · Framework / SDK</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>LangSmith accompaniment (the README recommends pairing with it, but commercial terms not itemized; quotes not collected by this site per the price-recording policy)</li>
+<li>The concrete options and isolation strength of sandbox backends</li>
+<li>How the interrupt / follow-up-question mechanism is exposed on Deep Agents</li>
+<li>Whether Deep Agents Code shares this repository's license</li>
+<li>File-lock strategy under multi-agent concurrency</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>Deep Agents is a general-purpose agent harness from LangChain.</strong> It ships with filesystem, sub-agents, context management and skills already in place, so it runs out of the box. The official description is "batteries-included agent harness". It is built for long, multi-step tasks, and anything in that pre-bundled layer can be swapped without changing code. The security chapter states the agent follows a "trust the LLM" model and can do anything its tools allow; boundaries must be enforced at the tool/sandbox level, not by expecting the model to self-police. LangGraph is the graph runtime, LangChain's <code>create_agent</code> is a minimal harness on top of it, and Deep Agents is a more opinionated harness on top of <code>create_agent</code>.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p><strong>Fits</strong>: you want a general agent that works out of the box, is tuned by default, and targets long multi-step tasks. You do not want to assemble filesystem, memory and sub-agents yourself. You are already in the LangChain ecosystem.</p></div>
+<div class="warn-p"><p><strong>Not a fit</strong>: needing fine-grained permission guardrails — the official docs state these are not provided, so you must build your own sandbox. Needing strict control of the agent loop shape — use a custom LangGraph graph. Wanting a lightweight harness — use LangChain <code>create_agent</code>.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　Hosted on GitHub — direct reachability from mainland fluctuates (200/000 mixed on the same day); npm / PyPI install routes measured stable.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>Officially self-described as model-agnostic</strong>, listed as one of four principles in the README.</p>
+<p><strong>Official wording</strong>: "Model-agnostic — works with any LLM that supports tool calling: frontier, open-weight, or local"</p>
+<p>The FAQ elaborates: any model supporting tool calling works. Including:</p>
+<ul><li>frontier APIs (OpenAI / Anthropic / Google)</li><li>provider-hosted open weights (Baseten / Fireworks)</li><li>models <strong>self-hosted via Ollama / vLLM / llama.cpp</strong></li></ul>
+<p>The integration path is any LangChain chat model. <strong>Switching providers requires no agent-code changes.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>It is a library, not a service — you operate the process yourself.</strong></p>
+<p>The README states it is built on LangGraph (streaming, persistence, checkpointing). LangSmith can additionally be configured for tracing/evaluation/deployment.</p>
+<p><strong>Responsibility split of the agent loop</strong>:</p>
+<ul><li>model decisions and tool calls run on the LangGraph runtime</li><li>Deep Agents presets planning, context management, sub-agent delegation</li></ul></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>Filesystem capability is the core selling point</strong>: read / write / edit / search.</p>
+<p>Its backends are <strong>pluggable</strong> (pluggable local, sandboxed, or remote backends). The official docs also have a standalone Sandboxes page covering isolated execution environments and the <code>execute</code> tool (<code>SandboxBackendProtocolV2</code>; only sandbox backends expose a shell).</p>
+<p><strong>Important boundary</strong>: the official security statement says verbatim "<strong>Enforce boundaries at the tool/sandbox level, not by expecting the model to self-police</strong>".</p>
+<p>That is, the official docs explicitly do not provide a permission-guardrail layer; boundaries must be implemented by you at the tool/sandbox layer.</p>
+<p><strong>Not stated officially</strong>: conflict handling when multiple agents concurrently write the same file (overview / backends pages checked).</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p>Self-hosted = <strong>stops when stopped</strong>, no hosted execution option (the README makes no such promise).</p>
+<p><strong>But resume-after-crash has official support</strong>:</p>
+<ul><li>built on LangGraph's persistence + checkpointing</li><li>persistent memory (pluggable state and store backends for cross-session recall)</li></ul>
+<p>LangSmith separately provides deployment officially.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>The toolchain is positioned "batteries-included."</strong> Officially listed capabilities:</p>
+<ul><li>Sub-agents — delegation with isolated sub-contexts</li><li>Filesystem</li><li>Shell access (run commands in your sandbox of choice)</li><li>Skills — reusable behaviors loaded on demand</li><li>Tools — your own functions or <strong>any MCP server</strong></li></ul>
+<p><strong>MCP support is explicit</strong>: the official docs list "bring your own functions or any MCP server".</p>
+<p>Human-in-the-loop: tool calls can be approved / edited / rejected, happening <strong>before execution</strong>.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>The textbook case of this track's "state ≠ context" distinction.</strong></p>
+<ul><li>Context management = summarize long threads and <strong>offload tool outputs to disk</strong> (offloading, not discarding)</li><li>Persistent memory = pluggable state and store backends, <strong>supporting cross-session recall</strong></li></ul>
+<p>The official description: defaults are tuned for <strong>long-horizon, multi-step work</strong>.</p>
+<p>Two practices coexist: compressing history + landing large tool outputs on disk + cross-session memory.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>The official docs explicitly do not defend against model overreach.</strong> Security section wording:</p>
+<p><strong>Official wording</strong> (three sentences quoted together): "Deep Agents follows a "trust the LLM" model." "The agent can do anything its tools allow." "Enforce boundaries at the tool/sandbox level, not by expecting the model to self-police."</p>
+<p>Meaning: it follows a "trust the LLM" model; the agent can do anything its tools allow. Boundaries must be enforced at the <strong>tool/sandbox layer</strong> — do not expect the model to self-restrain.</p>
+<p><strong>The only built-in human intervention point</strong> is this:</p>
+<p>human-in-the-loop tool-call approval (approve/edit/reject).</p>
+<p>This means: after installing Deep Agents, the permission model is <strong>your responsibility</strong>.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p><strong>Fits</strong> three scenarios.</p>
+<p>Wanting an out-of-the-box, well-tuned-by-default general Agent for long-horizon multi-step flows. Not wanting to assemble filesystem / memory / sub-agents yourself. Already in the LangChain ecosystem.</p>
+<p><strong>Does not fit</strong> three scenarios.</p>
+<p>Needing fine-grained permission guardrails — the official docs say they do not provide them; you must build your own sandbox. Wanting strict control of the agent loop shape — use LangGraph custom graphs. Wanting a lightweight harness — use LangChain <code>create_agent</code>.</p></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>MIT</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Treating Deep Agents / LangChain / LangGraph as one thing — the official docs are explicit that these are three layers with different responsibilities (see <code>layer_position</code>)</li>
+<li>Reading "trust the LLM" as a product feature rather than a risk warning — the official text tells you to set boundaries at the tool/sandbox layer yourself</li>
+<li>Assuming open source means zero cost — model inference plus LangSmith (the officially recommended tracing/eval) both cost money</li>
+<li>Assuming the latest version is 0.7.0 — a competitor site snapshotted 0.7.0; <strong>it is actually 0.7.30</strong> (rolling check 2026-10-23)</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-09-30。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>LangChain · Deep Agents repository</td><td><a href="https://github.com/langchain-ai/deepagents" rel="noopener" target="_blank">https://github.com/langchain-ai/deepagents</a></td></tr>
+<tr><td>docs</td><td>Deep Agents official docs (overview)</td><td><a href="https://docs.langchain.com/oss/python/deepagents/overview" rel="noopener" target="_blank">https://docs.langchain.com/oss/python/deepagents/overview</a></td></tr>
+<tr><td>docs</td><td>Deep Agents · Going to production</td><td><a href="https://docs.langchain.com/oss/python/deepagents/going-to-production" rel="noopener" target="_blank">https://docs.langchain.com/oss/python/deepagents/going-to-production</a></td></tr>
+<tr><td>docs</td><td>Deep Agents · Security policy (the "trust the LLM" statement verbatim)</td><td><a href="https://github.com/langchain-ai/deepagents?tab=security-ov-file" rel="noopener" target="_blank">https://github.com/langchain-ai/deepagents?tab=security-ov-file</a></td></tr>
+<tr><td>docs</td><td>LangChain ecosystem relationship notes (how the three layers fit together)</td><td><a href="https://docs.langchain.com/oss/python/concepts/products" rel="noopener" target="_blank">https://docs.langchain.com/oss/python/concepts/products</a></td></tr>
+<tr><td>changelog</td><td>Deep Agents Releases (0.7.20 @ 2026-09-29)</td><td><a href="https://github.com/langchain-ai/deepagents/releases" rel="noopener" target="_blank">https://github.com/langchain-ai/deepagents/releases</a></td></tr>
+<tr><td>docs</td><td>Deep Agents · Backends (pluggable filesystem backends, permission rules and boundaries, verified 2026-10-08)</td><td><a href="https://docs.langchain.com/oss/python/deepagents/backends" rel="noopener" target="_blank">https://docs.langchain.com/oss/python/deepagents/backends</a></td></tr>
+<tr><td>docs</td><td>Deep Agents · Sandboxes (isolated execution environments, the <code>execute</code> tool)</td><td><a href="https://docs.langchain.com/oss/python/deepagents/sandboxes" rel="noopener" target="_blank">https://docs.langchain.com/oss/python/deepagents/sandboxes</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs.</p>
+<p>The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" rel="noopener" target="_blank">protocols/framework/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong> (per the five test dimensions specific to this site's harness section):</p>
+<div class="tbl-wrap"><table><thead><tr><th>#</th><th>What to test</th><th>Why it is worth testing</th></tr></thead><tbody><tr><td>1</td><td>How many files and lines a minimal hello agent takes</td><td>officially "batteries-included"; see how much the preset layer actually brings</td></tr><tr><td>2</td><td>Whether it can recover after interruption and where state is stored</td><td>officially promises persistence + checkpointing + persistent memory; the landing points need verifying</td></tr><tr><td>3</td><td><strong>Tighten the sandbox to the max and see what tools can still do</strong></td><td>the official docs hand boundary responsibility to users; this is the item most worth measuring</td></tr><tr><td>4</td><td>Two agents concurrently reading/writing the same directory</td><td>file-conflict policy not stated officially</td></tr><tr><td>5</td><td>How much changes when switching to an Ollama local model</td><td>officially model-agnostic; verify whether it really is zero-change</td></tr></tbody></table></div>
+</div>
+<div class="panel is-slim">
+<h2>Three-layer positioning (the one thing this track most needs made clear)</h2>
+<p>This is the easiest thing to mix up: Deep Agents, LangChain, LangGraph are <strong>three layers</strong>.</p>
+<p>The three layers have different responsibilities.</p>
+<p>The official FAQ directly answers a question: what is the difference among the three?</p>
+<p>Asked about LangGraph vs LangChain, the official docs break the relationship down clearly.</p>
+<div class="tbl-wrap"><table><thead><tr><th>Layer</th><th>What it is</th><th>When to use</th></tr></thead><tbody><tr><td><strong>LangGraph</strong></td><td>graph runtime (the lowest orchestration layer)</td><td>the agent loop shape is wrong for you and you need a custom graph</td></tr><tr><td><strong>LangChain <code>create_agent</code></strong></td><td>minimal agent harness</td><td>wanting a lighter harness without preset middleware</td></tr><tr><td><strong>Deep Agents</strong></td><td>on top of <code>create_agent</code>, presets filesystem / sub-agents / context management / skills</td><td>wanting a complete harness out of the box</td></tr></tbody></table></div>
+<p>The three-layer relationship, official wording:</p>
+<blockquote>LangGraph is the graph runtime. LangChain's <code>create_agent</code> is a minimal agent harness on top of it. Deep Agents is a more opinionated harness on top of <code>create_agent</code> — same building blocks, but with filesystem, sub-agents, context management, and skills bundled in.</blockquote>
+<p><strong>The official docs also give the selection rule</strong> (this is directly this site's selection answer):</p>
+<blockquote>Use <strong>Deep Agents</strong> when you want the full harness — planning, context management, delegation — out of the box. Use [<strong>LangChain's <code>create_agent</code></strong>] when you want a lighter harness without the bundled middleware. Drop to [<strong>LangGraph</strong>] when the agent loop itself isn't the right shape and you need a custom graph.</blockquote>
+<p><strong>Composability</strong>: the official docs state any LangGraph <code>CompiledStateGraph</code> can be passed to a Deep Agent as a sub-agent.</p>
+<p>So it is not either/or. <strong>You can base on Deep Agents and use LangGraph graphs as sub-agents</strong>.</p>
+</div>
+<div class="panel is-slim">
+<h2>⚠ The item needing most attention: the official docs hand security responsibility to you</h2>
+<p>Security section wording:</p>
+<blockquote>Deep Agents follows a "trust the LLM" model. The agent can do anything its tools allow. Enforce boundaries at the tool/sandbox level, not by expecting the model to self-police.</blockquote>
+<p><strong>This is not marketing language; it is a risk statement.</strong> After installing:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Officially provided</th><th>Officially not provided</th></tr></thead><tbody><tr><td>human-in-the-loop tool-call approval (approve / edit / reject before execution)</td><td>any permission guardrail beyond the sandbox boundary</td></tr><tr><td>pluggable sandbox backends (<strong>but you draw the boundary</strong>)</td><td>model self-restraint</td></tr></tbody></table></div>
+<p><strong>Practical conclusion</strong>: wanting to use it while worrying about overreach, <strong>you must tighten the sandbox yourself</strong>.</p>
+<p>Do not assume safety is in place just because <strong>"it supports human-in-the-loop"</strong>.</p>
+</div>
+<div class="panel is-slim">
+<h2>"State ≠ context": it uses three means at once</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Means</th><th>Official wording</th><th>Effect</th></tr></thead><tbody><tr><td>summarize long threads</td><td>Context management</td><td>compresses long conversations</td></tr><tr><td><strong>offload tool outputs to disk</strong></td><td>Context management</td><td><strong>lands large tool outputs on disk instead of stuffing them into context</strong></td></tr><tr><td>persistent memory</td><td>pluggable state and store backends</td><td><strong>cross-session recall</strong></td></tr></tbody></table></div>
+<p>The second item deserves special attention.</p>
+<p><strong>Offloading</strong> tool outputs to disk, rather than compressing them away.</p>
+<p>This is closer to this site's stance on reliable long-running operation than simply "compressing history".</p>
+<p>The official positioning is <code>defaults tuned for long-horizon, multi-step work</code>. The defaults are tuned for long tasks.</p>
+</div>
+<div class="panel is-slim">
+<h2>Model support: local models really can be connected</h2>
+<p>FAQ wording:</p>
+<blockquote>Yes. Any model that supports tool calling works — frontier APIs (OpenAI, Anthropic, Google), open-weight models hosted on providers like Baseten or Fireworks, and <strong>self-hosted models via Ollama, vLLM, or llama.cpp</strong>.</blockquote>
+<p><strong>This is key for this site</strong>: the local quantized builds recommended by the model layer (models.specul.com) can also be connected.</p>
+<p>See that site's series provider-compatibility notes.</p>
+</div>
+<div class="panel is-slim">
+<h2>Appendix: there is also a terminal edition</h2>
+<p>The README mentions <strong>Deep Agents Code</strong> — a prebuilt terminal coding agent.</p>
+<p>Official positioning:</p>
+<blockquote><strong>Official wording</strong>: "similar to Claude Code or Cursor, powered by any LLM"</blockquote>
+<blockquote>⚠ <strong>This site does not collect it as a standalone object</strong>: it is a terminal-form product and belongs to the <code>cli.specul.com</code> section. It is recorded here because it shows Deep Agents' capabilities apply directly to coding scenarios.</blockquote>
+</div>
+<div class="panel is-slim">
+<h2>Verification notes</h2>
+<p>Basis for <code>confidence: partial</code> (downgraded from verified on 2026-10-03):</p>
+<blockquote><strong>Why downgraded</strong>: the subject of the ❌ items below is <strong>this site's evidence gap</strong>, not "not provided officially". Per the v3 rule "say unknown when unknown", marking verified while these items exist would be inflated, hence partial. Main gaps: LangSmith's accompanying commercial terms, LangGraph interrupt details, multi-agent concurrent file conflicts.</blockquote>
+<ul><li>✅ Verified:</li><li>repository exists and star count (30,517 · rolling check 2026-10-23)</li><li><strong>license verbatim (MIT, via the license API)</strong></li><li>latest version <strong>0.7.30</strong> (2026-10-22 releases)</li><li>repository description verbatim, full README four principles and nine-feature list</li><li>FAQ three-layer relationship verbatim, Security statement verbatim, provider-support scope verbatim, Quickstart code example</li><li>❌ Not verified:</li><li>LangSmith's accompanying commercial terms (quotes not collected by this site per the price-recording policy)</li><li>LangGraph interrupt details</li><li>the concrete implementations and option list of sandbox backends</li><li>the concrete API shape of <code>CompiledStateGraph</code> as a sub-agent</li><li>Deep Agents Code's license (it may be another repository)</li></ul>
+<p><strong>One secondhand-source deviation recorded specially</strong>: the competitor site (aiagentclash.com) 2026-09-28 snapshot recorded Deep Agents as <strong>0.7.0</strong>, while GitHub releases actually had <strong>0.7.20</strong> (2026-09-29).</p>
+<p><strong>This confirms the v3 plan's rule "competitor research is methodology reference only, not a data source" is necessary.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/framework/langgraph.html">LangGraph</a></span><span class="rel-n">the lower layer of the same ecosystem. LangGraph is the graph runtime Deep Agents depends on; the official FAQ explicitly distinguishes the two layers.</span></li>
+<li><span class="rel-t"><a href="/en/framework/llamaindex.html">LlamaIndex Framework</a></span><span class="rel-n">also an orchestration layer. But LlamaIndex centers on RAG / data connections; Deep Agents centers on a general agent harness.</span></li>
+<li><span class="rel-t"><a href="/en/coding/amp.html">Amp</a></span><span class="rel-n">Other layer · AI coding</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/framework/ag2.html">AG2</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">The community continuation of AutoGen after the original repo stalled. T</td></tr><tr><td><a href="/en/framework/agentscope.html">AgentScope</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">AgentScope is the flagship domestic multi-agent framework (Apache-2.0, A</td></tr><tr><td><a href="/en/framework/agno.html">Agno (formerly Phidata)</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Agno (formerly Phidata) ships framework + control plane as one: define a</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from LangChain</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/safety/langsmith.html"><span class="vp-cat">Safety &amp; evaluation</span>LangSmith</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

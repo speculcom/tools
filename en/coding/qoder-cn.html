@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Qoder CN (formerly Lingma) | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/qoder-cn.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/qoder-cn.html" property="og:url"/>
+<meta content="Qoder CN (formerly Lingma) | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Qoder CN (formerly Lingma) | Tools","applicationCategory":"DeveloperApplication","sameAs":"https://qoder.com.cn","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-22"}</script>
+<meta content="Qoder CN (formerly Lingma) | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/qoder-cn.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/qoder-cn.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/qoder-cn.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/qoder-cn.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#8b7cf8">QO</div>
+<div>
+<h1>Qoder CN (formerly Lingma)</h1>
+<div class="vendor is-caps">Alibaba Cloud</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a> · <a href="#dimension-name_history">Name history</a></p></nav>
+<div class="badges">
+<span class="tag on">China-origin</span>
+<span class="tag on">Free + paid</span>
+<span class="tag on">Desktop</span>
+<span class="tag on">Plugins</span>
+<span class="tag on">CLI</span>
+<span class="tag on">Chinese models</span>
+<span class="tag on">MCP</span>
+<span class="tag on">Credits</span>
+<span class="tag on">Enterprise VPC</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-22</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Qoder CN is Alibaba Cloud's AI coding product line (formerly Lingma, officially…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · In editor</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not checked</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Where each underlying model's filing number is publicly disclosed (the official docs claim domestic-deployment compliance; filing numbers official docs do not itemize every sub-detail)</li>
+<li>The product relationship between the international qoder.com and the CN series (no official cross-reference page)</li>
+<li>Storage and retention policies of the Cloud Agents CN / QoderWake CN lines (official docs do not itemize every sub-detail)</li>
+<li>Console details of the Enterprise Standard/Dedicated (VPC) editions (official docs do not itemize every sub-detail)</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>Qoder CN is Alibaba Cloud's AI coding product line</strong> (formerly Lingma, officially renamed 2026-05-20): desktop IDE + JetBrains plugin + CLI, switchable mainstream domestic models or BYOK, three context layers (memory / Repo Wiki / knowledge base), Credits shared across the family — 'first-party Alibaba Cloud product + domestic deployment' is its official compliance narrative.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Fits: domestic compliance narrative (an official 'first-party Alibaba Cloud product'; finance/government is the customer group the official page names), IDE/plugin/CLI three forms under one account, enterprise VPC dedicated deployment. Not a fit: wanting a self-serve menu of overseas models (the mainline model set is domestic LLMs); still relying on the VS Code plugin (maintenance ended).</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-22</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>domestic　Alibaba Cloud — the official docs call it a first-party Alibaba Cloud product, developed and operated by Alibaba Cloud itself.</dd>
+<dt>Direct access</dt><dd>direct OK　qoder.com.cn / lingma.aliyun.com / docs.qoder.cn measured 200 direct from mainland (2026-10-22).</dd>
+<dt>CAC filing</dt><dd>filing unknown：the official series page claims full-chain domestic cloud deployment meeting domestic data-security and compliance requirements, but per-model filing numbers (Qwen/DeepSeek/GLM/Kimi/MiniMax) were not verified against an official disclosure page the 2026-10-08 pass; "not verified" does not mean "not filed".</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">9 questions, one table</h2>
+<p class="t-section-lead">9 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p>The official model-selector page states three usage tiers: Auto smart routing, Fast tier, direct model selection; the selectable list includes the Qwen3.8/3.7 series, DeepSeek-V4-Pro/Flash, GLM-5.3/Flash, Kimi-K3/K2.8-Preview, MiniMax-M3.1-Flash (each with a Credits usage reference factor; the list and factors follow the client); you can also bring your own models via API keys (official "custom models" page; the CLI side calls it a BYOK wizard). The series page's official line: "under the hood it supports GLM, DeepSeek, Kimi, MiniMax and other mainstream domestic LLMs".</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p>Qoder CN is a product family (official family page): the all-in-one AI workspace Qoder CN (desktop app), Qoder CN IDE, Qoder CN JetBrains plugin, Qoder CN CLI, Agent SDK (TypeScript/Python), Cloud Agents CN (a fully managed cloud Agent platform), QoderWake CN (digital employees), mobile and web editions; Credits are shared across products (subscription terms on the official account &amp; subscription page). The coding mainline is the IDE/plugin/CLI trio; the official "what is Qoder CN IDE" page states the VS Code plugin is no longer maintained.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>The IDE/plugin/CLI forms work with your local code and projects (official security page: Qoder CN can handle local code, installed extensions, remote connections and external services); the CLI's memory files (AGENTS.md and automatic memory) are stored on your machine, viewable and clearable in settings. Model inference happens server-side — the series page's official line: "the full chain is deployed on domestic cloud"; the data boundaries of the Cloud Agents CN / QoderWake CN lines were official docs do not itemize every sub-detail.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p>The background/async surface is part of the official narrative: Cloud Agents CN runs fully managed long-running async tasks (official wording: tasks keep running after the client closes (translated)), batch concurrent execution; the CLI has scheduled tasks, /loop repeated execution, Cloud Mode and Remote Control; the mobile app can view agent progress and approve key operations (official-site framing). Note the official notice "Qoder CN IDE 'Quest' panel retirement notice" — the Quest surface in old tutorials is outdated.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p>Official docs cover the full extension surface: MCP (connector marketplace or custom MCP servers, configured in ~/.qoder/settings.json), Skills, Plugins, Subagents (expert teams: frontend/backend/database/ops/testing domain agents), Hooks, custom instructions and commands; the CLI has built-in file read/write, Shell execution, Grep/Glob, web search and page fetching, with a non-interactive mode for scripts and CI/CD; there is also Repo Wiki (generates project knowledge for a code repository) and code security scanning (progressive scans before commit/push).</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p>The memory mechanism has official pages: two classes — global memory and project memory, each toggleable and clearable, stored in the local memory directory; the official docs split context sources into three layers — memory (cross-task preferences and background), Repo Wiki (project knowledge generated from the codebase), knowledge base (structured material maintained by teams); there is also context compaction, codebase indexing, rule settings, multimodal input (images/PDF).</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p>Account system (Alibaba Cloud account); the CLI has permission modes, rule configuration and a tool-call approval flow (official permissions page); the terminal &amp; sandbox page states that running project commands during tasks and reviewing operations that need authorization requires approval; the security &amp; authorization page gives a checklist for accounts/credentials/extensions/connections. On the enterprise side there is an Enterprise Standard and an Enterprise Dedicated edition (VPC deployment).</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Fits: the domestic compliance narrative (a first-party Alibaba Cloud product, mainstream domestic LLMs + domestic cloud deployment, finance/government customers named officially), IDE/JetBrains-plugin/CLI trio under one account, family-wide shared Credits, enterprise VPC dedicated deployment. Does not fit: those wanting a self-selectable overseas model list (the mainline model surface is domestic mainstream LLMs), or still relying on the VS Code plugin (no longer maintained).</p></dd>
+</div>
+<div class="axis" id="dimension-name_history">
+<dt>Name history</dt>
+<dd><p>The brand renaming history (dossiers must state it clearly): the intelligent coding assistant Tongyi Lingma (Lingma, first launched 2023) → the Qoder CN series (officially renamed 2026-05-20); the desktop app was formerly named Lingma IDE, Qoder CN Desktop — the same product under multiple names across periods; when searching, recognize Tongyi Lingma / Lingma / Qoder CN alike.</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Tongyi Lingma (Lingma) was officially renamed the Qoder CN series on 2026-05-20 — 'Tongyi Lingma', 'Lingma IDE' and 'Qoder CN Desktop' all refer to the same desktop-application line (official wording: content you see elsewhere under 'Tongyi Lingma' is the same product)</li>
+<li>The domestic line qoder.com.cn (Qoder CN series) and the international qoder.com are two product lines — don't infer features or model sets from one to the other; the official relationship between them is not verified line by line</li>
+<li>The VS Code plugin has ended maintenance (stated on the official 'What is Qoder CN IDE' page) — the JetBrains plugin continues; readers migrating from the old Lingma VS Code plugin need to switch forms</li>
+<li>The Quest window has been retired (official product notice) — Quest workflows in older Lingma tutorials you find by search may no longer work</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-22，Content updated 2026-10-22。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>official</td><td>Qoder CN docs · What is the Qoder CN series (renaming facts/family matrix/compliance narrative)</td><td><a href="https://docs.qoder.cn/product-overview/introduction-of-qodercn" rel="noopener" target="_blank">https://docs.qoder.cn/product-overview/introduction-of-qodercn</a></td></tr>
+<tr><td>official</td><td>Qoder CN docs · What is Qoder CN IDE (desktop app/former names/VS Code plugin sunset)</td><td><a href="https://docs.qoder.cn/user-guide/what-is-qoder-cn" rel="noopener" target="_blank">https://docs.qoder.cn/user-guide/what-is-qoder-cn</a></td></tr>
+<tr><td>official</td><td>Qoder CN docs · Model selector (selectable model list and Credits factors)</td><td><a href="https://docs.qoder.cn/qoder/model-selector" rel="noopener" target="_blank">https://docs.qoder.cn/qoder/model-selector</a></td></tr>
+<tr><td>official</td><td>Qoder CN docs · Qoder CLI CN overview (terminal form/built-in tools/permission confirmation)</td><td><a href="https://docs.qoder.cn/cli/overview" rel="noopener" target="_blank">https://docs.qoder.cn/cli/overview</a></td></tr>
+<tr><td>official</td><td>Qoder CN docs · Memory (global/project memory and source layering)</td><td><a href="https://docs.qoder.cn/qoder/memory" rel="noopener" target="_blank">https://docs.qoder.cn/qoder/memory</a></td></tr>
+<tr><td>official</td><td>Qoder CN docs · Security and authorization (account/credential/extension checks)</td><td><a href="https://docs.qoder.cn/qoder/security-and-authorization" rel="noopener" target="_blank">https://docs.qoder.cn/qoder/security-and-authorization</a></td></tr>
+<tr><td>changelog</td><td>Qoder CN series changelog</td><td><a href="https://docs.qoder.cn/product-overview/qoder-cn-update-log" rel="noopener" target="_blank">https://docs.qoder.cn/product-overview/qoder-cn-update-log</a></td></tr>
+<tr><td>official</td><td>Qoder CN official site (product family/downloads)</td><td><a href="https://qoder.com.cn" rel="noopener" target="_blank">https://qoder.com.cn</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs.</p>
+<p>The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong> (three items, all pointing at what the official readable pages do not provide):</p>
+<ul><li><strong>the actual feature differences between the international qoder.com and the domestic qoder.com.cn</strong> (no official comparison table)</li><li><strong>the migration path for existing workflows after the Quest panel retirement</strong> (the notice only says retired, no item-by-item migration guide)</li><li><strong>the CLI non-interactive mode's actual permission-approval behavior in CI/CD</strong> (how the approval flow blocks in headless mode)</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/codebuddy.html">CodeBuddy</a></span><span class="rel-n">both are domestic big-tech coding assistants: Tencent's Hunyuan-backed CodeBuddy has a verifiable filing and rides its cloud ecosystem end to end; Qoder CN runs the "first-party product + family Credits" narrative, and this site has not verified its filing number</span></li>
+<li><span class="rel-t"><a href="/en/coding/trae.html">Trae</a></span><span class="rel-n">both are domestic coding tools with overseas lines: ByteDance's Trae is active on both domestic and international lines; the official relationship between Qoder CN's domestic line (qoder.com.cn) and international edition (qoder.com) has no official cross-reference</span></li>
+<li><span class="rel-t"><a href="/en/coding/qoder.html">Qoder</a></span><span class="rel-n">same brand, two lines: the international line uses qoder.com accounts and overseas endpoints, its family includes Cloud Agents/QoderWork; do not infer features or model surfaces across the lines (no official comparison page)</span></li>
+<li><span class="rel-t"><a href="/en/coding/claude-code-cli.html">Claude Code CLI</a></span><span class="rel-n">Same layer</span></li>
+<li><span class="rel-t"><a href="/en/framework/claude-agent-sdk.html">Claude Agent SDK</a></span><span class="rel-n">Other layer · Frameworks &amp; runtimes</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/baidu-comate.html">Baidu Comate (Wenxin Kuaima)</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Baidu Comate (Wenxin Kuaima) is Baidu's AI coding family: Comate AI IDE </td></tr><tr><td><a href="/en/coding/kilocode.html">Kilo Code</a></td><td>Local + cloud</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Kilo Code is a leading open-source coding agent (MIT): VS Code/JetBrains</td></tr><tr><td><a href="/en/coding/trae.html">Trae</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Trae is ByteDance's three-client AI IDE (desktop / web / mobile): dual w</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from 阿里云</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/coding/qoder.html"><span class="vp-cat">AI coding</span>Qoder</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

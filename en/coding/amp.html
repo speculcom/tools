@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Amp | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/amp.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/amp.html" property="og:url"/>
+<meta content="Amp | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Amp | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/coding/amp.html","sameAs":"https://ampcode.com","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Amp | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/amp.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/amp.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/amp.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/amp.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#8b7cf8">AM</div>
+<div>
+<h1>Amp</h1>
+<div class="vendor is-caps">Amp Frontier Corporation (spun out of Sourcegraph, Dec 2025)</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Coding</span>
+<span class="tag on">Terminal</span>
+<span class="tag on">Cloud</span>
+<span class="tag on">Hybrid</span>
+<span class="tag on">Multiple models</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Sourcegraph's Amp: a frontier coding agent spanning CLI + cloud orbs + runners — send…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Cloud / API · CLI</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>The <strong>concrete quota difference</strong> between the Individual tier's Megawatt and Gigawatt levels: the official pricing page presents them as a toggle, never side by side (orb-hour quotas on the official page; prices not stored per D9 policy)</li>
+<li>The <strong>answer bodies</strong> of the official pricing-page FAQ: this page captured only question titles; answer content was not expanded</li>
+<li>Orb concurrency limits and maximum single-run duration: the official does not state (checked docs/orbs and the pricing page)</li>
+<li>Self-hosted deployment: the official security reference says it is empty (explicitly unsupported); no self-hosted path is provided</li>
+</ul>
+</div>
+<div class="panel-lead"><p>Amp is Sourcegraph's frontier coding agent, spanning <strong>CLI + cloud orbs + runners</strong>. Send a prompt and you can close your laptop while it keeps working. It routes across frontier models, with the Oracle as a second-opinion model.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Four kinds of use fit:</p></div>
+<div><ul><li>People who want an agent that <strong>keeps working in a cloud orb after you close your laptop</strong></li><li>Teams that need <strong>multi-model frontier routing plus the Oracle second-opinion model</strong></li><li>People already working in a terminal or a VS Code-family editor who want IDE integration</li><li>Organisations needing enterprise controls (SSO, audit logs, MCP allowlists, zero data retention)</li></ul></div>
+<div class="warn-p"><p><strong>Not a fit for</strong> anyone who assumes tools are gated by approval — officially, "By default, Amp does not ask for approval before running tools". Approval takes a custom policy plugin that you write yourself.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-20</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　official site measured 200 direct.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>Multi-model frontier routing — tiered per task rather than locked to a single model.</strong></p>
+<p>Official "Why Amp" wording:</p>
+<p><strong>"Multi-Model: GPT-5.6, Claude Fable 5, fast models—Amp uses them all, for what each model is best at."</strong></p>
+<p><strong>The four Agent Modes are capability presets, not fixed model selectors</strong>: <code>low</code> / <code>medium</code> / <code>high</code> / <code>ultra</code>.</p>
+<p><strong>Official wording</strong>: "Modes are capability presets, not fixed model selectors"</p>
+<p>Routing is customizable. It looks at connected provider subscriptions, workspace limits and model availability to decide how the main agent and the Oracle run.</p>
+<p><strong>The Oracle is a "second opinion" model.</strong></p>
+<p>At <code>high</code>, the main agent uses GPT-6 Astra (medium) and the Oracle uses Claude Fable 5.1. At low / medium / ultra, the Oracle defaults to GPT-6 Astra.</p>
+<p><strong>BYOK is now open across all tiers</strong> (official news notes: for all tiers since 2026-09-30).</p>
+<p>Supported: OpenRouter, Bedrock, Google Cloud Agent Platform, Azure Foundry, Vercel / Cloudflare AI Gateway, Ollama Cloud, OpenCode Go and custom endpoint URLs, and ChatGPT subscriptions can be used too.</p>
+<p>⚠ <strong>The official sources disagree.</strong> The security reference page still says:</p>
+<p><strong>Official wording</strong>: "Amp doesn't support Bring Your Own Key or self-hosted deployments"</p>
+<p>This contradicts the BYOK stance on the pricing page / news; when citing, treat the pricing page as authoritative.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>Hybrid: local Client + cloud Server.</strong> Threads can additionally run on three execution surfaces.</p>
+<p>The official security reference splits Amp into two components.</p>
+<p><strong>Amp Client</strong> runs locally: code and context management, local settings, local thread history.</p>
+<p><strong>Amp Server</strong> is a multi-tenant cloud service on ampcode.com, hosted on GCP. It handles authentication, thread sync and LLM proxying.</p>
+<p><strong>Thread execution surfaces come in three</strong>: local, <strong>orb</strong> (a machine Amp creates for you in the cloud), <strong>runner</strong> (your own machine, <code>amp --no-tui --runner-id &lt;id&gt;</code>).</p>
+<p>The CLI picks the execution location with <code>--executor local|orb|runner:&lt;id&gt;</code>.</p>
+<p>There are also Web and macOS / iOS apps. The same agent, the same thread — usable everywhere.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>The Client carries only local context; the official explicitly does not index the whole repo.</strong></p>
+<p>Official security reference wording:</p>
+<p>"The Amp Client and Amp Server do not <strong>see, store, clone, or index the entire codebase</strong>"</p>
+<p>It only sends the Server the code snippets / whole files selected as context (partial code data).</p>
+<p>Tool side: <code>Read</code> / <code>create_file</code> / <code>edit_file</code> / <code>glob</code> / <code>Grep</code> / <code>Bash</code> etc.</p>
+<p><strong>IDE integration</strong> (VS Code, Cursor, Windsurf, Zed, Neovim): once connected, Amp can see the currently open file and selection. It can also <strong>edit files through your IDE, with full undo support</strong>.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>There is a real background form — orbs.</strong></p>
+<p>Official homepage wording:</p>
+<p>"Run agents anywhere and they <strong>keep working after you close your laptop</strong>"</p>
+<p>Each thread gets an orb (already carrying your code, tools and plugins); it keeps running after shutdown and can be continued from your phone.</p>
+<p><strong>Runners live on your own machines</strong>: <code>--share</code> can share a runner with the workspace, so others can start threads on it from ampcode.com too (the machine must be on).</p>
+<p><strong>Scheduling and self-wake</strong>: the official manual has Schedules.</p>
+<p>An official demo video shows the agent</p>
+<p><strong>official wording</strong>: "uses automations to wake itself up"</p>
+<p>that is, waking up on schedule to check production.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>Built-in tools + subagents + plugins + MCP — all four layers have official pages.</strong></p>
+<p><strong>Built-in tools</strong>: <code>amp tools list</code> shows <code>Bash</code>, <code>Read</code>, <code>create_file</code>, <code>edit_file</code>. Also <code>glob</code>, <code>Grep</code>, <code>web_search</code>, <code>read_web_page</code>, <code>Task</code>, <code>todo_*</code>, <code>undo_edit</code>.</p>
+<p><strong>Subagents / tools</strong>: <code>oracle</code> (second opinion for complex reasoning), <strong>Librarian</strong> (cross-repo retrieval. Can read all public GitHub code, and your private repos too), <strong>Painter</strong> (GPT Image generation and editing), Search, Read Thread.</p>
+<p><strong>Plugin system</strong>: you can write custom policy plugins (including a permissions plugin example). Custom agent modes and subagents are also possible.</p>
+<p><strong>MCP</strong>: local (<code>amp.mcpServers</code>, command / args / env, stdio) and remote definitions (stored on ampcode.com, url / headers).</p>
+<p>Transports include SSE and Streamable.</p>
+<p>Auth includes automatic <strong>OAuth</strong>, bearer, <strong>Amp ID token</strong>, Workload Identity.</p>
+<p>The official recommends packaging MCP servers into <strong>skills</strong> (<code>mcp.json</code>) — that keeps the tool list lean.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>Threads are the core unit — saveable, searchable, shareable.</strong></p>
+<p>Official "Why Amp" wording:</p>
+<p><strong>"Threads: You can save and share your interactions with Amp."</strong></p>
+<p>You can @-reference other threads (URL or <code>@T-...</code>). Past threads are searchable by keyword / file / repo / author / date. Workspaces support <strong>thread sharing and multiplayer</strong>.</p>
+<p><strong>AGENTS.md layering</strong>: the official lists cwd / parent directories / subtrees, <code>$HOME/.config/amp/AGENTS.md</code>, system-level <code>/etc/ampcode/AGENTS.md</code> and other layers. A subtree AGENTS.md is pulled in when files in that subtree are read.</p>
+<p>It also supports @-mention and globs conditional loading, and gives migration paths from CLAUDE.md / .cursorrules.</p>
+<p><strong>Compaction</strong>: the official Models page lists Compaction as "Context summarization for long threads".</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>No approval by default — this is the point that most needs calling out.</strong></p>
+<p>Official Tools page wording:</p>
+<p>"By default, Amp <strong>does not ask for approval</strong> before running tools."</p>
+<p>The official alternative is <strong>custom policy plugins</strong> (distributable as workspace-level plugins).</p>
+<p><strong>Workspace MCP servers require explicit approval.</strong> Servers in <code>.amp/settings.json</code> show <code>awaiting approval</code> on first detection; you need <code>amp mcp approve</code>.</p>
+<p>Global settings and those passed via <code>--mcp-config</code> do not.</p>
+<p><strong>The data side is fairly hard-nosed</strong>: the official <strong>auto-detects and redacts</strong> common secrets. (AWS / GCP / Azure, GitHub / GitLab, OpenAI / Anthropic, Stripe / Slack / npm etc., replaced with <code>[REDACTED:amp]</code>), but admits it is best-effort.</p>
+<p>Thread data is stored on ampcode.com (GCP). <strong>Your data is not used for training by default</strong> (never enableable on Enterprise). After deleting a thread, data is removed within 30 days; Enterprise offers zero data retention (ZDR).</p>
+<p><strong>Subscriptions and BYOK quotas are two different things.</strong> With your own key or subscription, there is no Amp token fee.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Fits four usage patterns:</p>
+<ul><li>people who want the agent to <strong>run long on their own cloud machine (orb), continuing after the laptop closes</strong></li><li>teams needing <strong>multi-model frontier routing + an Oracle second opinion</strong></li><li>people already working in the terminal or VS Code-family editors who want IDE hookup along the way</li><li>organizations needing enterprise controls (SSO, audit logs, MCP allowlist, zero data retention)</li></ul></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Assuming tools run only after approval — officially, Amp does not ask for approval before running tools.</li>
+<li>Expecting a standalone VS Code extension — integration is via the CLI and <code>ide connect</code> (VS Code / Cursor / Windsurf / Zed / Neovim).</li>
+<li>Treating $20/mo as the whole cost — orbs are billed by the minute and overage is charged against credits.</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-08。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>docs</td><td>Amp · official homepage (frontier agent / orbs, fetched 2026-10-08)</td><td><a href="https://ampcode.com/" rel="noopener" target="_blank">https://ampcode.com/</a></td></tr>
+<tr><td>pricing</td><td>Amp · official pricing page (Hobby free / Individual / Teams / Enterprise four tiers; prices not stored per D9 policy)</td><td><a href="https://ampcode.com/pricing" rel="noopener" target="_blank">https://ampcode.com/pricing</a></td></tr>
+<tr><td>changelog</td><td>Amp · Chronicle (official changelog, with entries such as 2026-09-24, 2026-08-25)</td><td><a href="https://ampcode.com/chronicle" rel="noopener" target="_blank">https://ampcode.com/chronicle</a></td></tr>
+<tr><td>docs</td><td>Amp · Owner's Manual (Agent Modes / AGENTS.md / Orbs / CLI / Pricing)</td><td><a href="https://ampcode.com/manual" rel="noopener" target="_blank">https://ampcode.com/manual</a></td></tr>
+<tr><td>docs</td><td>Amp Docs · CLI (install, --executor, IDE connect, Streaming JSON)</td><td><a href="https://ampcode.com/docs/cli" rel="noopener" target="_blank">https://ampcode.com/docs/cli</a></td></tr>
+<tr><td>docs</td><td>Amp Docs · Tools (Oracle / Librarian / Painter, no approval by default)</td><td><a href="https://ampcode.com/docs/tools" rel="noopener" target="_blank">https://ampcode.com/docs/tools</a></td></tr>
+<tr><td>docs</td><td>Amp Docs · MCP (local/remote, OAuth, Amp ID token, workspace approval)</td><td><a href="https://ampcode.com/docs/customize/mcp" rel="noopener" target="_blank">https://ampcode.com/docs/customize/mcp</a></td></tr>
+<tr><td>docs</td><td>Amp · Security Reference (Client/Server architecture, secret redaction, data retention, model training)</td><td><a href="https://ampcode.com/security" rel="noopener" target="_blank">https://ampcode.com/security</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This profile is based on official docs and records no local measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong>: focus on three things.</p>
+<ul><li>① the over-reach boundary of running tools under the no-approval default (whether only policy plugins backstop it)</li><li>② the orb's "keeps running after you close the laptop" behavior and pause-billing rules (the official cites 5 / 20 minute thresholds)</li><li>③ <code>amp --execute ... --stream-json</code> usability in scripts / CI (the official aims for Claude Code format compatibility)</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Verification note</h2>
+<p>Basis for <code>confidence: verified</code>: all eight dimensions were checked against official pages.</p>
+<p>Specifically: the runtime surface, execution surfaces, providers / modes, MCP hookup, permissions and the data side.</p>
+<p>Two scope boundaries remain at official category level. <strong>First, the concrete quota difference between the Individual tier's Megawatt / Gigawatt levels</strong>, second, the body text of the official pricing page's "Questions &amp; Answers".</p>
+<p>The first is presented as a toggle rather than a side-by-side table; the second is interactive pricing content, cited by entry point and not expanded here.</p>
+<p><strong>Two official-source inconsistencies worth flagging</strong>:</p>
+<ul><li>① the security reference page still says "no BYOK and no self-hosted deployments", contradicting the BYOK stance on the pricing page / news (treat the pricing page and recent news as authoritative)</li><li>② the task brief gave the npm package as <code>@sourcegraph/amp</code>, while the official install docs currently give <strong><code>@ampcode/cli</code> (officially marked not recommended)</strong> — treat the official docs as authoritative</li></ul>
+<p>Official pages checked the 2026-10-08 check: homepage, pricing, Chronicle, Owner's Manual, docs/cli, docs/tools, docs/customize/mcp, Security Reference.</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/goose.html">Goose</a></span><span class="rel-n">Also CLI-form: contrasts the "pure local process" and "cloud orb long-run" runtime surfaces</span></li>
+<li><span class="rel-t"><a href="/en/coding/codex-cli.html">Codex CLI</a></span><span class="rel-n">Also a multi-provider terminal agent: contrasts permission defaults and MCP transports</span></li>
+<li><span class="rel-t"><a href="/en/coding/claude-code-cli.html">Claude Code CLI</a></span><span class="rel-n">Also a frontier coding agent: contrasts approval mechanics and data policy</span></li>
+<li><span class="rel-t"><a href="/en/framework/deepagents.html">Deep Agents</a></span><span class="rel-n">Other layer · Frameworks &amp; runtimes</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/claude-code-cli.html">Claude Code CLI</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A terminal coding and tool-execution product, with a CHANGELOG and Atom </td></tr><tr><td><a href="/en/coding/codex-cli.html">Codex CLI</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">OpenAI's official terminal coding agent, written in Rust, architecturall</td></tr><tr><td><a href="/en/coding/copilot-cli.html">GitHub Copilot CLI</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">The Copilot agent in your terminal, carried by your GitHub subscription:</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>GitHub Copilot CLI | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/copilot-cli.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/copilot-cli.html" property="og:url"/>
+<meta content="GitHub Copilot CLI | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"GitHub Copilot CLI | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/coding/copilot-cli.html","sameAs":"https://docs.github.com/en/copilot/concepts/agents/about-copilot-cli","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="GitHub Copilot CLI | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/copilot-cli.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/copilot-cli.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/copilot-cli.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/copilot-cli.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#24292F"'>GI</div>
+<div>
+<h1>GitHub Copilot CLI</h1>
+<div class="vendor is-caps">GitHub</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Coding</span>
+<span class="tag on">Terminal</span>
+<span class="tag on">Local</span>
+<span class="tag on">Multiple models</span>
+<span class="tag on">End-to-end</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>The Copilot agent in your terminal, carried by your GitHub subscription: one terminal…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · CLI</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>The exact mapping between the CLI and each Copilot plan (does Free include the CLI) — official pages differ (both about-copilot-cli and cli-quickstart were checked; the two pages are inconsistent)</li>
+<li>Concurrency, duration and storage limits of the cloud sandbox (<code>copilot --cloud</code>) (public preview)</li>
+<li>Fine-grained differences in premium-request deduction between interactive and programmatic modes</li>
+<li>The full capability surface of ACP integration (the official concepts page lists the section but does not elaborate)</li>
+</ul>
+</div>
+<div class="panel-lead"><p>GitHub Copilot CLI is the Copilot coding agent that runs in your terminal, carried by the same GitHub subscription as the IDE form factor. The official README says it is "Powered by the same agentic harness as GitHub's Copilot coding agent." Three things differ from the IDE form. It has a programmatic entry point (<code>copilot -p</code> / <code>--prompt</code>) that can go into scripts and CI. Approval is terminal-level: three choices on first use of a writing or executing tool, plus <code>--allow-all-tools</code> / <code>--allow-tool</code> / <code>--deny-tool</code> for unattended runs, and some official docs say denial wins. Billing is per prompt too: "Each time you submit a prompt to Copilot CLI, your monthly quota of Copilot premium requests is reduced by one."</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>People already in the GitHub ecosystem who want to walk the whole chain from reading a repo to opening a pull request in the terminal. The official use case gives tasks such as "create a pull request on GitHub.com".</p></div>
+<div><p>People who need scripted or headless use: <code>copilot -p</code> with approval flags is CI-friendly. Anyone who wants the MCP / plugin / custom-agent surface.</p></div>
+<div class="warn-p"><p><strong>Not a fit for</strong> people who don't want a Copilot subscription, because the CLI ships with the subscription and cannot be bought on its own. Nor for anyone who wants "fully autonomous and zero risk": auto-approval has to be paired with an isolated environment, and the official docs warn about that plainly.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-20</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　docs.github.com measured 200 direct.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>Multi-vendor models, switchable inside the CLI.</strong></p>
+<p>Official README wording:</p>
+<p><strong>Official wording</strong>: "By default, <code>copilot</code> utilizes Claude Sonnet 4.5. Run the <code>/model</code> slash command to choose from other available models, including Claude Sonnet 4 and GPT-5"</p>
+<p>The official changelog's GA wording was:</p>
+<p><strong>Official wording</strong>: "Choose from the latest models from Anthropic, OpenAI, and Google"</p>
+<p><strong>Note the two official pages describe the default model differently</strong>:</p>
+<ul><li>the README says Claude Sonnet 4.5</li><li>the about page says "The default model used by GitHub Copilot CLI is Claude Sonnet 4. GitHub reserves the right to change this model"</li></ul>
+<p><strong>The exact list of available models varies by plan</strong>; the full list is on the Copilot models page (same account system as the <a href="/en/coding/copilot.html">IDE entry</a>).</p>
+<p>Third-party agent delegation follows Copilot platform capabilities (Preview).</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>A local terminal process</strong>, lifecycle bound to the terminal session.</p>
+<p>Officially supported systems:</p>
+<ul><li>Linux</li><li>macOS</li><li>Windows: via Powershell or Windows Subsystem for Linux (WSL)</li></ul>
+<p>Official wording on support:</p>
+<p><strong>Official wording</strong>: "Linux / macOS / Windows from within Powershell and Windows Subsystem for Linux (WSL)"</p>
+<p>The about page adds:</p>
+<p><strong>Official wording</strong>: "Native Windows support in Powershell is available, but experimental"</p>
+<p><strong>There is also a cloud execution surface.</strong> <code>copilot --cloud</code> starts a session in an isolated cloud-hosted environment (official docs say cloud sandboxes are "in public preview", their policies "inherit from Copilot cloud agent policies", sessions can continue across machines and run tasks in parallel).</p>
+<p><strong>These are two execution surfaces — the local terminal session and the cloud one; do not conflate them.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>Bounded by "trusted directories".</strong> When starting a session, the official docs require you to "confirm that you trust the files in, and below, the directory from which you launched the CLI".</p>
+<p>This trusted directory controls <strong>"where Copilot CLI can read, modify, and execute files"</strong>.</p>
+<p><strong>Key caveat</strong>: the official docs state plainly</p>
+<p><strong>Official wording</strong>: "Scoping of permissions is heuristic and GitHub does not guarantee that all files outside trusted directories will be protected"</p>
+<p><strong>Do not treat trusted directories as a hard sandbox.</strong></p>
+<p>For a harder boundary, enable the local sandbox: <strong>Official wording</strong>: "run <code>/sandbox enable</code> inside a session", which restricts filesystem, network and system capabilities. Or use <code>copilot --cloud</code> to put the whole session in a cloud-isolated environment.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>There is explicit background delegation and cloud sessions.</strong> Official changelog wording:</p>
+<p><strong>Official wording</strong>: "Prefix any prompt with <code>&amp;</code> to delegate work to the Copilot coding agent in the cloud, freeing your terminal for other tasks. Use <code>/resume</code> to switch between local and remote coding agent sessions seamlessly"</p>
+<p>That is, <strong>in the terminal you hand the task to the cloud coding agent and keep using the terminal for other things.</strong></p>
+<p>Cloud sandboxes (public preview) additionally support:</p>
+<p><strong>Official wording</strong>: "keep a session's state between uses, continue a session from a different machine, or run multiple tasks in parallel"</p>
+<p><strong>The local session itself still ends with the terminal.</strong> It is a client-resident type; the real background comes from the cloud channel above.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>MCP is a default capability.</strong> Official README wording:</p>
+<p><strong>Official wording</strong>: "the coding agent ships with GitHub's MCP server by default and supports custom MCP servers"</p>
+<p>How to add: <code>/mcp add</code> for interactive adding; <code>/mcp search</code> browses the GitHub MCP Registry for direct install (2026-06-23 changelog).</p>
+<p>Other extension surfaces listed in official docs:</p>
+<ul><li><strong>Custom instructions</strong></li><li><strong>Custom agents</strong> — including built-in Explore / Task / Code Review / Plan specialist agents, runnable in parallel</li><li><strong>Hooks</strong></li><li><strong>Skills</strong></li><li><strong>Plugins</strong></li></ul>
+<p>There is also <strong>LSP</strong>: you install language servers yourself, configured via <code>~/.copilot/lsp-config.json</code> or <code>.github/lsp.json</code>.</p>
+<p><strong>ACP integration is supported</strong> (the official concepts page has a "Use Copilot CLI via ACP" section; the changelog mentions ACP closeSession).</p>
+<p>On macOS / Windows, local sessions can additionally enable <strong>computer use</strong> to operate desktop apps.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>The trio: auto-compaction + session management + repository memory.</strong></p>
+<p>Auto-compaction: official docs say when a session nears the <strong>95%</strong> token limit, "Copilot automatically compresses your history in the background", enabling "virtually infinite sessions".</p>
+<p>Manual operations: <code>/compact</code> compacts manually; <code>/context</code> shows token usage.</p>
+<p>Rollback uses <code>/rewind</code>. The changelog says it</p>
+<p><strong>Official wording</strong>: "no longer requires git and restores only the files Copilot changed, skipping any file whose contents no longer match what Copilot last wrote"</p>
+<p>and optionally <strong>Official wording</strong>: "conversation-only or conversation + files".</p>
+<p>Cross-session memory follows <strong>Copilot Memory</strong> (the same feature as the <a href="/en/coding/copilot.html">IDE entry</a> in this section, storing repo-level conventions and preferences).</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>Approval is the axis most worth remembering in this entry, with finer granularity than the IDE form.</strong></p>
+<p>On first use of write / executable tools, the official docs give three options:</p>
+<ul><li>1. Yes</li><li>2. Yes, and approve TOOL for the rest of the running session</li><li>3. No, and tell Copilot what to do differently (Esc)</li></ul>
+<p>Official wording:</p>
+<p><strong>Official wording</strong> (the three approval-prompt options): "1. Yes" / "2. Yes, and approve TOOL for the rest of the running session" / "3. No, and tell Copilot what to do differently (Esc)"</p>
+<p><strong>Option 2 means all commands of that tool class are allowed for this session.</strong> Official example: after approving <code>rm ./this-file.txt</code>, any <code>rm</code> can run in the session.</p>
+<p>Programmatic / unattended mode has three switches:</p>
+<ul><li><code>--allow-all-tools</code> — never ask for any tool</li><li><code>--allow-tool</code> — allow specified tools</li><li><code>--deny-tool</code> — forbid specified tools, <strong>highest priority</strong></li></ul>
+<p>Values support "<code>shell(COMMAND)</code>, <code>write</code>, <code>MCP_SERVER_NAME</code>", and <strong><code>--deny-tool</code> takes precedence over <code>--allow-tool</code> / <code>--allow-all-tools</code></strong>.</p>
+<p>The official warning about auto-approval is worth remembering verbatim:</p>
+<p><strong>Official wording</strong>: "Copilot has the same access as you do to files on your computer, and can run any shell commands that you can run, without getting your prior approval"</p>
+<p>The official docs also recommend using auto-approval inside VMs / containers / offline environments to limit blast radius.</p>
+<p>For content exclusion, the CLI for Business / Enterprise users:</p>
+<p><strong>Official wording</strong>: "respects content exclusion policies configured at the enterprise, organization, and repository levels"</p>
+<p>Enterprise and organization policies can disable the CLI entirely.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Fits three kinds of people:</p>
+<ul><li>those already in the GitHub ecosystem who want to finish "read the repo / edit code / run tests / open PRs / manage issues" from the terminal — the official use cases literally include tasks like "create a pull request on GitHub.com"</li><li>those who need <strong>scripting / headless</strong> (<code>copilot -p</code> with approval options can run in CI)</li><li>those who need the MCP / plugins / custom-agent ecosystem</li></ul>
+<p><strong>Not a fit</strong> for two kinds of people:</p>
+<ul><li>those unwilling to pay for a Copilot subscription — the CLI comes with the subscription and cannot be bought separately</li><li>those wanting "fully automatic yet zero risk" — auto-approval must be paired with an isolated environment; the official docs flag the risk explicitly</li></ul></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Thinking Copilot CLI is a separate purchase — it comes with a Copilot subscription and has no standalone price</li>
+<li>Thinking the CLI costs no quota — each prompt deducts one premium request, and premium models multiply it</li>
+<li>Taking the about page's plan list (Pro/Pro+/Business/Enterprise) as the only wording — the quickstart page says all plans</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-08。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>docs</td><td>GitHub · About GitHub Copilot CLI (modes, approval options, trusted directories, models and premium requests)</td><td><a href="https://docs.github.com/en/copilot/concepts/agents/about-copilot-cli" rel="noopener" target="_blank">https://docs.github.com/en/copilot/concepts/agents/about-copilot-cli</a></td></tr>
+<tr><td>docs</td><td>GitHub · Copilot CLI concepts page (sandbox, context management, customization, content exclusion, ACP)</td><td><a href="https://docs.github.com/en/copilot/concepts/copilot-surfaces/copilot-cli" rel="noopener" target="_blank">https://docs.github.com/en/copilot/concepts/copilot-surfaces/copilot-cli</a></td></tr>
+<tr><td>docs</td><td>GitHub · GitHub Copilot CLI quickstart (npm / WinGet / Homebrew install, -p non-interactive)</td><td><a href="https://docs.github.com/en/copilot/get-started/cli-quickstart" rel="noopener" target="_blank">https://docs.github.com/en/copilot/get-started/cli-quickstart</a></td></tr>
+<tr><td>docs</td><td>GitHub · Install GitHub Copilot CLI (per-platform commands and prerequisites)</td><td><a href="https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli" rel="noopener" target="_blank">https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli</a></td></tr>
+<tr><td>docs</td><td>GitHub · Requests in GitHub Copilot (premium requests and model multipliers)</td><td><a href="https://docs.github.com/en/copilot/concepts/billing/copilot-requests" rel="noopener" target="_blank">https://docs.github.com/en/copilot/concepts/billing/copilot-requests</a></td></tr>
+<tr><td>changelog</td><td>GitHub · Copilot CLI offline changelog (1.0.93 @ 2026-10-07)</td><td><a href="https://github.com/github/copilot-cli/blob/main/changelog.md" rel="noopener" target="_blank">https://github.com/github/copilot-cli/blob/main/changelog.md</a></td></tr>
+<tr><td>repo</td><td>GitHub · copilot-cli official repository (README: default model, MCP, LSP, PAT auth)</td><td><a href="https://github.com/github/copilot-cli" rel="noopener" target="_blank">https://github.com/github/copilot-cli</a></td></tr>
+<tr><td>changelog</td><td>GitHub · GitHub Copilot CLI generally available (2026-02-25 GA, plan / autopilot / background delegation)</td><td><a href="https://github.blog/changelog/2026-02-25-github-copilot-cli-is-now-generally-available/" rel="noopener" target="_blank">https://github.blog/changelog/2026-02-25-github-copilot-cli-is-now-generally-available/</a></td></tr>
+<tr><td>changelog</td><td>GitHub · Changelog (Copilot label page)</td><td><a href="https://github.blog/changelog/label/copilot/" rel="noopener" target="_blank">https://github.blog/changelog/label/copilot/</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong>: focus on three things.</p>
+<ul><li><strong>the real blast radius of "approve for the rest of the session" in the three-option prompt</strong> (the official example shows it expands to the whole command class)</li><li><strong>exit codes and output of <code>copilot -p</code> under CI (no TTY)</strong></li><li><strong>whether the <code>&amp;</code> prefix delegation</strong> really hands the task to the cloud and pulls it back via <code>/resume</code></li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Differences from the IDE form (differences only)</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Dimension</th><th>IDE form (see ./copilot.md)</th><th>CLI form (this entry)</th></tr></thead><tbody><tr><td>Entry</td><td>editor / website</td><td>terminal <code>copilot</code></td></tr><tr><td>Non-interactive</td><td>generally none</td><td><strong><code>copilot -p</code> / <code>--prompt</code></strong>, usable in scripts and CI</td></tr><tr><td>Approval</td><td>editor modes</td><td><strong>terminal three-option prompt + <code>--allow/--deny-tool</code> switches</strong></td></tr><tr><td>Cloud execution surface</td><td>website / coding agent</td><td><code>copilot --cloud</code> cloud sandbox (public preview)</td></tr><tr><td>Background delegation</td><td>dispatch via issue / comment trigger</td><td><strong>prefix <code>&amp;</code> hands the task to the cloud coding agent</strong></td></tr></tbody></table></div>
+<p><strong>Shared parts are not repeated</strong>: model lists, Copilot Memory, org policies all follow the <a href="/en/coding/copilot.html">IDE entry</a>; plan pricing always goes to the official plans page.</p>
+</div>
+<div class="panel is-slim">
+<h2>Programmatic use and installation</h2>
+<p>Installation is primarily via the npm package. The official prerequisite is <code>Node.js 22 or later</code>:</p>
+<pre class="code"><code>npm install -g @github/copilot</code></pre>
+<p>There are also WinGet (<code>winget install GitHub.Copilot</code>), Homebrew (<code>brew install --cask copilot-cli</code>) and an install script.</p>
+<p>Besides <code>/login</code>, authentication supports a <strong>fine-grained PAT with the "Copilot Requests" permission</strong>, placed in <code>GH_TOKEN</code> or <code>GITHUB_TOKEN</code>.</p>
+<p><strong>Official example</strong>: <code>copilot -p "Show me this week's commits and summarize them" --allow-tool='shell(git)'</code></p>
+<p>Add <code>-s</code> to output only the answer, omitting usage info.</p>
+</div>
+<div class="panel is-slim">
+<h2>Permissions and approvals (the axis most worth remembering)</h2>
+<p>The three-option approval prompt (official wording):</p>
+<pre class="code"><code>1. Yes
+2. Yes, and approve TOOL for the rest of the running session
+3. No, and tell Copilot what to do differently (Esc)</code></pre>
+<p><strong>Option 2 means more than it reads.</strong> Official example: after approving <code>rm ./this-file.txt</code>, any <code>rm</code> (e.g. <code>rm -rf ./*</code>) can run in the session. This is "allow by tool class", not per-command approval.</p>
+<p>Unattended mode uses three switches, and <strong>deny wins</strong>:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Switch</th><th>Effect</th></tr></thead><tbody><tr><td><code>--allow-all-tools</code></td><td>never ask for any tool</td></tr><tr><td><code>--allow-tool</code></td><td>allow specified tools</td></tr><tr><td><code>--deny-tool</code></td><td><strong>forbid specified tools, highest priority</strong></td></tr></tbody></table></div>
+<p>Values support <code>shell(COMMAND)</code> (down to the <code>shell(git push)</code> level), <code>write</code>, <code>MCP_SERVER_NAME</code>.</p>
+<p>Official warning: with <code>--allow-all-tools</code>, it has the same local access as you.</p>
+<p>Local files and commands all count, with no per-item confirmation.</p>
+<p>The official docs recommend using it in VMs / containers / offline environments to limit blast radius.</p>
+<p><strong>Trusted directories are not a hard sandbox.</strong> The official docs state plainly that the boundary</p>
+<blockquote>"is heuristic and GitHub does not guarantee that all files outside trusted directories will be protected"</blockquote>
+</div>
+<div class="panel is-slim">
+<h2>Quota: one premium request per prompt</h2>
+<p>Each prompt costs one premium request. Official wording:</p>
+<blockquote>Each time you submit a prompt to Copilot CLI, your monthly quota of Copilot premium requests is reduced by one.</blockquote>
+<p>Non-default models multiply by the model rate (e.g. Claude Opus 4.5 is 3x).</p>
+<p>The Free tier officially allows up to 50 premium requests per month. Paid tiers' built-in models (GPT-5 mini / GPT-4.1 / GPT-4o) do not consume quota.</p>
+<p>The official docs also announced that starting 2026-06-01, Copilot moves from request-based billing to usage-based billing.</p>
+<p>Plan pricing is on the official plans page (per this site's price-recording policy, no prices are stored here).</p>
+</div>
+<div class="panel is-slim">
+<h2>Verification notes</h2>
+<p>Basis for <code>confidence: verified</code>: execution modes and approval options were obtained. MCP / extension surfaces were also obtained.</p>
+<p>Context management and billing units were also obtained.</p>
+<p>Sources are official docs and the official repository.</p>
+<p><strong>The remaining gap is mainly "the exact mapping between the CLI and each Copilot plan".</strong> The official about page lists Pro/Pro+/Business/Enterprise, while the quickstart page says all Copilot plans — the two pages are inconsistent. This is recorded as "not stated by the official docs", listing the pages checked, without picking one on the vendor's behalf.</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/copilot.html">GitHub Copilot</a></span><span class="rel-n">the IDE form of the same product; model lists and the cloud coding agent are covered there</span></li>
+<li><span class="rel-t"><a href="/en/coding/claude-code-cli.html">Claude Code CLI</a></span><span class="rel-n">also a terminal coding agent; permission-approval granularity can be compared item by item</span></li>
+<li><span class="rel-t"><a href="/en/coding/codex-cli.html">Codex CLI</a></span><span class="rel-n">also a terminal coding agent, but the non-interactive and sandbox models differ (Codex defaults to a workspace sandbox; this CLI defaults to per-tool approval)</span></li>
+<li><span class="rel-t"><a href="/en/mcp/github-mcp.html">GitHub MCP Server</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/amp.html">Amp</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Sourcegraph's Amp: a frontier coding agent spanning CLI + cloud orbs + r</td></tr><tr><td><a href="/en/coding/claude-code-cli.html">Claude Code CLI</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A terminal coding and tool-execution product, with a CHANGELOG and Atom </td></tr><tr><td><a href="/en/coding/codex-cli.html">Codex CLI</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">OpenAI's official terminal coding agent, written in Rust, architecturall</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from GitHub</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/mcp/github-mcp.html"><span class="vp-cat">MCP tools</span>GitHub MCP Server</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

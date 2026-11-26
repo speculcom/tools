@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Agent frameworks: how to choose — 深水指南 | 投机取巧</title>
-  <meta name="description" content="Agent 框架。LangGraph / OpenAI Agents SDK / Google ADK / Claude Agent SDK 怎么选：按流程控制、会话状态、工具执行与部署边界对照四个 SDK。区分框架提供的机制与应用仍需配置的部分。" />
-  <link rel="canonical" href="https://tools.specul.com/mcp/guides/compare-agent-frameworks.html" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Agent frameworks: how to choose" />
-  <meta property="og:url" content="https://tools.specul.com/mcp/guides/compare-agent-frameworks.html" />
-  <meta property="og:title" content="Agent frameworks: how to choose — 深水指南 | 投机取巧" />
-  <meta property="og:description" content="Agent 框架。LangGraph / OpenAI Agents SDK / Google ADK / Claude Agent SDK 怎么选：按流程控制、会话状态、工具执行与部署边界对照四个 SDK。区分框架提供的机制与应用仍需配置的部分。" />
-  <meta property="og:image" content="https://specul.com/home-shots/og-home.jpg?v=20261123d" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:locale" content="zh_CN" />
-  <meta property="og:locale:alternate" content="en_US" />
-  <meta name="theme-color" content="#16121f" />
-  <link rel="icon" type="image/png" href="../../assets/brand/dandelion-favicon-site.png" />
-  <link rel="apple-touch-icon" href="../../assets/brand/dandelion-apple-touch-site.png" />
-  <script src="../../brand.js?v=37d1072be69b"></script>
-  <link rel="stylesheet" href="../../brand.css?v=37d1072be69b" />
-  <link rel="stylesheet" href="../../site.css" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Agent frameworks: how to choose","description":"Compare workflow control, session state, tool execution and deployment boundaries; distinguish SDK mechanisms from application configuration.","dateModified":"2026-11-04"}</script>
-</head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Agent frameworks: how to choose — 深水指南 | 投机取巧</title>
+<meta content="Agent 框架。LangGraph / OpenAI Agents SDK / Google ADK / Claude Agent SDK 怎么选：按流程控制、会话状态、工具执行与部署边界对照四个 SDK。区分框架提供的机制与应用仍需配置的部分。" name="description"/>
+<link href="https://tools.specul.com/mcp/guides/compare-agent-frameworks.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Agent frameworks: how to choose" property="og:site_name"/>
+<meta content="https://tools.specul.com/mcp/guides/compare-agent-frameworks.html" property="og:url"/>
+<meta content="Agent frameworks: how to choose — 深水指南 | 投机取巧" property="og:title"/>
+<meta content="Agent 框架。LangGraph / OpenAI Agents SDK / Google ADK / Claude Agent SDK 怎么选：按流程控制、会话状态、工具执行与部署边界对照四个 SDK。区分框架提供的机制与应用仍需配置的部分。" property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="zh_CN" property="og:locale"/>
+<meta content="en_US" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="../../assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="../../assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="../../brand.js?v=37d1072be69b"></script>
+<link href="../../brand.css?v=37d1072be69b" rel="stylesheet"/>
+<link href="../../site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Agent frameworks: how to choose","description":"Compare workflow control, session state, tool execution and deployment boundaries; distinguish SDK mechanisms from application configuration.","dateModified":"2026-11-04"}</script>
+<link href="https://tools.specul.com/mcp/guides/compare-agent-frameworks.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/guides/compare-agent-frameworks.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/guides/compare-agent-frameworks.html" hreflang="x-default" rel="alternate"/></head>
 <!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
      同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
      而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
@@ -32,178 +32,174 @@
      ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
      （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
 <body class="brand-ambient has-tabbar has-tabbar-1row">
-  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
-  <header class="site-header">
-    <div class="container site-bar">
-      <a class="brand" href="https://specul.com/" title="投机取巧">
-        <span class="brand-dot" aria-hidden="true"></span>
-        <span class="brand-text">
-          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
-          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
-        </span>
-      </a>
-      <nav class="nav-links" aria-label="站点导航">
-        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
-        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
-        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>工具</span><span data-en>Tools</span></a>
-        <a href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a>
-        <a href="https://demos.specul.com/"><span data-zh>作品演示</span><span data-en>Playground</span></a>
-        <a href="https://oss.specul.com/"><span data-zh>开源库</span><span data-en>OSS</span></a>
-        <a href="https://hardware.specul.com/"><span data-zh>硬件算力</span><span data-en>Compute</span></a>
-        <a href="https://papers.specul.com/"><span data-zh>AI 论文</span><span data-en>AI Papers</span></a>
-        <a href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a>
-        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
-      </nav>
-      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+<a class="t-skip" href="#main"><span data-zh="">跳到主要内容</span><span data-en="">Skip to main content</span></a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" data-en-name="Speculative Speculation" data-zh-name="投机取巧" id="markName">投机取巧</span>
+<span class="brand-sub" data-en-sub="" data-zh-sub="Speculative Speculation" id="markSub">Speculative Speculation</span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/"><span data-zh="">首页</span><span data-en="">Home</span></a>
+<a href="https://learn.specul.com/"><span data-zh="">学 AI</span><span data-en="">Learn</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span data-zh="">工具</span><span data-en="">Tools</span></a>
+<a href="https://models.specul.com/"><span data-zh="">模型</span><span data-en="">Models</span></a>
+<a href="https://demos.specul.com/"><span data-zh="">作品演示</span><span data-en="">Playground</span></a>
+<a href="https://oss.specul.com/"><span data-zh="">开源库</span><span data-en="">OSS</span></a>
+<a href="https://hardware.specul.com/"><span data-zh="">硬件算力</span><span data-en="">Compute</span></a>
+<a href="https://papers.specul.com/"><span data-zh="">AI 论文</span><span data-en="">AI Papers</span></a>
+<a href="https://chain.specul.com/"><span data-zh="">链</span><span data-en="">Chain</span></a>
+<a href="https://nav.specul.com/"><span data-zh="">AI 导航</span><span data-en="">AI Directory</span></a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
            放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
            （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
            链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
-      <span class="nav-tools">
-        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
-        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
-        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
-      </span>
-      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+<span class="nav-tools">
+<a aria-label="搜索" class="icon-btn" data-ui-aria-label-en="Search" data-ui-aria-label-zh="搜索" data-ui-title-en="Search all sites" data-ui-title-zh="搜索全站" href="https://specul.com/search.html" title="搜索全站"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="Switch to English" class="icon-btn" href="/en/mcp/guides/compare-agent-frameworks.html" hreflang="en" id="langBtn" lang="en" title="Switch to English">EN</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
            行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
            无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
            「导航被藏进一个点了没反应的按钮」。 -->
-      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
-        <i></i><i></i><i></i>
-      </button>
-    </div>
-  </header>
-  <div class="nav-scrim"></div>
-  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
-    <div class="nav-drawer-h">
-      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
-      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
-      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
-    </div>
-    <nav class="nav-drawer-list">
-      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>工具</span><span data-en>Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://models.specul.com/"><span><span data-zh>模型</span><span data-en>Models</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://demos.specul.com/"><span><span data-zh>作品演示</span><span data-en>Playground</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://oss.specul.com/"><span><span data-zh>开源库</span><span data-en>OSS</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://hardware.specul.com/" class="nav-group-start"><span><span data-zh>硬件算力</span><span data-en>Compute</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://papers.specul.com/"><span><span data-zh>AI 论文</span><span data-en>AI Papers</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://chain.specul.com/"><span><span data-zh>链</span><span data-en>Chain</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://nav.specul.com/" class="nav-group-start" data-nav-group="external"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">↗</span></a>
-    </nav>
-    <div class="nav-drawer-foot">
-      <p><span data-zh>内容站覆盖学、用、选、跑；AI 导航是站外的 AI 网站目录，点出去看。</span><span data-en>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</span></p>
-      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
-    </div>
-  </aside>
-  <main id="main">
-    <div class="container detail">
-      <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
-      <div class="detail-head">
-        <div>
-          <h1><span data-zh>Agent 框架。LangGraph / OpenAI Agents SDK / Google ADK / Claude Agent SDK 怎么选</span><span data-en>Agent frameworks: how to choose</span></h1>
-          <div class="vendor is-caps"><span data-zh>规划</span><span data-en>Planning</span></div>
-        </div>
-      </div>
-      <div class="panel-lead"><span data-zh><p>按流程控制、会话状态、工具执行与部署边界对照四个 SDK。区分框架提供的机制与应用仍需配置的部分。</p></span><span data-en><p>Compare workflow control, session state, tool execution and deployment boundaries; distinguish SDK mechanisms from application configuration.</p></span></div>
-
-
-
-
-      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>先分清两类</span><span data-en>Choose the level you need</span></a></li><li><a href="#guide-section-1"><span data-zh>四行对照</span><span data-en>Four frameworks</span></a></li><li><a href="#guide-section-2"><span data-zh>逐个适用条件</span><span data-en>When each fits</span></a></li><li><a href="#guide-section-3"><span data-zh>核验事实</span><span data-en>Verification scope</span></a></li><li><a href="#guide-section-4"><span data-zh>常见误判</span><span data-en>Common misreads</span></a></li></ul></nav>
-      <div class="panel is-slim" id="guide-section-0">
-        <h2><span data-zh>先分清两类</span><span data-en>Choose the level you need</span></h2>
-        <span data-zh><p>先写清需要控制的部分，再选 SDK。四个项目的抽象层不同。不能把“低层”解释成能力少，也不能把一种工具的执行方式推广到整个 SDK。</p>
-            <div class="tbl-wrap"><table><thead><tr><th>需求</th><th>对应检查点</th></tr></thead><tbody><tr><td>流程步骤与分支由应用明确控制</td><td>图、状态、节点与中断恢复</td></tr><tr><td>多个 Agent 协作</td><td>工具、handoff、调度与职责边界</td></tr><tr><td>跨轮保留上下文</td><td>Session 后端、保留范围与恢复方法</td></tr><tr><td>工具接触文件、命令或网络</td><td>执行进程、权限与隔离方式</td></tr></tbody></table></div></span><span data-en><p>Write down what your application needs to control before choosing an SDK. Their abstraction levels differ. Low-level does not mean fewer capabilities, and one kind of tool&#39;s execution model does not describe the whole SDK.</p>
-            <div class="tbl-wrap"><table><thead><tr><th>Requirement</th><th>Inspect</th></tr></thead><tbody><tr><td>Explicit workflow steps and branches</td><td>Graph, state, nodes and interruption recovery</td></tr><tr><td>Collaboration between agents</td><td>Tools, handoffs, scheduling and responsibilities</td></tr><tr><td>Context across turns</td><td>Session backend, retained scope and recovery</td></tr><tr><td>Tools accessing files, commands or networks</td><td>Execution process, permissions and isolation</td></tr></tbody></table></div></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-1">
-        <h2><span data-zh>四行对照</span><span data-en>Four frameworks</span></h2>
-        <span data-zh><div class="tbl-wrap"><table><thead><tr><th>项目</th><th>官方文档提供的机制</th><th>应用仍需决定</th></tr></thead><tbody><tr><td>LangGraph</td><td>有状态编排、持久执行、流式输出、人在回路</td><td>状态结构、存储配置、业务分支与工具权限</td></tr><tr><td>OpenAI Agents SDK</td><td>Agent 循环、工具、handoff、Sessions、人在回路</td><td>会话后端、工具授权、业务审批与模型适配</td></tr><tr><td>Google ADK</td><td>Agent、图工作流、顺序/循环/并行工作流、Runtime</td><td>流程设计、状态数据与部署配置</td></tr><tr><td>Claude Agent SDK</td><td>Claude Code 能力、自定义进程内 MCP 工具、外部 MCP 连接</td><td>CLI 进程与工具的权限、部署隔离、会话生命周期</td></tr></tbody></table></div>
-            <p>某机制存在不代表已为你的应用配置好。不同语言 SDK 和版本的覆盖也需分别检查。</p></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Project</th><th>Mechanisms in official documentation</th><th>Application decisions</th></tr></thead><tbody><tr><td>LangGraph</td><td>Stateful orchestration, durable execution, streaming, human-in-the-loop</td><td>State schema, storage configuration, branches and tool permissions</td></tr><tr><td>OpenAI Agents SDK</td><td>Agent loop, tools, handoffs, Sessions, human-in-the-loop</td><td>Session backend, tool authorisation, business approvals and model integration</td></tr><tr><td>Google ADK</td><td>Agents, graph workflows, sequential/loop/parallel workflows and runtime</td><td>Workflow design, state data and deployment configuration</td></tr><tr><td>Claude Agent SDK</td><td>Claude Code capabilities, custom in-process MCP tools and external MCP connections</td><td>CLI/tool permissions, deployment isolation and session lifecycle</td></tr></tbody></table></div>
-            <p>A mechanism&#39;s existence does not mean it is configured for your application. Check language-specific SDK and version coverage separately.</p></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-2">
-        <h2><span data-zh>逐个适用条件</span><span data-en>When each fits</span></h2>
-        <span data-zh><p><strong>LangGraph</strong></p>
-            <p>当你需要明确控制图、状态与恢复过程时。对照其持久执行与中断机制。开始前先写一个失败后如何恢复的流程，不只画成功路径。</p>
-            <p><strong>OpenAI Agents SDK</strong>：当你需要 Agent 循环、工具和 handoff 时。对照其运行机制。需要跨轮上下文时检查 Sessions，不能笼统写成“没有状态管理”。模型兼容性按实际工具调用与响应能力确认。</p>
-            <p><strong>Google ADK</strong></p>
-            <p>当任务需要图、顺序、循环或并行工作流时，对照对应机制。官方也提供 Agent Runtime。不能把它概括为“只管图、不跑 Agent”。</p>
-            <p><strong>Claude Agent SDK</strong>：把 Claude Code 能力接入应用，并自己定义工具时。对照 Python/TypeScript 版本。</p>
-            <p><code>create_sdk_mcp_server()</code> 创建的工具服务在 Python 应用进程内。这不表示整个 SDK 没有 CLI 子进程。也不能据此承诺端到端“无 IPC 开销”。</p></span><span data-en><p><strong>LangGraph</strong>: examine durable execution and interruption mechanisms when you need explicit graph, state and recovery control. Describe recovery from failure as well as the success path.</p>
-            <p><strong>OpenAI Agents SDK</strong>: examine its runtime when you need an agent loop, tools and handoffs. For cross-turn context, inspect Sessions rather than describing it as having no state management. Check model compatibility against the tool-call and response capabilities you actually need.</p>
-            <p><strong>Google ADK</strong>: examine graph, sequential, loop or parallel workflows for the appropriate task. Its documentation also provides an Agent Runtime; it is not merely a graph layer that cannot run agents.</p>
-            <p><strong>Claude Agent SDK</strong>: examine the Python or TypeScript version when embedding Claude Code capabilities and custom tools. <code>create_sdk_mcp_server()</code> creates a tool server inside the Python application. That does not mean the whole SDK has no CLI subprocess or guarantee zero end-to-end IPC overhead.</p></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-3">
-        <h2><span data-zh>核验事实</span><span data-en>Verification scope</span></h2>
-        <span data-zh><p>2026-11-04 复核了四份官方文档中与本页机制对照有关的内容。LangGraph 概览、OpenAI Agents SDK 概览、Google ADK 文档入口与 Claude Agent SDK Python 参考。</p>
-            <p>重点修正三处边界。OpenAI Agents SDK 有 Sessions 与人在回路机制。ADK 有 Agent Runtime。Claude 的进程内 MCP 工具不等于整个 SDK 单进程。</p>
-            <p>这里没有运行 SDK、做吞吐测试或核验所有版本的兼容性。</p></span><span data-en><p>On 2026-11-04, this page&#39;s mechanism comparison was checked against four official documents: the LangGraph overview, OpenAI Agents SDK introduction, Google ADK documentation and Claude Agent SDK Python reference.</p>
-            <p>Three boundaries were corrected: OpenAI Agents SDK has Sessions and human-in-the-loop mechanisms; ADK has an Agent Runtime; Claude&#39;s in-process MCP tools do not make the entire SDK single-process. No SDK was executed, no throughput was measured, and compatibility across all versions was not verified.</p></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-4">
-        <h2><span data-zh>常见误判</span><span data-en>Common misreads</span></h2>
-        <span data-zh><ul><li>把框架提供持久化机制当成已经完成数据备份；需要核对后端、保留与恢复。</li><li>把支持多个模型当成无成本替换。提示词、工具 schema 和评估要重新检查。</li><li>把人在回路当成自动安全；审批点必须覆盖真正会产生影响的动作。</li><li>把进程内工具当成不用隔离；文件、命令与网络权限仍需明确。</li><li>只按功能名对照，不检查所用语言、版本与部署环境。</li></ul></span><span data-en><ul><li>A persistence mechanism does not establish a working backup; check backend, retention and recovery.</li><li>Multiple-model support does not make substitution free; recheck prompts, tool schemas and evaluations.</li><li>Human-in-the-loop is not automatic safety; approval points must cover consequential actions.</li><li>In-process tools still need explicit file, command and network boundaries.</li><li>Feature names alone are insufficient; check language, version and deployment environment.</li></ul></span>
-      </div>
-<nav class="panel is-slim" aria-label="接下来做什么" data-ui-aria-label-zh="接下来做什么" data-ui-aria-label-en="What to do next">
-<h2><span data-zh>接下来做什么</span><span data-en>What to do next</span></h2><ul>
-<li><a href="playbook-service-agent.html"><span data-zh>规划有权限边界的服务流程</span><span data-en>Plan a service workflow with permission boundaries</span></a></li>
-<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh>核对结果与来源</span><span data-en>Verify the result and its sources</span></a></li>
-<li><a href="failure-library.html#by-symptom"><span data-zh>按症状排查失败</span><span data-en>Troubleshoot by symptom</span></a></li>
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name"><span data-zh="">投机取巧</span><span data-en="">Speculative Speculation</span></span>
+<span class="brand-sub" data-en-sub="" data-zh-sub="Speculative Speculation">Speculative Speculation</span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/"><span><span data-zh="">首页</span><span data-en="">Home</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/"><span><span data-zh="">学 AI</span><span data-en="">Learn</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span><span data-zh="">工具</span><span data-en="">Tools</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/"><span><span data-zh="">模型</span><span data-en="">Models</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/"><span><span data-zh="">作品演示</span><span data-en="">Playground</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/"><span><span data-zh="">开源库</span><span data-en="">OSS</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/"><span><span data-zh="">硬件算力</span><span data-en="">Compute</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/"><span><span data-zh="">AI 论文</span><span data-en="">AI Papers</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/"><span><span data-zh="">链</span><span data-en="">Chain</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/"><span><span data-zh="">AI 导航</span><span data-en="">AI Directory</span></span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p><span data-zh="">内容站覆盖学、用、选、跑；AI 导航是站外的 AI 网站目录，点出去看。</span><span data-en="">Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</span></p>
+<nav><a href="https://specul.com/legal.html"><span data-zh="">法律条款</span><span data-en="">Legal terms</span></a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<a class="back" href="../">← <span data-zh="">深水指南</span><span data-en="">Guides</span></a>
+<div class="detail-head">
+<div>
+<h1><span data-zh="">Agent 框架。LangGraph / OpenAI Agents SDK / Google ADK / Claude Agent SDK 怎么选</span><span data-en="">Agent frameworks: how to choose</span></h1>
+<div class="vendor is-caps"><span data-zh="">规划</span><span data-en="">Planning</span></div>
+</div>
+</div>
+<div class="panel-lead"><span data-zh=""><p>按流程控制、会话状态、工具执行与部署边界对照四个 SDK。区分框架提供的机制与应用仍需配置的部分。</p></span><span data-en=""><p>Compare workflow control, session state, tool execution and deployment boundaries; distinguish SDK mechanisms from application configuration.</p></span></div>
+<nav aria-label="文章目录" class="panel is-slim" data-ui-aria-label-en="Article contents" data-ui-aria-label-zh="文章目录"><p><span data-zh="">按问题阅读</span><span data-en="">On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh="">先分清两类</span><span data-en="">Choose the level you need</span></a></li><li><a href="#guide-section-1"><span data-zh="">四行对照</span><span data-en="">Four frameworks</span></a></li><li><a href="#guide-section-2"><span data-zh="">逐个适用条件</span><span data-en="">When each fits</span></a></li><li><a href="#guide-section-3"><span data-zh="">核验事实</span><span data-en="">Verification scope</span></a></li><li><a href="#guide-section-4"><span data-zh="">常见误判</span><span data-en="">Common misreads</span></a></li></ul></nav>
+<div class="panel is-slim" id="guide-section-0">
+<h2><span data-zh="">先分清两类</span><span data-en="">Choose the level you need</span></h2>
+<span data-zh=""><p>先写清需要控制的部分，再选 SDK。四个项目的抽象层不同。不能把“低层”解释成能力少，也不能把一种工具的执行方式推广到整个 SDK。</p>
+<div class="tbl-wrap"><table><thead><tr><th>需求</th><th>对应检查点</th></tr></thead><tbody><tr><td>流程步骤与分支由应用明确控制</td><td>图、状态、节点与中断恢复</td></tr><tr><td>多个 Agent 协作</td><td>工具、handoff、调度与职责边界</td></tr><tr><td>跨轮保留上下文</td><td>Session 后端、保留范围与恢复方法</td></tr><tr><td>工具接触文件、命令或网络</td><td>执行进程、权限与隔离方式</td></tr></tbody></table></div></span><span data-en=""><p>Write down what your application needs to control before choosing an SDK. Their abstraction levels differ. Low-level does not mean fewer capabilities, and one kind of tool's execution model does not describe the whole SDK.</p>
+<div class="tbl-wrap"><table><thead><tr><th>Requirement</th><th>Inspect</th></tr></thead><tbody><tr><td>Explicit workflow steps and branches</td><td>Graph, state, nodes and interruption recovery</td></tr><tr><td>Collaboration between agents</td><td>Tools, handoffs, scheduling and responsibilities</td></tr><tr><td>Context across turns</td><td>Session backend, retained scope and recovery</td></tr><tr><td>Tools accessing files, commands or networks</td><td>Execution process, permissions and isolation</td></tr></tbody></table></div></span>
+</div>
+<div class="panel is-slim" id="guide-section-1">
+<h2><span data-zh="">四行对照</span><span data-en="">Four frameworks</span></h2>
+<span data-zh=""><div class="tbl-wrap"><table><thead><tr><th>项目</th><th>官方文档提供的机制</th><th>应用仍需决定</th></tr></thead><tbody><tr><td>LangGraph</td><td>有状态编排、持久执行、流式输出、人在回路</td><td>状态结构、存储配置、业务分支与工具权限</td></tr><tr><td>OpenAI Agents SDK</td><td>Agent 循环、工具、handoff、Sessions、人在回路</td><td>会话后端、工具授权、业务审批与模型适配</td></tr><tr><td>Google ADK</td><td>Agent、图工作流、顺序/循环/并行工作流、Runtime</td><td>流程设计、状态数据与部署配置</td></tr><tr><td>Claude Agent SDK</td><td>Claude Code 能力、自定义进程内 MCP 工具、外部 MCP 连接</td><td>CLI 进程与工具的权限、部署隔离、会话生命周期</td></tr></tbody></table></div>
+<p>某机制存在不代表已为你的应用配置好。不同语言 SDK 和版本的覆盖也需分别检查。</p></span><span data-en=""><div class="tbl-wrap"><table><thead><tr><th>Project</th><th>Mechanisms in official documentation</th><th>Application decisions</th></tr></thead><tbody><tr><td>LangGraph</td><td>Stateful orchestration, durable execution, streaming, human-in-the-loop</td><td>State schema, storage configuration, branches and tool permissions</td></tr><tr><td>OpenAI Agents SDK</td><td>Agent loop, tools, handoffs, Sessions, human-in-the-loop</td><td>Session backend, tool authorisation, business approvals and model integration</td></tr><tr><td>Google ADK</td><td>Agents, graph workflows, sequential/loop/parallel workflows and runtime</td><td>Workflow design, state data and deployment configuration</td></tr><tr><td>Claude Agent SDK</td><td>Claude Code capabilities, custom in-process MCP tools and external MCP connections</td><td>CLI/tool permissions, deployment isolation and session lifecycle</td></tr></tbody></table></div>
+<p>A mechanism's existence does not mean it is configured for your application. Check language-specific SDK and version coverage separately.</p></span>
+</div>
+<div class="panel is-slim" id="guide-section-2">
+<h2><span data-zh="">逐个适用条件</span><span data-en="">When each fits</span></h2>
+<span data-zh=""><p><strong>LangGraph</strong></p>
+<p>当你需要明确控制图、状态与恢复过程时。对照其持久执行与中断机制。开始前先写一个失败后如何恢复的流程，不只画成功路径。</p>
+<p><strong>OpenAI Agents SDK</strong>：当你需要 Agent 循环、工具和 handoff 时。对照其运行机制。需要跨轮上下文时检查 Sessions，不能笼统写成“没有状态管理”。模型兼容性按实际工具调用与响应能力确认。</p>
+<p><strong>Google ADK</strong></p>
+<p>当任务需要图、顺序、循环或并行工作流时，对照对应机制。官方也提供 Agent Runtime。不能把它概括为“只管图、不跑 Agent”。</p>
+<p><strong>Claude Agent SDK</strong>：把 Claude Code 能力接入应用，并自己定义工具时。对照 Python/TypeScript 版本。</p>
+<p><code>create_sdk_mcp_server()</code> 创建的工具服务在 Python 应用进程内。这不表示整个 SDK 没有 CLI 子进程。也不能据此承诺端到端“无 IPC 开销”。</p></span><span data-en=""><p><strong>LangGraph</strong>: examine durable execution and interruption mechanisms when you need explicit graph, state and recovery control. Describe recovery from failure as well as the success path.</p>
+<p><strong>OpenAI Agents SDK</strong>: examine its runtime when you need an agent loop, tools and handoffs. For cross-turn context, inspect Sessions rather than describing it as having no state management. Check model compatibility against the tool-call and response capabilities you actually need.</p>
+<p><strong>Google ADK</strong>: examine graph, sequential, loop or parallel workflows for the appropriate task. Its documentation also provides an Agent Runtime; it is not merely a graph layer that cannot run agents.</p>
+<p><strong>Claude Agent SDK</strong>: examine the Python or TypeScript version when embedding Claude Code capabilities and custom tools. <code>create_sdk_mcp_server()</code> creates a tool server inside the Python application. That does not mean the whole SDK has no CLI subprocess or guarantee zero end-to-end IPC overhead.</p></span>
+</div>
+<div class="panel is-slim" id="guide-section-3">
+<h2><span data-zh="">核验事实</span><span data-en="">Verification scope</span></h2>
+<span data-zh=""><p>2026-11-04 复核了四份官方文档中与本页机制对照有关的内容。LangGraph 概览、OpenAI Agents SDK 概览、Google ADK 文档入口与 Claude Agent SDK Python 参考。</p>
+<p>重点修正三处边界。OpenAI Agents SDK 有 Sessions 与人在回路机制。ADK 有 Agent Runtime。Claude 的进程内 MCP 工具不等于整个 SDK 单进程。</p>
+<p>这里没有运行 SDK、做吞吐测试或核验所有版本的兼容性。</p></span><span data-en=""><p>On 2026-11-04, this page's mechanism comparison was checked against four official documents: the LangGraph overview, OpenAI Agents SDK introduction, Google ADK documentation and Claude Agent SDK Python reference.</p>
+<p>Three boundaries were corrected: OpenAI Agents SDK has Sessions and human-in-the-loop mechanisms; ADK has an Agent Runtime; Claude's in-process MCP tools do not make the entire SDK single-process. No SDK was executed, no throughput was measured, and compatibility across all versions was not verified.</p></span>
+</div>
+<div class="panel is-slim" id="guide-section-4">
+<h2><span data-zh="">常见误判</span><span data-en="">Common misreads</span></h2>
+<span data-zh=""><ul><li>把框架提供持久化机制当成已经完成数据备份；需要核对后端、保留与恢复。</li><li>把支持多个模型当成无成本替换。提示词、工具 schema 和评估要重新检查。</li><li>把人在回路当成自动安全；审批点必须覆盖真正会产生影响的动作。</li><li>把进程内工具当成不用隔离；文件、命令与网络权限仍需明确。</li><li>只按功能名对照，不检查所用语言、版本与部署环境。</li></ul></span><span data-en=""><ul><li>A persistence mechanism does not establish a working backup; check backend, retention and recovery.</li><li>Multiple-model support does not make substitution free; recheck prompts, tool schemas and evaluations.</li><li>Human-in-the-loop is not automatic safety; approval points must cover consequential actions.</li><li>In-process tools still need explicit file, command and network boundaries.</li><li>Feature names alone are insufficient; check language, version and deployment environment.</li></ul></span>
+</div>
+<nav aria-label="接下来做什么" class="panel is-slim" data-ui-aria-label-en="What to do next" data-ui-aria-label-zh="接下来做什么">
+<h2><span data-zh="">接下来做什么</span><span data-en="">What to do next</span></h2><ul>
+<li><a href="playbook-service-agent.html"><span data-zh="">规划有权限边界的服务流程</span><span data-en="">Plan a service workflow with permission boundaries</span></a></li>
+<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh="">核对结果与来源</span><span data-en="">Verify the result and its sources</span></a></li>
+<li><a href="failure-library.html#by-symptom"><span data-zh="">按症状排查失败</span><span data-en="">Troubleshoot by symptom</span></a></li>
 </ul></nav>
-      <div class="panel is-slim">
-        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
-        <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
-          <tr><td><span data-zh>LangGraph 官方概览（流程编排与持久化机制，2026-11-04）</span><span data-en>LangGraph official overview (orchestration and persistence mechanisms; 2026-11-04)</span></td><td><a href="https://docs.langchain.com/oss/python/langgraph/" target="_blank" rel="noopener"><span data-zh>https://docs.langchain.com/oss/python/langgraph/</span><span data-en>https://docs.langchain.com/oss/python/langgraph/</span></a></td></tr>
-          <tr><td><span data-zh>OpenAI Agents SDK 官方概览（Sessions 与人在回路，2026-11-04）</span><span data-en>OpenAI Agents SDK introduction (Sessions and human-in-the-loop; 2026-11-04)</span></td><td><a href="https://openai.github.io/openai-agents-python/" target="_blank" rel="noopener"><span data-zh>https://openai.github.io/openai-agents-python/</span><span data-en>https://openai.github.io/openai-agents-python/</span></a></td></tr>
-          <tr><td><span data-zh>Google ADK 官方文档（Agent、图工作流与 Runtime，2026-11-04）</span><span data-en>Google ADK documentation (agents, graph workflows and runtime; 2026-11-04)</span></td><td><a href="https://google.github.io/adk-docs/" target="_blank" rel="noopener"><span data-zh>https://google.github.io/adk-docs/</span><span data-en>https://google.github.io/adk-docs/</span></a></td></tr>
-          <tr><td><span data-zh>Claude Agent SDK Python 参考（进程内 MCP 工具与 CLI 子进程边界，2026-11-04）</span><span data-en>Claude Agent SDK Python reference (in-process MCP tools versus CLI subprocess; 2026-11-04)</span></td><td><a href="https://platform.claude.com/docs/en/agent-sdk/python" target="_blank" rel="noopener"><span data-zh>https://platform.claude.com/docs/en/agent-sdk/python</span><span data-en>https://platform.claude.com/docs/en/agent-sdk/python</span></a></td></tr>
-        </tbody></table></div>
-        <p class="guide-foot"><span data-zh>资料快照日期：2026-11-04；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Source snapshot: 2026-11-04; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
-      </div>
-    </div>
-  </main>
-  <footer class="site-footer foot-single">
-    <div class="container foot-line">
-      <div class="foot-brand">
-        <span class="foot-brand-main">
-          <span class="brand-dot" aria-hidden="true"></span>
-          <span class="foot-copy"><span data-zh>投机取巧 · specul.com</span><span data-en>Specul · specul.com</span></span>
-        </span>
-        <span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt"><span data-zh>内容 CC BY 4.0</span><span data-en>Content CC BY 4.0</span></a><span class="sep" aria-hidden="true">·</span><a href="https://specul.com/LICENSE.txt"><span data-zh>代码 MIT</span><span data-en>Code MIT</span></a><span class="sep" aria-hidden="true">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>源码</span><span data-en>Source</span></a></span>
-      </div>
-      <nav class="foot-sites" aria-label="Footer site links">
-        <a class="site-link" href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://tools.specul.com/"><span data-zh>工具</span><span data-en>Tools</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://demos.specul.com/"><span data-zh>演示</span><span data-en>Demos</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://oss.specul.com/"><span data-zh>开源</span><span data-en>OSS</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://hardware.specul.com/"><span data-zh>算力</span><span data-en>Compute</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://papers.specul.com/"><span data-zh>论文</span><span data-en>Papers</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://nav.specul.com/"><span data-zh>导航</span><span data-en>Directory</span></a>
-      </nav>
-      <nav class="foot-legal" aria-label="Legal and corrections">
-        <a href="https://specul.com/legal.html"><span data-zh>法律</span><span data-en>Legal</span></a><span class="sep" aria-hidden="true">·</span>
-        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私</span><span data-en>Privacy</span></a><span class="sep" aria-hidden="true">·</span>
-        <a href="https://specul.com/correct.html"><span data-zh>纠错</span><span data-en>Corrections</span></a>
-      </nav>
-    </div>
-  </footer>
-<nav class="nav-tabbar nav-tabbar-1row" aria-label="快捷导航">
-    <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
-    <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学AI</span><span data-en>Learn</span></a>
-    <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
-    <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
-    <a href="https://demos.specul.com/"><span class="ti" aria-hidden="true">▷</span><span data-zh>演示</span><span data-en>Demos</span></a>
-    <a href="https://oss.specul.com/"><span class="ti" aria-hidden="true">▧</span><span data-zh>开源</span><span data-en>OSS</span></a>
-    <a href="https://hardware.specul.com/"><span class="ti" aria-hidden="true">▣</span><span data-zh>算力</span><span data-en>Chips</span></a>
-    <a href="https://papers.specul.com/"><span class="ti" aria-hidden="true">▥</span><span data-zh>论文</span><span data-en>Papers</span></a>
-    <a href="https://chain.specul.com/"><span class="ti" aria-hidden="true">◇</span><span data-zh>链</span><span data-en>Chain</span></a>
-    <a href="https://nav.specul.com/" data-nav-group="external"><span class="ti" aria-hidden="true">↗</span><span data-zh>导航</span><span data-en>Nav</span></a>
+<div class="panel is-slim">
+<h2><span data-zh="">出处</span><span data-en="">Sources</span></h2>
+<div class="tbl-wrap"><table><thead><tr><th><span data-zh="">来源</span><span data-en="">Source</span></th><th><span data-zh="">链接</span><span data-en="">URL</span></th></tr></thead><tbody>
+<tr><td><span data-zh="">LangGraph 官方概览（流程编排与持久化机制，2026-11-04）</span><span data-en="">LangGraph official overview (orchestration and persistence mechanisms; 2026-11-04)</span></td><td><a href="https://docs.langchain.com/oss/python/langgraph/" rel="noopener" target="_blank"><span data-zh="">https://docs.langchain.com/oss/python/langgraph/</span><span data-en="">https://docs.langchain.com/oss/python/langgraph/</span></a></td></tr>
+<tr><td><span data-zh="">OpenAI Agents SDK 官方概览（Sessions 与人在回路，2026-11-04）</span><span data-en="">OpenAI Agents SDK introduction (Sessions and human-in-the-loop; 2026-11-04)</span></td><td><a href="https://openai.github.io/openai-agents-python/" rel="noopener" target="_blank"><span data-zh="">https://openai.github.io/openai-agents-python/</span><span data-en="">https://openai.github.io/openai-agents-python/</span></a></td></tr>
+<tr><td><span data-zh="">Google ADK 官方文档（Agent、图工作流与 Runtime，2026-11-04）</span><span data-en="">Google ADK documentation (agents, graph workflows and runtime; 2026-11-04)</span></td><td><a href="https://google.github.io/adk-docs/" rel="noopener" target="_blank"><span data-zh="">https://google.github.io/adk-docs/</span><span data-en="">https://google.github.io/adk-docs/</span></a></td></tr>
+<tr><td><span data-zh="">Claude Agent SDK Python 参考（进程内 MCP 工具与 CLI 子进程边界，2026-11-04）</span><span data-en="">Claude Agent SDK Python reference (in-process MCP tools versus CLI subprocess; 2026-11-04)</span></td><td><a href="https://platform.claude.com/docs/en/agent-sdk/python" rel="noopener" target="_blank"><span data-zh="">https://platform.claude.com/docs/en/agent-sdk/python</span><span data-en="">https://platform.claude.com/docs/en/agent-sdk/python</span></a></td></tr>
+</tbody></table></div>
+<p class="guide-foot"><span data-zh="">资料快照日期：2026-11-04；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en="">Source snapshot: 2026-11-04; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
+</div>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy"><span data-zh="">投机取巧 · specul.com</span><span data-en="">Specul · specul.com</span></span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt"><span data-zh="">内容 CC BY 4.0</span><span data-en="">Content CC BY 4.0</span></a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt"><span data-zh="">代码 MIT</span><span data-en="">Code MIT</span></a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank"><span data-zh="">源码</span><span data-en="">Source</span></a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/"><span data-zh="">首页</span><span data-en="">Home</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/"><span data-zh="">学 AI</span><span data-en="">Learn</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/"><span data-zh="">工具</span><span data-en="">Tools</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/"><span data-zh="">模型</span><span data-en="">Models</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/"><span data-zh="">演示</span><span data-en="">Demos</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/"><span data-zh="">开源</span><span data-en="">OSS</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/"><span data-zh="">算力</span><span data-en="">Compute</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/"><span data-zh="">论文</span><span data-en="">Papers</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/"><span data-zh="">链</span><span data-en="">Chain</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/"><span data-zh="">导航</span><span data-en="">Directory</span></a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/legal.html"><span data-zh="">法律</span><span data-en="">Legal</span></a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/legal.html#s8"><span data-zh="">隐私</span><span data-en="">Privacy</span></a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/correct.html"><span data-zh="">纠错</span><span data-en="">Corrections</span></a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/"><span aria-hidden="true" class="ti">◎</span><span data-zh="">首页</span><span data-en="">Home</span></a>
+<a href="https://learn.specul.com/"><span aria-hidden="true" class="ti">▤</span><span data-zh="">学AI</span><span data-en="">Learn</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span aria-hidden="true" class="ti">◈</span><span data-zh="">工具</span><span data-en="">Tools</span></a>
+<a href="https://models.specul.com/"><span aria-hidden="true" class="ti">▦</span><span data-zh="">模型</span><span data-en="">Models</span></a>
+<a href="https://demos.specul.com/"><span aria-hidden="true" class="ti">▷</span><span data-zh="">演示</span><span data-en="">Demos</span></a>
+<a href="https://oss.specul.com/"><span aria-hidden="true" class="ti">▧</span><span data-zh="">开源</span><span data-en="">OSS</span></a>
+<a href="https://hardware.specul.com/"><span aria-hidden="true" class="ti">▣</span><span data-zh="">算力</span><span data-en="">Chips</span></a>
+<a href="https://papers.specul.com/"><span aria-hidden="true" class="ti">▥</span><span data-zh="">论文</span><span data-en="">Papers</span></a>
+<a href="https://chain.specul.com/"><span aria-hidden="true" class="ti">◇</span><span data-zh="">链</span><span data-en="">Chain</span></a>
+<a data-nav-group="external" href="https://nav.specul.com/"><span aria-hidden="true" class="ti">↗</span><span data-zh="">导航</span><span data-en="">Nav</span></a>
 </nav>
 </body>
 </html>

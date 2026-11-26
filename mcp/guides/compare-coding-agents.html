@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Coding agents: terminal vs IDE vs cloud — 深水指南 | 投机取巧</title>
-  <meta name="description" content="写代码：终端 / IDE / 云端 Agent 怎么选：先定执行面（终端 / IDE / 云端），再比权限模型、后台续跑与仓库上下文。给每个候选写明适用条件与一句「什么情况下选另一个」。" />
-  <link rel="canonical" href="https://tools.specul.com/mcp/guides/compare-coding-agents.html" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Coding agents: terminal vs IDE vs cloud" />
-  <meta property="og:url" content="https://tools.specul.com/mcp/guides/compare-coding-agents.html" />
-  <meta property="og:title" content="Coding agents: terminal vs IDE vs cloud — 深水指南 | 投机取巧" />
-  <meta property="og:description" content="写代码：终端 / IDE / 云端 Agent 怎么选：先定执行面（终端 / IDE / 云端），再比权限模型、后台续跑与仓库上下文。给每个候选写明适用条件与一句「什么情况下选另一个」。" />
-  <meta property="og:image" content="https://specul.com/home-shots/og-home.jpg?v=20261123d" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:locale" content="zh_CN" />
-  <meta property="og:locale:alternate" content="en_US" />
-  <meta name="theme-color" content="#16121f" />
-  <link rel="icon" type="image/png" href="../../assets/brand/dandelion-favicon-site.png" />
-  <link rel="apple-touch-icon" href="../../assets/brand/dandelion-apple-touch-site.png" />
-  <script src="../../brand.js?v=37d1072be69b"></script>
-  <link rel="stylesheet" href="../../brand.css?v=37d1072be69b" />
-  <link rel="stylesheet" href="../../site.css" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Coding agents: terminal vs IDE vs cloud","description":"Fix the execution surface first (terminal, IDE, cloud), then compare permission models, background continuation and repo context; each candidate gets its conditions and one line on when to pick another.","dateModified":"2026-11-03"}</script>
-</head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Coding agents: terminal vs IDE vs cloud — 深水指南 | 投机取巧</title>
+<meta content="写代码：终端 / IDE / 云端 Agent 怎么选：先定执行面（终端 / IDE / 云端），再比权限模型、后台续跑与仓库上下文。给每个候选写明适用条件与一句「什么情况下选另一个」。" name="description"/>
+<link href="https://tools.specul.com/mcp/guides/compare-coding-agents.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Coding agents: terminal vs IDE vs cloud" property="og:site_name"/>
+<meta content="https://tools.specul.com/mcp/guides/compare-coding-agents.html" property="og:url"/>
+<meta content="Coding agents: terminal vs IDE vs cloud — 深水指南 | 投机取巧" property="og:title"/>
+<meta content="写代码：终端 / IDE / 云端 Agent 怎么选：先定执行面（终端 / IDE / 云端），再比权限模型、后台续跑与仓库上下文。给每个候选写明适用条件与一句「什么情况下选另一个」。" property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="zh_CN" property="og:locale"/>
+<meta content="en_US" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="../../assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="../../assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="../../brand.js?v=37d1072be69b"></script>
+<link href="../../brand.css?v=37d1072be69b" rel="stylesheet"/>
+<link href="../../site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Coding agents: terminal vs IDE vs cloud","description":"Fix the execution surface first (terminal, IDE, cloud), then compare permission models, background continuation and repo context; each candidate gets its conditions and one line on when to pick another.","dateModified":"2026-11-03"}</script>
+<link href="https://tools.specul.com/mcp/guides/compare-coding-agents.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/guides/compare-coding-agents.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/guides/compare-coding-agents.html" hreflang="x-default" rel="alternate"/></head>
 <!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
      同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
      而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
@@ -32,194 +32,190 @@
      ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
      （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
 <body class="brand-ambient has-tabbar has-tabbar-1row">
-  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
-  <header class="site-header">
-    <div class="container site-bar">
-      <a class="brand" href="https://specul.com/" title="投机取巧">
-        <span class="brand-dot" aria-hidden="true"></span>
-        <span class="brand-text">
-          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
-          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
-        </span>
-      </a>
-      <nav class="nav-links" aria-label="站点导航">
-        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
-        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
-        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>工具</span><span data-en>Tools</span></a>
-        <a href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a>
-        <a href="https://demos.specul.com/"><span data-zh>作品演示</span><span data-en>Playground</span></a>
-        <a href="https://oss.specul.com/"><span data-zh>开源库</span><span data-en>OSS</span></a>
-        <a href="https://hardware.specul.com/"><span data-zh>硬件算力</span><span data-en>Compute</span></a>
-        <a href="https://papers.specul.com/"><span data-zh>AI 论文</span><span data-en>AI Papers</span></a>
-        <a href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a>
-        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
-      </nav>
-      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+<a class="t-skip" href="#main"><span data-zh="">跳到主要内容</span><span data-en="">Skip to main content</span></a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" data-en-name="Speculative Speculation" data-zh-name="投机取巧" id="markName">投机取巧</span>
+<span class="brand-sub" data-en-sub="" data-zh-sub="Speculative Speculation" id="markSub">Speculative Speculation</span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/"><span data-zh="">首页</span><span data-en="">Home</span></a>
+<a href="https://learn.specul.com/"><span data-zh="">学 AI</span><span data-en="">Learn</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span data-zh="">工具</span><span data-en="">Tools</span></a>
+<a href="https://models.specul.com/"><span data-zh="">模型</span><span data-en="">Models</span></a>
+<a href="https://demos.specul.com/"><span data-zh="">作品演示</span><span data-en="">Playground</span></a>
+<a href="https://oss.specul.com/"><span data-zh="">开源库</span><span data-en="">OSS</span></a>
+<a href="https://hardware.specul.com/"><span data-zh="">硬件算力</span><span data-en="">Compute</span></a>
+<a href="https://papers.specul.com/"><span data-zh="">AI 论文</span><span data-en="">AI Papers</span></a>
+<a href="https://chain.specul.com/"><span data-zh="">链</span><span data-en="">Chain</span></a>
+<a href="https://nav.specul.com/"><span data-zh="">AI 导航</span><span data-en="">AI Directory</span></a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
            放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
            （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
            链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
-      <span class="nav-tools">
-        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
-        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
-        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
-      </span>
-      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+<span class="nav-tools">
+<a aria-label="搜索" class="icon-btn" data-ui-aria-label-en="Search" data-ui-aria-label-zh="搜索" data-ui-title-en="Search all sites" data-ui-title-zh="搜索全站" href="https://specul.com/search.html" title="搜索全站"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="Switch to English" class="icon-btn" href="/en/mcp/guides/compare-coding-agents.html" hreflang="en" id="langBtn" lang="en" title="Switch to English">EN</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
            行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
            无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
            「导航被藏进一个点了没反应的按钮」。 -->
-      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
-        <i></i><i></i><i></i>
-      </button>
-    </div>
-  </header>
-  <div class="nav-scrim"></div>
-  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
-    <div class="nav-drawer-h">
-      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
-      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
-      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
-    </div>
-    <nav class="nav-drawer-list">
-      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>工具</span><span data-en>Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://models.specul.com/"><span><span data-zh>模型</span><span data-en>Models</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://demos.specul.com/"><span><span data-zh>作品演示</span><span data-en>Playground</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://oss.specul.com/"><span><span data-zh>开源库</span><span data-en>OSS</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://hardware.specul.com/" class="nav-group-start"><span><span data-zh>硬件算力</span><span data-en>Compute</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://papers.specul.com/"><span><span data-zh>AI 论文</span><span data-en>AI Papers</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://chain.specul.com/"><span><span data-zh>链</span><span data-en>Chain</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://nav.specul.com/" class="nav-group-start" data-nav-group="external"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">↗</span></a>
-    </nav>
-    <div class="nav-drawer-foot">
-      <p><span data-zh>内容站覆盖学、用、选、跑；AI 导航是站外的 AI 网站目录，点出去看。</span><span data-en>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</span></p>
-      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
-    </div>
-  </aside>
-  <main id="main">
-    <div class="container detail">
-      <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
-      <div class="detail-head">
-        <div>
-          <h1><span data-zh>写代码：终端 / IDE / 云端 Agent 怎么选</span><span data-en>Coding agents: terminal vs IDE vs cloud</span></h1>
-          <div class="vendor is-caps"><span data-zh>规划</span><span data-en>Planning</span></div>
-        </div>
-      </div>
-      <div class="panel-lead"><span data-zh><p>先定执行面（终端 / IDE / 云端），再比权限模型、后台续跑与仓库上下文。给每个候选写明适用条件与一句「什么情况下选另一个」。</p></span><span data-en><p>Fix the execution surface first (terminal, IDE, cloud), then compare permission models, background continuation and repo context; each candidate gets its conditions and one line on when to pick another.</p></span></div>
-
-
-
-
-      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>先定执行面，再挑产品</span><span data-en>Pick the surface first</span></a></li><li><a href="#guide-section-1"><span data-zh>六项对照</span><span data-en>Six dimensions</span></a></li><li><a href="#guide-section-2"><span data-zh>每个候选的适用条件</span><span data-en>When each fits</span></a></li><li><a href="#guide-section-3"><span data-zh>核验事实</span><span data-en>Dated facts</span></a></li><li><a href="#guide-section-4"><span data-zh>常见误判</span><span data-en>Common misreads</span></a></li></ul></nav>
-      <div class="panel is-slim" id="guide-section-0">
-        <h2><span data-zh>先定执行面，再挑产品</span><span data-en>Pick the surface first</span></h2>
-        <span data-zh><p>写代码的 Agent 先分三类执行面，价格和模型都不是第一决策点：</p>
-            <div class="tbl-wrap"><table><thead><tr><th>执行面</th><th>代表</th><th>运行位置</th><th>适合的活</th></tr></thead><tbody><tr><td>终端</td><td>Claude Code CLI、Codex CLI、Gemini CLI</td><td>你的 shell 与仓库</td><td>已有仓库、要脚本化、要看清每条命令</td></tr><tr><td>IDE</td><td>Cursor、GitHub Copilot、Antigravity</td><td>编辑器进程或厂商云</td><td>边写边看、要补全与内联 diff</td></tr><tr><td>云端</td><td>Devin、Cursor 云端 Agent</td><td>厂商工作区</td><td>工单批量委派、合上笔记本还要继续跑</td></tr></tbody></table></div>
-            <p><strong>先问一句：改动是在你机器上跑，还是交给厂商云跑？</strong> 这一步会直接排除一半候选。</p></span><span data-en><p>First distinguish three execution surfaces for a coding agent. Price and model choice come after deciding where work runs:</p>
-            <div class="tbl-wrap"><table><thead><tr><th>Surface</th><th>Examples</th><th>Execution location</th><th>Work to consider</th></tr></thead><tbody><tr><td>Terminal</td><td>Claude Code CLI, Codex CLI, Gemini CLI</td><td>Your shell and repository</td><td>Existing repositories, scripting, inspectable commands</td></tr><tr><td>IDE</td><td>Cursor, GitHub Copilot, Antigravity</td><td>Editor process or vendor cloud</td><td>Editing with completion and inline diffs</td></tr><tr><td>Cloud</td><td>Devin, Cursor Cloud Agents</td><td>Vendor workspace</td><td>Delegated issues and work continuing after the laptop closes</td></tr></tbody></table></div>
-            <p><strong>Ask whether changes run on your machine or in a vendor cloud.</strong> This can eliminate unsuitable candidates before other comparisons.</p></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-1">
-        <h2><span data-zh>六项对照</span><span data-en>Six dimensions</span></h2>
-        <span data-zh><div class="tbl-wrap"><table><thead><tr><th>维度</th><th>Claude Code CLI</th><th>Codex CLI</th><th>Gemini CLI</th><th>Cursor</th><th>Devin</th><th>Antigravity</th></tr></thead><tbody><tr><td>执行面</td><td>终端</td><td>终端</td><td>终端</td><td>IDE + 云端</td><td>云端工作区</td><td>桌面 / CLI / IDE / SDK</td></tr><tr><td>权限控制</td><td>权限粒度可配置（官方文档与 CHANGELOG 记录）</td><td>命令执行需确认，app server 架构</td><td>非交互脚本模式，适合 CI</td><td>编辑器内确认 + 云端</td><td>云端沙箱，工单派单</td><td>官方三档命令执行策略</td></tr><tr><td>后台续跑</td><td>本地进程</td><td>线程续接</td><td>脚本模式</td><td>合上笔记本仍继续（官方 2026 架构更新）</td><td>原生异步</td><td>harness 常驻</td></tr><tr><td>模型选择</td><td>Anthropic 模型线</td><td>OpenAI 模型线</td><td>Gemini 模型线</td><td>多模型可切</td><td>厂商托管</td><td>Gemini 线</td></tr><tr><td>许可/源代码</td><td>源码可见，All rights reserved</td><td>仓库可见</td><td>Apache-2.0</td><td>闭源</td><td>闭源</td><td>闭源</td></tr><tr><td>价格档位</td><td>订阅或 API，档位见官方定价页</td><td>ChatGPT 档位或 API key</td><td>免费配额 + 付费 API</td><td>Hobby / Pro / Teams / Enterprise</td><td>团队报价</td><td>随 Google AI 计划</td></tr></tbody></table></div>
-            <p>价格不写数字（本站纪律 D9）；档位名与配额以各官方定价页为准。</p></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Dimension</th><th>Claude Code CLI</th><th>Codex CLI</th><th>Gemini CLI</th><th>Cursor</th><th>Devin</th><th>Antigravity</th></tr></thead><tbody><tr><td>Surface</td><td>Terminal</td><td>Terminal</td><td>Terminal</td><td>IDE and cloud</td><td>Cloud workspace</td><td>Desktop / CLI / IDE / SDK</td></tr><tr><td>Permissions</td><td>Configurable granularity, documented in docs and CHANGELOG</td><td>Execution approvals; app-server architecture</td><td>Non-interactive scripting for CI</td><td>Editor approvals and cloud controls</td><td>Cloud sandbox, issue assignment</td><td>Three documented command-execution policies</td></tr><tr><td>Continuation</td><td>Local process</td><td>Thread continuation</td><td>Script mode</td><td>Cloud work can continue after the laptop closes</td><td>Asynchronous work</td><td>Persistent harness</td></tr><tr><td>Model line in snapshot</td><td>Anthropic</td><td>OpenAI</td><td>Gemini</td><td>Multiple models</td><td>Vendor-managed</td><td>Gemini</td></tr><tr><td>Licence/source</td><td>Source-visible, All rights reserved</td><td>Repository available</td><td>Apache-2.0</td><td>Closed-source</td><td>Closed-source</td><td>Closed-source</td></tr><tr><td>Pricing basis</td><td>Subscription or API; official pricing tiers</td><td>ChatGPT tier or API key</td><td>Free quota and paid API</td><td>Hobby / Pro / Teams / Enterprise</td><td>Team quotation</td><td>Google AI plan</td></tr></tbody></table></div>
-            <p>No prices are collected here. Current tier names and quotas must be checked on each official pricing page.</p></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-2">
-        <h2><span data-zh>每个候选的适用条件</span><span data-en>When each fits</span></h2>
-        <span data-zh><p><strong>Claude Code CLI</strong>：适合已有仓库、想把每一步命令摊在终端里看的人。使用前需核对命令、文件与工具的授权范围。能力边界是模型线固定在 Anthropic，要多模型得另配。<strong>什么情况下选另一个</strong></p>
-            <p>要 IDE 内联补全就选 Cursor 或 Copilot。要完全开源可改的 CLI 就选 Gemini CLI。</p>
-            <p><strong>Codex CLI</strong></p>
-            <p>适合 OpenAI 生态、要线程续接与脚本化的人。Rust 实现、app server 是它的架构特征。<strong>什么情况下选另一个</strong></p>
-            <p>团队已经押注 Anthropic，就选 Claude Code CLI。</p>
-            <p><strong>Gemini CLI</strong></p>
-            <p>Apache-2.0、npx 免安装、支持 MCP 与非交互脚本。它适合 CI 与教学。<strong>什么情况下选另一个</strong></p>
-            <p>要对照权限控制与变更记录时，再查 Claude Code CLI 的具体配置。</p>
-            <p><strong>Cursor</strong></p>
-            <p>适合要 IDE 体验、又要云端 Agent 续跑的人。官方区分云端 VM 与自托管机器的工具执行。自托管执行不等于模型请求、日志与全部数据都不出网，仍需核对网络设置与条款。<strong>什么情况下选另一个</strong></p>
-            <p>只要终端、不想装编辑器，就选三家 CLI 之一。</p>
-            <p><strong>Devin</strong></p>
-            <p>适合把工单批量丢给云端、拿草稿 PR 再接管的人。Slack / Linear / Jira 可直接派单。<strong>什么情况下选另一个</strong></p>
-            <p>改动必须在你本机、不能出网，就选终端或 IDE。</p>
-            <p><strong>Antigravity</strong></p>
-            <p>适合团队在桌面指挥中心、CLI、IDE 扩展与 Python SDK 之间共用一套 harness。官方给了三档命令执行策略。<strong>什么情况下选另一个</strong></p>
-            <p>只需要编辑器内工作流，可对照 Cursor 的 IDE 形态。</p></span><span data-en><p><strong>Claude Code CLI</strong>: a candidate for working in an existing repository with commands visible in a terminal. Check authorisation for commands, files and tools. Its default model line in this snapshot is Anthropic; other model requirements need separate configuration checks. Consider Cursor or Copilot for IDE completion, or Gemini CLI for an Apache-2.0 CLI you can modify.</p>
-            <p><strong>Codex CLI</strong>: a candidate for the OpenAI ecosystem, thread continuation and scripting. Rust implementation and the app server are recorded architectural features. Consider Claude Code CLI when the team&#39;s requirements are tied to Anthropic.</p>
-            <p><strong>Gemini CLI</strong>: Apache-2.0, launchable through <code>npx</code>, with MCP and non-interactive scripting for CI and teaching. For a permission-control comparison, examine Claude Code CLI&#39;s specific settings and change records.</p>
-            <p><strong>Cursor</strong>: a candidate for an IDE workflow alongside cloud continuation. Official documentation distinguishes cloud VMs from tool execution on self-hosted machines. Self-hosted execution does not establish that model requests, logs and all other data stay offline; inspect network settings and terms separately. Consider a CLI when you only need a terminal.</p>
-            <p><strong>Devin</strong>: a candidate for delegating issues to a cloud workspace and reviewing draft PRs afterwards, with Slack / Linear / Jira integrations. If work must run locally without outbound data, investigate the actual local execution and data path of terminal or IDE options.</p>
-            <p><strong>Antigravity</strong>: a candidate for sharing a harness across desktop, CLI, IDE extension and Python SDK, with three documented command policies in this snapshot. If you only need an editor workflow, compare Cursor&#39;s IDE form.</p></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-3">
-        <h2><span data-zh>核验事实</span><span data-en>Dated facts</span></h2>
-        <span data-zh><ol><li value="1">Gemini CLI 采用 Apache-2.0，支持 <code>npx</code> 启动与 MCP（仓库 README，2026-10 快照）。</li><li value="2">Cursor 云端 Agent 在独立云端 VM 中运行，不依赖本机持续联网。官方另提供自托管机器执行路线。执行位置不能单独证明全链路不出网（官方 Cloud Agents 文档，2026-11-04 局部复核）。</li><li value="3">Antigravity 的命令执行策略为官方显式三档（2026-10-13 release notes 核验）。</li><li value="4">Claude Code CLI 有独立 CHANGELOG 与 Atom feed。源码可见但许可证为 All rights reserved（仓库页）。</li><li value="5">Codex CLI 为 Rust 实现，架构以 app server 与线程续接为核心（仓库与 releases）。</li></ol>
-            <p>上表区分原有核验快照与第 2 项的局部复核日。版本发布日以官方 releases 为准，局部复核不代表全文重新核验。</p></span><span data-en><ol><li value="1">Gemini CLI is Apache-2.0-licensed and supports <code>npx</code> startup and MCP (repository README; October 2026 snapshot).</li><li value="2">Cursor Cloud Agents run in isolated cloud VMs without requiring the local machine to stay online; a separate self-hosted machine execution path is documented. Execution location alone does not prove end-to-end offline processing (official Cloud Agents documentation; this item rechecked 2026-11-04).</li><li value="3">Antigravity explicitly documents three command-execution policies (release notes checked 2026-10-13).</li><li value="4">Claude Code CLI has a separate CHANGELOG and Atom feed; source is visible but the licence is All rights reserved (repository snapshot).</li><li value="5">Codex CLI is implemented in Rust, with app-server architecture and thread continuation recorded in its repository and releases.</li></ol>
-            <p>These entries distinguish earlier verification snapshots from the scoped recheck of item 2. Use official releases for publication dates; a scoped recheck is not a new full-guide verification.</p></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-4">
-        <h2><span data-zh>常见误判</span><span data-en>Common misreads</span></h2>
-        <span data-zh><ul><li>把「能跑终端」当成「能安全跑终端」：权限模型不同，默认确认与白名单是两回事。</li><li>把「云端续跑」当成「不用看」：草稿 PR 仍要人审，云端只省等待时间。</li><li>把「开源 CLI」当成「模型也开源」：CLI 的许可证与模型权重许可是两份文件。</li><li>把「支持 MCP」当成「工具即插即用」：server 的权限与数据范围仍要逐条看。</li></ul></span><span data-en><ul><li>Terminal execution does not establish safe execution. Default confirmations and allowlists are different permission designs.</li><li>Cloud continuation does not remove review; a draft PR still needs inspection.</li><li>An open-source CLI does not establish model-weight rights; their licences are separate.</li><li>MCP support does not make tools ready for unrestricted use. Inspect each server&#39;s permissions and data scope.</li></ul></span>
-      </div>
-<nav class="panel is-slim" aria-label="接下来做什么" data-ui-aria-label-zh="接下来做什么" data-ui-aria-label-en="What to do next">
-<h2><span data-zh>接下来做什么</span><span data-en>What to do next</span></h2><ul>
-<li><a href="playbook-fix-a-bug.html"><span data-zh>用一个问题练习修复流程</span><span data-en>Work through a bug-fix workflow</span></a></li>
-<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh>核对结果与来源</span><span data-en>Verify the result and its sources</span></a></li>
-<li><a href="failure-library.html#by-symptom"><span data-zh>按症状排查失败</span><span data-en>Troubleshoot by symptom</span></a></li>
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name"><span data-zh="">投机取巧</span><span data-en="">Speculative Speculation</span></span>
+<span class="brand-sub" data-en-sub="" data-zh-sub="Speculative Speculation">Speculative Speculation</span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/"><span><span data-zh="">首页</span><span data-en="">Home</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/"><span><span data-zh="">学 AI</span><span data-en="">Learn</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span><span data-zh="">工具</span><span data-en="">Tools</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/"><span><span data-zh="">模型</span><span data-en="">Models</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/"><span><span data-zh="">作品演示</span><span data-en="">Playground</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/"><span><span data-zh="">开源库</span><span data-en="">OSS</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/"><span><span data-zh="">硬件算力</span><span data-en="">Compute</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/"><span><span data-zh="">AI 论文</span><span data-en="">AI Papers</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/"><span><span data-zh="">链</span><span data-en="">Chain</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/"><span><span data-zh="">AI 导航</span><span data-en="">AI Directory</span></span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p><span data-zh="">内容站覆盖学、用、选、跑；AI 导航是站外的 AI 网站目录，点出去看。</span><span data-en="">Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</span></p>
+<nav><a href="https://specul.com/legal.html"><span data-zh="">法律条款</span><span data-en="">Legal terms</span></a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<a class="back" href="../">← <span data-zh="">深水指南</span><span data-en="">Guides</span></a>
+<div class="detail-head">
+<div>
+<h1><span data-zh="">写代码：终端 / IDE / 云端 Agent 怎么选</span><span data-en="">Coding agents: terminal vs IDE vs cloud</span></h1>
+<div class="vendor is-caps"><span data-zh="">规划</span><span data-en="">Planning</span></div>
+</div>
+</div>
+<div class="panel-lead"><span data-zh=""><p>先定执行面（终端 / IDE / 云端），再比权限模型、后台续跑与仓库上下文。给每个候选写明适用条件与一句「什么情况下选另一个」。</p></span><span data-en=""><p>Fix the execution surface first (terminal, IDE, cloud), then compare permission models, background continuation and repo context; each candidate gets its conditions and one line on when to pick another.</p></span></div>
+<nav aria-label="文章目录" class="panel is-slim" data-ui-aria-label-en="Article contents" data-ui-aria-label-zh="文章目录"><p><span data-zh="">按问题阅读</span><span data-en="">On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh="">先定执行面，再挑产品</span><span data-en="">Pick the surface first</span></a></li><li><a href="#guide-section-1"><span data-zh="">六项对照</span><span data-en="">Six dimensions</span></a></li><li><a href="#guide-section-2"><span data-zh="">每个候选的适用条件</span><span data-en="">When each fits</span></a></li><li><a href="#guide-section-3"><span data-zh="">核验事实</span><span data-en="">Dated facts</span></a></li><li><a href="#guide-section-4"><span data-zh="">常见误判</span><span data-en="">Common misreads</span></a></li></ul></nav>
+<div class="panel is-slim" id="guide-section-0">
+<h2><span data-zh="">先定执行面，再挑产品</span><span data-en="">Pick the surface first</span></h2>
+<span data-zh=""><p>写代码的 Agent 先分三类执行面，价格和模型都不是第一决策点：</p>
+<div class="tbl-wrap"><table><thead><tr><th>执行面</th><th>代表</th><th>运行位置</th><th>适合的活</th></tr></thead><tbody><tr><td>终端</td><td>Claude Code CLI、Codex CLI、Gemini CLI</td><td>你的 shell 与仓库</td><td>已有仓库、要脚本化、要看清每条命令</td></tr><tr><td>IDE</td><td>Cursor、GitHub Copilot、Antigravity</td><td>编辑器进程或厂商云</td><td>边写边看、要补全与内联 diff</td></tr><tr><td>云端</td><td>Devin、Cursor 云端 Agent</td><td>厂商工作区</td><td>工单批量委派、合上笔记本还要继续跑</td></tr></tbody></table></div>
+<p><strong>先问一句：改动是在你机器上跑，还是交给厂商云跑？</strong> 这一步会直接排除一半候选。</p></span><span data-en=""><p>First distinguish three execution surfaces for a coding agent. Price and model choice come after deciding where work runs:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Surface</th><th>Examples</th><th>Execution location</th><th>Work to consider</th></tr></thead><tbody><tr><td>Terminal</td><td>Claude Code CLI, Codex CLI, Gemini CLI</td><td>Your shell and repository</td><td>Existing repositories, scripting, inspectable commands</td></tr><tr><td>IDE</td><td>Cursor, GitHub Copilot, Antigravity</td><td>Editor process or vendor cloud</td><td>Editing with completion and inline diffs</td></tr><tr><td>Cloud</td><td>Devin, Cursor Cloud Agents</td><td>Vendor workspace</td><td>Delegated issues and work continuing after the laptop closes</td></tr></tbody></table></div>
+<p><strong>Ask whether changes run on your machine or in a vendor cloud.</strong> This can eliminate unsuitable candidates before other comparisons.</p></span>
+</div>
+<div class="panel is-slim" id="guide-section-1">
+<h2><span data-zh="">六项对照</span><span data-en="">Six dimensions</span></h2>
+<span data-zh=""><div class="tbl-wrap"><table><thead><tr><th>维度</th><th>Claude Code CLI</th><th>Codex CLI</th><th>Gemini CLI</th><th>Cursor</th><th>Devin</th><th>Antigravity</th></tr></thead><tbody><tr><td>执行面</td><td>终端</td><td>终端</td><td>终端</td><td>IDE + 云端</td><td>云端工作区</td><td>桌面 / CLI / IDE / SDK</td></tr><tr><td>权限控制</td><td>权限粒度可配置（官方文档与 CHANGELOG 记录）</td><td>命令执行需确认，app server 架构</td><td>非交互脚本模式，适合 CI</td><td>编辑器内确认 + 云端</td><td>云端沙箱，工单派单</td><td>官方三档命令执行策略</td></tr><tr><td>后台续跑</td><td>本地进程</td><td>线程续接</td><td>脚本模式</td><td>合上笔记本仍继续（官方 2026 架构更新）</td><td>原生异步</td><td>harness 常驻</td></tr><tr><td>模型选择</td><td>Anthropic 模型线</td><td>OpenAI 模型线</td><td>Gemini 模型线</td><td>多模型可切</td><td>厂商托管</td><td>Gemini 线</td></tr><tr><td>许可/源代码</td><td>源码可见，All rights reserved</td><td>仓库可见</td><td>Apache-2.0</td><td>闭源</td><td>闭源</td><td>闭源</td></tr><tr><td>价格档位</td><td>订阅或 API，档位见官方定价页</td><td>ChatGPT 档位或 API key</td><td>免费配额 + 付费 API</td><td>Hobby / Pro / Teams / Enterprise</td><td>团队报价</td><td>随 Google AI 计划</td></tr></tbody></table></div>
+<p>价格不写数字（本站纪律 D9）；档位名与配额以各官方定价页为准。</p></span><span data-en=""><div class="tbl-wrap"><table><thead><tr><th>Dimension</th><th>Claude Code CLI</th><th>Codex CLI</th><th>Gemini CLI</th><th>Cursor</th><th>Devin</th><th>Antigravity</th></tr></thead><tbody><tr><td>Surface</td><td>Terminal</td><td>Terminal</td><td>Terminal</td><td>IDE and cloud</td><td>Cloud workspace</td><td>Desktop / CLI / IDE / SDK</td></tr><tr><td>Permissions</td><td>Configurable granularity, documented in docs and CHANGELOG</td><td>Execution approvals; app-server architecture</td><td>Non-interactive scripting for CI</td><td>Editor approvals and cloud controls</td><td>Cloud sandbox, issue assignment</td><td>Three documented command-execution policies</td></tr><tr><td>Continuation</td><td>Local process</td><td>Thread continuation</td><td>Script mode</td><td>Cloud work can continue after the laptop closes</td><td>Asynchronous work</td><td>Persistent harness</td></tr><tr><td>Model line in snapshot</td><td>Anthropic</td><td>OpenAI</td><td>Gemini</td><td>Multiple models</td><td>Vendor-managed</td><td>Gemini</td></tr><tr><td>Licence/source</td><td>Source-visible, All rights reserved</td><td>Repository available</td><td>Apache-2.0</td><td>Closed-source</td><td>Closed-source</td><td>Closed-source</td></tr><tr><td>Pricing basis</td><td>Subscription or API; official pricing tiers</td><td>ChatGPT tier or API key</td><td>Free quota and paid API</td><td>Hobby / Pro / Teams / Enterprise</td><td>Team quotation</td><td>Google AI plan</td></tr></tbody></table></div>
+<p>No prices are collected here. Current tier names and quotas must be checked on each official pricing page.</p></span>
+</div>
+<div class="panel is-slim" id="guide-section-2">
+<h2><span data-zh="">每个候选的适用条件</span><span data-en="">When each fits</span></h2>
+<span data-zh=""><p><strong>Claude Code CLI</strong>：适合已有仓库、想把每一步命令摊在终端里看的人。使用前需核对命令、文件与工具的授权范围。能力边界是模型线固定在 Anthropic，要多模型得另配。<strong>什么情况下选另一个</strong></p>
+<p>要 IDE 内联补全就选 Cursor 或 Copilot。要完全开源可改的 CLI 就选 Gemini CLI。</p>
+<p><strong>Codex CLI</strong></p>
+<p>适合 OpenAI 生态、要线程续接与脚本化的人。Rust 实现、app server 是它的架构特征。<strong>什么情况下选另一个</strong></p>
+<p>团队已经押注 Anthropic，就选 Claude Code CLI。</p>
+<p><strong>Gemini CLI</strong></p>
+<p>Apache-2.0、npx 免安装、支持 MCP 与非交互脚本。它适合 CI 与教学。<strong>什么情况下选另一个</strong></p>
+<p>要对照权限控制与变更记录时，再查 Claude Code CLI 的具体配置。</p>
+<p><strong>Cursor</strong></p>
+<p>适合要 IDE 体验、又要云端 Agent 续跑的人。官方区分云端 VM 与自托管机器的工具执行。自托管执行不等于模型请求、日志与全部数据都不出网，仍需核对网络设置与条款。<strong>什么情况下选另一个</strong></p>
+<p>只要终端、不想装编辑器，就选三家 CLI 之一。</p>
+<p><strong>Devin</strong></p>
+<p>适合把工单批量丢给云端、拿草稿 PR 再接管的人。Slack / Linear / Jira 可直接派单。<strong>什么情况下选另一个</strong></p>
+<p>改动必须在你本机、不能出网，就选终端或 IDE。</p>
+<p><strong>Antigravity</strong></p>
+<p>适合团队在桌面指挥中心、CLI、IDE 扩展与 Python SDK 之间共用一套 harness。官方给了三档命令执行策略。<strong>什么情况下选另一个</strong></p>
+<p>只需要编辑器内工作流，可对照 Cursor 的 IDE 形态。</p></span><span data-en=""><p><strong>Claude Code CLI</strong>: a candidate for working in an existing repository with commands visible in a terminal. Check authorisation for commands, files and tools. Its default model line in this snapshot is Anthropic; other model requirements need separate configuration checks. Consider Cursor or Copilot for IDE completion, or Gemini CLI for an Apache-2.0 CLI you can modify.</p>
+<p><strong>Codex CLI</strong>: a candidate for the OpenAI ecosystem, thread continuation and scripting. Rust implementation and the app server are recorded architectural features. Consider Claude Code CLI when the team's requirements are tied to Anthropic.</p>
+<p><strong>Gemini CLI</strong>: Apache-2.0, launchable through <code>npx</code>, with MCP and non-interactive scripting for CI and teaching. For a permission-control comparison, examine Claude Code CLI's specific settings and change records.</p>
+<p><strong>Cursor</strong>: a candidate for an IDE workflow alongside cloud continuation. Official documentation distinguishes cloud VMs from tool execution on self-hosted machines. Self-hosted execution does not establish that model requests, logs and all other data stay offline; inspect network settings and terms separately. Consider a CLI when you only need a terminal.</p>
+<p><strong>Devin</strong>: a candidate for delegating issues to a cloud workspace and reviewing draft PRs afterwards, with Slack / Linear / Jira integrations. If work must run locally without outbound data, investigate the actual local execution and data path of terminal or IDE options.</p>
+<p><strong>Antigravity</strong>: a candidate for sharing a harness across desktop, CLI, IDE extension and Python SDK, with three documented command policies in this snapshot. If you only need an editor workflow, compare Cursor's IDE form.</p></span>
+</div>
+<div class="panel is-slim" id="guide-section-3">
+<h2><span data-zh="">核验事实</span><span data-en="">Dated facts</span></h2>
+<span data-zh=""><ol><li value="1">Gemini CLI 采用 Apache-2.0，支持 <code>npx</code> 启动与 MCP（仓库 README，2026-10 快照）。</li><li value="2">Cursor 云端 Agent 在独立云端 VM 中运行，不依赖本机持续联网。官方另提供自托管机器执行路线。执行位置不能单独证明全链路不出网（官方 Cloud Agents 文档，2026-11-04 局部复核）。</li><li value="3">Antigravity 的命令执行策略为官方显式三档（2026-10-13 release notes 核验）。</li><li value="4">Claude Code CLI 有独立 CHANGELOG 与 Atom feed。源码可见但许可证为 All rights reserved（仓库页）。</li><li value="5">Codex CLI 为 Rust 实现，架构以 app server 与线程续接为核心（仓库与 releases）。</li></ol>
+<p>上表区分原有核验快照与第 2 项的局部复核日。版本发布日以官方 releases 为准，局部复核不代表全文重新核验。</p></span><span data-en=""><ol><li value="1">Gemini CLI is Apache-2.0-licensed and supports <code>npx</code> startup and MCP (repository README; October 2026 snapshot).</li><li value="2">Cursor Cloud Agents run in isolated cloud VMs without requiring the local machine to stay online; a separate self-hosted machine execution path is documented. Execution location alone does not prove end-to-end offline processing (official Cloud Agents documentation; this item rechecked 2026-11-04).</li><li value="3">Antigravity explicitly documents three command-execution policies (release notes checked 2026-10-13).</li><li value="4">Claude Code CLI has a separate CHANGELOG and Atom feed; source is visible but the licence is All rights reserved (repository snapshot).</li><li value="5">Codex CLI is implemented in Rust, with app-server architecture and thread continuation recorded in its repository and releases.</li></ol>
+<p>These entries distinguish earlier verification snapshots from the scoped recheck of item 2. Use official releases for publication dates; a scoped recheck is not a new full-guide verification.</p></span>
+</div>
+<div class="panel is-slim" id="guide-section-4">
+<h2><span data-zh="">常见误判</span><span data-en="">Common misreads</span></h2>
+<span data-zh=""><ul><li>把「能跑终端」当成「能安全跑终端」：权限模型不同，默认确认与白名单是两回事。</li><li>把「云端续跑」当成「不用看」：草稿 PR 仍要人审，云端只省等待时间。</li><li>把「开源 CLI」当成「模型也开源」：CLI 的许可证与模型权重许可是两份文件。</li><li>把「支持 MCP」当成「工具即插即用」：server 的权限与数据范围仍要逐条看。</li></ul></span><span data-en=""><ul><li>Terminal execution does not establish safe execution. Default confirmations and allowlists are different permission designs.</li><li>Cloud continuation does not remove review; a draft PR still needs inspection.</li><li>An open-source CLI does not establish model-weight rights; their licences are separate.</li><li>MCP support does not make tools ready for unrestricted use. Inspect each server's permissions and data scope.</li></ul></span>
+</div>
+<nav aria-label="接下来做什么" class="panel is-slim" data-ui-aria-label-en="What to do next" data-ui-aria-label-zh="接下来做什么">
+<h2><span data-zh="">接下来做什么</span><span data-en="">What to do next</span></h2><ul>
+<li><a href="playbook-fix-a-bug.html"><span data-zh="">用一个问题练习修复流程</span><span data-en="">Work through a bug-fix workflow</span></a></li>
+<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh="">核对结果与来源</span><span data-en="">Verify the result and its sources</span></a></li>
+<li><a href="failure-library.html#by-symptom"><span data-zh="">按症状排查失败</span><span data-en="">Troubleshoot by symptom</span></a></li>
 </ul></nav>
-      <div class="panel is-slim">
-        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
-        <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
-          <tr><td><span data-zh>Anthropic · Claude Code 仓库与 CHANGELOG（源码可见、All rights reserved；2026-10 快照）</span><span data-en>Anthropic: Claude Code repository and CHANGELOG (source-visible, All rights reserved; October 2026 snapshot)</span></td><td><a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener"><span data-zh>https://github.com/anthropics/claude-code</span><span data-en>https://github.com/anthropics/claude-code</span></a></td></tr>
-          <tr><td><span data-zh>OpenAI · Codex CLI 仓库与 releases（Rust 实现、app server；2026-10 快照）</span><span data-en>OpenAI: Codex CLI repository and releases (Rust, app server; October 2026 snapshot)</span></td><td><a href="https://github.com/openai/codex" target="_blank" rel="noopener"><span data-zh>https://github.com/openai/codex</span><span data-en>https://github.com/openai/codex</span></a></td></tr>
-          <tr><td><span data-zh>Google · Gemini CLI 仓库（Apache-2.0、npx 启动、MCP；2026-10 快照）</span><span data-en>Google: Gemini CLI repository (Apache-2.0, npx, MCP; October 2026 snapshot)</span></td><td><a href="https://github.com/google-gemini/gemini-cli" target="_blank" rel="noopener"><span data-zh>https://github.com/google-gemini/gemini-cli</span><span data-en>https://github.com/google-gemini/gemini-cli</span></a></td></tr>
-          <tr><td><span data-zh>Cursor · 官方文档（云端 Agent 的执行位置与网络控制；2026-11-04 局部复核）</span><span data-en>Cursor: official documentation (Cloud Agent execution location and network controls; scoped recheck 2026-11-04)</span></td><td><a href="https://cursor.com/docs" target="_blank" rel="noopener"><span data-zh>https://cursor.com/docs</span><span data-en>https://cursor.com/docs</span></a></td></tr>
-          <tr><td><span data-zh>Devin · 官方文档（云端工作区、工单到草稿 PR）</span><span data-en>Devin: official documentation (cloud workspaces and issues to draft PRs)</span></td><td><a href="https://docs.devin.ai/" target="_blank" rel="noopener"><span data-zh>https://docs.devin.ai</span><span data-en>https://docs.devin.ai/</span></a></td></tr>
-          <tr><td><span data-zh>Google Antigravity · 官方站（桌面/CLI/IDE/SDK 四面共用 harness，2026-10-13 核验）</span><span data-en>Google Antigravity: official site (shared harness across desktop, CLI, IDE and SDK; checked 2026-10-13)</span></td><td><a href="https://antigravity.google/" target="_blank" rel="noopener"><span data-zh>https://antigravity.google</span><span data-en>https://antigravity.google/</span></a></td></tr>
-        </tbody></table></div>
-        <p class="guide-foot"><span data-zh>资料快照日期：2026-11-03；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Source snapshot: 2026-11-03; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
-      </div>
-      <p class="t-sm topics-line"><span data-zh>这页出现在主题：</span><span data-en>This page appears in: </span><a href="https://specul.com/topic-code.html"><span data-zh>用 AI 写代码</span><span data-en>Write code with AI</span></a> · <a href="https://specul.com/topic-game.html"><span data-zh>用 AI 做游戏</span><span data-en>Make games with AI</span></a> · <a href="https://specul.com/topic-prompts.html"><span data-zh>把 AI 用对</span><span data-en>Use AI well</span></a></p>
-    </div>
-  </main>
-  <footer class="site-footer foot-single">
-    <div class="container foot-line">
-      <div class="foot-brand">
-        <span class="foot-brand-main">
-          <span class="brand-dot" aria-hidden="true"></span>
-          <span class="foot-copy"><span data-zh>投机取巧 · specul.com</span><span data-en>Specul · specul.com</span></span>
-        </span>
-        <span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt"><span data-zh>内容 CC BY 4.0</span><span data-en>Content CC BY 4.0</span></a><span class="sep" aria-hidden="true">·</span><a href="https://specul.com/LICENSE.txt"><span data-zh>代码 MIT</span><span data-en>Code MIT</span></a><span class="sep" aria-hidden="true">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>源码</span><span data-en>Source</span></a></span>
-      </div>
-      <nav class="foot-sites" aria-label="Footer site links">
-        <a class="site-link" href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://tools.specul.com/"><span data-zh>工具</span><span data-en>Tools</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://demos.specul.com/"><span data-zh>演示</span><span data-en>Demos</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://oss.specul.com/"><span data-zh>开源</span><span data-en>OSS</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://hardware.specul.com/"><span data-zh>算力</span><span data-en>Compute</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://papers.specul.com/"><span data-zh>论文</span><span data-en>Papers</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://nav.specul.com/"><span data-zh>导航</span><span data-en>Directory</span></a>
-      </nav>
-      <nav class="foot-legal" aria-label="Legal and corrections">
-        <a href="https://specul.com/legal.html"><span data-zh>法律</span><span data-en>Legal</span></a><span class="sep" aria-hidden="true">·</span>
-        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私</span><span data-en>Privacy</span></a><span class="sep" aria-hidden="true">·</span>
-        <a href="https://specul.com/correct.html"><span data-zh>纠错</span><span data-en>Corrections</span></a>
-      </nav>
-    </div>
-  </footer>
-<nav class="nav-tabbar nav-tabbar-1row" aria-label="快捷导航">
-    <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
-    <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学AI</span><span data-en>Learn</span></a>
-    <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
-    <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
-    <a href="https://demos.specul.com/"><span class="ti" aria-hidden="true">▷</span><span data-zh>演示</span><span data-en>Demos</span></a>
-    <a href="https://oss.specul.com/"><span class="ti" aria-hidden="true">▧</span><span data-zh>开源</span><span data-en>OSS</span></a>
-    <a href="https://hardware.specul.com/"><span class="ti" aria-hidden="true">▣</span><span data-zh>算力</span><span data-en>Chips</span></a>
-    <a href="https://papers.specul.com/"><span class="ti" aria-hidden="true">▥</span><span data-zh>论文</span><span data-en>Papers</span></a>
-    <a href="https://chain.specul.com/"><span class="ti" aria-hidden="true">◇</span><span data-zh>链</span><span data-en>Chain</span></a>
-    <a href="https://nav.specul.com/" data-nav-group="external"><span class="ti" aria-hidden="true">↗</span><span data-zh>导航</span><span data-en>Nav</span></a>
+<div class="panel is-slim">
+<h2><span data-zh="">出处</span><span data-en="">Sources</span></h2>
+<div class="tbl-wrap"><table><thead><tr><th><span data-zh="">来源</span><span data-en="">Source</span></th><th><span data-zh="">链接</span><span data-en="">URL</span></th></tr></thead><tbody>
+<tr><td><span data-zh="">Anthropic · Claude Code 仓库与 CHANGELOG（源码可见、All rights reserved；2026-10 快照）</span><span data-en="">Anthropic: Claude Code repository and CHANGELOG (source-visible, All rights reserved; October 2026 snapshot)</span></td><td><a href="https://github.com/anthropics/claude-code" rel="noopener" target="_blank"><span data-zh="">https://github.com/anthropics/claude-code</span><span data-en="">https://github.com/anthropics/claude-code</span></a></td></tr>
+<tr><td><span data-zh="">OpenAI · Codex CLI 仓库与 releases（Rust 实现、app server；2026-10 快照）</span><span data-en="">OpenAI: Codex CLI repository and releases (Rust, app server; October 2026 snapshot)</span></td><td><a href="https://github.com/openai/codex" rel="noopener" target="_blank"><span data-zh="">https://github.com/openai/codex</span><span data-en="">https://github.com/openai/codex</span></a></td></tr>
+<tr><td><span data-zh="">Google · Gemini CLI 仓库（Apache-2.0、npx 启动、MCP；2026-10 快照）</span><span data-en="">Google: Gemini CLI repository (Apache-2.0, npx, MCP; October 2026 snapshot)</span></td><td><a href="https://github.com/google-gemini/gemini-cli" rel="noopener" target="_blank"><span data-zh="">https://github.com/google-gemini/gemini-cli</span><span data-en="">https://github.com/google-gemini/gemini-cli</span></a></td></tr>
+<tr><td><span data-zh="">Cursor · 官方文档（云端 Agent 的执行位置与网络控制；2026-11-04 局部复核）</span><span data-en="">Cursor: official documentation (Cloud Agent execution location and network controls; scoped recheck 2026-11-04)</span></td><td><a href="https://cursor.com/docs" rel="noopener" target="_blank"><span data-zh="">https://cursor.com/docs</span><span data-en="">https://cursor.com/docs</span></a></td></tr>
+<tr><td><span data-zh="">Devin · 官方文档（云端工作区、工单到草稿 PR）</span><span data-en="">Devin: official documentation (cloud workspaces and issues to draft PRs)</span></td><td><a href="https://docs.devin.ai/" rel="noopener" target="_blank"><span data-zh="">https://docs.devin.ai</span><span data-en="">https://docs.devin.ai/</span></a></td></tr>
+<tr><td><span data-zh="">Google Antigravity · 官方站（桌面/CLI/IDE/SDK 四面共用 harness，2026-10-13 核验）</span><span data-en="">Google Antigravity: official site (shared harness across desktop, CLI, IDE and SDK; checked 2026-10-13)</span></td><td><a href="https://antigravity.google/" rel="noopener" target="_blank"><span data-zh="">https://antigravity.google</span><span data-en="">https://antigravity.google/</span></a></td></tr>
+</tbody></table></div>
+<p class="guide-foot"><span data-zh="">资料快照日期：2026-11-03；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en="">Source snapshot: 2026-11-03; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
+</div>
+<p class="t-sm topics-line"><span data-zh="">这页出现在主题：</span><span data-en="">This page appears in: </span><a href="https://specul.com/topic-code.html"><span data-zh="">用 AI 写代码</span><span data-en="">Write code with AI</span></a> · <a href="https://specul.com/topic-game.html"><span data-zh="">用 AI 做游戏</span><span data-en="">Make games with AI</span></a> · <a href="https://specul.com/topic-prompts.html"><span data-zh="">把 AI 用对</span><span data-en="">Use AI well</span></a></p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy"><span data-zh="">投机取巧 · specul.com</span><span data-en="">Specul · specul.com</span></span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt"><span data-zh="">内容 CC BY 4.0</span><span data-en="">Content CC BY 4.0</span></a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt"><span data-zh="">代码 MIT</span><span data-en="">Code MIT</span></a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank"><span data-zh="">源码</span><span data-en="">Source</span></a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/"><span data-zh="">首页</span><span data-en="">Home</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/"><span data-zh="">学 AI</span><span data-en="">Learn</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/"><span data-zh="">工具</span><span data-en="">Tools</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/"><span data-zh="">模型</span><span data-en="">Models</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/"><span data-zh="">演示</span><span data-en="">Demos</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/"><span data-zh="">开源</span><span data-en="">OSS</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/"><span data-zh="">算力</span><span data-en="">Compute</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/"><span data-zh="">论文</span><span data-en="">Papers</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/"><span data-zh="">链</span><span data-en="">Chain</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/"><span data-zh="">导航</span><span data-en="">Directory</span></a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/legal.html"><span data-zh="">法律</span><span data-en="">Legal</span></a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/legal.html#s8"><span data-zh="">隐私</span><span data-en="">Privacy</span></a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/correct.html"><span data-zh="">纠错</span><span data-en="">Corrections</span></a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/"><span aria-hidden="true" class="ti">◎</span><span data-zh="">首页</span><span data-en="">Home</span></a>
+<a href="https://learn.specul.com/"><span aria-hidden="true" class="ti">▤</span><span data-zh="">学AI</span><span data-en="">Learn</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span aria-hidden="true" class="ti">◈</span><span data-zh="">工具</span><span data-en="">Tools</span></a>
+<a href="https://models.specul.com/"><span aria-hidden="true" class="ti">▦</span><span data-zh="">模型</span><span data-en="">Models</span></a>
+<a href="https://demos.specul.com/"><span aria-hidden="true" class="ti">▷</span><span data-zh="">演示</span><span data-en="">Demos</span></a>
+<a href="https://oss.specul.com/"><span aria-hidden="true" class="ti">▧</span><span data-zh="">开源</span><span data-en="">OSS</span></a>
+<a href="https://hardware.specul.com/"><span aria-hidden="true" class="ti">▣</span><span data-zh="">算力</span><span data-en="">Chips</span></a>
+<a href="https://papers.specul.com/"><span aria-hidden="true" class="ti">▥</span><span data-zh="">论文</span><span data-en="">Papers</span></a>
+<a href="https://chain.specul.com/"><span aria-hidden="true" class="ti">◇</span><span data-zh="">链</span><span data-en="">Chain</span></a>
+<a data-nav-group="external" href="https://nav.specul.com/"><span aria-hidden="true" class="ti">↗</span><span data-zh="">导航</span><span data-en="">Nav</span></a>
 </nav>
 </body>
 </html>

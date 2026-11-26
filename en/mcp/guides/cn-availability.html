@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>How to read mainland availability | Tools</title>
+<meta content="Three cn fields in the tool dossiers answer whether a product connects from the mainland, who operates it and whether it is filed; this page gives the…" name="description"/>
+<link href="https://tools.specul.com/en/mcp/guides/cn-availability.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/mcp/guides/cn-availability.html" property="og:url"/>
+<meta content="How to read mainland availability | Tools" property="og:title"/>
+<meta content="Three cn fields in the tool dossiers answer whether a product connects from the mainland, who operates it and whether it is filed; this page gives the…" property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to read mainland availability","description":"Three cn fields in the tool dossiers answer whether a product connects from the mainland, who operates it and whether it is filed; this page gives the…","dateModified":"2026-11-03"}</script>
+<meta content="How to read mainland availability | Tools" name="twitter:title"/><meta content="Three cn fields in the tool dossiers answer whether a product connects from the mainland, who operates it and whether it is filed; this page gives the…" name="twitter:description"/><link href="https://tools.specul.com/mcp/guides/cn-availability.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/guides/cn-availability.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/guides/cn-availability.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/mcp/guides/cn-availability.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<a class="back" href="/en/mcp/">← Guides</a>
+<div class="detail-head">
+<div>
+<h1>How to read mainland availability</h1>
+<div class="vendor is-caps">Guardrails &amp; safety</div>
+</div>
+</div>
+<div class="panel-lead"><p>Three cn fields in the tool dossiers answer whether a product connects from the mainland, who operates it and whether it is filed; this page gives the counting rules, limits and a self-check method for 225 dossiers, with no real-time guarantee.</p></div>
+<nav aria-label="Article contents" class="panel is-slim"><p>On this page</p><ul><li><a href="#guide-section-0">What this page is not</a></li><li><a href="#guide-section-1">Three fields</a></li><li><a href="#guide-section-2">Distribution across 225 dossiers</a></li><li><a href="#guide-section-3">How direct was measured</a></li><li><a href="#guide-section-4">Reading the filing field</a></li><li><a href="#guide-section-5">Self-check in four steps</a></li><li><a href="#guide-section-6">Common misreads</a></li><li><a href="#guide-section-7">Dated facts</a></li></ul></nav>
+<div class="panel is-slim" id="guide-section-0">
+<h2>What this page is not</h2>
+<p>This page explains how to read fields; it is not a live availability database.</p>
+<ul><li>A direct-access result records a date and network path, not a guarantee that access works now.</li><li>Filing fields record evidence found in official notices, not a legal determination about your deployment.</li><li>Fields are factual records, not a recommendation ranking.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-1">
+<h2>Three fields</h2>
+<p>Each tool dossier contains a <code>cn:</code> block with three classifications:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Field</th><th>Values</th><th>Question</th><th>Use</th></tr></thead><tbody><tr><td><code>origin</code></td><td><code>domestic</code> / <code>foreign</code></td><td>Where is the operating entity based?</td><td>An entity clue, not proof of data residency or legal obligations</td></tr><tr><td><code>direct</code></td><td><code>yes</code> / <code>no</code> / <code>unknown</code></td><td>Was the official site reachable directly from the recorded mainland network?</td><td>Assess your network requirements; unknown means not confirmed</td></tr><tr><td><code>filing</code></td><td><code>filed</code> / <code>not-filed</code> / <code>unknown</code></td><td>Was a matching filing recorded?</td><td>Relevant context for services offered to the mainland public</td></tr></tbody></table></div>
+<p>Read accompanying <code>direct_note</code>, <code>filing_note</code> and <code>verified</code> values for probe dates, domains and notice batches before using the classification.</p>
+</div>
+<div class="panel is-slim" id="guide-section-2">
+<h2>Distribution across 225 dossiers</h2>
+<p>Counts come from the stored <code>cn</code> fields. Dossier checks range from 2026-10-20 to 2026-11-03; the recorded aggregation date is 2026-11-03.</p>
+<div class="tbl-wrap"><table><thead><tr><th>Dimension</th><th>Stored distribution</th></tr></thead><tbody><tr><td>Entity</td><td>37 domestic / 188 foreign</td></tr><tr><td>Direct access</td><td>169 yes / 46 no / 10 unknown</td></tr><tr><td>Filing</td><td>20 filed / 190 not-filed / 15 unknown</td></tr></tbody></table></div>
+<p>Read the fields separately. A foreign entity does not establish that it does not serve the mainland public. Not-filed does not establish a violation or exemption. These are stored classifications, not individual legal determinations for all 225 products.</p>
+</div>
+<div class="panel is-slim" id="guide-section-3">
+<h2>How direct was measured</h2>
+<p><code>direct</code> is not a ping result or someone else's anecdote. The dossier convention is:</p>
+<ol><li value="1">Choose the main product domain and key official, terms, pricing and documentation pages.</li><li value="2">Request them from the recorded mainland network, retaining status and timing.</li><li value="3">Record 200 as yes; timeout, DNS failure or reset as no; probe-environment restrictions such as anti-bot 403 as unknown.</li><li value="4">Record the date. Networks and provinces may give different results.</li></ol>
+<p>Thus yes means reachable on that recorded path, not on every network nationwide.</p>
+</div>
+<div class="panel is-slim" id="guide-section-4">
+<h2>Reading the filing field</h2>
+<ul><li><code>filed</code>: the dossier records a matching entity/product in an official notice, with batch, number and date.</li><li><code>not-filed</code>: no match was recorded within the notices searched. Product/entity names, batches, registration types or scope may differ; this does not directly establish non-compliance.</li><li><code>unknown</code>: insufficient evidence or unmatched notice scope; do not infer an answer.</li></ul>
+<p>Article 2 of the Interim Measures scopes relevant services offered to the mainland public. Article 17 separately addresses security assessment and algorithm filing for services with public-opinion attributes or social-mobilisation capacity. Entity location alone does not decide applicability. Distinguish service filing, application registration and other obligations. A filing field does not prove availability, residency or complete compliance.</p>
+</div>
+<div class="panel is-slim" id="guide-section-5">
+<h2>Self-check in four steps</h2>
+<ol><li value="1">Open the tool dossier and read the three <code>cn</code> fields and verification date.</li><li value="2">Treat information older than 90 days as a lead needing rechecking, not current status.</li><li value="3">Repeat the reachability check yourself, recording date, network and HTTP status. Retain differences from the dossier.</li><li value="4">For deployment, record entity, access and filing separately, alongside data residency and contracting entity.</li></ol>
+</div>
+<div class="panel is-slim" id="guide-section-6">
+<h2>Common misreads</h2>
+<ul><li>Neither not-filed nor foreign origin alone establishes a violation or exemption; those conclusions exceed the fields' evidence.</li><li>Direct access yes is not an SLA; it is one recorded observation.</li><li>A domestic entity does not prove all data remains domestic; examine privacy terms and deployment.</li><li>Unknown and no are different.</li><li>Old check dates are not today's observations.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-7">
+<h2>Dated facts</h2>
+<ol><li value="1">All 225 dossiers contain a <code>cn</code> block: 37 domestic and 188 foreign (recorded aggregation 2026-11-03).</li><li value="2">Stored direct-access counts are 169 yes, 46 no and 10 unknown.</li><li value="3">Stored filing counts are 20 filed, 190 not-filed and 15 unknown.</li><li value="4">The CAC notice dated 2024-04-02 has rolling attachments, not just its initial batch. On 2026-11-04, the notice, Articles 2 and 17 of the Interim Measures and this page's aggregate counts were rechecked. Individual products' filing and network statuses were not all rechecked.</li></ol>
+</div>
+<nav aria-label="What to do next" class="panel is-slim">
+<h2>What to do next</h2><ul>
+<li><a href="/en/mcp/guides/toolkit-worksheets.html">Record constraints, acceptance and unknowns</a></li>
+<li><a href="https://learn.specul.com/en/guide/%E6%80%8E%E4%B9%88%E9%AA%8C%E8%AF%81%20AI%20%E7%9A%84%E8%BE%93%E5%87%BA/">Verify the result and its sources</a></li>
+<li><a href="/en/mcp/guides/failure-library.html#by-symptom">Troubleshoot by symptom</a></li>
+</ul></nav>
+<div class="panel is-slim">
+<h2>Sources</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Source</th><th>URL</th></tr></thead><tbody>
+<tr><td>CAC: published generative-AI service filing information (notice and rolling attachments)</td><td><a href="https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm" rel="noopener" target="_blank">https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm</a></td></tr>
+<tr><td>This site: tools index (cn-field sources for 225 dossiers)</td><td><a href="https://tools.specul.com/en/mcp/" rel="noopener" target="_blank">https://tools.specul.com/mcp/</a></td></tr>
+<tr><td>This site: how to check generative-AI compliance obligations</td><td><a href="https://learn.specul.com/en/guide/%E6%80%8E%E4%B9%88%E6%9F%A5%E7%94%9F%E6%88%90%E5%BC%8F%20AI%20%E5%90%88%E8%A7%84%E4%B9%89%E5%8A%A1/" rel="noopener" target="_blank">https://learn.specul.com/guide/%E6%80%8E%E4%B9%88%E6%9F%A5%E7%94%9F%E6%88%90%E5%BC%8F%20AI%20%E5%90%88%E8%A7%84%E4%B9%89%E5%8A%A1/</a></td></tr>
+<tr><td>This site: direct-mainland-access filter on category pages</td><td><a href="https://tools.specul.com/en/mcp/" rel="noopener" target="_blank">https://tools.specul.com/mcp/</a></td></tr>
+<tr><td>CAC: Interim Measures for the Management of Generative AI Services (Articles 2 and 17; scoped recheck 2026-11-04)</td><td><a href="https://www.cac.gov.cn/2023-07/13/c_1690898327029107.htm" rel="noopener" target="_blank">https://www.cac.gov.cn/2023-07/13/c_1690898327029107.htm</a></td></tr>
+</tbody></table></div>
+<p class="guide-foot">Source snapshot: 2026-11-03; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</p>
+</div>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Playbook: running a model on your own machine | Tools</title>
+<meta content="Five steps — VRAM, quantization tier, runtime, evaluation, monitoring — with a size formula, the quantization index, failure modes and an acceptance list." name="description"/>
+<link href="https://tools.specul.com/en/mcp/guides/playbook-local-model.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/mcp/guides/playbook-local-model.html" property="og:url"/>
+<meta content="Playbook: running a model on your own machine | Tools" property="og:title"/>
+<meta content="Five steps — VRAM, quantization tier, runtime, evaluation, monitoring — with a size formula, the quantization index, failure modes and an acceptance list." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Playbook: running a model on your own machine","description":"Five steps — VRAM, quantization tier, runtime, evaluation, monitoring — with a size formula, the quantization index, failure modes and an acceptance list.","dateModified":"2026-11-03"}</script>
+<meta content="Playbook: running a model on your own machine | Tools" name="twitter:title"/><meta content="Five steps — VRAM, quantization tier, runtime, evaluation, monitoring — with a size formula, the quantization index, failure modes and an acceptance list." name="twitter:description"/><link href="https://tools.specul.com/mcp/guides/playbook-local-model.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/guides/playbook-local-model.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/guides/playbook-local-model.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/mcp/guides/playbook-local-model.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<a class="back" href="/en/mcp/">← Guides</a>
+<div class="detail-head">
+<div>
+<h1>Playbook: running a model on your own machine</h1>
+<div class="vendor is-caps">Planning</div>
+</div>
+</div>
+<div class="panel-lead"><p>Five steps — VRAM, quantization tier, runtime, evaluation, monitoring — with a size formula, the quantization index, failure modes and an acceptance list.</p></div>
+<nav aria-label="Article contents" class="panel is-slim"><p>On this page</p><ul><li><a href="#guide-section-0">VRAM: calculate before downloading</a></li><li><a href="#guide-section-1">Quantization: use the index</a></li><li><a href="#guide-section-2">Runtime: match the hardware</a></li><li><a href="#guide-section-3">Evaluate: 20 cases per task</a></li><li><a href="#guide-section-4">Monitor after launch</a></li><li><a href="#guide-section-5">Cost formula</a></li><li><a href="#guide-section-6">Acceptance checklist</a></li><li><a href="#guide-section-7">Failure modes</a></li><li><a href="#guide-section-8">Worked example: budget memory before starting</a></li></ul></nav>
+<div class="panel is-slim" id="guide-section-0">
+<h2>VRAM: calculate before downloading</h2>
+<p>The KV formula below is a simplified budget for conventional attention caches, not every architecture or implementation. GB is decimal; GiB = bytes / 2^30.</p>
+<pre class="code"><code>Weight GB ≈ parameters in billions × bits per weight / 8
+KV bytes ≈ 2 × layers × KV heads × head dimension × cached tokens per request
+         × bytes per element × concurrent requests
+Total budget ≈ weights + KV cache + runtime/system overhead + chosen headroom</code></pre>
+<ul><li>Seven billion parameters at pure four-bit precision are about 3.5 GB; use actual file bytes for quantisation metadata and other contents.</li><li>Choose context requirements before a tier; parameter count alone underestimates running memory.</li><li>For GQA/MQA use KV heads, not query heads. Record overhead and headroom for the configuration rather than a universal percentage.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-1">
+<h2>Quantization: use the index</h2>
+<p>The 2026-10-30 snapshot contains <strong>129 quantisation repositories, 1,262 variants and 1,337 GGUF files</strong>.</p>
+<ol><li value="1">Filter against available memory, including cache, concurrency and runtime.</li><li value="2">Check base version, quantisation method, provenance and release notes; publisher name alone does not establish quality.</li><li value="3">Check total size, bits per weight, complete shards and runtime compatibility.</li><li value="4">Validate one clearly specified candidate before deciding whether to compare others.</li></ol>
+</div>
+<div class="panel is-slim" id="guide-section-2">
+<h2>Runtime: match the hardware</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Hardware</th><th>Candidate paths</th><th>Check</th></tr></thead><tbody><tr><td>Apple silicon</td><td>LM Studio with MLX, or llama.cpp</td><td>Architecture, format and unified-memory budget</td></tr><tr><td>One NVIDIA GPU</td><td>LM Studio, llama.cpp or ExLlamaV3</td><td>GPU/driver support; GGUF and EXL3 are different formats</td></tr><tr><td>Multiple GPUs/concurrency</td><td>Serving runtimes such as vLLM</td><td>Parallel configuration, architecture and quantisation support</td></tr><tr><td>CPU/edge</td><td>Local runtimes such as llama.cpp</td><td>Memory, supported architectures and response requirements</td></tr></tbody></table></div>
+<ul><li>Choose according to GUI, scripting or serving needs; this is not a performance ranking.</li><li>Tool and model licences are separate.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-3">
+<h2>Evaluate: 20 cases per task</h2>
+<p>Twenty cases in each of three categories is an illustrative exercise, not a universal acceptance-set size. Choose real task and boundary coverage for the risk.</p>
+<ol><li value="1">Prepare an illustrative 60 tasks: Q&amp;A, summaries and code, 20 each, with expected answers.</li><li value="2">Compare Q4/Q5/Q8, or available neighbouring tiers, recording quality and speed.</li><li value="3">Record correctness, hallucinations, first-token delay and tokens per second.</li><li value="4">Explain why the chosen tier satisfies the task rather than saying it “feels good”.</li></ol>
+<p><strong>Failure mode</strong>: checking one prompt leaves real task failures undiscovered.</p>
+</div>
+<div class="panel is-slim" id="guide-section-4">
+<h2>Monitor after launch</h2>
+<ul><li>Peak memory, output throughput, first-token delay and error rates.</li><li>Prefer necessary lengths, timings and errors in logs. Hashes can still link back to input; they are not automatic anonymisation. Define access and retention.</li><li>Rerun the task set before changing the model or quantisation.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-5">
+<h2>Cost formula</h2>
+<pre class="code"><code>Initial: hardware, transfer and setup time
+Recurring: electricity, maintenance and reevaluation
+Cloud comparison: input/output, caching, tools and fixed costs over the same period</code></pre>
+<p>No electricity rates or quotations are prefilled. Use the <a href="https://tools.specul.com/en/mcp/guides/cost-calculator.html" rel="noopener" target="_blank">cost calculator</a> with comparable periods. Existing hardware, allocation and maintenance can change the outcome; usage alone does not determine which is cheaper.</p>
+</div>
+<div class="panel is-slim" id="guide-section-6">
+<h2>Acceptance checklist</h2>
+<ul><li>[ ] Consistent-unit capacity budget includes weights, KV cache, concurrency, overhead and chosen headroom.</li><li>[ ] Quantisation and repository versions recorded.</li><li>[ ] Runtime and model licences checked separately.</li><li>[ ] Agreed task set completed, four metrics and uncovered cases recorded.</li><li>[ ] Tier choice explained.</li><li>[ ] Monitoring and alert thresholds defined.</li><li>[ ] Rollback plan ready for updates.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-7">
+<h2>Failure modes</h2>
+<ul><li>Weights alone: context cache causes an OOM that the budget missed.</li><li>Parameter confusion: total and active parameters do not directly establish memory or speed.</li><li>Licence confusion: an MIT tool does not determine a model's commercial rights.</li><li>No evaluation set: quality changes go unnoticed.</li><li>No monitoring: peak memory failures are discovered only after deployment.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-8">
+<h2 id="worked-example">Worked example: budget memory before starting</h2>
+<p>These are hypothetical capacity figures, not a named model or measured performance.</p>
+<p>Assume a 10 GiB available budget and 6 GiB of weights. Reserve 2 GiB for context cache and 1 GiB for runtime, leaving 1 GiB headroom. The 9 GiB estimate is not a startup guarantee.</p>
+<p>Check file provenance, licensing, runtime and architecture support. Start with short input and inspect loading, unsupported operations and actual memory. Increase context gradually, recording errors and response times.</p>
+<p>If it does not fit, identify weights, cache and other applications separately. Assess smaller variants, quantizations or supported offload. Startup with unacceptable response time also fails the task.</p>
+<p>See the <a href="https://models.specul.com/en/guides/gpu-cost-math.html" rel="noopener" target="_blank">hardware-budget example</a> for units and calculation.</p>
+</div>
+<nav aria-label="What to do next" class="panel is-slim">
+<h2>What to do next</h2><ul>
+<li><a href="/en/mcp/guides/toolkit-worksheets.html">Record constraints, acceptance and unknowns</a></li>
+<li><a href="https://learn.specul.com/en/guide/%E6%80%8E%E4%B9%88%E9%AA%8C%E8%AF%81%20AI%20%E7%9A%84%E8%BE%93%E5%87%BA/">Verify the result and its sources</a></li>
+<li><a href="/en/mcp/guides/failure-library.html#by-symptom">Troubleshoot by symptom</a></li>
+</ul></nav>
+<div class="panel is-slim">
+<h2>Sources</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Source</th><th>URL</th></tr></thead><tbody>
+<tr><td>This site: quantisation index (129 repositories, 1,262 variants and 1,337 GGUF files; 2026-10-30 snapshot)</td><td><a href="https://models.specul.com/en/" rel="noopener" target="_blank">https://models.specul.com/</a></td></tr>
+<tr><td>llama.cpp: repository (GGUF and llama-server; October 2026 snapshot)</td><td><a href="https://github.com/ggml-org/llama.cpp" rel="noopener" target="_blank">https://github.com/ggml-org/llama.cpp</a></td></tr>
+<tr><td>vLLM: documentation (PagedAttention and OpenAI-compatible endpoint; October 2026 snapshot)</td><td><a href="https://docs.vllm.ai/" rel="noopener" target="_blank">https://docs.vllm.ai/</a></td></tr>
+<tr><td>LM Studio: official site (MLX and llama.cpp runtimes; October 2026 snapshot)</td><td><a href="https://lmstudio.ai/" rel="noopener" target="_blank">https://lmstudio.ai/</a></td></tr>
+<tr><td>PyPI: exllamav3 1.6.5 (2026-10-25; checked 2026-11-03)</td><td><a href="https://pypi.org/project/exllamav3/" rel="noopener" target="_blank">https://pypi.org/project/exllamav3/</a></td></tr>
+<tr><td>Hugging Face Transformers: cache tensor shapes (basis for the simplified KV formula; 2026-11-04)</td><td><a href="https://huggingface.co/docs/transformers/cache_explanation" rel="noopener" target="_blank">https://huggingface.co/docs/transformers/cache_explanation</a></td></tr>
+</tbody></table></div>
+<p class="guide-foot">Source snapshot: 2026-11-03; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</p>
+</div>
+<p class="t-sm topics-line">This page appears in: <a href="https://specul.com/en/topic-game.html">Make games with AI</a> · <a href="https://specul.com/en/topic-robot.html">Build a robot</a></p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

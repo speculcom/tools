@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Google ADK（Agent Development Kit） | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/framework/google-adk.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/framework/google-adk.html" property="og:url"/>
+<meta content="Google ADK（Agent Development Kit） | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Google ADK（Agent Development Kit） | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/framework/google-adk.html","sameAs":"https://google.github.io/adk-docs/","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Google ADK（Agent Development Kit） | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/framework/google-adk.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/framework/google-adk.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/framework/google-adk.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/framework/google-adk.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Frameworks</span>
+</nav>
+<a class="back" href="/en/framework/">← Frameworks</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#4285F4"'>GO</div>
+<div>
+<h1>Google ADK（Agent Development Kit）</h1>
+<div class="vendor is-caps">Google</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Python</span>
+<span class="tag on">TypeScript</span>
+<span class="tag on">Open source</span>
+<span class="tag on">Apache-2.0</span>
+<span class="tag on">Orchestration framework</span>
+<span class="tag on">Graph execution</span>
+<span class="tag on">Workflows</span>
+<span class="tag on">Multi-agent</span>
+<span class="tag on">HITL</span>
+<span class="tag on">Tool confirmation</span>
+<span class="tag on">eval</span>
+<span class="tag on">CloudRun</span>
+<span class="tag on">MCP</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>In one line: Google ADK is a code-first agent orchestration framework whose core…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Cloud / API · Framework / SDK</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Default sandbox mechanism, filesystem permission model, network access control</li>
+<li>Cross-process, cross-machine task resume and recovery granularity</li>
+<li>State-storage schemes under distributed deployment</li>
+<li>The implementation layer of MCP integration (framework-level dependency vs tool source)</li>
+<li>Capability alignment between the Python and TypeScript editions</li>
+<li>How state is hosted when deploying to Vertex AI Agent Engine</li>
+<li>Gemini unit prices and the actual rates of Vertex AI Agent Engine / Cloud Run (the <strong>meaning</strong> of <code>GOOGLE_GENAI_USE_ENTERPRISE</code> is verified; the <strong>rates</strong> are not)</li>
+<li>What exactly "optimized for Gemini" optimizes (not stated officially; Models page and LiteLLM page checked)</li>
+<li>Tool-calling and structured-output reliability comparison under non-Gemini models (not given officially)</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>What it is, in one line</strong>: Google ADK is a "code-first agent orchestration framework whose core asset is a graph execution engine". It organises several agents into one flow; it does not run a single agent for you.</p>
+<p>The official README states its identity in the first feature it lists:</p>
+<blockquote><strong>Workflow Runtime</strong>: A graph-based execution engine for composing <strong>deterministic execution flows</strong> for agentic apps, with support for routing, fan-out/fan-in, <strong>loops</strong>, <strong>retry</strong>, <strong>state management</strong>, <strong>dynamic nodes</strong>, <strong>human-in-the-loop</strong>, and <strong>nested workflows</strong>.</blockquote></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p><strong>Fits</strong>: organising multiple agents into deterministic flows with branches, loops and human intervention; defining agents and tools code-first so they are testable and versionable; a team inside the Google ecosystem (Cloud Run / Vertex / Gemini); needing built-in eval and a development UI; wanting one framework across Python and TypeScript; needing tool-level human confirmation, session persistence and resume. <strong>Not a fit</strong>: running a single agent with no graph structure (OpenAI Agents SDK or Deep Agents are lighter); needing built-in file- or network-sandbox boundaries — <strong>the official docs provide none</strong>, so file access goes through the Artifacts abstraction or a tool you wire up yourself; wanting self-hosted weights out of the box without going through the LiteLLM adaptor layer.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　adk.dev measured 200 direct.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>Official line: optimized for Gemini, but it is also model-agnostic.</strong></p>
+<p>README <strong>verbatim</strong>: "While optimized for Gemini, ADK is <strong>model-agnostic</strong>, deployment-agnostic, and compatible with other frameworks."</p>
+<p><strong>So non-Gemini models can be connected.</strong> The official "Models for Agents" page gives three integration mechanisms:</p>
+<ul><li><strong>① direct string / registry</strong> — Gemini, Claude, Agent Platform hosted models</li><li><strong>② model connectors</strong> — <code>LiteLlm</code> / <code>ApigeeLlm</code> wrapper classes</li><li><strong>③ model routing</strong> — runtime dynamic model selection + automatic failover</li></ul>
+<p><strong>Official wording</strong>: "providing a standardized, OpenAI-compatible interface to over 100+ LLMs"</p>
+<p>Local / self-hosted models have dedicated official pages: Ollama, vLLM, LiteRT-LM.</p>
+<p>⚠ <strong>Not stated officially</strong>: what "optimized for Gemini" actually optimizes.</p>
+<p>⚠ Nor is there a reliability comparison of tool calling and structured output under non-Gemini models. <strong>Checked</strong>: the Models page and the LiteLLM page.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>Four run forms, all provided by the <code>adk</code> CLI or containers (README verified).</strong></p>
+<ul><li><strong>① interactive CLI</strong> — <code>adk run &lt;agent-folder&gt;</code></li><li><strong>② built-in Web UI</strong> — <code>adk web &lt;agent-folder&gt;</code>. The official docs state support for multi-agent directories or pointing directly at a single agent folder</li></ul>
+<ul><li><strong>③ Development UI</strong> — the built-in development/debug console</li><li><strong>④ containerized deployment</strong> — <code>adk deploy docker --with_ui &lt;agent-folder&gt;</code></li></ul>
+<p><strong>Official wording</strong>: "A built-in development UI to help you test, evaluate, debug, and showcase your agent(s)"</p>
+<p>⚠ All four are <strong>your local or your cloud processes</strong>. ADK itself provides no hosted service.</p>
+<p>Hosting requires Vertex AI Agent Engine or Cloud Run — those are Google products, not this framework's.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>The official answer to "files" is the abstraction layer Artifacts, not the raw filesystem (verified on 2026-10-08).</strong> In other words, it does not read or write disks itself.</p>
+<p>Official Artifacts page <strong>verbatim</strong>:</p>
+<p><strong>Official wording</strong>: Artifacts "represent a crucial mechanism for managing named, versioned binary data associated either with a specific user interaction session or persistently with a user"</p>
+<p><strong>Where things land is decided by the ArtifactService you choose.</strong> <strong>Official wording</strong>: "Their storage and retrieval are managed by a dedicated Artifact Service"</p>
+<p>Two backends:</p>
+<ul><li><code>InMemoryArtifactService</code> — lost on restart</li><li><code>GcsArtifactService</code> — persistent, versioned</li></ul>
+<p><strong>ADK is a library; it does not ship Read/Write/Bash style file tools.</strong> Disk access means writing your own function tool, or connecting MCP. The official MCP page example is exactly a filesystem MCP server.</p>
+<p>⚠ <strong>Not provided officially</strong>: any sandbox mechanism or filesystem permission model (Artifacts, tools, deploy pages checked). The default access boundary depends on whatever tools you connect.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>It does not host a background. The official docs give two explicit pieces of evidence: session/state persistence, and resume-after-interruption.</strong></p>
+<p><strong>① Persistence</strong> — SessionService comes in three tiers:</p>
+<ul><li><code>InMemorySessionService</code> — <strong>official wording</strong>: "All conversation data is lost if the application restarts"</li></ul>
+<ul><li><code>DatabaseSessionService</code> — "Data survives application restarts"</li><li><code>VertexAiSessionService</code> — hosted</li></ul>
+<p>MemoryService separately has InMemory and Vertex AI Memory Bank tiers.</p>
+<p><strong>② Resume</strong> — ADK Python 1.16+ can configure an App with <code>ResumabilityConfig(is_resumable=True)</code>.</p>
+<p>Official <strong>verbatim</strong>:</p>
+<p><strong>Official wording</strong>: "allows an agent workflow to pick up where it left off"</p>
+<p>Resume by Invocation ID. Works via <code>/run_sse</code> or <code>runner.run_async</code>.</p>
+<p><strong>ADK itself is a library and hosts nothing.</strong> A true background means deploying to Cloud Run / Vertex AI Agent Engine — that is your cloud resource.</p>
+<p>⚠ Two official boundaries:</p>
+<ul><li>Resume is currently "not currently supported" triggered from the Web UI / CLI</li><li>tools may be re-executed (the official docs remind: side-effectful tools need your own dedup)</li></ul></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>The tool ecosystem is what it emphasizes most, and MCP is a first-class capability in the official docs.</strong></p>
+<p>README <strong>verbatim</strong>:</p>
+<p>"Utilize pre-built tools, custom functions, <strong>OpenAPI specs</strong>, <strong>MCP tools</strong> or integrate existing tools"</p>
+<p>There is also a dedicated MCP tools documentation page. It provides the <code>McpToolset</code> class, and it is <strong>bidirectional</strong>:</p>
+<ul><li>let ADK act as an MCP client, connecting external MCP servers (examples include filesystem / Google Maps MCP servers)</li></ul>
+<ul><li>ADK tools can also be wrapped as an MCP server and exposed outward</li><li>transports cover stdio and Streamable HTTP</li></ul>
+<p><strong>Tool-level human confirmation (HITL)</strong> <strong>Official wording</strong>: "a tool confirmation flow (HITL) that can guard tool execution with explicit confirmation and custom input"</p>
+<p>Corresponding doc <code>tools/confirmation</code>. Mechanism details in the permissions axis.</p>
+<p><strong>This is a rare "tool-level human confirmation" among objects collected on this site.</strong> It is a different layer from the OpenAI Agents SDK's input/output guardrail.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>The official docs draw a clear distinction among session / memory, and there is a dedicated context-compaction feature.</strong></p>
+<p>Three sentences on the official sessions page, <strong>official wording</strong>: <code>Session</code> is "single, ongoing interaction", <code>State</code> is "data within the current conversation", <code>Memory</code> is "searchable, cross-session information"</p>
+<p>The first two are managed by <code>SessionService</code>. Long-term knowledge is managed by <code>MemoryService</code>.</p>
+<p><strong>Compaction</strong>: ADK Python 1.16.0+ provides Context Compaction. <strong>Official wording</strong>: "reduce the size of context as an agent is running by summarizing older parts of the agent workflow event history"</p>
+<p>The mechanism is a <strong>sliding window</strong>:</p>
+<ul><li>configure <code>EventsCompactionConfig(compaction_interval, overlap_size)</code></li><li>at the threshold, earlier events get summarized</li><li><code>summarizer</code> can swap models</li></ul>
+<p>⚠ Per this site's "state ≠ context": <code>state</code> governs flow data. Compaction governs history compression. These are two mechanisms, and the official docs describe them separately.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>The officially explicit mechanism is tool-level human confirmation, Tool Confirmation (HITL).</strong></p>
+<p>Doc <code>tools/confirmation</code> (since v1.14.0, labeled <strong>Experimental</strong>) <strong>official wording</strong>: "allows an ADK Tool to pause its execution and interact with a user or other system for confirmation"</p>
+<p><strong>Two usage styles verified.</strong></p>
+<ul><li><strong>① simple confirmation</strong> — <code>FunctionTool(..., require_confirmation=True)</code> asks once yes/no; you can also pass a function returning a boolean (e.g. "only ask when amount &gt; 1000")</li></ul>
+<ul><li><strong>② advanced confirmation</strong> — <code>tool_context.request_confirmation(hint, payload)</code>. Can pause the tool, collect structured data (e.g. approval days) and then resume</li></ul>
+<p>Without a UI, the ADK server's <code>/run</code> or <code>/run_sse</code> REST endpoints allow remote confirmation.</p>
+<p><strong>This is only "ask before executing", not boundary-setting.</strong> The official docs provide no sandbox or filesystem permission model. <strong>Checked</strong>: confirmation, Artifacts, deploy pages.</p>
+<p>⚠ Official known limitation: DatabaseSessionService and VertexAiSessionService do not support this feature.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p><strong>Fits these cases.</strong></p>
+<ul><li>organizing multiple agents into a <strong>deterministic flow with branching, loops and human intervention</strong></li><li>defining agents and tools code-first, for testability and version control</li><li>teams inside the Google ecosystem (Cloud Run / Vertex / Gemini)</li><li>needing built-in eval and a development UI</li><li>wanting one framework covering both Python and TypeScript</li><li>needing tool-level human confirmation, session persistence and resume-after-interruption</li></ul>
+<p><strong>Does not fit these cases.</strong></p>
+<ul><li>running a single agent only, no graph structure needed — OpenAI Agents SDK or Deep Agents are lighter</li><li>needing framework-built file / network sandbox boundaries — <strong>not provided officially</strong>. File access relies on the Artifacts abstraction or tools you connect yourself</li></ul>
+<ul><li>wanting out-of-the-box self-hosted weights without going through the LiteLLM adapter layer</li></ul></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>Apache-2.0</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Assuming it is "Google's version of the OpenAI Agents SDK" — <strong>it is an orchestration framework</strong> whose core asset is the Workflow Runtime graph engine, not single-agent primitives</li>
+<li>Reading <code>state management</code> as "has context management" — the former is process state; the latter is the separate Context Compaction mechanism (1.16+)</li>
+<li>Treating MCP as a core dependency — the README lists MCP only as one tool source, which is not the same as OpenAI Agents SDK putting <code>mcp&gt;=1.19.0</code> in <code>dependencies</code></li>
+<li>Assuming Tool Confirmation equals a sandbox — it is "ask once before running", not a boundary</li>
+<li>Assuming open source and free means zero cost — Cloud Run / Vertex Agent Engine costs are yours, and there is a <code>GOOGLE_GENAI_USE_ENTERPRISE</code> switch</li>
+<li>Assuming it is Python-only — there is a separate TypeScript repo (<code>google/adk-js</code>, 1,426★); the Python body is the only thing indexed here</li>
+<li>Mixing up repo names — the sample repo shows as <code>google/adk-recipes</code> while the description says adk-samples</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-01。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>google/adk-python · repository (21,966★, Apache-2.0, rolling check 2026-10-23)</td><td><a href="https://github.com/google/adk-python" rel="noopener" target="_blank">https://github.com/google/adk-python</a></td></tr>
+<tr><td>docs</td><td>Main README (Workflow Runtime / Task API / Tool Confirmation / deployment methods / eval)</td><td><a href="https://github.com/google/adk-python/blob/main/README.md" rel="noopener" target="_blank">https://github.com/google/adk-python/blob/main/README.md</a></td></tr>
+<tr><td>docs</td><td>Official docs home</td><td><a href="https://google.github.io/adk-docs/" rel="noopener" target="_blank">https://google.github.io/adk-docs/</a></td></tr>
+<tr><td>docs</td><td>Official docs · Tool Confirmation (HITL) (require_confirmation / request_confirmation mechanism, Experimental, known limits, verified 2026-10-08)</td><td><a href="https://google.github.io/adk-docs/tools/confirmation/" rel="noopener" target="_blank">https://google.github.io/adk-docs/tools/confirmation/</a></td></tr>
+<tr><td>docs</td><td>Official docs · Models for Agents (three model-integration mechanisms: direct registry / model connectors / model routing, verified 2026-10-08)</td><td><a href="https://google.github.io/adk-docs/agents/models/" rel="noopener" target="_blank">https://google.github.io/adk-docs/agents/models/</a></td></tr>
+<tr><td>docs</td><td>Official docs · LiteLLM connector (<code>LiteLlm</code> wrapper class, OpenAI-compatible, over 100+ LLMs, verified 2026-10-08)</td><td><a href="https://google.github.io/adk-docs/agents/models/litellm/" rel="noopener" target="_blank">https://google.github.io/adk-docs/agents/models/litellm/</a></td></tr>
+<tr><td>docs</td><td>Official docs · Sessions &amp; Memory (Session/State/Memory distinction, SessionService three-tier persistence, verified 2026-10-08)</td><td><a href="https://google.github.io/adk-docs/sessions/" rel="noopener" target="_blank">https://google.github.io/adk-docs/sessions/</a></td></tr>
+<tr><td>docs</td><td>Official docs · Context Compaction (sliding-window summarization, v1.16.0+, verified 2026-10-08)</td><td><a href="https://google.github.io/adk-docs/context/compaction/" rel="noopener" target="_blank">https://google.github.io/adk-docs/context/compaction/</a></td></tr>
+<tr><td>docs</td><td>Official docs · Artifacts (ArtifactService, InMemory/GCS storage, verified 2026-10-08)</td><td><a href="https://google.github.io/adk-docs/artifacts/" rel="noopener" target="_blank">https://google.github.io/adk-docs/artifacts/</a></td></tr>
+<tr><td>docs</td><td>Official docs · Resume stopped agents (ResumabilityConfig, resume by Invocation ID, verified 2026-10-08)</td><td><a href="https://google.github.io/adk-docs/runtime/resume/" rel="noopener" target="_blank">https://google.github.io/adk-docs/runtime/resume/</a></td></tr>
+<tr><td>docs</td><td>Official docs · MCP tools (McpToolset, ADK as MCP client / ADK tools exposed as MCP server, verified 2026-10-08)</td><td><a href="https://google.github.io/adk-docs/tools/mcp-tools/" rel="noopener" target="_blank">https://google.github.io/adk-docs/tools/mcp-tools/</a></td></tr>
+<tr><td>docs</td><td>Official docs · Agent Config (building agents without code)</td><td><a href="https://google.github.io/adk-docs/agents/config/" rel="noopener" target="_blank">https://google.github.io/adk-docs/agents/config/</a></td></tr>
+<tr><td>docs</td><td>Google official codelab · Building AI Agents with ADK: The Foundation (<strong>official item-by-item explanation of the three variables <code>GOOGLE_GENAI_USE_ENTERPRISE</code> / <code>GOOGLE_CLOUD_PROJECT</code> / <code>GOOGLE_CLOUD_LOCATION</code>, including the "enable billing" wording</strong>, verified 2026-10-01)</td><td><a href="https://codelabs.developers.google.com/devsite/codelabs/build-agents-with-adk-foundation" rel="noopener" target="_blank">https://codelabs.developers.google.com/devsite/codelabs/build-agents-with-adk-foundation</a></td></tr>
+<tr><td>docs</td><td>Google Cloud docs · Manage sessions with Agent Development Kit (the same three variables with TRUE / True spellings, verified 2026-10-01)</td><td><a href="https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/sessions/manage-with-adk" rel="noopener" target="_blank">https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/sessions/manage-with-adk</a></td></tr>
+<tr><td>repo</td><td>google/adk-js · TypeScript edition (1,426★, Apache-2.0)</td><td><a href="https://github.com/google/adk-js" rel="noopener" target="_blank">https://github.com/google/adk-js</a></td></tr>
+<tr><td>repo</td><td>google/adk-recipes · sample collection (10,404★)</td><td><a href="https://github.com/google/adk-recipes" rel="noopener" target="_blank">https://github.com/google/adk-recipes</a></td></tr>
+<tr><td>changelog</td><td>Releases (v2.12.0 @ 2026-10-13)</td><td><a href="https://github.com/google/adk-python/releases" rel="noopener" target="_blank">https://github.com/google/adk-python/releases</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs.</p>
+<p>The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" rel="noopener" target="_blank">protocols/framework/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong> (tailored to the orchestration-framework dimension):</p>
+<div class="tbl-wrap"><table><thead><tr><th>#</th><th>What to test</th><th>Why it is worth testing</th></tr></thead><tbody><tr><td>1</td><td>Default file and network permission boundaries after container deployment</td><td>fills this site's biggest gap, and is a selection prerequisite</td></tr><tr><td>2</td><td>The minimal complete case of running <code>adk eval</code></td><td>it is the only object with built-in eval; its real cost is worth seeing</td></tr><tr><td>3</td><td>Recovery semantics after killing the process mid-flow</td><td>the official docs have retry / state management, but recovery granularity is unverified</td></tr><tr><td>4</td><td>How often Tool Confirmation interrupts humans in a long loop</td><td>officially it can guard, but the actual interruption count needs measuring</td></tr><tr><td>5</td><td>Tool-calling and structured-output reliability after switching to a non-Gemini model</td><td>officially model-agnostic; verify the cost</td></tr><tr><td>6</td><td>The capability gap between the Python and TS editions</td><td>two separate repositories; the official docs never say they are aligned</td></tr></tbody></table></div>
+</div>
+<div class="panel is-slim">
+<h2>Why it is classified as orchestration rather than coding-base</h2>
+<p>This site's first four coding bases are the OpenAI Agents SDK, Deep Agents, Claude Agent SDK, Codex SDK.</p>
+<p>They all answer the same question:</p>
+<blockquote>how do you run one agent?</blockquote>
+<p>ADK answers a different question:</p>
+<blockquote>how do you organize multiple agents into a flow with branching, loops and human intervention?</blockquote>
+<p><strong>The keyword is deterministic</strong>: what it sets out to solve is not "whether an agent can work". (deterministic means "certainty".)</p>
+<p>What it sets out to solve is whether a flow composed of multiple <strong>agents</strong> is repeatable and predictable across runs.</p>
+<p>This lands directly on the distinction this site cares about:</p>
+<div class="tbl-wrap"><table><thead><tr><th>The surface this site watches</th><th>What ADK gives</th></tr></thead><tbody><tr><td><strong>state</strong> (flow control)</td><td>✅ graph execution engine: routing / loops / retry / state management / nested workflows</td></tr><tr><td><strong>context</strong> (long-task compression)</td><td>✅ Context Compaction since 1.16+: sliding-window summarization of earlier events (<code>EventsCompactionConfig(compaction_interval, overlap_size)</code>), <code>summarizer</code> swappable</td></tr></tbody></table></div>
+</div>
+<div class="panel is-slim">
+<h2>The tool ecosystem: MCP is one member, but note the weight</h2>
+<p><strong>README verbatim:</strong></p>
+<blockquote>Utilize pre-built tools, custom functions, <strong>OpenAPI specs</strong>, <strong>MCP tools</strong> or integrate existing tools to give agents diverse capabilities, all for tight integration with the Google ecosystem.</blockquote>
+<p>⚠ <strong>This site's judgment (inference; implementation not verified)</strong>: the README lists MCP <strong>alongside</strong> OpenAPI specs.</p>
+<p>This suggests it integrates MCP as "one source of tools".</p>
+<p>This differs from the <a href="/en/framework/openai-agents-sdk.html">OpenAI Agents SDK</a>.</p>
+<p>That one puts <code>mcp&gt;=1.19.0,&lt;3</code> directly in <code>dependencies</code>. That is a framework-level dependency.</p>
+<p><strong>The two are not first-class citizens of the same weight.</strong></p>
+<h3 class="sub-h">One official capability worth a separate look: Tool Confirmation (HITL)</h3>
+<blockquote>A tool confirmation flow (HITL) that can <strong>guard tool execution with explicit confirmation and custom input</strong>.</blockquote>
+<p>The doc is at <code>tools/confirmation</code>.</p>
+<p><strong>This is a rare "tool-level human confirmation" among objects collected on this site.</strong> input/output guardrails are a different layer from it:</p>
+<ul><li>guardrails <strong>validate content</strong> (is this input / output compliant)</li><li>tool confirmation <strong>gates execution</strong> (should this tool really run, optionally with custom input)</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Deployment: four commands, from local to Google cloud</h2>
+<p><strong>All four run/deployment forms given by the README are verified:</strong></p>
+<pre class="code"><code>adk run &lt;agent-folder&gt;              # interactive CLI
+adk web                &lt;agent-folder&gt;       # built-in Web UI
+adk deploy docker   --with_ui &lt;agent-folder&gt;         # containerized
+adk deploy cloud_run --with_ui &lt;agent-folder&gt;        # Cloud Run</code></pre>
+<p><strong>Two more points this site considers notable.</strong></p>
+<p><strong>① Built-in development UI and built-in eval.</strong></p>
+<p><strong>Official wording</strong>:</p>
+<blockquote>A built-in development UI to help you <strong>test, evaluate, debug, and showcase</strong> your agent(s)</blockquote>
+<p><strong>There is also</strong> the <code>adk eval &lt;agent-folder&gt; &lt;evalset.json&gt;</code> command and the <code>.evalset.json</code> config format.</p>
+<p><strong>This is the only object collected on this site that makes "evaluation" a framework-built-in command.</strong> Against the "no measured runs" rule, this kind of capability deserves a note: it lets users run their own evaluations.</p>
+<p><strong>② There is a deployment-level switch to note, and it is essentially a "billing-path switch."</strong></p>
+<p><strong>The README's Cloud Run example contains</strong> <code>GOOGLE_GENAI_USE_ENTERPRISE=1</code>.</p>
+<p><strong>Verified clearly the 2026-10-08 check (2026-10-01, Google's official codelab and Cloud docs)</strong>: it is <strong>not a switch that "unlocks enterprise features"</strong>.</p>
+<p><strong>It is a routing switch: moving requests from the Gemini Developer API to the Google Cloud enterprise platform (Gemini Enterprise Agent Platform / Vertex AI), and the billing basis changes with it.</strong></p>
+<p>In other words, what changes is where requests go, not feature entitlements.</p>
+<p><strong>The official codelab's explanation of the three variables, verbatim:</strong></p>
+<div class="tbl-wrap"><table><thead><tr><th>Variable</th><th>Official meaning</th></tr></thead><tbody><tr><td><code>GOOGLE_GENAI_USE_ENTERPRISE</code></td><td>"This tells the ADK that you intend to use Google's <strong>Gemini Enterprise Agent Platform</strong> service for your Generative AI operations."</td></tr><tr><td><code>GOOGLE_CLOUD_PROJECT</code></td><td>"ADK needs this to correctly associate your agent with your cloud resources and <strong>enable billing</strong>."</td></tr><tr><td><code>GOOGLE_CLOUD_LOCATION</code></td><td>region, e.g. <code>global</code></td></tr></tbody></table></div>
+<p><strong>The single most important line.</strong></p>
+<p>The official docs write "enable billing" explicitly against <code>GOOGLE_CLOUD_PROJECT</code>.</p>
+<p><strong>Set all three variables together and the agent lands in your Google Cloud project and starts billing.</strong> Unset, it goes the Gemini Developer API route (which has its own free tier and quotas).</p>
+<p><strong>Two more points worth recording</strong>:</p>
+<ul><li><strong>the three variables must appear as a group</strong> — every official example (README, codelab, the Cloud docs' Live API guide) sets all three; there is no set-one-only style</li></ul>
+<ul><li><strong>values are inconsistent</strong> — the README and codelab <code>.env</code> files write <code>1</code>, the Cloud docs write <code>TRUE</code> or <code>True</code>. All are truthy by boolean semantics, but the official inconsistency itself is worth noting</li></ul>
+<blockquote>⚠ Still unverified: Gemini's specific unit prices. And the actual rates of Vertex AI Agent Engine and Cloud Run.</blockquote>
+</div>
+<div class="panel is-slim">
+<h2>Local files and sandbox: this site's biggest evidence gap</h2>
+<p><strong>When the README discusses the tool ecosystem it lists</strong> pre-built tools, custom functions, OpenAPI specs, MCP tools.</p>
+<p>All of that is "how to connect tools in".</p>
+<p>It <strong>does not list "reading/writing local files" as a capability</strong>.</p>
+<p>It <strong>also does not describe a default file-access boundary</strong>.</p>
+<p>Compare what other objects on this site do here:</p>
+<ul><li><strong>OpenHands</strong> gives an explicit Docker sandbox form and API-key mechanism, and hangs a WARNING on the no-sandbox install option</li></ul>
+<ul><li><strong>Codex SDK</strong> source has a three-tier <code>SandboxMode</code> enum</li><li><strong>on the ADK side this site has obtained no official statement of any sandbox or permission boundary</strong></li></ul>
+<p>⚠ <strong>Not provided officially</strong>: default sandbox mechanism, filesystem permission model, network access control. <strong>If you choose it, container isolation is yours to confirm.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>Same-vendor dual versions + the samples repository</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Repository</th><th>Purpose</th><th>Verified (2026-10-01)</th></tr></thead><tbody><tr><td><code>google/adk-python</code></td><td>Python mainline (collected by this entry)</td><td>21,966★ · Apache-2.0</td></tr><tr><td><code>google/adk-js</code></td><td>TypeScript edition</td><td>1,426★ · Apache-2.0</td></tr><tr><td><code>google/adk-recipes</code></td><td>sample collection (description says adk-samples)</td><td>10,404★</td></tr></tbody></table></div>
+<p>⚠ Per this site's "one object = one decision basis" granularity, <strong>only the Python mainline is collected</strong>.</p>
+</div>
+<div class="panel is-slim">
+<h2>Verification notes</h2>
+<p>Basis for <code>confidence: partial</code>.</p>
+<p><strong>Why not verified.</strong> Three dimensions were verified against official mechanics the 2026-10-08 check:</p>
+<ul><li><code>local_files</code> — the Artifacts abstraction</li><li><code>context</code> — Context Compaction since 1.16</li><li><code>permissions</code> — Tool Confirmation</li></ul>
+<p>But <code>permissions</code> is only "confirm before executing". The official docs provide no sandbox or filesystem permission model.</p>
+<p>The remaining gaps concentrate on <strong>rates and deployment semantics</strong>:</p>
+<ul><li>Gemini unit prices and the actual rates of Vertex AI Agent Engine / Cloud Run</li><li>cross-process cross-machine resume semantics</li><li>distributed state storage</li></ul>
+<blockquote><strong>Verified</strong>: repository exists and star count (21,966 · rolling check 2026-10-23), license (Apache-2.0, via the license API), last push (2026-10-22, still active), latest version <strong>v2.12.0</strong> (releases @ 2026-10-13), the README's full six-feature list and four run forms, the two <code>adk deploy</code> commands and the <code>GOOGLE_GENAI_USE_ENTERPRISE</code> env var, the <code>adk eval</code> command and <code>.evalset.json</code> format, metadata of the <code>google/adk-js</code> (1,426★ · Apache-2.0) and <code>google/adk-recipes</code> (10,404★) repositories</blockquote>
+<blockquote><strong>Added the 2026-10-08 check (2026-10-01)</strong>: the exact meaning of <code>GOOGLE_GENAI_USE_ENTERPRISE</code>. It is a <strong>billing-path switch</strong> (moving to Gemini Enterprise Agent Platform / Vertex AI), not an enterprise-feature switch. The official docs hang "enable billing" on <code>GOOGLE_CLOUD_PROJECT</code>; the three variables must be set as a group. Sources: Google's official codelab and Cloud docs.</blockquote>
+<blockquote><strong>Not verified</strong>: tool-calling and structured-output reliability (alignment) under non-Gemini models, default sandbox and file permission models, network access control, cross-process/cross-machine resume semantics, distributed state storage, the implementation layer of MCP integration (framework-level dependency vs tool source), Gemini unit prices and the actual rates of Vertex AI Agent Engine / Cloud Run</blockquote>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/framework/langgraph.html">LangGraph</a></span><span class="rel-n"><strong>The pair this site should contrast most</strong>: both are graph-execution orchestration frameworks, and LangGraph's checkpointer / interrupt mechanisms vs ADK's state management + HITL are two answers to the same class of problem. Only after collecting the latter can this site offer an internal comparison of orchestration frameworks.</span></li>
+<li><span class="rel-t"><a href="/en/framework/crewai.html">CrewAI</a></span><span class="rel-n">Both orchestration frameworks, but CrewAI centers on the "roles/tasks/flows" abstraction while ADK centers on "graph nodes" — different abstraction levels.</span></li>
+<li><span class="rel-t"><a href="/en/framework/openai-agents-sdk.html">OpenAI Agents SDK</a></span><span class="rel-n">Both vendor-line frameworks but opposite in form: that one is single-agent primitives (primitives-only); ADK is multi-agent orchestration.</span></li>
+<li><span class="rel-t"><a href="/en/framework/openhands.html">OpenHands Agent Canvas</a></span><span class="rel-n">The negative contrast: OpenHands is a scheduling platform with a Web UI that can also attach third-party agents; ADK is a code-first library. Both orchestrate, but one faces the interface and one faces the code.</span></li>
+<li><span class="rel-t"><a href="/en/coding/gemini-cli.html">Gemini CLI</a></span><span class="rel-n">Other layer · AI coding</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/framework/ag2.html">AG2</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">The community continuation of AutoGen after the original repo stalled. T</td></tr><tr><td><a href="/en/framework/mastra.html">Mastra</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Mastra is the batteries-included agent framework for TypeScript - offici</td></tr><tr><td><a href="/en/framework/microsoft-agent-framework.html">Microsoft Agent Framework</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">The Microsoft-official agent foundation that merged Semantic Kernel and </td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from Google</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/automation/vertex-agent-builder.html"><span class="vp-cat">Automation</span>Vertex AI Agent Builder</a></li><li><a href="/en/chat/gemini-chat.html"><span class="vp-cat">General chat</span>Gemini (chat app)</a></li><li><a href="/en/coding/gemini-cli.html"><span class="vp-cat">AI coding</span>Gemini CLI</a></li><li><a href="/en/coding/google-antigravity.html"><span class="vp-cat">AI coding</span>Google Antigravity</a></li><li><a href="/en/coding/jules.html"><span class="vp-cat">AI coding</span>Jules</a></li><li><a href="/en/mcp/chrome-devtools-mcp.html"><span class="vp-cat">MCP tools</span>Chrome DevTools MCP</a></li><li><a href="/en/office/google-workspace-gemini.html"><span class="vp-cat">Office &amp; writing</span>Google Workspace Gemini</a></li><li><a href="/en/research/notebooklm.html"><span class="vp-cat">Deep research</span>NotebookLM</a></li><li><a href="/en/video/veo.html"><span class="vp-cat">Video generation</span>Veo (Google)</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

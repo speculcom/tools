@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>AG2 | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/framework/ag2.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/framework/ag2.html" property="og:url"/>
+<meta content="AG2 | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"AG2 | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/framework/ag2.html","sameAs":"https://ag2.ai","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="AG2 | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/framework/ag2.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/framework/ag2.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/framework/ag2.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/framework/ag2.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Frameworks</span>
+</nav>
+<a class="back" href="/en/framework/">← Frameworks</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#3b82f6">AG</div>
+<div>
+<h1>AG2</h1>
+<div class="vendor is-caps">ag2ai</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Orchestration framework</span>
+<span class="tag on">Python</span>
+<span class="tag on">Open source</span>
+<span class="tag on">Apache-2.0</span>
+<span class="tag on">Multi-agent</span>
+<span class="tag on">Role assignments</span>
+<span class="tag on">Subagents</span>
+<span class="tag on">HITL</span>
+<span class="tag on">human-in-the-loop</span>
+<span class="tag on">Sandbox</span>
+<span class="tag on">Event-driven</span>
+<span class="tag on">Workflows</span>
+<span class="tag on">Persistence</span>
+<span class="tag on">Long-term memory</span>
+<span class="tag on">Context compression</span>
+<span class="tag on">MCP</span>
+<span class="tag on">A2A</span>
+<span class="tag on">Local models</span>
+<span class="tag on">Ollama</span>
+<span class="tag on">Multiple backends</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>The community continuation of AutoGen after the original repo stalled. The repository…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · Framework / SDK</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Framework-level default file-access boundaries and container-level isolation (not stated officially)</li>
+<li>Hosting options and resume-after-crash semantics in crash scenarios (not stated officially)</li>
+<li>Tool calling / structured output reliability comparison across providers (not stated officially)</li>
+<li>A2A implementation details in AG2 v1.0 (the official repository topics include a2a; the 2026-10-08 pass did not capture a dedicated page)</li>
+<li>The full command-allowlist semantic boundary of the restricted shell (the official docs give allowed/readonly/blocked three tiers; details need measured runs)</li>
+<li>The long-term parallel-maintenance policy of the Classic line vs v1.0 (officially only "remains maintained") <strong>Verification sources per item:</strong></li>
+<li>file-access boundaries and container isolation, hosting options: <code>network/overview</code> and <code>agent_harness</code> pages checked</li>
+<li>reliability after switching providers: <code>beta/model_configuration</code> and the Grok compatibility page checked</li>
+</ul>
+</div>
+<div class="panel-lead"><p>AG2 is an open-source Python framework for building AI agents and coordinating multiple agents to solve tasks, with "agents capable of interacting with each other," broad LLM support, tooling, autonomous and human-in-the-loop workflows, and multi-agent conversation patterns. It is the community continuation of AutoGen: as of <strong>v1.0</strong> the protocol-driven framework became the top-level package (<code>import ag2</code>), while the classic framework (<code>ConversableAgent</code>, <code>GroupChat</code>, <code>import autogen</code>) moved to its own repository, <code>ag2ai/ag2-classic</code>. Officially, "AG2 v1.0 (<code>pip install ag2</code>) is <strong>not</strong> a drop-in upgrade from Classic. The agent model, orchestration, and imports all changed." v1.0 orchestrates agents through the <strong>Network</strong> — a <code>Hub</code> that owns the registry, write-ahead log, and audit trail, with agents talking over typed <strong>channels</strong> — and exposes an opt-in <strong>harness</strong> of composable primitives (<code>assembly=</code>, <code>knowledge=</code>, <code>tasks=</code>). It is licensed Apache-2.0 and runs entirely in your own process (no managed hosting), so the only cost is model calls, billed by whichever provider you install.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Orchestrating <strong>multi-agent conversations / a protocol-driven network</strong> in Python (Hub + channels, with consulting, discussion, and workflow adapters) Needing auditable durable messaging (write-ahead log, audit trail) and cross-process deployment (WsLink) Running on local models (Ollama / vLLM / LM Studio) Needing HITL and a restricted shell tool; MCP and AG-UI integration Preferring opt-in, composable harness primitives</p></div>
+<div class="warn-p"><p><strong>Not a fit for</strong> expecting <code>pip install ag2</code> to still be the classic AutoGen API (since v1.0 those classes live in <code>ag2-classic</code>); needing a <strong>vendor-managed backend</strong> (it is a pure library — you run the process); needing out-of-the-box <strong>container-level sandboxing</strong> (officially you get a restricted-shell allowlist, not a container); or non-Python stacks (there is no official non-Python port).</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　official site measured 200 direct.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>The provider list is explicit, type-safe config classes, covering both cloud and local paths.</strong></p>
+<p>Official <code>beta/model_configuration</code> page wording:</p>
+<p>"The AG2 framework provides an explicit, predictable, and <strong>type-safe</strong> way to configure Large Language Models"</p>
+<p>One Config class + one extra per provider:</p>
+<ul><li><code>OpenAIConfig</code> / <code>OpenAIResponsesConfig</code> (<code>ag2[openai]</code>)</li><li><code>AnthropicConfig</code> (<code>ag2[anthropic]</code>)</li><li><code>GeminiConfig</code> / <code>VertexAIConfig</code> (<code>ag2[gemini]</code>)</li><li><code>BedrockConfig</code> (<code>ag2[bedrock]</code>)</li><li><code>OllamaConfig</code> (<code>ag2[ollama]</code>)</li><li><code>DashScopeConfig</code> (<code>ag2[dashscope]</code>)</li><li><code>XAIConfig</code> (<code>ag2[xai]</code>)</li><li><code>ZAIConfig</code> (<code>ag2[zai]</code>)</li></ul>
+<p><strong>Local / self-hosted support is explicit.</strong></p>
+<p>The official docs have a dedicated section "Self-Hosted and OpenAI-Compatible Models (vLLM, LM Studio, etc.)", via <code>OpenAIConfig</code>'s base_url. The README also lists <code>ag2[ollama]</code>.</p>
+<p><strong>Bedrock switched to the native async client</strong> aiobotocore in v1.1.1. The official release marks it breaking.</p>
+<p><strong>Unknown</strong> — how tool calling / structured output reliability compares across providers, not stated officially (<code>beta/model_configuration</code> and the Grok compatibility page checked).</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>A pure Python library, async throughout, no hosted service.</strong></p>
+<p>README wording:</p>
+<p>"AG2 requires <strong>Python version &gt;= 3.10</strong>"</p>
+<p>"AG2 is <strong>async throughout</strong>. <code>Agent.ask(...)</code> starts a turn and returns an <code>AgentReply</code>"</p>
+<p>Install is <code>pip install ag2[openai]</code>.</p>
+<p><strong>The official docs give two scheduling links for multi-agent form</strong> (<code>network/overview</code> page):</p>
+<ul><li>default <strong><code>LocalLink</code></strong> — official description:</li></ul>
+<p>"same-process duplex queues"</p>
+<p>i.e. hub + agents inside one process.</p>
+<ul><li>switch to <strong><code>WsLink</code></strong> — official description:</li></ul>
+<p>"the hub and each agent as separate OS processes connected over WebSocket"</p>
+<p>i.e. the hub and each agent live in separate OS processes.</p>
+<p>When switching links the <code>HubClient</code> API is unchanged; no business-code changes needed.</p>
+<p><strong>It does not operate an agent loop.</strong></p>
+<p>Everything in the library runs on your own process / host; the official docs offer no hosted offering.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>The framework ships no general-purpose file tools. File capability comes from KnowledgeStore and the sandboxed shell tool.</strong></p>
+<p>The latter's boundaries are written more clearly than most peers — the single most notable thing about this object.</p>
+<p><strong>① Disk knowledge store.</strong></p>
+<p>The official harness example uses <code>DiskKnowledgeStore(Path("./knowledge_demo"))</code>, official comment:</p>
+<p>"Disk-backed, so anything the agent remembers <strong>survives the process exiting</strong>"</p>
+<p>i.e. where knowledge lands on disk is decided by the directory you specify.</p>
+<p><strong>② Restricted shell</strong> (verified, see official release v1.1.1).</p>
+<p>Restricted mode "runs commands <strong>without a shell</strong>".</p>
+<p>When <code>SandboxShellTool</code> / <code>ShellAdapter</code> gets <code>allowed=[...]</code> or <code>readonly=True</code>, it splits the command into argv. Then <strong>it checks only the argv and executes it verbatim</strong>:</p>
+<p><strong>Official wording</strong>: "Nothing can expand after the check"</p>
+<p>Pipes / redirection / wildcards / variables are rejected in restricted mode.</p>
+<ul><li><code>readonly=True</code> allows only non-writing commands that launch no other programs</li><li><code>blocked=[...]</code> officially stated plainly:</li></ul>
+<p>"remains <strong>best-effort</strong>. It is <strong>not</strong> a security boundary."</p>
+<p><strong>Unknown</strong> — framework-level default file-access boundaries and container-level isolation, not stated officially (<code>network/overview</code>, <code>agent_harness</code> and the release page checked).</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>"Still running after shutdown" is pure-library form on this site — there is no hosted background.</strong></p>
+<p>But the durable messaging mechanism has an explicit official implementation. The Network capabilities listed on the <code>network/overview</code> page include:</p>
+<p>"<strong>Durable messaging</strong> with replayable channel transcripts (<strong>write-ahead log</strong>)"</p>
+<p>"<strong>Distributed / cross-process deployment</strong>: replace <code>LocalLink</code> with <strong><code>WsLink</code></strong>"</p>
+<p>The hub holds authoritative state: registry, audit log, channel table, write-ahead logs. Clients are:</p>
+<p>"thin frontends"</p>
+<p>There is also a dedicated <strong>Distributed Deployment</strong> page.</p>
+<p>It covers WsLink, serve_ws, auth, <strong>at-least-once delivery</strong>, reconnect and <strong>task durability</strong>.</p>
+<p><strong>Long-term memory can survive across processes.</strong> DiskKnowledgeStore persists to disk, see the local_files axis.</p>
+<p><strong>But there is no vendor-hosted offering at all.</strong></p>
+<p>Processes must run on your own servers; a true background needs your own containers / K8s.</p>
+<p><strong>Unknown</strong> — hosting options and the exact semantics of resume-after-crash, not stated officially (<code>network/overview</code> page checked).</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>Tools, MCP and AG-UI are all verifiable from official sources; A2A is only seen in repository topics.</strong></p>
+<p><strong>① Native tools.</strong></p>
+<p>A plain Python function with the <code>@tool</code> decorator becomes a tool. Official wording:</p>
+<p>"AG2 runs the <strong>full tool-calling loop</strong>: the model decides when to call it, AG2 executes it, and the result is fed back"</p>
+<p>Agents can also be used as tools by other agents via <code>Agent.as_tool()</code>.</p>
+<p><strong>② MCP.</strong></p>
+<p>Official releases record ongoing maintenance of <code>MCPToolkit</code> and <code>MCPServerTool</code>:</p>
+<ul><li>v1.1.1 "send exactly one <code>Authorization</code> header on every provider"</li><li>v1.1.2 "fix(mcp): derive model output schemas from serialization"</li></ul>
+<p><strong>③ AG-UI.</strong></p>
+<ul><li>v1.1.2 "feat(ag-ui)!: <strong>serve AG-UI 1.0</strong>"</li><li>v1.1.1 supports "<strong>Human input over AG-UI</strong>" (questions via <code>context.input()</code> inside tools are raised as interrupts to the AG-UI client)</li></ul>
+<p><strong>④ Skills.</strong></p>
+<p>Official releases contain skill-related fixes:</p>
+<ul><li>"check local skill ownership before validating arguments"</li><li>"execute nested scripts from declared paths"</li></ul>
+<p><strong>A2A can currently only be seen in the official repository topics (including <code>a2a</code>).</strong></p>
+<p>This pass did not capture the body of a v1.0 A2A dedicated page, so it is not expanded.</p>
+<p>Subtask delegation has separately auto-injected <code>run_subtask</code> / <code>run_subtasks</code> tools (see the context axis).</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>This is the AG2 design that best matches this site's "state ≠ context" stance.</strong></p>
+<p>It explicitly splits the harness into three groups of opt-in primitives.</p>
+<p>Official <code>agent_harness</code> page wording:</p>
+<p>"A bare <code>Agent</code> is just a model loop. The <strong>harness</strong> is the set of <strong>opt-in primitives</strong> you compose onto it"</p>
+<p>Three key parameters:</p>
+<ul><li><strong><code>assembly=</code> (context policy)</strong> — official examples include <code>WorkingMemoryPolicy</code> (injects <code>memory/working.md</code> into the system prompt), <code>SlidingWindowPolicy(max_events=50)</code> (caps history usage), <code>AlertPolicy</code></li></ul>
+<ul><li><strong><code>knowledge=</code></strong> — <code>KnowledgeConfig(store=..., compact=..., compact_trigger=..., aggregate=...)</code>, with <code>SummarizeCompact</code> / <code>TailWindowCompact</code> doing <strong>context compaction</strong> (README example "18 -&gt; 3 events"); <code>write_event_log</code> dumps stream history to <code>/log/{stream_id}.jsonl</code></li></ul>
+<ul><li><strong><code>tasks=</code> (off by default)</strong> — when enabled, subtask tools are auto-injected; sub-Agents inherit parent tools by default, and <strong>subtasks themselves have <code>tasks=False</code></strong>, official wording:</li></ul>
+<p><strong>Official wording</strong>: "recursive delegation is structurally impossible"</p>
+<p><strong>The boundary is clear</strong>: <code>compact=</code> governs window compaction.</p>
+<p><code>KnowledgeStore</code> governs cross-process persistent memory — the official docs describe the two separately.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>The official mechanisms come in two layers: HITL human review + restricted shell tools. Neither layer equals a container sandbox.</strong></p>
+<p><strong>① HITL.</strong></p>
+<p>README wording:</p>
+<ul><li>calling <code>context.input(...)</code> inside a tool pauses the run to ask a human</li><li><code>hitl_hook</code> decides where the answer comes from (CLI / web UI / queue)</li></ul>
+<p><strong>② Tool approval.</strong></p>
+<p>Release v1.1.1 states plainly:</p>
+<p>"<strong>Approval grants are keyed by tool implementation</strong>"</p>
+<p>and only one same-named tool is exposed per turn.</p>
+<p>MCP-discovered tools rank below code-declared tools and cannot override local tools.</p>
+<p><strong>③ Restricted shell.</strong></p>
+<p><code>SandboxShellTool</code>'s <code>allowed</code> / <code>readonly</code> / <code>blocked</code> — see the local_files axis. The official docs themselves declare <code>blocked=[...]</code> <strong>not a security boundary</strong>.</p>
+<p>v1.1.2 also fixed a shell command-filter bypass vulnerability (<strong>GHSA-42mf-vpmr-gw5r</strong>).</p>
+<p><strong>④ Data-interface security note.</strong></p>
+<p>Official docs warn that Redis's <code>Serializer.PICKLE</code> hands code-execution capability to anyone who can write that stream.</p>
+<p>The advice is to use only fully trusted Redis; JSON is the default.</p>
+<p><strong>Unknown</strong> — framework-level process / container sandbox defaults, not stated officially (<code>agent_harness</code> and release pages checked).</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p><strong>Fits.</strong></p>
+<ul><li>orchestrating <strong>multi-agent conversations / protocolized networks</strong> in Python (Hub + channel, with consulting, discussion, workflow adapters)</li><li>needing auditable durable messaging (write-ahead log, audit trail) and cross-process deployment (WsLink)</li><li>running on local models (Ollama / vLLM / LM Studio)</li><li>wanting HITL and restricted shell tools</li><li>needing MCP and AG-UI integration</li><li>preferring opt-in, composable harness primitives</li></ul>
+<p><strong>Does not fit.</strong></p>
+<ul><li>expecting <code>pip install ag2</code> to still be the old AutoGen API (since v1.0 the classic classes moved into <code>ag2-classic</code>)</li><li>needing a vendor-hosted background (pure library, processes are your own)</li><li>needing out-of-the-box container-level sandbox isolation (the official offering is a restricted-shell allowlist, not containers)</li><li>non-Python stacks (no official non-Python port)</li></ul></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>Apache-2.0</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Assuming <code>pip install ag2</code> is still classic AutoGen — since v1.0 ConversableAgent / GroupChat / <code>import autogen</code> all moved to the ag2-classic package</li>
+<li>Assuming ag2 is a smooth upgrade from autogen — officially v1.0 is not a drop-in upgrade; the agent model, orchestration, and imports all changed</li>
+<li>Assuming it is a Microsoft-official project — it is maintained by community volunteers (ag2ai), a different line from Microsoft's Microsoft Agent Framework</li>
+<li>Assuming <code>blocked=[...]</code> is a security boundary — officially it is only best-effort; isolation in the restricted shell comes from the <code>allowed</code> allowlist and <code>readonly</code></li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-08。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>ag2ai/ag2 · repository (5,011★, Apache-2.0, pushed_at 2026-10-22, topics include mcp/a2a/ag2, rolling check 2026-10-23)</td><td><a href="https://github.com/ag2ai/ag2" rel="noopener" target="_blank">https://github.com/ag2ai/ag2</a></td></tr>
+<tr><td>docs</td><td>Main README (AG2 v1.0 vs AG2 Classic split, Agent/tools/HITL/Network/harness concepts, Apache-2.0 statement)</td><td><a href="https://github.com/ag2ai/ag2/blob/main/README.md" rel="noopener" target="_blank">https://github.com/ag2ai/ag2/blob/main/README.md</a></td></tr>
+<tr><td>docs</td><td>Official docs · Network Overview (Hub + channel, four adapters, LocalLink/WsLink, write-ahead log, audit trail, HumanClient)</td><td><a href="https://docs.ag2.ai/docs/user-guide/network/overview/" rel="noopener" target="_blank">https://docs.ag2.ai/docs/user-guide/network/overview/</a></td></tr>
+<tr><td>docs</td><td>Official docs · Agent Harness (assembly= / knowledge= / tasks= primitive groups, compaction, recursive delegation impossible, turn lifecycle)</td><td><a href="https://docs.ag2.ai/docs/user-guide/agent_harness/" rel="noopener" target="_blank">https://docs.ag2.ai/docs/user-guide/agent_harness/</a></td></tr>
+<tr><td>docs</td><td>Official docs · Model Configuration (provider Config classes and extras list, self-hosted OpenAI-compatible, Vertex/Z.AI/Bedrock auth)</td><td><a href="https://docs.ag2.ai/latest/docs/beta/model_configuration/" rel="noopener" target="_blank">https://docs.ag2.ai/latest/docs/beta/model_configuration/</a></td></tr>
+<tr><td>docs</td><td>Official docs · Grok &amp; OpenAI-API-Compatible (xAI via the OpenAI client, function calling and structured output)</td><td><a href="https://docs.ag2.ai/latest/docs/user-guide/models/grok-and-oai-compatible-models/" rel="noopener" target="_blank">https://docs.ag2.ai/latest/docs/user-guide/models/grok-and-oai-compatible-models/</a></td></tr>
+<tr><td>docs</td><td>AG2 Classic docs · LLM Configuration (classic line's provider list: OpenAI/Anthropic/Gemini/Bedrock/Mistral/Cerebras/Together/Groq + local Ollama/LiteLLM/LM Studio)</td><td><a href="https://classic.docs.ag2.ai/latest/docs/user-guide/basic-concepts/llm-configuration/" rel="noopener" target="_blank">https://classic.docs.ag2.ai/latest/docs/user-guide/basic-concepts/llm-configuration/</a></td></tr>
+<tr><td>changelog</td><td>Releases (latest v1.1.2 @ 2026-10-03; v1.1.1 includes restricted shell and tool-approval changes, GHSA-42mf-vpmr-gw5r fix, Bedrock switch to aiobotocore)</td><td><a href="https://github.com/ag2ai/ag2/releases" rel="noopener" target="_blank">https://github.com/ag2ai/ag2/releases</a></td></tr>
+<tr><td>repo</td><td>ag2ai/ag2-classic · the classic framework's separate repository (pip install ag2-classic, import autogen, still maintained)</td><td><a href="https://github.com/ag2ai/ag2-classic" rel="noopener" target="_blank">https://github.com/ag2ai/ag2-classic</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs.</p>
+<p>The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" rel="noopener" target="_blank">protocols/framework/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong> (tailored to the orchestration-framework + multi-agent-conversation dimensions):</p>
+<div class="tbl-wrap"><table><thead><tr><th>#</th><th>What to test</th><th>Why it is worth testing</th></tr></thead><tbody><tr><td>1</td><td>Effort to port a piece of classic GroupChat code using <code>WorkflowAdapter</code></td><td>verifies the official "closest to GroupChat" claim</td></tr><tr><td>2</td><td>Switching <code>LocalLink</code> to <code>WsLink</code> cross-process deployment — does business code really stay unchanged</td><td>the official promise is the HubClient API stays the same</td></tr><tr><td>3</td><td>Usability of the restricted shell (<code>allowed</code>/<code>readonly</code>) under a realistic command set</td><td>stronger security often costs usability; the boundary needs measuring</td></tr><tr><td>4</td><td>Attach Ollama and run a multi-agent network, observing token and latency overhead</td><td>the real cost of local models + multi-agent</td></tr><tr><td>5</td><td>DiskKnowledgeStore + compaction across two runs, verifying cross-process memory really works</td><td>the README example claims it remembers after restart</td></tr><tr><td>6</td><td>The breaking-change surface of the two consecutive v1.1.x releases</td><td>fast iteration; selection needs quantified upgrade risk</td></tr></tbody></table></div>
+</div>
+<div class="panel is-slim">
+<h2>A version fault line that must be made clear: AG2 v1.0 split out Classic</h2>
+<p>The README top uses a prominent notice:</p>
+<blockquote><strong>Looking for <code>ConversableAgent</code>, <code>GroupChat</code>, or <code>import autogen</code>? That's now AG2 Classic.</strong></blockquote>
+<p>Since v1.0, the classic framework moved wholesale to the separate repository <code>ag2ai/ag2-classic</code>.</p>
+<ul><li>classic line: <code>pip install ag2-classic</code>, <code>import autogen</code>, docs at <code>classic.docs.ag2.ai</code></li><li>new top-level package: <code>pip install ag2</code> is now the protocol-driven new framework</li></ul>
+<p><strong>The classic line is still maintained; existing code does not stop working.</strong></p>
+<p><strong>The new top-level package no longer ships the <code>autogen</code> import name or the classic agent classes.</strong></p>
+<p>The official wording on the upgrade path is blunt:</p>
+<blockquote>AG2 v1.0 (<code>pip install ag2</code>) is <strong>not</strong> a drop-in upgrade from Classic. The agent model, orchestration, and imports all changed.</blockquote>
+<p><strong>So the answer to "is AG2 the new AutoGen" is: same lineage.</strong></p>
+<p><strong>But v1.0 is not a lift-and-shift upgrade.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>Multi-agent orchestration: Network (Hub + channel)</h2>
+<p>v1.0 uses <strong>Network</strong> to replace the classic <code>GroupChat</code> / swarm / nested chat:</p>
+<blockquote>a <code>Hub</code> that owns the registry, the <strong>write-ahead log</strong>, and the <strong>audit trail</strong>, with agents talking over typed <strong>channels</strong>.</blockquote>
+<p>The official wording is explicit:</p>
+<blockquote>"<strong>This replaces the classic <code>GroupChat</code> / swarm / nested-chat patterns.</strong>"</blockquote>
+<p>Four built-in channel adapters:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Adapter</th><th>Participants</th><th>Speaking order</th><th>Termination</th></tr></thead><tbody><tr><td><code>conversation</code></td><td>exactly 2</td><td>free (either side at any time)</td><td>explicit close or TTL</td></tr><tr><td><code>consulting</code></td><td>exactly 2</td><td>strict question-answer</td><td>auto-closes after the answer</td></tr><tr><td><code>discussion</code></td><td>2+</td><td>round-robin</td><td>explicit close or TTL</td></tr><tr><td><code>workflow</code></td><td>2+</td><td>declarative <code>TransitionGraph</code></td><td>graph termination</td></tr></tbody></table></div>
+<p>Of these, the official docs call <code>workflow</code> <strong>"the closest counterpart to the classic GroupChat"</strong>.</p>
+<p>For deployment the default is <code>LocalLink</code> (same process). Switching to <code>WsLink</code> goes cross-process / cross-host with business code unchanged.</p>
+</div>
+<div class="panel is-slim">
+<h2>The harness: three groups of opt-in primitives, landing exactly on "state ≠ context"</h2>
+<p>Official <code>agent_harness</code> page wording:</p>
+<blockquote>A bare <code>Agent</code> is just a model loop. The <strong>harness</strong> is the set of <strong>opt-in primitives</strong> you compose onto it.</blockquote>
+<div class="tbl-wrap"><table><thead><tr><th>Parameter</th><th>Role</th><th>Corresponding dimension on this site</th></tr></thead><tbody><tr><td><code>assembly=</code></td><td>context policy: <code>WorkingMemoryPolicy</code> / <code>SlidingWindowPolicy</code> / <code>AlertPolicy</code></td><td><strong>context</strong></td></tr><tr><td><code>knowledge=</code></td><td><code>KnowledgeStore</code> + <code>SummarizeCompact</code> / <code>TailWindowCompact</code> compaction + aggregation</td><td><strong>long-term memory + context compaction</strong></td></tr><tr><td><code>tasks=</code></td><td>subtask delegation (off by default), sub-Agent <code>tasks=False</code>, recursion impossible</td><td><strong>subagents</strong></td></tr></tbody></table></div>
+<p><strong>This boundary is clean</strong>: compaction (<code>compact=</code>) governs window usage.</p>
+<p>The knowledge store (<code>KnowledgeStore</code>) governs cross-process persistent memory.</p>
+</div>
+<div class="panel is-slim">
+<h2>Permissions: HITL + restricted shell, but not a container sandbox</h2>
+<ul><li><strong>HITL</strong>: <code>context.input(...)</code> inside a tool pauses the run to ask a human; <code>hitl_hook</code> decides the answer source.</li><li><strong>Tool approval</strong>: official v1.1.1 states approvals are keyed by "tool implementation", and only one same-named tool is exposed per turn.</li><li><strong>Restricted shell</strong>: <code>SandboxShellTool</code>'s <code>allowed=[...]</code> / <code>readonly=True</code> split the command into argv, then <strong>check only the argv and execute verbatim</strong>.</li></ul>
+<p>Official wording:</p>
+<blockquote>"Nothing can expand after the check"</blockquote>
+<p>The official docs also declare of <code>blocked=[...]</code>:</p>
+<blockquote>"best-effort. It is <strong>not</strong> a security boundary."</blockquote>
+<ul><li>v1.1.2 fixed a shell command-filter bypass vulnerability (<strong>GHSA-42mf-vpmr-gw5r</strong>), showing this class of tool's security surface needs watching across releases.</li></ul>
+<p><strong>Note: this is not container isolation</strong> — the official offering is an allowlist and read-only mode.</p>
+<p><strong>One more data-interface note.</strong></p>
+<p>With <code>Serializer.PICKLE</code>, anyone who can write that Redis stream gains code-execution capability.</p>
+<p>The official advice: use only fully trusted Redis; JSON is the default.</p>
+</div>
+<div class="panel is-slim">
+<h2>Verification notes</h2>
+<p>Basis for <code>confidence: partial</code>:</p>
+<p><strong>Why not verified</strong>: the 2026-10-08 pass verified the v1.0-vs-Classic split, the Network Hub/channel abstraction, the three harness primitive groups, the provider list (including local models).</p>
+<p>The restricted shell and tool-approval mechanisms are also verified. The release cadence (v1.1.1 / v1.1.2) was verified the 2026-10-08 pass too.</p>
+<p>But several items are <strong>genuinely not given officially</strong>:</p>
+<ul><li>framework-level default file-access boundaries and container-level isolation</li><li>hosting options and crash-resume semantics</li><li>tool calling / structured output reliability after switching providers</li><li>A2A implementation details in v1.0 (only seen in repository topics)</li></ul>
+<p>Plus fast version iteration (two releases within days), so it is not enough to raise to verified.</p>
+<p><strong>Official pages checked the 2026-10-08 pass</strong>: repository and README, <code>network/overview</code>, <code>agent_harness</code>, <code>beta/model_configuration</code>, the Grok compatibility page, the classic line's LLM Configuration page, the releases page, the <code>ag2ai/ag2-classic</code> repository.</p>
+<p><strong>Verified metadata</strong>: repository exists, ★5,011 (rolling check 2026-10-23), license Apache-2.0 (via the license API), last push 2026-10-22 (still active), latest version <strong>v1.2.1</strong> (releases @ 2026-10-21).</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/framework/microsoft-agent-framework.html">Microsoft Agent Framework</a></span><span class="rel-n"><strong>Same-lineage divergence</strong>: AG2 is the community continuation of AutoGen; MAF is Microsoft's official successor merging AutoGen with Semantic Kernel. The AutoGen sunset recorded by this site's harness section is why these two branches are collected separately.</span></li>
+<li><span class="rel-t"><a href="/en/framework/crewai.html">CrewAI</a></span><span class="rel-n"><strong>Abstraction-level contrast</strong>: CrewAI uses the business metaphors of Crew (roles/goals/tasks) / Flow. AG2 v1.0 uses the protocolized abstraction of Network (Hub + typed channels). One leans toward team roles, the other toward message protocols and governance.</span></li>
+<li><span class="rel-t"><a href="/en/framework/google-adk.html">Google ADK（Agent Development Kit）</a></span><span class="rel-n"><strong>Orchestration and HITL contrast</strong>: ADK is a graph execution engine + tool-level confirmation. AG2 is a Hub/channel network + <code>context.input()</code> human review. Both provide state persistence, but at different granularity and semantics.</span></li>
+<li><span class="rel-t"><a href="/en/mcp/filesystem.html">Filesystem MCP Server</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/framework/crewai.html">CrewAI</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">"Organises multi-agent collaboration through role division and business </td></tr><tr><td><a href="/en/framework/google-adk.html">Google ADK（Agent Development Kit）</a></td><td>Cloud / API</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">In one line: Google ADK is a code-first agent orchestration framework wh</td></tr><tr><td><a href="/en/framework/hermes-agent.html">Hermes Agent</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A resident personal assistant with a learning loop — put plainly: a resi</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

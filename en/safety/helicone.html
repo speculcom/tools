@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Helicone | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/safety/helicone.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/safety/helicone.html" property="og:url"/>
+<meta content="Helicone | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Helicone | Tools","applicationCategory":"DeveloperApplication","sameAs":"https://docs.helicone.ai","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-11-21"}</script>
+<meta content="Helicone | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/safety/helicone.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/safety/helicone.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/safety/helicone.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/safety/helicone.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Safety</span>
+</nav>
+<a class="back" href="/en/safety/">← Safety</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#f26d6d">HE</div>
+<div>
+<h1>Helicone</h1>
+<div class="vendor is-caps">Helicone</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">AI gateway</span>
+<span class="tag on">observability</span>
+<span class="tag on">logs</span>
+<span class="tag on">usage</span>
+<span class="tag on">multi-provider</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-11-21</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Helicone is an open-source AI gateway and LLM observability platform: officially a…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Cloud / API · Vendor cloud</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not checked</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Exact retention period and deletion UI for cloud request/response logs (not itemised in the official docs)</li>
+<li>Whether logged data is used for training or product improvement</li>
+<li>Team permission tiers, audit logs and export details</li>
+<li>Billing and quota terms (prices are not recorded in entries)</li>
+<li>Capacity planning and upgrade paths for the self-hosted stack (check the deployment docs)</li>
+</ul>
+</div>
+English summaries and interface labels are available. Detailed source notes below are currently in Chinese.
+<div class="panel-lead"><p><strong>Helicone is an open-source AI gateway and LLM observability platform</strong>: officially a Rust router with one OpenAI-compatible interface for 100+ models, plus caching, rate limits, fallback and tracing; it can be cloud-hosted or deployed as a gateway binary or full stack on your own infrastructure. It solves centralised call management and observability, not model-quality judgement.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Fit: teams connecting more than one model, wanting logs, usage and fallback in one place and accepting a cloud form; or teams that must keep data in-house and will maintain ClickHouse, Minio and Supabase for self-hosting. Not fit: treating the gateway as model capability itself, or teams unwilling to own self-hosting dependencies.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-11-21</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　Docs and changelog are hosted outside the mainland; both were reachable on the 2026-11-06 and 2026-11-21 checks.</dd>
+<dt>Direct access</dt><dd>direct OK　docs.helicone.ai and www.helicone.ai/changelog returned 200 direct on 2026-11-06; the Open Source and AI Gateway Introduction pages returned 200 on 2026-11-21.</dd>
+<dt>CAC filing</dt><dd>filing unknown：Filing and in-country availability not verified; reachability is not availability.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p>The official AI Gateway docs describe an open-source Rust router exposing one OpenAI-compatible interface to 100+ language models, with provider keys centralised in the gateway; both cloud-hosted and self-hosted forms are listed. It is not a model provider.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p>The cloud-hosted gateway runs on the platform, with an official 99.9% SLA and global edge network. The self-hosted gateway ships as one lightweight Rust binary for Docker, Kubernetes, bare-metal or sidecar use; the full observability stack can run via Docker Compose or Helm.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>In cloud form, requests and logs live on Helicone's side. In self-hosted form, Web, Jawn, Supabase, ClickHouse and Minio run on your own infrastructure, so logs and object storage stay under your control. The gateway itself does not run local models.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p>The gateway sits in the request path and forwards or falls back per call. The official material does not list a durable task queue as a product surface; background jobs are left to the caller's orchestration. Log writes are part of the cloud or self-hosted stack.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p>The docs list integrations including the OpenAI SDK, Anthropic, LangChain, Gemini and Vercel AI SDK. The gateway provides OpenAI-compatible syntax, caching, rate limits, fallbacks and built-in tracing. An MCP server is not part of the AI Gateway capability surface as documented.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p>The gateway keeps no conversation memory: context is the request body, and length belongs to the upstream model. The observability layer stores traces and sessions for debugging, but the docs do not feed historical traces back as model context.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p>Cloud use centralises keys and spend controls in the account; self-hosting leaves key and data permissions to your deployment. Team tiers, audit logs and export details are not itemised in the official docs.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Fits: teams standardising several model providers with fallback, caching, rate limits and observability, or teams that need data inside their own infrastructure and will run the self-hosted gateway. Does not fit: those expecting the gateway to supply model capability, or those unwilling to operate ClickHouse, Minio and Supabase dependencies.</p></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>Apache-2.0 — the official open-source page read on 2026-11-21 states "licensed under the Apache License 2.0"; the GitHub repository README also marks Apache-2.0 on the same date.</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Account and permissions</a> · <a href="/en/mcp/guides/failure-library.html#rate-limit">Rate limits and retries</a> · <a href="/en/mcp/guides/failure-library.html#files">File-reading issues</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Treating a unified entry point as unified capability — model parameters and behaviour still differ behind the gateway</li>
+<li>Using the observability panel without checking what sensitive content goes into request bodies</li>
+<li>Treating platform-managed keys as a reason to skip key rotation and least privilege</li>
+<li>Choosing self-hosting for “one binary” while ignoring the ClickHouse / Minio / Supabase stack you must operate</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-11-21，Content updated 2026-11-21。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>docs</td><td>Helicone · Open Source (Apache License 2.0, self-hosting and repositories; 200 direct on 2026-11-21)</td><td><a href="https://docs.helicone.ai/references/open-source" rel="noopener" target="_blank">https://docs.helicone.ai/references/open-source</a></td></tr>
+<tr><td>docs</td><td>Helicone · AI Gateway Introduction (Rust router, 100+ models, cloud/self-hosted, Docker/Kubernetes/bare-metal; 200 direct on 2026-11-21)</td><td><a href="https://docs.helicone.ai/gateway/overview" rel="noopener" target="_blank">https://docs.helicone.ai/gateway/overview</a></td></tr>
+<tr><td>docs</td><td>Helicone · official docs (AI Gateway · automatic logging, observability and fallbacks; 100+ models; 200 direct on 2026-11-06)</td><td><a href="https://docs.helicone.ai" rel="noopener" target="_blank">https://docs.helicone.ai</a></td></tr>
+<tr><td>changelog</td><td>Helicone · changelog (200 direct on 2026-11-06)</td><td><a href="https://www.helicone.ai/changelog" rel="noopener" target="_blank">https://www.helicone.ai/changelog</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>No measured runs on latency, availability or failover conditions. "100+ models", "99.9% SLA" and "within seconds" are quoted from official pages; the site does not treat those figures as evidence for a ranking, and draws no comparison against similar products. Licence and self-hosting statements come from the official Open Source and AI Gateway Introduction pages.</p>
+</div>
+<div class="panel is-slim">
+<h2>第一次怎么用</h2>
+<ol><li value="1">先过一遍你要送出去的数据：客户姓名、订单号、密钥、源码片段。任一项不能离开自己环境，就选自托管而不是云端。</li><li value="2">接入时把「谁在调用哪个模型、失败会怎样」写清楚。网关只保证集中，不保证行为一致。回退条件与超时阈值要显式设定并演练一次。</li><li value="3">密钥仍在你的账上：平台代管不等于免轮换，按你的离职与泄露预案设定轮换周期。</li><li value="4">选自托管时先按官方 Docker Compose / Helm 文档核对 ClickHouse、Minio、Supabase 的备份与升级路径，再上线。</li><li value="5">上线后核对日志范围：确认记录里没混进不该长期留存的内容，再决定保留多久、怎么导出。</li></ol>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/safety/langwatch.html">LangWatch</a></span><span class="rel-n">Same line: LangWatch (in gateway and access control); this entry states only what its own official sources support.</span></li>
+<li><span class="rel-t"><a href="/en/safety/litellm.html">LiteLLM Proxy (AI Gateway)</a></span><span class="rel-n">Same line: LiteLLM 网关（Proxy / AI Gateway） (in gateway and access control); this entry states only what its own official sources support.</span></li>
+<li><span class="rel-t"><a href="/en/framework/vercel-ai-sdk.html">Vercel AI SDK 7</a></span><span class="rel-n">Other layer · Frameworks &amp; runtimes</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/safety/langsmith.html">LangSmith</a></td><td>Local + cloud</td><td>Commercial terms</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">LangSmith is a hosted observability and evaluation platform. Its officia</td></tr><tr><td><a href="/en/safety/langwatch.html">LangWatch</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">LangWatch is an LLMOps platform that puts online calls, evaluation and p</td></tr><tr><td><a href="/en/safety/arize-phoenix.html">Arize Phoenix</a></td><td>Local / self-hosted</td><td>Commercial terms</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Phoenix is an open-licensed observability and evaluation platform that r</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

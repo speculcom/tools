@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>OpenAI Agents SDK | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/framework/openai-agents-sdk.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/framework/openai-agents-sdk.html" property="og:url"/>
+<meta content="OpenAI Agents SDK | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"OpenAI Agents SDK | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/framework/openai-agents-sdk.html","sameAs":"https://openai.github.io/openai-agents-python/","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="OpenAI Agents SDK | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/framework/openai-agents-sdk.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/framework/openai-agents-sdk.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/framework/openai-agents-sdk.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/framework/openai-agents-sdk.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Frameworks</span>
+</nav>
+<a class="back" href="/en/framework/">← Frameworks</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#10A37F"'>OP</div>
+<div>
+<h1>OpenAI Agents SDK</h1>
+<div class="vendor is-caps">OpenAI</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Python</span>
+<span class="tag on">Open source</span>
+<span class="tag on">MIT</span>
+<span class="tag on">Coding framework</span>
+<span class="tag on">General-purpose harness</span>
+<span class="tag on">guardrails</span>
+<span class="tag on">MCP</span>
+<span class="tag on">human-in-the-loop</span>
+<span class="tag on">sandbox</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>"A primitives-only multi-agent harness" — the official description is "lightweight…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · Framework / SDK</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>A capability-alignment matrix across the 100+ providers</li>
+<li>Regions, quotas, and billing of the hosted sandbox client (quotes not recorded per our price-recording policy)</li>
+<li>Concurrent-write semantics of Sessions backends across multi-process/multi-machine</li>
+<li>The real dependency footprint and upgrade conflicts of the litellm / any-llm extras</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>"A primitives-only multi-agent harness"</strong> — the official description is "lightweight yet powerful": it hands you the agent-loop primitives and does not decide for you how the filesystem, planning or memory work.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p><strong>Fits</strong>: you want a thin harness with built-in guardrails / human-in-the-loop, first-class MCP support, and a Python stack. <strong>Not a fit</strong>: a ready-made long-task workspace (use Deep Agents or the SandboxAgent route); a TypeScript ecosystem (use openai-agents-js).</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　openai.github.io measured 200 direct; PyPI measured reachable.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>The official self-description is provider-agnostic.</strong> The official access statement is one sentence: the OpenAI two APIs are supported, and so are 100+ other LLMs.</p>
+<p><strong>Official wording</strong>: "It is provider-agnostic, supporting the OpenAI Responses and Chat Completions APIs, as well as <strong>100+ other LLMs</strong>."</p>
+<p>The implementation path has two layers of evidence:</p>
+<ul><li>The core dependency is <code>openai&gt;=3.0.0</code>.</li><li>There are two optional extras, both non-OpenAI paths.</li></ul>
+<p>The two extras are <code>litellm</code> (<code>openai-agents[litellm]</code>) and <code>any-llm</code> (<code>openai-agents[any-llm]</code>, requires Python ≥3.11).</p>
+<p><strong>The official <code>models</code> page gives the full access surface (verified).</strong> The official docs dedicate "Non-OpenAI models" and "Third-party adapters" sections.</p>
+<p>Access points in those sections:</p>
+<ul><li><strong>Built-in provider access points</strong> can point at OpenAI-compatible endpoints.</li><li>Plus <strong>Any-LLM / LiteLLM beta adapters</strong>.</li></ul>
+<p>Official example of the built-in access point:</p>
+<blockquote><code>MultiProvider(openai_base_url="https://openrouter.ai/api/v1")</code></blockquote>
+<p>Official adapter example:</p>
+<blockquote><code>anthropic/claude-3-5-sonnet</code></blockquote>
+<p>The LiteLLM page's wording: one interface to 100+ models, and any AI model can be used.</p>
+<p><strong>Official wording</strong>: "allows you to use <strong>100+ models</strong> via a single interface ... use <strong>any AI model</strong> in the Agents SDK"</p>
+<p><strong>Switching providers = change the <code>model</code></strong> (a string name / <code>LitellmModel(...)</code> / provider prefix).</p>
+<p>⚠ But the official docs make <strong>no "zero-change" quantitative promise</strong>; per-vendor capability alignment needs testing.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>You run the process yourself — it is a library, not a service.</strong></p>
+<p>All four run modes in the README are local code calls:</p>
+<ul><li><code>Runner.run_sync</code></li><li><code>RealtimeRunner.run</code></li><li><code>VoicePipeline.run</code></li><li>sandbox client</li></ul>
+<p>The only exception is <strong>SandboxAgent's hosted sandbox client</strong> — the official docs mention a hosted sandbox is available.</p>
+<p>⚠ But that depends on OpenAI-side container services; it is not "the whole agent hosted".</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>Local-file capability explicitly exists, but not in the default agent.</strong></p>
+<p>For scenarios that "need to inspect files, run commands, apply patches, or preserve workspace state across longer tasks" the official docs provide <strong><code>SandboxAgent</code></strong> separately.</p>
+<p><strong>Official wording</strong>: SandboxAgent is preconfigured to work with a container to perform work over long time horizons</p>
+<p>Its <code>default_manifest</code> can declare <code>GitRepo(repo=..., ref=...)</code>.</p>
+<p><strong>Sandbox clients split by platform</strong>:</p>
+<ul><li><code>UnixLocalSandboxClient</code> — macOS / Linux.</li><li>Windows must use <code>DockerSandboxClient</code> (requires the <code>openai-agents[docker]</code> extra).</li><li>Windows can also use the hosted sandbox client.</li></ul>
+<p>⚠ <strong>A practical selection note: Windows users cannot use the local Unix sandbox path directly.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>Self-hosted = stop it and it's gone.</strong> The README has no hosted execution option (Realtime is a long connection, but the process stays in your hands).</p>
+<p><strong>Resuming after interruption has official support.</strong> The Sessions section states <strong>Official wording</strong>: "Automatic conversation history management across agent runs".</p>
+<p>Optional backends include SQLite (SQLAlchemy dependency) and Redis (<code>openai-agents[redis]</code>).</p>
+<p>SandboxAgent's default_manifest also targets <strong>Official wording</strong>: "preserve workspace state across longer tasks".</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>The tool surface is the four kinds the official docs list</strong>: functions, MCP, hosted tools, and <strong>agents as tools</strong> (calling other agents as tools).</p>
+<p>The latter two sit alongside handoffs as core delegation mechanisms.</p>
+<p><strong>MCP is a core dependency, not optional.</strong> See the dependency declaration:</p>
+<ul><li><code>mcp&gt;=1.19.0,&lt;3</code> is in <code>dependencies</code>.</li><li>It is not in optional-dependencies — a first-class capability.</li></ul>
+<p><strong>Guardrails are configurable.</strong> The official list includes "Configurable safety checks for input and output validation", split into input and output directions.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>The official wording only has Sessions.</strong></p>
+<p><strong>Official wording</strong>: "Automatic conversation history management across agent runs"</p>
+<p>Optional backends include Redis (<code>openai-agents[redis]</code>) and SQLAlchemy (SQLAlchemy + asyncpg dependencies).</p>
+<p><strong>Note the divergence from our claim.</strong></p>
+<p>Sessions manages <strong>conversation history</strong>.</p>
+<p>In our "state ≠ context" claim, measures like <strong>spilling large tool outputs to disk</strong> are user-built in this SDK.</p>
+<p>SandboxAgent's sandbox workspace can play that role, but the official docs do not market it as a context-management layer.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>Built-in Guardrails (input + output two-way validation) + Human in the loop (tool-level approval).</strong></p>
+<p>This is the <strong>most complete permissions surface</strong> we have seen built in so far. Two official lines:</p>
+<p><strong>Official wording</strong>: "Configurable safety checks for input and output validation"</p>
+<p><strong>Official wording</strong>: "Built-in mechanisms for involving humans across agent runs"</p>
+<p><strong>Mechanism details verified</strong> (official <code>guardrails</code> and <code>human_in_the_loop</code> chapters). Guardrails come in three kinds:</p>
+<ul><li><strong>input</strong> — runs only on the first agent in the chain.</li><li><strong>output</strong> — runs only on the agent producing the final output.</li><li><strong>tool</strong> — wraps <code>FunctionTool</code>, validates before and after execution; can skip/replace/raise a tripwire.</li></ul>
+<p>The third kind's tripwire throws an exception and <strong>aborts immediately</strong>.</p>
+<p>On the input side, <code>run_in_parallel=False</code> optionally intercepts before the agent starts.</p>
+<p><strong>Tool-level approval</strong>: <code>needs_approval=True|callable</code> works on <code>function_tool</code>, <code>ShellTool</code>, <code>ApplyPatchTool</code>, <code>Agent.as_tool</code>.</p>
+<p>MCP servers use <code>require_approval</code>.</p>
+<p>Approvals pause via run-wide <code>interruptions</code>; <code>RunState</code> is serializable/resumable. When arguments cannot be safely parsed it <strong>fails closed</strong>; <code>always_approve</code> can pin a decision.</p>
+<p>⚠ <strong>State the boundary</strong>: the official docs have <strong>no</strong> built-in file/network sandbox.</p>
+<p>guardrails are <strong>user-programmable validation hooks</strong>; the real sandbox boundary is left to the host machine or the SandboxAgent container, not the guardrail layer.</p>
+<p>(guardrails, human_in_the_loop, and Sandbox agents pages checked.)</p>
+<p>This contrasts sharply with Deep Agents' <strong>"trust the LLM, boundary responsibility is yours"</strong>.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p><strong>Fits</strong>:</p>
+<ul><li>You want a "thin harness" and choose everything beyond the agent loop primitives yourself.</li><li>You need guardrails and human-in-the-loop built in.</li><li>You need first-class MCP support and your team is on Python.</li></ul>
+<p><strong>Does not fit</strong>:</p>
+<ul><li>You want a batteries-included long-task workspace.</li><li>You are in the TypeScript ecosystem (use openai-agents-js).</li></ul>
+<p>Both "does not fit" items have alternative routes: for the long-task workspace use Deep Agents, or take this SDK's SandboxAgent route.</p></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>MIT</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Reading "provider-agnostic" as "switching providers costs nothing" — the docs promise 100+ without a quantified guarantee; this site marks it unverified</li>
+<li>Assuming SandboxAgent works out of the box on Windows — the local path is only <code>UnixLocalSandboxClient</code> (macOS/Linux); Windows needs Docker or hosted</li>
+<li>Assuming Guardrails work as a permission boundary — they are input/output validation, not a sandbox boundary; they address different risk types</li>
+<li>Assuming this is an official shell around OpenAI's closed-source SDK — it is itself an MIT-licensed framework, and the official docs state they are "committed to continuing to build the Agents SDK as an open source framework"</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-09-30。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>OpenAI Agents SDK · repository (Python)</td><td><a href="https://github.com/openai/openai-agents-python" rel="noopener" target="_blank">https://github.com/openai/openai-agents-python</a></td></tr>
+<tr><td>docs</td><td>Official docs homepage</td><td><a href="https://openai.github.io/openai-agents-python/" rel="noopener" target="_blank">https://openai.github.io/openai-agents-python/</a></td></tr>
+<tr><td>docs</td><td>Models (provider-agnostic, Non-OpenAI models, Any-LLM / LiteLLM adapters)</td><td><a href="https://openai.github.io/openai-agents-python/models/" rel="noopener" target="_blank">https://openai.github.io/openai-agents-python/models/</a></td></tr>
+<tr><td>docs</td><td>Using any model via LiteLLM ("use any AI model", 100+ models)</td><td><a href="https://openai.github.io/openai-agents-python/models/litellm/" rel="noopener" target="_blank">https://openai.github.io/openai-agents-python/models/litellm/</a></td></tr>
+<tr><td>docs</td><td>Sandbox agents (official dedicated chapter)</td><td><a href="https://openai.github.io/openai-agents-python/sandbox_agents" rel="noopener" target="_blank">https://openai.github.io/openai-agents-python/sandbox_agents</a></td></tr>
+<tr><td>docs</td><td>Guardrails (official dedicated chapter)</td><td><a href="https://openai.github.io/openai-agents-python/guardrails/" rel="noopener" target="_blank">https://openai.github.io/openai-agents-python/guardrails/</a></td></tr>
+<tr><td>docs</td><td>Human in the loop (official dedicated chapter)</td><td><a href="https://openai.github.io/openai-agents-python/human_in_the_loop/" rel="noopener" target="_blank">https://openai.github.io/openai-agents-python/human_in_the_loop/</a></td></tr>
+<tr><td>docs</td><td>Sessions (official dedicated chapter)</td><td><a href="https://openai.github.io/openai-agents-python/sessions/" rel="noopener" target="_blank">https://openai.github.io/openai-agents-python/sessions/</a></td></tr>
+<tr><td>docs</td><td>Sandbox clients (platform differences and the hosted client)</td><td><a href="https://openai.github.io/openai-agents-python/sandbox/clients/" rel="noopener" target="_blank">https://openai.github.io/openai-agents-python/sandbox/clients/</a></td></tr>
+<tr><td>repo</td><td>Agents SDK JS/TS (separate repo, MIT, 3,935★, rolling verification 2026-10-23)</td><td><a href="https://github.com/openai/openai-agents-js" rel="noopener" target="_blank">https://github.com/openai/openai-agents-js</a></td></tr>
+<tr><td>changelog</td><td>Releases (0.22.3 @ 2026-09-17)</td><td><a href="https://github.com/openai/openai-agents-python/releases" rel="noopener" target="_blank">https://github.com/openai/openai-agents-python/releases</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" rel="noopener" target="_blank">protocols/framework/_protocol.md</a>.</p>
+<p><strong>Suggested runs</strong> (tailored to this SDK within the harness section's five dimensions):</p>
+<div class="tbl-wrap"><table><thead><tr><th>#</th><th>What to test</th><th>Why it is worth testing</th></tr></thead><tbody><tr><td>1</td><td>How many files and lines for a minimal hello agent</td><td>officially called lightweight — verify just how "thin"</td></tr><tr><td>2</td><td>Can Guardrails block an over-reach like "read a file"</td><td>officially positioned as input/output validation, not file-access permission</td></tr><tr><td>3</td><td>Minimal usable path of SandboxAgent on <strong>Windows</strong></td><td>the official example is Unix; Windows needs Docker</td></tr><tr><td>4</td><td>How much changes when switching to litellm / any-llm with a local model</td><td>officially provider-agnostic — verify the real diff size</td></tr><tr><td>5</td><td>After killing the process, does Sessions restore state completely</td><td>our biggest "reliable long-running" concern</td></tr></tbody></table></div>
+</div>
+<div class="panel is-slim">
+<h2>Provider-agnostic is in the official first paragraph</h2>
+<p>The official first paragraph puts this up front:</p>
+<blockquote>The OpenAI Agents SDK is a lightweight yet powerful framework for building multi-agent workflows.</blockquote>
+<blockquote>It is <strong>provider-agnostic</strong>, supporting the OpenAI Responses and Chat Completions APIs, as well as <strong>100+ other LLMs</strong>.</blockquote>
+<p><strong>This is our first decision point.</strong> The code-level evidence agrees:</p>
+<ul><li>Core dependency <code>openai&gt;=3.0.0</code>.</li><li>Two optional extras <code>litellm</code> and <code>any-llm</code>, as non-OpenAI paths.</li></ul>
+<p>⚠ But state the boundary: <strong>"100+" is an official claim; we have not measured the capability alignment of specific providers.</strong></p>
+<p>Tool calling, structured output, and multimodal support vary a lot across vendors.</p>
+</div>
+<div class="panel is-slim">
+<h2>Versus Deep Agents: the table our readers most need to see</h2>
+<p>Both sit in the Python agent-harness tier, with completely opposite styles:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Dimension</th><th><strong>OpenAI Agents SDK</strong></th><th><strong>Deep Agents</strong></th></tr></thead><tbody><tr><td>Style</td><td>primitives-only, thin</td><td>batteries-included, thick</td></tr><tr><td>filesystem</td><td>not preset (wire your own, or use SandboxAgent)</td><td><strong>core selling point</strong>, pluggable backends</td></tr><tr><td>subagents</td><td>agents as tools / handoffs (build them yourself)</td><td><strong>preset</strong> sub-agents</td></tr><tr><td>context management</td><td>only Sessions (conversation history)</td><td>summarize + <strong>disk spill</strong> + cross-session memory</td></tr><tr><td>permissions</td><td><strong>built-in guardrails + human-in-the-loop</strong></td><td>officially "trust the LLM"; boundaries are yours</td></tr><tr><td>run form</td><td>you run it (local/container/Redis)</td><td>you run it</td></tr></tbody></table></div>
+<p><strong>Selection rule</strong>: want security built in → the former; want features built in → the latter.</p>
+</div>
+<div class="panel is-slim">
+<h2>SandboxAgent: the official answer for local files — with a Windows pitfall</h2>
+<p>A plain <code>Agent</code> carries no local workspace. For this the official docs provide <strong><code>SandboxAgent</code></strong>:</p>
+<blockquote>Use a <code>SandboxAgent</code> when the agent needs to inspect files, run commands, apply patches, or <strong>preserve workspace state across longer tasks</strong>.</blockquote>
+<p>Its <code>default_manifest</code> can declare repositories to check out:</p>
+<pre class="code"><code>agent = SandboxAgent(
+    name="Workspace Assistant",
+    default_manifest=Manifest(
+        entries={"repo": GitRepo(repo="openai/openai-agents-python", ref="main")}
+    ),
+)</code></pre>
+<p>⚠ <strong>Platform differences are selection-critical</strong>:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Client</th><th>Supported platforms</th><th>Note</th></tr></thead><tbody><tr><td><code>UnixLocalSandboxClient</code></td><td>macOS / Linux</td><td>the README example uses it</td></tr><tr><td><code>DockerSandboxClient</code></td><td>Windows etc.</td><td>requires the <code>openai-agents[docker]</code> extra</td></tr><tr><td>hosted sandbox client</td><td>depends on OpenAI-side services</td><td>officially mentioned as available</td></tr></tbody></table></div>
+<p><strong>Windows users cannot take the local Unix sandbox path directly.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>The permissions surface: the most complete built-in scheme we have seen</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Officially provided</th><th>Section</th></tr></thead><tbody><tr><td><strong>Guardrails</strong> (input + output two-way validation)</td><td>"Configurable safety checks for input and output validation"</td></tr><tr><td><strong>Human in the loop</strong> (involving humans across runs)</td><td>"Built-in mechanisms for involving humans across agent runs"</td></tr></tbody></table></div>
+<p><strong>Contrast with Deep Agents' official statement</strong> (verbatim):</p>
+<blockquote>Deep Agents follows a "trust the LLM" model... Enforce boundaries at the tool/sandbox level, not by expecting the model to self-police.</blockquote>
+<p><strong>These two sentences are the two answers to our "who owns permissions" question</strong> — and a real selection criterion.</p>
+<blockquote><strong>Do you want built-in input/output validation, or do you want to draw the sandbox boundary yourself?</strong></blockquote>
+<p><strong>Mechanism verified (see axes.permissions)</strong>:</p>
+<ul><li>guardrails split into input / output / tool, with a tripwire abort on hit.</li><li>Tool-level approval <code>needs_approval</code> covers function_tool / ShellTool / ApplyPatchTool / MCP.</li></ul>
+<p>⚠ <strong>Boundary: no built-in file/network sandbox officially.</strong></p>
+<p>A guardrail is a user-programmable validation hook. The real sandbox boundary is left to the host machine or the SandboxAgent container.</p>
+</div>
+<div class="panel is-slim">
+<h2>"State ≠ context": the two SDKs answer differently</h2>
+<div class="tbl-wrap"><table><thead><tr><th></th><th>OpenAI Agents SDK</th><th>Deep Agents</th></tr></thead><tbody><tr><td>Conversation history</td><td>Sessions (Redis / SQLAlchemy backends)</td><td>persistent memory (pluggable state and store)</td></tr><tr><td>Long context</td><td><strong>no official context-management layer</strong></td><td>summarize long threads</td></tr><tr><td>Large-output disk spill</td><td><strong>no official claim</strong> (SandboxAgent's workspace can serve the role)</td><td><strong>offload tool outputs to disk</strong></td></tr></tbody></table></div>
+<p>When we argue "persistence ≠ compression", <strong>Deep Agents is the side with official disk-spill mechanisms</strong>.</p>
+<p>⚠ But note: SandboxAgent's workspace preservation (preserve workspace state) is itself a form of persistence.</p>
+<p>The official docs just don't classify it as context management.</p>
+<p><strong>This is our judgment, not an official statement — marked as inference.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>MCP is a first-class capability, not an optional plugin</h2>
+<p>In <code>pyproject.toml</code>, <code>mcp&gt;=1.19.0,&lt;3</code> sits in <strong><code>dependencies</code></strong>, not <code>optional-dependencies</code>.</p>
+<p>The official README lists MCP alongside functions and hosted tools as tool types.</p>
+<p><strong>In this SDK, connecting an MCP server requires installing nothing extra.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>Appendix: the JS/TS version is a separate repo, not listed separately by us</h2>
+<p>The README explicitly points to <code>openai/openai-agents-js</code> (rolling verification 2026-10-23: MIT, 3,935★, active).</p>
+<blockquote>⚠ <strong>We do not list it as a separate object</strong>: a second-language implementation of the same product does not match our "one object = one decision basis" granularity (same treatment as Deep Agents Code). It is recorded here because selection requires knowing "a JS/TS version exists besides the Python one".</blockquote>
+</div>
+<div class="panel is-slim">
+<h2>Verification notes</h2>
+<p>Basis for <code>confidence: partial</code> (downgraded from verified on 2026-10-03):</p>
+<blockquote><strong>Why downgraded</strong>: the ❌ items below are <strong>our evidence gaps</strong>, not "the official docs don't provide it". Per the v3 rule "say unknown when unknown", marking verified while these exist would be inflated — downgraded to partial. Main gap: the real capability alignment of the 100+ providers (2026-10-08 additions: the three guardrail mechanisms and tool-level approval are verified).</blockquote>
+<p>✅ Verified list:</p>
+<ul><li>Repository existence and star count (30,233 · rolling verification 2026-10-23), license (MIT, via license API).</li><li>Last push (2026-10-22, still active).</li><li>Latest version <strong>0.24.0</strong> (releases @ 2026-10-15).</li><li>Key items of the full <code>pyproject.toml</code> (<code>requires-python &gt;=3.10</code>, <code>mcp&gt;=1.19.0,&lt;3</code> is a core dependency, litellm/any-llm/sqlalchemy all optional extras).</li></ul>
+<ul><li>Full README: ten core concepts, code examples of the four run modes.</li><li>The SandboxAgent section with platform differences, and the JS-version repo metadata.</li></ul>
+<p>❌ Not verified:</p>
+<ul><li>The real capability alignment of the 100+ providers.</li><li>Availability and billing of the hosted sandbox client (quotes not recorded per our price-recording policy).</li><li>The concrete backend semantics of Sessions.</li><li>Costs of the Realtime/Voice paths.</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/framework/deepagents.html">Deep Agents</a></span><span class="rel-n"><strong>The pair most worth contrasting on our site</strong>: Deep Agents is batteries-included (filesystem + subagents + context management); this SDK is primitives-only. Two branches of the same decision tree.</span></li>
+<li><span class="rel-t"><a href="/en/framework/claude-agent-sdk.html">Claude Agent SDK</a></span><span class="rel-n">Also in the "coding-base" tier, also from a model vendor. The OpenAI side goes primitives-only + built-in guardrails; the Anthropic side's home turf is Claude Code.</span></li>
+<li><span class="rel-t"><a href="/en/framework/langgraph.html">LangGraph</a></span><span class="rel-n">LangGraph is a graph runtime; the OpenAI Agents SDK is an agent harness — composable (use the graph as a tool/subagent), but at different layers.</span></li>
+<li><span class="rel-t"><a href="/en/coding/codex-cli.html">Codex CLI</a></span><span class="rel-n">Other layer · AI coding</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/framework/pydantic-ai.html">Pydantic AI</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Pydantic AI is the type-safe Python agent loop — official README: "Pydan</td></tr><tr><td><a href="/en/framework/smolagents.html">smolagents</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A thin agent library from Hugging Face — it lets agents think in code. I</td></tr><tr><td><a href="/en/framework/ag2.html">AG2</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">The community continuation of AutoGen after the original repo stalled. T</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from OpenAI</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/audio/whisper.html"><span class="vp-cat">Audio generation</span>Whisper</a></li><li><a href="/en/chat/chatgpt.html"><span class="vp-cat">General chat</span>ChatGPT</a></li><li><a href="/en/coding/codex-cli.html"><span class="vp-cat">AI coding</span>Codex CLI</a></li><li><a href="/en/coding/codex-ide.html"><span class="vp-cat">AI coding</span>Codex (IDE extension)</a></li><li><a href="/en/coding/openai-dot.html"><span class="vp-cat">AI coding</span>OpenAI Dot</a></li><li><a href="/en/framework/codex-sdk.html"><span class="vp-cat">Frameworks &amp; runtimes</span>Codex SDK</a></li><li><a href="/en/safety/openai-evals.html"><span class="vp-cat">Safety &amp; evaluation</span>OpenAI Evals</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

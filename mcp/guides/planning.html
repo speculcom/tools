@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Planning for agents — 深水指南 | 投机取巧</title>
-  <meta name="description" content="agent 的规划：先想清楚步骤再动手，还是边做边定——规划模式怎么选，以及规划为什么会失效、失效了怎么救。" />
-  <link rel="canonical" href="https://tools.specul.com/mcp/guides/planning.html" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Planning for agents" />
-  <meta property="og:url" content="https://tools.specul.com/mcp/guides/planning.html" />
-  <meta property="og:title" content="Planning for agents — 深水指南 | 投机取巧" />
-  <meta property="og:description" content="agent 的规划：先想清楚步骤再动手，还是边做边定——规划模式怎么选，以及规划为什么会失效、失效了怎么救。" />
-  <meta property="og:image" content="https://specul.com/home-shots/og-home.jpg?v=20261123d" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:locale" content="zh_CN" />
-  <meta property="og:locale:alternate" content="en_US" />
-  <meta name="theme-color" content="#16121f" />
-  <link rel="icon" type="image/png" href="../../assets/brand/dandelion-favicon-site.png" />
-  <link rel="apple-touch-icon" href="../../assets/brand/dandelion-apple-touch-site.png" />
-  <script src="../../brand.js?v=37d1072be69b"></script>
-  <link rel="stylesheet" href="../../brand.css?v=37d1072be69b" />
-  <link rel="stylesheet" href="../../site.css" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Planning for agents","description":"Plan first or decide as you go — how to choose a planning pattern, and why plans fail.","dateModified":"2026-10-30"}</script>
-</head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Planning for agents — 深水指南 | 投机取巧</title>
+<meta content="agent 的规划：先想清楚步骤再动手，还是边做边定——规划模式怎么选，以及规划为什么会失效、失效了怎么救。" name="description"/>
+<link href="https://tools.specul.com/mcp/guides/planning.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Planning for agents" property="og:site_name"/>
+<meta content="https://tools.specul.com/mcp/guides/planning.html" property="og:url"/>
+<meta content="Planning for agents — 深水指南 | 投机取巧" property="og:title"/>
+<meta content="agent 的规划：先想清楚步骤再动手，还是边做边定——规划模式怎么选，以及规划为什么会失效、失效了怎么救。" property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="zh_CN" property="og:locale"/>
+<meta content="en_US" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="../../assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="../../assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="../../brand.js?v=37d1072be69b"></script>
+<link href="../../brand.css?v=37d1072be69b" rel="stylesheet"/>
+<link href="../../site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Planning for agents","description":"Plan first or decide as you go — how to choose a planning pattern, and why plans fail.","dateModified":"2026-10-30"}</script>
+<link href="https://tools.specul.com/mcp/guides/planning.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/guides/planning.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/guides/planning.html" hreflang="x-default" rel="alternate"/></head>
 <!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
      同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
      而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
@@ -32,181 +32,177 @@
      ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
      （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
 <body class="brand-ambient has-tabbar has-tabbar-1row">
-  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
-  <header class="site-header">
-    <div class="container site-bar">
-      <a class="brand" href="https://specul.com/" title="投机取巧">
-        <span class="brand-dot" aria-hidden="true"></span>
-        <span class="brand-text">
-          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
-          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
-        </span>
-      </a>
-      <nav class="nav-links" aria-label="站点导航">
-        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
-        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
-        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>工具</span><span data-en>Tools</span></a>
-        <a href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a>
-        <a href="https://demos.specul.com/"><span data-zh>作品演示</span><span data-en>Playground</span></a>
-        <a href="https://oss.specul.com/"><span data-zh>开源库</span><span data-en>OSS</span></a>
-        <a href="https://hardware.specul.com/"><span data-zh>硬件算力</span><span data-en>Compute</span></a>
-        <a href="https://papers.specul.com/"><span data-zh>AI 论文</span><span data-en>AI Papers</span></a>
-        <a href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a>
-        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
-      </nav>
-      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+<a class="t-skip" href="#main"><span data-zh="">跳到主要内容</span><span data-en="">Skip to main content</span></a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" data-en-name="Speculative Speculation" data-zh-name="投机取巧" id="markName">投机取巧</span>
+<span class="brand-sub" data-en-sub="" data-zh-sub="Speculative Speculation" id="markSub">Speculative Speculation</span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/"><span data-zh="">首页</span><span data-en="">Home</span></a>
+<a href="https://learn.specul.com/"><span data-zh="">学 AI</span><span data-en="">Learn</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span data-zh="">工具</span><span data-en="">Tools</span></a>
+<a href="https://models.specul.com/"><span data-zh="">模型</span><span data-en="">Models</span></a>
+<a href="https://demos.specul.com/"><span data-zh="">作品演示</span><span data-en="">Playground</span></a>
+<a href="https://oss.specul.com/"><span data-zh="">开源库</span><span data-en="">OSS</span></a>
+<a href="https://hardware.specul.com/"><span data-zh="">硬件算力</span><span data-en="">Compute</span></a>
+<a href="https://papers.specul.com/"><span data-zh="">AI 论文</span><span data-en="">AI Papers</span></a>
+<a href="https://chain.specul.com/"><span data-zh="">链</span><span data-en="">Chain</span></a>
+<a href="https://nav.specul.com/"><span data-zh="">AI 导航</span><span data-en="">AI Directory</span></a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
            放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
            （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
            链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
-      <span class="nav-tools">
-        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
-        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
-        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
-      </span>
-      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+<span class="nav-tools">
+<a aria-label="搜索" class="icon-btn" data-ui-aria-label-en="Search" data-ui-aria-label-zh="搜索" data-ui-title-en="Search all sites" data-ui-title-zh="搜索全站" href="https://specul.com/search.html" title="搜索全站"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="Switch to English" class="icon-btn" href="/en/mcp/guides/planning.html" hreflang="en" id="langBtn" lang="en" title="Switch to English">EN</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
            行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
            无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
            「导航被藏进一个点了没反应的按钮」。 -->
-      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
-        <i></i><i></i><i></i>
-      </button>
-    </div>
-  </header>
-  <div class="nav-scrim"></div>
-  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
-    <div class="nav-drawer-h">
-      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
-      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
-      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
-    </div>
-    <nav class="nav-drawer-list">
-      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>工具</span><span data-en>Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://models.specul.com/"><span><span data-zh>模型</span><span data-en>Models</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://demos.specul.com/"><span><span data-zh>作品演示</span><span data-en>Playground</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://oss.specul.com/"><span><span data-zh>开源库</span><span data-en>OSS</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://hardware.specul.com/" class="nav-group-start"><span><span data-zh>硬件算力</span><span data-en>Compute</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://papers.specul.com/"><span><span data-zh>AI 论文</span><span data-en>AI Papers</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://chain.specul.com/"><span><span data-zh>链</span><span data-en>Chain</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://nav.specul.com/" class="nav-group-start" data-nav-group="external"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">↗</span></a>
-    </nav>
-    <div class="nav-drawer-foot">
-      <p><span data-zh>内容站覆盖学、用、选、跑；AI 导航是站外的 AI 网站目录，点出去看。</span><span data-en>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</span></p>
-      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
-    </div>
-  </aside>
-  <main id="main">
-    <div class="container detail">
-      <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
-      <div class="detail-head">
-        <div>
-          <h1><span data-zh>agent 的规划</span><span data-en>Planning for agents</span></h1>
-          <div class="vendor is-caps"><span data-zh>规划</span><span data-en>Planning</span></div>
-        </div>
-      </div>
-      <div class="panel-lead"><span data-zh><p>先想清楚步骤再动手，还是边做边定——规划模式怎么选，以及规划为什么会失效、失效了怎么救。</p></span><span data-en><p>Plan first or decide as you go — how to choose a planning pattern, and why plans fail.</p></span></div>
-
-
-
-
-      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></a></li><li><a href="#guide-section-1"><span data-zh>第一种：固定流程</span><span data-en>Pattern one: fixed paths</span></a></li><li><a href="#guide-section-2"><span data-zh>第二种：边做边定</span><span data-en>Pattern two: decide as you go</span></a></li><li><a href="#guide-section-3"><span data-zh>人工检查点：规划的安全绳</span><span data-en>Human checkpoints</span></a></li><li><a href="#guide-section-4"><span data-zh>规划为什么会失效</span><span data-en>Why plans fail</span></a></li></ul></nav>
-      <div class="panel is-slim" id="guide-section-0">
-        <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
-        <span data-zh><p><strong>规划就是先决定步骤序列，再逐步执行。</strong> 与之相对的是边做边定：模型每一轮只看当前局面决定下一步。 两种范式没有高下，只有适不适合—— 判断依据是：<strong>步骤数能不能预先说清。</strong></p></span><span data-en><p><strong>Planning means deciding the step sequence first, then executing step by step.</strong> The opposite is deciding as you go: each round the model looks only at the current situation and picks the next step. The two paradigms have no superiority — only fit — and the criterion is: <strong>can the number of steps be stated in advance.</strong></p></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-1">
-        <h2><span data-zh>第一种：固定流程</span><span data-en>Pattern one: fixed paths</span></h2>
-        <span data-zh><p>Anthropic 把「流程可预定义」的系统叫 workflow。 <strong>Anthropic 官方原文</strong>：&quot;Workflows are systems where LLMs and tools are orchestrated through predefined code paths.&quot;</p>
-            <p><strong>Anthropic 官方原文</strong>：与之相对的 agent 是 &quot;LLMs dynamically direct their own processes and tool usage&quot;。 对应的三种规划模式：</p>
-            <p><strong>提示链（prompt chaining）</strong>：把任务拆成固定子任务序列，上一步输出喂下一步。 <strong>Anthropic 官方原文</strong>：&quot;Prompt chaining decomposes a task into a sequence of steps, where each LLM call processes the output of the previous one.&quot; 代价是延迟，换来的是每一步变简单、更可控。 官方建议在中间步骤加程序化检查（gate），确认流程还在轨道上。</p>
-            <p><strong>路由（routing）</strong>：先分类，再进不同分支。 适合「输入有明确类别、每类处理方式不同」的场景。</p>
-            <p><strong>编排者-工作者（orchestrator-workers）</strong>：中央 LLM 动态拆任务、派给 worker、再合成结果。 适合<strong>子任务无法预先枚举</strong>的场合——比如改代码， 要动几个文件、每个文件怎么改，得看了任务才知道。 官方点出它和并行化的关键区别： <strong>Anthropic 官方原文</strong>：&quot;the key difference from parallelization is its flexibility— subtasks aren&#39;t pre-defined, but determined by the orchestrator based on the specific input.&quot;</p></span><span data-en><p>Anthropic calls systems with a predefinable flow workflows. <strong>Anthropic official text</strong>: &quot;Workflows are systems where LLMs and tools are orchestrated through predefined code paths.&quot;</p>
-            <p><strong>Anthropic official text</strong>: the contrasting agent is &quot;LLMs dynamically direct their own processes and tool usage&quot;. The three planning patterns that follow:</p>
-            <p><strong>Prompt chaining</strong>: decompose the task into a fixed sequence of subtasks, each step&#39;s output feeding the next. <strong>Anthropic official text</strong>: &quot;Prompt chaining decomposes a task into a sequence of steps, where each LLM call processes the output of the previous one.&quot; The price is latency; what you gain is each step becoming simpler and more controllable. The official advice adds programmatic checks (gates) at intermediate steps to confirm the flow is still on track.</p>
-            <p><strong>Routing</strong>: classify first, then branch. Fits &quot;inputs have clear categories, each category handled differently&quot; scenarios.</p>
-            <p><strong>Orchestrator-workers</strong>: a central LLM dynamically decomposes tasks, dispatches workers, then synthesizes results. Fits cases where <strong>subtasks cannot be enumerated in advance</strong> — like changing code: how many files to touch and how to change each one only becomes clear after seeing the task. The official docs draw the key difference from parallelization: <strong>Anthropic official text</strong>: &quot;the key difference from parallelization is its flexibility— subtasks aren&#39;t pre-defined, but determined by the orchestrator based on the specific input.&quot;</p></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-2">
-        <h2><span data-zh>第二种：边做边定</span><span data-en>Pattern two: decide as you go</span></h2>
-        <span data-zh><p>什么时候必须放弃固定流程？官方给了判据：</p>
-            <blockquote>&quot;Agents can be used for open-ended problems where it&#39;s difficult or impossible to predict the required number of steps, and where you can&#39;t hardcode a fixed path.&quot;</blockquote>
-            <p>步骤数说不清，就别画流程图。 但边做边定有三个老问题：跑偏、循环、半路而废。 对应的工程手段是给执行加<strong>反馈环</strong>。</p>
-            <p>Anthropic 的评估者-优化者（evaluator-optimizer）是一个 LLM 生成、 另一个 LLM 评估并反馈，循环打磨。 官方给的两个适配信号： 反馈能实质改善输出；模型自己给得出这个反馈。</p>
-            <p>Reflexion 论文（arXiv 2303.11366）把反馈做成了体系。 agent 用语言复盘任务反馈，把反思文本存进 episodic memory buffer， 下次试同类任务时先读教训再动手。 论文报告 HumanEval 编码基准上 91% pass@1， 超过当时 GPT-4 的 80%。 注意这是论文在特定基准上的结果，不是通用承诺。</p></span><span data-en><p>When must you abandon a fixed flow? The official criterion:</p>
-            <blockquote>&quot;Agents can be used for open-ended problems where it&#39;s difficult or impossible to predict the required number of steps, and where you can&#39;t hardcode a fixed path.&quot;</blockquote>
-            <p>If the step count cannot be stated, don&#39;t draw a flowchart. But deciding-as-you-go has three old problems: drifting off course, looping, quitting halfway. The matching engineering answer is adding a <strong>feedback loop</strong> to execution.</p>
-            <p>Anthropic&#39;s evaluator-optimizer is one LLM generating, another LLM evaluating and giving feedback, polishing in a loop. The two fit signals the official docs give: feedback can materially improve the output; the model can produce that feedback itself.</p>
-            <p>The Reflexion paper (arXiv 2303.11366) systematizes feedback. The agent verbally reviews task feedback, stores the reflection text in an episodic memory buffer, and reads the lessons before attempting a similar task next time. The paper reports 91% pass@1 on the HumanEval coding benchmark, beating GPT-4&#39;s 80% at the time. Note these are paper results on a specific benchmark, not a general promise.</p></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-3">
-        <h2><span data-zh>人工检查点：规划的安全绳</span><span data-en>Human checkpoints</span></h2>
-        <span data-zh><p>让流程可中断、可恢复，是规划里最实用的工程投资。 <a href="/framework/langgraph.html">LangGraph</a> 的官方文档把 human-in-the-loop 和 fault tolerance、time travel 并列为 checkpointer 的用途： 状态有快照，才能在某一步停下等人批，再从原点继续。</p>
-            <p>关键步骤交给流程，危险步骤还给人。 判断哪步危险：不可逆、要花钱、会发出去。</p></span><span data-en><p>Making the flow interruptible and resumable is the most practical engineering investment in planning. <a href="/framework/langgraph.html">LangGraph</a>&#39;s official docs list human-in-the-loop alongside fault tolerance and time travel as checkpointer uses: only with state snapshots can you pause at a step for human approval and continue from the origin.</p>
-            <p>Key steps go to the flow, dangerous steps stay with humans. How to judge a dangerous step: irreversible, costs money, or goes outbound.</p></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-4">
-        <h2><span data-zh>规划为什么会失效</span><span data-en>Why plans fail</span></h2>
-        <span data-zh><ol><li value="1">计划过期：环境变了，旧计划照跑到底。</li><li value="2">过度规划：为五分钟能做的小事先写五千字计划。</li><li value="3">假反馈：评估者只会说「很好」，优化循环原地打转。</li><li value="4">无恢复点：跑到一半崩了，只能从头再来。</li></ol>
-            <p><strong>通用原则来自 Anthropic 官方原文</strong>： &quot;Success in the LLM space isn&#39;t about building the most sophisticated system. It&#39;s about building the right system for your needs.&quot; 从最简单的提示词开始，配上扎实的评测， 简单方案不够用了，再加多步系统。</p></span><span data-en><ol><li value="1">Stale plans: the environment changed, the old plan runs to the end anyway.</li><li value="2">Over-planning: writing a five-thousand-word plan for something doable in five minutes.</li><li value="3">Fake feedback: the evaluator only says &quot;looks good&quot;, the optimization loop spins in place.</li><li value="4">No recovery point: it crashes halfway and you can only start over.</li></ol>
-            <p><strong>The general principle, from Anthropic official text</strong>: &quot;Success in the LLM space isn&#39;t about building the most sophisticated system. It&#39;s about building the right system for your needs.&quot; Start from the simplest prompt with solid evaluation; add multi-step systems only when the simple approach stops being enough.</p></span>
-      </div>
-<nav class="panel is-slim" aria-label="接下来做什么" data-ui-aria-label-zh="接下来做什么" data-ui-aria-label-en="What to do next">
-<h2><span data-zh>接下来做什么</span><span data-en>What to do next</span></h2><ul>
-<li><a href="toolkit-worksheets.html"><span data-zh>记录约束、验收与未确认项</span><span data-en>Record constraints, acceptance and unknowns</span></a></li>
-<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh>核对结果与来源</span><span data-en>Verify the result and its sources</span></a></li>
-<li><a href="failure-library.html#by-symptom"><span data-zh>按症状排查失败</span><span data-en>Troubleshoot by symptom</span></a></li>
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name"><span data-zh="">投机取巧</span><span data-en="">Speculative Speculation</span></span>
+<span class="brand-sub" data-en-sub="" data-zh-sub="Speculative Speculation">Speculative Speculation</span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/"><span><span data-zh="">首页</span><span data-en="">Home</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/"><span><span data-zh="">学 AI</span><span data-en="">Learn</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span><span data-zh="">工具</span><span data-en="">Tools</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/"><span><span data-zh="">模型</span><span data-en="">Models</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/"><span><span data-zh="">作品演示</span><span data-en="">Playground</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/"><span><span data-zh="">开源库</span><span data-en="">OSS</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/"><span><span data-zh="">硬件算力</span><span data-en="">Compute</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/"><span><span data-zh="">AI 论文</span><span data-en="">AI Papers</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/"><span><span data-zh="">链</span><span data-en="">Chain</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/"><span><span data-zh="">AI 导航</span><span data-en="">AI Directory</span></span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p><span data-zh="">内容站覆盖学、用、选、跑；AI 导航是站外的 AI 网站目录，点出去看。</span><span data-en="">Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</span></p>
+<nav><a href="https://specul.com/legal.html"><span data-zh="">法律条款</span><span data-en="">Legal terms</span></a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<a class="back" href="../">← <span data-zh="">深水指南</span><span data-en="">Guides</span></a>
+<div class="detail-head">
+<div>
+<h1><span data-zh="">agent 的规划</span><span data-en="">Planning for agents</span></h1>
+<div class="vendor is-caps"><span data-zh="">规划</span><span data-en="">Planning</span></div>
+</div>
+</div>
+<div class="panel-lead"><span data-zh=""><p>先想清楚步骤再动手，还是边做边定——规划模式怎么选，以及规划为什么会失效、失效了怎么救。</p></span><span data-en=""><p>Plan first or decide as you go — how to choose a planning pattern, and why plans fail.</p></span></div>
+<nav aria-label="文章目录" class="panel is-slim" data-ui-aria-label-en="Article contents" data-ui-aria-label-zh="文章目录"><p><span data-zh="">按问题阅读</span><span data-en="">On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh="">这一篇讲什么</span><span data-en="">What this guide covers</span></a></li><li><a href="#guide-section-1"><span data-zh="">第一种：固定流程</span><span data-en="">Pattern one: fixed paths</span></a></li><li><a href="#guide-section-2"><span data-zh="">第二种：边做边定</span><span data-en="">Pattern two: decide as you go</span></a></li><li><a href="#guide-section-3"><span data-zh="">人工检查点：规划的安全绳</span><span data-en="">Human checkpoints</span></a></li><li><a href="#guide-section-4"><span data-zh="">规划为什么会失效</span><span data-en="">Why plans fail</span></a></li></ul></nav>
+<div class="panel is-slim" id="guide-section-0">
+<h2><span data-zh="">这一篇讲什么</span><span data-en="">What this guide covers</span></h2>
+<span data-zh=""><p><strong>规划就是先决定步骤序列，再逐步执行。</strong> 与之相对的是边做边定：模型每一轮只看当前局面决定下一步。 两种范式没有高下，只有适不适合—— 判断依据是：<strong>步骤数能不能预先说清。</strong></p></span><span data-en=""><p><strong>Planning means deciding the step sequence first, then executing step by step.</strong> The opposite is deciding as you go: each round the model looks only at the current situation and picks the next step. The two paradigms have no superiority — only fit — and the criterion is: <strong>can the number of steps be stated in advance.</strong></p></span>
+</div>
+<div class="panel is-slim" id="guide-section-1">
+<h2><span data-zh="">第一种：固定流程</span><span data-en="">Pattern one: fixed paths</span></h2>
+<span data-zh=""><p>Anthropic 把「流程可预定义」的系统叫 workflow。 <strong>Anthropic 官方原文</strong>："Workflows are systems where LLMs and tools are orchestrated through predefined code paths."</p>
+<p><strong>Anthropic 官方原文</strong>：与之相对的 agent 是 "LLMs dynamically direct their own processes and tool usage"。 对应的三种规划模式：</p>
+<p><strong>提示链（prompt chaining）</strong>：把任务拆成固定子任务序列，上一步输出喂下一步。 <strong>Anthropic 官方原文</strong>："Prompt chaining decomposes a task into a sequence of steps, where each LLM call processes the output of the previous one." 代价是延迟，换来的是每一步变简单、更可控。 官方建议在中间步骤加程序化检查（gate），确认流程还在轨道上。</p>
+<p><strong>路由（routing）</strong>：先分类，再进不同分支。 适合「输入有明确类别、每类处理方式不同」的场景。</p>
+<p><strong>编排者-工作者（orchestrator-workers）</strong>：中央 LLM 动态拆任务、派给 worker、再合成结果。 适合<strong>子任务无法预先枚举</strong>的场合——比如改代码， 要动几个文件、每个文件怎么改，得看了任务才知道。 官方点出它和并行化的关键区别： <strong>Anthropic 官方原文</strong>："the key difference from parallelization is its flexibility— subtasks aren't pre-defined, but determined by the orchestrator based on the specific input."</p></span><span data-en=""><p>Anthropic calls systems with a predefinable flow workflows. <strong>Anthropic official text</strong>: "Workflows are systems where LLMs and tools are orchestrated through predefined code paths."</p>
+<p><strong>Anthropic official text</strong>: the contrasting agent is "LLMs dynamically direct their own processes and tool usage". The three planning patterns that follow:</p>
+<p><strong>Prompt chaining</strong>: decompose the task into a fixed sequence of subtasks, each step's output feeding the next. <strong>Anthropic official text</strong>: "Prompt chaining decomposes a task into a sequence of steps, where each LLM call processes the output of the previous one." The price is latency; what you gain is each step becoming simpler and more controllable. The official advice adds programmatic checks (gates) at intermediate steps to confirm the flow is still on track.</p>
+<p><strong>Routing</strong>: classify first, then branch. Fits "inputs have clear categories, each category handled differently" scenarios.</p>
+<p><strong>Orchestrator-workers</strong>: a central LLM dynamically decomposes tasks, dispatches workers, then synthesizes results. Fits cases where <strong>subtasks cannot be enumerated in advance</strong> — like changing code: how many files to touch and how to change each one only becomes clear after seeing the task. The official docs draw the key difference from parallelization: <strong>Anthropic official text</strong>: "the key difference from parallelization is its flexibility— subtasks aren't pre-defined, but determined by the orchestrator based on the specific input."</p></span>
+</div>
+<div class="panel is-slim" id="guide-section-2">
+<h2><span data-zh="">第二种：边做边定</span><span data-en="">Pattern two: decide as you go</span></h2>
+<span data-zh=""><p>什么时候必须放弃固定流程？官方给了判据：</p>
+<blockquote>"Agents can be used for open-ended problems where it's difficult or impossible to predict the required number of steps, and where you can't hardcode a fixed path."</blockquote>
+<p>步骤数说不清，就别画流程图。 但边做边定有三个老问题：跑偏、循环、半路而废。 对应的工程手段是给执行加<strong>反馈环</strong>。</p>
+<p>Anthropic 的评估者-优化者（evaluator-optimizer）是一个 LLM 生成、 另一个 LLM 评估并反馈，循环打磨。 官方给的两个适配信号： 反馈能实质改善输出；模型自己给得出这个反馈。</p>
+<p>Reflexion 论文（arXiv 2303.11366）把反馈做成了体系。 agent 用语言复盘任务反馈，把反思文本存进 episodic memory buffer， 下次试同类任务时先读教训再动手。 论文报告 HumanEval 编码基准上 91% pass@1， 超过当时 GPT-4 的 80%。 注意这是论文在特定基准上的结果，不是通用承诺。</p></span><span data-en=""><p>When must you abandon a fixed flow? The official criterion:</p>
+<blockquote>"Agents can be used for open-ended problems where it's difficult or impossible to predict the required number of steps, and where you can't hardcode a fixed path."</blockquote>
+<p>If the step count cannot be stated, don't draw a flowchart. But deciding-as-you-go has three old problems: drifting off course, looping, quitting halfway. The matching engineering answer is adding a <strong>feedback loop</strong> to execution.</p>
+<p>Anthropic's evaluator-optimizer is one LLM generating, another LLM evaluating and giving feedback, polishing in a loop. The two fit signals the official docs give: feedback can materially improve the output; the model can produce that feedback itself.</p>
+<p>The Reflexion paper (arXiv 2303.11366) systematizes feedback. The agent verbally reviews task feedback, stores the reflection text in an episodic memory buffer, and reads the lessons before attempting a similar task next time. The paper reports 91% pass@1 on the HumanEval coding benchmark, beating GPT-4's 80% at the time. Note these are paper results on a specific benchmark, not a general promise.</p></span>
+</div>
+<div class="panel is-slim" id="guide-section-3">
+<h2><span data-zh="">人工检查点：规划的安全绳</span><span data-en="">Human checkpoints</span></h2>
+<span data-zh=""><p>让流程可中断、可恢复，是规划里最实用的工程投资。 <a href="/framework/langgraph.html">LangGraph</a> 的官方文档把 human-in-the-loop 和 fault tolerance、time travel 并列为 checkpointer 的用途： 状态有快照，才能在某一步停下等人批，再从原点继续。</p>
+<p>关键步骤交给流程，危险步骤还给人。 判断哪步危险：不可逆、要花钱、会发出去。</p></span><span data-en=""><p>Making the flow interruptible and resumable is the most practical engineering investment in planning. <a href="/framework/langgraph.html">LangGraph</a>'s official docs list human-in-the-loop alongside fault tolerance and time travel as checkpointer uses: only with state snapshots can you pause at a step for human approval and continue from the origin.</p>
+<p>Key steps go to the flow, dangerous steps stay with humans. How to judge a dangerous step: irreversible, costs money, or goes outbound.</p></span>
+</div>
+<div class="panel is-slim" id="guide-section-4">
+<h2><span data-zh="">规划为什么会失效</span><span data-en="">Why plans fail</span></h2>
+<span data-zh=""><ol><li value="1">计划过期：环境变了，旧计划照跑到底。</li><li value="2">过度规划：为五分钟能做的小事先写五千字计划。</li><li value="3">假反馈：评估者只会说「很好」，优化循环原地打转。</li><li value="4">无恢复点：跑到一半崩了，只能从头再来。</li></ol>
+<p><strong>通用原则来自 Anthropic 官方原文</strong>： "Success in the LLM space isn't about building the most sophisticated system. It's about building the right system for your needs." 从最简单的提示词开始，配上扎实的评测， 简单方案不够用了，再加多步系统。</p></span><span data-en=""><ol><li value="1">Stale plans: the environment changed, the old plan runs to the end anyway.</li><li value="2">Over-planning: writing a five-thousand-word plan for something doable in five minutes.</li><li value="3">Fake feedback: the evaluator only says "looks good", the optimization loop spins in place.</li><li value="4">No recovery point: it crashes halfway and you can only start over.</li></ol>
+<p><strong>The general principle, from Anthropic official text</strong>: "Success in the LLM space isn't about building the most sophisticated system. It's about building the right system for your needs." Start from the simplest prompt with solid evaluation; add multi-step systems only when the simple approach stops being enough.</p></span>
+</div>
+<nav aria-label="接下来做什么" class="panel is-slim" data-ui-aria-label-en="What to do next" data-ui-aria-label-zh="接下来做什么">
+<h2><span data-zh="">接下来做什么</span><span data-en="">What to do next</span></h2><ul>
+<li><a href="toolkit-worksheets.html"><span data-zh="">记录约束、验收与未确认项</span><span data-en="">Record constraints, acceptance and unknowns</span></a></li>
+<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh="">核对结果与来源</span><span data-en="">Verify the result and its sources</span></a></li>
+<li><a href="failure-library.html#by-symptom"><span data-zh="">按症状排查失败</span><span data-en="">Troubleshoot by symptom</span></a></li>
 </ul></nav>
-      <div class="panel is-slim">
-        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
-        <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
-          <tr><td><span data-zh>Anthropic 工程博客 · Building effective agents（2026-10-30 直抓 200）</span><span data-en>Anthropic engineering blog · Building effective agents (official page verified via WebFetch on 2026-10-30)</span></td><td><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener"><span data-zh>https://www.anthropic.com/engineering/building-effective-agents</span><span data-en>https://www.anthropic.com/engineering/building-effective-agents</span></a></td></tr>
-          <tr><td><span data-zh>Reflexion 论文（arXiv 2303.11366，2026-10-30 直抓摘要页）</span><span data-en>Reflexion paper (arXiv 2303.11366, abstract page direct-fetched 2026-10-30)</span></td><td><a href="https://arxiv.org/abs/2303.11366" target="_blank" rel="noopener"><span data-zh>https://arxiv.org/abs/2303.11366</span><span data-en>https://arxiv.org/abs/2303.11366</span></a></td></tr>
-          <tr><td><span data-zh>LangGraph 官方文档 · Persistence（2026-10-30 直抓 200）</span><span data-en>LangGraph official docs · Persistence (direct fetch 200 on 2026-10-30)</span></td><td><a href="https://docs.langchain.com/oss/python/langgraph/persistence" target="_blank" rel="noopener"><span data-zh>https://docs.langchain.com/oss/python/langgraph/persistence</span><span data-en>https://docs.langchain.com/oss/python/langgraph/persistence</span></a></td></tr>
-        </tbody></table></div>
-        <p class="guide-foot"><span data-zh>资料快照日期：2026-10-30；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Source snapshot: 2026-10-30; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
-      </div>
-    </div>
-  </main>
-  <footer class="site-footer foot-single">
-    <div class="container foot-line">
-      <div class="foot-brand">
-        <span class="foot-brand-main">
-          <span class="brand-dot" aria-hidden="true"></span>
-          <span class="foot-copy"><span data-zh>投机取巧 · specul.com</span><span data-en>Specul · specul.com</span></span>
-        </span>
-        <span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt"><span data-zh>内容 CC BY 4.0</span><span data-en>Content CC BY 4.0</span></a><span class="sep" aria-hidden="true">·</span><a href="https://specul.com/LICENSE.txt"><span data-zh>代码 MIT</span><span data-en>Code MIT</span></a><span class="sep" aria-hidden="true">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>源码</span><span data-en>Source</span></a></span>
-      </div>
-      <nav class="foot-sites" aria-label="Footer site links">
-        <a class="site-link" href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://tools.specul.com/"><span data-zh>工具</span><span data-en>Tools</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://demos.specul.com/"><span data-zh>演示</span><span data-en>Demos</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://oss.specul.com/"><span data-zh>开源</span><span data-en>OSS</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://hardware.specul.com/"><span data-zh>算力</span><span data-en>Compute</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://papers.specul.com/"><span data-zh>论文</span><span data-en>Papers</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://nav.specul.com/"><span data-zh>导航</span><span data-en>Directory</span></a>
-      </nav>
-      <nav class="foot-legal" aria-label="Legal and corrections">
-        <a href="https://specul.com/legal.html"><span data-zh>法律</span><span data-en>Legal</span></a><span class="sep" aria-hidden="true">·</span>
-        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私</span><span data-en>Privacy</span></a><span class="sep" aria-hidden="true">·</span>
-        <a href="https://specul.com/correct.html"><span data-zh>纠错</span><span data-en>Corrections</span></a>
-      </nav>
-    </div>
-  </footer>
-<nav class="nav-tabbar nav-tabbar-1row" aria-label="快捷导航">
-    <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
-    <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学AI</span><span data-en>Learn</span></a>
-    <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
-    <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
-    <a href="https://demos.specul.com/"><span class="ti" aria-hidden="true">▷</span><span data-zh>演示</span><span data-en>Demos</span></a>
-    <a href="https://oss.specul.com/"><span class="ti" aria-hidden="true">▧</span><span data-zh>开源</span><span data-en>OSS</span></a>
-    <a href="https://hardware.specul.com/"><span class="ti" aria-hidden="true">▣</span><span data-zh>算力</span><span data-en>Chips</span></a>
-    <a href="https://papers.specul.com/"><span class="ti" aria-hidden="true">▥</span><span data-zh>论文</span><span data-en>Papers</span></a>
-    <a href="https://chain.specul.com/"><span class="ti" aria-hidden="true">◇</span><span data-zh>链</span><span data-en>Chain</span></a>
-    <a href="https://nav.specul.com/" data-nav-group="external"><span class="ti" aria-hidden="true">↗</span><span data-zh>导航</span><span data-en>Nav</span></a>
+<div class="panel is-slim">
+<h2><span data-zh="">出处</span><span data-en="">Sources</span></h2>
+<div class="tbl-wrap"><table><thead><tr><th><span data-zh="">来源</span><span data-en="">Source</span></th><th><span data-zh="">链接</span><span data-en="">URL</span></th></tr></thead><tbody>
+<tr><td><span data-zh="">Anthropic 工程博客 · Building effective agents（2026-10-30 直抓 200）</span><span data-en="">Anthropic engineering blog · Building effective agents (official page verified via WebFetch on 2026-10-30)</span></td><td><a href="https://www.anthropic.com/engineering/building-effective-agents" rel="noopener" target="_blank"><span data-zh="">https://www.anthropic.com/engineering/building-effective-agents</span><span data-en="">https://www.anthropic.com/engineering/building-effective-agents</span></a></td></tr>
+<tr><td><span data-zh="">Reflexion 论文（arXiv 2303.11366，2026-10-30 直抓摘要页）</span><span data-en="">Reflexion paper (arXiv 2303.11366, abstract page direct-fetched 2026-10-30)</span></td><td><a href="https://arxiv.org/abs/2303.11366" rel="noopener" target="_blank"><span data-zh="">https://arxiv.org/abs/2303.11366</span><span data-en="">https://arxiv.org/abs/2303.11366</span></a></td></tr>
+<tr><td><span data-zh="">LangGraph 官方文档 · Persistence（2026-10-30 直抓 200）</span><span data-en="">LangGraph official docs · Persistence (direct fetch 200 on 2026-10-30)</span></td><td><a href="https://docs.langchain.com/oss/python/langgraph/persistence" rel="noopener" target="_blank"><span data-zh="">https://docs.langchain.com/oss/python/langgraph/persistence</span><span data-en="">https://docs.langchain.com/oss/python/langgraph/persistence</span></a></td></tr>
+</tbody></table></div>
+<p class="guide-foot"><span data-zh="">资料快照日期：2026-10-30；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en="">Source snapshot: 2026-10-30; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
+</div>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy"><span data-zh="">投机取巧 · specul.com</span><span data-en="">Specul · specul.com</span></span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt"><span data-zh="">内容 CC BY 4.0</span><span data-en="">Content CC BY 4.0</span></a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt"><span data-zh="">代码 MIT</span><span data-en="">Code MIT</span></a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank"><span data-zh="">源码</span><span data-en="">Source</span></a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/"><span data-zh="">首页</span><span data-en="">Home</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/"><span data-zh="">学 AI</span><span data-en="">Learn</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/"><span data-zh="">工具</span><span data-en="">Tools</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/"><span data-zh="">模型</span><span data-en="">Models</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/"><span data-zh="">演示</span><span data-en="">Demos</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/"><span data-zh="">开源</span><span data-en="">OSS</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/"><span data-zh="">算力</span><span data-en="">Compute</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/"><span data-zh="">论文</span><span data-en="">Papers</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/"><span data-zh="">链</span><span data-en="">Chain</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/"><span data-zh="">导航</span><span data-en="">Directory</span></a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/legal.html"><span data-zh="">法律</span><span data-en="">Legal</span></a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/legal.html#s8"><span data-zh="">隐私</span><span data-en="">Privacy</span></a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/correct.html"><span data-zh="">纠错</span><span data-en="">Corrections</span></a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/"><span aria-hidden="true" class="ti">◎</span><span data-zh="">首页</span><span data-en="">Home</span></a>
+<a href="https://learn.specul.com/"><span aria-hidden="true" class="ti">▤</span><span data-zh="">学AI</span><span data-en="">Learn</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span aria-hidden="true" class="ti">◈</span><span data-zh="">工具</span><span data-en="">Tools</span></a>
+<a href="https://models.specul.com/"><span aria-hidden="true" class="ti">▦</span><span data-zh="">模型</span><span data-en="">Models</span></a>
+<a href="https://demos.specul.com/"><span aria-hidden="true" class="ti">▷</span><span data-zh="">演示</span><span data-en="">Demos</span></a>
+<a href="https://oss.specul.com/"><span aria-hidden="true" class="ti">▧</span><span data-zh="">开源</span><span data-en="">OSS</span></a>
+<a href="https://hardware.specul.com/"><span aria-hidden="true" class="ti">▣</span><span data-zh="">算力</span><span data-en="">Chips</span></a>
+<a href="https://papers.specul.com/"><span aria-hidden="true" class="ti">▥</span><span data-zh="">论文</span><span data-en="">Papers</span></a>
+<a href="https://chain.specul.com/"><span aria-hidden="true" class="ti">◇</span><span data-zh="">链</span><span data-en="">Chain</span></a>
+<a data-nav-group="external" href="https://nav.specul.com/"><span aria-hidden="true" class="ti">↗</span><span data-zh="">导航</span><span data-en="">Nav</span></a>
 </nav>
 </body>
 </html>

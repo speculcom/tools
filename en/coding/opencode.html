@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>OpenCode | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/opencode.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/opencode.html" property="og:url"/>
+<meta content="OpenCode | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"OpenCode | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/coding/opencode.html","sameAs":"https://opencode.ai","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="OpenCode | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/opencode.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/opencode.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/opencode.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/opencode.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#E5705A"'>OP</div>
+<div>
+<h1>OpenCode</h1>
+<div class="vendor is-caps">OpenCode</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Coding</span>
+<span class="tag on">Terminal</span>
+<span class="tag on">Local</span>
+<span class="tag on">Open source</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>An MIT-licensed multi-provider programming harness that asks permission before…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · CLI</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>The exact YOLO-mode switch and its risks</li>
+<li>Subagent scheduling and token overhead</li>
+<li>Real-world behavior on large repos under the "no vectorized index (ripgrep / LSP only)" route</li>
+</ul>
+</div>
+<div class="panel-lead"><p>An MIT-licensed multi-provider programming harness that <strong>asks permission before running bash commands</strong>, and supports loading via ACP.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Users who need switchable multiple providers and who care about confirmation before bash commands run. Participants in the ACP ecosystem.</p></div>
+<div class="warn-p"><p><strong>Not a fit for</strong> fully unattended automation — asking before each command interrupts the flow; the exact switch for YOLO mode was not verified.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　Hosted on GitHub — direct reachability from mainland fluctuates (200/000 mixed on the same day); npm / PyPI install routes measured stable.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p>A coding harness that plugs into many providers. Official <code>models</code> and <code>providers</code> pages:</p>
+<p>OpenCode uses AI SDK and Models.dev, <strong>supporting 75+ LLM providers, and also supports running local models</strong>. The catalog includes:</p>
+<ul><li>302.AI</li><li>Amazon Bedrock</li><li>Anthropic</li><li>Azure OpenAI</li><li>DeepSeek</li><li>Google Vertex AI</li><li>Groq</li><li>Hugging Face</li><li>llama.cpp</li><li>LM Studio</li><li>Ollama</li><li>OpenAI</li><li>OpenRouter</li><li>xAI</li><li>Z.AI</li><li>ZenMux and more.</li></ul>
+<p>Credentials go through <code>/connect</code> into <code>~/.local/share/opencode/auth.json</code>;</p>
+<p><code>enabled_providers</code> / <code>disabled_providers</code> act as allow/deny lists, and custom providers can be defined (<code>npm</code> + <code>baseURL</code>, OpenAI-compatible included); there is also the official curated list OpenCode Zen. <strong>Local models can be connected</strong> —</p>
+<p>the official docs name llama.cpp, LM Studio, Ollama, Atomic Chat.</p>
+<p>Note: connecting via a Claude Pro/Max subscription <strong>is not an Anthropic-officially-supported usage</strong>.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p>A local process running in the terminal. Multi-platform installs are provided (macOS Homebrew / Windows Scoop etc.). Its lifecycle is bound to the terminal session.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>Coding capability aimed at real code repositories. <code>read</code>/<code>edit</code>/<code>write</code>/<code>grep</code>/<code>glob</code> read and write the workspace directly. <code>grep</code>/<code>glob</code> use ripgrep underneath, <strong>following <code>.gitignore</code> by default</strong>.</p>
+<p><strong>Access is confined by default to the working directory at launch</strong> — paths outside it must be explicitly allowed via <code>external_directory</code> in <code>permission</code> (e.g. <code>~/projects/personal/**</code>).</p>
+<p><code>read</code> is allow by default, but <strong><code>.env</code> / <code>.env.*</code> are deny by default</strong> (<code>.env.example</code> allow). The <code>@</code> key fuzzy-searches project files; file changes have a <code>watcher</code> (with configurable <code>ignore</code>).</p>
+<p>Symbol-level capability comes from the <strong>LSP tool (experimental)</strong>: it needs <code>OPENCODE_EXPERIMENTAL_LSP_TOOL=true</code> plus your own LSP servers, supporting goToDefinition / findReferences / hover and more.</p>
+<p><strong>No description of codebase vectorized indexing was found officially</strong> (tools / config / permissions pages checked).</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p>Terminal form, local process, lifecycle bound to the session.</p>
+<p>The official docs also have <code>opencode serve</code> (a headless HTTP server). There is also <code>opencode web</code> and a desktop app. <strong>They all run on your own machine.</strong> They expose a session API to clients, including <code>prompt_async</code> for async sending. The execution environment is yours, not a vendor-hosted cloud.</p>
+<p><strong>No cloud background capability that "keeps running after the client closes / survives shutdown" was found officially</strong> (server page and docs overview checked).</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>Built-in tools are listed item by item officially</strong>:</p>
+<ul><li>bash</li><li>edit</li><li>write</li><li>read</li><li>grep</li><li>glob</li><li>lsp (experimental)</li><li>patch</li><li>skill</li><li>todowrite</li><li>webfetch</li><li>websearch (Exa, requires the OpenCode provider or <code>OPENCODE_ENABLE_EXA</code>)</li><li>question</li></ul>
+<p>There is also <code>task</code> for dispatching subagents.</p>
+<p>Built-in agents include:</p>
+<ul><li>build</li><li>plan</li><li>general</li><li>explore</li><li>scout</li><li>compaction</li><li>title</li><li>summary</li></ul>
+<p><strong>MCP integration verified</strong>: local <code>type:"local"</code> and remote <code>type:"remote"</code>, with OAuth dynamic client registration (RFC 7591) and commands like <code>opencode mcp auth</code>; custom tools and plugins (hooks) are also supported.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>ACP (Agent Client Protocol) load capability is its differentiating design</strong> — preserving model, effort and mode boundaries across restore and fork.</p>
+<p>Session mechanics verified: the <code>/session</code> API supports creating, <strong>forking (branching at a given message)</strong>, revert/unrevert and summarize. The TUI has <code>/undo</code>, <code>/redo</code>, <code>/share</code>.</p>
+<p><strong>The compaction policy is configured officially</strong> — the <code>compaction</code> item:</p>
+<ul><li><code>auto</code> (default true, auto-compacts the session when context fills up)</li><li><code>prune</code> (deletes old tool output to save tokens, default false)</li><li><code>reserved</code> (compaction buffer)</li></ul>
+<p>There are also three built-in agents: compaction / title / summary.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>Permission policy verified</strong>: the <code>permission</code> config decides per operation whether it runs automatically, asks for approval, or is blocked — three tiers <code>"allow"</code> / <code>"ask"</code> / <code>"deny"</code>.</p>
+<p>Fine-grained per-tool config is supported, with wildcards and object syntax (for bash: <code>git *</code> allow, <code>rm *</code> deny, <strong>the last matching rule wins</strong>).</p>
+<p>Configurable permission keys:</p>
+<ul><li>read</li><li>edit (covers edit, write, patch)</li><li>glob</li><li>grep</li><li>bash</li><li>task</li><li>skill</li><li>lsp</li><li>webfetch</li><li>websearch</li><li>external_directory</li><li>doom_loop</li></ul>
+<p><strong>Defaults are permissive</strong>: most are allow, <code>doom_loop</code> and <code>external_directory</code> are ask; <code>read</code> is allow but <code>.env</code> / <code>.env.*</code> are deny by default.</p>
+<p>The official config page also says "all operations are allowed by default, no explicit approval needed".</p>
+<p>The approval UI offers once / always / reject. It can be overridden per agent.</p>
+<p>Since v1.1.1 the legacy <code>tools</code> boolean config has been merged into <code>permission</code>.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>For individuals and teams that need 75+ providers, TUI/headless server/desktop forms, and command-level permission checks. Not for newcomers who want zero-config pure GUI.</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Reading the provider support list as entitlement — a connector being available is not the same as having a model subscription</li>
+<li>Assuming it executes commands with full rights by default — the README says it asks before bash commands</li>
+<li>Assuming access to a provider means it is free — model costs are still yours</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-23。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>OpenCode · repository README (now at anomalyco/opencode; old sst/opencode 301-redirects; rolling check 2026-10-23)</td><td><a href="https://github.com/anomalyco/opencode" rel="noopener" target="_blank">https://github.com/anomalyco/opencode</a></td></tr>
+<tr><td>changelog</td><td>OpenCode · Releases (v1.19.4 @ 2026-10-22)</td><td><a href="https://github.com/anomalyco/opencode/releases" rel="noopener" target="_blank">https://github.com/anomalyco/opencode/releases</a></td></tr>
+<tr><td>changelog</td><td>OpenCode · official site Changelog</td><td><a href="https://opencode.ai/changelog" rel="noopener" target="_blank">https://opencode.ai/changelog</a></td></tr>
+<tr><td>docs</td><td>OpenCode · official docs</td><td><a href="https://opencode.ai/docs" rel="noopener" target="_blank">https://opencode.ai/docs</a></td></tr>
+<tr><td>docs</td><td>OpenCode · official docs · Providers (75+ providers, catalog, custom providers, credential storage)</td><td><a href="https://opencode.ai/docs/providers" rel="noopener" target="_blank">https://opencode.ai/docs/providers</a></td></tr>
+<tr><td>docs</td><td>OpenCode · official docs · Models (75+ providers, local models, default model and variants)</td><td><a href="https://opencode.ai/docs/models" rel="noopener" target="_blank">https://opencode.ai/docs/models</a></td></tr>
+<tr><td>docs</td><td>OpenCode · official docs · Permissions (allow/ask/deny, fine-grained rules, external_directory, defaults)</td><td><a href="https://opencode.ai/docs/permissions" rel="noopener" target="_blank">https://opencode.ai/docs/permissions</a></td></tr>
+<tr><td>docs</td><td>OpenCode · official docs · Tools (built-in tool list, subagents, MCP, custom tools)</td><td><a href="https://opencode.ai/docs/tools" rel="noopener" target="_blank">https://opencode.ai/docs/tools</a></td></tr>
+<tr><td>docs</td><td>OpenCode · official docs · MCP Servers (local/remote, OAuth, management)</td><td><a href="https://opencode.ai/docs/mcp-servers" rel="noopener" target="_blank">https://opencode.ai/docs/mcp-servers</a></td></tr>
+<tr><td>docs</td><td>OpenCode · official docs · Config (compaction, watcher, permission, server)</td><td><a href="https://opencode.ai/docs/config" rel="noopener" target="_blank">https://opencode.ai/docs/config</a></td></tr>
+<tr><td>docs</td><td>OpenCode · official docs · Server (opencode serve, session API, fork/summarize)</td><td><a href="https://opencode.ai/docs/server" rel="noopener" target="_blank">https://opencode.ai/docs/server</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs.</p>
+<p>The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong>: the testing focus for this tool should be <strong>the real interruption cost of the "ask-before-command" design in long tasks</strong> — this is its core workflow difference from full-autonomy tools.</p>
+</div>
+<div class="panel is-slim">
+<h2>Change-log notes</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Version</th><th>Date</th></tr></thead><tbody><tr><td><code>v1.18.33</code></td><td>2026-09-28</td></tr></tbody></table></div>
+<p><strong>Update cadence is very high</strong> (release and changelog both on 09-28).</p>
+</div>
+<div class="panel is-slim">
+<h2>Permission design: asks before executing</h2>
+<p>This is the single most notable line in this entry, from the README:</p>
+<pre class="code"><code>Asks permission before running bash commands</code></pre>
+<p><strong>Most terminal agents execute commands automatically by default; OpenCode asks.</strong></p>
+<p>This lowers the risk of "the model deleting files / running dangerous commands by mistake", at the cost of interrupting the flow. The README also mentions <strong>YOLO</strong>, likely an optional no-ask mode, <strong>but the exact switch was not verified the 2026-10-08 pass — recorded as unknown</strong>.</p>
+</div>
+<div class="panel is-slim">
+<h2>Subagent capability</h2>
+<pre class="code"><code>Also included is a general subagent for complex searches and multistep tasks.</code></pre>
+<p>A built-in <strong>general subagent</strong> for complex searches and multistep tasks. This lets it handle "investigate first, then act" style tasks that need multiple rounds.</p>
+<p><strong>The subagent's scheduling details and token overhead were not verified the 2026-10-08 pass.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>ACP: Agent Client Protocol</h2>
+<p>This is its architectural highlight:</p>
+<pre class="code"><code>ACP load/restore/fork preserves model, effort and mode boundaries (translated from the dossier's Chinese paraphrase)</code></pre>
+<p><strong>"Preserving model and effort across forks" is a detail worth noting</strong> — many tools lose settings after a fork, forcing you to re-set them every time.</p>
+</div>
+<div class="panel is-slim">
+<h2>Stability fixes are a meaningful signal</h2>
+<p>Referring to AgentClash's verification record of OpenCode v1.18.33 (09-28), that version contains four fixes:</p>
+<ol><li value="1">Cloudflare timeout control</li><li value="2">MCP browser launch-failure feedback</li><li value="3"><strong>debug credential redaction</strong></li><li value="4">Gemini reasoning-parameter correction</li></ol>
+<p><strong>Two of the four relate to permissions/reliability</strong> (credential redaction, MCP launch-failure feedback). This shows the project's reliability investment goes into permissions and diagnosability — but it also means <strong>these areas had problems before</strong>.</p>
+</div>
+<div class="panel is-slim">
+<h2>Confidence-level notes</h2>
+<p>Why <code>confidence: partial</code>:</p>
+<ul><li>✅ Verified: repository, license (MIT), latest version and date, star count (220,242 · rolling check 2026-10-23, highest in this track), permission policy (allow/ask/deny fine-grained), ACP, install methods; <strong>rolling-check addition</strong>: the repo has migrated from <code>sst/opencode</code> to <code>anomalyco/opencode</code> (GitHub 301 redirect confirms it; the repo homepage field = opencode.ai); <strong>2026-10-08 this-round addition</strong>: 75+ providers and local models, built-in tool list and MCP integration, <code>compaction</code> context policy</li><li>❌ Not verified: the exact YOLO-mode switch, subagent scheduling details and token overhead</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/aider-cli.html">Aider</a></span><span class="rel-n">same category of tool, but maintenance has slowed</span></li>
+<li><span class="rel-t"><a href="/en/coding/codex-cli.html">Codex CLI</a></span><span class="rel-n">same category of tool, with different architectural emphasis</span></li>
+<li><span class="rel-t"><a href="/en/coding/kilocode.html">Kilo Code</a></span><span class="rel-n">an official downstream: Kilo docs state verbatim "The Kilo CLI is a fork of OpenCode" — configs can be compared side by side</span></li>
+<li><span class="rel-t"><a href="/en/mcp/filesystem.html">Filesystem MCP Server</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/amp.html">Amp</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Sourcegraph's Amp: a frontier coding agent spanning CLI + cloud orbs + r</td></tr><tr><td><a href="/en/coding/claude-code-cli.html">Claude Code CLI</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A terminal coding and tool-execution product, with a CHANGELOG and Atom </td></tr><tr><td><a href="/en/coding/codex-cli.html">Codex CLI</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">OpenAI's official terminal coding agent, written in Rust, architecturall</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

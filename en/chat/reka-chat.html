@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Reka Chat (Reka Playground / Edge Chat) | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/chat/reka-chat.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/chat/reka-chat.html" property="og:url"/>
+<meta content="Reka Chat (Reka Playground / Edge Chat) | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Reka Chat (Reka Playground / Edge Chat) | Tools","applicationCategory":"DeveloperApplication","sameAs":"https://app.reka.ai","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-31"}</script>
+<meta content="Reka Chat (Reka Playground / Edge Chat) | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/chat/reka-chat.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/chat/reka-chat.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/chat/reka-chat.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/chat/reka-chat.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Chat</span>
+</nav>
+<a class="back" href="/en/chat/">← Chat</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#f5c542">RE</div>
+<div>
+<h1>Reka Chat (Reka Playground / Edge Chat)</h1>
+<div class="vendor is-caps">Reka AI, Inc.</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Multimodal</span>
+<span class="tag on">Open-source aggregation</span>
+<span class="tag on">Open weights</span>
+<span class="tag on">OpenAI-compatible</span>
+<span class="tag on">Closed source</span>
+<span class="tag on">Not filed</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-31</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Reka Chat: a chat entry left behind by a lab that fully pivoted to physical AI — the…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · Web service</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Commercial terms</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Model selection, memory, and file-upload features of the Edge Chat entry (official docs do not state it)</li>
+<li>Retention and training-use terms for hosted chat data (official docs do not itemize every sub-detail)</li>
+<li>The exact license terms of the Reka Edge weights page (HF page not itemized in official docs verbatim)</li>
+<li>How the chat entry relates to API quota/billing (pricing page on record in docs; entry side not itemized in official docs)</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>Reka Chat: a chat entry left behind by a lab that fully pivoted to physical AI</strong> — the homepage's marquee today is omni models, Reka Cloud, and video/data infrastructure; the chat surface (app.reka.ai "Edge Chat") is thin, and the verifiable surface is the API (OpenAI-compatible; in-house reka-edge-2603/reka-flash-3 + curated open tiers deepseek4-flash/glm5.3/qwen3.8-27b/gemma4-26b) plus the Reka Edge open-weights local route. Key wording: <strong>the company's mainline is world-model research (news line: Rho-1 2026-10-05) — reading Reka as a "chat product company" misplaces it</strong>.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Fits: following the Reka model line (Edge/Flash), lining up curated open tiers through one API, the Edge open-weights local route. Not a fit: mature consumer chat products; mainland-direct chat service (not filed).</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-31</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (Reka AI, Inc., USA; founded by an ex-DeepMind team — carried from the older nav entry; the official pages do not state the founding background, noted as nav cross-reference).</dd>
+<dt>Direct access</dt><dd>direct OK　reka.ai measured 200 direct from mainland (fetched 2026-10-31, www 308 to apex); app/docs subdomains also reachable direct.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (disclosure page and batch lists searched 2026-10-31; no Reka entry); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p>Dual pool of in-house models + curated open models: the Reka API model table verified same day lists reka-edge-2603 (16k context, text/image/video input) and reka-flash-3 (64k) alongside open tiers such as deepseek4-flash/glm5.3/qwen3.8-27b/gemma4-26b, all called through the api.reka.ai/v1 OpenAI-compatible endpoint; how the chat entry (app.reka.ai "Edge Chat") relates to the API pool was official docs do not itemize every sub-detail.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p>Web entry at app.reka.ai (chat.reka.ai 307→app.reka.ai/chat, verified same day; page title "Reka Playground / Edge Chat"); plus an API (api.reka.ai/v1) and an open-weights local route (docs "Run locally": macOS Apple Silicon 32 GB+ / Linux serving).</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>Hosted chat data is governed by the official privacy policy (June 2026 version verified same day), official docs do not itemize every sub-detail; the open Reka Edge weights run entirely on your own machine once downloaded (docs run-locally page on record) — hosted entry and local weights are two data boundaries.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p>Chat returns immediately; official docs do not state it for async/agentic task forms. The company's current mainline is research/Reka Cloud/video infrastructure/data infrastructure (four self-described sections on the homepage verified same day); the chat entry is not in the homepage's marquee area.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p>API-side tooling surface on record: the model table carries Tools/Structured outputs/Reasoning columns (reka-edge-2603 Yes on all three; reka-flash-3 Tools=No); the docs site ships its own MCP server (docs.reka.ai/_mcp/server, on record in llms.txt) for agents to read the docs.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p>Conversations are organized per chat; no cross-session memory mechanism verified in official statements. On the API side context length varies by model (table same day: reka-edge-2603 16k, reka-flash-3 64k, open tiers 262k); the effective value in the chat entry is not itemized in official docs.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p>Account-gated (app.reka.ai requires login); contracting party Reka AI, Inc. (Terms of Use 2026-09: the contract covers reka.ai and its vision/creator/developer subdomains plus Reka Labs/Cloud/Vision services); the privacy page (June 2026) carries an EEA/UK section.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Fits: following the Reka in-house model line (Edge/Flash) + lining up curated open tiers (DeepSeek/GLM/Qwen/Gemma) through one API; wanting the Reka Edge open-weights local route. Not a fit: wanting a mature consumer chat product (thin entry surface, company focus has shifted to physical AI); wanting mainland-direct chat service (not filed).</p></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>Closed-source product (contracting party Reka AI, Inc.; Terms of Use September 2026 version verified same day); Reka Edge open weights published separately on Hugging Face (RekaAI/reka-edge-2603; the weights-page license not verified verbatim).</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Account and permissions</a> · <a href="/en/mcp/guides/failure-library.html#rate-limit">Rate limits and retries</a> · <a href="/en/mcp/guides/failure-library.html#files">File-reading issues</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>The company positioning fully pivoted — the homepage marquee is "models and infrastructure for the physical AI era" (omni models/Reka Cloud/video infrastructure/egocentric data) and the news mainline is world-model research (Rho-1 2026-10-05 etc.); the chat entry is a corner product — understanding Reka as a "chat product company" misplaces it</li>
+<li>The API pool includes curated open models (deepseek4-flash/glm5.3/qwen3.8-27b/gemma4-26b) — "Reka API" does not mean "Reka models only"; each open tier is used under its own weights license</li>
+<li>Reka Edge open weights and the closed flagship are two lines — reka-edge-2603 runs locally (docs run-locally), reka-flash-3 is API-only; capabilities and data boundaries differ</li>
+<li>The chat entry's feature surface is thin — app.reka.ai is a JS app (only the "Edge Chat" title visible same day); model choice/memory/upload unverified in official docs; do not expect ChatGPT-class maturity</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-31，Content updated 2026-10-31。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>official</td><td>Reka · official homepage (2026-10-31 direct 200; "physical AI era" four-section self-description + Reka Cloud/video/data infrastructure on record same day)</td><td><a href="https://reka.ai" rel="noopener" target="_blank">https://reka.ai</a></td></tr>
+<tr><td>official</td><td>Reka Chat · product entry (chat.reka.ai 307→app.reka.ai/chat direct 200; page title Reka Playground/Edge Chat)</td><td><a href="https://app.reka.ai" rel="noopener" target="_blank">https://app.reka.ai</a></td></tr>
+<tr><td>official</td><td>Reka · Terms of Use (2026-10-31 direct 200; Last Updated September 2026; party Reka AI, Inc.)</td><td><a href="https://reka.ai/legal/terms-of-use" rel="noopener" target="_blank">https://reka.ai/legal/terms-of-use</a></td></tr>
+<tr><td>official</td><td>Reka · Privacy Policy (2026-10-31 direct 200; Effective June 2026; carries an EEA/UK section)</td><td><a href="https://reka.ai/legal/privacy-policy" rel="noopener" target="_blank">https://reka.ai/legal/privacy-policy</a></td></tr>
+<tr><td>docs</td><td>Reka API · documentation (2026-10-31 direct 200; api.reka.ai/v1 OpenAI-compatible; model table/Run locally/MCP server on record)</td><td><a href="https://docs.reka.ai/overview" rel="noopener" target="_blank">https://docs.reka.ai/overview</a></td></tr>
+<tr><td>changelog</td><td>Reka News (change-record line, 2026-10-31 direct 200; Rho-1 2026-10-05/Inverse Dynamics 2026-10-02/EdgeQ 2026-09-22 entries on record same day)</td><td><a href="https://reka.ai/news" rel="noopener" target="_blank">https://reka.ai/news</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The coding test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a> (the coding task set does not apply to chat products).</p>
+<p><strong>Suggested runs</strong> (three, each pointing at what the official pages do not give):</p>
+<ul><li><strong>Which model the Edge Chat entry actually serves, and whether it matches the API model table</strong> (the entry is a JS app, unverified)</li><li><strong>Retention and training-use terms for hosted chat data</strong> (read the June 2026 privacy policy item by item)</li><li><strong>Hands-on feel of the Reka Edge weights local hardware bar</strong> (docs say Apple Silicon 32 GB+, not actually tested)</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/chat/poe.html">Poe</a></span><span class="rel-n">Also multi-model aggregation chat: Poe headlines a closed-source API pool, while Reka's entry is thin and its aggregation surface sits mainly on the API side.</span></li>
+<li><span class="rel-t"><a href="/en/runner/ollama.html">Ollama</a></span><span class="rel-n">Open-weights local route contrast: Reka Edge weights, once downloaded, are carried by a local runner stack — data never leaves the machine.</span></li>
+<li><span class="rel-t"><a href="/en/coding/aider.html">Aider (Watch mode)</a></span><span class="rel-n">OpenAI-compatible endpoint consumer-side contrast: api.reka.ai/v1 can be plugged straight into coding agents that support custom endpoints.</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/chat/chatglm-chat.html">ChatGLM (Zhipu Qingyan)</a></td><td>Local / self-hosted</td><td>Commercial terms</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Zhipu Qingyan (ChatGLM) is the domestic chat product built on long-docum</td></tr><tr><td><a href="/en/chat/chatgpt.html">ChatGPT</a></td><td>Cloud / API</td><td>Commercial terms</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">OpenAI’s general-purpose chat assistant: web, apps and desktop fully cov</td></tr><tr><td><a href="/en/chat/claude-chat.html">Claude (chat app)</a></td><td>Cloud / API</td><td>Commercial terms</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A general chat app strong on long-form and writing quality: memory is an</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

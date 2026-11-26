@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>How to read a third-party safety report | Tools</title>
+<meta content='Read external safety reports along subject, version, task definition and claim boundary, turning "it passed" into "what passed, under which conditions".' name="description"/>
+<link href="https://tools.specul.com/en/mcp/guides/how-to-read-a-third-party-safety-report.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/mcp/guides/how-to-read-a-third-party-safety-report.html" property="og:url"/>
+<meta content="How to read a third-party safety report | Tools" property="og:title"/>
+<meta content='Read external safety reports along subject, version, task definition and claim boundary, turning "it passed" into "what passed, under which conditions".' property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to read a third-party safety report","description":"Read external safety reports along subject, version, task definition and claim boundary, turning \"it passed\" into \"what passed, under which conditions\".","dateModified":"2026-11-06"}</script>
+<meta content="How to read a third-party safety report | Tools" name="twitter:title"/><meta content='Read external safety reports along subject, version, task definition and claim boundary, turning "it passed" into "what passed, under which conditions".' name="twitter:description"/><link href="https://tools.specul.com/mcp/guides/how-to-read-a-third-party-safety-report.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/guides/how-to-read-a-third-party-safety-report.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/guides/how-to-read-a-third-party-safety-report.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/mcp/guides/how-to-read-a-third-party-safety-report.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<a class="back" href="/en/mcp/">← Guides</a>
+<div class="detail-head">
+<div>
+<h1>How to read a third-party safety report</h1>
+<div class="vendor is-caps">Guardrails &amp; safety</div>
+</div>
+</div>
+<div class="panel-lead"><p>Read external safety reports along subject, version, task definition and claim boundary, turning "it passed" into "what passed, under which conditions".</p></div>
+<nav aria-label="Article contents" class="panel is-slim"><p>On this page</p><ul><li><a href="#guide-section-0">What this guide covers</a></li><li><a href="#guide-section-1">Who this is for</a></li><li><a href="#guide-section-2">Prerequisites</a></li><li><a href="#guide-section-3">Four kinds of reports</a></li><li><a href="#guide-section-4">Seven reading steps</a></li><li><a href="#guide-section-5">Worked example: reading an injection-resistance claim</a></li><li><a href="#guide-section-6">Acceptance</a></li><li><a href="#guide-section-7">Troubleshooting branches</a></li><li><a href="#guide-section-8">Next steps</a></li><li><a href="#guide-section-9">What was verified and what is not</a></li></ul></nav>
+<div class="panel is-slim" id="guide-section-0">
+<h2>What this guide covers</h2>
+<p><strong>A third-party safety report is somebody else's answer to your question.</strong> How far it can be trusted depends on whether you can reconstruct its conditions. This guide gives a reading order: locate the subject and version, inspect the task definition, then judge how far the conclusion has been stretched. Without the conditions, you have not read it.</p>
+</div>
+<div class="panel is-slim" id="guide-section-1">
+<h2>Who this is for</h2>
+<ul><li>Procurement or review work where a vendor hands you evaluation results, certificates or a system card.</li><li>You will cite an external report internally and need to say which sentence it actually supports.</li><li>Your own product was tested by a third party and you judge whether the conclusion was over-paraphrased.</li><li>A release decision waits on results that only exist in someone else's report.</li></ul>
+<p>Not a fit: looking for a ranking of who is safer. Task definitions differ across reports, and forcing a ranking produces conclusions with no basis.</p>
+</div>
+<div class="panel is-slim" id="guide-section-2">
+<h2>Prerequisites</h2>
+<ol><li value="1">The report itself, or a complete openable version — a summary or a repost is not enough.</li><li value="2">The exact version under test and its release date, written into your record.</li><li value="3">Your own scenario list: task types, languages, user groups, tool permissions.</li><li value="4">One sentence of claim boundary you can repeat, for example "it covers chat output only, not tool writes".</li></ol>
+</div>
+<div class="panel is-slim" id="guide-section-3">
+<h2>Four kinds of reports</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Source type</th><th>Typical content</th><th>What to watch</th></tr></thead><tbody><tr><td>Vendor self-report</td><td>system cards, transparency pages, release notes</td><td>Separation of self-testing from external testing; undisclosed items</td></tr><tr><td>Government or multinational bodies</td><td>capability and risk reviews, targeted evaluations</td><td>Sampling scope, cut-off date, stated limitations</td></tr><tr><td>Academic and normative proposals</td><td>documentation formats, evaluation methods</td><td>What it argues for and what it does not claim</td></tr><tr><td>Framework documents</td><td>structure for managing AI risk</td><td>Voluntary guidance versus mandatory duty</td></tr></tbody></table></div>
+<p>Vendor self-report pages usually give an index rather than the full data. The Anthropic transparency page lists selected safety evaluation summaries and a full system card, split by entries such as political bias, honesty and agentic safety. <strong>This guide describes only the index form</strong>: many entries do not mean equal data depth per entry.</p>
+<p>On the academic side, the Model Cards paper recommends publishing a brief performance note with each model. The paper's abstract defines them as "short documents accompanying trained machine learning models". The point: a report is worth its conditions, not its single headline score.</p>
+</div>
+<div class="panel is-slim" id="guide-section-4">
+<h2>Seven reading steps</h2>
+<ol><li value="1">Which exact version was tested? Conclusions do not transfer across versions.</li><li value="2">Who tested it, through which interface? API endpoints and the product UI can behave differently.</li><li value="3">How is the task defined? "Harmful" and "jailbreak succeeded" differ between reports, so scores are not comparable.</li><li value="4">Where do the samples come from — public, synthetic or custom — and do they cover your languages and scenarios?</li><li value="5">How does the report state its own limits? Copy those limits verbatim into your record.</li><li value="6">Is there a list of failures and untested items? Reports showing only successes deserve less weight.</li><li value="7">What did the person citing it add? "No X observed on task Y" often becomes "X cannot happen".</li></ol>
+<p>Steps 3 and 5 save real time. Multinational safety reviews say so themselves; the International AI Safety Report site states: "significant gaps remain: sophisticated attackers can often bypass current defences" The same page also records that the report is coordinated by an international expert advisory panel nominated by more than 30 countries, with authors and funders publicly listed.</p>
+</div>
+<div class="panel is-slim" id="guide-section-5">
+<h2 id="worked-example">Worked example: reading an injection-resistance claim</h2>
+<p>The scenario is illustrative and the figures are invented assumptions that demo the reading order; they are not measured values from any report.</p>
+<ul><li>Input: a repost claiming "a certain model passes prompt-injection tests at 98%".</li><li>Processing: run the seven steps back against the original text: version under test, test interface, task definition, sample source, limitation statement, untested items, and citation drift.</li><li>Judging the result (example): the original says "refusal rate 98% on two public injection templates, single-turn setting". The repost turned a refusal rate into a pass rate and two template families into a general capability. The usable scope shrinks accordingly: your multi-turn tool chain is not covered.</li><li>What to do after a failure: Rewrite the citable sentence as "the report measured Y under setting X; it does not cover our Z"; if the decision depends on injection resistance in tool chains, run your own red team instead of waiting for someone else to fill the gap.</li></ul>
+<p>One test for the judgement: <strong>can you read the conclusion aloud to the engineer implementing it, and can they plan work from it.</strong> If not, the conclusion is marketing material.</p>
+</div>
+<div class="panel is-slim" id="guide-section-6">
+<h2>Acceptance</h2>
+<ul><li>[ ] Every cited conclusion in your record carries version, date and source page</li><li>[ ] You can write at least three things the report did not cover</li><li>[ ] Differences between the citation and the original wording are marked explicitly</li><li>[ ] Key conclusions have a second source, or are labelled single-source</li><li>[ ] The parts your decision needs but the report misses are scheduled for self-testing</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-7">
+<h2>Troubleshooting branches</h2>
+<ul><li>The original cannot be found: treat the claim as unverified and keep it out of decision material.</li><li>The report has several versions: use the version matching the product date under test, and record which one you read.</li><li>Scores differ sharply from your own tests: compare task definitions and samples before suspecting a product regression.</li><li>Charts without method: shrink the citable scope to "the authors state".</li><li>The cited report was retracted or updated: refresh your record rather than carrying the old conclusion.</li><li>Management-system certificates mixed with capability evaluation: a certificate shows a process exists, not that the model is safer.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-8">
+<h2>Next steps</h2>
+<ol><li value="1">Collect the citable conclusions on one page with coverage and gaps marked.</li><li value="2">Schedule a red-team pass for the gaps, or add them to the vendor questionnaire.</li><li value="3">To align risk work with organisational process, use a voluntary framework's structure — the NIST AI RMF page describes it as intended for voluntary use.</li><li value="4">Re-check each citation when a report is updated, and move the verification date with it.</li></ol>
+</div>
+<div class="panel is-slim" id="guide-section-9">
+<h2>What was verified and what is not</h2>
+<p>On 2026-11-06 five source pages were fetched directly: the Model Cards paper abstract, the International AI Safety Report site, the UK AI Security Institute organisation page, the Anthropic transparency page and the NIST AI Risk Management Framework page. This guide reports only what those pages themselves state; no full report body was read for this page.</p>
+<p>Unknowns:</p>
+<ul><li>Exact task definitions, sample sizes and statistical bases inside each report — reading the full text is required and was not done here.</li><li>Update dates and method details behind each entry on a vendor transparency page — only the index structure was confirmed.</li><li>Whether your sector treats a given report type as required evidence — that depends on jurisdiction and product role, and this guide makes no judgement.</li></ul>
+</div>
+<nav aria-label="What to do next" class="panel is-slim">
+<h2>What to do next</h2><ul>
+<li><a href="/en/mcp/guides/toolkit-worksheets.html">Record constraints, acceptance and unknowns</a></li>
+<li><a href="https://learn.specul.com/en/guide/%E6%80%8E%E4%B9%88%E9%AA%8C%E8%AF%81%20AI%20%E7%9A%84%E8%BE%93%E5%87%BA/">Verify the result and its sources</a></li>
+<li><a href="/en/mcp/guides/failure-library.html#by-symptom">Troubleshoot by symptom</a></li>
+</ul></nav>
+<div class="panel is-slim">
+<h2>Sources</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Source</th><th>URL</th></tr></thead><tbody>
+<tr><td>Model Cards paper (arXiv 1810.03993, abstract page direct-fetched 2026-11-06)</td><td><a href="https://arxiv.org/abs/1810.03993" rel="noopener" target="_blank">https://arxiv.org/abs/1810.03993</a></td></tr>
+<tr><td>International AI Safety Report official site (direct fetch 200 on 2026-11-06)</td><td><a href="https://internationalaisafetyreport.org/" rel="noopener" target="_blank">https://internationalaisafetyreport.org/</a></td></tr>
+<tr><td>UK AI Security Institute government organisation page (direct fetch 200 on 2026-11-06)</td><td><a href="https://www.gov.uk/government/organisations/ai-security-institute" rel="noopener" target="_blank">https://www.gov.uk/government/organisations/ai-security-institute</a></td></tr>
+<tr><td>Anthropic official transparency page · index of safety evaluations and system cards (direct fetch 200 on 2026-11-06)</td><td><a href="https://www.anthropic.com/transparency" rel="noopener" target="_blank">https://www.anthropic.com/transparency</a></td></tr>
+<tr><td>NIST AI Risk Management Framework official page (direct fetch 200 on 2026-11-06)</td><td><a href="https://www.nist.gov/itl/ai-risk-management-framework" rel="noopener" target="_blank">https://www.nist.gov/itl/ai-risk-management-framework</a></td></tr>
+</tbody></table></div>
+<p class="guide-foot">Source snapshot: 2026-11-06; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</p>
+</div>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

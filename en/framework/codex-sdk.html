@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Codex SDK | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/framework/codex-sdk.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/framework/codex-sdk.html" property="og:url"/>
+<meta content="Codex SDK | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Codex SDK | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/framework/codex-sdk.html","sameAs":"https://developers.openai.com/codex/","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Codex SDK | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/framework/codex-sdk.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/framework/codex-sdk.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/framework/codex-sdk.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/framework/codex-sdk.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Frameworks</span>
+</nav>
+<a class="back" href="/en/framework/">← Frameworks</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#10A37F"'>CO</div>
+<div>
+<h1>Codex SDK</h1>
+<div class="vendor is-caps">OpenAI</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">TypeScript</span>
+<span class="tag on">Python</span>
+<span class="tag on">Rust</span>
+<span class="tag on">Open source</span>
+<span class="tag on">Apache-2.0</span>
+<span class="tag on">Coding framework</span>
+<span class="tag on">CLI wrapper</span>
+<span class="tag on">Non-interactive execution</span>
+<span class="tag on">Sandbox</span>
+<span class="tag on">Approval mode</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>"Turns the Codex CLI into an object you can drive inside a Node process" — the…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · Framework / SDK</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Blocked · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Per-platform implementation differences of the three sandbox tiers on Windows / macOS / Linux (especially whether Windows goes through WSL)</li>
+<li>Tool-calling and structured-output quality alignment after switching to third-party providers</li>
+<li>Whether the Python SDK's API aligns with the TS version (whether <code>Thread</code> / <code>run</code> / <code>resumeThread</code> concepts match)</li>
+<li>Concurrent-write and cross-machine migration semantics of <code>~/.codex/sessions</code></li>
+<li>The full syntax of <code>permissions.audit</code> rules (the official docs give only the filesystem example)</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>"Turns the Codex CLI into an object you can drive inside a Node process"</strong> — the official README opens with "Embed the Codex agent in your workflows and apps"; the second sentence settles the form:</p>
+<blockquote>The TypeScript SDK <strong>wraps</strong> the <code>codex</code> CLI from <code>@openai/codex</code>. It <strong>spawns the CLI</strong> and exchanges JSONL events over stdin/stdout.</blockquote></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p><strong>A good fit in four cases:</strong></p></div>
+<div><ul><li>You want to put Codex inside your own Node app, Electron app or CI</li><li>You need non-interactive execution</li><li>You need file-level permission rules</li><li>You are on a TypeScript or Python stack, have settled on OpenAI models, but want the model layer swappable</li></ul></div>
+<div class="warn-p"><p><strong>Not a fit in two cases:</strong></p></div>
+<div><ul><li>You want a pure library and do not want to carry a spawned CLI child process — use the OpenAI Agents SDK instead</li><li>Your target directory is not a Git repository and you do not want to pass <code>skipGitRepoCheck</code></li></ul></div>
+<div><p>⚠ One more capability boundary: <strong>if you need a compaction API exposed at the SDK layer, it does not have one.</strong> The CLI side has <code>compact_prompt</code> / <code>experimental_compact_prompt_file</code> plus <code>PreCompact</code> / <code>PostCompact</code> hooks, but the SDK layer has no dedicated compaction interface — config pass-through is the only route.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct blocked　developers.openai.com 403 direct from mainland, 200 via proxy.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>Defaults to OpenAI, but the architecture is not locked down.</strong></p>
+<p>Three pieces of evidence:</p>
+<ul><li>the README's config example translates <code>baseUrl</code> into <code>--config openai_base_url=...</code> passed to the CLI — i.e. <strong>switching the API endpoint is a first-class config item</strong></li></ul>
+<ul><li>the official <code>config-advanced</code> page has a dedicated <strong>Custom model providers</strong> section (verified): top-level <code>model = ...</code> with <code>model_provider = "proxy"</code>, then <code>[model_providers.&lt;id&gt;]</code> (fields include <code>base_url</code> / <code>env_key</code> / <code>wire_api</code> / <code>http_headers</code> / <code>auth.command</code>)</li></ul>
+<ul><li><code>ThreadOptions</code> has its own <code>model?: string</code> field</li></ul>
+<p><strong>Built-in provider IDs</strong>: reserved <code>openai</code>, <code>ollama</code>, <code>lmstudio</code>, plus built-in <code>amazon-bedrock</code> and <code>azure</code>. <code>openai_base_url</code> can change a built-in provider's base URL.</p>
+<p>The official example directly gives a third party:</p>
+<p><strong>Official example</strong>: <code>[model_providers.mistral]</code> <code>base_url = "https://api.mistral.ai/v1"</code></p>
+<p><strong>OSS mode</strong> is also supported: <code>--oss</code> with <code>oss_provider = "ollama" | "lmstudio"</code>.</p>
+<p><strong>That is: the official docs explicitly support non-OpenAI models</strong> (local Ollama / LM Studio, Mistral, Bedrock etc.).</p>
+<p><strong>README wording</strong>: If you set <code>baseUrl</code>, the SDK passes it as a <code>--config openai_base_url=...</code> override</p>
+<p>⚠ <strong>But after switching to a third-party model? How good are tool calling and structured output quality? The official docs give no quantified conclusion. This site has not measured either.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>The process form is "your Node process + a spawned CLI subprocess."</strong></p>
+<p>The README's <code>env</code> parameter note is worth attention. By default the CLI <strong>inherits the Node process environment</strong>. So you can fully control which variables the CLI sees. The official use case given is sandboxed hosts (e.g. Electron apps).</p>
+<p>The SDK injects its own needed variables (like <code>CODEX_API_KEY</code>) on top of the inheritance.</p>
+<p><strong>This is decisive for Electron / desktop-app integration</strong> — the official docs call out this scenario explicitly.</p>
+<p><strong>README wording</strong>: By default, the Codex CLI <strong>inherits the Node.js process environment</strong></p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>Local files are a native CLI capability; the SDK side only needs a working directory.</strong></p>
+<p>Three relevant parameters:</p>
+<ul><li><code>workingDirectory</code> — sets the run directory</li><li><code>additionalDirectories</code> — appends extra directories</li><li><code>local_image</code> type input items — pass local images to the CLI (via <code>--image</code>)</li></ul>
+<p>⚠ <strong>One behavior you must know</strong>: Codex <strong>requires the working directory to be a Git repository</strong>. It refuses to run otherwise. The check can be skipped with <code>skipGitRepoCheck</code>.</p>
+<p><strong>This is a selection-level hard constraint</strong>: it does not work out of the box in non-Git directories (pure data dirs, temp dirs).</p>
+<p><strong>Official wording</strong>: To avoid unrecoverable errors, Codex requires the working directory to be a Git repository</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>Among objects collected on this site, this is the only one officially and explicitly supported for non-interactive execution.</strong></p>
+<p><strong>Verified</strong>: the official <code>noninteractive</code> page is verified (<code>docs/exec.md</code> points to it). <code>codex exec</code> targets scripts and CI.</p>
+<ul><li>default <strong>read-only sandbox</strong>; <code>--sandbox workspace-write</code> or <code>danger-full-access</code> available</li><li><code>--json</code> outputs JSONL</li><li><code>--output-schema</code> for structured output</li><li><code>--ephemeral</code> writes nothing to disk</li><li><strong>resumable</strong>: <code>codex exec resume --last</code>, or <code>codex exec resume &lt;SESSION_ID&gt;</code></li></ul>
+<p>The SDK-side counterpart is <code>resumeThread()</code>; Threads persist under <code>~/.codex/sessions</code>.</p>
+<p>(This forms a pair with the CLI entry. Over there, "Gemini CLI is the only one explicitly supporting non-interactive".)</p>
+<p>⚠ <strong>Note <code>~/.codex/sessions</code> is a file directory, not a database</strong>. State and process live on the same machine.</p>
+<p><strong>Cross-machine migration and multi-process concurrent-write semantics are not stated officially.</strong> (noninteractive and config-reference pages checked; they only cover <code>history.persistence</code> and resume.)</p>
+<p><strong>The official positioning of <code>codex exec</code></strong>: scripts and CI</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>The tool surface is entirely decided by the CLI — the SDK neither adds nor trims.</strong></p>
+<p>On the SDK side you get a <strong>structured event stream</strong>. <code>runStreamed()</code> returns an async generator. Event types:</p>
+<ul><li><code>item.completed</code> — tool calls, streaming responses, file-change notifications</li><li><code>turn.completed</code> — includes usage stats</li></ul>
+<p><strong>Structured output is a first-class capability the SDK explicitly supports</strong>: <code>outputSchema</code> takes a JSON Schema, and the official docs also recommend the Zod conversion path <code>zodToJsonSchema(schema, { target: "openAi" })</code>.</p>
+<p>⚠ <strong>There is a naming trap here</strong>: that target says <code>"openAi"</code>. But what it produces is <strong>generic JSON Schema</strong>. Any model honoring that schema can use it — <strong>it does not mean OpenAI only</strong>.</p>
+<p><strong>The MCP situation needs stating clearly</strong>. The README never mentions MCP. None of the 9 MCP servers collected on this site involve it either. But Codex CLI's MCP support <strong>is verified</strong> (the official docs have a standalone MCP page):</p>
+<ul><li>transports: <strong>STDIO</strong> (command / args / env / env_vars / cwd) and <strong>Streamable HTTP</strong> (url / bearer / headers)</li><li>config: the <code>codex mcp</code> command line, or <code>[mcp_servers.&lt;name&gt;]</code> in <code>config.toml</code></li><li>tool switches: <code>enabled_tools</code> / <code>disabled_tools</code></li><li>approvals: <strong>per-server and per-tool <code>approval_mode</code></strong> (<code>auto</code> / <code>prompt</code> / <code>approve</code>)</li><li>auth: <code>codex mcp login</code> via OAuth</li></ul>
+<p><strong>Official wording</strong>: Codex supports MCP servers in both the CLI and the IDE extension <strong>SDK side</strong>: the SDK's <code>config</code> passthrough writes into the CLI's <code>config.toml</code>, so MCP is reachable this way; but <strong>the official SDK README does not spell out this linkage</strong>, so this site records it only as a CLI capability and still does not link it to the MCP-site servers.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>What it provides is "session continuation", not "context management".</strong></p>
+<p>The evidence is <code>resumeThread(threadId)</code>. It can restore a conversation and keep running, but <strong>there is no compaction, summarization or offloading mechanism</strong>.</p>
+<p>In other words, <code>Thread</code> solves <strong>reliable resume</strong> (the "state" surface as this site defines it), not <strong>long context</strong> (the "context" surface as this site defines it).</p>
+<p><strong>To compact context you can only rely on CLI-side config or switch models</strong> — the SDK layer exposes no related options.</p>
+<p><strong>⚠ SDK-side linkage with MCP</strong>: the SDK's <code>config</code> passthrough writes into the CLI's <code>config.toml</code>, so MCP is theoretically reachable this way. But <strong>the official SDK README does not spell out this linkage</strong> — this site records it only as a CLI capability and <strong>does not link it to the MCP-site servers</strong>.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>This is the most valuable finding from this site's cross-check: it fills the approval-enum gap left in the CLI entry.</strong></p>
+<p>The evidence comes from SDK source (not docs), the type definitions in <code>sdk/typescript/src/threadOptions.ts</code>:</p>
+<ul><li><strong>four approval modes</strong> — <code>ApprovalMode = "never" | "on-request" | "on-failure" | "untrusted"</code></li><li><strong>three sandbox tiers</strong> — <code>SandboxMode = "read-only" | "workspace-write" | "danger-full-access"</code></li><li>network controlled separately — <code>networkAccessEnabled?: boolean</code>, <code>webSearchMode?: "disabled" | "cached" | "live"</code>, <code>webSearchEnabled?: boolean</code></li></ul>
+<ul><li>reasoning effort has <strong>8 levels</strong> — <code>ModelReasoningEffort</code>: minimal / low / medium / high / xhigh / max / ultra / persistent</li></ul>
+<p><strong>The other layer is config passthrough</strong>. The SDK supports <code>config</code>, auto-flattened into dotted paths and converted to TOML for <code>--config</code>. There is also <code>configOverrides</code> (raw TOML passed item by item). The official example directly gives filesystem-level rules:</p>
+<p><strong>Official example</strong>: <code>permissions.audit.filesystem={":root"="read","/path/to/project/.env"="deny"}</code></p>
+<p>That means <strong>reading a file like <code>.env</code> can be denied precisely by path</strong>. The official precedence: raw overrides &gt; structured config &gt; SDK-managed settings.</p>
+<p><strong>Sandbox and approval official defaults verified</strong> (<code>agent-approvals-security</code> and <code>config-advanced</code>):</p>
+<ul><li>local default <strong>workspace-write + network off</strong>; non-version-controlled dirs default to <strong>read-only</strong></li><li>top-level keys <code>approval_policy</code> (<code>untrusted</code> / <code>on-request</code> / <code>never</code> / <code>granular</code>, including <code>approvals_reviewer = "auto_review"</code>) pair with <code>sandbox_mode</code></li></ul>
+<ul><li><code>[sandbox_workspace_write]</code> can set <code>writable_roots</code>, <code>network_access</code></li><li>there are named profiles: <code>:read-only</code> / <code>:workspace</code> / <code>:danger-full-access</code></li><li>under <code>workspace-write</code>, <code>.git</code> / <code>.agents</code> / <code>.codex</code> <strong>remain recursively read-only</strong></li><li>network additionally has <code>features.network_proxy</code> domain allowlist + DNS-rebinding protection</li></ul>
+<p>⚠ <strong>The three sandbox tiers differ in per-platform implementation. Platforms mean Windows / macOS / Linux. The official docs do not enumerate these differences item by item</strong>. They only say <strong>"OS-level mechanisms enforce sandbox policies"</strong>, with no network by default and writes limited to the workspace.</p>
+<p>(<code>agent-approvals-security</code>, <code>config-advanced</code>, <code>config-reference</code> pages checked.)</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p><strong>Fits four scenarios:</strong></p>
+<ul><li>embedding Codex into your own Node app / Electron app / CI</li><li>needing non-interactive execution</li><li>needing file-path-precise permission rules</li><li>TypeScript or Python stacks, already committed to OpenAI models but wanting the model layer swappable</li></ul>
+<p><strong>Does not fit two scenarios:</strong></p>
+<ul><li>wanting a pure library without carrying an extra CLI subprocess — use the OpenAI Agents SDK for that</li><li>the target directory is not a Git repo and you are unwilling to enable <code>skipGitRepoCheck</code></li></ul>
+<p>⚠ One more capability boundary: <strong>if you need a compaction API exposed directly at the SDK layer</strong>, it does not deliver.</p>
+<p>The CLI side has <code>compact_prompt</code> / <code>experimental_compact_prompt_file</code> and <code>PreCompact</code> / <code>PostCompact</code> hooks configurable, but <strong>the SDK layer has no dedicated compaction interface</strong>, only config passthrough.</p></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>Apache-2.0</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Assuming openai/codex-sdk from the v3 roadmap exists — that repo 404s; the SDK is a subdirectory of the monorepo</li>
+<li>Assuming the SDK version number reflects the capability — package.json says 0.0.0-dev; the real version tracks the CLI (currently 0.159.3)</li>
+<li>Expecting it to work out of the box outside a Git directory — the CLI requires the working directory to be a Git repository, so you must skip explicitly</li>
+<li>Treating <code>sandbox_workspace_write.network_access</code> and the SDK's <code>networkAccessEnabled</code> as two separate things — the latter is the SDK-level entry point; the former is a config passthrough</li>
+<li>Treating OpenAI Agents SDK (a pure Python library) as a like-for-like alternative — the forms differ, see layer_position</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-01。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>openai/codex · repository (monorepo, SDK under sdk/ subdirectories)</td><td><a href="https://github.com/openai/codex" rel="noopener" target="_blank">https://github.com/openai/codex</a></td></tr>
+<tr><td>docs</td><td>TypeScript SDK README (wraps the CLI, JSONL communication, thread/turn, resume, config passthrough)</td><td><a href="https://github.com/openai/codex/tree/main/sdk/typescript" rel="noopener" target="_blank">https://github.com/openai/codex/tree/main/sdk/typescript</a></td></tr>
+<tr><td>code</td><td>Source sdk/typescript/src/threadOptions.ts (ApprovalMode four tiers / SandboxMode three tiers / network and reasoning effort)</td><td><a href="https://github.com/openai/codex/blob/main/sdk/typescript/src/threadOptions.ts" rel="noopener" target="_blank">https://github.com/openai/codex/blob/main/sdk/typescript/src/threadOptions.ts</a></td></tr>
+<tr><td>code</td><td>sdk/typescript/package.json (package name @openai/codex-sdk, Apache-2.0, Node≥18)</td><td><a href="https://github.com/openai/codex/blob/main/sdk/typescript/package.json" rel="noopener" target="_blank">https://github.com/openai/codex/blob/main/sdk/typescript/package.json</a></td></tr>
+<tr><td>docs</td><td>docs/exec.md · Non-interactive mode (body is an external link only)</td><td><a href="https://github.com/openai/codex/blob/main/docs/exec.md" rel="noopener" target="_blank">https://github.com/openai/codex/blob/main/docs/exec.md</a></td></tr>
+<tr><td>docs</td><td>docs/sandbox.md · Sandbox &amp; approvals (body is an external link only)</td><td><a href="https://github.com/openai/codex/blob/main/docs/sandbox.md" rel="noopener" target="_blank">https://github.com/openai/codex/blob/main/docs/sandbox.md</a></td></tr>
+<tr><td>docs</td><td>Official Agent approvals &amp; security (three sandbox tiers, approval policies, network policies, protected paths)</td><td><a href="https://developers.openai.com/codex/agent-approvals-security" rel="noopener" target="_blank">https://developers.openai.com/codex/agent-approvals-security</a></td></tr>
+<tr><td>docs</td><td>Official Configuration Reference (approval_policy / sandbox_mode / model_provider etc. keys)</td><td><a href="https://developers.openai.com/codex/config-reference" rel="noopener" target="_blank">https://developers.openai.com/codex/config-reference</a></td></tr>
+<tr><td>docs</td><td>Official Advanced Configuration (Custom model providers, OSS mode, compaction, hooks)</td><td><a href="https://developers.openai.com/codex/config-advanced" rel="noopener" target="_blank">https://developers.openai.com/codex/config-advanced</a></td></tr>
+<tr><td>docs</td><td>Official MCP docs (CLI and IDE support STDIO / Streamable HTTP)</td><td><a href="https://developers.openai.com/codex/mcp" rel="noopener" target="_blank">https://developers.openai.com/codex/mcp</a></td></tr>
+<tr><td>docs</td><td>Official Non-interactive mode (codex exec, resume, read-only default)</td><td><a href="https://developers.openai.com/codex/noninteractive" rel="noopener" target="_blank">https://developers.openai.com/codex/noninteractive</a></td></tr>
+<tr><td>repo</td><td>Python SDK directory (existence recorded by this site; details unverified)</td><td><a href="https://github.com/openai/codex/tree/main/sdk/python" rel="noopener" target="_blank">https://github.com/openai/codex/tree/main/sdk/python</a></td></tr>
+<tr><td>changelog</td><td>Releases (0.159.3 @ 2026-09-30, plus 0.161.0-alpha pre-releases)</td><td><a href="https://github.com/openai/codex/releases" rel="noopener" target="_blank">https://github.com/openai/codex/releases</a></td></tr>
+<tr><td>docs</td><td>Official security docs (sandbox and approvals, JS-rendered; body not captured by this site)</td><td><a href="https://developers.openai.com/codex/security" rel="noopener" target="_blank">https://developers.openai.com/codex/security</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs.</p>
+<p>The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/framework/_protocol.md" rel="noopener" target="_blank">protocols/framework/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong> (tailored to this SDK's form):</p>
+<div class="tbl-wrap"><table><thead><tr><th>#</th><th>What to test</th><th>Why it is worth testing</th></tr></thead><tbody><tr><td>1</td><td>CLI × SDK version combination matrix (CLI 0.159.3 / 0.161.0-alpha × SDK)</td><td>the SDK version does not reflect capability; you need to know which combinations are validated</td></tr><tr><td>2</td><td>Whether <code>permissions.audit.filesystem</code> deny rules actually block reading .env</td><td>the official example gives the syntax, but interception strength is unverified</td></tr><tr><td>3</td><td>How complete <code>resumeThread</code> recovery is after a process crash</td><td>this site's top concern: "reliable long-running operation"</td></tr><tr><td>4</td><td>Real time and cost differences across the 8 <code>modelReasoningEffort</code> levels</td><td>the official docs give the enum but not the price</td></tr><tr><td>5</td><td>Failure rate and interruption behavior of running a real task chain in non-interactive mode</td><td>the core metric of unattended scenarios</td></tr><tr><td>6</td><td>Whether structured output stays reliable after switching <code>baseUrl</code> to a third-party provider</td><td>the architecture is not locked down, but reliability is unknown</td></tr></tbody></table></div>
+</div>
+<div class="panel is-slim">
+<h2>Form clarification: this is the first "CLI-wrapped" object on this site</h2>
+<p>Of this site's three coding-base forms, this belongs to type 2 (wrapping an existing CLI):</p>
+<div class="tbl-wrap"><table><thead><tr><th>Form</th><th>Who runs the agent loop</th><th>Objects on this site</th></tr></thead><tbody><tr><td>① build-your-own-loop framework</td><td>a library inside your process</td><td>OpenAI Agents SDK, Deep Agents</td></tr><tr><td>② <strong>wrapping an existing CLI</strong></td><td><strong>an external CLI subprocess</strong></td><td><strong>Codex SDK</strong>, Claude Agent SDK</td></tr><tr><td>③ ships a full runtime</td><td>vendor-hosted</td><td>(none yet)</td></tr></tbody></table></div>
+<p><strong>This difference is not a matter of wording; it decides several practical things</strong>:</p>
+<ol><li value="1"><strong>Behavior boundary = CLI version boundary</strong>. The SDK's own version number is <code>0.0.0-dev</code> (measured in package.json); what really decides capability is the CLI it spawns — currently <code>0.159.3</code> (releases @ 2026-09-30, with <code>0.161.0-alpha.7</code> pre-release). Upgrading the CLI equals upgrading the SDK's capability and risk surface.</li><li value="2"><strong>Sandbox and approvals are not yours to define</strong>. They are CLI capabilities; the SDK can only influence them via parameters (see permissions below).</li><li value="3"><strong>One more process means one more overhead and one more failure point</strong>. But in exchange you get the CLI's full capabilities without implementing them.</li></ol>
+</div>
+<div class="panel is-slim">
+<h2>The permission surface: source code gives four approval modes and three sandbox tiers</h2>
+<p>⚠ <strong>This passage corrects an "unverified" in this site's CLI-site entry</strong>: this site's CLI entry (<code>cli/products/codex-cli.md</code>) once carried one sentence. It read "the specific approval modes were not verified the 2026-10-08 pass" (translated). The reason: no enum could be found in the CLI docs. (On 2026-10-08 that entry was completed with the four official approval tiers.) This time the enum was found in the SDK source's type definitions — <strong>not in the doc external links, but in the source</strong>:</p>
+<pre class="code"><code>// sdk/typescript/src/threadOptions.ts (verified 2026-10-01)
+export type ApprovalMode = "never" | "on-request" | "on-failure" | "untrusted";
+export type SandboxMode = "read-only" | "workspace-write" | "danger-full-access";</code></pre>
+<p>Accompanying options:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Option</th><th>Values</th><th>Role</th></tr></thead><tbody><tr><td><code>networkAccessEnabled</code></td><td>bool</td><td>whether the sandbox allows network</td></tr><tr><td><code>webSearchMode</code></td><td><code>disabled</code> / <code>cached</code> / <code>live</code></td><td>three tiers of web search</td></tr><tr><td><code>webSearchEnabled</code></td><td>bool</td><td>master search switch</td></tr><tr><td><code>modelReasoningEffort</code></td><td><strong>8 levels</strong>: minimal / low / medium / high / xhigh / max / ultra / persistent</td><td>reasoning effort</td></tr><tr><td><code>additionalDirectories</code></td><td>string[]</td><td>append accessible directories</td></tr></tbody></table></div>
+<p><strong>One layer deeper: reading files can be denied precisely by path.</strong> The SDK supports <code>configOverrides</code> passing raw TOML item by item, and the official example directly gives filesystem rules:</p>
+<pre class="code"><code>configOverrides: ['permissions.audit.filesystem={":root"="read","/path/to/project/.env"="deny"}']</code></pre>
+<p>This means files like <code>.env</code> can be denied individually. It is not coarse-grained "sandbox blocks all writes" protection. The official precedence, high to low: raw overrides, structured config, SDK-managed settings.</p>
+<p><strong>Sandbox / approval defaults verified</strong> (see axes.permissions): local default <code>workspace-write</code> + network off, non-version-controlled dirs default <code>read-only</code>; under <code>workspace-write</code>, <code>.git</code> / <code>.agents</code> / <code>.codex</code> are recursively read-only. <strong>The per-platform implementation differences of the three sandbox tiers are not enumerated officially</strong>: they only say "OS-level mechanisms enforce sandbox policies", without listing Windows / macOS / Linux differences separately (<code>agent-approvals-security</code> and <code>config-advanced</code> pages checked). <strong>Windows users especially should verify themselves</strong>.</p>
+</div>
+<div class="panel is-slim">
+<h2>Local files: there is a hard constraint you must know</h2>
+<blockquote>To avoid unrecoverable errors, Codex <strong>requires the working directory to be a Git repository</strong>.</blockquote>
+<p>It refuses to run otherwise; <code>skipGitRepoCheck: true</code> can skip it.</p>
+<p><strong>This is a selection-level constraint</strong>: out-of-the-box use in pure data dirs, temp dirs, upload dirs <strong>does not work</strong>, and those scenarios are exactly what you hit most when "embedding into your own product".</p>
+</div>
+<div class="panel is-slim">
+<h2>State vs context: it only solves the former</h2>
+<div class="tbl-wrap"><table><thead><tr><th>The surface this site cares about</th><th>This SDK's official means</th><th>Enough?</th></tr></thead><tbody><tr><td><strong>state</strong> (reliable resume)</td><td><code>resumeThread(id)</code>, Threads persisted under <code>~/.codex/sessions</code></td><td>✅ official support exists</td></tr><tr><td><strong>context</strong> (long-task compaction)</td><td>none. No compaction/summarization/offloading options at the SDK layer</td><td>❌ only CLI-side config</td></tr></tbody></table></div>
+<p><strong>The "state ≠ context" stance is confirmed right here</strong>: it preserves the conversation completely, but does no compaction of content — cost and latency once threads grow is a separate matter.</p>
+<p>⚠ <code>~/.codex/sessions</code> is a <strong>file directory</strong>, not a database. Cross-machine migration and multi-process concurrent writes to the same session are <strong>not stated officially</strong>.</p>
+</div>
+<div class="panel is-slim">
+<h2>Non-interactive execution: the only candidate here with official evidence so far</h2>
+<p>The title of <code>docs/exec.md</code> is <strong>Non-interactive mode</strong>.</p>
+<p>This forms an interesting pair with that CLI-site entry: among the CLI site's 6 objects, <strong>only Gemini CLI explicitly supports non-interactive script mode</strong>. The rest are marked unverified on this item. And on this harness site, Codex SDK is currently the only object with official non-interactive documentation.</p>
+<p><strong>If what you want is "run a chain of tasks unattended", these two are the only evidence-backed landing points</strong> — one in your terminal, one inside your Node process.</p>
+</div>
+<div class="panel is-slim">
+<h2>Structured output: supported quite completely</h2>
+<pre class="code"><code>const turn = await thread.run("Summarize repository status", { outputSchema: schema });</code></pre>
+<ul><li>JSON Schema can be passed directly (<code>as const</code> with types)</li><li>or converted from Zod: <code>zodToJsonSchema(schema, { target: "openAi" })</code></li></ul>
+<p>⚠ There is a naming trap here. That <code>target: "openAi"</code> only tells the converter which target format to use. What it produces is standard JSON Schema — it does not mean only OpenAI models can use it.</p>
+</div>
+<div class="panel is-slim">
+<h2>MCP: officially supported by Codex CLI, reachable on the SDK side via config passthrough</h2>
+<p>The SDK README never mentions MCP, and the main repo's <code>docs/</code> directory has no <code>mcp.md</code> either (verified 2026-10-01). But the official developer docs have a standalone <strong>MCP page</strong> (verified 2026-10-08):</p>
+<blockquote>Codex supports MCP servers in both the CLI and the IDE extension.</blockquote>
+<p>STDIO and Streamable HTTP transports are both supported, configurable via <code>codex mcp add ...</code> and <code>[mcp_servers.&lt;name&gt;]</code> in <code>config.toml</code>, with per-server / per-tool <code>approval_mode</code> (<code>auto</code> / <code>prompt</code> / <code>approve</code>) and <code>enabled_tools</code> / <code>disabled_tools</code>. <strong>SDK side</strong>: the SDK's <code>config</code> passthrough writes into the CLI's <code>config.toml</code>, so MCP servers are reachable this way; but <strong>the official SDK README does not spell out this linkage</strong>, so this site records it only as a CLI capability and still does not link it to the 9 official servers on this site's MCP section.</p>
+</div>
+<div class="panel is-slim">
+<h2>Verification notes</h2>
+<p>Basis for <code>confidence: partial</code> (downgraded from verified on 2026-10-03):</p>
+<blockquote><strong>Why downgraded</strong>: the subject of the ❌ items below is <strong>this site's evidence gap</strong>, not "not provided officially". Per the v3 rule "say unknown when unknown", marking verified while these items exist would be inflated, hence partial. Main gaps: <strong>per-platform</strong> implementation differences of the three sandbox tiers, third-party provider capability alignment, permission-audit rule syntax. (2026-10-08 additions: official MCP support, model/provider config surface, sandbox and approval defaults, non-interactive config all verified.)</blockquote>
+<ul><li>✅ Verified: repository exists and star count (130,474 · rolling check 2026-10-23), license (Apache-2.0), last push (2026-10-22, still active), latest stable <strong>0.163.0</strong> (releases @ 2026-10-15), full <code>sdk/typescript/package.json</code> (package name <code>@openai/codex-sdk</code>, version 0.0.0-dev, Node≥18), full six sections of <code>sdk/typescript/README.md</code> (quickstart / streaming / structured output / images / resume / environment and config), <strong>full type definitions of <code>sdk/typescript/src/threadOptions.ts</code></strong> (four approval tiers, three sandbox tiers, network and search, eight reasoning levels), the <code>docs/</code> directory listing, and the existence of python/typescript/python-runtime subdirectories under <code>sdk/</code></li></ul>
+<ul><li>❌ Not verified: <strong>per-platform</strong> implementation differences of the three sandbox tiers (official only says OS-level enforcement, not enumerated item by item), tool-calling and structured-output quality alignment after switching to third-party models, whether the Python SDK's API shape matches the TS version, concurrent-write semantics of <code>~/.codex/sessions</code></li></ul>
+<p>⚠ <strong>Also correcting the plan</strong>. The <code>codex-sdk</code> written in the v3 plan (labeled 127k★) does not exist as a standalone repository. gh api returns 404. The 127,448★ is the star count of the <code>openai/codex</code> monorepo; the SDK is its <code>sdk/typescript</code> subdirectory.</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/framework/claude-agent-sdk.html">Claude Agent SDK</a></span><span class="rel-n"><strong>The pair this site should contrast most</strong>: both are CLI-wrapped (bundled / spawn CLI + inter-process communication), but the Claude side's README states Claude-only with no provider bypass, while this SDK has <code>baseUrl</code> and <code>model_providers</code>.</span></li>
+<li><span class="rel-t"><a href="/en/framework/openai-agents-sdk.html">OpenAI Agents SDK</a></span><span class="rel-n">Two forms from the same vendor: that one is a pure Python library (primitives-only), this one is a Node + CLI-subprocess wrapper. The first selection question is "do you want to carry an extra CLI process".</span></li>
+<li><span class="rel-t"><a href="/en/framework/deepagents.html">Deep Agents</a></span><span class="rel-n">The batteries-included contrast surface: this SDK presets nothing; tools and sandbox are entirely decided by the CLI version.</span></li>
+<li><span class="rel-t"><a href="/en/framework/langgraph.html">LangGraph</a></span><span class="rel-n">If you need "non-interactive + graph structure + multi-agent collaboration", an orchestration framework is the matching layer; this SDK only gives single-thread execution.</span></li>
+<li><span class="rel-t"><a href="/en/coding/codex-cli.html">Codex CLI</a></span><span class="rel-n">Other layer · AI coding</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/framework/claude-agent-sdk.html">Claude Agent SDK</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">The Python programming interface to Claude Code — a polished coding CLI </td></tr><tr><td><a href="/en/framework/dspy.html">DSPy</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">DSPy turns 'tuning prompts' into a programming problem (MIT, Stanford NL</td></tr><tr><td><a href="/en/framework/pydantic-ai.html">Pydantic AI</a></td><td>Local / self-hosted</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Pydantic AI is the type-safe Python agent loop — official README: "Pydan</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from OpenAI</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/audio/whisper.html"><span class="vp-cat">Audio generation</span>Whisper</a></li><li><a href="/en/chat/chatgpt.html"><span class="vp-cat">General chat</span>ChatGPT</a></li><li><a href="/en/coding/codex-cli.html"><span class="vp-cat">AI coding</span>Codex CLI</a></li><li><a href="/en/coding/codex-ide.html"><span class="vp-cat">AI coding</span>Codex (IDE extension)</a></li><li><a href="/en/coding/openai-dot.html"><span class="vp-cat">AI coding</span>OpenAI Dot</a></li><li><a href="/en/framework/openai-agents-sdk.html"><span class="vp-cat">Frameworks &amp; runtimes</span>OpenAI Agents SDK</a></li><li><a href="/en/safety/openai-evals.html"><span class="vp-cat">Safety &amp; evaluation</span>OpenAI Evals</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

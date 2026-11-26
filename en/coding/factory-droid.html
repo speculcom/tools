@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Droid | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/factory-droid.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/factory-droid.html" property="og:url"/>
+<meta content="Droid | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Droid | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/coding/factory-droid.html","sameAs":"https://factory.ai","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Droid | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/factory-droid.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/factory-droid.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/factory-droid.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/factory-droid.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#8b7cf8">DR</div>
+<div>
+<h1>Droid</h1>
+<div class="vendor is-caps">Factory AI</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Coding</span>
+<span class="tag on">Terminal</span>
+<span class="tag on">Multiple models</span>
+<span class="tag on">Local</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Factory AI's terminal coding agent, model-agnostic (factory-hosted + BYOK + local…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · CLI</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Whether codebase vector indexing exists, and first-index time on large repos (not stated officially; CLI Reference and Quickstart checked)</li>
+<li>Concurrency numbers and quotas for cloud background agents and Droid Computers (official says only "varies by plan", no numbers)</li>
+<li>The persistence boundary and retention policy of cross-session memory on the CLI side (not stated on CLI pages; CLI Overview and Droid Exec checked)</li>
+<li>Business / Enterprise tier contents (official pages say only "contact sales")</li>
+</ul>
+</div>
+<div class="panel-lead"><p>Factory AI's terminal coding agent. Its pitch is <strong>model independence</strong> — the official BYOK page says "Use your own OpenAI or Anthropic keys, connect to any open source model providers, or run models locally", and <strong>your keys stay local: "Your API keys remain local and are not uploaded to Factory servers"</strong>. Quota is not one monthly bucket but three independent rolling windows (5-hour / 7-day / 30-day); when you hit one you can fall back to <strong>Droid Core</strong> (a free open-weight model pool) or <strong>Extra Usage</strong> (prepaid credits, $10 minimum, never expiring). Every mutating action is gated by an <strong>Autonomy Level</strong> (Off / Low / Medium / High) plus command allow / deny / block lists. And it is not a single CLI: the official pricing page lists the Pro tier as "Factory App / Droid CLI / Droid SDK".</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>End-to-end software engineering in the terminal for teams that need enterprise governance. Particularly good for: a plan-implement-test loop on an existing repo (<code>/missions</code> multi-agent orchestration); CI/CD automation (<code>droid exec</code> one-shot runs with JSON output and a non-zero exit on failure); organizations that need BYOK, local models or airgapped deployment to avoid a single-vendor lock-in.</p></div>
+<div class="warn-p"><p><strong>Not a fit for</strong> individuals looking for a free, lightweight terminal assistant — the lowest tier is already Pro at $20/mo, with no free plan; and <code>droid exec</code> is read-only by default, so auto-editing files requires explicitly raising the autonomy level.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　official site measured 200 direct.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>Model-agnosticism is its selling point: officially hosted models, BYOK, and local models coexist.</strong></p>
+<p>Officially hosted models cover four vendors, plus an open-weight pool.</p>
+<ul><li>Anthropic: Claude Opus / Sonnet / Fable / Haiku</li><li>OpenAI: GPT-6 / GPT-5.5 / GPT-5.3-Codex</li><li>Google: Gemini</li><li>xAI: Grok</li><li>Droid Core open weights: GLM, Kimi, Qwen, DeepSeek, MiniMax, Nemotron, etc.</li></ul>
+<p>Every model is labeled with its burn multiplier and supported <code>reasoningEffort</code>.</p>
+<p>Multiplier examples: <code>gpt-5.5</code> is 2×, <code>claude-sonnet-5</code> is 0.8×.</p>
+<p><strong>BYOK can use your own keys or any OpenAI-compatible endpoint.</strong></p>
+<p><strong>Official wording</strong>: "Use your own OpenAI or Anthropic keys, connect to any open source model providers, or run models locally"</p>
+<p>Config lives in <code>customModels</code> in <code>~/.factory/settings.json</code>, three fields.</p>
+<ul><li><code>baseUrl</code></li><li><code>apiKey</code></li><li><code>provider</code> (one of three: <code>anthropic</code>, <code>openai</code>, <code>generic-chat-completion-api</code>)</li></ul>
+<p>Values can reference environment variables via <code>${VAR}</code>.</p>
+<p>Any OpenAI-compatible endpoint works: OpenRouter / Fireworks / Together / Ollama / vLLM etc.</p>
+<p><strong>API keys stay local and are not uploaded.</strong></p>
+<p><strong>Official wording</strong>: "Your API keys remain local and are not uploaded to Factory servers"</p>
+<p>Switch models with <code>/model</code>.</p>
+<p><strong>Custom models are CLI-only and do not appear on Web / mobile.</strong></p>
+<p>There is also the official <strong>Factory Router</strong> for automatic cross-provider routing.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>CLI-first, but the official positioning is "one agent, multiple platforms".</strong></p>
+<p>The workhorse is the terminal process <code>droid</code>, an interactive REPL.</p>
+<p>Its lifecycle is bound to the terminal session — close the terminal and it ends.</p>
+<p>Three install options:</p>
+<ul><li>macOS / Linux: official script <code>curl -fsSL https://app.factory.ai/cli | sh</code></li><li>Windows: <code>irm https://app.factory.ai/cli/windows | iex</code></li><li>or npm: <code>npm install -g droid</code></li></ul>
+<p><strong>The same agent has two more entry points.</strong></p>
+<ul><li><strong>Factory App</strong> — a desktop client</li><li><strong>Droid SDK</strong> — TypeScript <code>@factory/droid-sdk</code>, Python <code>droid-sdk</code></li></ul>
+<p>The official pricing page lists all three as Pro-tier contents.</p>
+<p><strong>Official wording</strong>: "Factory App / Droid CLI / Droid SDK"</p>
+<p>On the enterprise side there are also <strong>Droid Computers</strong>, Factory-managed remote cloud environments, from the Plus tier up.</p>
+<p><strong>This entry documents the CLI form only</strong>; desktop and SDK differences follow the official pages.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>It reads and writes in your own working directory; the official docs add two isolation mechanisms.</strong></p>
+<p>One is <code>--cwd &lt;path&gt;</code>, setting the working directory.</p>
+<p>Two is <code>-w, --worktree [name]</code>, running on a separate git worktree.</p>
+<p><strong>Official wording</strong>: "fanning out parallel <code>droid exec</code> jobs against the same repo without file conflicts"</p>
+<p>Official note: clean worktrees are auto-deleted on exit; dirty ones are kept for review.</p>
+<p><strong>Non-interactive <code>droid exec</code> is read-only by default.</strong></p>
+<p>Read commands listed under the DEFAULT tier include:</p>
+<ul><li><code>cat</code> / <code>ls</code> / <code>git status</code> / <code>git log</code></li><li><code>find</code>, but not with <code>-delete</code> / <code>-exec</code></li></ul>
+<p>The official docs state plainly under the DEFAULT tier:</p>
+<p><strong>Official wording</strong>: "No modifications to files or system"</p>
+<p>To change files you must explicitly raise it to <code>--auto low</code> or above.</p>
+<p><strong>Whether the codebase is vector-indexed, and how long first indexing takes on large repos, is not stated officially</strong> (CLI Reference and Quickstart pages checked).</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>The CLI itself is session-bound, but there is an explicit cloud background form officially.</strong></p>
+<p>The terminal process ends on exit.</p>
+<p>The official pricing page's Pro tier lists:</p>
+<p><strong>Official wording</strong>: "Cloud &amp; local background agents"</p>
+<p>The Plus tier unlocks <strong>Droid Computers</strong>.</p>
+<p><strong>Official wording</strong>: "Factory-managed Droid Computers (remote cloud environments)"</p>
+<p>The enterprise page also says Droid can run on:</p>
+<ul><li>CI runners, VMs, Kubernetes clusters</li></ul>
+<p><strong>Missions</strong> is the multi-agent orchestration form: an orchestrator coordinates workers and validators.</p>
+<p>Launch either via <code>/missions</code> or <code>droid exec --mission</code>.</p>
+<p>The official docs require the High autonomy level, or <code>--skip-permissions-unsafe</code>.</p>
+<p><strong>Concrete cloud concurrency numbers and quotas are not given by the official docs</strong> (Plans &amp; Pricing and the Missions overview checked).</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>The built-in tool surface is broad, MCP support is complete, and there is an interactive manager.</strong></p>
+<p>Built-in capabilities include:</p>
+<ul><li>command execution, file read/write, git operations</li><li>code review (<code>/review</code>)</li><li>image generation, PDF reading</li></ul>
+<p>The extension surface adds five more classes:</p>
+<ul><li><strong>Skills</strong> — <code>/skills</code>, <code>/create-skill</code></li><li><strong>Hooks</strong> — nine event types including PreToolUse / PostToolUse / PreCompact</li><li><strong>Custom Droids sub-agents</strong> — <code>/droids</code></li><li><strong>Plugins</strong> — <code>/plugins</code>, distributed via a marketplace</li><li>custom slash commands and <strong>AGENTS.md</strong></li></ul>
+<p><strong>MCP supports two transports.</strong></p>
+<p><strong>Official wording</strong>: "Droid supports two types of servers: http (remote endpoints) and stdio (local processes)"</p>
+<p>Add via <code>droid mcp add &lt;name&gt; &lt;url&gt; --type http</code> or <code>droid mcp add &lt;name&gt; "&lt;command&gt;"</code>.</p>
+<p><code>/mcp</code> opens the interactive manager: browse, inspect tools, enable/disable, do OAuth auth.</p>
+<p>It can also add 40+ servers from a registry.</p>
+<p>Config is two-layer: user-level <code>~/.factory/mcp.json</code> and project-level <code>.factory/mcp.json</code>.</p>
+<p>There is also <code>disabledTools</code> to disable per tool; OAuth tokens are stored in the system keyring.</p>
+<p><strong>Non-interactive mode is also officially supported.</strong></p>
+<p><code>droid exec</code> output formats are <code>text</code> / <code>json</code>.</p>
+<p>There is also <code>--input-format stream-jsonrpc</code>, a long-lived JSON-RPC control plane.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>Sessions can be resumed by id and forked; compaction and the control plane are documented.</strong></p>
+<p>On the non-interactive side, resume with <code>droid exec --session-id &lt;id&gt;</code>.</p>
+<p>Fork with <code>--fork &lt;id&gt;</code>.</p>
+<p>On the interactive side, exit prompts resume, and the CLI reference has <code>-r, --resume</code>.</p>
+<p>The stream-jsonrpc control plane exposes <code>droid.load_session</code>, session forking and history compaction.</p>
+<p><strong>Official wording</strong>: "interrupt work, update settings, manage MCP servers/tools, inspect context, fork sessions, or compact history"</p>
+<p>Compaction additionally has a <code>PreCompact</code> hook event.</p>
+<p>The changelog also has this line:</p>
+<p><strong>Official wording</strong>: "in-place compression"</p>
+<p><strong>On memory</strong>, the official enterprise form mentions cross-repo "organizational knowledge".</p>
+<p>There is also issue-tracker context.</p>
+<p>The Enterprise tier additionally has:</p>
+<p><strong>Official wording</strong>: "Cross-harness agent memory"</p>
+<p><strong>The persistence boundary and retention policy of memory on the CLI side are not stated on the CLI pages</strong> (CLI Overview and Droid Exec pages checked).</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>Permissions are a two-level design: tiered autonomy (Autonomy Level) plus command allow/deny/block lists.</strong></p>
+<p>Enterprises can additionally cap both levels.</p>
+<p>The official Autonomy page splits execution risk into four tiers.</p>
+<ul><li><strong>Off</strong> — read-only tools + allowlisted commands</li><li><strong>Low</strong> — file edits + low-risk commands / MCP</li><li><strong>Medium</strong> — plus reversible workspace changes, e.g. <code>npm install</code>, <code>git commit</code></li><li><strong>High</strong> — high-risk operations, e.g. <code>git push</code>, migrations</li></ul>
+<p>Switch by cycling with <code>Ctrl+L</code>; <code>Shift+Tab</code> toggles Auto / Spec.</p>
+<p>Command policy is three tables.</p>
+<ul><li><code>commandAllowlist</code> — treated as low risk</li><li><code>commandDenylist</code> — requires approval even when relaxed</li><li><code>commandBlocklist</code> — <strong>refused at any level, with no approval prompt</strong>; sees through <code>bash -c</code> wrapper evasion</li></ul>
+<p>The official docs call <code>commandBlocklist</code>:</p>
+<p><strong>Official wording</strong>: "the strongest control available"</p>
+<p>Non-interactive <code>droid exec</code> is read-only by default.</p>
+<p>Open it up stepwise with <code>--auto low|medium|high</code>.</p>
+<p><code>--skip-permissions-unsafe</code> opens everything; officially labeled DANGEROUS, isolated environments only.</p>
+<p>Exceeding the level stops immediately: non-zero exit code, no verified changes (fail-fast).</p>
+<p>Enterprises can cap with Default / Maximum Autonomy Level.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p><strong>Fits teams running end-to-end software engineering in the terminal and needing enterprise-grade governance.</strong></p>
+<p>Three kinds of teams match best:</p>
+<ul><li>those with existing repos who want the full plan → implement → test flow (<code>/missions</code> multi-agent orchestration)</li><li>those automating CI/CD: <code>droid exec</code> one-shot runs, JSON output, non-zero exit on failure</li><li>those needing BYOK / local models / airgapped deployment, to break free of single-vendor lock-in</li></ul>
+<p><strong>Not a fit</strong> for individuals just wanting a free lightweight terminal assistant — there is no free tier officially; the lowest is the paid Pro tier.</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Assuming BYOK has no quota — official docs state Individual plans include only an allowance of free BYOK usage</li>
+<li>Treating Droid as CLI-only, when the vendor actually leads with CLI + desktop App + SDK</li>
+<li>Expecting droid exec to edit files, when it defaults to read-only mode</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-08。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>pricing</td><td>Factory AI · official pricing page (Pro / Plus / Max tiers; pricing not stored per price-recording policy; verified 2026-10-08)</td><td><a href="https://factory.ai/pricing" rel="noopener" target="_blank">https://factory.ai/pricing</a></td></tr>
+<tr><td>pricing</td><td>Factory AI · official docs · Plans &amp; Pricing (rolling Rate Limits, Droid Core, Extra Usage, BYOK)</td><td><a href="https://docs.factory.ai/pricing" rel="noopener" target="_blank">https://docs.factory.ai/pricing</a></td></tr>
+<tr><td>changelog</td><td>Factory AI · official docs · Full Changelog (maintained per surface: CLI / App / API / Web / Enterprise)</td><td><a href="https://docs.factory.ai/changelog/release-notes" rel="noopener" target="_blank">https://docs.factory.ai/changelog/release-notes</a></td></tr>
+<tr><td>changelog</td><td>Factory AI · official docs · CLI Updates</td><td><a href="https://docs.factory.ai/changelog/cli-updates" rel="noopener" target="_blank">https://docs.factory.ai/changelog/cli-updates</a></td></tr>
+<tr><td>docs</td><td>Factory AI · official docs · CLI Overview (three install options, key capabilities)</td><td><a href="https://docs.factory.ai/cli/getting-started/overview" rel="noopener" target="_blank">https://docs.factory.ai/cli/getting-started/overview</a></td></tr>
+<tr><td>docs</td><td>Factory AI · official docs · Quickstart (install script, approval flow)</td><td><a href="https://docs.factory.ai/cli/getting-started/quickstart" rel="noopener" target="_blank">https://docs.factory.ai/cli/getting-started/quickstart</a></td></tr>
+<tr><td>docs</td><td>Factory AI · official docs · Droid Exec (headless, autonomy levels, output formats)</td><td><a href="https://docs.factory.ai/cli/droid-exec/overview" rel="noopener" target="_blank">https://docs.factory.ai/cli/droid-exec/overview</a></td></tr>
+<tr><td>docs</td><td>Factory AI · official docs · Autonomy Level (four tiers, command lists, enterprise caps)</td><td><a href="https://docs.factory.ai/cli/user-guides/auto-run" rel="noopener" target="_blank">https://docs.factory.ai/cli/user-guides/auto-run</a></td></tr>
+<tr><td>docs</td><td>Factory AI · official docs · Model Context Protocol (MCP) (http / stdio, registry, layered config)</td><td><a href="https://docs.factory.ai/cli/configuration/mcp" rel="noopener" target="_blank">https://docs.factory.ai/cli/configuration/mcp</a></td></tr>
+<tr><td>docs</td><td>Factory AI · official docs · Bring Your Own Key (BYOK) (three provider types, local models, keys stay local)</td><td><a href="https://docs.factory.ai/cli/byok/overview" rel="noopener" target="_blank">https://docs.factory.ai/cli/byok/overview</a></td></tr>
+<tr><td>docs</td><td>Factory AI · official docs · Available Models (hosted model list and multipliers, Droid Core)</td><td><a href="https://docs.factory.ai/models" rel="noopener" target="_blank">https://docs.factory.ai/models</a></td></tr>
+<tr><td>docs</td><td>Factory AI · official docs · Enterprise Overview (cloud / hybrid / airgapped deployment, SOC 2 / ISO)</td><td><a href="https://docs.factory.ai/enterprise" rel="noopener" target="_blank">https://docs.factory.ai/enterprise</a></td></tr>
+<tr><td>docs</td><td>Factory AI · official docs · Droid CLI Reference (--cwd / --worktree / install and update)</td><td><a href="https://docs.factory.ai/reference/cli-reference" rel="noopener" target="_blank">https://docs.factory.ai/reference/cli-reference</a></td></tr>
+<tr><td>repo</td><td>Factory AI · official repository · Droid TypeScript SDK</td><td><a href="https://github.com/Factory-AI/droid-sdk-typescript" rel="noopener" target="_blank">https://github.com/Factory-AI/droid-sdk-typescript</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong>: focus on how often the three-window Rate Limit actually interrupts work.</p>
+<p>That is its biggest workflow-friction difference from "one monthly total" tools.</p>
+</div>
+<div class="panel is-slim">
+<h2>Changelogs live on the official docs site, not GitHub releases</h2>
+<p>Droid's version numbers are <strong>maintained per surface</strong>: CLI and Desktop have separate numbering.</p>
+<div class="tbl-wrap"><table><thead><tr><th>Surface</th><th>Representative version</th><th>Date</th></tr></thead><tbody><tr><td>CLI</td><td><code>v0.229.0</code></td><td>2026-09-29</td></tr><tr><td>Desktop</td><td><code>v0.186.0</code></td><td>2026-09-29</td></tr></tbody></table></div>
+<p>The official Full Changelog is a <strong>per-surface cumulative list</strong>, maintained across CLI / App / API / Web / Enterprise surfaces, self-described as over a hundred releases in total.</p>
+<p>There is also a separate "CLI Updates" page.</p>
+<p><strong>When citing a version number, state which surface.</strong></p>
+<p>The "latest" summary in the official changelog page header was out of sync with the entry list below it on the verification day.</p>
+<p>The header said <code>v0.228.0</code> while the entries already showed <code>v0.229.0</code>.</p>
+<p>Before citing, take the live page as authoritative.</p>
+</div>
+<div class="panel is-slim">
+<h2>Installation and the three entry points</h2>
+<p>All three installs work:</p>
+<pre class="code"><code>curl -fsSL https://app.factory.ai/cli | sh      # macOS / Linux
+irm https://app.factory.ai/cli/windows | iex    # Windows
+npm install -g droid</code></pre>
+<p><strong>It is not "a CLI tool" but "one agent with three entry points".</strong></p>
+<ul><li>the pricing page writes Pro-tier contents as "Factory App / Droid CLI / Droid SDK"</li><li>the official docs also have "IDE Integrations" with JetBrains / Zed integrations</li></ul>
+<p>When purchasing, check which entry point you want: the three do not have identical execution surfaces or quota accounting.</p>
+</div>
+<div class="panel is-slim">
+<h2>Quota is not "one monthly total"</h2>
+<p>The official quota is a <strong>three-window rolling Rate Limit</strong>:</p>
+<pre class="code"><code>5-hour / 7-day / 30-day windows are independent; all must have headroom for a request to go through</code></pre>
+<p><strong>This explains "why I'm still rate-limited right after topping up"</strong> — you may be hitting the 5-hour window.</p>
+<p>When rate-limited you can switch to <strong>Droid Core</strong> and keep working: it is an open-weight model pool with its own free quota.</p>
+<p>You can also use <strong>Extra Usage</strong>: prepaid, never expires (minimum top-up on the official page; per this site's price-recording policy, not stored here).</p>
+<p>This is one of the finest-grained quota schemes this site has seen.</p>
+</div>
+<div class="panel is-slim">
+<h2>Enterprise form</h2>
+<p>The official Enterprise page writes the deployment surface as:</p>
+<blockquote>"cloud, hybrid, and fully airgapped environments"</blockquote>
+<p>Droid can run on:</p>
+<blockquote>"developer laptops, CI runners, VMs, Kubernetes clusters, airgapped networks"</blockquote>
+<p>The compliance-program table lists <strong>SOC 2 Type II / ISO 27001 / ISO 42001</strong>.</p>
+<p>The official docs also offer Droid Shield, command policies, hooks, sandboxing and OpenTelemetry telemetry.</p>
+<p><strong>This is the most complete enterprise-governance narrative in this section</strong>, though all of it is vendor self-description.</p>
+</div>
+<div class="panel is-slim">
+<h2>Verification notes</h2>
+<p>Why <code>confidence: partial</code>:</p>
+<ul><li>✅ verified: the five-tier structure and three-window Rate Limit mechanics, Droid Core / Extra Usage / BYOK</li><li>✅ verified: three install options, CLI + Desktop + SDK three entry points</li><li>✅ verified: four Autonomy tiers and command lists, MCP's two transports and layered config</li><li>✅ verified: headless <code>droid exec</code> and autonomy levels, enterprise deployment and compliance self-descriptions</li><li>❌ not stated officially: codebase indexing strategy and large-repo time cost, cloud concurrency and quota numbers, the persistence boundary of CLI-side memory (see the unknowns list)</li></ul>
+<p><strong>When citing this entry, use only the verified parts.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/codex-cli.html">Codex CLI</a></span><span class="rel-n">also a multi-provider terminal agent; its architecture leans on the app server</span></li>
+<li><span class="rel-t"><a href="/en/coding/opencode.html">OpenCode</a></span><span class="rel-n">also BYOK multi-provider; useful as the open-license contrast</span></li>
+<li><span class="rel-t"><a href="/en/coding/claude-code-cli.html">Claude Code CLI</a></span><span class="rel-n">also a terminal coding agent; different permission model and ecosystem</span></li>
+<li><span class="rel-t"><a href="/en/mcp/filesystem.html">Filesystem MCP Server</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/amp.html">Amp</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Sourcegraph's Amp: a frontier coding agent spanning CLI + cloud orbs + r</td></tr><tr><td><a href="/en/coding/claude-code-cli.html">Claude Code CLI</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A terminal coding and tool-execution product, with a CHANGELOG and Atom </td></tr><tr><td><a href="/en/coding/codex-cli.html">Codex CLI</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">OpenAI's official terminal coding agent, written in Rust, architecturall</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

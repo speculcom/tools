@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Cost formulas: cloud, agents, local and video | Tools</title>
+<meta content="No price figures, only four reproducible formulas and conventions — tokens, seats, local power, video seconds — each with an official pricing pointer." name="description"/>
+<link href="https://tools.specul.com/en/mcp/guides/cost-calculator.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/mcp/guides/cost-calculator.html" property="og:url"/>
+<meta content="Cost formulas: cloud, agents, local and video | Tools" property="og:title"/>
+<meta content="No price figures, only four reproducible formulas and conventions — tokens, seats, local power, video seconds — each with an official pricing pointer." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Cost formulas: cloud, agents, local and video","description":"No price figures, only four reproducible formulas and conventions — tokens, seats, local power, video seconds — each with an official pricing pointer.","dateModified":"2026-11-03"}</script>
+<meta content="Cost formulas: cloud, agents, local and video | Tools" name="twitter:title"/><meta content="No price figures, only four reproducible formulas and conventions — tokens, seats, local power, video seconds — each with an official pricing pointer." name="twitter:description"/><link href="https://tools.specul.com/mcp/guides/cost-calculator.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/guides/cost-calculator.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/guides/cost-calculator.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/mcp/guides/cost-calculator.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<a class="back" href="/en/mcp/">← Guides</a>
+<div class="detail-head">
+<div>
+<h1>Cost formulas: cloud, agents, local and video</h1>
+<div class="vendor is-caps">Cost control</div>
+</div>
+</div>
+<div class="panel-lead"><p>No price figures, only four reproducible formulas and conventions — tokens, seats, local power, video seconds — each with an official pricing pointer.</p></div>
+<section aria-labelledby="cost-workbench-title" class="panel is-slim" id="cost-workbench">
+<h2 id="cost-workbench-title">Calculate with your own assumptions</h2>
+<p>Prices are blank: enter rates from your current contract or official billing page. Each group is independent and is not automatically added to the others. Use one currency throughout; totals exclude tax. Inputs are neither uploaded nor saved.</p>
+<div class="cost-presets">
+<label for="cost-preset">Official price snapshot (optional)</label>
+<select id="cost-preset" name="preset">
+<option value="">Do not apply; enter rates manually</option>
+<option value="claude-intro">Claude Sonnet 5 intro: $2 input / $10 output (until 2026-08-31)</option>
+<option value="claude-standard">Claude Sonnet 5 standard: $3 input / $15 output</option>
+</select>
+<p class="t-xs" id="cost-preset-note">The preset only fills the three token rates in the cloud group. Cache write $2.50 / read $0.20 is noted but not auto-filled. Checked 2026-11-25; source: claude.com/pricing.</p>
+</div>
+<form id="cost-workbench-form">
+<fieldset data-cost-group="api"><legend>Cloud chat / agent model and tool calls</legend><div class="cost-fields"><label class="cost-field" for="cost-tasks"><span>Tasks in period</span><input id="cost-tasks" inputmode="decimal" min="0" name="tasks" required="" step="any" type="number" value="1"/><span class="t-xs">tasks</span></label><label class="cost-field" for="cost-calls"><span>Initial model calls per task</span><input id="cost-calls" inputmode="decimal" min="0" name="calls" required="" step="any" type="number" value="1"/><span class="t-xs">calls / task</span></label><label class="cost-field" for="cost-retries"><span>Additional retry model calls per task</span><input id="cost-retries" inputmode="decimal" min="0" name="retries" required="" step="any" type="number" value="0"/><span class="t-xs">excludes initial calls</span></label><label class="cost-field" for="cost-input"><span>Uncached input per call</span><input id="cost-input" inputmode="decimal" min="0" name="input" required="" step="any" type="number" value="1000"/><span class="t-xs">tokens / call</span></label><label class="cost-field" for="cost-cached"><span>Cached input per call</span><input id="cost-cached" inputmode="decimal" min="0" name="cached" required="" step="any" type="number" value="0"/><span class="t-xs">not included in uncached input</span></label><label class="cost-field" for="cost-output"><span>Output per call</span><input id="cost-output" inputmode="decimal" min="0" name="output" required="" step="any" type="number" value="500"/><span class="t-xs">tokens / call</span></label><label class="cost-field" for="cost-inputRate"><span>Uncached input rate</span><input id="cost-inputRate" inputmode="decimal" min="0" name="inputRate" required="" step="any" type="number" value=""/><span class="t-xs">currency / million tokens</span></label><label class="cost-field" for="cost-cachedRate"><span>Cached input rate</span><input id="cost-cachedRate" inputmode="decimal" min="0" name="cachedRate" required="" step="any" type="number" value=""/><span class="t-xs">currency / million tokens; 0 if unused</span></label><label class="cost-field" for="cost-outputRate"><span>Output rate</span><input id="cost-outputRate" inputmode="decimal" min="0" name="outputRate" required="" step="any" type="number" value=""/><span class="t-xs">currency / million tokens</span></label><label class="cost-field" for="cost-tools"><span>Total tool calls per task</span><input id="cost-tools" inputmode="decimal" min="0" name="tools" required="" step="any" type="number" value="0"/><span class="t-xs">includes tool retries; not multiplied by model calls</span></label><label class="cost-field" for="cost-toolRate"><span>Cost per tool call</span><input id="cost-toolRate" inputmode="decimal" min="0" name="toolRate" required="" step="any" type="number" value=""/><span class="t-xs">currency / tool call</span></label></div><p><output aria-atomic="true" aria-live="polite" id="cost-result-api">Fill every field in this group; explicitly enter 0 for costs that do not apply.</output></p></fieldset>
+<fieldset data-cost-group="team"><legend>Seats, review and other fixed costs</legend><div class="cost-fields"><label class="cost-field" for="cost-seats"><span>Seats</span><input id="cost-seats" inputmode="decimal" min="0" name="seats" required="" step="any" type="number" value="1"/><span class="t-xs">seats</span></label><label class="cost-field" for="cost-seatRate"><span>Seat cost for period</span><input id="cost-seatRate" inputmode="decimal" min="0" name="seatRate" required="" step="any" type="number" value=""/><span class="t-xs">currency / seat</span></label><label class="cost-field" for="cost-hours"><span>Review hours in period</span><input id="cost-hours" inputmode="decimal" min="0" name="hours" required="" step="any" type="number" value="0"/><span class="t-xs">hours</span></label><label class="cost-field" for="cost-hourRate"><span>Review hourly rate</span><input id="cost-hourRate" inputmode="decimal" min="0" name="hourRate" required="" step="any" type="number" value=""/><span class="t-xs">currency / hour</span></label><label class="cost-field" for="cost-fixed"><span>Other retrieval, storage or period costs</span><input id="cost-fixed" inputmode="decimal" min="0" name="fixed" required="" step="any" type="number" value=""/><span class="t-xs">currency; exclude costs already counted above</span></label></div><p><output aria-atomic="true" aria-live="polite" id="cost-result-team">Fill every field in this group; explicitly enter 0 for costs that do not apply.</output></p></fieldset>
+<fieldset data-cost-group="local"><legend>Monthly local running costs</legend><div class="cost-fields"><label class="cost-field" for="cost-hardware"><span>Hardware cost allocated to this use</span><input id="cost-hardware" inputmode="decimal" min="0" name="hardware" required="" step="any" type="number" value=""/><span class="t-xs">currency</span></label><label class="cost-field" for="cost-months"><span>Allocation months</span><input id="cost-months" inputmode="decimal" min="0" name="months" required="" step="any" type="number" value="24"/><span class="t-xs">must exceed 0</span></label><label class="cost-field" for="cost-power"><span>Average power</span><input id="cost-power" inputmode="decimal" min="0" name="power" required="" step="any" type="number" value=""/><span class="t-xs">kW, not W</span></label><label class="cost-field" for="cost-dailyHours"><span>Daily running hours</span><input id="cost-dailyHours" inputmode="decimal" min="0" name="dailyHours" required="" step="any" type="number" value="8"/><span class="t-xs">hours / day, 0–24</span></label><label class="cost-field" for="cost-days"><span>Running days this month</span><input id="cost-days" inputmode="decimal" min="0" name="days" required="" step="any" type="number" value="30"/><span class="t-xs">days, 0–31</span></label><label class="cost-field" for="cost-electricRate"><span>Electricity rate</span><input id="cost-electricRate" inputmode="decimal" min="0" name="electricRate" required="" step="any" type="number" value=""/><span class="t-xs">currency / kWh</span></label><label class="cost-field" for="cost-maintenance"><span>Monthly maintenance and evaluation</span><input id="cost-maintenance" inputmode="decimal" min="0" name="maintenance" required="" step="any" type="number" value=""/><span class="t-xs">currency</span></label></div><p><output aria-atomic="true" aria-live="polite" id="cost-result-local">Fill every field in this group; explicitly enter 0 for costs that do not apply.</output></p><div class="cost-split" id="cost-split-local"><div><span>One-time hardware allocated</span><b id="cost-one-time-local">—</b></div><div><span>Monthly running</span><b id="cost-monthly-local">—</b></div></div></fieldset>
+<fieldset data-cost-group="video"><legend>Video budget billed per second</legend><div class="cost-fields"><label class="cost-field" for="cost-shots"><span>Shots</span><input id="cost-shots" inputmode="decimal" min="0" name="shots" required="" step="any" type="number" value="1"/><span class="t-xs">shots</span></label><label class="cost-field" for="cost-seconds"><span>Billed seconds per shot</span><input id="cost-seconds" inputmode="decimal" min="0" name="seconds" required="" step="any" type="number" value="5"/><span class="t-xs">seconds / shot</span></label><label class="cost-field" for="cost-attempts"><span>Total attempts per shot</span><input id="cost-attempts" inputmode="decimal" min="0" name="attempts" required="" step="any" type="number" value="1"/><span class="t-xs">includes first attempt; at least 1</span></label><label class="cost-field" for="cost-secondRate"><span>Rate per second</span><input id="cost-secondRate" inputmode="decimal" min="0" name="secondRate" required="" step="any" type="number" value=""/><span class="t-xs">currency / billed second</span></label><label class="cost-field" for="cost-editing"><span>Total editing and asset-licence costs</span><input id="cost-editing" inputmode="decimal" min="0" name="editing" required="" step="any" type="number" value=""/><span class="t-xs">currency</span></label></div><p><output aria-atomic="true" aria-live="polite" id="cost-result-video">Fill every field in this group; explicitly enter 0 for costs that do not apply.</output></p></fieldset>
+<p class="t-xs">Cloud, team and video groups use the period you enter. The local group splits one-time hardware from monthly running, so a one-off purchase is not mixed into a monthly bill.</p>
+<p><button type="reset">Reset</button> <button id="cost-export" type="button">Download assumptions and formulas</button> <button id="cost-share" type="button">Copy assumptions link</button> <span aria-live="polite" class="t-xs" id="cost-share-status" role="status"></span></p>
+</form>
+<section class="cost-breakeven" id="cost-breakeven">
+<h3>Local vs API: when does it pay back?</h3>
+<p>Three inputs only: one-time hardware, monthly local running, monthly API bill. Payback months = hardware / (API - local). If the gap is zero or negative, local never pays back on savings alone.</p>
+<div class="cost-fields">
+<label class="cost-field" for="be-hardware"><span>One-time hardware</span><input id="be-hardware" inputmode="decimal" min="0" step="any" type="number" value=""/><span class="t-xs">currency</span></label>
+<label class="cost-field" for="be-local"><span>Monthly local running cost</span><input id="be-local" inputmode="decimal" min="0" step="any" type="number" value=""/><span class="t-xs">power + maintenance + depreciation</span></label>
+<label class="cost-field" for="be-api"><span>Monthly API bill</span><input id="be-api" inputmode="decimal" min="0" step="any" type="number" value=""/><span class="t-xs">same workload and currency</span></label>
+</div>
+<p><output aria-atomic="true" aria-live="polite" id="be-result">Fill all three to see payback months.</output></p>
+</section>
+<noscript><p>The calculator needs JavaScript. All formulas remain below for manual calculation.</p></noscript>
+<script defer="" src="/cost-calculator.js"></script>
+</section>
+<nav aria-label="Article contents" class="panel is-slim"><p>On this page</p><ul><li><a href="#guide-section-0">Conventions first</a></li><li><a href="#guide-section-1">Cloud chat</a></li><li><a href="#guide-section-2">Agent tasks</a></li><li><a href="#guide-section-3">Local model</a></li><li><a href="#guide-section-4">Video generation</a></li><li><a href="#guide-section-5">Four decisions</a></li><li><a href="#guide-section-6">Common misreads</a></li></ul></nav>
+<div class="panel is-slim" id="guide-section-0">
+<h2>Conventions first</h2>
+<p>Enter prices for the specific product, tier and contract you use. No rates are prefilled. Subscription seats and API usage are different billing bases: a monthly subscription is not a token rate. The groups above are independent; combine actual components without counting a cost twice.</p>
+<ul><li>Count uncached input, cached input and output separately. Do not include cached tokens again as uncached input.</li><li>Use currency per million tokens for token rates; convert tool rates to their actual billing unit.</li><li>Use one currency throughout. Account for currency conversion, taxes and discounts under your own contract.</li><li>Choose budget headroom from your failure, rework and review assumptions; there is no universal percentage.</li><li>Documentation alone does not establish which option costs less. Supply your own usage, hardware allocation and maintenance assumptions.</li></ul>
+</div>
+<div class="panel is-slim" id="guide-section-1">
+<h2>Cloud chat</h2>
+<pre class="code"><code>Model cost = sum over calls of (uncached input tokens × input rate
+           + cached input tokens × cached rate + output tokens × output rate) / 1,000,000</code></pre>
+<p>Each call may include history, system instructions and retrieved passages. Counting only the latest user message misses that input. The calculator simplifies this to average tokens per call multiplied by call count; calculate different models or rates separately.</p>
+<p>Control point: preserve necessary context and evidence while removing irrelevant repetition, then check the answer again.</p>
+</div>
+<div class="panel is-slim" id="guide-section-2">
+<h2>Agent tasks</h2>
+<pre class="code"><code>Model calls = tasks × (initial model calls per task + additional retry calls per task)
+Tool cost = tasks × total tool calls per task (including tool retries) × cost per tool call
+Period cost = model cost + tool cost + seats, review and other costs</code></pre>
+<p>Count model and tool calls separately. Do not multiply the total tool calls by the model-call count again. Split tools that incur several service charges. Whether failed requests are billed depends on the service; retries may also carry different context lengths.</p>
+<p>Control points: set retry and budget limits, record failure causes, and include approval time in review costs.</p>
+</div>
+<div class="panel is-slim" id="guide-section-3">
+<h2>Local model</h2>
+<pre class="code"><code>Monthly budget = allocated hardware cost / allocation months + electricity
+               + monthly maintenance and evaluation
+Electricity = average kW × daily running hours × running days × price per kWh</code></pre>
+<p>Allocation is a budgeting method, not cash paid that month. For existing hardware, distinguish incremental cash spending from a budget including hardware allocation. Record whether power covers the whole system or a component; rated peak power is not a sustained average.</p>
+<p>Control point: first check capacity for weights, context cache, concurrency and runtime overhead, then compare costs.</p>
+</div>
+<div class="panel is-slim" id="guide-section-4">
+<h2>Video generation</h2>
+<pre class="code"><code>Video budget = shots × billed seconds per shot × total attempts per shot × rate per second
+             + editing and asset-licence costs</code></pre>
+<p>Total attempts include the first attempt. The calculator estimates per-second billing with equal-length attempts. For credits, requests, resolution tiers or subscriptions, convert the appropriate billing unit first. Sum shots individually when lengths or attempt counts differ.</p>
+<p>Control point: record acceptance criteria for each shot and use your own attempt budget or history, rather than assuming two or three attempts will suffice.</p>
+</div>
+<div class="panel is-slim" id="guide-section-5">
+<h2>Four decisions</h2>
+<ol><li value="1">Low usage does not automatically make cloud cheaper; compare subscriptions, existing equipment and maintenance over the same period.</li><li value="2">If data must remain offline, first check the entire processing chain, then budget local operations.</li><li value="3">For long tasks, record model calls, tool calls, retries and approval time separately to identify cost sources.</li><li value="4">Keep both first-attempt success and rework scenarios for video, showing what causes the difference.</li></ol>
+</div>
+<div class="panel is-slim" id="guide-section-6">
+<h2>Common misreads</h2>
+<ul><li>Counting cached input twice or omitting repeated history.</li><li>Treating a per-million-token price as a per-token price: a millionfold unit error.</li><li>Adding an initial call to a retry count that already includes it.</li><li>Mixing billing per second, credit and request without conversion.</li><li>Comparing different currencies, tax bases or periods directly.</li><li>Treating an illustrative calculation as a quotation or savings promise.</li></ul>
+</div>
+<nav aria-label="What to do next" class="panel is-slim">
+<h2>What to do next</h2><ul>
+<li><a href="/en/mcp/guides/toolkit-worksheets.html">Record constraints, acceptance and unknowns</a></li>
+<li><a href="https://learn.specul.com/en/guide/%E6%80%8E%E4%B9%88%E9%AA%8C%E8%AF%81%20AI%20%E7%9A%84%E8%BE%93%E5%87%BA/">Verify the result and its sources</a></li>
+<li><a href="/en/mcp/guides/failure-library.html#by-symptom">Troubleshoot by symptom</a></li>
+</ul></nav>
+<div class="panel is-slim">
+<h2>Sources</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Source</th><th>URL</th></tr></thead><tbody>
+<tr><td>OpenAI: ChatGPT pricing (subscription reference; no prices collected)</td><td><a href="https://openai.com/chatgpt/" rel="noopener" target="_blank">https://openai.com/chatgpt/</a></td></tr>
+<tr><td>Anthropic: Claude pricing (official reference)</td><td><a href="https://www.anthropic.com/pricing" rel="noopener" target="_blank">https://www.anthropic.com/pricing</a></td></tr>
+<tr><td>Google AI plans (subscription reference)</td><td><a href="https://one.google.com/about/google-ai-plans" rel="noopener" target="_blank">https://one.google.com/about/google-ai-plans</a></td></tr>
+<tr><td>This site: cost control methods and pitfalls</td><td><a href="https://tools.specul.com/en/mcp/guides/cost-control.html" rel="noopener" target="_blank">https://tools.specul.com/mcp/guides/cost-control.html</a></td></tr>
+</tbody></table></div>
+<p class="guide-foot">Source snapshot: 2026-11-03; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</p>
+</div>
+<p class="t-sm topics-line">This page appears in: <a href="https://specul.com/en/topic-music.html">Make music with AI</a> · <a href="https://specul.com/en/topic-office.html">Office documents with AI</a> · <a href="https://specul.com/en/topic-prompts.html">Use AI well</a> · <a href="https://specul.com/en/topic-video.html">Make video with AI</a></p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

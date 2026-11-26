@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Presidio | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/safety/presidio.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/safety/presidio.html" property="og:url"/>
+<meta content="Presidio | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Presidio | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/safety/presidio.html","sameAs":"https://presidio.dataprivacystack.org/","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-11-06"}</script>
+<meta content="Presidio | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><meta content="noindex,follow" name="robots"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/safety/presidio.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Safety</span>
+</nav>
+<a class="back" href="/en/safety/">← Safety</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#2F855A"'>PR</div>
+<div>
+<h1>Presidio</h1>
+<div class="vendor is-caps">Data Privacy Stack</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Open source</span>
+<span class="tag on">MIT</span>
+<span class="tag on">Python</span>
+<span class="tag on">Local</span>
+<span class="tag on">Self-hosted</span>
+<span class="tag on">API</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-11-06</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Presidio is the self-deployed redaction SDK: the docs describe fast text and image…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local + cloud · Local app</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Not checked · Not checked</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>The repository LICENSE text was not fetched directly (MIT recorded from the PyPI licence field)</li>
+<li>Item-by-item CHANGELOG.md contents, since the file body was not fetched</li>
+<li>The official complete list of supported languages and entity types (the recognizers docs page returned 404)</li>
+<li>Versions and release dates of presidio-anonymizer and presidio-image-redaction individually</li>
+<li>Docker image tag-to-version mapping</li>
+<li>Where recognizer language models are downloaded and how they are packaged offline</li>
+<li>The full set of selectable NLP engine tiers and version requirements</li>
+<li>Whether any telemetry or reporting exists (not declared by the index or docs; no counter-evidence captured)</li>
+<li>Mainland-network direct reachability and filing status (not measured, not searched)</li>
+</ul>
+</div>
+English summaries and interface labels are available. Detailed source notes below are currently in Chinese.
+<div class="panel-lead"><p><strong>Presidio is the self-deployed redaction SDK</strong>: the docs describe fast text and image identification and anonymisation, with three APIs — AnalyzerEngine, AnonymizerEngine and Image Redactor — and official operators replace, redact, hash, mask, encrypt, keep and custom. The only line against hosted products in this category is <strong>whether text may leave your boundary</strong>: Presidio runs in your deployment and supports offline use. Its scores therefore carry no blocked-percentage meaning; the official analyzer page even says scores are not probabilities.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Fit: inserting personal-data identification and transformation into your pipeline (before RAG ingest, before log persistence, before sending to a cloud model), operator-level composition and custom recognisers, text that must not cross the network boundary, and fully offline operation. Not fit: wanting a hosted console and compliance deliverables, modalities beyond text and images (the official surface stops there), or teams treating a score threshold as compliance proof.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-11-06</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　Governed by the community organisation Data Privacy Stack (on record on the docs home page), with the project originating at Microsoft; no mainland-facing terms page or Chinese documentation was captured in this pass.</dd>
+<dt>Direct access</dt><dd>direct unknown　The docs site and PyPI returned 200 from the current network on the verification date, but the repository page and raw path timed out; mainland-network reachability and language-model download were not measured, so it is recorded as unknown.</dd>
+<dt>CAC filing</dt><dd>filing unknown：No official basis; the generative-AI filing registry was not searched in this pass, so no "not filed" conclusion is drawn.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p>It carries no generative model of its own: the Analyzer page states "Predefined recognizers leverage regex, Named Entity Recognition and other types of logic to detect PII in unstructured text." — the recognition surface combines regex, NLP (spaCy / Transformers class), rules and checksums, with context words weighting the score, and custom recognizers covered by an official tutorial. The full list of selectable NLP engines and model tiers: not itemised in this pass.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p>Everything runs inside your own boundary: the docs home page gives the install surface as pip packages or a Docker REST API, and states that offline usage is supported with data staying inside your own deployment. No hosted service surface is offered officially (no such statement captured). Image tags and their version mapping: not itemized in official docs word for word in this pass.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>It does not read your workspace; it processes only the text and images you explicitly hand it, and returns results inside your own process or service. Where the recognizers' language-model files are downloaded and cached, and how they are packaged offline: no word-for-word official statement captured, recorded as unknown.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p>There is no hosted background task: one analyze / anonymize call is one invocation, or one pass inside your own service, with batching and retries owned by your orchestration layer. The docs table of contents (Getting Started / Analyzer / Anonymizer / Image Redactor / Samples / API Docs) contains no queue or resume concept.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p>Three API faces: AnalyzerEngine (recognition), AnonymizerEngine (transformation), Image Redactor (image masking). The operators on record from the Anonymizer page are replace, redact, hash, mask, encrypt, keep and custom, configured through OperatorConfig's type and params and combinable. MCP transport support: not described in the official docs, recorded as unknown.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p>Here "context" is a literal mechanism: recognizers weight candidate entities with context words, so neighbouring words in the same text change the result; the docs home page describes the project as "fast identification and anonymization modules" for text and images. It is a stateless one-pass handler with no cross-session memory — batch context-window management belongs to your calling code.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p>See the licence field (MIT, taken from the PyPI licence metadata; the LICENSE text was not read directly). Two measured facts about ownership: the old address microsoft.github.io/presidio displayed "This page has moved" on the verification date, and the intermediate host data-privacy-stack.github.io 301s to presidio.dataprivacystack.org, whose home page states the project is governed by Data Privacy Stack. <strong>Data flow</strong>: recognition and anonymisation complete inside your own deployment and offline use is supported, meaning text need not be sent to any third party. <strong>Red line</strong>: the Analyzer page states on record "Scores are not probabilities", so a score threshold is not a detection probability; this site publishes no detection rate, no miss rate and no product rankings. Whether it satisfies an anonymisation obligation under any given law is not a legal conclusion the project makes.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Fits: inserting personal-data recognition and transformation into your own pipeline (before RAG ingestion, before logs are written, before a call to a hosted model); needing operator-level composition and custom recognizers; requiring text not to leave your network boundary; needing the whole chain to run offline. Not a fit: teams wanting a hosted console and compliance deliverables; modalities beyond text and images (the surface on record stops there); anyone treating a score threshold as proof of compliance.</p></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>MIT — with the evidence strength stated: the PyPI project page carries license field MIT and the summary
+"Python based service for detecting PII entities in text.", with Home pointing at github.com/data-privacy-stack/presidio.
+Direct fetches of the repository LICENSE page failed repeatedly in this pass (the GitHub repo page and the raw path both
+timed out), so MIT is recorded from the official package-index metadata, and the unread LICENSE text goes to unknowns.</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Account and permissions</a> · <a href="/en/mcp/guides/failure-library.html#rate-limit">Rate limits and retries</a> · <a href="/en/mcp/guides/failure-library.html#files">File-reading issues</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>把 score 当「检出概率」。官方 analyzer 页原文是「Scores are not probabilities」</li>
+<li>把「算子有七类」当成脱敏覆盖率：算子是可组合动作，官方不给任何命中比例</li>
+<li>以为仓库还在 microsoft/presidio。旧址已显示 moved、文档首页指认 Data Privacy Stack 治理</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-11-06，Content updated 2026-11-06。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>docs</td><td>Presidio · docs home page (new address, positioning sentence, pip/Docker REST and offline statements, Data Privacy Stack governance, table of contents and CHANGELOG link; direct-fetched 200, 2026-11-06)</td><td><a href="https://presidio.dataprivacystack.org/" rel="noopener" target="_blank">https://presidio.dataprivacystack.org/</a></td></tr>
+<tr><td>migration</td><td>Presidio · old docs address (the "This page has moved" migration fact; direct-fetched 200, 2026-11-06)</td><td><a href="https://microsoft.github.io/presidio/" rel="noopener" target="_blank">https://microsoft.github.io/presidio/</a></td></tr>
+<tr><td>docs</td><td>Presidio · docs Analyzer (recognizer logic wording, "Scores are not probabilities", context-word weighting and custom recognizers; direct-fetched 200, 2026-11-06)</td><td><a href="https://presidio.dataprivacystack.org/analyzer/" rel="noopener" target="_blank">https://presidio.dataprivacystack.org/analyzer/</a></td></tr>
+<tr><td>docs</td><td>Presidio · docs Anonymizer (operators replace/redact/hash/mask/encrypt/keep/custom and OperatorConfig; direct-fetched 200, 2026-11-06)</td><td><a href="https://presidio.dataprivacystack.org/anonymizer/" rel="noopener" target="_blank">https://presidio.dataprivacystack.org/anonymizer/</a></td></tr>
+<tr><td>docs</td><td>presidio-analyzer · PyPI project page (2.2.366, licence field MIT, summary and the repository address named as Home; direct-fetched 200, 2026-11-06)</td><td><a href="https://pypi.org/project/presidio-analyzer/" rel="noopener" target="_blank">https://pypi.org/project/presidio-analyzer/</a></td></tr>
+<tr><td>changelog</td><td>presidio-analyzer · PyPI release history (the 2.2.366 down to 2.2.361 date sequence; direct-fetched 200, 2026-11-06)</td><td><a href="https://pypi.org/project/presidio-analyzer/#history" rel="noopener" target="_blank">https://pypi.org/project/presidio-analyzer/#history</a></td></tr>
+<tr><td>repo</td><td>data-privacy-stack/presidio · repository page (the location the docs home page points at; direct fetch failed in this pass, no body captured, only the link relation recorded, 2026-11-06)</td><td><a href="https://github.com/data-privacy-stack/presidio" rel="noopener" target="_blank">https://github.com/data-privacy-stack/presidio</a></td></tr>
+<tr><td>changelog</td><td>data-privacy-stack/presidio · CHANGELOG (the change file named by the docs home page; direct fetch failed in this pass, no body captured, 2026-11-06)</td><td><a href="https://github.com/data-privacy-stack/presidio/blob/main/CHANGELOG.md" rel="noopener" target="_blank">https://github.com/data-privacy-stack/presidio/blob/main/CHANGELOG.md</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p><strong>This site has not run it end to end</strong>: AnalyzerEngine/AnonymizerEngine were never installed or called, no corpus was run to test hit behaviour, so no detection rate, miss rate, precision or ranking is produced, and the number of official recognizers is not tallied. This archive only organises statements on record at the docs home page, the Analyzer and Anonymizer pages, the PyPI project page and its release history.</p>
+<p><strong>Suggested measurements</strong> (four):</p>
+<ul><li><strong>The real cost of wiring a custom recognizer</strong> (the tutorial is on record; the amount of change is yours to test)</li><li><strong>How language models are obtained in an offline deployment</strong> (download and cache locations are not spelled out officially)</li><li><strong>Reversibility and audit trail of combined operators</strong> (what the restore boundary looks like when replace meets encrypt)</li><li><strong>Entity coverage differences outside English</strong> (this site draws no ratio conclusion — only whether the mechanism works)</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>变更记录说明</h2>
+<p>本对象有可核验的变更记录。但不在仓库页上：<strong>PyPI 发布历史在册</strong>（presidio-analyzer 2.2.366 发布于 2026-10-27、2.2.365 于 2026-10-25、2.2.364 于 2026-07-22、2.2.363 于 2026-06-28、2.2.362 于 2026-03-15、2.2.361 于 2026-02-12）。</p>
+<p>文档首页另指认 CHANGELOG.md 位于 github.com/data-privacy-stack/presidio。</p>
+<p>本批次该仓库页与 raw 路径均页面响应超时官方页面未提供正文。所以变更内容口径以包索引日期为准。逐条内容进 unknowns。</p>
+<p>按发布密度（近 30 天内有版本）判 lifecycle active。</p>
+</div>
+<div class="panel is-slim">
+<h2>能力边界</h2>
+<ul><li>模态面：官方在册只有文本与图像两条（image redaction 是独立组件）。</li><li>判定面：输出是候选实体与 score，<strong>官方明确 score 不是概率</strong>。把它读成任何百分比都是越界。</li><li>变换面：算子是动作（遮、替、哈希、加密、保留、自定义），不承诺「脱敏后不可逆推」这类结论。那是你选算子与密钥管理的责任。</li><li>合规面：它不产出法律结论。GDPR/个保法意义上的匿名化是否成立，取决于你的整体处理方案，而不是这一个 SDK。</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>部署建议</h2>
+<ol><li value="1">先定边界：如果「文本不出内网」是硬约束，本档案这条线是唯一可选项。否则才需要比较托管方案。</li><li value="2">装两个包（analyzer 与 anonymizer）。先用官方 tutorial 跑一遍 replace 与 mask，再决定要不要自定义 recognizer。</li><li value="3">需要服务化时用官方 Docker REST 路径，但把镜像标签与版本钉住。本批次官方页面未提供标签对应关系。</li><li value="4">记录配置而非结果分数。把 recognizer 集、上下文词与算子参数进版本控制。把 score 阈值写进文档时要同时写明官方那句 「Scores are not probabilities」。</li></ol>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/safety/nightfall.html">Nightfall</a></span><span class="rel-n">Also "handle personal data before it reaches the model", but the difference is who executes: that archive is a hosted API with configured operators, this one runs entirely inside your own boundary.</span></li>
+<li><span class="rel-t"><a href="/en/safety/gitguardian.html">GitGuardian</a></span><span class="rel-n">Covers a different class of sensitive material — credentials and secrets; the two are often chained on the same pipeline, and this site does not rank them.</span></li>
+<li><span class="rel-t"><a href="/en/framework/microsoft-agent-framework.html">Microsoft Agent Framework</a></span><span class="rel-n">The orchestration side: when redaction operators must sit in an agent's input/output path, the landing point is the agent framework layer.</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/safety/arize-phoenix.html">Arize Phoenix</a></td><td>Local / self-hosted</td><td>Commercial terms</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Phoenix is an open-licensed observability and evaluation platform that r</td></tr><tr><td><a href="/en/safety/langfuse.html">Langfuse</a></td><td>Local + cloud</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Langfuse is an open-source observability and evaluation platform. Its co</td></tr><tr><td><a href="/en/safety/litellm.html">LiteLLM Proxy (AI Gateway)</a></td><td>Local + cloud</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">It is a self-deployed unified entry point, with governance on keys and b</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

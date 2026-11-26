@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Codex CLI | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/codex-cli.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/codex-cli.html" property="og:url"/>
+<meta content="Codex CLI | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Codex CLI | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/coding/codex-cli.html","sameAs":"https://github.com/openai/codex","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Codex CLI | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/codex-cli.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/codex-cli.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/codex-cli.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/codex-cli.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#10A37F"'>CO</div>
+<div>
+<h1>Codex CLI</h1>
+<div class="vendor is-caps">OpenAI</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Coding</span>
+<span class="tag on">Terminal</span>
+<span class="tag on">Local</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>OpenAI's official terminal coding agent, written in Rust, architecturally centred on…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · CLI</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li><strong>Per-platform</strong> implementation details of the three sandbox tiers on macOS / Linux / Windows (the official only says OS-level enforcement + Windows <code>elevated</code> / <code>unelevated</code>, not expanded per platform)</li>
+<li>Tool-calling quality alignment after switching to third-party providers</li>
+<li>Concrete concurrency count and duration numbers for cloud tasks (the official only says "follows the plan") &gt; The original six items — "default model / sandbox tiers / tool list / context strategy / approval modes / cloud-task entry points" — &gt; have since been verified against the official developers.openai.com/codex (config-basic, config-advanced, &gt; agent-approvals-security, noninteractive, mcp, cli/reference, cloud); see the axes above.</li>
+</ul>
+</div>
+English summaries and interface labels are available. Detailed source notes below are currently in Chinese.
+<div class="panel-lead"><p>OpenAI's official terminal coding agent, <strong>written in Rust</strong>, architecturally centred on the app server and thread resumption.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Engineering work in the terminal, including CI integration or building your own client. Its architecture emphasises resumption and recovery of existing repositories.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　Hosted on GitHub — direct reachability from mainland fluctuates (200/000 mixed on the same day); npm / PyPI install routes measured stable.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>Runs OpenAI's own models by default; architecturally it also allows swapping to other providers.</strong></p>
+<p>The official config-basic "Default model" example is <code>model = "gpt-5.5"</code>. The CLI also has <code>--model</code> / <code>-m</code> to override (the example given is <code>gpt-5.4</code>).</p>
+<p>Three companion model switches:</p>
+<ul><li><code>model_context_window</code></li><li><code>model_reasoning_effort</code></li><li><code>model_catalog_json</code> (or view the model catalog with <code>codex debug models</code>)</li></ul>
+<p><strong>Custom providers are explicitly supported by the official side</strong> (config-advanced "Custom model providers").</p>
+<p>Configuration: write <code>model</code> + <code>model_provider</code> at the top level, then configure <code>[model_providers.&lt;id&gt;]</code>.</p>
+<p>Five available fields: <code>base_url</code> / <code>env_key</code> / <code>wire_api</code> / <code>http_headers</code> / <code>auth.command</code>.</p>
+<p>Three reserved built-in provider IDs: <code>openai</code>, <code>ollama</code>, <code>lmstudio</code>.</p>
+<p>There is also a built-in <code>amazon-bedrock</code>. The official example gives directly:</p>
+<p><strong>Official example</strong>: <code>[model_providers.mistral] base_url="https://api.mistral.ai/v1"</code></p>
+<p>Local models go through <strong>OSS mode</strong>: <code>--oss</code> + <code>oss_provider = "ollama" | "lmstudio"</code>. To change the built-in OpenAI provider's address, use <code>openai_base_url</code>.</p>
+<p><strong>After switching to third-party models, the official gives no quantified conclusion on tool-calling quality.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>It is a terminal process running locally.</strong></p>
+<p>The code is written in Rust. Release version tags are <code>rust-v*</code>.</p>
+<p>Its lifetime is bound to the terminal session: quit and it ends.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>It works inside your working directory, writes only to the workspace by default, and requires that directory to be a Git repository.</strong></p>
+<p>The official agent-approvals-security wording is this sentence:</p>
+<p><strong>Official wording</strong>: "no network access and write permissions limited to the active workspace"</p>
+<p><strong>That means: no network access, write permissions limited to the active workspace.</strong></p>
+<p>The "workspace" here includes the current directory and <code>/tmp</code>; <code>/status</code> shows the workspace directories.</p>
+<p>Sandbox default tiers come in two flavors:</p>
+<ul><li>version-controlled directories default to <code>workspace-write</code></li><li>non-version-controlled directories default to <code>read-only</code></li></ul>
+<p>Under <code>workspace-write</code>, <code>.git</code> / <code>.agents</code> / <code>.codex</code> are recursively read-only.</p>
+<p>Tunable items: <code>--add-dir</code> appends writable directories, <code>-C/--cd</code> sets the working directory, <code>project_root_markers</code> customizes project-root detection (<code>.git</code> included by default).</p>
+<p><strong>One hard constraint</strong>: non-interactive <code>codex exec</code> requires the working directory to be a Git repository. Official wording:</p>
+<p><strong>Official wording</strong>: "Codex requires commands to run inside a Git repository"</p>
+<p>To skip this check, use <code>--skip-git-repo-check</code>.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>The local terminal process ends with the session, but the official additionally has a cloud task form, now verified.</strong></p>
+<p>The official Codex cloud page says Codex cloud lets Codex work in its own cloud environment:</p>
+<p><strong>Official wording</strong>: "work on tasks in the background (including in parallel) using its own cloud environment"</p>
+<p>These tasks run in isolated OpenAI-managed containers:</p>
+<p><strong>Official wording</strong>: "isolated OpenAI-managed containers"</p>
+<p>It does not access your host machine and does not touch unrelated data.</p>
+<p>The CLI side has two entry points:</p>
+<ul><li>the <code>codex cloud</code> subcommand (experimental, alias <code>codex cloud-tasks</code>)</li><li><code>codex apply</code> — applies a cloud task's diff to the local working tree</li></ul>
+<p>Cloud access follows ChatGPT plans (Plus / Pro / Business / Edu / Enterprise).</p>
+<p><strong>Cloud-task concurrency and duration quotas: the official gives no concrete numbers, only "follows the plan".</strong></p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>Both the built-in tool surface and MCP have been verified.</strong></p>
+<p>Built-in capabilities are spread across config feature toggles, six classes in total:</p>
+<ul><li><code>shell</code> — executes commands, toggled by <code>features.shell_tool</code></li><li><code>unified_exec</code> — PTY execution</li><li>web search — <code>web_search = cached | live | disabled</code></li><li>undo, git commit</li><li><strong>multi-agent collaboration</strong> — toggled by <code>features.multi_agent</code>, the tool is <code>spawn_agent</code></li><li>companion tools also include <code>send_input</code> / <code>resume_agent</code> / <code>wait_agent</code> / <code>close_agent</code></li><li>memories</li></ul>
+<p>The non-interactive event stream also surfaces these actions: <code>codex exec --json</code> event types include command executions, file changes, MCP tool calls, web searches, plan updates.</p>
+<p>Three extension mechanisms: <strong>Hooks</strong> (PreToolUse / PostToolUse / PreCompact etc.), <strong>Skills</strong> (<code>SKILL.md</code>, packageable as plugins) and a <strong>plugin marketplace</strong>.</p>
+<p><strong>MCP support is complete officially.</strong> The official MCP page says:</p>
+<p>"Codex supports MCP servers in both the CLI and the IDE extension"</p>
+<p>Transports support STDIO and Streamable HTTP (Bearer / OAuth; log in with <code>codex mcp login</code>).</p>
+<p>Configuration works in two places: the <code>codex mcp</code> CLI, or <code>[mcp_servers.&lt;name&gt;]</code>.</p>
+<p>Tool-level switches include <code>enabled_tools</code> / <code>disabled_tools</code> and per-tool <code>approval_mode</code>.</p>
+<p>The reverse also works: <code>codex mcp-server</code> exposes Codex itself as an MCP server to other agents.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>Session resumption + automatic compaction + optional memories — all three mechanisms verified.</strong></p>
+<p><strong>Resumption</strong>: interactively via <code>codex resume</code>, non-interactively via <code>codex exec resume</code> (<code>--last</code> or <code>&lt;SESSION_ID&gt;</code>). <code>codex fork</code> forks a session into a new thread.</p>
+<p>The app-server architecture lets threads be started, resumed and recovered.</p>
+<p><strong>Compaction</strong>: the official config keys are <code>compact_prompt</code> (inline override of the compaction prompt) and <code>experimental_compact_prompt_file</code>; there are also <code>PreCompact</code> / <code>PostCompact</code> hook events.</p>
+<p>The context window can be set explicitly via <code>model_context_window</code> (example: 128000).</p>
+<p><strong>Memories must be explicitly enabled</strong>: after turning on <code>[features] memories = true</code>, Codex distills past sessions into local memory files (default location <code>~/.codex/memories/</code>).</p>
+<p>In the TUI, <code>/memories</code> controls per thread; parameters go through <code>memories.*</code>. The official says memories "redacts secrets".</p>
+<p><strong>Note memories are off by default.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p>Sandbox and approval boundaries follow the runtime environment.</p>
+<p><strong>API-key billing and subscription are not the same quota</strong> (confirmed in the official usage notes).</p>
+<p><strong>Approval and sandbox modes are fully verified</strong>: the official stance (agent-approvals-security / config-advanced / config-reference) matches the SDK source.</p>
+<p>The approval policy is the top-level <code>approval_policy</code>:</p>
+<ul><li><code>untrusted</code> / <code>on-request</code> / <code>never</code> / <code>granular</code></li><li><code>on-failure</code> (deprecated)</li></ul>
+<p>The reviewer is <code>approvals_reviewer</code>, taking <code>user</code> or <code>auto_review</code>.</p>
+<p>The sandbox mode is <code>sandbox_mode</code>, taking <code>read-only</code> / <code>workspace-write</code> / <code>danger-full-access</code>; there are also named profiles <code>:read-only</code> / <code>:workspace</code> / <code>:danger-full-access</code>.</p>
+<p><strong>The local default is <code>workspace-write</code>, with networking off.</strong></p>
+<p>Non-version-controlled directories default to <code>read-only</code>.</p>
+<p>Under <code>workspace-write</code>, <code>.git</code> / <code>.agents</code> / <code>.codex</code> are recursively read-only. Networking additionally has <code>features.network_proxy</code> domain allowlist + DNS-rebinding protection.</p>
+<p>The TUI has three more toggles:</p>
+<ul><li><code>/permissions</code> — switch to read-only</li><li><code>--ask-for-approval never</code> — turn approvals off</li><li><code>--dangerously-bypass-approvals-and-sandbox</code> (alias <code>--yolo</code>) — open everything</li></ul>
+<p><strong>Windows has its own dedicated tier</strong>: <code>[windows] sandbox = "elevated" | "unelevated"</code>. The <code>codex sandbox</code> subcommand can provide sandboxing on macOS / Linux / Windows.</p>
+<p>But <strong>the official does not expand per-platform implementation details by platform</strong> (checked config-basic and agent-approvals-security; not listed per platform).</p>
+<p>See the <a href="/en/framework/codex-sdk.html">Codex SDK dossier</a>.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p><strong>Fits engineering tasks in the terminal, scenarios hooking into CI or building custom clients.</strong></p>
+<p>It has a piece of evidence few others have: <strong>non-interactive mode has official documentation support</strong>. <code>docs/exec.md</code> is titled Non-interactive mode (body is an external link).</p>
+<p>That makes it, besides Gemini CLI, the only subject in this site's CLI category with non-interactive evidence.</p>
+<p>Resumption and recovery on existing repositories are its architectural focus.</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Treating API credits as part of the subscription — they are billed separately</li>
+<li>Assuming the CLI is the whole thing — there is also an app server for custom clients</li>
+<li>Assuming the docs site can be curled directly — a CDN may block it</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-08。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>OpenAI · Codex CLI repository</td><td><a href="https://github.com/openai/codex" rel="noopener" target="_blank">https://github.com/openai/codex</a></td></tr>
+<tr><td>changelog</td><td>OpenAI · Codex CLI Releases (rust-v0.158.0 @ 2026-09-28)</td><td><a href="https://github.com/openai/codex/releases" rel="noopener" target="_blank">https://github.com/openai/codex/releases</a></td></tr>
+<tr><td>changelog</td><td>OpenAI · Codex CLI Commits</td><td><a href="https://github.com/openai/codex/commits/main" rel="noopener" target="_blank">https://github.com/openai/codex/commits/main</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Codex docs</td><td><a href="https://developers.openai.com/codex/cli" rel="noopener" target="_blank">https://developers.openai.com/codex/cli</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Config basics (default model gpt-5.5, sandbox_mode, Windows sandbox)</td><td><a href="https://developers.openai.com/codex/config-basic" rel="noopener" target="_blank">https://developers.openai.com/codex/config-basic</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Advanced Configuration (custom providers / OSS / hooks)</td><td><a href="https://developers.openai.com/codex/config-advanced" rel="noopener" target="_blank">https://developers.openai.com/codex/config-advanced</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Configuration Reference (approval_policy and other config keys)</td><td><a href="https://developers.openai.com/codex/config-reference" rel="noopener" target="_blank">https://developers.openai.com/codex/config-reference</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Agent approvals &amp; security (sandbox / approval defaults / networking)</td><td><a href="https://developers.openai.com/codex/agent-approvals-security" rel="noopener" target="_blank">https://developers.openai.com/codex/agent-approvals-security</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Non-interactive mode (codex exec / Git repository requirement)</td><td><a href="https://developers.openai.com/codex/noninteractive" rel="noopener" target="_blank">https://developers.openai.com/codex/noninteractive</a></td></tr>
+<tr><td>docs</td><td>OpenAI · MCP (STDIO / Streamable HTTP, per-tool approval_mode)</td><td><a href="https://developers.openai.com/codex/mcp" rel="noopener" target="_blank">https://developers.openai.com/codex/mcp</a></td></tr>
+<tr><td>docs</td><td>OpenAI · CLI reference (--model / --sandbox / codex cloud / exec)</td><td><a href="https://developers.openai.com/codex/cli/reference" rel="noopener" target="_blank">https://developers.openai.com/codex/cli/reference</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Codex cloud / web (cloud tasks run in OpenAI-managed containers)</td><td><a href="https://developers.openai.com/codex/cloud" rel="noopener" target="_blank">https://developers.openai.com/codex/cloud</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Memories (cross-session memory, off by default)</td><td><a href="https://developers.openai.com/codex/memories" rel="noopener" target="_blank">https://developers.openai.com/codex/memories</a></td></tr>
+<tr><td>docs</td><td>OpenAI · Customization (AGENTS.md / Skills / MCP / Subagents)</td><td><a href="https://developers.openai.com/codex/concepts/customization" rel="noopener" target="_blank">https://developers.openai.com/codex/concepts/customization</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+</div>
+<div class="panel is-slim">
+<h2>Change-log note</h2>
+<p>This subject has standalone releases:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Version</th><th>Date</th></tr></thead><tbody><tr><td><code>rust-v0.158.0</code></td><td>2026-09-28</td></tr></tbody></table></div>
+<p><strong>Note the version prefix is <code>rust-v</code></strong>, indicating the repository also contains implementations in other languages; when citing version numbers, write the prefix in full.</p>
+</div>
+<div class="panel is-slim">
+<h2>Installation methods</h2>
+<p>The README offers two:</p>
+<ul><li>npm install</li><li>Homebrew install (<code>--cask</code>)</li></ul>
+<p>Authorization is explicit: the README has its own section <strong>"Using Codex with your ChatGPT plan"</strong>, i.e. authorization rides on the ChatGPT subscription.</p>
+</div>
+<div class="panel is-slim">
+<h2>Architecture key: the app server</h2>
+<p>The design focus of Codex is not the CLI itself but <strong>the app server behind it</strong>.</p>
+<ul><li>custom clients connect through the app server</li><li>threads can be started, resumed and recovered</li><li>the Python SDK is built on app-server JSON-RPC</li></ul>
+<p><strong>That means it can be used independently of the terminal</strong> — if you are building your own integration, the CLI is just one of its clients.</p>
+</div>
+<div class="panel is-slim">
+<h2>Verification limits (lifted in 2026-10-08)</h2>
+<p><strong>At first collection</strong> several dimensions of this entry were marked unknown, because the official docs site <code>developers.openai.com</code> then returned <strong>403</strong> to curl (CDN interception), and the repository README is minimal — no "sandbox tiers, tool list, model mapping, approval modes" could be obtained.</p>
+<p><strong>2026-10-08 (2026-10-08) filled everything in by fetching the official docs directly through a browser.</strong></p>
+<p>Official pages fetched in full the 2026-10-08 check:</p>
+<ul><li><code>config-basic</code> / <code>config-advanced</code> / <code>config-reference</code></li><li><code>agent-approvals-security</code> / <code>noninteractive</code> / <code>mcp</code> / <code>cli/reference</code></li><li><code>cloud</code> / <code>memories</code></li></ul>
+<p>Item-by-item conclusions from these pages are in the axes above.</p>
+</div>
+<div class="panel is-slim">
+<h2>Permission-grading note</h2>
+<p>Why <code>confidence: partial</code>:</p>
+<ul><li>✅ Verified (each item traceable to an official page): repository exists, license (Apache-2.0), latest version, release date, stars (130,498 · rolling re-check 2026-10-23), installation methods, ChatGPT-subscription authorization</li></ul>
+<ul><li>✅ Verified (default model and provider configuration surface, sandbox tiers and defaults, approval-policy enumeration, tool list and MCP, context compaction and memories, the cloud-task form)</li></ul>
+<ul><li>❌ Not verified (<strong>per-platform</strong> implementation details of the three sandbox tiers): the official only says OS-level enforcement + the Windows <code>elevated</code>/<code>unelevated</code> tiers, not broken out by platform</li></ul>
+<ul><li>❌ Not verified (tool-calling quality after switching providers; concrete concurrency/duration numbers for cloud tasks)</li></ul>
+<p><strong>When citing this entry, use only the verified parts.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>第一次怎么用</h2>
+<ol><li value="1">安装与登录以仓库 README 为准；先跑 <code>codex --help</code>。</li><li value="2">在仓库根目录启动，让它先读项目结构与测试命令。</li><li value="3">需要长任务时用线程续接；中断后从同一线程继续，不要新开会话丢上下文。</li><li value="4">让它把改动拆成小步，每步给 diff 与测试结果。</li><li value="5">推远端与装依赖必须人工确认。</li></ol>
+<pre class="code"><code>在【仓库】里修【bug】。流程：
+1) 先复现并贴失败日志；
+2) 给计划（改哪些文件、不改哪些）；
+3) 每改一个文件就跑相关测试；
+4) 最后给风险点与回滚方式。</code></pre>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/claude-code-cli.html">Claude Code CLI</a></span><span class="rel-n">Also a terminal coding agent</span></li>
+<li><span class="rel-t"><a href="/en/coding/gemini-cli.html">Gemini CLI</a></span><span class="rel-n">Google's official equivalent</span></li>
+<li><span class="rel-t"><a href="/en/framework/codex-sdk.html">Codex SDK</a></span><span class="rel-n">Other layer · Frameworks &amp; runtimes</span></li>
+<li><span class="rel-t"><a href="/en/mcp/filesystem.html">Filesystem MCP Server</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/amp.html">Amp</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Sourcegraph's Amp: a frontier coding agent spanning CLI + cloud orbs + r</td></tr><tr><td><a href="/en/coding/claude-code-cli.html">Claude Code CLI</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A terminal coding and tool-execution product, with a CHANGELOG and Atom </td></tr><tr><td><a href="/en/coding/copilot-cli.html">GitHub Copilot CLI</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">The Copilot agent in your terminal, carried by your GitHub subscription:</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from OpenAI</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/audio/whisper.html"><span class="vp-cat">Audio generation</span>Whisper</a></li><li><a href="/en/chat/chatgpt.html"><span class="vp-cat">General chat</span>ChatGPT</a></li><li><a href="/en/coding/codex-ide.html"><span class="vp-cat">AI coding</span>Codex (IDE extension)</a></li><li><a href="/en/coding/openai-dot.html"><span class="vp-cat">AI coding</span>OpenAI Dot</a></li><li><a href="/en/framework/codex-sdk.html"><span class="vp-cat">Frameworks &amp; runtimes</span>Codex SDK</a></li><li><a href="/en/framework/openai-agents-sdk.html"><span class="vp-cat">Frameworks &amp; runtimes</span>OpenAI Agents SDK</a></li><li><a href="/en/safety/openai-evals.html"><span class="vp-cat">Safety &amp; evaluation</span>OpenAI Evals</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

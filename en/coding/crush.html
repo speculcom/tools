@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Crush | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/crush.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/crush.html" property="og:url"/>
+<meta content="Crush | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Crush | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/coding/crush.html","sameAs":"https://github.com/charmbracelet/crush","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Crush | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/crush.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/crush.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/crush.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/crush.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#F26D9D"'>CR</div>
+<div>
+<h1>Crush</h1>
+<div class="vendor is-caps">Charm</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Coding</span>
+<span class="tag on">Terminal</span>
+<span class="tag on">Local</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>A TUI coding agent in the Charm ecosystem that runs in your terminal. Its MCP section…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · CLI</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li><strong>The specific license terms</strong> — GitHub identifies it as <code>NOASSERTION</code></li>
+<li>The concrete quota of Hyper's free tier (pricing on the official page; per this site's price-recording policy, not stored here)</li>
+<li>The indexing algorithm and first-index time on large repos (not stated officially; README and docs/config checked)</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>A TUI coding agent in the Charm ecosystem that runs in your terminal.</strong> Its MCP section describes three transport options, and it ships an official subscription plan, Hyper.</p>
+<p>Hyper is its own paid provider, so two cost models coexist. The license on GitHub is NOASSERTION, so commercial use is not something you can assume.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Several kinds of people fit:</p></div>
+<div><ul><li>Users who like the Charm ecosystem's terminal experience (TUI aesthetics and interaction)</li><li>People who need to switch between several providers, or want the official Hyper subscription</li><li><strong>People who want to switch models mid-session without losing context</strong> (the official README promises exactly this)</li><li>People who want local models and want to declare their context window explicitly</li><li>People who need all three MCP transports supported</li></ul></div>
+<div class="warn-p"><p><strong>Not a fit for</strong> scenarios needing a clear open-source licence for redistribution — GitHub reports NOASSERTION and the terms were not verified.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　Hosted on GitHub — direct reachability from mainland fluctuates (200/000 mixed on the same day); npm / PyPI install routes measured stable.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>It ships no model of its own — all models are BYOK, but many providers can be connected.</strong></p>
+<p>The official README gives the full list and several ways to switch. It includes Charm's own subscription offering <strong>Hyper</strong>.</p>
+<p>Official README wording:</p>
+<p><strong>Official wording</strong>: "Hyper, from Charm, is the official Crush provider. It's subscription-based"</p>
+<p>The official README also mentions Hyper has a free tier, and zero data retention (ZDR).</p>
+<p>Besides Hyper, providers named in the official README:</p>
+<ul><li>Anthropic, OpenAI, Gemini, OpenRouter</li></ul>
+<ul><li>Vercel AI Gateway, Z.ai, MiniMax, Synthetic</li></ul>
+<ul><li>Hugging Face, Cerebras, io.net, Alibaba</li></ul>
+<ul><li>Groq, Avian, OpenCode Zen &amp; Go</li></ul>
+<ul><li>Google Cloud VertexAI, Amazon Bedrock (Claude)</li></ul>
+<ul><li>Azure OpenAI, Moonshot</li></ul>
+<p>Each has a corresponding environment variable (e.g. <code>ANTHROPIC_API_KEY</code>).</p>
+<p>Three ways to switch:</p>
+<ul><li>connect any compatible endpoint: the command is <code>provider add</code>, arguments in order are provider id, <code>--type</code>, <code>--base-url</code>, <code>--api-key</code>, where <code>--type</code> only accepts <code>openai-compat</code> or <code>anthropic</code></li></ul>
+<ul><li>register a model: via <code>model add &lt;provider&gt;/&lt;id&gt; --context-window …</code>, declaring how long a context the model supports</li></ul>
+<ul><li>set default models: <code>model large</code> / <code>model small</code> set the default large and small models respectively</li></ul>
+<p>The default catalog comes from the officially maintained Catwalk repository and updates automatically.</p>
+<p><strong>Local models</strong>: officially supported are llamacpp, omlx, lmstudio, litellm, ollama, with automatic model discovery.</p>
+<p>The local connection example in the official README:</p>
+<p><code>provider add ollama --type ollama --base-url http://localhost:11434/v1/</code></p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>A local process, running in the terminal, with a TUI built on Charm's terminal libraries.</strong></p>
+<p>Install options include Homebrew, NPM, Arch Linux, etc.</p>
+<p><strong>Multiple clients can share one workspace.</strong> A second client pointing at the same working directory attaches to the existing workspace, sharing the session list, message history, permission queue, LSP and MCP state.</p>
+<p><strong>But every new invocation starts a new process.</strong> So the first-wins rule affects the shared workspace's configuration.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>By default it reads and writes only within the project workspace; there is no full semantic index.</strong> The scope is bounded by two things: LSP, and ignore rules.</p>
+<p><strong>Ignore boundary</strong>: official README wording "Crush respects <code>.gitignore</code> files by default". A <code>.crushignore</code> with the same syntax can add exclusions, placed at the project root or in subdirectories.</p>
+<p><strong>Initialization</strong>: <code>crush init</code> analyzes the codebase and generates a context file. Default name <code>AGENTS.md</code>; rename or relocate via <code>initialize-as</code>.</p>
+<p><strong>Symbol-level capability depends on attached LSPs.</strong></p>
+<p>Official README wording:</p>
+<p><strong>Official wording</strong>: "LSP-Enhanced: Crush uses LSPs for additional context"</p>
+<p>Configure manually via <code>lsp add go --command gopls</code>, or let <code>auto-lsp</code> configure them automatically.</p>
+<p><strong>Context files</strong>: the global <code>~/.config/crush/CRUSH.md</code> (Crush-specific) and <code>~/.config/AGENTS.md</code> (cross-tool standard) are injected automatically; paths can be added via <code>global-context-path</code>.</p>
+<p><strong>Unknown</strong>: the indexing algorithm and time cost on large repos are not stated by the official docs. (README and docs/config both checked.)</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>It cannot keep running after shutdown.</strong> This is the form-factor boundary of a local CLI, not a defect.</p>
+<p><strong>Multi-client workspace sharing is not background execution.</strong> The official README explains: running <code>crush serve</code> exposes a local backend, and multiple TUI clients join the same workspace via <code>--cwd</code>. But the workspace's lifecycle follows the client streams.</p>
+<p>Official README wording:</p>
+<p><strong>Official wording</strong>: "A workspace lives as long as at least one client has an SSE event stream open against it." "When the last stream disconnects, the workspace is torn down."</p>
+<p>That is, when the last stream disconnects, the workspace is torn down.</p>
+<p><strong>The execution environment is your local machine.</strong> <code>crush serve</code> is also a local backend. Neither the official README nor docs/config has any vendor-hosted wording, nor any "keeps running after shutdown" claim.</p>
+<p><strong>Interruption is recoverable</strong>: sessions are saved per project. You can resume via the session selector, and the exit banner also prompts resume. But the process itself does not stay resident.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>MCP is explicitly supported, all three transports, and it is the most completely documented.</strong></p>
+<p>The official README states support for <code>http</code>, <code>stdio</code> and <code>sse</code>. This is one of the few entries in this section that spells out MCP transports clearly.</p>
+<p>It also supports a custom config file <code>~/.config/crush/crushrc</code> (Windows: <code>%USERPROFILE%\.config\crush\crushrc</code>), and <strong>config can be overridden by machine conditions</strong> (the example branches on <code>$HOSTNAME</code>).</p>
+<p><strong>Models can be added manually, with the context window declared explicitly.</strong> The command given in the official README is <code>model add ollama/llama3.3 --name "Llama 3.3" --context-window 128000</code>.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>The context mechanism has three parts: sessions, global context files, LSP.</strong></p>
+<p><strong>Sessions</strong>: official README wording "Session-Based: maintain multiple work sessions and contexts per project" — multiple work sessions and contexts per project, switchable and resumable.</p>
+<p><strong>Context survives model switches</strong>: official README wording "Flexible: switch LLMs mid-session while preserving context" — i.e. the official docs explicitly promise switching models does not lose context.</p>
+<p><strong>Context files</strong>: the global <code>~/.config/crush/CRUSH.md</code> and <code>~/.config/AGENTS.md</code> are injected automatically; on the project side <code>crush init</code> generates <code>AGENTS.md</code>; <code>context-path</code> / <code>global-context-path</code> can add more.</p>
+<p><strong>Compaction strategy verified.</strong> The <code>auto-summarize</code> boolean in docs/config, official description:</p>
+<p><strong>Official wording</strong>: "automatically summarize long conversations"</p>
+<p>The command palette also has "Summarize Session" to compact the current session manually.</p>
+<p><strong>LSP provides additional context</strong> (see local_files).</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>By default it asks before every tool call.</strong> Official README wording:</p>
+<p><strong>Official wording</strong>: "By default, Crush will ask you for permission before running tool calls"</p>
+<p>In config, <code>permissions allow view edit</code> skips confirmation for specific tools.</p>
+<p>The official caution on the no-confirmation mode is <code>Use this with care</code>.</p>
+<p><strong>There is also a <code>--yolo</code> switch that relaxes approvals wholesale.</strong> But this flag follows the "first-wins" rule. Within the same cwd, the first client's setting locks the behavior of later clients. On mismatch, a debug log line records the discrepancy. <strong>Mind this rule when multiple clients attach to the same directory at once.</strong></p>
+<p>Credential config also supports per-machine branching (overridable via <code>$HOSTNAME</code> conditions).</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Fits these kinds of people:</p>
+<ul><li>those who like the Charm ecosystem's terminal experience (TUI aesthetics and interaction)</li></ul>
+<ul><li>those who need to switch among multiple providers, or want to try the official subscription Hyper</li></ul>
+<ul><li><strong>those who want to switch models mid-session without losing context</strong> (explicitly promised in the official README)</li></ul>
+<ul><li>those who want to use local models and declare their context window explicitly</li></ul>
+<ul><li>those who need all three MCP transports supported</li></ul>
+<p><strong>Not a fit</strong> for scenarios that need a clear open-source license for redistribution — GitHub identifies it as NOASSERTION and the terms are not itemized.</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Assuming the licence clearly permits commercial use — GitHub reports NOASSERTION and the terms were not verified</li>
+<li>Assuming it only works with your own models — it can also connect to Anthropic / OpenAI and others</li>
+<li>Assuming each terminal window is configured independently — within the same workspace, first-wins locks the settings</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-09-29。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>Charm · Crush repository README</td><td><a href="https://github.com/charmbracelet/crush" rel="noopener" target="_blank">https://github.com/charmbracelet/crush</a></td></tr>
+<tr><td>docs</td><td>Charm · Crush official config docs (docs/config: Bash config, permissions allow/deny, auto-summarize, context-path, provider/model add, local models)</td><td><a href="https://github.com/charmbracelet/crush/blob/main/docs/config/README.md" rel="noopener" target="_blank">https://github.com/charmbracelet/crush/blob/main/docs/config/README.md</a></td></tr>
+<tr><td>repo</td><td>Charm · Catwalk official provider/model catalog (the default-catalog source named by the README)</td><td><a href="https://github.com/charmbracelet/catwalk" rel="noopener" target="_blank">https://github.com/charmbracelet/catwalk</a></td></tr>
+<tr><td>changelog</td><td>Charm · Crush Releases</td><td><a href="https://github.com/charmbracelet/crush/releases" rel="noopener" target="_blank">https://github.com/charmbracelet/crush/releases</a></td></tr>
+<tr><td>changelog</td><td>Charm · Crush Commits</td><td><a href="https://github.com/charmbracelet/crush/commits/main" rel="noopener" target="_blank">https://github.com/charmbracelet/crush/commits/main</a></td></tr>
+<tr><td>docs</td><td>Charm · Crush official site</td><td><a href="https://charm.land/crush/" rel="noopener" target="_blank">https://charm.land/crush/</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong>: focus on <strong>behavior in non-TTY environments</strong>. TUI-style terminal tools of this kind often break in CI.</p>
+</div>
+<div class="panel is-slim">
+<h2>Release-channel note</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Version</th><th>Date</th></tr></thead><tbody><tr><td><code>nightly</code></td><td>2026-09-29</td></tr></tbody></table></div>
+<p><strong>Like Gemini CLI, it uses nightly rolling releases.</strong> When citing a version number, remember: nightly contents change daily.</p>
+</div>
+<div class="panel is-slim">
+<h2>The official provider: Hyper</h2>
+<p>Official README wording:</p>
+<blockquote>"Hyper, from Charm, is the official Crush provider. It's subscription-based"</blockquote>
+<p><strong>This is the only entry in this section with a vendor-run subscription.</strong> Other tools either ship only their own models or are pure BYOK.</p>
+<p>So two cost models coexist:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Mode</th><th>Description</th></tr></thead><tbody><tr><td>Hyper subscription</td><td>run by Charm officially, billed by subscription (pricing on the official page; per this site's price-recording policy, not stored here)</td></tr><tr><td>bring-your-own key</td><td>connect Anthropic / OpenAI etc., costs self-paid</td></tr></tbody></table></div>
+<p><strong>Unknown</strong>: Hyper officially has a free tier, but its tiers and quota numbers were not verified on 2026-10-08; recorded as unknown.</p>
+</div>
+<div class="panel is-slim">
+<h2>MCP: all three transports spelled out</h2>
+<p>Official README wording:</p>
+<blockquote>"Extensible: add capabilities via MCPs (http, stdio, and sse)"</blockquote>
+<p><strong>This one deserves its own note.</strong> Most tools just say "supports MCP"; Crush lists all three transports outright.</p>
+<p>Cross-checked against this site's own observations of the tools section: quite a few reference servers <strong>only support stdio</strong>. They do not support remote transports. So a CLI tool that explicitly supports http has a larger extension-compatibility surface than one might assume.</p>
+</div>
+<div class="panel is-slim">
+<h2>The license status deserves a flag</h2>
+<p>The license field returned by the GitHub API is <strong><code>NOASSERTION</code></strong>, i.e. unrecognized. It is neither MIT nor Apache-2.0.</p>
+<p><strong>This means:</strong></p>
+<ul><li>do not assume commercial use is allowed</li><li>do not assume closed-source redistribution is allowed</li><li>check the LICENSE file in the repository yourself before citing</li></ul>
+<p><strong>This counts as "unknown" and must be flagged per this site's methodology.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>Permission-grading note</h2>
+<p>Why this entry is <code>confidence: partial</code>:</p>
+<ul><li>✅ verified: repository, star count (28,756 · rolling check 2026-10-23), latest release (nightly) and date, MCP's three transports, the Hyper official provider, custom-provider setup, install methods; <strong>added in the 2026-10-08 round</strong>: the full provider list and local models, LSP and context-file mechanics, auto-summarize, permission allow/deny and <code>--yolo</code>, the <code>crush serve</code> local-backend boundary</li></ul>
+<ul><li>❌ not verified: <strong>the specific license terms</strong>, the concrete quota of Hyper's free tier</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/opencode.html">OpenCode</a></span><span class="rel-n">a similar multi-provider tool, also supports MCP</span></li>
+<li><span class="rel-t"><a href="/en/coding/gemini-cli.html">Gemini CLI</a></span><span class="rel-n">a similar tool, more complete engineering</span></li>
+<li><span class="rel-t"><a href="/en/mcp/context7.html">Context7</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/amp.html">Amp</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Sourcegraph's Amp: a frontier coding agent spanning CLI + cloud orbs + r</td></tr><tr><td><a href="/en/coding/claude-code-cli.html">Claude Code CLI</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">A terminal coding and tool-execution product, with a CHANGELOG and Atom </td></tr><tr><td><a href="/en/coding/codex-cli.html">Codex CLI</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">OpenAI's official terminal coding agent, written in Rust, architecturall</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

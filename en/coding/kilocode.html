@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Kilo Code | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/kilocode.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/kilocode.html" property="og:url"/>
+<meta content="Kilo Code | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Kilo Code | Tools","applicationCategory":"DeveloperApplication","sameAs":"https://kilo.ai","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-22"}</script>
+<meta content="Kilo Code | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/kilocode.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/kilocode.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/kilocode.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/kilocode.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#8b7cf8">KI</div>
+<div>
+<h1>Kilo Code</h1>
+<div class="vendor is-caps">Kilo-Org</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a> · <a href="#dimension-name_history">Name history</a></p></nav>
+<div class="badges">
+<span class="tag on">Open source</span>
+<span class="tag on">Free + paid</span>
+<span class="tag on">IDE</span>
+<span class="tag on">Plugins</span>
+<span class="tag on">CLI</span>
+<span class="tag on">Cloud agent</span>
+<span class="tag on">MCP</span>
+<span class="tag on">BYOK</span>
+<span class="tag on">Local models</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-22</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Kilo Code is a leading open-source coding agent (MIT): VS Code/JetBrains/CLI/Desktop…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local + cloud · In editor</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Lineage with Roo Code/Cline (official docs only list the product surface; community perception and official stance recorded separately)</li>
+<li>Storage and retention policy of Cloud Agents container code (kept at official category level)</li>
+<li>Automatic cross-session memory mechanism (no official statement verified)</li>
+<li>Capability boundary of Kilo Desktop (beta) (official pages give entry-level description only)</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>Kilo Code is one of open-source coding agents</strong> (MIT on GitHub): VS Code/JetBrains/CLI/Desktop plus Cloud Agents in isolated containers, 500+ models at zero markup through the Kilo Gateway, full BYOK and local-model support (Ollama/LM Studio), free to start with usage billed at provider rates — the official narrative is 'all-in-one agentic engineering platform', and the domain has moved to kilo.ai.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Fits: open-source and auditable, an extremely wide model menu (zero-markup Gateway plus local models), multiple surfaces under one account, free start with pay-as-you-go. Not a fit: needing strong vendor-governance backing (enterprise tier exists but the core is an open-source community company); looking for the 'official Roo Code successor' (Roo's own shutdown notice points to ZooCode/Cline, not Kilo).</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-22</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　Kilo-Org (open-source company behind Kilo Code).</dd>
+<dt>Direct access</dt><dd>direct OK　kilo.ai / kilocode.ai (308 redirect) / kilo.ai/docs measured 200 direct from mainland (2026-10-22).</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (searched 2026-10-22); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">9 questions, one table</h2>
+<p class="t-section-lead">9 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p>Official stance: 500+ models at zero markup: the Kilo Gateway connects hundreds of models through one API (streaming, BYOK, usage tracking); Auto Model routes automatically across Efficient/Frontier/Free tiers; BYOK has its own official page (bring your own key and use it directly); local models via Ollama / LM Studio also have official pages. Billing has three parts: Free-tier usage is billed separately (at the provider's list price), Kilo Pass, Teams per-seat subscription, Enterprise (official pricing page; concrete prices are not collected by this site per D9).</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p>Open source (GitHub MIT, main repo Kilo-Org/kilocode): VS Code extension + JetBrains plugin + CLI + Kilo Desktop (beta). Official docs state explicitly that Kilo CLI is a fork of OpenCode (supporting the same configuration). Cloud Agents: an isolated Linux container per session (Node.js/git/gh/glab preinstalled, apt available), automatic branch creation with continuous pushing, ephemeral environments — official stance: "no local machine required" (translated).</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>The IDE extension/CLI processes your codebase on your own machine (open source, auditable by you); Cloud Agents run inside vendor-hosted isolated containers, with the repo cloned into the container and automatic branch management. Storage and retention policies for code inside containers have not been verified item by item.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p>Cloud Agents are the hosted surface: start cloud sessions from any device with automatic git management; there is also Automation (scheduled/event automation, the docs have an Automate section), Code Reviewer (AI PR review), and Slack integration (use Kilo from Slack). The official homepage claims "5M+ developers".</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p>MCP has official pages (Overview + Integrations); Custom Rules (custom rule files); Custom Modes; shared custom agents (Teams surface); the kilo-marketplace extension market (fork-and-submit flow has an official page).</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p>Sessions &amp; Sharing and Session History and Search have official pages; Custom Rules provide persistent project instructions. An automatic cross-session memory mechanism has not been verified in any official statement.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p>The official settings pages form a system: Auto-Approving Actions, Sandboxing, Cost Controls and Usage Safeguards. Enterprise surface: SSO/SAML, SCIM, audit logs, data residency (EU Sovereignty official page), SLA, restricting available models/providers, Shared Private Gateway BYOK (official pricing/enterprise pages).</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Fits: people who want open source they can audit + 500+ models at zero markup + full BYOK/local-model support, VS Code/JetBrains/CLI/cloud multi-form, free start with pay-as-you-go. Does not fit: people wanting strong vendor-backed governance narratives (an enterprise surface exists but the entity is an open-source community company); people looking for the "official Roo Code successor" (Roo's official shutdown notice points to ZooCode/Cline and does not mention Kilo — see pitfalls).</p></dd>
+</div>
+<div class="axis" id="dimension-name_history">
+<dt>Name history</dt>
+<dd><p>Domain migration: kilocode.ai → kilo.ai (308 redirect measured 2026-10-22); the product name remains Kilo Code. Lineage with Roo Code/Cline: community consensus holds Kilo descends from a Roo Code fork, but the official docs never state this lineage (officially stated only that the CLI is an OpenCode fork) — this site records the official stance.</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>The domain moved to kilo.ai (old kilocode.ai 308-redirects) — many old tutorials/links still say kilocode.ai; raw docs markdown actually lives on kilocode-docs.vercel.app</li>
+<li>'Kilo is the Roo Code successor' is community lore, not an official statement — Roo Code's official shutdown notice (2026-05-15) recommends ZooCode (a community fork) and Cline, and never mentions Kilo; keep the two claims' sources separate</li>
+<li>The Free tier's 'free' means no subscription — model usage is billed separately at provider rates (the official pricing page says usage billed separately), unlike flat monthly-credit tools</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-22，Content updated 2026-10-22。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>official</td><td>Kilo site · llms.txt (product matrix: VS Code/JetBrains/CLI/Cloud/Gateway/500+ models zero markup)</td><td><a href="https://kilo.ai/llms.txt" rel="noopener" target="_blank">https://kilo.ai/llms.txt</a></td></tr>
+<tr><td>docs</td><td>Kilo docs · Getting Started (install/auth/first task)</td><td><a href="https://kilo.ai/docs" rel="noopener" target="_blank">https://kilo.ai/docs</a></td></tr>
+<tr><td>pricing</td><td>Kilo · Pricing (Free/Teams/Enterprise three tiers + three-part billing stance)</td><td><a href="https://kilo.ai/pricing" rel="noopener" target="_blank">https://kilo.ai/pricing</a></td></tr>
+<tr><td>official</td><td>Kilo · Cloud Agents (isolated containers/automatic branches/any device)</td><td><a href="https://kilo.ai/cloud" rel="noopener" target="_blank">https://kilo.ai/cloud</a></td></tr>
+<tr><td>repo</td><td>Kilo GitHub main repository (MIT open source)</td><td><a href="https://github.com/Kilo-Org/kilocode" rel="noopener" target="_blank">https://github.com/Kilo-Org/kilocode</a></td></tr>
+<tr><td>changelog</td><td>Kilo GitHub Releases (changelog)</td><td><a href="https://github.com/Kilo-Org/kilocode/releases" rel="noopener" target="_blank">https://github.com/Kilo-Org/kilocode/releases</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong> (three items, all pointing at what the readable official pages do not give):</p>
+<ul><li><strong>The actual billing behavior of Gateway's zero markup</strong> (compare per-token prices against using the provider API directly)</li><li><strong>Retention duration and billing boundary of code inside Cloud Agents containers</strong> (not written on the official pages)</li><li><strong>Transparency of where Auto Model's three-tier routing actually lands</strong> (which model each request lands on)</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/cline.html">Cline</a></span><span class="rel-n">same-source code-lineage contrast: Roo Code's official shutdown notice names Cline as a replacement; the Kilo–Cline community lineage is official pages differ — compare the two products' BYOK and model surfaces</span></li>
+<li><span class="rel-t"><a href="/en/coding/cursor.html">Cursor</a></span><span class="rel-n">also a VS Code-family coding agent: Cursor is a closed-source standalone IDE, Kilo an open-source plugin form + Gateway zero-markup narrative — opposite philosophies</span></li>
+<li><span class="rel-t"><a href="/en/coding/opencode.html">OpenCode</a></span><span class="rel-n">the officially stated CLI lineage: Kilo CLI is a fork of OpenCode (official docs wording)</span></li>
+<li><span class="rel-t"><a href="/en/mcp/context7.html">Context7</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/qoder.html">Qoder</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Qoder is the Alibaba-affiliated international Qoder line (qoder.com, spl</td></tr><tr><td><a href="/en/coding/augment-code.html">Augment Code</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Augment Code is the enterprise 'software factory' platform: Cosmos turns</td></tr><tr><td><a href="/en/coding/v0.html">v0</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">v0 is Vercel's prompt-to-full-stack platform: chats generate Next.js app</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

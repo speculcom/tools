@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Baidu Comate (Wenxin Kuaima) | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/baidu-comate.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/baidu-comate.html" property="og:url"/>
+<meta content="Baidu Comate (Wenxin Kuaima) | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Baidu Comate (Wenxin Kuaima) | Tools","applicationCategory":"DeveloperApplication","sameAs":"https://kuaima.baidu.com","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-22"}</script>
+<meta content="Baidu Comate (Wenxin Kuaima) | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/baidu-comate.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/baidu-comate.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/baidu-comate.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/baidu-comate.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#8b7cf8">BA</div>
+<div>
+<h1>Baidu Comate (Wenxin Kuaima)</h1>
+<div class="vendor is-caps">Baidu</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a> · <a href="#dimension-name_history">Name history</a></p></nav>
+<div class="badges">
+<span class="tag on">China-origin</span>
+<span class="tag on">Free + paid</span>
+<span class="tag on">IDE</span>
+<span class="tag on">Plugins</span>
+<span class="tag on">CLI</span>
+<span class="tag on">Chinese models</span>
+<span class="tag on">MCP</span>
+<span class="tag on">Private deployment</span>
+<span class="tag on">Enterprise console</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-22</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>Baidu Comate (Wenxin Kuaima) is Baidu's AI coding family: Comate AI IDE + multi-IDE…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · In editor</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not checked</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>The official stance on joining Baidu DuMate (media reports only; no official announcement found; the official site remains active)</li>
+<li>Published filing numbers for the models used (the official docs do not publish them)</li>
+<li>Whether personal BYOK is supported (the enterprise side goes through Qianfan/third-party providers; the personal side is not itemized in official docs)</li>
+<li>Details of the approval model for Agent file/terminal operations (official docs do not itemize every sub-detail)</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>Baidu Comate (Wenxin Kuaima) is Baidu's AI coding family</strong>: a standalone Comate AI IDE + plugins for VS Code/JetBrains/Visual Studio/Xcode + CLI, with a model menu dominated by domestic LLMs (DeepSeek/GLM/Kimi/MiniMax switchable, enterprises can add Qianfan providers), a full extension stack (Skills/Rules/Subagents/MCP/Memory/Automation) and personal/enterprise/private-deployment tiers — 'data stays in-domain' private deployment is its official compliance flagship.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Fits: domestic-compliance and private-deployment narratives (finance/healthcare named by the official pages), broad IDE coverage (including Xcode/Visual Studio), enterprise console + AgentHub asset hub. Not a fit: wanting an overseas frontier-model menu (the official model page is domestic-first); wanting personal BYOK with arbitrary keys (enterprise adds Qianfan/third-party providers; personal BYOK not verified).</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-22</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>domestic　Baidu (Baidu Intelligent Cloud); docs live on cloud.baidu.com with a Baidu Cloud account.</dd>
+<dt>Direct access</dt><dd>direct OK　kuaima.baidu.com / comate.baidu.com / cloud.baidu.com measured 200 direct from mainland (2026-10-22).</dd>
+<dt>CAC filing</dt><dd>filing unknown：the official docs do not publish filing numbers for the models used; the current model list (DeepSeek/GLM/Kimi/MiniMax) was not verified one by one (those models themselves mostly appear in the CAC registry, but Comate's referencing path was not verified); "not verified" does not mean "not filed".</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">9 questions, one table</h2>
+<p class="t-section-lead">9 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p>The official "Models" docs page lists the selectable roster: DeepSeek V4 Flash/V4 Pro, GLM-4.7/5-Turbo/5.0/5.1/5.2/5v-Turbo, Kimi-K2.5/K2.6, MiniMax M2.5/M3/M2.7 — note the main line is third-party domestic LLMs, not just the ERNIE family; enterprise users can additionally add third-party model-provider APIs (the official page names the Baidu Intelligent Cloud Qianfan ModelBuilder roster). Switching goes through the Auto button in the chat box or the model-selection page (the official documents both methods).</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p>A full form family (official docs navigation): Comate AI IDE (standalone IDE), VS Code / all JetBrains / Visual Studio / Xcode plugins, CLI; the enterprise console (permissions/usage/knowledge management/instruction management/open center) plus Deepwiki and AgentHub enterprise pages. Personal / Enterprise / private-deployment editions come in three tiers (the official FAQ spells out the differences: license management, data reports, large-scale private deployment).</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>Plugin/IDE/CLI forms work on local code; the official FAQ states that SaaS inference must pass the preceding context of the file being written to the model, and promises (translated from the official wording) "no subsequent accumulation, analysis or processing is done with this uploaded code"; under private deployment the models and services all sit in the customer's private domain — data never leaves the domain (per the FAQ wording).</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p>Mission Mode (end-to-end delivery toward an explicit goal: autonomously decomposing goals and executing until done) and Spec mode (spec-driven) both have official pages; Automation (scheduled/event-driven automation) as an extension capability has its own page; the Comate NEXT plan (cloud workbench, autonomous agent collaboration) is per the official docs page.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p>Extension capabilities all have official pages: Subagent (built-in Explore subagent with its own independent context window), Skills (open-standard capability packs), Rules (custom instructions: code standards / framework preferences / project conventions), MCP, Command, Memory; the "@" shortcut adds File/Folder/Terminal/Doc/Rules context, the "/" shortcut adds Skills/Commands/Subagents.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p>Memory has an official page (cross-session memory); code indexing has an official page (repo-level index); enterprise-side knowledge management (private-domain knowledge injection). The built-in Explore subagent handles codebase exploration.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p>Accounts run on the Baidu Intelligent Cloud system; the enterprise console has permission management / three-level roles (enterprise admin / department admin / regular member per the enterprise docs); approval details for Agent file/terminal operations were official docs do not itemize every sub-detail.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Good fit: domestic compliance and private-deployment narratives (finance/healthcare customer segments are named by the official side), an IDE full family (including Xcode/Visual Studio that peers rarely cover), switchable domestic-model roster, enterprise console + AgentHub asset middle platform. Not a fit: needing an overseas frontier-model roster (the official model page's main line is domestic models), needing BYOK with any personal key (the enterprise side goes through Qianfan/third-party providers; personal BYOK is not itemized in official docs).</p></dd>
+</div>
+<div class="axis" id="dimension-name_history">
+<dt>Name history</dt>
+<dd><p>Brand history: Comate (2023-06 invite-only beta on Baidu Intelligent Cloud) → Comate X (2023-08 commercial edition) → Chinese name "Wenxin Kuaima" (2024-06 brand refresh at the ERNIE model conference); the official sites kuaima.baidu.com and comate.baidu.com both work in parallel, docs live at cloud.baidu.com/doc/COMATE — when searching, recognize both Comate and Wenxin Kuaima.</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>The Chinese name Wenxin Kuaima and the English name Baidu Comate are the same product (official rebrand 2024-06) — the site now leads with kuaima.baidu.com while the old comate.baidu.com still works</li>
+<li>A 2026-09-07 media report (Jiemian via Cailianshe) says Comate merged into the general-agent platform DuMate (Baidu Dazi) — no official announcement was found by this site; the official site and docs remain independently active. Record both claims separately; do not treat it as retired</li>
+<li>The current official model menu is mostly third-party domestic LLMs (DeepSeek/GLM/Kimi/MiniMax) — the old impression 'Comate = Wenxin model only' is outdated; enterprises can additionally add Qianfan and other providers</li>
+<li>On the SaaS side, the code context of the file you are editing is sent server-side for inference (official FAQ), with a no-retention/no-processing promise; the official path for sensitive data is the private-deployment tier — don't assume 'plugin = fully local'</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-22，Content updated 2026-10-22。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>official</td><td>Baidu Intelligent Cloud Docs · COMATE overview (Tab/Agent/Mode four modes/Skills/Rules/Subagents/shortcuts)</td><td><a href="https://cloud.baidu.com/doc/COMATE/s/qm7yrpa11" rel="noopener" target="_blank">https://cloud.baidu.com/doc/COMATE/s/qm7yrpa11</a></td></tr>
+<tr><td>official</td><td>Baidu Intelligent Cloud Docs · COMATE Models (selectable model roster and switching methods)</td><td><a href="https://cloud.baidu.com/doc/COMATE/s/emsseobso" rel="noopener" target="_blank">https://cloud.baidu.com/doc/COMATE/s/emsseobso</a></td></tr>
+<tr><td>official</td><td>Baidu Intelligent Cloud Docs · COMATE FAQ (three-tier differences / IDE list / code-data stance)</td><td><a href="https://cloud.baidu.com/doc/COMATE/s/Dlnvqzquu" rel="noopener" target="_blank">https://cloud.baidu.com/doc/COMATE/s/Dlnvqzquu</a></td></tr>
+<tr><td>official</td><td>Baidu Intelligent Cloud Docs · CLI quick start (CLI form in place)</td><td><a href="https://cloud.baidu.com/doc/COMATE/s/0mrcv8nsa" rel="noopener" target="_blank">https://cloud.baidu.com/doc/COMATE/s/0mrcv8nsa</a></td></tr>
+<tr><td>changelog</td><td>Baidu Intelligent Cloud Docs · Comate AI IDE changelog (changelog)</td><td><a href="https://cloud.baidu.com/doc/COMATE/s/2mjzerjsp" rel="noopener" target="_blank">https://cloud.baidu.com/doc/COMATE/s/2mjzerjsp</a></td></tr>
+<tr><td>official</td><td>Baidu Comate (Wenxin Kuaima) official site (product entry / latest updates)</td><td><a href="https://kuaima.baidu.com" rel="noopener" target="_blank">https://kuaima.baidu.com</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong> (three, each pointing at something the official readable pages do not give):</p>
+<ul><li><strong>Product independence after the "joining Baidu DuMate" reports</strong> (whether sites/docs/billing still run independently under the Comate brand)</li><li><strong>Actual boundary of code-context transmission on the SaaS side</strong> (the FAQ only covers completion context; what an Agent sends when reading multiple files is not written)</li><li><strong>Model-switching freedom in the private-deployment edition</strong> (the official claims support for ERNIE / open-source / enterprise fine-tuned models; not measured)</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/codebuddy.html">CodeBuddy</a></span><span class="rel-n">Same domestic big-tech coding full family: Tencent's Hunyuan filing number is checkable in official docs; Baidu Comate's model filing numbers are not published by the official side.</span></li>
+<li><span class="rel-t"><a href="/en/coding/qoder-cn.html">Qoder CN (formerly Lingma)</a></span><span class="rel-n">Same domestic big-tech coding line: Alibaba runs the "first-party product + full-family Credits" stance; Comate runs the "private deployment, data never leaves the domain" narrative.</span></li>
+<li><span class="rel-t"><a href="/en/coding/trae.html">Trae</a></span><span class="rel-n">Both domestic coding tools: Trae's overseas dual line is active; Comate's main line is the domestic enterprise side (private deployment).</span></li>
+<li><span class="rel-t"><a href="/en/mcp/context7.html">Context7</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/kilocode.html">Kilo Code</a></td><td>Local + cloud</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Kilo Code is a leading open-source coding agent (MIT): VS Code/JetBrains</td></tr><tr><td><a href="/en/coding/qoder-cn.html">Qoder CN (formerly Lingma)</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Qoder CN is Alibaba Cloud's AI coding product line (formerly Lingma, off</td></tr><tr><td><a href="/en/coding/trae.html">Trae</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Trae is ByteDance's three-client AI IDE (desktop / web / mobile): dual w</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from 百度</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/chat/wenxin.html"><span class="vp-cat">General chat</span>Wenxin</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

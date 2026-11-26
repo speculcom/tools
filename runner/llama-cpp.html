@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>llama.cpp — Runners | 投机取巧</title>
-  <meta name="description" content="llama.cpp（ggml-org）：llama.cpp 是整个本地推理生态的地基：GGUF 格式由它定义，models 站的量化索引按它的口径建。Ollama/LM Studio/KoboldCpp 都在它上面盖楼。 MIT、纯 C/C++、llama-server 提供官方 REST 线。" />
-  <link rel="canonical" href="https://tools.specul.com/runner/llama-cpp.html" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="llama.cpp" />
-  <meta property="og:url" content="https://tools.specul.com/runner/llama-cpp.html" />
-  <meta property="og:title" content="llama.cpp — Runners | 投机取巧" />
-  <meta property="og:description" content="llama.cpp（ggml-org）：llama.cpp 是整个本地推理生态的地基：GGUF 格式由它定义，models 站的量化索引按它的口径建。Ollama/LM Studio/KoboldCpp 都在它上面盖楼。 MIT、纯 C/C++、llama-server 提供官方 REST 线。" />
-  <meta property="og:image" content="https://specul.com/home-shots/og-home.jpg?v=20261123d" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:locale" content="zh_CN" />
-  <meta property="og:locale:alternate" content="en_US" />
-  <meta name="theme-color" content="#16121f" />
-  <link rel="icon" type="image/png" href="../assets/brand/dandelion-favicon-site.png" />
-  <link rel="apple-touch-icon" href="../assets/brand/dandelion-apple-touch-site.png" />
-  <script src="../brand.js?v=37d1072be69b"></script>
-  <link rel="stylesheet" href="../brand.css?v=37d1072be69b" />
-  <link rel="stylesheet" href="../site.css" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"llama.cpp","applicationCategory":"DeveloperApplication","sameAs":"https://github.com/ggml-org/llama.cpp","description":"llama.cpp 是整个本地推理生态的地基：GGUF 格式由它定义，models 站的量化索引按它的口径建。Ollama/LM Studio/KoboldCpp 都在它上面盖楼。 MIT、纯 C/C++、llama-server 提供官方 REST 线。","dateModified":"2026-11-21"}</script>
-</head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>llama.cpp — Runners | 投机取巧</title>
+<meta content="llama.cpp（ggml-org）：llama.cpp 是整个本地推理生态的地基：GGUF 格式由它定义，models 站的量化索引按它的口径建。Ollama/LM Studio/KoboldCpp 都在它上面盖楼。 MIT、纯 C/C++、llama-server 提供官方 REST 线。" name="description"/>
+<link href="https://tools.specul.com/runner/llama-cpp.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="llama.cpp" property="og:site_name"/>
+<meta content="https://tools.specul.com/runner/llama-cpp.html" property="og:url"/>
+<meta content="llama.cpp — Runners | 投机取巧" property="og:title"/>
+<meta content="llama.cpp（ggml-org）：llama.cpp 是整个本地推理生态的地基：GGUF 格式由它定义，models 站的量化索引按它的口径建。Ollama/LM Studio/KoboldCpp 都在它上面盖楼。 MIT、纯 C/C++、llama-server 提供官方 REST 线。" property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="zh_CN" property="og:locale"/>
+<meta content="en_US" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="../assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="../assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="../brand.js?v=37d1072be69b"></script>
+<link href="../brand.css?v=37d1072be69b" rel="stylesheet"/>
+<link href="../site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"llama.cpp","applicationCategory":"DeveloperApplication","sameAs":"https://github.com/ggml-org/llama.cpp","description":"llama.cpp 是整个本地推理生态的地基：GGUF 格式由它定义，models 站的量化索引按它的口径建。Ollama/LM Studio/KoboldCpp 都在它上面盖楼。 MIT、纯 C/C++、llama-server 提供官方 REST 线。","dateModified":"2026-11-21"}</script>
+<link href="https://tools.specul.com/runner/llama-cpp.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/runner/llama-cpp.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/runner/llama-cpp.html" hreflang="x-default" rel="alternate"/></head>
 <!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
      同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
      而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
@@ -32,315 +32,286 @@
      ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
      （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
 <body class="brand-ambient has-tabbar has-tabbar-1row">
-  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
-  <header class="site-header">
-    <div class="container site-bar">
-      <a class="brand" href="https://specul.com/" title="投机取巧">
-        <span class="brand-dot" aria-hidden="true"></span>
-        <span class="brand-text">
-          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
-          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
-        </span>
-      </a>
-      <nav class="nav-links" aria-label="站点导航">
-        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
-        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
-        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>工具</span><span data-en>Tools</span></a>
-        <a href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a>
-        <a href="https://demos.specul.com/"><span data-zh>作品演示</span><span data-en>Playground</span></a>
-        <a href="https://oss.specul.com/"><span data-zh>开源库</span><span data-en>OSS</span></a>
-        <a href="https://hardware.specul.com/"><span data-zh>硬件算力</span><span data-en>Compute</span></a>
-        <a href="https://papers.specul.com/"><span data-zh>AI 论文</span><span data-en>AI Papers</span></a>
-        <a href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a>
-        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
-      </nav>
-      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+<a class="t-skip" href="#main"><span data-zh="">跳到主要内容</span><span data-en="">Skip to main content</span></a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" data-en-name="Speculative Speculation" data-zh-name="投机取巧" id="markName">投机取巧</span>
+<span class="brand-sub" data-en-sub="" data-zh-sub="Speculative Speculation" id="markSub">Speculative Speculation</span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/"><span data-zh="">首页</span><span data-en="">Home</span></a>
+<a href="https://learn.specul.com/"><span data-zh="">学 AI</span><span data-en="">Learn</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span data-zh="">工具</span><span data-en="">Tools</span></a>
+<a href="https://models.specul.com/"><span data-zh="">模型</span><span data-en="">Models</span></a>
+<a href="https://demos.specul.com/"><span data-zh="">作品演示</span><span data-en="">Playground</span></a>
+<a href="https://oss.specul.com/"><span data-zh="">开源库</span><span data-en="">OSS</span></a>
+<a href="https://hardware.specul.com/"><span data-zh="">硬件算力</span><span data-en="">Compute</span></a>
+<a href="https://papers.specul.com/"><span data-zh="">AI 论文</span><span data-en="">AI Papers</span></a>
+<a href="https://chain.specul.com/"><span data-zh="">链</span><span data-en="">Chain</span></a>
+<a href="https://nav.specul.com/"><span data-zh="">AI 导航</span><span data-en="">AI Directory</span></a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
            放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
            （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
            链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
-      <span class="nav-tools">
-        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
-        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
-        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
-      </span>
-      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+<span class="nav-tools">
+<a aria-label="搜索" class="icon-btn" data-ui-aria-label-en="Search" data-ui-aria-label-zh="搜索" data-ui-title-en="Search all sites" data-ui-title-zh="搜索全站" href="https://specul.com/search.html" title="搜索全站"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="Switch to English" class="icon-btn" href="/en/runner/llama-cpp.html" hreflang="en" id="langBtn" lang="en" title="Switch to English">EN</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
            行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
            无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
            「导航被藏进一个点了没反应的按钮」。 -->
-      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
-        <i></i><i></i><i></i>
-      </button>
-    </div>
-  </header>
-  <div class="nav-scrim"></div>
-  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
-    <div class="nav-drawer-h">
-      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
-      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
-      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
-    </div>
-    <nav class="nav-drawer-list">
-      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>工具</span><span data-en>Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://models.specul.com/"><span><span data-zh>模型</span><span data-en>Models</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://demos.specul.com/"><span><span data-zh>作品演示</span><span data-en>Playground</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://oss.specul.com/"><span><span data-zh>开源库</span><span data-en>OSS</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://hardware.specul.com/" class="nav-group-start"><span><span data-zh>硬件算力</span><span data-en>Compute</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://papers.specul.com/"><span><span data-zh>AI 论文</span><span data-en>AI Papers</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://chain.specul.com/"><span><span data-zh>链</span><span data-en>Chain</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://nav.specul.com/" class="nav-group-start" data-nav-group="external"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">↗</span></a>
-    </nav>
-    <div class="nav-drawer-foot">
-      <p><span data-zh>内容站覆盖学、用、选、跑；AI 导航是站外的 AI 网站目录，点出去看。</span><span data-en>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</span></p>
-      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
-    </div>
-  </aside>
-  <main id="main">
-    <div class="container detail">
-      <nav class="crumbs" aria-label="面包屑" data-ui-aria-label-zh="面包屑" data-ui-aria-label-en="Breadcrumb">
-        <a href="https://tools.specul.com/"><span data-zh>AI 工具</span><span data-en>AI Tools</span></a>
-        <span aria-current="page">Runners</span>
-      </nav>
-      <a class="back" href="./">← Runners</a>
-
-      <div class="detail-head">
-        <div class="mark" style="--card-accent:#94a3b8" aria-hidden="true"><span data-zh>ll</span><span data-en>LL</span></div>
-        <div>
-          <h1><span data-zh>llama.cpp</span><span data-en>llama.cpp</span></h1>
-          <div class="vendor is-caps">ggml-org</div>
-        </div>
-      </div>
-
-      <nav class="panel is-slim" aria-label="档案目录" data-ui-aria-label-zh="档案目录" data-ui-aria-label-en="Profile contents"><p><span data-zh>先看你关心的部分</span><span data-en>Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></a> · <a href="#dimension-runtime"><span data-zh>运行位置</span><span data-en>Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh>本地文件</span><span data-en>Local files</span></a> · <a href="#dimension-background"><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></a> · <a href="#dimension-context"><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></a> · <a href="#dimension-permissions"><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></a> · <a href="#dimension-fit"><span data-zh>适合什么任务</span><span data-en>Best for</span></a></p></nav>
-      <div class="badges">
-        <span class="tag on"><span data-zh>开源</span><span data-en>Open source</span></span>
-        <span class="tag on"><span data-zh>MIT</span><span data-en>MIT</span></span>
-        <span class="tag on"><span data-zh>GGUF</span><span data-en>GGUF</span></span>
-        <span class="tag on"><span data-zh>C++</span><span data-en>C++</span></span>
-        <span class="tag on"><span data-zh>本地推理</span><span data-en>Local inference</span></span>
-        <span class="tag on"><span data-zh>llama-server</span><span data-en>llama-server</span></span>
-        <span class="t-state is-ok"><span data-zh>8 项已核</span><span data-en>8 axes checked</span></span>
-        <span class="t-state is-ok"><span data-zh>活跃</span><span data-en>Active</span></span>
-        <span class="badge"><span data-zh>最后核验</span><span data-en>Checked</span> 2026-11-21</span>
-      </div>
-
-      <p class="t-sm"><span data-zh>两个标签分开读：左边讲这页的证据是否齐，右边讲上游产品还在不在更新。停更不等于资料残缺；证据齐也不等于产品还活跃。</span><span data-en>Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</span></p>
-      <section class="snapshot" aria-label="决策快照" data-ui-aria-label-zh="决策快照" data-ui-aria-label-en="Decision snapshot">
-      <div class="snap-head">
-        <h2><span data-zh>30 秒判断：它能不能进你的候选名单</span><span data-en>30-second check: should it make your shortlist?</span></h2>
-        
-      </div>
-      <div class="snap-grid">
-        <div class="snap-item"><span class="snap-k"><span data-zh>一句话</span><span data-en>In one line</span></span><p><span data-zh>llama.cpp 是整个本地推理生态的地基：GGUF 格式由它定义，models 站的量化索引按它的口径建。</span><span data-en>llama.cpp is the bedrock of the entire local-inference ecosystem: GGUF is defined…</span></p></div>
-        <div class="snap-item"><span class="snap-k"><span data-zh>怎么用它</span><span data-en>How you use it</span></span><p><span data-zh>本地 / 自托管</span><span data-en>Local / self-hosted</span> · <span data-zh>命令行</span><span data-en>CLI</span></p></div>
-        <div class="snap-item"><span class="snap-k"><span data-zh>许可 / 商用</span><span data-en>Licence / commercial use</span></span><p><span data-zh>开源许可</span><span data-en>Open licence</span></p><small><span data-zh>商用前读原文，别只看标签</span><span data-en>Read the original licence before commercial use</span></small></div>
-        <div class="snap-item"><span class="snap-k"><span data-zh>中国大陆</span><span data-en>Mainland China</span></span><p><span data-zh>大陆可直连</span><span data-en>Direct in mainland</span> · <span data-zh>未见于备案</span><span data-en>Not in filing list</span></p></div>
-      </div>
-      <p class="snap-note"><span data-zh>这四张卡只帮你快速排除，不替你做决定；真正的差别在下面 8 个问题和来源里。</span><span data-en>These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</span></p>
-    </section>
-            <div class="panel is-slim">
-        <h2 id="known-unknowns"><span data-zh>未确认的信息</span><span data-en>Information not confirmed</span></h2>
-        <span data-zh>
-        <ul>
-          <li>支持模型全清单：官方按合入滚动，按仓库模型页核对。</li>
-          <li>MCP 支持边界：<code>--mcp-servers-json</code> 为实验性，按 server README 当前参数核对。</li>
-          <li>llama.app 与 GitHub 仓的官方关系：README 直连安装入口，归属按站点说明核对。</li>
-        </ul></span><span data-en>
-        <ul>
-          <li>Full supported-model list: official docs roll with merges; check the repo model pages.</li>
-          <li>MCP boundaries: <code>--mcp-servers-json</code> is experimental; check the current server README parameters.</li>
-          <li>The official relationship between llama.app and the GitHub repo: the README links the installer, with ownership described on the site.</li>
-        </ul></span>
-      </div>
-
-
-            
-      <div class="panel-lead"><span data-zh><p><strong>llama.cpp 是整个本地推理生态的地基</strong>：GGUF 格式由它定义，models 站的量化索引按它的口径建。Ollama/LM Studio/KoboldCpp 都在它上面盖楼。</p>
-            <p>MIT、纯 C/C++、llama-server 提供官方 REST 线。</p></span><span data-en><p><strong>llama.cpp is the bedrock of the entire local-inference ecosystem</strong>: GGUF is defined here, the models-site quant index is built to its yardstick, and Ollama/LM Studio/KoboldCpp all build on top of it. MIT, pure C/C++, with an official REST line via llama-server.</p></span></div>
-
-            <div class="panel is-slim">
-        <h2><span data-zh>适合与不适合</span><span data-en>When to use it, when not to</span></h2>
-<span data-zh>        <div><p>适合：要控制量化档、后端与每个参数的用户。也适合消费级 GPU 与 Apple 硅跑 GGUF，给自研工具做推理底座。 不适合要开箱 GUI。也不适合要多模型高并发服务化，那是 vLLM/SGLang 的调度强项。</p></div></span><span data-en>        <div><p>Fits: fine-grained control (quant tiers/backends/params), GGUF on consumer GPUs and Apple silicon, powering in-house tools. Not a fit: out-of-the-box GUIs; multi-model high-concurrency serving.</p></div></span>
-      </div>
-
-            <div class="panel">
-        <h2><span data-zh>中文生态</span><span data-en>China availability</span> <span class="panel-note"><span data-zh>国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en>domestic / direct access / CAC filing · snapshot</span> 2026-11-21</span></h2>
-        <dl class="cn-rows">
-          <dt><span data-zh>出品属地</span><span data-en>Origin</span></dt><dd><span data-zh>国外出品</span><span data-en>foreign-made</span>　<span data-zh>ggml-org（Georgi Gerganov 主导的开源组织）。</span><span data-en>ggml-org (open-source org led by Georgi Gerganov).</span></dd>
-          <dt><span data-zh>国内使用</span><span data-en>Direct access</span></dt><dd><span data-zh>大陆可直连</span><span data-en>direct OK</span>　<span data-zh>github.com/ggml-org/llama.cpp 与 llama.app 直连实测 200（2026-10-21）；llama.cpp 顶级域直抓 000（网络受限，非死亡判定）。</span><span data-en>github.com/ggml-org/llama.cpp and llama.app measured 200 direct (2026-10-21); the llama.cpp apex domain measured 000 (network-limited, not a death verdict).</span></dd>
-          <dt><span data-zh>备案状态</span><span data-en>CAC filing</span></dt><dd><span data-zh>未见于备案名单</span><span data-en>not in filing list</span>：<span data-zh>未见于网信办公示名单（2026-10-21 检索）；开源项目未面向大陆公众提供服务，备案不适用。</span><span data-en>not in the CAC public registry (searched 2026-10-21); the open-source project does not serve the mainland public, so filing does not apply.</span></dd>
-        </dl>
-        <p class="cn-foot"><span data-zh>备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en>Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
-      </div>
-
-
-      <div class="block-head">
-        <h2 class="t-h2"><span data-zh>8 个问题，一张表</span><span data-en>8 questions, one table</span></h2>
-        <p class="t-section-lead">8 <span data-zh>个问题</span><span data-en>questions</span>, <span data-zh>与同类对象逐项可比</span><span data-en>each comparable item by item with its peers</span>.</p>
-      </div>
-      <dl class="axes">
-        <div class="axis" id="dimension-model_access">
-          <dt><span data-zh>模型与开放条件</span><span data-en>Model & openness</span></dt>
-          <dd><span data-zh><p>GGUF 生态根。官方 server 支持 F16 与量化模型在 GPU/CPU 推理。模型可从 Hugging Face 取 GGUF，也可自转 safetensors。支持模型族随合入滚动，量化档由社区量化者产出（2026-11-21）。</p></span><span data-en><p>The root of the GGUF ecosystem: the official server runs F16 and quantised models on GPU/CPU, with models taken from Hugging Face as GGUF or converted from safetensors; supported model families roll with merges, while quantised files come from community quantisers (2026-11-21).</p></span></dd>
-        </div>
-        <div class="axis" id="dimension-runtime">
-          <dt><span data-zh>运行位置</span><span data-en>Where it runs</span></dt>
-          <dd><span data-zh><p>C/C++ 推理库，另有 <code>llama-server</code>。OpenAI 兼容 <code>/v1/chat/completions</code>、<code>/v1/completions</code>、embeddings 与 responses，另有 Anthropic 兼容 <code>/v1/messages</code>。</p>
-            <p>构建后端覆盖 CPU、Metal、SYCL、CUDA、HIP 与 Vulkan，自带 Web UI（2026-11-21）。</p></span><span data-en><p>A C/C++ inference library plus <code>llama-server</code>: OpenAI-compatible <code>/v1/chat/completions</code>, <code>/v1/completions</code>, embeddings and responses, and an Anthropic-compatible <code>/v1/messages</code>. Build backends cover CPU, Metal, SYCL, CUDA, HIP and Vulkan, with a built-in web UI (2026-11-21).</p></span></dd>
-        </div>
-        <div class="axis" id="dimension-local_files">
-          <dt><span data-zh>本地文件</span><span data-en>Local files</span></dt>
-          <dd><span data-zh><p>全本地。模型权重、KV cache、对话与生成物都在自有机器。<code>--kv-offload</code> 可把 KV cache 放 GPU，<code>--no-kv-offload</code> 留 CPU。官方无云托管线（2026-11-21）。</p></span><span data-en><p>Fully local: model weights, KV cache, conversations and outputs stay on the user’s machine; <code>--kv-offload</code> moves KV cache to GPU while <code>--no-kv-offload</code> keeps it on CPU, and there is no official cloud-hosted line (2026-11-21).</p></span></dd>
-        </div>
-        <div class="axis" id="dimension-background">
-          <dt><span data-zh>关机后的任务</span><span data-en>Tasks after shutdown</span></dt>
-          <dd><span data-zh><p><code>llama-server</code> 常驻即服务。连续批处理默认开启。<code>-np/--parallel</code> 配多 slot，<code>--ctx-checkpoints</code> 保留上下文检查点。适合常开进程，托管队列由部署方自建（2026-11-21）。</p></span><span data-en><p><code>llama-server</code> is a long-running service: continuous batching is on by default, <code>-np/--parallel</code> sets slot count and <code>--ctx-checkpoints</code> retains context checkpoints. It suits an always-on process, with any hosted queue built by the deployer (2026-11-21).</p></span></dd>
-        </div>
-        <div class="axis" id="dimension-tools">
-          <dt><span data-zh>工具与扩展</span><span data-en>Tools & extensions</span></dt>
-          <dd><span data-zh><p>工具面强。<code>--jinja</code> 开 OpenAI 风格 function calling 与 tool use。它含原生格式与通用回退，覆盖任意模型。</p>
-            <p>实验性 <code>--mcp-servers-json</code> 接 Cursor 兼容 MCP server。<code>--agent</code> 开内置工具与 CORS 代理。</p>
-            <p>另有 schema 约束 JSON、多模态、reranking 与监控端点（2026-11-21）。</p></span><span data-en><p>A strong tool surface: <code>--jinja</code> enables OpenAI-style function calling/tool use with native formats plus a generic fallback for any model; experimental <code>--mcp-servers-json</code> connects Cursor-compatible MCP servers; <code>--agent</code> enables built-in tools and a CORS proxy; plus schema-constrained JSON, multimodal, reranking and monitoring endpoints (2026-11-21).</p></span></dd>
-        </div>
-        <div class="axis" id="dimension-context">
-          <dt><span data-zh>上下文与记忆</span><span data-en>Context & memory</span></dt>
-          <dd><span data-zh><p>上下文按运行参数控制。<code>-c/--ctx-size</code> 设 prompt 窗口，<code>--kv-unified-per-slot</code> 给每个并行 slot 限额。</p>
-            <p><code>-ctk/-ctv</code> 可把 KV cache 压到 q8/q4 等类型，<code>--ctx-checkpoints</code> 最多留 32 个检查点（2026-11-21）。</p></span><span data-en><p>Context is controlled at launch: <code>-c/--ctx-size</code> sets the prompt window, <code>--kv-unified-per-slot</code> caps each parallel slot, <code>-ctk/-ctv</code> compress KV cache to q8/q4 types and <code>--ctx-checkpoints</code> retains up to 32 checkpoints (2026-11-21).</p></span></dd>
-        </div>
-        <div class="axis" id="dimension-permissions">
-          <dt><span data-zh>权限与限制</span><span data-en>Permissions & limits</span></dt>
-          <dd><span data-zh><p>MIT 许可，本地进程无账号体系。<code>llama-server</code> 用 <code>--api-key</code> 或 <code>--api-key-file</code> 做 Bearer 鉴权。</p>
-            <p>MCP/agent 默认关闭。开启时出于安全默认把 CORS 限到 localhost。官方明确提示勿在不可信环境启用（2026-11-21）。</p></span><span data-en><p>MIT licensed with no account system for the local process; <code>llama-server</code> authenticates Bearer keys via <code>--api-key</code> or <code>--api-key-file</code>; MCP/agent are off by default and, when enabled, restrict CORS to localhost for safety, with official warnings against untrusted environments (2026-11-21).</p></span></dd>
-        </div>
-        <div class="axis" id="dimension-fit">
-          <dt><span data-zh>适合什么任务</span><span data-en>Best for</span></dt>
-          <dd><span data-zh><p>适合要细粒度控制的人，包括量化档、后端、上下文与 KV cache。也适合消费级硬件跑 GGUF。</p>
-            <p>还适合给下游工具做本地推理底座，在 server 层接 MCP 或工具调用。不适合要开箱 GUI。也不适合要多模型高吞吐服务化，后者 vLLM/SGLang 更强（2026-11-21）。</p></span><span data-en><p>Fit: fine-grained control over quantisation, backends, context and KV cache; GGUF on consumer hardware; a local inference base for downstream tools; MCP/tool calling at the server layer. Not fit: turnkey GUIs or high-throughput multi-model serving (vLLM/SGLang are stronger there) (2026-11-21).</p></span></dd>
-        </div>
-      </dl>
-
-            <div class="panel is-slim" id="license">
-        <h2><span data-zh>许可与使用条款</span><span data-en>Licence and terms of use</span></h2>
-        <p><span data-zh>MIT（官方仓 README 徽章与 LICENSE 一致，2026-10-21 直抓核验；2026-11-21 复核）。</span><span data-en>MIT (official repo README badge and LICENSE consistent, direct-fetched 2026-10-21).</span></p>
-      </div>
-
-
-      <nav class="panel is-slim" aria-label="使用排查" data-ui-aria-label-zh="使用排查" data-ui-aria-label-en="Troubleshooting">
-        <h2><span data-zh>使用时遇到问题</span><span data-en>When something fails</span></h2>
-        <p><a href="../mcp/guides/failure-library.html#memory"><span data-zh>模型装不下</span><span data-en>Model does not fit</span></a> · <a href="../mcp/guides/failure-library.html#latency"><span data-zh>等待或输出慢</span><span data-en>Slow response or output</span></a></p>
-      </nav>
-
-            <div class="panel warn">
-        <h2 class="warn"><span data-zh>头号误解</span><span data-en>Top misconception</span></h2>
-        <ul>
-
-          <li><span data-zh>把 GGUF 支持面当「所有模型都有量化档」——量化档由第三方量化者产出，看 models 站索引</span><span data-en>Treating GGUF support as &#39;every model has a quant build&#39; — quant builds come from third-party quantizers; check the models-site index</span></li>
-          <li><span data-zh>只认命令行——llama-server 是官方 REST 服务线，很多工具在它上面跑</span><span data-en>Knowing only the CLI — llama-server is the official REST line many tools run on</span></li>
-          <li><span data-zh>用旧域名印象找官网——README 现推 llama.app 安装脚本（2026-10-21 直抓所见）</span><span data-en>Using an old-domain habit — the README now promotes the llama.app install script (direct-fetched 2026-10-21)</span></li>
-        </ul>
-      </div>
-
-
-
-
-      <div class="panel">
-        <h2><span data-zh>证据来源</span><span data-en>Evidence sources</span></h2>
-        <p class="t-sm"><span data-zh>最后核验</span><span data-en>Checked</span> 2026-11-21，<span data-zh>内容更新</span><span data-en>Content updated</span> 2026-11-21。<span data-zh>只说明这页最后核验的日期，不代表每个字段都在同一天重新查过。</span><span data-en>This is the date of the entry, not a claim that every field was rechecked that day.</span></p>
-        <table class="src">
-          <thead><tr><th class="w-20"><span data-zh>类型</span><span data-en>Type</span></th><th class="w-52"><span data-zh>名称</span><span data-en>Name</span></th><th><span data-zh>链接</span><span data-en>Link</span></th></tr></thead>
-          <tbody>
-            <tr><td>repo</td><td><span data-zh>ggml-org/llama.cpp · 仓库（MIT；132,794★，最近推送 2026-10-30，GitHub API 核验）</span><span data-en>ggml-org/llama.cpp — repository (MIT; 132,794 stars, last push 2026-10-30, verified via GitHub API)</span></td><td><a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">https://github.com/ggml-org/llama.cpp</a></td></tr>
-            <tr><td>changelog</td><td><span data-zh>ggml-org/llama.cpp · Releases（changelog，含 nightly，2026-11-21 抓取 200）</span><span data-en>ggml-org/llama.cpp — Releases (changelog including nightly; fetched 200 on 2026-11-21)</span></td><td><a href="https://github.com/ggml-org/llama.cpp/releases" target="_blank" rel="noopener">https://github.com/ggml-org/llama.cpp/releases</a></td></tr>
-            <tr><td>docs</td><td><span data-zh>llama.app · 官方安装入口（API server 与工具调用，2026-11-21 抓取 200）</span><span data-en>llama.app — official installer docs (API server and tool calling; fetched 200 on 2026-11-21)</span></td><td><a href="https://llama.app/docs/api" target="_blank" rel="noopener">https://llama.app/docs/api</a></td></tr>
-            <tr><td>docs</td><td><span data-zh>llama.cpp · server README（并行 slot、MCP/agent、api-key 与 KV cache 参数，2026-11-21 GitHub API 直取）</span><span data-en>llama.cpp — server README (parallel slots, MCP/agent, api-key and KV cache parameters; fetched via GitHub API 2026-11-21)</span></td><td><a href="https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md" target="_blank" rel="noopener">https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md</a></td></tr>
-            <tr><td>docs</td><td><span data-zh>llama.cpp · Function Calling 文档（--jinja 与原生/通用工具格式，2026-11-21 GitHub API 直取）</span><span data-en>llama.cpp — Function Calling docs (--jinja and native/generic tool formats; fetched via GitHub API 2026-11-21)</span></td><td><a href="https://github.com/ggml-org/llama.cpp/blob/master/docs/function-calling.md" target="_blank" rel="noopener">https://github.com/ggml-org/llama.cpp/blob/master/docs/function-calling.md</a></td></tr>
-            <tr><td>docs</td><td><span data-zh>llama.cpp · Build 文档（CPU/Metal/SYCL/CUDA/HIP/Vulkan 后端，2026-11-21 GitHub API 直取）</span><span data-en>llama.cpp — Build docs (CPU/Metal/SYCL/CUDA/HIP/Vulkan backends; fetched via GitHub API 2026-11-21)</span></td><td><a href="https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md" target="_blank" rel="noopener">https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md</a></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-            <div class="panel is-slim">
-        <h2><span data-zh>实测记录</span><span data-en>Test notes</span></h2>
-        <span data-zh><p>本档核对官方 server/function-calling/build 文档与仓库许可。吞吐、显存与 MCP 工具链稳定性需按具体硬件与模型实测。</p></span><span data-en><p>This entry checks the official server, function-calling and build docs plus the repo licence. Throughput, VRAM and MCP tool-chain stability need testing on specific hardware and models.</p></span>
-      </div>
-
-
-      
-
-            <div class="panel is-slim">
-        <h2><span data-zh>相关条目</span><span data-en>Related entries</span></h2>
-        <ul class="rel-list">
-          <li><span class="rel-t"><a href="./ollama.html"><span data-zh>Ollama</span><span data-en>Ollama</span></a></span><span class="rel-n"><span data-zh>在 llama.cpp 之上做开箱体验的一代；要底层控制回到本档案。</span><span data-en>The generation that built an out-of-the-box experience on top of llama.cpp; for low-level control return to this dossier.</span></span></li>
-          <li><span class="rel-t"><a href="./koboldcpp.html"><span data-zh>KoboldCpp</span><span data-en>KoboldCpp</span></a></span><span class="rel-n"><span data-zh>基于 llama.cpp 的单文件 GUI 路线。</span><span data-en>The single-file GUI route built on llama.cpp.</span></span></li>
-          <li><span class="rel-t"><a href="/framework/openai-agents-sdk.html"><span data-zh>OpenAI Agents SDK</span><span data-en>OpenAI Agents SDK</span></a></span><span class="rel-n"><span data-zh>另一层 · 框架与运行时</span><span data-en>Other layer · Frameworks & runtimes</span></span></li>
-          <li><span class="rel-t"><a href="/framework/llamaindex.html"><span data-zh>LlamaIndex Framework</span><span data-en>LlamaIndex Framework</span></a></span><span class="rel-n"><span data-zh>另一层 · 框架与运行时</span><span data-en>Other layer · Frameworks & runtimes</span></span></li>
-        </ul>
-      </div>
-
-
-      <section class="section peer-section" id="peers">
-      <div class="container">
-        <div class="matrix-head">
-          <p class="kicker"><span data-zh>同类对照</span><span data-en>Same-category peers</span></p>
-          <h2><span data-zh>先看这三个，再决定要不要往下读</span><span data-en>Look at these three before reading further</span></h2>
-          <p class="section-desc"><span data-zh>按用途重合度挑的，不是排名。先比「跑在哪 / 许可 / 状态」，三项里有一项不合格就可以跳过。</span><span data-en>Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</span></p>
-        </div>
-        <div class="table-wrap">
-          <table class="cmp peer-table">
-            <thead><tr><th><span data-zh>对象</span><span data-en>Object</span></th><th><span data-zh>跑在哪</span><span data-en>Where</span></th><th><span data-zh>许可</span><span data-en>Licence</span></th><th><span data-zh>证据 / 状态</span><span data-en>Evidence / status</span></th><th><span data-zh>适合做什么</span><span data-en>What it is for</span></th></tr></thead>
-            <tbody><tr><td><a href="./exllamav3.html"><span data-zh>ExLlamaV3</span><span data-en>ExLlamaV3</span></a></td><td><span data-zh>本地 / 自托管</span><span data-en>Local / self-hosted</span></td><td><span data-zh>开源许可</span><span data-en>Open licence</span></td><td><span data-zh>8 项已核</span><span data-en>8 questions checked</span><br><span class="td-vendor"><span data-zh>活跃</span><span data-en>Active</span></span></td><td class="td-fit"><span data-zh>ExLlamaV3 是 ExLlamaV2 的接续线。</span><span data-en>The successor to ExLlamaV2: low-latency local inference on NVIDIA GPUs u</span></td></tr><tr><td><a href="./localai.html"><span data-zh>LocalAI</span><span data-en>LocalAI</span></a></td><td><span data-zh>本地 / 自托管</span><span data-en>Local / self-hosted</span></td><td><span data-zh>开源许可</span><span data-en>Open licence</span></td><td><span data-zh>8 项已核</span><span data-en>8 questions checked</span><br><span class="td-vendor"><span data-zh>活跃</span><span data-en>Active</span></span></td><td class="td-fit"><span data-zh>LocalAI 是「换 URL 就转本地」的多模态运行时：单二进制 OpenAI 兼容前置。</span><span data-en>LocalAI is the 'change the URL and go local' multimodal runtime: a singl</span></td></tr><tr><td><a href="./mlc-llm.html"><span data-zh>MLC LLM</span><span data-en>MLC LLM</span></a></td><td><span data-zh>本地 / 自托管</span><span data-en>Local / self-hosted</span></td><td><span data-zh>开源许可</span><span data-en>Open licence</span></td><td><span data-zh>8 项已核</span><span data-en>8 questions checked</span><br><span class="td-vendor"><span data-zh>活跃</span><span data-en>Active</span></span></td><td class="td-fit"><span data-zh>MLC LLM：编译式跨平台推理引擎，许可证 Apache-2.0。仓库 23,284★，最近推送 2026-1</span><span data-en>MLC LLM: a compile-to-native cross-platform inference engine (Apache-2.0</span></td></tr></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-      
-
-      <p class="fine mt-6">
-        <span data-zh>本页由</span><span data-en>This page is generated from the</span> <a href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener" class="link-brand">ai-handbook</a> <span data-zh>数据层生成（CC BY 4.0）。</span><span data-en>data layer (CC BY 4.0).</span>
-        <span data-zh>判断标准与方法说明见仓库内</span><span data-en>For the judging criteria and method notes, see</span> <code>METHODOLOGY.md</code>.
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name"><span data-zh="">投机取巧</span><span data-en="">Speculative Speculation</span></span>
+<span class="brand-sub" data-en-sub="" data-zh-sub="Speculative Speculation">Speculative Speculation</span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/"><span><span data-zh="">首页</span><span data-en="">Home</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/"><span><span data-zh="">学 AI</span><span data-en="">Learn</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span><span data-zh="">工具</span><span data-en="">Tools</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/"><span><span data-zh="">模型</span><span data-en="">Models</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/"><span><span data-zh="">作品演示</span><span data-en="">Playground</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/"><span><span data-zh="">开源库</span><span data-en="">OSS</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/"><span><span data-zh="">硬件算力</span><span data-en="">Compute</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/"><span><span data-zh="">AI 论文</span><span data-en="">AI Papers</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/"><span><span data-zh="">链</span><span data-en="">Chain</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/"><span><span data-zh="">AI 导航</span><span data-en="">AI Directory</span></span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p><span data-zh="">内容站覆盖学、用、选、跑；AI 导航是站外的 AI 网站目录，点出去看。</span><span data-en="">Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</span></p>
+<nav><a href="https://specul.com/legal.html"><span data-zh="">法律条款</span><span data-en="">Legal terms</span></a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="面包屑" class="crumbs" data-ui-aria-label-en="Breadcrumb" data-ui-aria-label-zh="面包屑">
+<a href="https://tools.specul.com/"><span data-zh="">AI 工具</span><span data-en="">AI Tools</span></a>
+<span aria-current="page">Runners</span>
+</nav>
+<a class="back" href="./">← Runners</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style="--card-accent:#94a3b8"><span data-zh="">ll</span><span data-en="">LL</span></div>
+<div>
+<h1><span data-zh="">llama.cpp</span><span data-en="">llama.cpp</span></h1>
+<div class="vendor is-caps">ggml-org</div>
+</div>
+</div>
+<nav aria-label="档案目录" class="panel is-slim" data-ui-aria-label-en="Profile contents" data-ui-aria-label-zh="档案目录"><p><span data-zh="">先看你关心的部分</span><span data-en="">Jump to what matters to you</span></p><p><a href="#dimension-model_access"><span data-zh="">模型与开放条件</span><span data-en="">Model &amp; openness</span></a> · <a href="#dimension-runtime"><span data-zh="">运行位置</span><span data-en="">Where it runs</span></a> · <a href="#dimension-local_files"><span data-zh="">本地文件</span><span data-en="">Local files</span></a> · <a href="#dimension-background"><span data-zh="">关机后的任务</span><span data-en="">Tasks after shutdown</span></a> · <a href="#dimension-tools"><span data-zh="">工具与扩展</span><span data-en="">Tools &amp; extensions</span></a> · <a href="#dimension-context"><span data-zh="">上下文与记忆</span><span data-en="">Context &amp; memory</span></a> · <a href="#dimension-permissions"><span data-zh="">权限与限制</span><span data-en="">Permissions &amp; limits</span></a> · <a href="#dimension-fit"><span data-zh="">适合什么任务</span><span data-en="">Best for</span></a></p></nav>
+<div class="badges">
+<span class="tag on"><span data-zh="">开源</span><span data-en="">Open source</span></span>
+<span class="tag on"><span data-zh="">MIT</span><span data-en="">MIT</span></span>
+<span class="tag on"><span data-zh="">GGUF</span><span data-en="">GGUF</span></span>
+<span class="tag on"><span data-zh="">C++</span><span data-en="">C++</span></span>
+<span class="tag on"><span data-zh="">本地推理</span><span data-en="">Local inference</span></span>
+<span class="tag on"><span data-zh="">llama-server</span><span data-en="">llama-server</span></span>
+<span class="t-state is-ok"><span data-zh="">8 项已核</span><span data-en="">8 axes checked</span></span>
+<span class="t-state is-ok"><span data-zh="">活跃</span><span data-en="">Active</span></span>
+<span class="badge"><span data-zh="">最后核验</span><span data-en="">Checked</span> 2026-11-21</span>
+</div>
+<p class="t-sm"><span data-zh="">两个标签分开读：左边讲这页的证据是否齐，右边讲上游产品还在不在更新。停更不等于资料残缺；证据齐也不等于产品还活跃。</span><span data-en="">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</span></p>
+<section aria-label="决策快照" class="snapshot" data-ui-aria-label-en="Decision snapshot" data-ui-aria-label-zh="决策快照">
+<div class="snap-head">
+<h2><span data-zh="">30 秒判断：它能不能进你的候选名单</span><span data-en="">30-second check: should it make your shortlist?</span></h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k"><span data-zh="">一句话</span><span data-en="">In one line</span></span><p><span data-zh="">llama.cpp 是整个本地推理生态的地基：GGUF 格式由它定义，models 站的量化索引按它的口径建。</span><span data-en="">llama.cpp is the bedrock of the entire local-inference ecosystem: GGUF is defined…</span></p></div>
+<div class="snap-item"><span class="snap-k"><span data-zh="">怎么用它</span><span data-en="">How you use it</span></span><p><span data-zh="">本地 / 自托管</span><span data-en="">Local / self-hosted</span> · <span data-zh="">命令行</span><span data-en="">CLI</span></p></div>
+<div class="snap-item"><span class="snap-k"><span data-zh="">许可 / 商用</span><span data-en="">Licence / commercial use</span></span><p><span data-zh="">开源许可</span><span data-en="">Open licence</span></p><small><span data-zh="">商用前读原文，别只看标签</span><span data-en="">Read the original licence before commercial use</span></small></div>
+<div class="snap-item"><span class="snap-k"><span data-zh="">中国大陆</span><span data-en="">Mainland China</span></span><p><span data-zh="">大陆可直连</span><span data-en="">Direct in mainland</span> · <span data-zh="">未见于备案</span><span data-en="">Not in filing list</span></p></div>
+</div>
+<p class="snap-note"><span data-zh="">这四张卡只帮你快速排除，不替你做决定；真正的差别在下面 8 个问题和来源里。</span><span data-en="">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</span></p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns"><span data-zh="">未确认的信息</span><span data-en="">Information not confirmed</span></h2>
+<span data-zh="">
+<ul>
+<li>支持模型全清单：官方按合入滚动，按仓库模型页核对。</li>
+<li>MCP 支持边界：<code>--mcp-servers-json</code> 为实验性，按 server README 当前参数核对。</li>
+<li>llama.app 与 GitHub 仓的官方关系：README 直连安装入口，归属按站点说明核对。</li>
+</ul></span><span data-en="">
+<ul>
+<li>Full supported-model list: official docs roll with merges; check the repo model pages.</li>
+<li>MCP boundaries: <code>--mcp-servers-json</code> is experimental; check the current server README parameters.</li>
+<li>The official relationship between llama.app and the GitHub repo: the README links the installer, with ownership described on the site.</li>
+</ul></span>
+</div>
+<div class="panel-lead"><span data-zh=""><p><strong>llama.cpp 是整个本地推理生态的地基</strong>：GGUF 格式由它定义，models 站的量化索引按它的口径建。Ollama/LM Studio/KoboldCpp 都在它上面盖楼。</p>
+<p>MIT、纯 C/C++、llama-server 提供官方 REST 线。</p></span><span data-en=""><p><strong>llama.cpp is the bedrock of the entire local-inference ecosystem</strong>: GGUF is defined here, the models-site quant index is built to its yardstick, and Ollama/LM Studio/KoboldCpp all build on top of it. MIT, pure C/C++, with an official REST line via llama-server.</p></span></div>
+<div class="panel is-slim">
+<h2><span data-zh="">适合与不适合</span><span data-en="">When to use it, when not to</span></h2>
+<span data-zh=""> <div><p>适合：要控制量化档、后端与每个参数的用户。也适合消费级 GPU 与 Apple 硅跑 GGUF，给自研工具做推理底座。 不适合要开箱 GUI。也不适合要多模型高并发服务化，那是 vLLM/SGLang 的调度强项。</p></div></span><span data-en=""> <div><p>Fits: fine-grained control (quant tiers/backends/params), GGUF on consumer GPUs and Apple silicon, powering in-house tools. Not a fit: out-of-the-box GUIs; multi-model high-concurrency serving.</p></div></span>
+</div>
+<div class="panel">
+<h2><span data-zh="">中文生态</span><span data-en="">China availability</span> <span class="panel-note"><span data-zh="">国产 / 国内可直接用 / 备案状态 · 快照</span><span data-en="">domestic / direct access / CAC filing · snapshot</span> 2026-11-21</span></h2>
+<dl class="cn-rows">
+<dt><span data-zh="">出品属地</span><span data-en="">Origin</span></dt><dd><span data-zh="">国外出品</span><span data-en="">foreign-made</span>　<span data-zh="">ggml-org（Georgi Gerganov 主导的开源组织）。</span><span data-en="">ggml-org (open-source org led by Georgi Gerganov).</span></dd>
+<dt><span data-zh="">国内使用</span><span data-en="">Direct access</span></dt><dd><span data-zh="">大陆可直连</span><span data-en="">direct OK</span>　<span data-zh="">github.com/ggml-org/llama.cpp 与 llama.app 直连实测 200（2026-10-21）；llama.cpp 顶级域直抓 000（网络受限，非死亡判定）。</span><span data-en="">github.com/ggml-org/llama.cpp and llama.app measured 200 direct (2026-10-21); the llama.cpp apex domain measured 000 (network-limited, not a death verdict).</span></dd>
+<dt><span data-zh="">备案状态</span><span data-en="">CAC filing</span></dt><dd><span data-zh="">未见于备案名单</span><span data-en="">not in filing list</span>：<span data-zh="">未见于网信办公示名单（2026-10-21 检索）；开源项目未面向大陆公众提供服务，备案不适用。</span><span data-en="">not in the CAC public registry (searched 2026-10-21); the open-source project does not serve the mainland public, so filing does not apply.</span></dd>
+</dl>
+<p class="cn-foot"><span data-zh="">备案信息以网信办《生成式人工智能服务已备案信息》公示名单为准（按批次滚动更新，本站只抄编号不解读）；「大陆可直连」是本站从大陆网络直连实测的结果，不是厂商承诺。GitHub 类站点当日实测有波动，口径写在依据里。</span><span data-en="">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</span></p>
+</div>
+<div class="block-head">
+<h2 class="t-h2"><span data-zh="">8 个问题，一张表</span><span data-en="">8 questions, one table</span></h2>
+<p class="t-section-lead">8 <span data-zh="">个问题</span><span data-en="">questions</span>, <span data-zh="">与同类对象逐项可比</span><span data-en="">each comparable item by item with its peers</span>.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt><span data-zh="">模型与开放条件</span><span data-en="">Model &amp; openness</span></dt>
+<dd><span data-zh=""><p>GGUF 生态根。官方 server 支持 F16 与量化模型在 GPU/CPU 推理。模型可从 Hugging Face 取 GGUF，也可自转 safetensors。支持模型族随合入滚动，量化档由社区量化者产出（2026-11-21）。</p></span><span data-en=""><p>The root of the GGUF ecosystem: the official server runs F16 and quantised models on GPU/CPU, with models taken from Hugging Face as GGUF or converted from safetensors; supported model families roll with merges, while quantised files come from community quantisers (2026-11-21).</p></span></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt><span data-zh="">运行位置</span><span data-en="">Where it runs</span></dt>
+<dd><span data-zh=""><p>C/C++ 推理库，另有 <code>llama-server</code>。OpenAI 兼容 <code>/v1/chat/completions</code>、<code>/v1/completions</code>、embeddings 与 responses，另有 Anthropic 兼容 <code>/v1/messages</code>。</p>
+<p>构建后端覆盖 CPU、Metal、SYCL、CUDA、HIP 与 Vulkan，自带 Web UI（2026-11-21）。</p></span><span data-en=""><p>A C/C++ inference library plus <code>llama-server</code>: OpenAI-compatible <code>/v1/chat/completions</code>, <code>/v1/completions</code>, embeddings and responses, and an Anthropic-compatible <code>/v1/messages</code>. Build backends cover CPU, Metal, SYCL, CUDA, HIP and Vulkan, with a built-in web UI (2026-11-21).</p></span></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt><span data-zh="">本地文件</span><span data-en="">Local files</span></dt>
+<dd><span data-zh=""><p>全本地。模型权重、KV cache、对话与生成物都在自有机器。<code>--kv-offload</code> 可把 KV cache 放 GPU，<code>--no-kv-offload</code> 留 CPU。官方无云托管线（2026-11-21）。</p></span><span data-en=""><p>Fully local: model weights, KV cache, conversations and outputs stay on the user’s machine; <code>--kv-offload</code> moves KV cache to GPU while <code>--no-kv-offload</code> keeps it on CPU, and there is no official cloud-hosted line (2026-11-21).</p></span></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt><span data-zh="">关机后的任务</span><span data-en="">Tasks after shutdown</span></dt>
+<dd><span data-zh=""><p><code>llama-server</code> 常驻即服务。连续批处理默认开启。<code>-np/--parallel</code> 配多 slot，<code>--ctx-checkpoints</code> 保留上下文检查点。适合常开进程，托管队列由部署方自建（2026-11-21）。</p></span><span data-en=""><p><code>llama-server</code> is a long-running service: continuous batching is on by default, <code>-np/--parallel</code> sets slot count and <code>--ctx-checkpoints</code> retains context checkpoints. It suits an always-on process, with any hosted queue built by the deployer (2026-11-21).</p></span></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt><span data-zh="">工具与扩展</span><span data-en="">Tools &amp; extensions</span></dt>
+<dd><span data-zh=""><p>工具面强。<code>--jinja</code> 开 OpenAI 风格 function calling 与 tool use。它含原生格式与通用回退，覆盖任意模型。</p>
+<p>实验性 <code>--mcp-servers-json</code> 接 Cursor 兼容 MCP server。<code>--agent</code> 开内置工具与 CORS 代理。</p>
+<p>另有 schema 约束 JSON、多模态、reranking 与监控端点（2026-11-21）。</p></span><span data-en=""><p>A strong tool surface: <code>--jinja</code> enables OpenAI-style function calling/tool use with native formats plus a generic fallback for any model; experimental <code>--mcp-servers-json</code> connects Cursor-compatible MCP servers; <code>--agent</code> enables built-in tools and a CORS proxy; plus schema-constrained JSON, multimodal, reranking and monitoring endpoints (2026-11-21).</p></span></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt><span data-zh="">上下文与记忆</span><span data-en="">Context &amp; memory</span></dt>
+<dd><span data-zh=""><p>上下文按运行参数控制。<code>-c/--ctx-size</code> 设 prompt 窗口，<code>--kv-unified-per-slot</code> 给每个并行 slot 限额。</p>
+<p><code>-ctk/-ctv</code> 可把 KV cache 压到 q8/q4 等类型，<code>--ctx-checkpoints</code> 最多留 32 个检查点（2026-11-21）。</p></span><span data-en=""><p>Context is controlled at launch: <code>-c/--ctx-size</code> sets the prompt window, <code>--kv-unified-per-slot</code> caps each parallel slot, <code>-ctk/-ctv</code> compress KV cache to q8/q4 types and <code>--ctx-checkpoints</code> retains up to 32 checkpoints (2026-11-21).</p></span></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt><span data-zh="">权限与限制</span><span data-en="">Permissions &amp; limits</span></dt>
+<dd><span data-zh=""><p>MIT 许可，本地进程无账号体系。<code>llama-server</code> 用 <code>--api-key</code> 或 <code>--api-key-file</code> 做 Bearer 鉴权。</p>
+<p>MCP/agent 默认关闭。开启时出于安全默认把 CORS 限到 localhost。官方明确提示勿在不可信环境启用（2026-11-21）。</p></span><span data-en=""><p>MIT licensed with no account system for the local process; <code>llama-server</code> authenticates Bearer keys via <code>--api-key</code> or <code>--api-key-file</code>; MCP/agent are off by default and, when enabled, restrict CORS to localhost for safety, with official warnings against untrusted environments (2026-11-21).</p></span></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt><span data-zh="">适合什么任务</span><span data-en="">Best for</span></dt>
+<dd><span data-zh=""><p>适合要细粒度控制的人，包括量化档、后端、上下文与 KV cache。也适合消费级硬件跑 GGUF。</p>
+<p>还适合给下游工具做本地推理底座，在 server 层接 MCP 或工具调用。不适合要开箱 GUI。也不适合要多模型高吞吐服务化，后者 vLLM/SGLang 更强（2026-11-21）。</p></span><span data-en=""><p>Fit: fine-grained control over quantisation, backends, context and KV cache; GGUF on consumer hardware; a local inference base for downstream tools; MCP/tool calling at the server layer. Not fit: turnkey GUIs or high-throughput multi-model serving (vLLM/SGLang are stronger there) (2026-11-21).</p></span></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2><span data-zh="">许可与使用条款</span><span data-en="">Licence and terms of use</span></h2>
+<p><span data-zh="">MIT（官方仓 README 徽章与 LICENSE 一致，2026-10-21 直抓核验；2026-11-21 复核）。</span><span data-en="">MIT (official repo README badge and LICENSE consistent, direct-fetched 2026-10-21).</span></p>
+</div>
+<nav aria-label="使用排查" class="panel is-slim" data-ui-aria-label-en="Troubleshooting" data-ui-aria-label-zh="使用排查">
+<h2><span data-zh="">使用时遇到问题</span><span data-en="">When something fails</span></h2>
+<p><a href="../mcp/guides/failure-library.html#memory"><span data-zh="">模型装不下</span><span data-en="">Model does not fit</span></a> · <a href="../mcp/guides/failure-library.html#latency"><span data-zh="">等待或输出慢</span><span data-en="">Slow response or output</span></a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn"><span data-zh="">头号误解</span><span data-en="">Top misconception</span></h2>
+<ul>
+<li><span data-zh="">把 GGUF 支持面当「所有模型都有量化档」——量化档由第三方量化者产出，看 models 站索引</span><span data-en="">Treating GGUF support as 'every model has a quant build' — quant builds come from third-party quantizers; check the models-site index</span></li>
+<li><span data-zh="">只认命令行——llama-server 是官方 REST 服务线，很多工具在它上面跑</span><span data-en="">Knowing only the CLI — llama-server is the official REST line many tools run on</span></li>
+<li><span data-zh="">用旧域名印象找官网——README 现推 llama.app 安装脚本（2026-10-21 直抓所见）</span><span data-en="">Using an old-domain habit — the README now promotes the llama.app install script (direct-fetched 2026-10-21)</span></li>
+</ul>
+</div>
+<div class="panel">
+<h2><span data-zh="">证据来源</span><span data-en="">Evidence sources</span></h2>
+<p class="t-sm"><span data-zh="">最后核验</span><span data-en="">Checked</span> 2026-11-21，<span data-zh="">内容更新</span><span data-en="">Content updated</span> 2026-11-21。<span data-zh="">只说明这页最后核验的日期，不代表每个字段都在同一天重新查过。</span><span data-en="">This is the date of the entry, not a claim that every field was rechecked that day.</span></p>
+<table class="src">
+<thead><tr><th class="w-20"><span data-zh="">类型</span><span data-en="">Type</span></th><th class="w-52"><span data-zh="">名称</span><span data-en="">Name</span></th><th><span data-zh="">链接</span><span data-en="">Link</span></th></tr></thead>
+<tbody>
+<tr><td>repo</td><td><span data-zh="">ggml-org/llama.cpp · 仓库（MIT；132,794★，最近推送 2026-10-30，GitHub API 核验）</span><span data-en="">ggml-org/llama.cpp — repository (MIT; 132,794 stars, last push 2026-10-30, verified via GitHub API)</span></td><td><a href="https://github.com/ggml-org/llama.cpp" rel="noopener" target="_blank">https://github.com/ggml-org/llama.cpp</a></td></tr>
+<tr><td>changelog</td><td><span data-zh="">ggml-org/llama.cpp · Releases（changelog，含 nightly，2026-11-21 抓取 200）</span><span data-en="">ggml-org/llama.cpp — Releases (changelog including nightly; fetched 200 on 2026-11-21)</span></td><td><a href="https://github.com/ggml-org/llama.cpp/releases" rel="noopener" target="_blank">https://github.com/ggml-org/llama.cpp/releases</a></td></tr>
+<tr><td>docs</td><td><span data-zh="">llama.app · 官方安装入口（API server 与工具调用，2026-11-21 抓取 200）</span><span data-en="">llama.app — official installer docs (API server and tool calling; fetched 200 on 2026-11-21)</span></td><td><a href="https://llama.app/docs/api" rel="noopener" target="_blank">https://llama.app/docs/api</a></td></tr>
+<tr><td>docs</td><td><span data-zh="">llama.cpp · server README（并行 slot、MCP/agent、api-key 与 KV cache 参数，2026-11-21 GitHub API 直取）</span><span data-en="">llama.cpp — server README (parallel slots, MCP/agent, api-key and KV cache parameters; fetched via GitHub API 2026-11-21)</span></td><td><a href="https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md" rel="noopener" target="_blank">https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md</a></td></tr>
+<tr><td>docs</td><td><span data-zh="">llama.cpp · Function Calling 文档（--jinja 与原生/通用工具格式，2026-11-21 GitHub API 直取）</span><span data-en="">llama.cpp — Function Calling docs (--jinja and native/generic tool formats; fetched via GitHub API 2026-11-21)</span></td><td><a href="https://github.com/ggml-org/llama.cpp/blob/master/docs/function-calling.md" rel="noopener" target="_blank">https://github.com/ggml-org/llama.cpp/blob/master/docs/function-calling.md</a></td></tr>
+<tr><td>docs</td><td><span data-zh="">llama.cpp · Build 文档（CPU/Metal/SYCL/CUDA/HIP/Vulkan 后端，2026-11-21 GitHub API 直取）</span><span data-en="">llama.cpp — Build docs (CPU/Metal/SYCL/CUDA/HIP/Vulkan backends; fetched via GitHub API 2026-11-21)</span></td><td><a href="https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md" rel="noopener" target="_blank">https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2><span data-zh="">实测记录</span><span data-en="">Test notes</span></h2>
+<span data-zh=""><p>本档核对官方 server/function-calling/build 文档与仓库许可。吞吐、显存与 MCP 工具链稳定性需按具体硬件与模型实测。</p></span><span data-en=""><p>This entry checks the official server, function-calling and build docs plus the repo licence. Throughput, VRAM and MCP tool-chain stability need testing on specific hardware and models.</p></span>
+</div>
+<div class="panel is-slim">
+<h2><span data-zh="">相关条目</span><span data-en="">Related entries</span></h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="./ollama.html"><span data-zh="">Ollama</span><span data-en="">Ollama</span></a></span><span class="rel-n"><span data-zh="">在 llama.cpp 之上做开箱体验的一代；要底层控制回到本档案。</span><span data-en="">The generation that built an out-of-the-box experience on top of llama.cpp; for low-level control return to this dossier.</span></span></li>
+<li><span class="rel-t"><a href="./koboldcpp.html"><span data-zh="">KoboldCpp</span><span data-en="">KoboldCpp</span></a></span><span class="rel-n"><span data-zh="">基于 llama.cpp 的单文件 GUI 路线。</span><span data-en="">The single-file GUI route built on llama.cpp.</span></span></li>
+<li><span class="rel-t"><a href="/framework/openai-agents-sdk.html"><span data-zh="">OpenAI Agents SDK</span><span data-en="">OpenAI Agents SDK</span></a></span><span class="rel-n"><span data-zh="">另一层 · 框架与运行时</span><span data-en="">Other layer · Frameworks &amp; runtimes</span></span></li>
+<li><span class="rel-t"><a href="/framework/llamaindex.html"><span data-zh="">LlamaIndex Framework</span><span data-en="">LlamaIndex Framework</span></a></span><span class="rel-n"><span data-zh="">另一层 · 框架与运行时</span><span data-en="">Other layer · Frameworks &amp; runtimes</span></span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker"><span data-zh="">同类对照</span><span data-en="">Same-category peers</span></p>
+<h2><span data-zh="">先看这三个，再决定要不要往下读</span><span data-en="">Look at these three before reading further</span></h2>
+<p class="section-desc"><span data-zh="">按用途重合度挑的，不是排名。先比「跑在哪 / 许可 / 状态」，三项里有一项不合格就可以跳过。</span><span data-en="">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</span></p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th><span data-zh="">对象</span><span data-en="">Object</span></th><th><span data-zh="">跑在哪</span><span data-en="">Where</span></th><th><span data-zh="">许可</span><span data-en="">Licence</span></th><th><span data-zh="">证据 / 状态</span><span data-en="">Evidence / status</span></th><th><span data-zh="">适合做什么</span><span data-en="">What it is for</span></th></tr></thead>
+<tbody><tr><td><a href="./exllamav3.html"><span data-zh="">ExLlamaV3</span><span data-en="">ExLlamaV3</span></a></td><td><span data-zh="">本地 / 自托管</span><span data-en="">Local / self-hosted</span></td><td><span data-zh="">开源许可</span><span data-en="">Open licence</span></td><td><span data-zh="">8 项已核</span><span data-en="">8 questions checked</span><br/><span class="td-vendor"><span data-zh="">活跃</span><span data-en="">Active</span></span></td><td class="td-fit"><span data-zh="">ExLlamaV3 是 ExLlamaV2 的接续线。</span><span data-en="">The successor to ExLlamaV2: low-latency local inference on NVIDIA GPUs u</span></td></tr><tr><td><a href="./localai.html"><span data-zh="">LocalAI</span><span data-en="">LocalAI</span></a></td><td><span data-zh="">本地 / 自托管</span><span data-en="">Local / self-hosted</span></td><td><span data-zh="">开源许可</span><span data-en="">Open licence</span></td><td><span data-zh="">8 项已核</span><span data-en="">8 questions checked</span><br/><span class="td-vendor"><span data-zh="">活跃</span><span data-en="">Active</span></span></td><td class="td-fit"><span data-zh="">LocalAI 是「换 URL 就转本地」的多模态运行时：单二进制 OpenAI 兼容前置。</span><span data-en="">LocalAI is the 'change the URL and go local' multimodal runtime: a singl</span></td></tr><tr><td><a href="./mlc-llm.html"><span data-zh="">MLC LLM</span><span data-en="">MLC LLM</span></a></td><td><span data-zh="">本地 / 自托管</span><span data-en="">Local / self-hosted</span></td><td><span data-zh="">开源许可</span><span data-en="">Open licence</span></td><td><span data-zh="">8 项已核</span><span data-en="">8 questions checked</span><br/><span class="td-vendor"><span data-zh="">活跃</span><span data-en="">Active</span></span></td><td class="td-fit"><span data-zh="">MLC LLM：编译式跨平台推理引擎，许可证 Apache-2.0。仓库 23,284★，最近推送 2026-1</span><span data-en="">MLC LLM: a compile-to-native cross-platform inference engine (Apache-2.0</span></td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<p class="fine mt-6">
+<span data-zh="">本页由</span><span data-en="">This page is generated from the</span> <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> <span data-zh="">数据层生成（CC BY 4.0）。</span><span data-en="">data layer (CC BY 4.0).</span>
+<span data-zh="">判断标准与方法说明见仓库内</span><span data-en="">For the judging criteria and method notes, see</span> <code>METHODOLOGY.md</code>.
       </p>
-    </div>
-  </main>
-  <footer class="site-footer foot-single">
-    <div class="container foot-line">
-      <div class="foot-brand">
-        <span class="foot-brand-main">
-          <span class="brand-dot" aria-hidden="true"></span>
-          <span class="foot-copy"><span data-zh>投机取巧 · specul.com</span><span data-en>Specul · specul.com</span></span>
-        </span>
-        <span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt"><span data-zh>内容 CC BY 4.0</span><span data-en>Content CC BY 4.0</span></a><span class="sep" aria-hidden="true">·</span><a href="https://specul.com/LICENSE.txt"><span data-zh>代码 MIT</span><span data-en>Code MIT</span></a><span class="sep" aria-hidden="true">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>源码</span><span data-en>Source</span></a></span>
-      </div>
-      <nav class="foot-sites" aria-label="Footer site links">
-        <a class="site-link" href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://tools.specul.com/"><span data-zh>工具</span><span data-en>Tools</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://demos.specul.com/"><span data-zh>演示</span><span data-en>Demos</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://oss.specul.com/"><span data-zh>开源</span><span data-en>OSS</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://hardware.specul.com/"><span data-zh>算力</span><span data-en>Compute</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://papers.specul.com/"><span data-zh>论文</span><span data-en>Papers</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://nav.specul.com/"><span data-zh>导航</span><span data-en>Directory</span></a>
-      </nav>
-      <nav class="foot-legal" aria-label="Legal and corrections">
-        <a href="https://specul.com/legal.html"><span data-zh>法律</span><span data-en>Legal</span></a><span class="sep" aria-hidden="true">·</span>
-        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私</span><span data-en>Privacy</span></a><span class="sep" aria-hidden="true">·</span>
-        <a href="https://specul.com/correct.html"><span data-zh>纠错</span><span data-en>Corrections</span></a>
-      </nav>
-    </div>
-  </footer>
-<nav class="nav-tabbar nav-tabbar-1row" aria-label="快捷导航">
-    <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
-    <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学AI</span><span data-en>Learn</span></a>
-    <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
-    <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
-    <a href="https://demos.specul.com/"><span class="ti" aria-hidden="true">▷</span><span data-zh>演示</span><span data-en>Demos</span></a>
-    <a href="https://oss.specul.com/"><span class="ti" aria-hidden="true">▧</span><span data-zh>开源</span><span data-en>OSS</span></a>
-    <a href="https://hardware.specul.com/"><span class="ti" aria-hidden="true">▣</span><span data-zh>算力</span><span data-en>Chips</span></a>
-    <a href="https://papers.specul.com/"><span class="ti" aria-hidden="true">▥</span><span data-zh>论文</span><span data-en>Papers</span></a>
-    <a href="https://chain.specul.com/"><span class="ti" aria-hidden="true">◇</span><span data-zh>链</span><span data-en>Chain</span></a>
-    <a href="https://nav.specul.com/" data-nav-group="external"><span class="ti" aria-hidden="true">↗</span><span data-zh>导航</span><span data-en>Nav</span></a>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy"><span data-zh="">投机取巧 · specul.com</span><span data-en="">Specul · specul.com</span></span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt"><span data-zh="">内容 CC BY 4.0</span><span data-en="">Content CC BY 4.0</span></a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt"><span data-zh="">代码 MIT</span><span data-en="">Code MIT</span></a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank"><span data-zh="">源码</span><span data-en="">Source</span></a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/"><span data-zh="">首页</span><span data-en="">Home</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/"><span data-zh="">学 AI</span><span data-en="">Learn</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/"><span data-zh="">工具</span><span data-en="">Tools</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/"><span data-zh="">模型</span><span data-en="">Models</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/"><span data-zh="">演示</span><span data-en="">Demos</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/"><span data-zh="">开源</span><span data-en="">OSS</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/"><span data-zh="">算力</span><span data-en="">Compute</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/"><span data-zh="">论文</span><span data-en="">Papers</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/"><span data-zh="">链</span><span data-en="">Chain</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/"><span data-zh="">导航</span><span data-en="">Directory</span></a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/legal.html"><span data-zh="">法律</span><span data-en="">Legal</span></a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/legal.html#s8"><span data-zh="">隐私</span><span data-en="">Privacy</span></a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/correct.html"><span data-zh="">纠错</span><span data-en="">Corrections</span></a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/"><span aria-hidden="true" class="ti">◎</span><span data-zh="">首页</span><span data-en="">Home</span></a>
+<a href="https://learn.specul.com/"><span aria-hidden="true" class="ti">▤</span><span data-zh="">学AI</span><span data-en="">Learn</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span aria-hidden="true" class="ti">◈</span><span data-zh="">工具</span><span data-en="">Tools</span></a>
+<a href="https://models.specul.com/"><span aria-hidden="true" class="ti">▦</span><span data-zh="">模型</span><span data-en="">Models</span></a>
+<a href="https://demos.specul.com/"><span aria-hidden="true" class="ti">▷</span><span data-zh="">演示</span><span data-en="">Demos</span></a>
+<a href="https://oss.specul.com/"><span aria-hidden="true" class="ti">▧</span><span data-zh="">开源</span><span data-en="">OSS</span></a>
+<a href="https://hardware.specul.com/"><span aria-hidden="true" class="ti">▣</span><span data-zh="">算力</span><span data-en="">Chips</span></a>
+<a href="https://papers.specul.com/"><span aria-hidden="true" class="ti">▥</span><span data-zh="">论文</span><span data-en="">Papers</span></a>
+<a href="https://chain.specul.com/"><span aria-hidden="true" class="ti">◇</span><span data-zh="">链</span><span data-en="">Chain</span></a>
+<a data-nav-group="external" href="https://nav.specul.com/"><span aria-hidden="true" class="ti">↗</span><span data-zh="">导航</span><span data-en="">Nav</span></a>
 </nav>
 </body>
 </html>

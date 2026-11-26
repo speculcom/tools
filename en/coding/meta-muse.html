@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Meta Muse | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/meta-muse.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/meta-muse.html" property="og:url"/>
+<meta content="Meta Muse | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Meta Muse | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/coding/meta-muse.html","sameAs":"https://about.fb.com/news/2026/09/introducing-muse/","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Meta Muse | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/meta-muse.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/meta-muse.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/meta-muse.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/meta-muse.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#0866FF"'>ME</div>
+<div>
+<h1>Meta Muse</h1>
+<div class="vendor is-caps">Meta</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Coding agent</span>
+<span class="tag on">Cloud</span>
+<span class="tag on">Vendor cloud</span>
+<span class="tag on">Always-on</span>
+<span class="tag on">Approval</span>
+<span class="tag on">Memory</span>
+<span class="tag on">Payments</span>
+<span class="tag on">Free tier</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>A design with a separate agent handling approval — two system-isolated things run on…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Cloud / API · Vendor cloud</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Context-window size (no official numbers at all)</li>
+<li>Sentinel decision criteria and misjudgment handling</li>
+<li>Launch timing and form of the Confidential VM</li>
+<li>VM backup retention duration, and its interplay with deletion semantics</li>
+<li>Availability and feature differences outside the US</li>
+<li>Where the boundary of the free tier's "most of what people need" lies</li>
+</ul>
+</div>
+<div class="panel-lead"><p><strong>A design with a separate agent handling approval</strong> — two system-isolated things run on the Muse Secure VM: Muse doing the work, and Sentinel able to veto it.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p><strong>Fits</strong> (official positioning): everyday tasks plus longer goals — booking travel by email and similar work with no learning cost. The official emphasis on "no learning curve" is what most distinguishes it from the other two.</p></div>
+<div class="warn-p"><p><strong>Not a fit for</strong>: people who need to read or write local project files (not the same category of thing); anyone needing it at launch (officially rolling out in the US; the AI glasses form is "coming soon"); people who need a guarantee that "not even Meta can read it" (<strong>the Confidential VM is not shipped</strong>).</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　the official news page about.fb.com measured 200 direct; the product ships inside Meta apps, which were not probed separately.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p><strong>The model is vendor-assigned</strong> — <strong>official wording</strong>: "powered by Muse Spark, Meta's most capable model to date, built for real-world agentic work like this".</p>
+<p>Muse Spark is a separate Meta model name (the Meta Careers page lists <strong>official wording</strong>: "Muse Spark · natively multimodal reasoning, visual chain of thought and multi-agent orchestration" as its own entry).</p>
+<p><strong>There is no model-selection entry point.</strong> The same model name also appears in AI-glasses release notes (Muse Spark on Meta Ray-Ban Display) — it is reused across form factors.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p><strong>The answer to "what form is it" is the product itself</strong>: the official wording says Muse runs on a <strong>Muse Secure VM</strong>, described officially as <strong>official wording</strong>: "a dedicated, virtual machine (VM) that houses both the agent and a person's data", and <strong>official wording</strong>: "Every Muse user's VM is isolated so no one else's agent can access it" (see the Help Centre page).</p>
+<p><strong>The entry-point story differs from local agents</strong>: the official pages stress <strong>official wording</strong>: "talking to it works just like messaging another person, in the Muse app or directly in WhatsApp" — <strong>WhatsApp is one of the entry points</strong>, a clear difference from the other two vendors.</p>
+<p>Launch channels: iOS / Android / muse.ai, US first, officially <strong>official wording</strong>: "coming soon to AI glasses".</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>It is not designed to read or write files on your machine</strong>; the official text never mentions the local file system.</p>
+<p>All data lives in the Muse Secure VM.</p>
+<p>The official pages add a data-minimization promise for app connections (Help Centre page): <strong>"For example, connecting your email allows Muse to search your email"</strong> <strong>"but it won't download your whole inbox (unless you tell it to)"</strong>.</p>
+<p><strong>This sentence is a concrete boundary the official pages give on the data side, worth noting separately.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>The official pages state the after-close behavior explicitly</strong>, more concrete than just "always on": <strong>official wording</strong>: "For tasks that take more time, Muse keeps working after people close the app, and comes back when something changes or when it needs approval, like before it sends an email or makes a purchase".</p>
+<p>i.e. <strong>continuous background work + callbacks only for approvals</strong>.</p>
+<p><strong>The "come back" triggers are listed officially in three classes</strong> (Help Centre approval page):</p>
+<ul><li>Task progress (status bar shows "Is working" / "Making something" / "Is updating memory" live)</li><li>Scheduled tasks or reminders coming due (inside the assistant icon, <strong>Upcoming</strong> lists scheduled tasks and reminders, and each scheduled task can have its own approval setting)</li><li>And the moment your approval is needed</li></ul>
+<p>One official sentence uses "proactively": <strong>official wording</strong>: "a personal AI agent that proactively helps with people's goals and suggests ideas" and it can <strong>official wording</strong>: "make suggestions unprompted".</p>
+<p><strong>The trigger source is not only your commands</strong> — the Help Centre Connector page describes reverse pushes: <strong>official wording</strong>: "Some Connectors can also share information proactively with Muse. For example, calendar Connectors can update Muse automatically when there are changes in your schedule", and <strong>such Connectors are flagged before connection</strong>.</p>
+<p><strong>Read-only or read-write during autonomous background work? This entry gives a mechanism, not an original sentence</strong> (supplemented 2026-10-03). Under the default permission tier <strong>official wording</strong>: "your Muse will ask for permission before every write action and important read actions" while the Connector page says the default state is <strong>official wording</strong>: "Muse will not take <strong>many important actions</strong>, like sending an email, without your approval" (note: many, not every).</p>
+<p>The combined consequence is clear: <strong>during background work reads keep running as usual, and any write must come back to the foreground and wait for approval</strong> — which matches the launch page's <strong>official wording</strong>: "comes back ... when it needs approval, like before it sends an email or makes a purchase".</p>
+<p><strong>This is not an official sentence saying "background is read-only"; it is a mechanism conclusion derived from two permission clauses</strong>, and unlike Dot where read-only is stated outright, <strong>do not quote them as the same sentence</strong>.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>The payment tool is the most distinctive item, and the official pages name the partner</strong>: <strong>official wording</strong>: "Muse can checkout with Link built by Stripe, and it is the first AI agent covered by Link's purchase protections", including free coverage for damaged or lost items, price-drop protection, no-fee returns, and a return guarantee on eligible purchases.</p>
+<p>The mechanism per the official pages: <strong>official wording</strong>: "Link's wallet for agents generates a one-time-use card so your real card details stay hidden".</p>
+<p>Shop Pay <strong>official wording</strong>: "coming soon", plus 1Password support (also reusing logins you already have).</p>
+<p>Browser capability is stated officially: <strong>official wording</strong>: "It can open a browser, fill out forms, and negotiate on their behalf".</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>The memory mechanism is one of the official selling points</strong>: <strong>official wording</strong>: "Muse also remembers what matters to a person, so it can make suggestions unprompted and act on details that person only mentioned once"</p>
+<p>The official examples are concrete (turning a recipe reel saved on Instagram into a shopping list, re-sending an invitation after remembering a friend's dietary restrictions).</p>
+<p>The Help Centre adds a sentence pinning down the <strong>source</strong> of memory: <strong>official wording</strong>: "Muse is designed to remember context from your conversations, so you can refer back to things you've discussed before"</p>
+<p>— i.e. conversations themselves are a first-class memory source, not only things you explicitly ask it to remember.</p>
+<p><strong>The storage form is written officially as inspectable files, not a black box</strong>: <strong>official wording</strong>: "You can find out what Muse remembers about you at any time by asking directly, or by viewing files like your MEMORY.md".</p>
+<p>The forget skill mechanism is also spelled out, with an <strong>official hedge</strong> attached: <strong>official wording</strong>: "Forgetting works by asking Muse to look for information about a specific person, topic or matter in its memories and supporting files and remove it <strong>to the best of its ability</strong>"</p>
+<p><strong>"To the best of its ability" is not a guarantee of complete erasure</strong>, and this hedge deserves separate note.</p>
+<p><strong>The deletion side also has official mechanisms</strong>: <strong>official wording</strong>: "You can delete any message you send to Muse, Side Chats with Muse, and files in your virtual machine"</p>
+<p>Reset is supported, as is forgetting a specific topic (forget skill).</p>
+<p>The official pages also warn about residue: <strong>official wording</strong>: "Muse may still remember information it learned from what you deleted"</p>
+<p><strong>This qualifier is worth noting: deletion does not erase what was already learned.</strong></p>
+<p><strong>Residue has more than the deletion path (supplemented 2026-10-03)</strong>. Disconnecting a Connector does not clear memory either. <strong>official wording</strong>: "Information that Muse previously used to perform tasks with that Connector might still remain in Muse's memories and your conversation history".</p>
+<p><strong>By contrast, reset is the hard boundary</strong>: <strong>official wording</strong>: "Resetting Muse permanently deletes all information, chat history, files and active tasks. <strong>This cannot be undone.</strong>"</p>
+<p>⚠ <strong>The context-window size is not published officially</strong>; no official number has been seen.</p>
+<p>One engineering detail is mentioned but not expanded: the VM <strong>official wording</strong>: "maintains backups to help protect your agent's history from data loss"</p>
+<p>— <strong>a backup mechanism exists, but neither page says how long backups are kept or how they interplay with deletion semantics.</strong></p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>This entry's most distinctive design: an independent Sentinel agent performs approvals.</strong></p>
+<p><strong>official wording</strong>: "A separate Sentinel agent runs on that same machine, kept apart from Muse at the system level. Nothing Muse does reaches the internet unless the Sentinel approves it, and it asks the person for permission when needed"</p>
+<p><strong>i.e. approval is not judged by Muse itself but by another agent system-level isolated from it.</strong></p>
+<p>This differs in implementation from Dot's "auto-review" (Dot never states whether its reviewer is independent).</p>
+<p>The rest: asking before sensitive actions (sending email, purchases); <strong>official wording</strong>: "Muse shows people a complete audit trail of everything it has done and plans to do" (<strong>the audit surface is broader than Dot's activity view — it includes "plans to do"</strong>);</p>
+<p>users choose apps and permission granularity themselves: <strong>official wording</strong>: "for things like email, people choose what Muse can do, whether it reads their mail or can also send on their behalf";</p>
+<p><strong>credential isolation</strong>: <strong>official wording</strong>: "Muse has no visibility into people's passwords or payment methods. Any credentials a person shares with Muse go into secure storage", and <strong>official wording</strong>: "Muse also cannot see passwords a person types into the browser themselves";</p>
+<p>the Help Centre details the mechanism: three checks before using credentials (whether the service is the expected one, whether you authorized it, whether you granted permission for this kind of action);</p>
+<p><strong>training toggle</strong>: <strong>official wording</strong>: "People can also opt out of their interactions being used to train Meta's AI models" (the Help Centre page adds: on by default, changeable anytime, and changes also apply to historical interactions; when on, some identifying information such as names/emails/phones/SSNs is still removed and decoupled from the account);</p>
+<p><strong>not shared with the ads system</strong>. Both official Muse statements say conversations and VM data do not go to Meta's ads system. The Help Centre page adds: the same holds even if other Meta products are linked in Accounts Center.</p>
+<p><strong>⚠ The official pages themselves admit prompt injection is unsolved (supplemented 2026-10-03, first-hand wording)</strong>: <strong>official wording</strong> (four sentences quoted together): "Websites, emails, files and connected services can contain instructions intended to manipulate an AI agent." "This is sometimes called a prompt injection attack." "Muse uses multiple protections to help detect and resist these attempts." "These include model training, automated detection systems, and limits on the information and services Muse can access during a task."</p>
+<p><strong>The key sentence</strong>: <strong>official wording</strong>: "Important permission and security checks operate separately from the AI model, meaning that they don't rely only on Muse recognizing that an instruction may be malicious."</p>
+<p>— <strong>the official pages admit "the model itself recognizing a malicious instruction" is not enough as a backstop</strong>. This matches the Sentinel design motivation.</p>
+<p>The official pages also state, as expected, <strong>official wording</strong>: "No automated system is perfect", and ask users to review activity themselves.</p>
+<p><strong>⚠ Custom Connectors are a risk opening flagged by the official pages themselves (supplemented 2026-10-03)</strong>: users can have Muse build a connector on the spot, and the official pages immediately warn: <strong>official wording</strong>: "Meta doesn't review custom connectors or how they use your information, so grant access with caution and review the provider's privacy policies."</p>
+<p>— <strong>this is an official admission of a review blind spot</strong>, which must be counted when evaluating third-party integrations.</p>
+<p>Permission convergence in the other direction also has official clauses: <strong>official wording</strong>: "Many Connectors can also be set up so that Muse is only able to retrieve data, but not take actions (like sending a calendar invite)"</p>
+<p>— <strong>read-only connectors are an official de-escalation option.</strong></p>
+<p>⚠ The Help Centre page contains one <strong>not-yet-implemented promise</strong>: Muse Confidential VM. The official wording says <strong>official wording</strong>: "In the future / Later this year", i.e. <strong>the whole VM encrypted with a key only the user holds, unreadable even to Meta</strong> — <strong>currently unavailable</strong>.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>The official positioning is <strong>official wording</strong>: "for billions of people worldwide, so there's no learning curve", and the named scenarios are concrete: everyday errands like sending email and booking travel, plus bigger goals (selling a car for more, lowering bills, adjusting training plans as life changes).</p>
+<p><strong>Does not fit</strong>: people who need local project-file read/write (a completely different capability circle); people in the EU/UK etc. who need it at launch (official wording says <strong>official wording</strong>: "rolling out in the US"); people needing a Confidential-VM-grade "even the vendor cannot read it" guarantee (<strong>not yet implemented</strong>).</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Treating Confidential VM as a shipping feature — the official docs say Later this year; it is not live</li>
+<li>Treating Sentinel as "Muse asking first" — it is a separately isolated system agent</li>
+<li>Assuming deleting a message erases the memory — the official docs say it may still recall what it learned</li>
+<li>Reading "free for most" as free for everything — the boundary is not quantified and subscription pricing was not verified</li>
+<li>Describing Muse's background permission as "the docs say read-only" — what they give is a mechanism (writes must be approved), not a read-only statement</li>
+<li>Assuming disconnecting a Connector clears the related memory — the docs say it might still remain</li>
+<li>Assuming forget skill guarantees erasure — the wording is "to the best of its ability"</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-03。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>official</td><td>Meta · Introducing Muse: The World's First Personal AI Agent Built for Everyone (official Newsroom launch page, 2026-09-08, body of 7,655 words captured section by section)</td><td><a href="https://about.fb.com/news/2026/09/introducing-muse/" rel="noopener" target="_blank">https://about.fb.com/news/2026/09/introducing-muse/</a></td></tr>
+<tr><td>docs</td><td>Meta Help Centre · How Muse handles your privacy, safety and security (VM isolation / Sentinel / Secure Credentials / training toggle / audit / official prompt-injection admission / deletion and forget semantics)</td><td><a href="https://www.meta.com/help/1047255454427887/" rel="noopener" target="_blank">https://www.meta.com/help/1047255454427887/</a></td></tr>
+<tr><td>docs</td><td>Meta Help Centre · How Muse works with your guidance and approval (read vs write action definitions / two permission tiers / five approval options / Activity log / Upcoming / reversibility)</td><td><a href="https://meta.com/help/1385290430137537/" rel="noopener" target="_blank">https://meta.com/help/1385290430137537/</a></td></tr>
+<tr><td>docs</td><td>Meta Help Centre · How Muse works with Connectors (Connector mechanism / read-only connectors / official warning on custom connectors / memory residue after disconnect)</td><td><a href="https://meta.com/help/1687253048996149/" rel="noopener" target="_blank">https://meta.com/help/1687253048996149/</a></td></tr>
+<tr><td>changelog</td><td>Meta · Meta AI glasses release notes (Muse Spark cross-form reuse, launch regions)</td><td><a href="https://meta.com/help/1809764829519902/" rel="noopener" target="_blank">https://meta.com/help/1809764829519902/</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong>: a <strong>same-topic contrast with OpenAI Dot</strong> is the only meaningful design — both launched the same period with close positioning. The differences concentrate in <code>permissions</code> (Sentinel vs auto-review) and <code>context</code> (whether training is on by default).</p>
+<p>Neither needs benchmarks, just reading settings pages + observing behavior, but <strong>measurement requires a paid subscription</strong> (Muse currently launches in the US).</p>
+</div>
+<div class="panel is-slim">
+<h2>Key design differences from Dot (two same-period dossiers, the most worthwhile contrast)</h2>
+<div class="tbl-wrap"><table><thead><tr><th></th><th>OpenAI Dot</th><th>Meta Muse</th></tr></thead><tbody><tr><td>Who approves</td><td>"auto-review", <strong>independence of the reviewer not stated</strong></td><td><strong>independent Sentinel agent</strong>, system-level isolation from Muse</td></tr><tr><td>How strict is approval</td><td>"certain sensitive tasks like changing passwords always require you personally" (translated)</td><td>"Nothing Muse does reaches the internet unless the Sentinel approves it"</td></tr><tr><td>Audit surface</td><td>activity view for progress</td><td>"complete audit trail of everything it has done <strong>and plans to do</strong>"</td></tr><tr><td>Credentials</td><td>uses stored passwords, not exposed to the model</td><td>Secure Credentials Store, and it cannot see passwords the user types</td></tr><tr><td>Entry points</td><td>ChatGPT / Slack / Teams / text (iMessage/RCS beta)</td><td><strong>WhatsApp</strong> (like messaging another person)</td></tr><tr><td>Can it pay</td><td>not written on the launch page</td><td><strong>yes</strong>, Stripe Link, with purchase protections</td></tr><tr><td>Training toggle</td><td>personal plans choose</td><td>Help Centre: "on by default, can be turned off, changes also apply to history" (translated)</td></tr><tr><td>Background autonomy permissions</td><td><strong>officially stated read-only</strong></td><td><strong>writes must return to the foreground for approval</strong> (derived from the default tier's "every write action needs permission"; no official "background is read-only" sentence)</td></tr></tbody></table></div>
+<p><strong>The last row deserves separate emphasis</strong>: Dot's official pages <strong>explicitly state</strong> read-only; Muse's do <strong>not</strong> have that sentence. After this supplemental verification, Muse yields a <strong>mechanism-level conclusion</strong> (the default permission tier requires permission for every write action, so during background work writes must come back to the foreground and wait for approval), <strong>not an original "background is read-only" sentence</strong>. The two differ in strength; do not mix them when quoting — this boundary must still be held.</p>
+</div>
+<div class="panel is-slim">
+<h2>Sentinel: an independent veto layer</h2>
+<pre class="code"><code>A separate Sentinel agent runs on that same machine, kept apart from Muse
+at the system level. Nothing Muse does reaches the internet unless the
+Sentinel approves it, and it asks the person for permission when needed.</code></pre>
+<p><strong>The weight of this sentence lies in "kept apart at the system level"</strong> — not a prompt-level constraint ("please check compliance first"), but another process/agent isolated at the system layer.</p>
+<p>Implication: <strong>Muse cannot grant itself a pass.</strong> This is a design of completely different strength from "relying on the model's own judgment about whether to ask".</p>
+</div>
+<div class="panel is-slim">
+<h2>A broader audit surface than Dot: includes "plans to do"</h2>
+<pre class="code"><code>Muse shows people a complete audit trail of everything it has done
+and plans to do.</code></pre>
+<p><strong>Note <code>and plans to do</code></strong> — what is audited is not only actions that happened but planned actions too. This intervenes one step earlier than "reading logs after the fact" (the user can see what it plans to do before it acts).</p>
+</div>
+<div class="panel is-slim">
+<h2>Deletion is not erasure (as the official pages themselves warn)</h2>
+<pre class="code"><code>You can delete any message you send to Muse, Side Chats with Muse,
+and files in your virtual machine.
+...
+After you delete something from Muse, Muse may still remember information
+it learned from what you deleted.</code></pre>
+<p>The official pages provide the forget skill (asking it to forget a topic/person/interaction), and you can inspect <code>MEMORY.md</code> to see what it remembers.</p>
+<p><strong>But the "may still remember after deletion" sentence is written by the official pages themselves</strong> — meaning <strong>data deletion rights and model memory are two separate lines</strong>; the former does not automatically cover the latter. This must be examined separately in compliance assessments.</p>
+</div>
+<div class="panel is-slim">
+<h2>Confidential VM: written down, but not shipped yet</h2>
+<pre class="code"><code>Later this year, Meta will introduce Muse Confidential VM, where the whole VM,
+including a person's data and conversations with Muse, is encrypted with a key
+only they hold, so not even Meta can access it.</code></pre>
+<p><strong>The official wording is Later this year / In the future — currently unavailable.</strong></p>
+<p>If this were written into a selection conclusion as an existing feature, that would be treating a promise as fact. This site marks it clearly: not implemented.</p>
+</div>
+<div class="panel is-slim">
+<h2>Payments: the only one whose official pages name a payment partner</h2>
+<pre class="code"><code>Muse can checkout with Link built by Stripe, and it is the first AI agent
+covered by Link's purchase protections: free coverage for damaged or lost items,
+price drops, no-fee returns, and a return guarantee on eligible purchases.
+Link's wallet for agents generates a one-time-use card so your real card details
+stay hidden.</code></pre>
+<p>The mechanism is worth noting: <strong>one-time-use card + checkout on the user's behalf</strong>, so real card numbers stay hidden. Shop Pay coming soon, plus 1Password support (also reusing existing logins).</p>
+<p><strong>Compared with the other two</strong>: neither Dot's nor Grok Bot's official launch pages mention the agent paying directly. This is the only one of the three with an official payment-path statement.</p>
+</div>
+<div class="panel is-slim">
+<h2>Concrete boundaries on the data side</h2>
+<p>The Help Centre page has a very concrete promise worth copying down:</p>
+<pre class="code"><code>For example, connecting your email allows Muse to search your email,
+but it won't download your whole inbox (unless you tell it to).</code></pre>
+<p><strong>"Connecting email does not mean hauling away the whole inbox"</strong> — this is the official least-privilege example.</p>
+<p>Two more explicit promises:</p>
+<ul><li>Conversations and VM data are not shared with Meta's ads system (<strong>even when other Meta products are linked in Accounts Center</strong>)</li><li>Secure Credentials Store: credentials go into the vault, usable by Muse but invisible to it; and <strong>it cannot see passwords the user types into the browser themselves</strong></li></ul>
+</div>
+<div class="panel is-slim">
+<h2>Collection limitations</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Page</th><th>Status</th></tr></thead><tbody><tr><td>Meta Newsroom launch page</td><td>✅ Playwright captured 7,655 words; all nine dimensions evidenced from the body</td></tr><tr><td>Help Centre · privacy/safety/security</td><td>✅ <strong>full page body captured 2026-10-03</strong> (~2,400 words); <code>permissions</code> / <code>context</code> quotes re-verified verbatim</td></tr><tr><td>Help Centre · guidance and approval</td><td>✅ <strong>full page body captured 2026-10-03</strong> (~1,500 words); approval tiers / options / reversibility come from this page</td></tr><tr><td>Help Centre · how Muse works with Connectors</td><td>✅ <strong>full page body captured 2026-10-03</strong> (~900 words); custom-connector risk comes from this page</td></tr><tr><td>Meta AI glasses release notes</td><td>⚠️ used only to confirm Muse Spark cross-form reuse and regional statements</td></tr><tr><td>Meta Careers (Muse Spark technical description)</td><td>⚠️ summary only captured</td></tr></tbody></table></div>
+<p><strong>⚠️ One inconsistency in evidence method, recorded honestly</strong>: all three Help Centre pages are <strong>full page bodies returned by the search interface</strong>. Direct <code>WebFetch</code> of meta.com still fails from this machine. The bodies are complete and quotable verbatim, but <strong>were not rendered and captured locally</strong> — for formal external citation they should be re-verified once more.</p>
+<p><strong>Confidence remains partial, but the reasons have changed twice</strong>: before the supplement it was because <strong>"Help Centre direct capture timed out, only search summaries obtained"</strong>; after the supplement all three bodies are in, and what remains is <strong>data the vendor simply has not published</strong> — context-window size, Sentinel decision criteria.</p>
+</div>
+<div class="panel is-slim">
+<h2>Three official self-acknowledged risks worth noting separately</h2>
+<p>The biggest gain from this supplemental verification is not what was filled in but <strong>three limitations the official pages themselves admit</strong>:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Official wording</th><th>Implication</th></tr></thead><tbody><tr><td>"No automated system is perfect"</td><td>the official pages do not promise the approval layer is free of misjudgment</td></tr><tr><td>"they don't rely only on Muse recognizing that an instruction may be malicious"</td><td><strong>official admission that the model judging alone is not enough as a backstop</strong></td></tr><tr><td>"Meta doesn't review custom connectors or how they use your information"</td><td><strong>official admission of a review blind spot for custom connectors</strong></td></tr></tbody></table></div>
+<p>The second sentence corroborates the Sentinel design: <strong>approval is placed outside the model precisely because the official pages themselves consider "the model can recognize malicious instructions" unreliable.</strong></p>
+</div>
+<div class="panel is-slim">
+<h2>Residual memory has four paths; only reset is a hard boundary</h2>
+<p>Previously only "may still remember after deletion" was recorded. The 2026-10-08 check adds the second path — <strong>disconnecting a Connector does not clear memory either</strong>:</p>
+<pre class="code"><code>Information that Muse previously used to perform tasks with that Connector
+might still remain in Muse's memories and your conversation history.</code></pre>
+<div class="tbl-wrap"><table><thead><tr><th>Operation</th><th>What it clears</th><th>Official wording</th></tr></thead><tbody><tr><td>Delete messages / Side Chats / VM files</td><td>that interaction and files</td><td>"may still remember information it learned from what you deleted"</td></tr><tr><td>forget skill</td><td>a specified person / topic / matter</td><td>"remove it <strong>to the best of its ability</strong>" (best effort, not a guarantee)</td></tr><tr><td>Disconnect a Connector</td><td>stops data exchange</td><td>"might still remain in Muse's memories"</td></tr><tr><td><strong>reset</strong></td><td>all information, chat history, files, active tasks</td><td>"<strong>This cannot be undone.</strong>"</td></tr></tbody></table></div>
+<p><strong>This must be examined separately in data-deletion assessments</strong>: in the official wording the first three all leave room; only reset is deterministic.</p>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/openai-dot.html">OpenAI Dot</a></span><span class="rel-n"><strong>released the same period, must-read contrast</strong> (different approval-layer designs)</span></li>
+<li><span class="rel-t"><a href="/en/coding/grok-bot.html">xAI Grok Bot</a></span><span class="rel-n">released the same period, the third vendor</span></li>
+<li><span class="rel-t"><a href="/en/coding/codex-ide.html">Codex (IDE extension)</a></span><span class="rel-n">the local-CLI contrast (the machine is yours)</span></li>
+<li><span class="rel-t"><a href="/en/framework/crewai.html">CrewAI</a></span><span class="rel-n">Other layer · Frameworks &amp; runtimes</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/augment-code.html">Augment Code</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Augment Code is the enterprise 'software factory' platform: Cosmos turns</td></tr><tr><td><a href="/en/coding/grok-bot.html">xAI Grok Bot</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">The official page explains uses through a list of jobs. It does not disc</td></tr><tr><td><a href="/en/coding/jules.html">Jules</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Nothing installs locally: the work runs on a Google Cloud VM and lands a</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from Meta</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/chat/meta-ai.html"><span class="vp-cat">General chat</span>Meta AI</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

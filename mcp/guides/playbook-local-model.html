@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Playbook: running a model on your own machine — 深水指南 | 投机取巧</title>
-  <meta name="description" content="任务：在自己的机器上跑一个模型：显存、量化档、runtime、评估、监控五步。含体积算式、量化索引、失败模式与验收单。" />
-  <link rel="canonical" href="https://tools.specul.com/mcp/guides/playbook-local-model.html" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Playbook: running a model on your own machine" />
-  <meta property="og:url" content="https://tools.specul.com/mcp/guides/playbook-local-model.html" />
-  <meta property="og:title" content="Playbook: running a model on your own machine — 深水指南 | 投机取巧" />
-  <meta property="og:description" content="任务：在自己的机器上跑一个模型：显存、量化档、runtime、评估、监控五步。含体积算式、量化索引、失败模式与验收单。" />
-  <meta property="og:image" content="https://specul.com/home-shots/og-home.jpg?v=20261123d" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:locale" content="zh_CN" />
-  <meta property="og:locale:alternate" content="en_US" />
-  <meta name="theme-color" content="#16121f" />
-  <link rel="icon" type="image/png" href="../../assets/brand/dandelion-favicon-site.png" />
-  <link rel="apple-touch-icon" href="../../assets/brand/dandelion-apple-touch-site.png" />
-  <script src="../../brand.js?v=37d1072be69b"></script>
-  <link rel="stylesheet" href="../../brand.css?v=37d1072be69b" />
-  <link rel="stylesheet" href="../../site.css" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Playbook: running a model on your own machine","description":"Five steps — VRAM, quantization tier, runtime, evaluation, monitoring — with a size formula, the quantization index, failure modes and an acceptance list.","dateModified":"2026-11-03"}</script>
-</head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Playbook: running a model on your own machine — 深水指南 | 投机取巧</title>
+<meta content="任务：在自己的机器上跑一个模型：显存、量化档、runtime、评估、监控五步。含体积算式、量化索引、失败模式与验收单。" name="description"/>
+<link href="https://tools.specul.com/mcp/guides/playbook-local-model.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Playbook: running a model on your own machine" property="og:site_name"/>
+<meta content="https://tools.specul.com/mcp/guides/playbook-local-model.html" property="og:url"/>
+<meta content="Playbook: running a model on your own machine — 深水指南 | 投机取巧" property="og:title"/>
+<meta content="任务：在自己的机器上跑一个模型：显存、量化档、runtime、评估、监控五步。含体积算式、量化索引、失败模式与验收单。" property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="zh_CN" property="og:locale"/>
+<meta content="en_US" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="../../assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="../../assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="../../brand.js?v=37d1072be69b"></script>
+<link href="../../brand.css?v=37d1072be69b" rel="stylesheet"/>
+<link href="../../site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Playbook: running a model on your own machine","description":"Five steps — VRAM, quantization tier, runtime, evaluation, monitoring — with a size formula, the quantization index, failure modes and an acceptance list.","dateModified":"2026-11-03"}</script>
+<link href="https://tools.specul.com/mcp/guides/playbook-local-model.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/guides/playbook-local-model.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/guides/playbook-local-model.html" hreflang="x-default" rel="alternate"/></head>
 <!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
      同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
      而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
@@ -32,212 +32,208 @@
      ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
      （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
 <body class="brand-ambient has-tabbar has-tabbar-1row">
-  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
-  <header class="site-header">
-    <div class="container site-bar">
-      <a class="brand" href="https://specul.com/" title="投机取巧">
-        <span class="brand-dot" aria-hidden="true"></span>
-        <span class="brand-text">
-          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
-          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
-        </span>
-      </a>
-      <nav class="nav-links" aria-label="站点导航">
-        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
-        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
-        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>工具</span><span data-en>Tools</span></a>
-        <a href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a>
-        <a href="https://demos.specul.com/"><span data-zh>作品演示</span><span data-en>Playground</span></a>
-        <a href="https://oss.specul.com/"><span data-zh>开源库</span><span data-en>OSS</span></a>
-        <a href="https://hardware.specul.com/"><span data-zh>硬件算力</span><span data-en>Compute</span></a>
-        <a href="https://papers.specul.com/"><span data-zh>AI 论文</span><span data-en>AI Papers</span></a>
-        <a href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a>
-        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
-      </nav>
-      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+<a class="t-skip" href="#main"><span data-zh="">跳到主要内容</span><span data-en="">Skip to main content</span></a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" data-en-name="Speculative Speculation" data-zh-name="投机取巧" id="markName">投机取巧</span>
+<span class="brand-sub" data-en-sub="" data-zh-sub="Speculative Speculation" id="markSub">Speculative Speculation</span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/"><span data-zh="">首页</span><span data-en="">Home</span></a>
+<a href="https://learn.specul.com/"><span data-zh="">学 AI</span><span data-en="">Learn</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span data-zh="">工具</span><span data-en="">Tools</span></a>
+<a href="https://models.specul.com/"><span data-zh="">模型</span><span data-en="">Models</span></a>
+<a href="https://demos.specul.com/"><span data-zh="">作品演示</span><span data-en="">Playground</span></a>
+<a href="https://oss.specul.com/"><span data-zh="">开源库</span><span data-en="">OSS</span></a>
+<a href="https://hardware.specul.com/"><span data-zh="">硬件算力</span><span data-en="">Compute</span></a>
+<a href="https://papers.specul.com/"><span data-zh="">AI 论文</span><span data-en="">AI Papers</span></a>
+<a href="https://chain.specul.com/"><span data-zh="">链</span><span data-en="">Chain</span></a>
+<a href="https://nav.specul.com/"><span data-zh="">AI 导航</span><span data-en="">AI Directory</span></a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
            放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
            （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
            链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
-      <span class="nav-tools">
-        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
-        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
-        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
-      </span>
-      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+<span class="nav-tools">
+<a aria-label="搜索" class="icon-btn" data-ui-aria-label-en="Search" data-ui-aria-label-zh="搜索" data-ui-title-en="Search all sites" data-ui-title-zh="搜索全站" href="https://specul.com/search.html" title="搜索全站"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="Switch to English" class="icon-btn" href="/en/mcp/guides/playbook-local-model.html" hreflang="en" id="langBtn" lang="en" title="Switch to English">EN</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
            行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
            无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
            「导航被藏进一个点了没反应的按钮」。 -->
-      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
-        <i></i><i></i><i></i>
-      </button>
-    </div>
-  </header>
-  <div class="nav-scrim"></div>
-  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
-    <div class="nav-drawer-h">
-      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
-      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
-      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
-    </div>
-    <nav class="nav-drawer-list">
-      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>工具</span><span data-en>Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://models.specul.com/"><span><span data-zh>模型</span><span data-en>Models</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://demos.specul.com/"><span><span data-zh>作品演示</span><span data-en>Playground</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://oss.specul.com/"><span><span data-zh>开源库</span><span data-en>OSS</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://hardware.specul.com/" class="nav-group-start"><span><span data-zh>硬件算力</span><span data-en>Compute</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://papers.specul.com/"><span><span data-zh>AI 论文</span><span data-en>AI Papers</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://chain.specul.com/"><span><span data-zh>链</span><span data-en>Chain</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://nav.specul.com/" class="nav-group-start" data-nav-group="external"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">↗</span></a>
-    </nav>
-    <div class="nav-drawer-foot">
-      <p><span data-zh>内容站覆盖学、用、选、跑；AI 导航是站外的 AI 网站目录，点出去看。</span><span data-en>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</span></p>
-      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
-    </div>
-  </aside>
-  <main id="main">
-    <div class="container detail">
-      <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
-      <div class="detail-head">
-        <div>
-          <h1><span data-zh>任务：在自己的机器上跑一个模型</span><span data-en>Playbook: running a model on your own machine</span></h1>
-          <div class="vendor is-caps"><span data-zh>规划</span><span data-en>Planning</span></div>
-        </div>
-      </div>
-      <div class="panel-lead"><span data-zh><p>显存、量化档、runtime、评估、监控五步。含体积算式、量化索引、失败模式与验收单。</p></span><span data-en><p>Five steps — VRAM, quantization tier, runtime, evaluation, monitoring — with a size formula, the quantization index, failure modes and an acceptance list.</p></span></div>
-
-
-
-
-      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>显存：先算再下</span><span data-en>VRAM: calculate before downloading</span></a></li><li><a href="#guide-section-1"><span data-zh>量化档：按索引选</span><span data-en>Quantization: use the index</span></a></li><li><a href="#guide-section-2"><span data-zh>Runtime：按硬件选</span><span data-en>Runtime: match the hardware</span></a></li><li><a href="#guide-section-3"><span data-zh>评估：三类任务各 20 条</span><span data-en>Evaluate: 20 cases per task</span></a></li><li><a href="#guide-section-4"><span data-zh>监控：上线后看什么</span><span data-en>Monitor after launch</span></a></li><li><a href="#guide-section-5"><span data-zh>成本算式</span><span data-en>Cost formula</span></a></li><li><a href="#guide-section-6"><span data-zh>验收单</span><span data-en>Acceptance checklist</span></a></li><li><a href="#guide-section-7"><span data-zh>常见失败模式</span><span data-en>Failure modes</span></a></li><li><a href="#guide-section-8"><span data-zh>贯穿案例：先算内存，再尝试启动</span><span data-en>Worked example: budget memory before starting</span></a></li></ul></nav>
-      <div class="panel is-slim" id="guide-section-0">
-        <h2><span data-zh>显存：先算再下</span><span data-en>VRAM: calculate before downloading</span></h2>
-        <span data-zh><p><strong>一句话</strong>：以下 KV 算式只做常规注意力缓存的简化预算。不适用于所有架构或缓存实现。GB 按十进制计，GiB = 字节 / 2^30。</p>
-            <pre class="code"><code>权重体积 GB ≈ 参数量(B) × bpw / 8
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name"><span data-zh="">投机取巧</span><span data-en="">Speculative Speculation</span></span>
+<span class="brand-sub" data-en-sub="" data-zh-sub="Speculative Speculation">Speculative Speculation</span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/"><span><span data-zh="">首页</span><span data-en="">Home</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/"><span><span data-zh="">学 AI</span><span data-en="">Learn</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span><span data-zh="">工具</span><span data-en="">Tools</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/"><span><span data-zh="">模型</span><span data-en="">Models</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/"><span><span data-zh="">作品演示</span><span data-en="">Playground</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/"><span><span data-zh="">开源库</span><span data-en="">OSS</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/"><span><span data-zh="">硬件算力</span><span data-en="">Compute</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/"><span><span data-zh="">AI 论文</span><span data-en="">AI Papers</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/"><span><span data-zh="">链</span><span data-en="">Chain</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/"><span><span data-zh="">AI 导航</span><span data-en="">AI Directory</span></span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p><span data-zh="">内容站覆盖学、用、选、跑；AI 导航是站外的 AI 网站目录，点出去看。</span><span data-en="">Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</span></p>
+<nav><a href="https://specul.com/legal.html"><span data-zh="">法律条款</span><span data-en="">Legal terms</span></a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<a class="back" href="../">← <span data-zh="">深水指南</span><span data-en="">Guides</span></a>
+<div class="detail-head">
+<div>
+<h1><span data-zh="">任务：在自己的机器上跑一个模型</span><span data-en="">Playbook: running a model on your own machine</span></h1>
+<div class="vendor is-caps"><span data-zh="">规划</span><span data-en="">Planning</span></div>
+</div>
+</div>
+<div class="panel-lead"><span data-zh=""><p>显存、量化档、runtime、评估、监控五步。含体积算式、量化索引、失败模式与验收单。</p></span><span data-en=""><p>Five steps — VRAM, quantization tier, runtime, evaluation, monitoring — with a size formula, the quantization index, failure modes and an acceptance list.</p></span></div>
+<nav aria-label="文章目录" class="panel is-slim" data-ui-aria-label-en="Article contents" data-ui-aria-label-zh="文章目录"><p><span data-zh="">按问题阅读</span><span data-en="">On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh="">显存：先算再下</span><span data-en="">VRAM: calculate before downloading</span></a></li><li><a href="#guide-section-1"><span data-zh="">量化档：按索引选</span><span data-en="">Quantization: use the index</span></a></li><li><a href="#guide-section-2"><span data-zh="">Runtime：按硬件选</span><span data-en="">Runtime: match the hardware</span></a></li><li><a href="#guide-section-3"><span data-zh="">评估：三类任务各 20 条</span><span data-en="">Evaluate: 20 cases per task</span></a></li><li><a href="#guide-section-4"><span data-zh="">监控：上线后看什么</span><span data-en="">Monitor after launch</span></a></li><li><a href="#guide-section-5"><span data-zh="">成本算式</span><span data-en="">Cost formula</span></a></li><li><a href="#guide-section-6"><span data-zh="">验收单</span><span data-en="">Acceptance checklist</span></a></li><li><a href="#guide-section-7"><span data-zh="">常见失败模式</span><span data-en="">Failure modes</span></a></li><li><a href="#guide-section-8"><span data-zh="">贯穿案例：先算内存，再尝试启动</span><span data-en="">Worked example: budget memory before starting</span></a></li></ul></nav>
+<div class="panel is-slim" id="guide-section-0">
+<h2><span data-zh="">显存：先算再下</span><span data-en="">VRAM: calculate before downloading</span></h2>
+<span data-zh=""><p><strong>一句话</strong>：以下 KV 算式只做常规注意力缓存的简化预算。不适用于所有架构或缓存实现。GB 按十进制计，GiB = 字节 / 2^30。</p>
+<pre class="code"><code>权重体积 GB ≈ 参数量(B) × bpw / 8
 KV 字节 ≈ 2 × 层数 × KV 头数 × 头维度 × 每请求缓存 tokens × 每元素字节数 × 并发请求数
 总预算 ≈ 权重 + KV 缓存 + 运行器与系统开销 + 自定余量</code></pre>
-            <ul><li>7B 参数按纯 4-bit 算约为 3.5 GB。实际文件还含量化与其他数据，以文件字节数为准。</li><li>先定上下文长度，再定量化档；只按参数量算会低估。</li><li>GQA/MQA 使用 KV 头数，不直接套查询头数。运行器开销与余量按配置记录，不预设通用百分比。</li></ul></span><span data-en><p>The KV formula below is a simplified budget for conventional attention caches, not every architecture or implementation. GB is decimal; GiB = bytes / 2^30.</p>
-            <pre class="code"><code>Weight GB ≈ parameters in billions × bits per weight / 8
+<ul><li>7B 参数按纯 4-bit 算约为 3.5 GB。实际文件还含量化与其他数据，以文件字节数为准。</li><li>先定上下文长度，再定量化档；只按参数量算会低估。</li><li>GQA/MQA 使用 KV 头数，不直接套查询头数。运行器开销与余量按配置记录，不预设通用百分比。</li></ul></span><span data-en=""><p>The KV formula below is a simplified budget for conventional attention caches, not every architecture or implementation. GB is decimal; GiB = bytes / 2^30.</p>
+<pre class="code"><code>Weight GB ≈ parameters in billions × bits per weight / 8
 KV bytes ≈ 2 × layers × KV heads × head dimension × cached tokens per request
          × bytes per element × concurrent requests
 Total budget ≈ weights + KV cache + runtime/system overhead + chosen headroom</code></pre>
-            <ul><li>Seven billion parameters at pure four-bit precision are about 3.5 GB; use actual file bytes for quantisation metadata and other contents.</li><li>Choose context requirements before a tier; parameter count alone underestimates running memory.</li><li>For GQA/MQA use KV heads, not query heads. Record overhead and headroom for the configuration rather than a universal percentage.</li></ul></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-1">
-        <h2><span data-zh>量化档：按索引选</span><span data-en>Quantization: use the index</span></h2>
-        <span data-zh><p>本站 models 站快照（2026-10-30）：<strong>129 个量化仓、1,262 个量化档、1,337 个 GGUF 文件</strong>。</p>
-            <ol><li value="1">按可用内存筛候选，同时预算缓存、并发与运行器。</li><li value="2">核对基座版本、量化方法、来源与发布说明，不能只按发布者名字判断质量。</li><li value="3">同档多文件时核对总体积、bpw、分片是否齐全与运行器兼容性。</li><li value="4">先验证一个条件清楚的候选，再按任务决定是否比较其他档。</li></ol></span><span data-en><p>The 2026-10-30 snapshot contains <strong>129 quantisation repositories, 1,262 variants and 1,337 GGUF files</strong>.</p>
-            <ol><li value="1">Filter against available memory, including cache, concurrency and runtime.</li><li value="2">Check base version, quantisation method, provenance and release notes; publisher name alone does not establish quality.</li><li value="3">Check total size, bits per weight, complete shards and runtime compatibility.</li><li value="4">Validate one clearly specified candidate before deciding whether to compare others.</li></ol></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-2">
-        <h2><span data-zh>Runtime：按硬件选</span><span data-en>Runtime: match the hardware</span></h2>
-        <span data-zh><div class="tbl-wrap"><table><thead><tr><th>硬件</th><th>候选路线</th><th>需要核对</th></tr></thead><tbody><tr><td>Apple 硅</td><td>LM Studio（MLX）或 llama.cpp</td><td>模型架构、格式与统一内存预算</td></tr><tr><td>单张 NVIDIA</td><td>LM Studio、llama.cpp 或 ExLlamaV3</td><td>GPU/驱动支持。GGUF 与 EXL3 不是同一格式</td></tr><tr><td>多卡 / 并发</td><td>vLLM 等服务运行器</td><td>并行配置、架构与量化格式支持</td></tr><tr><td>CPU / 边缘</td><td>llama.cpp 等本地运行器</td><td>内存、架构支持与任务响应要求</td></tr></tbody></table></div>
-            <ul><li>按图形界面、脚本或服务化需求选择路线；这不是性能排序。</li><li>注意工具许可证与权重许可证是两份文件。</li></ul></span><span data-en><div class="tbl-wrap"><table><thead><tr><th>Hardware</th><th>Candidate paths</th><th>Check</th></tr></thead><tbody><tr><td>Apple silicon</td><td>LM Studio with MLX, or llama.cpp</td><td>Architecture, format and unified-memory budget</td></tr><tr><td>One NVIDIA GPU</td><td>LM Studio, llama.cpp or ExLlamaV3</td><td>GPU/driver support; GGUF and EXL3 are different formats</td></tr><tr><td>Multiple GPUs/concurrency</td><td>Serving runtimes such as vLLM</td><td>Parallel configuration, architecture and quantisation support</td></tr><tr><td>CPU/edge</td><td>Local runtimes such as llama.cpp</td><td>Memory, supported architectures and response requirements</td></tr></tbody></table></div>
-            <ul><li>Choose according to GUI, scripting or serving needs; this is not a performance ranking.</li><li>Tool and model licences are separate.</li></ul></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-3">
-        <h2><span data-zh>评估：三类任务各 20 条</span><span data-en>Evaluate: 20 cases per task</span></h2>
-        <span data-zh><p>下面以三类各 20 条为教学安排。实际样本按业务任务、边界情况与风险设计，这不是通用验收规模。</p>
-            <ol><li value="1"><strong>准备 60 条真实任务</strong>：问答、摘要、代码各 20 条，带标准答案。</li><li value="2"><strong>跑三档</strong>：Q4、Q5、Q8（或模型提供的相邻档），记录质量与速度。</li><li value="3"><strong>看四个指标</strong>：正确率、幻觉率、首 token 延迟、tokens/s。</li><li value="4"><strong>选档结论</strong>：写清「为什么这个档够用」，不要只写「感觉不错」。</li></ol>
-            <p><strong>失败模式</strong>：只测一个 prompt；真实任务一上就崩。</p></span><span data-en><p>Twenty cases in each of three categories is an illustrative exercise, not a universal acceptance-set size. Choose real task and boundary coverage for the risk.</p>
-            <ol><li value="1">Prepare an illustrative 60 tasks: Q&amp;A, summaries and code, 20 each, with expected answers.</li><li value="2">Compare Q4/Q5/Q8, or available neighbouring tiers, recording quality and speed.</li><li value="3">Record correctness, hallucinations, first-token delay and tokens per second.</li><li value="4">Explain why the chosen tier satisfies the task rather than saying it “feels good”.</li></ol>
-            <p><strong>Failure mode</strong>: checking one prompt leaves real task failures undiscovered.</p></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-4">
-        <h2><span data-zh>监控：上线后看什么</span><span data-en>Monitor after launch</span></h2>
-        <span data-zh><ul><li>显存峰值、tokens/s、首 token 延迟、错误率。</li><li>优先记录必要的长度、耗时与错误。哈希也可能关联原文，不能当作自动匿名化。明确日志访问权限与保留范围。</li><li>模型或量化档更新时，重跑评估集再切换。</li></ul></span><span data-en><ul><li>Peak memory, output throughput, first-token delay and error rates.</li><li>Prefer necessary lengths, timings and errors in logs. Hashes can still link back to input; they are not automatic anonymisation. Define access and retention.</li><li>Rerun the task set before changing the model or quantisation.</li></ul></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-5">
-        <h2><span data-zh>成本算式</span><span data-en>Cost formula</span></h2>
-        <span data-zh><pre class="code"><code>一次性：硬件 + 下载流量 + 调试时间
+<ul><li>Seven billion parameters at pure four-bit precision are about 3.5 GB; use actual file bytes for quantisation metadata and other contents.</li><li>Choose context requirements before a tier; parameter count alone underestimates running memory.</li><li>For GQA/MQA use KV heads, not query heads. Record overhead and headroom for the configuration rather than a universal percentage.</li></ul></span>
+</div>
+<div class="panel is-slim" id="guide-section-1">
+<h2><span data-zh="">量化档：按索引选</span><span data-en="">Quantization: use the index</span></h2>
+<span data-zh=""><p>本站 models 站快照（2026-10-30）：<strong>129 个量化仓、1,262 个量化档、1,337 个 GGUF 文件</strong>。</p>
+<ol><li value="1">按可用内存筛候选，同时预算缓存、并发与运行器。</li><li value="2">核对基座版本、量化方法、来源与发布说明，不能只按发布者名字判断质量。</li><li value="3">同档多文件时核对总体积、bpw、分片是否齐全与运行器兼容性。</li><li value="4">先验证一个条件清楚的候选，再按任务决定是否比较其他档。</li></ol></span><span data-en=""><p>The 2026-10-30 snapshot contains <strong>129 quantisation repositories, 1,262 variants and 1,337 GGUF files</strong>.</p>
+<ol><li value="1">Filter against available memory, including cache, concurrency and runtime.</li><li value="2">Check base version, quantisation method, provenance and release notes; publisher name alone does not establish quality.</li><li value="3">Check total size, bits per weight, complete shards and runtime compatibility.</li><li value="4">Validate one clearly specified candidate before deciding whether to compare others.</li></ol></span>
+</div>
+<div class="panel is-slim" id="guide-section-2">
+<h2><span data-zh="">Runtime：按硬件选</span><span data-en="">Runtime: match the hardware</span></h2>
+<span data-zh=""><div class="tbl-wrap"><table><thead><tr><th>硬件</th><th>候选路线</th><th>需要核对</th></tr></thead><tbody><tr><td>Apple 硅</td><td>LM Studio（MLX）或 llama.cpp</td><td>模型架构、格式与统一内存预算</td></tr><tr><td>单张 NVIDIA</td><td>LM Studio、llama.cpp 或 ExLlamaV3</td><td>GPU/驱动支持。GGUF 与 EXL3 不是同一格式</td></tr><tr><td>多卡 / 并发</td><td>vLLM 等服务运行器</td><td>并行配置、架构与量化格式支持</td></tr><tr><td>CPU / 边缘</td><td>llama.cpp 等本地运行器</td><td>内存、架构支持与任务响应要求</td></tr></tbody></table></div>
+<ul><li>按图形界面、脚本或服务化需求选择路线；这不是性能排序。</li><li>注意工具许可证与权重许可证是两份文件。</li></ul></span><span data-en=""><div class="tbl-wrap"><table><thead><tr><th>Hardware</th><th>Candidate paths</th><th>Check</th></tr></thead><tbody><tr><td>Apple silicon</td><td>LM Studio with MLX, or llama.cpp</td><td>Architecture, format and unified-memory budget</td></tr><tr><td>One NVIDIA GPU</td><td>LM Studio, llama.cpp or ExLlamaV3</td><td>GPU/driver support; GGUF and EXL3 are different formats</td></tr><tr><td>Multiple GPUs/concurrency</td><td>Serving runtimes such as vLLM</td><td>Parallel configuration, architecture and quantisation support</td></tr><tr><td>CPU/edge</td><td>Local runtimes such as llama.cpp</td><td>Memory, supported architectures and response requirements</td></tr></tbody></table></div>
+<ul><li>Choose according to GUI, scripting or serving needs; this is not a performance ranking.</li><li>Tool and model licences are separate.</li></ul></span>
+</div>
+<div class="panel is-slim" id="guide-section-3">
+<h2><span data-zh="">评估：三类任务各 20 条</span><span data-en="">Evaluate: 20 cases per task</span></h2>
+<span data-zh=""><p>下面以三类各 20 条为教学安排。实际样本按业务任务、边界情况与风险设计，这不是通用验收规模。</p>
+<ol><li value="1"><strong>准备 60 条真实任务</strong>：问答、摘要、代码各 20 条，带标准答案。</li><li value="2"><strong>跑三档</strong>：Q4、Q5、Q8（或模型提供的相邻档），记录质量与速度。</li><li value="3"><strong>看四个指标</strong>：正确率、幻觉率、首 token 延迟、tokens/s。</li><li value="4"><strong>选档结论</strong>：写清「为什么这个档够用」，不要只写「感觉不错」。</li></ol>
+<p><strong>失败模式</strong>：只测一个 prompt；真实任务一上就崩。</p></span><span data-en=""><p>Twenty cases in each of three categories is an illustrative exercise, not a universal acceptance-set size. Choose real task and boundary coverage for the risk.</p>
+<ol><li value="1">Prepare an illustrative 60 tasks: Q&amp;A, summaries and code, 20 each, with expected answers.</li><li value="2">Compare Q4/Q5/Q8, or available neighbouring tiers, recording quality and speed.</li><li value="3">Record correctness, hallucinations, first-token delay and tokens per second.</li><li value="4">Explain why the chosen tier satisfies the task rather than saying it “feels good”.</li></ol>
+<p><strong>Failure mode</strong>: checking one prompt leaves real task failures undiscovered.</p></span>
+</div>
+<div class="panel is-slim" id="guide-section-4">
+<h2><span data-zh="">监控：上线后看什么</span><span data-en="">Monitor after launch</span></h2>
+<span data-zh=""><ul><li>显存峰值、tokens/s、首 token 延迟、错误率。</li><li>优先记录必要的长度、耗时与错误。哈希也可能关联原文，不能当作自动匿名化。明确日志访问权限与保留范围。</li><li>模型或量化档更新时，重跑评估集再切换。</li></ul></span><span data-en=""><ul><li>Peak memory, output throughput, first-token delay and error rates.</li><li>Prefer necessary lengths, timings and errors in logs. Hashes can still link back to input; they are not automatic anonymisation. Define access and retention.</li><li>Rerun the task set before changing the model or quantisation.</li></ul></span>
+</div>
+<div class="panel is-slim" id="guide-section-5">
+<h2><span data-zh="">成本算式</span><span data-en="">Cost formula</span></h2>
+<span data-zh=""><pre class="code"><code>一次性：硬件 + 下载流量 + 调试时间
 持续：电费 + 维护 + 评估复跑
 对比云端：按同一期间分开计算输入/输出、缓存、工具与固定费用</code></pre>
-            <p>不预置电价与报价。用 <a href="https://tools.specul.com/mcp/guides/cost-calculator.html" target="_blank" rel="noopener">成本计算器</a> 填写相同期间的假设。已有硬件、分摊与维护会改变结论，不能仅由调用量推断哪种更省。</p></span><span data-en><pre class="code"><code>Initial: hardware, transfer and setup time
+<p>不预置电价与报价。用 <a href="https://tools.specul.com/mcp/guides/cost-calculator.html" rel="noopener" target="_blank">成本计算器</a> 填写相同期间的假设。已有硬件、分摊与维护会改变结论，不能仅由调用量推断哪种更省。</p></span><span data-en=""><pre class="code"><code>Initial: hardware, transfer and setup time
 Recurring: electricity, maintenance and reevaluation
 Cloud comparison: input/output, caching, tools and fixed costs over the same period</code></pre>
-            <p>No electricity rates or quotations are prefilled. Use the <a href="https://tools.specul.com/mcp/guides/cost-calculator.html" target="_blank" rel="noopener">cost calculator</a> with comparable periods. Existing hardware, allocation and maintenance can change the outcome; usage alone does not determine which is cheaper.</p></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-6">
-        <h2><span data-zh>验收单</span><span data-en>Acceptance checklist</span></h2>
-        <span data-zh><ul><li>[ ] 容量预算包含权重、KV 缓存、并发、开销与自定余量，单位一致</li><li>[ ] 量化档与量化仓有版本记录</li><li>[ ] runtime 许可证与模型许可证分别核对</li><li>[ ] 约定的评估集完成，四指标与未覆盖情况有记录</li><li>[ ] 选定档位写出理由</li><li>[ ] 监控指标与告警阈值就绪</li><li>[ ] 更新模型时的回滚方案就绪</li></ul></span><span data-en><ul><li>[ ] Consistent-unit capacity budget includes weights, KV cache, concurrency, overhead and chosen headroom.</li><li>[ ] Quantisation and repository versions recorded.</li><li>[ ] Runtime and model licences checked separately.</li><li>[ ] Agreed task set completed, four metrics and uncovered cases recorded.</li><li>[ ] Tier choice explained.</li><li>[ ] Monitoring and alert thresholds defined.</li><li>[ ] Rollback plan ready for updates.</li></ul></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-7">
-        <h2><span data-zh>常见失败模式</span><span data-en>Failure modes</span></h2>
-        <span data-zh><ul><li><strong>只算权重</strong>：忘了 KV 缓存，长上下文直接 OOM。</li><li><strong>混淆参数口径</strong>：总参与激活参数不同，不能直接代替内存或速度结论。</li><li><strong>许可混淆</strong>：工具 MIT，权重却是非商用。</li><li><strong>无评估集</strong>：换档后质量下降没人发现。</li><li><strong>无监控</strong>：上线后显存峰值把机器拖死。</li></ul></span><span data-en><ul><li>Weights alone: context cache causes an OOM that the budget missed.</li><li>Parameter confusion: total and active parameters do not directly establish memory or speed.</li><li>Licence confusion: an MIT tool does not determine a model&#39;s commercial rights.</li><li>No evaluation set: quality changes go unnoticed.</li><li>No monitoring: peak memory failures are discovered only after deployment.</li></ul></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-8">
-        <h2 id="worked-example"><span data-zh>贯穿案例：先算内存，再尝试启动</span><span data-en>Worked example: budget memory before starting</span></h2>
-        <span data-zh><p>以下数字是假设的容量练习，不对应某款模型，也不是性能测量。</p>
-            <p>设设备可用预算为 10 GiB，候选权重为 6 GiB。先预留 2 GiB 给上下文缓存，1 GiB 给运行时，其余 1 GiB 作为余量。合计 9 GiB 是初步预算，不是一定能启动的保证。</p>
-            <p>接下来核对文件来源、许可、运行器与架构支持。先用短输入检查能否加载、是否有不支持的算子，以及真实内存占用。再逐渐增加上下文。每一步记录错误和响应时间。</p>
-            <p>装不下时，先分清是权重、缓存还是其他程序占用。再评估更小规格、不同量化或运行器支持的卸载。能启动但响应不满足任务要求，也应记录为未通过。</p>
-            <p>具体计算与单位见 <a href="https://models.specul.com/guides/gpu-cost-math.html" target="_blank" rel="noopener">硬件预算示例</a>。</p></span><span data-en><p>These are hypothetical capacity figures, not a named model or measured performance.</p>
-            <p>Assume a 10 GiB available budget and 6 GiB of weights. Reserve 2 GiB for context cache and 1 GiB for runtime, leaving 1 GiB headroom. The 9 GiB estimate is not a startup guarantee.</p>
-            <p>Check file provenance, licensing, runtime and architecture support. Start with short input and inspect loading, unsupported operations and actual memory. Increase context gradually, recording errors and response times.</p>
-            <p>If it does not fit, identify weights, cache and other applications separately. Assess smaller variants, quantizations or supported offload. Startup with unacceptable response time also fails the task.</p>
-            <p>See the <a href="https://models.specul.com/guides/gpu-cost-math.html" target="_blank" rel="noopener">hardware-budget example</a> for units and calculation.</p></span>
-      </div>
-<nav class="panel is-slim" aria-label="接下来做什么" data-ui-aria-label-zh="接下来做什么" data-ui-aria-label-en="What to do next">
-<h2><span data-zh>接下来做什么</span><span data-en>What to do next</span></h2><ul>
-<li><a href="toolkit-worksheets.html"><span data-zh>记录约束、验收与未确认项</span><span data-en>Record constraints, acceptance and unknowns</span></a></li>
-<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh>核对结果与来源</span><span data-en>Verify the result and its sources</span></a></li>
-<li><a href="failure-library.html#by-symptom"><span data-zh>按症状排查失败</span><span data-en>Troubleshoot by symptom</span></a></li>
+<p>No electricity rates or quotations are prefilled. Use the <a href="https://tools.specul.com/mcp/guides/cost-calculator.html" rel="noopener" target="_blank">cost calculator</a> with comparable periods. Existing hardware, allocation and maintenance can change the outcome; usage alone does not determine which is cheaper.</p></span>
+</div>
+<div class="panel is-slim" id="guide-section-6">
+<h2><span data-zh="">验收单</span><span data-en="">Acceptance checklist</span></h2>
+<span data-zh=""><ul><li>[ ] 容量预算包含权重、KV 缓存、并发、开销与自定余量，单位一致</li><li>[ ] 量化档与量化仓有版本记录</li><li>[ ] runtime 许可证与模型许可证分别核对</li><li>[ ] 约定的评估集完成，四指标与未覆盖情况有记录</li><li>[ ] 选定档位写出理由</li><li>[ ] 监控指标与告警阈值就绪</li><li>[ ] 更新模型时的回滚方案就绪</li></ul></span><span data-en=""><ul><li>[ ] Consistent-unit capacity budget includes weights, KV cache, concurrency, overhead and chosen headroom.</li><li>[ ] Quantisation and repository versions recorded.</li><li>[ ] Runtime and model licences checked separately.</li><li>[ ] Agreed task set completed, four metrics and uncovered cases recorded.</li><li>[ ] Tier choice explained.</li><li>[ ] Monitoring and alert thresholds defined.</li><li>[ ] Rollback plan ready for updates.</li></ul></span>
+</div>
+<div class="panel is-slim" id="guide-section-7">
+<h2><span data-zh="">常见失败模式</span><span data-en="">Failure modes</span></h2>
+<span data-zh=""><ul><li><strong>只算权重</strong>：忘了 KV 缓存，长上下文直接 OOM。</li><li><strong>混淆参数口径</strong>：总参与激活参数不同，不能直接代替内存或速度结论。</li><li><strong>许可混淆</strong>：工具 MIT，权重却是非商用。</li><li><strong>无评估集</strong>：换档后质量下降没人发现。</li><li><strong>无监控</strong>：上线后显存峰值把机器拖死。</li></ul></span><span data-en=""><ul><li>Weights alone: context cache causes an OOM that the budget missed.</li><li>Parameter confusion: total and active parameters do not directly establish memory or speed.</li><li>Licence confusion: an MIT tool does not determine a model's commercial rights.</li><li>No evaluation set: quality changes go unnoticed.</li><li>No monitoring: peak memory failures are discovered only after deployment.</li></ul></span>
+</div>
+<div class="panel is-slim" id="guide-section-8">
+<h2 id="worked-example"><span data-zh="">贯穿案例：先算内存，再尝试启动</span><span data-en="">Worked example: budget memory before starting</span></h2>
+<span data-zh=""><p>以下数字是假设的容量练习，不对应某款模型，也不是性能测量。</p>
+<p>设设备可用预算为 10 GiB，候选权重为 6 GiB。先预留 2 GiB 给上下文缓存，1 GiB 给运行时，其余 1 GiB 作为余量。合计 9 GiB 是初步预算，不是一定能启动的保证。</p>
+<p>接下来核对文件来源、许可、运行器与架构支持。先用短输入检查能否加载、是否有不支持的算子，以及真实内存占用。再逐渐增加上下文。每一步记录错误和响应时间。</p>
+<p>装不下时，先分清是权重、缓存还是其他程序占用。再评估更小规格、不同量化或运行器支持的卸载。能启动但响应不满足任务要求，也应记录为未通过。</p>
+<p>具体计算与单位见 <a href="https://models.specul.com/guides/gpu-cost-math.html" rel="noopener" target="_blank">硬件预算示例</a>。</p></span><span data-en=""><p>These are hypothetical capacity figures, not a named model or measured performance.</p>
+<p>Assume a 10 GiB available budget and 6 GiB of weights. Reserve 2 GiB for context cache and 1 GiB for runtime, leaving 1 GiB headroom. The 9 GiB estimate is not a startup guarantee.</p>
+<p>Check file provenance, licensing, runtime and architecture support. Start with short input and inspect loading, unsupported operations and actual memory. Increase context gradually, recording errors and response times.</p>
+<p>If it does not fit, identify weights, cache and other applications separately. Assess smaller variants, quantizations or supported offload. Startup with unacceptable response time also fails the task.</p>
+<p>See the <a href="https://models.specul.com/guides/gpu-cost-math.html" rel="noopener" target="_blank">hardware-budget example</a> for units and calculation.</p></span>
+</div>
+<nav aria-label="接下来做什么" class="panel is-slim" data-ui-aria-label-en="What to do next" data-ui-aria-label-zh="接下来做什么">
+<h2><span data-zh="">接下来做什么</span><span data-en="">What to do next</span></h2><ul>
+<li><a href="toolkit-worksheets.html"><span data-zh="">记录约束、验收与未确认项</span><span data-en="">Record constraints, acceptance and unknowns</span></a></li>
+<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh="">核对结果与来源</span><span data-en="">Verify the result and its sources</span></a></li>
+<li><a href="failure-library.html#by-symptom"><span data-zh="">按症状排查失败</span><span data-en="">Troubleshoot by symptom</span></a></li>
 </ul></nav>
-      <div class="panel is-slim">
-        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
-        <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
-          <tr><td><span data-zh>models.specul.com · 量化索引（129 量化仓 / 1,262 量化档 / 1,337 GGUF，2026-10-30 快照）</span><span data-en>This site: quantisation index (129 repositories, 1,262 variants and 1,337 GGUF files; 2026-10-30 snapshot)</span></td><td><a href="https://models.specul.com/" target="_blank" rel="noopener"><span data-zh>https://models.specul.com/</span><span data-en>https://models.specul.com/</span></a></td></tr>
-          <tr><td><span data-zh>llama.cpp · 官方仓库（GGUF 与 llama-server；2026-10 快照）</span><span data-en>llama.cpp: repository (GGUF and llama-server; October 2026 snapshot)</span></td><td><a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener"><span data-zh>https://github.com/ggml-org/llama.cpp</span><span data-en>https://github.com/ggml-org/llama.cpp</span></a></td></tr>
-          <tr><td><span data-zh>vLLM · 官方文档（PagedAttention、OpenAI 兼容；2026-10 快照）</span><span data-en>vLLM: documentation (PagedAttention and OpenAI-compatible endpoint; October 2026 snapshot)</span></td><td><a href="https://docs.vllm.ai/" target="_blank" rel="noopener"><span data-zh>https://docs.vllm.ai</span><span data-en>https://docs.vllm.ai/</span></a></td></tr>
-          <tr><td><span data-zh>LM Studio · 官方站（MLX + llama.cpp 双运行时；2026-10 快照）</span><span data-en>LM Studio: official site (MLX and llama.cpp runtimes; October 2026 snapshot)</span></td><td><a href="https://lmstudio.ai/" target="_blank" rel="noopener"><span data-zh>https://lmstudio.ai</span><span data-en>https://lmstudio.ai/</span></a></td></tr>
-          <tr><td><span data-zh>PyPI · exllamav3 1.6.5（2026-10-25；2026-11-03 复核）</span><span data-en>PyPI: exllamav3 1.6.5 (2026-10-25; checked 2026-11-03)</span></td><td><a href="https://pypi.org/project/exllamav3/" target="_blank" rel="noopener"><span data-zh>https://pypi.org/project/exllamav3/</span><span data-en>https://pypi.org/project/exllamav3/</span></a></td></tr>
-          <tr><td><span data-zh>Hugging Face Transformers · 缓存张量形状（简化 KV 算式的推导依据；2026-11-04）</span><span data-en>Hugging Face Transformers: cache tensor shapes (basis for the simplified KV formula; 2026-11-04)</span></td><td><a href="https://huggingface.co/docs/transformers/cache_explanation" target="_blank" rel="noopener"><span data-zh>https://huggingface.co/docs/transformers/cache_explanation</span><span data-en>https://huggingface.co/docs/transformers/cache_explanation</span></a></td></tr>
-        </tbody></table></div>
-        <p class="guide-foot"><span data-zh>资料快照日期：2026-11-03；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Source snapshot: 2026-11-03; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
-      </div>
-      <p class="t-sm topics-line"><span data-zh>这页出现在主题：</span><span data-en>This page appears in: </span><a href="https://specul.com/topic-game.html"><span data-zh>用 AI 做游戏</span><span data-en>Make games with AI</span></a> · <a href="https://specul.com/topic-robot.html"><span data-zh>做机器人</span><span data-en>Build a robot</span></a></p>
-    </div>
-  </main>
-  <footer class="site-footer foot-single">
-    <div class="container foot-line">
-      <div class="foot-brand">
-        <span class="foot-brand-main">
-          <span class="brand-dot" aria-hidden="true"></span>
-          <span class="foot-copy"><span data-zh>投机取巧 · specul.com</span><span data-en>Specul · specul.com</span></span>
-        </span>
-        <span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt"><span data-zh>内容 CC BY 4.0</span><span data-en>Content CC BY 4.0</span></a><span class="sep" aria-hidden="true">·</span><a href="https://specul.com/LICENSE.txt"><span data-zh>代码 MIT</span><span data-en>Code MIT</span></a><span class="sep" aria-hidden="true">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>源码</span><span data-en>Source</span></a></span>
-      </div>
-      <nav class="foot-sites" aria-label="Footer site links">
-        <a class="site-link" href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://tools.specul.com/"><span data-zh>工具</span><span data-en>Tools</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://demos.specul.com/"><span data-zh>演示</span><span data-en>Demos</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://oss.specul.com/"><span data-zh>开源</span><span data-en>OSS</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://hardware.specul.com/"><span data-zh>算力</span><span data-en>Compute</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://papers.specul.com/"><span data-zh>论文</span><span data-en>Papers</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://nav.specul.com/"><span data-zh>导航</span><span data-en>Directory</span></a>
-      </nav>
-      <nav class="foot-legal" aria-label="Legal and corrections">
-        <a href="https://specul.com/legal.html"><span data-zh>法律</span><span data-en>Legal</span></a><span class="sep" aria-hidden="true">·</span>
-        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私</span><span data-en>Privacy</span></a><span class="sep" aria-hidden="true">·</span>
-        <a href="https://specul.com/correct.html"><span data-zh>纠错</span><span data-en>Corrections</span></a>
-      </nav>
-    </div>
-  </footer>
-<nav class="nav-tabbar nav-tabbar-1row" aria-label="快捷导航">
-    <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
-    <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学AI</span><span data-en>Learn</span></a>
-    <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
-    <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
-    <a href="https://demos.specul.com/"><span class="ti" aria-hidden="true">▷</span><span data-zh>演示</span><span data-en>Demos</span></a>
-    <a href="https://oss.specul.com/"><span class="ti" aria-hidden="true">▧</span><span data-zh>开源</span><span data-en>OSS</span></a>
-    <a href="https://hardware.specul.com/"><span class="ti" aria-hidden="true">▣</span><span data-zh>算力</span><span data-en>Chips</span></a>
-    <a href="https://papers.specul.com/"><span class="ti" aria-hidden="true">▥</span><span data-zh>论文</span><span data-en>Papers</span></a>
-    <a href="https://chain.specul.com/"><span class="ti" aria-hidden="true">◇</span><span data-zh>链</span><span data-en>Chain</span></a>
-    <a href="https://nav.specul.com/" data-nav-group="external"><span class="ti" aria-hidden="true">↗</span><span data-zh>导航</span><span data-en>Nav</span></a>
+<div class="panel is-slim">
+<h2><span data-zh="">出处</span><span data-en="">Sources</span></h2>
+<div class="tbl-wrap"><table><thead><tr><th><span data-zh="">来源</span><span data-en="">Source</span></th><th><span data-zh="">链接</span><span data-en="">URL</span></th></tr></thead><tbody>
+<tr><td><span data-zh="">models.specul.com · 量化索引（129 量化仓 / 1,262 量化档 / 1,337 GGUF，2026-10-30 快照）</span><span data-en="">This site: quantisation index (129 repositories, 1,262 variants and 1,337 GGUF files; 2026-10-30 snapshot)</span></td><td><a href="https://models.specul.com/" rel="noopener" target="_blank"><span data-zh="">https://models.specul.com/</span><span data-en="">https://models.specul.com/</span></a></td></tr>
+<tr><td><span data-zh="">llama.cpp · 官方仓库（GGUF 与 llama-server；2026-10 快照）</span><span data-en="">llama.cpp: repository (GGUF and llama-server; October 2026 snapshot)</span></td><td><a href="https://github.com/ggml-org/llama.cpp" rel="noopener" target="_blank"><span data-zh="">https://github.com/ggml-org/llama.cpp</span><span data-en="">https://github.com/ggml-org/llama.cpp</span></a></td></tr>
+<tr><td><span data-zh="">vLLM · 官方文档（PagedAttention、OpenAI 兼容；2026-10 快照）</span><span data-en="">vLLM: documentation (PagedAttention and OpenAI-compatible endpoint; October 2026 snapshot)</span></td><td><a href="https://docs.vllm.ai/" rel="noopener" target="_blank"><span data-zh="">https://docs.vllm.ai</span><span data-en="">https://docs.vllm.ai/</span></a></td></tr>
+<tr><td><span data-zh="">LM Studio · 官方站（MLX + llama.cpp 双运行时；2026-10 快照）</span><span data-en="">LM Studio: official site (MLX and llama.cpp runtimes; October 2026 snapshot)</span></td><td><a href="https://lmstudio.ai/" rel="noopener" target="_blank"><span data-zh="">https://lmstudio.ai</span><span data-en="">https://lmstudio.ai/</span></a></td></tr>
+<tr><td><span data-zh="">PyPI · exllamav3 1.6.5（2026-10-25；2026-11-03 复核）</span><span data-en="">PyPI: exllamav3 1.6.5 (2026-10-25; checked 2026-11-03)</span></td><td><a href="https://pypi.org/project/exllamav3/" rel="noopener" target="_blank"><span data-zh="">https://pypi.org/project/exllamav3/</span><span data-en="">https://pypi.org/project/exllamav3/</span></a></td></tr>
+<tr><td><span data-zh="">Hugging Face Transformers · 缓存张量形状（简化 KV 算式的推导依据；2026-11-04）</span><span data-en="">Hugging Face Transformers: cache tensor shapes (basis for the simplified KV formula; 2026-11-04)</span></td><td><a href="https://huggingface.co/docs/transformers/cache_explanation" rel="noopener" target="_blank"><span data-zh="">https://huggingface.co/docs/transformers/cache_explanation</span><span data-en="">https://huggingface.co/docs/transformers/cache_explanation</span></a></td></tr>
+</tbody></table></div>
+<p class="guide-foot"><span data-zh="">资料快照日期：2026-11-03；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en="">Source snapshot: 2026-11-03; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
+</div>
+<p class="t-sm topics-line"><span data-zh="">这页出现在主题：</span><span data-en="">This page appears in: </span><a href="https://specul.com/topic-game.html"><span data-zh="">用 AI 做游戏</span><span data-en="">Make games with AI</span></a> · <a href="https://specul.com/topic-robot.html"><span data-zh="">做机器人</span><span data-en="">Build a robot</span></a></p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy"><span data-zh="">投机取巧 · specul.com</span><span data-en="">Specul · specul.com</span></span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt"><span data-zh="">内容 CC BY 4.0</span><span data-en="">Content CC BY 4.0</span></a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt"><span data-zh="">代码 MIT</span><span data-en="">Code MIT</span></a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank"><span data-zh="">源码</span><span data-en="">Source</span></a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/"><span data-zh="">首页</span><span data-en="">Home</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/"><span data-zh="">学 AI</span><span data-en="">Learn</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/"><span data-zh="">工具</span><span data-en="">Tools</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/"><span data-zh="">模型</span><span data-en="">Models</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/"><span data-zh="">演示</span><span data-en="">Demos</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/"><span data-zh="">开源</span><span data-en="">OSS</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/"><span data-zh="">算力</span><span data-en="">Compute</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/"><span data-zh="">论文</span><span data-en="">Papers</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/"><span data-zh="">链</span><span data-en="">Chain</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/"><span data-zh="">导航</span><span data-en="">Directory</span></a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/legal.html"><span data-zh="">法律</span><span data-en="">Legal</span></a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/legal.html#s8"><span data-zh="">隐私</span><span data-en="">Privacy</span></a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/correct.html"><span data-zh="">纠错</span><span data-en="">Corrections</span></a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/"><span aria-hidden="true" class="ti">◎</span><span data-zh="">首页</span><span data-en="">Home</span></a>
+<a href="https://learn.specul.com/"><span aria-hidden="true" class="ti">▤</span><span data-zh="">学AI</span><span data-en="">Learn</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span aria-hidden="true" class="ti">◈</span><span data-zh="">工具</span><span data-en="">Tools</span></a>
+<a href="https://models.specul.com/"><span aria-hidden="true" class="ti">▦</span><span data-zh="">模型</span><span data-en="">Models</span></a>
+<a href="https://demos.specul.com/"><span aria-hidden="true" class="ti">▷</span><span data-zh="">演示</span><span data-en="">Demos</span></a>
+<a href="https://oss.specul.com/"><span aria-hidden="true" class="ti">▧</span><span data-zh="">开源</span><span data-en="">OSS</span></a>
+<a href="https://hardware.specul.com/"><span aria-hidden="true" class="ti">▣</span><span data-zh="">算力</span><span data-en="">Chips</span></a>
+<a href="https://papers.specul.com/"><span aria-hidden="true" class="ti">▥</span><span data-zh="">论文</span><span data-en="">Papers</span></a>
+<a href="https://chain.specul.com/"><span aria-hidden="true" class="ti">◇</span><span data-zh="">链</span><span data-en="">Chain</span></a>
+<a data-nav-group="external" href="https://nav.specul.com/"><span aria-hidden="true" class="ti">↗</span><span data-zh="">导航</span><span data-en="">Nav</span></a>
 </nav>
 </body>
 </html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Context is a budget, not a warehouse | Tools</title>
+<meta content="Bigger windows still dilute attention — static content up front, just-in-time retrieval, compaction and notes spend tokens where signal is highest." name="description"/>
+<link href="https://tools.specul.com/en/mcp/guides/prompt-guide-context.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/mcp/guides/prompt-guide-context.html" property="og:url"/>
+<meta content="Context is a budget, not a warehouse | Tools" property="og:title"/>
+<meta content="Bigger windows still dilute attention — static content up front, just-in-time retrieval, compaction and notes spend tokens where signal is highest." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Context is a budget, not a warehouse","description":"Bigger windows still dilute attention — static content up front, just-in-time retrieval, compaction and notes spend tokens where signal is highest.","dateModified":"2026-11-07"}</script>
+<meta content="Context is a budget, not a warehouse | Tools" name="twitter:title"/><meta content="Bigger windows still dilute attention — static content up front, just-in-time retrieval, compaction and notes spend tokens where signal is highest." name="twitter:description"/><link href="https://tools.specul.com/mcp/guides/prompt-guide-context.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/guides/prompt-guide-context.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/guides/prompt-guide-context.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/mcp/guides/prompt-guide-context.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<a class="back" href="/en/mcp/">← Guides</a>
+<div class="detail-head">
+<div>
+<h1>Context is a budget, not a warehouse</h1>
+<div class="vendor is-caps">Prompts &amp; workflows · Prompt guide</div>
+</div>
+</div>
+<div class="panel-lead"><p>Bigger windows still dilute attention — static content up front, just-in-time retrieval, compaction and notes spend tokens where signal is highest.</p></div>
+<div class="panel is-slim">
+<p>Prompt effect has not been tested.</p>
+<p class="t-xs">A prompt is a re-runnable template, not a promise of results. Changing the model, version or input can change the outcome. Use the checkpoints on this page to verify it yourself, and treat the official sources as evidence of mechanism rather than a guarantee of effect.</p>
+</div>
+<nav aria-label="Article contents" class="panel is-slim"><p>On this page</p><ul><li><a href="#guide-section-0">What this guide covers</a></li><li><a href="#guide-section-1">Attention budget and position effects</a></li><li><a href="#guide-section-2">Static first, dynamic last</a></li><li><a href="#guide-section-3">Just-in-time retrieval and progressive disclosure</a></li><li><a href="#guide-section-4">Three techniques for long tasks</a></li><li><a href="#guide-section-5">Failure modes</a></li><li><a href="#guide-section-6">Sources</a></li></ul></nav>
+<div class="panel is-slim" id="guide-section-0">
+<h2>What this guide covers</h2>
+<p><strong>Context engineering decides which tokens belong in the window at each inference.</strong> Anthropic's official definition: prompt engineering writes instructions; context engineering curates and maintains the optimal set of tokens during inference — system instructions, tools, external data, message history all count. The window is a budget, not a warehouse: stuffing more in does not mean getting more out. We have not run hands-on tests; the mechanisms below come from official docs and papers.</p>
+</div>
+<div class="panel is-slim" id="guide-section-1">
+<h2>Attention budget and position effects</h2>
+<p>Anthropic calls the phenomenon context rot: as context tokens grow, the model's ability to accurately recall information from that context declines. The root is the transformer architecture: n tokens form n² pairwise attention relations, and the longer the sequence, the thinner the capacity to capture them gets stretched. Short sequences dominate training data, so models also have less experience with long-range dependencies.</p>
+<p>The Lost in the Middle paper tested multi-document QA and key-value retrieval: performance is highest when relevant information sits at the beginning or end, and degrades significantly when it lands in the middle of a long context. Explicitly long-context models behave the same way. Takeaway: do not bury key information mid-context; a big window is not uniformly good.</p>
+</div>
+<div class="panel is-slim" id="guide-section-2">
+<h2>Static first, dynamic last</h2>
+<p>OpenAI's prompt caching matches on prefixes: a request first checks whether the beginning of the prompt is already cached; a hit reuses it, a miss processes everything and caches the prefix. It activates automatically above 1024 tokens — no request changes needed. The placement rule follows: instructions, examples, and tool definitions up front; user-specific variable content at the end.</p>
+<p>Three details decide the hit rate: tool definitions and their order must be exactly identical across requests; multi-turn history is only appended to the end of the messages array, never reordered; the <code>cached_tokens</code> field in the response reports hits, and prefixes unused for a while are evicted. Caching is organization-scoped; the official docs state no data is stored during the process, making it eligible for zero data retention.</p>
+</div>
+<div class="panel is-slim" id="guide-section-3">
+<h2>Just-in-time retrieval and progressive disclosure</h2>
+<p>Another way to save budget: do not pre-load data — keep lightweight identifiers. File paths, stored queries, links; load on demand at runtime with tools. Anthropic cites <a href="/en/coding/claude-code.html">Claude Code</a> as its example: write targeted queries, inspect slices with head/tail, and never load whole data objects into the window. Identifier metadata carries signal: directories, naming, and timestamps hint at purpose and relevance. The agent explores layer by layer, keeping only what is currently needed in working memory.</p>
+<p>The official trade-off is explicit: runtime exploration is slower than pre-computed retrieval; without guidance the agent misuses tools, chases dead ends, and misses key information. Hybrid strategies are common: pre-load some data for speed, leave the rest to autonomous exploration.</p>
+</div>
+<div class="panel is-slim" id="guide-section-4">
+<h2>Three techniques for long tasks</h2>
+<p>When a task outgrows the window, Anthropic offers three routes:</p>
+<ol><li value="1">Compaction: summarize history near the limit and reinitialize the window. Tune recall first, then precision; clearing old tool results is the lightest touch.</li><li value="2">Structured note-taking: the agent periodically writes notes outside the window and reads them back later. Progress and dependencies survive window resets.</li><li value="3">Sub-agents: each explores deeply in a clean window and returns only a distilled summary; the lead agent synthesizes.</li></ol>
+<p>Choose by task shape: compaction preserves conversational flow, notes suit milestone-driven iterative development, and sub-agents suit research and analysis where parallel exploration pays off.</p>
+</div>
+<div class="panel is-slim" id="guide-section-5">
+<h2>Failure modes</h2>
+<ol><li value="1">Edge-case laundry lists: stuffing every rule into the prompt. The official advice is diverse, canonical examples instead.</li><li value="2">Bloated tool sets: overlapping functionality, ambiguous choices. If a human cannot say which tool to use, the agent cannot do better.</li><li value="3">Over-aggressive compaction: dropping details that look trivial now but matter later. Tune the compaction prompt on complex traces.</li><li value="4">Waiting for bigger windows: the official judgment is that relevance problems persist at any size — curation cannot be skipped.</li></ol>
+<p>System prompts have two extremes of their own: hardcoded if-else logic is brittle, vague guidance is empty. The official advice: start minimal, then add instructions and examples based on observed failure modes.</p>
+</div>
+<div class="panel is-slim" id="guide-section-6">
+<h2>Sources</h2>
+<ul><li><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" rel="noopener" target="_blank">Anthropic Engineering · Effective context engineering for AI agents</a></li><li><a href="https://raw.githubusercontent.com/openai/openai-cookbook/main/examples/Prompt_Caching101.ipynb" rel="noopener" target="_blank">OpenAI Cookbook · Prompt Caching 101</a></li><li><a href="https://arxiv.org/abs/2307.03172" rel="noopener" target="_blank">Lost in the Middle (arXiv 2307.03172)</a></li></ul>
+<p>Verified 2026-11-07; all three fetched directly with HTTP 200. The OpenAI doc site was unreachable from this network; official content was taken from a raw file in its official repository.</p>
+</div>
+<nav aria-label="What to do next" class="panel is-slim">
+<h2>What to do next</h2><ul>
+<li><a href="/en/mcp/guides/toolkit-worksheets.html">Record constraints, acceptance and unknowns</a></li>
+<li><a href="https://learn.specul.com/en/guide/%E6%80%8E%E4%B9%88%E9%AA%8C%E8%AF%81%20AI%20%E7%9A%84%E8%BE%93%E5%87%BA/">Verify the result and its sources</a></li>
+<li><a href="/en/mcp/guides/failure-library.html#by-symptom">Troubleshoot by symptom</a></li>
+</ul></nav>
+<div class="panel is-slim">
+<h2>Sources</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Source</th><th>URL</th></tr></thead><tbody>
+<tr><td>Anthropic Engineering · Effective context engineering for AI agents (direct fetch 200 on 2026-11-07)</td><td><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" rel="noopener" target="_blank">https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents</a></td></tr>
+<tr><td>OpenAI Cookbook · Prompt Caching 101 (official repo raw file, direct fetch 200 on 2026-11-07)</td><td><a href="https://raw.githubusercontent.com/openai/openai-cookbook/main/examples/Prompt_Caching101.ipynb" rel="noopener" target="_blank">https://raw.githubusercontent.com/openai/openai-cookbook/main/examples/Prompt_Caching101.ipynb</a></td></tr>
+<tr><td>Lost in the Middle paper (arXiv 2307.03172, abstract page direct-fetched 2026-11-07)</td><td><a href="https://arxiv.org/abs/2307.03172" rel="noopener" target="_blank">https://arxiv.org/abs/2307.03172</a></td></tr>
+</tbody></table></div>
+<p class="guide-foot">Source snapshot: 2026-11-07; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</p>
+</div>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

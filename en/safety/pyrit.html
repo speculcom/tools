@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>PyRIT | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/safety/pyrit.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/safety/pyrit.html" property="og:url"/>
+<meta content="PyRIT | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"PyRIT | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/safety/pyrit.html","sameAs":"https://microsoft.github.io/PyRIT/","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-11-06"}</script>
+<meta content="PyRIT | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><meta content="noindex,follow" name="robots"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/safety/pyrit.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Safety</span>
+</nav>
+<a class="back" href="/en/safety/">← Safety</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#5B5BD6"'>PY</div>
+<div>
+<h1>PyRIT</h1>
+<div class="vendor is-caps">Microsoft</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Open source</span>
+<span class="tag on">MIT</span>
+<span class="tag on">Python</span>
+<span class="tag on">Local</span>
+<span class="tag on">Terminal</span>
+<span class="tag on">WebUI</span>
+<span class="tag on">eval</span>
+<span class="tag on">Self-hosted</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-11-06</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>PyRIT is Microsoft's build-your-own-red-team toolkit for local runs (MIT, moved from…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · Local app</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Open licence</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Not checked · Not checked</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>Whether any hosted execution surface (or hosted report service) exists: no official statement captured</li>
+<li>Default SQLite database filename and path, plus cleanup and export commands</li>
+<li>The boundary of cross-session memory and any context compaction/truncation strategy</li>
+<li>MCP transport support (not described in the official docs)</li>
+<li>Whether telemetry is on by default, and retention terms for scan records</li>
+<li>The itemised 0.x to v1.0.0 migration surface (only the release-notes headline was read)</li>
+<li>The capability gap between the CoPyRIT GUI scenario catalogue and the CLI scanners</li>
+<li>What actually happens when no attack/identity model is configured</li>
+<li>Mainland-network direct reachability and filing status (not measured, not searched)</li>
+</ul>
+</div>
+English summaries and interface labels are available. Detailed source notes below are currently in Chinese.
+<div class="panel-lead"><p><strong>PyRIT is Microsoft's build-your-own-red-team toolkit for local runs</strong> (MIT, moved from Azure/PyRIT to microsoft/PyRIT): the repo describes automated scans, adaptive multi-turn attacks and a web UI; the official docs define it as assessing the security and safety of generative AI systems at scale. The split from garak is clean: <strong>garak defaults to one command against one endpoint; PyRIT defaults to orchestrating targets, converters, scorers, memory and attack strategies in Python into a repeatable assessment</strong>.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Fit: orchestrating adaptive multi-turn attacks (the docs name Crescendo and TAP) into a repeatable assessment; a local memory backend that writes the process into your own SQLite or Azure SQL; reviewers using the CoPyRIT interface to inspect results one by one; adding garak-style probes to the same scan flow, as the official scenario page shows with <code>pyrit_scan run garak.prompt_inject</code>. Not fit: wanting one command and done, a hosted report platform or compliance deliverable, or expecting the tool to replace red-team judgement.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-11-06</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　An open-source project of Microsoft (the repository and PyPI both credit Microsoft); no mainland-facing terms page or Chinese docs were captured in this pass.</dd>
+<dt>Direct access</dt><dd>direct unknown　github.com, microsoft.github.io and PyPI returned 200 from the current network on the verification date, but no mainland-network direct-connection measurement was made, so it is recorded as unknown.</dd>
+<dt>CAC filing</dt><dd>filing unknown：No official basis; the generative-AI filing registry was not searched in this pass, so no "not filed" conclusion is drawn.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p>Two sides both need models: the target under red-team, and the side driving the attacks. The repository front page names targets covering "OpenAI, Anthropic, Azure OpenAI, Microsoft Foundry, Azure Machine Learning, Google Gemini, Google Vertex AI, AWS Bedrock, Hugging Face, Ollama, Groq, OpenRouter, Cohere, and GitHub Copilot", with protocols written as "HTTP, WebSockets, browser automation with Playwright, or custom targets"; the docs 'latest' page compresses this into Any Target. On credentials the official wording is "PyRIT loads API credentials from environment variables or <code>.env</code> files", with OPENAI_CHAT_ENDPOINT / OPENAI_CHAT_KEY / OPENAI_CHAT_MODEL as the sample variables.</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p>Installed into your own Python environment: <code>pip install pyrit</code> (PyPI records requires-python <strong>=3.10,</strong>3.15, current version 1.1.0). The repository front page offers three entry points — a "command-line scanner", a "graphical interface" (CoPyRIT), and an "extensible Python framework"; the docs spell the CLI as <code>pyrit_scan</code> and <code>pyrit_shell</code>, and the GUI as interactive exploration with results reviewed in the browser. Execution happens on your own machine; whether any hosted execution surface exists: no official statement captured.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p>It reads local configuration and <code>.env</code> credentials, and writes scan artefacts and state. The docs page states "Built-in Memory" has two backends, SQLite and Azure SQL — the first lands in a database file on your machine, the second in your own database. Default SQLite filename and path, plus cleanup and export methods: not itemized in official docs word for word in this pass.</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p>Local semantics for long tasks are all present: adaptive multi-turn attacks and scenarios advance inside local processes, and results can be reviewed in the CoPyRIT interface (repository front page: "Explore AI systems interactively and review results in your browser"). A hosted queue that "keeps running after shutdown": not stated by the vendor — it is not a managed service.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p>Component surface on record in the docs: Automated Red Teaming (Crescendo and TAP named), Scenario Framework, Any Target, Built-in Memory, Flexible Scoring, plus the targets/converters/scorers/memory/orchestrators module split. The direct interface with another archive in this category: a dedicated docs page says the Garak scenario family "implements probes inspired by the Garak framework", run as <code>pyrit_scan run garak.prompt_inject --target openai_chat</code>. MCP support: not described in the official docs, recorded as unknown.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p>Adaptive multi-turn attacks depend on revisitable conversation state, and that state lives in the memory backends above; the docs list "adaptive multi-turn attacks" alongside the scenario catalogue. The boundary of cross-session memory, and any compaction or truncation strategy: no itemised official text captured in this pass, recorded as unknown.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p>Licence: MIT, copyright holder Microsoft (LICENSE read directly). Ownership needs one recorded fact: the original Azure/PyRIT repository page states "PyRIT has moved! Please see https://github.com/microsoft/PyRIT!", and this archive files the post-migration repository. Data flow: probe and attack prompts go to the target endpoint and the attack-model endpoint you configured, credentials are loaded from environment variables or <code>.env</code> (see the model_access axis), and run records land in your own SQLite/Azure SQL. Whether telemetry is on by default, and retention clauses: no official statement captured, moved to unknowns. It is an evaluation and forensics tool that does not block, so this site writes no "what share it stops" ratio and cites no scenario-report numbers.</p></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Fits: orchestrating multi-turn adaptive attacks (Crescendo, TAP) into a repeatable assessment; needing to compose targets/converters/scorers yourself in Python; letting non-engineering reviewers go through results in a local GUI; teams already folding garak-style probes into one scan pipeline. Not a fit: wanting a single command that scans one endpoint and ends there (that is garak's default shape); needing hosted reports and compliance deliverables; expecting it to replace human red-team judgement.</p></dd>
+</div>
+</dl>
+<div class="panel is-slim" id="license">
+<h2>Licence and terms of use</h2>
+<p>MIT (repository LICENSE read directly on 2026-11-06: "MIT License", copyright line "Copyright (c) Microsoft Corporation.").
+The PyPI project page carries the same MIT field; the original Azure/PyRIT repository page also showed MIT.</p>
+</div>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Account and permissions</a> · <a href="/en/mcp/guides/failure-library.html#rate-limit">Rate limits and retries</a> · <a href="/en/mcp/guides/failure-library.html#files">File-reading issues</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>以为跑 Garak scenario 要先装 garak。官方口径是把探针实现搬进 <code>pyrit_scan</code></li>
+<li>只配被测端点的 key。驱动攻击的模型端点与凭据同样要配（env/<code>.env</code> 口径在册）</li>
+<li>把 scenario 报告当成防护结论：它不做阻断，本档也不把它的数值当拦截率</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-11-06，Content updated 2026-11-06。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>migration</td><td>Azure/PyRIT · original repository page (the "PyRIT has moved!" notice and the MIT label; direct-fetched 200, 2026-11-06)</td><td><a href="https://github.com/Azure/PyRIT" rel="noopener" target="_blank">https://github.com/Azure/PyRIT</a></td></tr>
+<tr><td>repo</td><td>microsoft/PyRIT · repository front page (self-description line, three entry points, target and protocol lists, 24 releases; direct-fetched 200, 2026-11-06)</td><td><a href="https://github.com/microsoft/PyRIT" rel="noopener" target="_blank">https://github.com/microsoft/PyRIT</a></td></tr>
+<tr><td>docs</td><td>microsoft/PyRIT · LICENSE (MIT text and the Microsoft copyright line; direct-fetched 200, 2026-11-06)</td><td><a href="https://github.com/microsoft/PyRIT/blob/main/LICENSE" rel="noopener" target="_blank">https://github.com/microsoft/PyRIT/blob/main/LICENSE</a></td></tr>
+<tr><td>docs</td><td>PyRIT · official docs, latest (definition sentence, <code>pip install pyrit</code>, Automated Red Teaming/Scenario Framework/Any Target/Built-in Memory/Flexible Scoring, <code>pyrit_scan</code>/<code>pyrit_shell</code>/CoPyRIT; direct-fetched 200, 2026-11-06)</td><td><a href="https://microsoft.github.io/PyRIT/latest/" rel="noopener" target="_blank">https://microsoft.github.io/PyRIT/latest/</a></td></tr>
+<tr><td>docs</td><td>PyRIT · docs, Garak scenarios (probes inspired by Garak, <code>pyrit_scan run garak.prompt_inject --target openai_chat</code>; direct-fetched 200, 2026-11-06)</td><td><a href="https://microsoft.github.io/PyRIT/latest/scanner/garak" rel="noopener" target="_blank">https://microsoft.github.io/PyRIT/latest/scanner/garak</a></td></tr>
+<tr><td>docs</td><td>PyRIT · docs, Populating secrets (OPENAI_CHAT_ENDPOINT/KEY/MODEL and "loads API credentials from environment variables or <code>.env</code> files"; direct-fetched 200, 2026-11-06)</td><td><a href="https://microsoft.github.io/PyRIT/latest/getting-started/populating-secrets" rel="noopener" target="_blank">https://microsoft.github.io/PyRIT/latest/getting-started/populating-secrets</a></td></tr>
+<tr><td>changelog</td><td>microsoft/PyRIT · Releases (the v1.1.0 / v1.0.1 / v1.0.0 / v0.14.0 / v0.13.0 sequence; direct-fetched 200, 2026-11-06)</td><td><a href="https://github.com/microsoft/PyRIT/releases" rel="noopener" target="_blank">https://github.com/microsoft/PyRIT/releases</a></td></tr>
+<tr><td>changelog</td><td>PyRIT · PyPI project page (1.1.0, <code>pip install pyrit</code>, requires-python <strong>=3.10,</strong>3.15, MIT; direct-fetched 200, 2026-11-06)</td><td><a href="https://pypi.org/project/pyrit/" rel="noopener" target="_blank">https://pypi.org/project/pyrit/</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p><strong>This site has not run it end to end</strong>: no <code>pyrit_scan</code> execution and no CoPyRIT session, so no attack success rate, pass rate or ranking is produced, and the scenario count is not tallied. This archive only organises statements on record at the repository front page, LICENSE, the docs 'latest' page, two dedicated docs pages, releases and PyPI.</p>
+<p><strong>Suggested measurements</strong> (four):</p>
+<ul><li><strong>What happens when only the target is configured and no attack model is</strong> (the credential surface is on record; default behaviour is not)</li><li><strong>Revisability differences between the SQLite and Azure SQL memory backends</strong> (default file location and cleanup method not verified word for word)</li><li><strong>Comparability between the Garak scenario family and native garak probe output</strong> (the official framing is a ported implementation, not a garak call)</li><li><strong>The capability gap between the CoPyRIT interface and <code>pyrit_scan</code></strong> (the GUI scenario catalogue is on record in the v1.1.0 notes; coverage not tallied)</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>变更记录说明</h2>
+<p>本对象有独立 releases 页。当日在册序列为 v1.1.0、v1.0.1 与 v1.0.0。</p>
+<p>v1.1.0 含 CoPyRIT 功能、Best-of-N scanners 与 GUI scenario catalog。v1.0.0 含新 registry、组件构造与 identity models。</p>
+<p>v0.14.0 迁移到 Pydantic v2 并支持流式。v0.13.0 重构 TargetConfiguration。</p>
+<p>PyPI 记 1.1.0 发布于 2026-09-04，与 releases 页标注同日。</p>
+<p>v1.0.0 的大版本改动意味着 0.x 的写法不必然继续可用。迁移面本批次未逐条清点，进 unknowns。仓库未标记归档，故 lifecycle 记 active。</p>
+</div>
+<div class="panel is-slim">
+<h2>能力边界</h2>
+<ul><li>它是<strong>红队与取证</strong>工具：产出是攻击过程与可复核记录，不做运行时阻断，因此「拦住多少比例」这个问题对它不成立。</li><li>它需要两类端点（被测 target + 驱动攻击的模型），两类都要你自己给凭据。官方只给配置口径，不给托管端点。</li><li>scenario 与探针家族的名字（含 garak 移植家族）说明的是<strong>测试语义</strong>，不是覆盖面证明，本档不做任何换算或排名。</li></ul>
+</div>
+<div class="panel is-slim">
+<h2>第一次怎么用</h2>
+<ol><li value="1"><code>pip install pyrit</code>（注意 PyPI 的 Python 区间 <strong>=3.10,</strong>3.15）。</li><li value="2">按官方 secrets 页把凭据放进环境变量或 <code>.env</code>：至少要有能驱动攻击的模型端点三件套，再加被测 target。</li><li value="3">选一个 scenario 家族跑第一轮（<code>pyrit_scan run garak.prompt_inject --target openai_chat</code> 是官方在册示例形式）， 先确认 memory 后端把过程写到了哪里。</li><li value="4">需要人工复核时再起 CoPyRIT。要把流程固化进发布门禁，就把这轮 run 的参数与记录一起版本化。</li><li value="5">从 0.x 升上来的项目，先读 v1.0.0 的 release notes 再改代码。</li></ol>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/safety/garak.html">garak</a></span><span class="rel-n">Also a red-teaming framework: that archive is a terminal one-command scanner, this one is an orchestration framework with SDK/GUI/CLI entry points — and the official docs port garak's probes into this framework.</span></li>
+<li><span class="rel-t"><a href="/en/safety/lakera-ai.html">Lakera</a></span><span class="rel-n">The other face of red teaming: this archive delivers an assessment pipeline you run yourself, Lakera delivers a hosted prevention API plus a red-team service.</span></li>
+<li><span class="rel-t"><a href="/en/runner/ollama.html">Ollama</a></span><span class="rel-n">A local endpoint: Ollama appears in the official target list, so a whole red-team run can stay inside your own network boundary.</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/safety/arize-phoenix.html">Arize Phoenix</a></td><td>Local / self-hosted</td><td>Commercial terms</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Phoenix is an open-licensed observability and evaluation platform that r</td></tr><tr><td><a href="/en/safety/langfuse.html">Langfuse</a></td><td>Local + cloud</td><td>Open licence</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Langfuse is an open-source observability and evaluation platform. Its co</td></tr><tr><td><a href="/en/safety/braintrust.html">Braintrust</a></td><td>Local + cloud</td><td>Commercial terms</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Braintrust is an observability platform that treats evaluation as a rele</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from Microsoft</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/automation/copilot-studio.html"><span class="vp-cat">Automation</span>Microsoft Copilot Studio</a></li><li><a href="/en/automation/power-automate.html"><span class="vp-cat">Automation</span>Microsoft Power Automate</a></li><li><a href="/en/framework/microsoft-agent-framework.html"><span class="vp-cat">Frameworks &amp; runtimes</span>Microsoft Agent Framework</a></li><li><a href="/en/framework/semantic-kernel.html"><span class="vp-cat">Frameworks &amp; runtimes</span>Semantic Kernel（SK）</a></li><li><a href="/en/mcp/playwright.html"><span class="vp-cat">MCP tools</span>Playwright MCP Server</a></li><li><a href="/en/office/microsoft-365-copilot.html"><span class="vp-cat">Office &amp; writing</span>Microsoft 365 Copilot</a></li><li><a href="/en/safety/azure-ai-content-safety.html"><span class="vp-cat">Safety &amp; evaluation</span>Azure AI Content Safety</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

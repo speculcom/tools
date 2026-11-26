@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Claude Code CLI | Tools</title>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="description"/>
+<link href="https://tools.specul.com/en/coding/claude-code-cli.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/coding/claude-code-cli.html" property="og:url"/>
+<meta content="Claude Code CLI | Tools" property="og:title"/>
+<meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Claude Code CLI | Tools","applicationCategory":"DeveloperApplication","url":"https://tools.specul.com/en/coding/claude-code-cli.html","sameAs":"https://github.com/anthropics/claude-code","description":"Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.","dateModified":"2026-10-23"}</script>
+<meta content="Claude Code CLI | Tools" name="twitter:title"/><meta content="Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it." name="twitter:description"/><link href="https://tools.specul.com/coding/claude-code-cli.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/coding/claude-code-cli.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/coding/claude-code-cli.html" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/coding/claude-code-cli.html" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<nav aria-label="Breadcrumb" class="crumbs">
+<a href="https://tools.specul.com/en/">AI Tools</a>
+<span aria-current="page">Coding</span>
+</nav>
+<a class="back" href="/en/coding/">← Coding</a>
+<div class="detail-head">
+<div aria-hidden="true" class="mark" style='--card-accent:"#D97757"'>CL</div>
+<div>
+<h1>Claude Code CLI</h1>
+<div class="vendor is-caps">Anthropic</div>
+</div>
+</div>
+<nav aria-label="Profile contents" class="panel is-slim"><p>Jump to what matters to you</p><p><a href="#dimension-model_access">Model &amp; openness</a> · <a href="#dimension-runtime">Where it runs</a> · <a href="#dimension-local_files">Local files</a> · <a href="#dimension-background">Tasks after shutdown</a> · <a href="#dimension-tools">Tools &amp; extensions</a> · <a href="#dimension-context">Context &amp; memory</a> · <a href="#dimension-permissions">Permissions &amp; limits</a> · <a href="#dimension-fit">Best for</a></p></nav>
+<div class="badges">
+<span class="tag on">Coding</span>
+<span class="tag on">Terminal</span>
+<span class="tag on">Local</span>
+<span class="t-state is-ok">8 axes checked</span>
+<span class="t-state is-ok">Active</span>
+<span class="badge">Checked 2026-10-23</span>
+</div>
+<p class="t-sm">Read the two badges separately: the first is whether this page is backed by evidence, the second is whether the product is still maintained. An archived product can have complete evidence; complete evidence does not mean the product is active.</p>
+<section aria-label="Decision snapshot" class="snapshot">
+<div class="snap-head">
+<h2>30-second check: should it make your shortlist?</h2>
+</div>
+<div class="snap-grid">
+<div class="snap-item"><span class="snap-k">In one line</span><p>A terminal coding and tool-execution product, with a CHANGELOG and Atom feed. See the…</p></div>
+<div class="snap-item"><span class="snap-k">How you use it</span><p>Local / self-hosted · CLI</p></div>
+<div class="snap-item"><span class="snap-k">Licence / commercial use</span><p>Not checked</p><small>Read the original licence before commercial use</small></div>
+<div class="snap-item"><span class="snap-k">Mainland China</span><p>Direct in mainland · Not in filing list</p></div>
+</div>
+<p class="snap-note">These four cards help you rule things out, not decide for you. The real differences are in the eight questions and sources below.</p>
+</section>
+<div class="panel is-slim">
+<h2 id="known-unknowns">Information not confirmed</h2>
+<ul>
+<li>The full tool list</li>
+<li>The concrete sandbox implementation</li>
+<li>Whether local models are supported</li>
+<li>The relationship between API calls and subscription quotas</li>
+<li>The specific restriction content of the commercial terms</li>
+</ul>
+</div>
+English summaries and interface labels are available. Detailed source notes below are currently in Chinese.
+<div class="panel-lead"><p><strong>The highest data quality and most frequent releases in this track</strong> — it ships its own CHANGELOG and Atom feed, with the finest granularity in permission design.</p></div>
+<div class="panel is-slim">
+<h2>When to use it, when not to</h2>
+<div><p>Users who value permission control, want the MCP ecosystem, and want Anthropic's own models. Users who want update notifications (this entry ships its own Atom feed).</p></div>
+<div class="warn-p"><p><strong>Not a fit for</strong> scenarios needing an open-source licence, self-hosting or closed distribution — the licence is explicitly proprietary, and public source is not the same as free use.</p></div>
+</div>
+<div class="panel">
+<h2>China availability <span class="panel-note">domestic / direct access / CAC filing · snapshot 2026-10-23</span></h2>
+<dl class="cn-rows">
+<dt>Origin</dt><dd>foreign-made　foreign entity (no matching filing entity in the CAC registry).</dd>
+<dt>Direct access</dt><dd>direct OK　Hosted on GitHub — direct reachability from mainland fluctuates (200/000 mixed on the same day); npm / PyPI install routes measured stable.</dd>
+<dt>CAC filing</dt><dd>not in filing list：not in the CAC public registry (13 batch attachments searched 2026-10-20, https://www.cac.gov.cn/2024-04/02/c_1713729983803145.htm); the product does not serve the mainland public, so filing does not apply.</dd>
+</dl>
+<p class="cn-foot">Filing status is quoted from the CAC public registry (updated batch by batch; this site copies the number and does not interpret it). "Direct access" is this site's own reachability measurement from a mainland network, not a vendor promise. GitHub-hosted sites fluctuated on the measurement day — the note says so.</p>
+</div>
+<div class="block-head">
+<h2 class="t-h2">8 questions, one table</h2>
+<p class="t-section-lead">8 questions, each comparable item by item with its peers.</p>
+</div>
+<dl class="axes">
+<div class="axis" id="dimension-model_access">
+<dt>Model &amp; openness</dt>
+<dd><p>Anthropic's own Claude family.</p>
+<p><strong>v2.1.284 (2026-09-28) added Claude Sonnet 5.5 (<code>claude-sonnet-5-5</code>). The official notes it is the default Sonnet model on the Anthropic API.</strong> Spec is 1M context (API pricing on the official pricing page; not stored by this site).</p></dd>
+</div>
+<div class="axis" id="dimension-runtime">
+<dt>Where it runs</dt>
+<dd><p>A local process in the terminal; lifecycle bound to the terminal session. The repo includes .devcontainer for containerized development; sessions land in ~/.claude and can be resumed with continue/resume, but nothing keeps running after the terminal exits.</p></dd>
+</div>
+<div class="axis" id="dimension-local_files">
+<dt>Local files</dt>
+<dd><p><strong>The permission model is strongly tied to the working directory</strong> —</p>
+<p>the CHANGELOG records that auto mode asks "before reading files outside the working directories". It also added a "Yes, but ask again next time" option. That means: allow this one read, and keep asking afterwards.</p>
+<p>1M context tier (see model_access).</p></dd>
+</div>
+<div class="axis" id="dimension-background">
+<dt>Tasks after shutdown</dt>
+<dd><p><strong>The terminal form needs a resident client, but the official has a cloud form that keeps running after shutdown.</strong></p>
+<p>Official <code>claude-code-on-the-web</code> wording: "A cloud session is a Claude Code session that runs on cloud infrastructure instead of on your machine... The session keeps running after you close your laptop."</p>
+<p>The CLI creates a cloud session with <code>claude --cloud</code> (the old <code>--remote</code> is an alias), and <code>claude --teleport</code> pulls a cloud session back into the terminal to continue;</p>
+<p>Routines (created in the CLI via <code>/schedule</code>) run on Anthropic-managed cloud, <strong>official wording</strong>: "they keep working when your laptop is closed".</p>
+<p>Cloud sessions and routines require a paid Pro / Max / Team or Enterprise seat.</p>
+<p>Quotas and limits follow the plan. The official routines page has a standalone "Usage and limits" section.</p></dd>
+</div>
+<div class="axis" id="dimension-tools">
+<dt>Tools &amp; extensions</dt>
+<dd><p><strong>MCP support is complete and continuously strengthening</strong> —</p>
+<p>v2.1.284 added <code>/mcp reconnect all</code>. It retries all failed-or-unauthenticated MCP servers in one shot.</p>
+<p>The same version fixed an issue: on session resume, MCP tool calls reported "No such tool available" while the server was actually still connecting. It now <strong>waits up to 10 seconds</strong>.</p></dd>
+</div>
+<div class="axis" id="dimension-context">
+<dt>Context &amp; memory</dt>
+<dd><p><strong>The context-compaction mechanism has explicit boundary handling</strong> —</p>
+<p>v2.1.284 fixed a persistent error: when the request is still too long after compacting, it kept reporting "Prompt is too long". It now <strong>compacts once more, keeping less of the recent conversation</strong>.</p>
+<p>That shows it genuinely has multi-round compaction, and edge cases are being patched continuously.</p></dd>
+</div>
+<div class="axis" id="dimension-permissions">
+<dt>Permissions &amp; limits</dt>
+<dd><p><strong>The granularity of its permission design is the finest in this category</strong>:</p>
+<ul><li>auto mode asks per path (reads outside the working directories need confirmation), and offers an "allow this once" middle option;</li></ul>
+<ul><li>managed policies support <code>availableModels</code> and <code>enforceAvailableModels</code> to control usable models, and <strong>warn at startup</strong> when the policy mismatches;</li></ul>
+<ul><li><code>/usage</code> shows quota consumption and limits.</li></ul></dd>
+</div>
+<div class="axis" id="dimension-fit">
+<dt>Best for</dt>
+<dd><p>Users who value controllable permissions, need the MCP ecosystem, and want Anthropic's official models. <strong>Not a fit for scenarios needing an open-source license or self-hosting</strong> (the license is explicitly proprietary).</p></dd>
+</div>
+</dl>
+<nav aria-label="Troubleshooting" class="panel is-slim">
+<h2>When something fails</h2>
+<p><a href="/en/mcp/guides/failure-library.html#auth">Authentication and permissions</a> · <a href="/en/mcp/guides/failure-library.html#tool-input">Invalid tool inputs</a> · <a href="/en/mcp/guides/failure-library.html#json">Invalid output format</a></p>
+</nav>
+<div class="panel warn">
+<h2 class="warn">Top misconception</h2>
+<ul>
+<li>Assuming a GitHub repo means open source — LICENSE.md is All rights reserved plus commercial terms</li>
+<li>Overlooking the default that reads outside the working directory ask first — your first run may be interrupted</li>
+<li>Assuming compression fixes every over-long case; the official docs still address the "still too long after compression" edge</li>
+</ul>
+</div>
+<div class="panel">
+<h2>Evidence sources</h2>
+<p class="t-sm">Checked 2026-10-23，Content updated 2026-10-08。This is the date of the entry, not a claim that every field was rechecked that day.</p>
+<table class="src">
+<thead><tr><th class="w-20">Type</th><th class="w-52">Name</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td>repo</td><td>Anthropic · Claude Code repository</td><td><a href="https://github.com/anthropics/claude-code" rel="noopener" target="_blank">https://github.com/anthropics/claude-code</a></td></tr>
+<tr><td>changelog</td><td>Anthropic · Claude Code CHANGELOG</td><td><a href="https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md" rel="noopener" target="_blank">https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md</a></td></tr>
+<tr><td>changelog</td><td>Anthropic · Claude Code Releases (v2.1.284 @ 2026-09-28)</td><td><a href="https://github.com/anthropics/claude-code/releases" rel="noopener" target="_blank">https://github.com/anthropics/claude-code/releases</a></td></tr>
+<tr><td>changelog</td><td>Anthropic · Claude Code Atom feed (directly subscribable updates)</td><td><a href="https://github.com/anthropics/claude-code/blob/main/feed.xml" rel="noopener" target="_blank">https://github.com/anthropics/claude-code/blob/main/feed.xml</a></td></tr>
+<tr><td>docs</td><td>Anthropic · official docs</td><td><a href="https://code.claude.com/docs/en/overview" rel="noopener" target="_blank">https://code.claude.com/docs/en/overview</a></td></tr>
+<tr><td>docs</td><td>Anthropic · Commercial Terms of Service</td><td><a href="https://www.anthropic.com/legal/commercial-terms" rel="noopener" target="_blank">https://www.anthropic.com/legal/commercial-terms</a></td></tr>
+<tr><td>docs</td><td>Anthropic · Claude Code on the web (cloud sessions, keep running after shutdown)</td><td><a href="https://code.claude.com/docs/en/claude-code-on-the-web" rel="noopener" target="_blank">https://code.claude.com/docs/en/claude-code-on-the-web</a></td></tr>
+<tr><td>docs</td><td>Anthropic · Routines (cloud scheduled / API / GitHub-triggered tasks)</td><td><a href="https://code.claude.com/docs/en/routines" rel="noopener" target="_blank">https://code.claude.com/docs/en/routines</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel is-slim">
+<h2>Test notes</h2>
+<p>This site has not completed measured runs. The test protocol is at <a href="https://github.com/speculcom/ai-handbook/blob/main/tools/protocols/coding/_protocol.md" rel="noopener" target="_blank">protocols/coding/_protocol.md</a>.</p>
+<p><strong>Suggested measurement</strong>: focus on <strong>how often the "allow this once" approval option actually interrupts during long tasks</strong>, and <strong>MCP reconnection behavior on session resume</strong> (the freshly fixed spot is the most worth verifying).</p>
+</div>
+<div class="panel is-slim">
+<h2>⚠ License status (the most important prerequisite)</h2>
+<p><code>LICENSE.md</code> original text:</p>
+<blockquote>© Anthropic PBC. <strong>All rights reserved.</strong> Use is subject to Anthropic's Commercial Terms of Service.</blockquote>
+<p><strong>This is not an open-source license.</strong> The GitHub API's license field returning <code>NONE</code> is for the same reason.</p>
+<div class="tbl-wrap"><table><thead><tr><th>Question</th><th>Answer</th></tr></thead><tbody><tr><td>Can I read the source?</td><td>Yes (the repository is public)</td></tr><tr><td>Can I use it commercially?</td><td>Must follow Anthropic's Commercial Terms</td></tr><tr><td>Can I distribute it closed-source?</td><td><strong>No</strong> (All rights reserved)</td></tr><tr><td>Can I self-host?</td><td>Not applicable (proprietary + subscription)</td></tr></tbody></table></div>
+<p><strong>This must be made clear before any selection decision</strong> — "the tool is on GitHub" does not equal "you are free to use it".</p>
+</div>
+<div class="panel is-slim">
+<h2>Change log: three subscription paths (unique in this category)</h2>
+<p>This entry has <strong>three</strong> changelog entry points:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Entry point</th><th>Notes</th></tr></thead><tbody><tr><td><code>CHANGELOG.md</code></td><td>the main change log</td></tr><tr><td><code>releases</code></td><td>version tags and dates</td></tr><tr><td><strong><code>feed.xml</code></strong></td><td><strong>Atom feed, directly subscribable</strong></td></tr></tbody></table></div>
+<pre class="code"><code>&lt;link rel="self" type="application/atom+xml"
+      href="https://raw.githubusercontent.com/anthropics/claude-code/main/feed.xml"/&gt;</code></pre>
+<p><strong>This is the only project in this category that ships an Atom feed.</strong> If you want to subscribe to some CLI tool's updates, point at this feed.</p>
+<p><strong>Note</strong>: this site's <code>mcp.specul.com</code> once evaluated "add RSS" as an improvement; this entry shows <strong>at least this one subject, Claude Code, already provides it</strong>, while other subjects still need manual checking.</p>
+</div>
+<div class="panel is-slim">
+<h2>Release cadence</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Version</th><th>Date</th></tr></thead><tbody><tr><td><code>v2.1.284</code></td><td>2026-09-28</td></tr><tr><td><code>v2.1.283</code></td><td>2026-09-25</td></tr><tr><td><code>v2.1.282</code></td><td>2026-09-24</td></tr><tr><td><code>v2.1.281</code></td><td>2026-09-23</td></tr><tr><td><code>v2.1.280</code></td><td>2026-09-22</td></tr></tbody></table></div>
+<p><strong>5 releases in 5 days</strong> — one of the densest verifiable cadences in this category.</p>
+</div>
+<div class="panel is-slim">
+<h2>Model update (v2.1.284 original wording)</h2>
+<p>CHANGELOG original text (excerpt; the API-pricing part is not quoted per D9 policy):</p>
+<pre class="code"><code>Added Claude Sonnet 5.5 (claude-sonnet-5-5), now the default Sonnet
+model on the Anthropic API — 1M context…</code></pre>
+<div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody><tr><td>model id</td><td><code>claude-sonnet-5-5</code></td></tr><tr><td>context</td><td><strong>1M</strong></td></tr></tbody></table></div>
+<p><strong>This is the only subject in this category whose default-model spec was verified from the CHANGELOG</strong>, because it was written in the CHANGELOG rather than elsewhere.</p>
+</div>
+<div class="panel is-slim">
+<h2>Permission design: the finest in this category</h2>
+<h3 class="sub-h">① Asks per path, with an "allow just this once"</h3>
+<p>v2.1.284 added an option:</p>
+<pre class="code"><code>Added a "Yes, but ask again next time" answer to auto mode's prompt
+before a read outside the working directories, so you can allow that one
+read and still be asked about later ones</code></pre>
+<p><strong>This design deserves its own record</strong>. Most tools' approvals have only two states — allow / deny. Claude Code offers a third state: <strong>allow this once, but keep asking</strong>.</p>
+<p>It resolves a real dilemma:</p>
+<ul><li>allow globally → lose the protection</li><li>confirm every time → workflow interruptions</li></ul>
+<h3 class="sub-h">② Managed policies control usable models</h3>
+<pre class="code"><code>Added Claude apps gateway startup warnings when a managed policy's
+availableModels is empty, or leaves out the model Claude Code starts on
+without setting model or enforceAvailableModels</code></pre>
+<p>In enterprise scenarios:</p>
+<ul><li>usable models are controlled by the <code>availableModels</code> policy</li><li><code>enforceAvailableModels</code> decides whether it is enforced</li><li><strong>policy mismatches warn at startup</strong> — no silent degradation</li></ul>
+<h3 class="sub-h">③ Quota visibility</h3>
+<pre class="code"><code>Added dollar amounts to the Claude apps gateway spend limit in /usage
+and the status line</code></pre>
+<p><code>/usage</code> and the status line show <strong>concrete spend numbers</strong> rather than abstract percentages (the original example contains amounts; not quoted per D9 policy).</p>
+</div>
+<div class="panel is-slim">
+<h2>MCP support keeps strengthening</h2>
+<p>Both v2.1.284 changes concern MCP:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Change</th><th>Content</th></tr></thead><tbody><tr><td>added</td><td><code>/mcp reconnect all</code> — retry all failed or unauthenticated servers in one shot</td></tr><tr><td>fixed</td><td>on session resume MCP tools reported "No such tool available" (the server was actually still connecting); it now <strong>waits up to 10 seconds</strong></td></tr></tbody></table></div>
+<p><strong>The value of the second fix</strong>: it reveals a real scenario — <strong>a race exists between session resume and MCP server connection</strong>. Only heavy usage would surface this class of problem.</p>
+</div>
+<div class="panel is-slim">
+<h2>Boundary handling of context compaction</h2>
+<pre class="code"><code>Fixed "Prompt is too long" errors that persisted after compacting:
+when the compacted request is still too long, Claude Code now compacts
+once more, keeping less of the recent conversation</code></pre>
+<p><strong>What this shows</strong>: after compaction a request may still be too long; then it <strong>compacts once more</strong> and <strong>keeps less of the recent conversation</strong>.</p>
+<p>This is honest boundary handling — not pretending one compaction solves everything.</p>
+</div>
+<div class="panel is-slim">
+<h2>Permission-grading note</h2>
+<p>Basis for <code>confidence: partial</code> (downgraded from verified on 2026-10-03):</p>
+<blockquote><strong>Why the downgrade</strong>: the subject of the ❌ items below is <strong>this site's evidence gap</strong>, not "the official did not provide it". Per the v3 rule "say unknown when unknown", marking verified while these items exist would be inflated, hence partial. Main gaps: the full tool list, sandbox implementation details, whether local models are supported, the API-vs-subscription quota relationship.</blockquote>
+<ul><li>✅ Verified: repository, <strong>license status original text</strong>, the latest 5 versions and dates, stars (152,928 · rolling re-check 2026-10-23, latest release v2.1.309 @ 2026-10-22), <strong>model spec original text</strong> (pricing not stored per D9), the three concrete permission mechanisms, the two MCP changes, the compaction strategy, the Atom feed's existence, <strong>the cloud form (<code>claude --cloud</code> / Routines / keeps running after shutdown)</strong></li><li>❌ Not verified: the full tool list, sandbox implementation details, whether local models are supported, the API-vs-subscription quota relationship</li></ul>
+<p><strong>This was once the first CLI-form entry to reach <code>verified</code></strong>. It writes a lot of information into the CHANGELOG and LICENSE. <strong>Downgraded to <code>partial</code> on 2026-10-03 because this site still has evidence gaps (see below)</strong>.</p>
+</div>
+<div class="panel is-slim">
+<h2>第一次怎么用</h2>
+<ol><li value="1">安装命令以仓库 README 为准；安装后先在空目录跑 <code>claude --help</code> 确认版本。</li><li value="2">进入目标仓库，先让它读 README 与测试命令，不要直接改代码。</li><li value="3">用权限确认模式逐条看它要跑的命令；能白名单就白名单到具体命令。</li><li value="4">让它先给「根因假设 + 验证方法」，再改代码；改动后必须跑回归测试。</li><li value="5">源码可见但许可证是 All rights reserved，商用与再分发前先读 LICENSE。</li></ol>
+<pre class="code"><code>仓库在【路径】。先做三件事，不要改代码：
+1) 读 README 与测试配置，列出运行测试的命令；
+2) 复现【bug】，给出两个根因假设；
+3) 按成本排序，先验最便宜的那个。</code></pre>
+</div>
+<div class="panel is-slim">
+<h2>Related entries</h2>
+<ul class="rel-list">
+<li><span class="rel-t"><a href="/en/coding/codex-cli.html">Codex CLI</a></span><span class="rel-n">The equivalent official OpenAI tool</span></li>
+<li><span class="rel-t"><a href="/en/coding/opencode.html">OpenCode</a></span><span class="rel-n">The open-source alternative</span></li>
+<li><span class="rel-t"><a href="/en/framework/claude-agent-sdk.html">Claude Agent SDK</a></span><span class="rel-n">Other layer · Frameworks &amp; runtimes</span></li>
+<li><span class="rel-t"><a href="/en/mcp/filesystem.html">Filesystem MCP Server</a></span><span class="rel-n">Other layer · MCP tools</span></li>
+</ul>
+</div>
+<section class="section peer-section" id="peers">
+<div class="container">
+<div class="matrix-head">
+<p class="kicker">Same-category peers</p>
+<h2>Look at these three before reading further</h2>
+<p class="section-desc">Selected by overlap in jobs, not ranked. Compare where it runs, licence and status first; if one of the three fails, skip it.</p>
+</div>
+<div class="table-wrap">
+<table class="cmp peer-table">
+<thead><tr><th>Object</th><th>Where</th><th>Licence</th><th>Evidence / status</th><th>What it is for</th></tr></thead>
+<tbody><tr><td><a href="/en/coding/amp.html">Amp</a></td><td>Cloud / API</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">Sourcegraph's Amp: a frontier coding agent spanning CLI + cloud orbs + r</td></tr><tr><td><a href="/en/coding/codex-cli.html">Codex CLI</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">OpenAI's official terminal coding agent, written in Rust, architecturall</td></tr><tr><td><a href="/en/coding/copilot-cli.html">GitHub Copilot CLI</a></td><td>Local / self-hosted</td><td>Not checked</td><td>8 questions checked<br/><span class="td-vendor">Active</span></td><td class="td-fit">The Copilot agent in your terminal, carried by your GitHub subscription:</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section vendor-section" id="vendor">
+<div class="container">
+<div class="vendor-head">
+<p class="kicker">Same vendor</p>
+<h2>More from Anthropic</h2>
+<p class="section-desc">One vendor’s products are often split across categories. This list puts them together so you do not have to assemble them across five sites.</p>
+</div>
+<ul class="vendor-list"><li><a href="/en/chat/claude-chat.html"><span class="vp-cat">General chat</span>Claude (chat app)</a></li><li><a href="/en/coding/claude-code.html"><span class="vp-cat">AI coding</span>Claude Code (IDE extension)</a></li><li><a href="/en/framework/claude-agent-sdk.html"><span class="vp-cat">Frameworks &amp; runtimes</span>Claude Agent SDK</a></li></ul>
+</div>
+</section>
+<p class="fine mt-6">
+This page is generated from the <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">ai-handbook</a> data layer (CC BY 4.0).
+For the judging criteria and method notes, see <code>METHODOLOGY.md</code>.
+      </p>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>

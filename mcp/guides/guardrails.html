@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Guardrails for agents — 深水指南 | 投机取巧</title>
-  <meta name="description" content="agent 的护栏：输入输出与工具三层防线、触发即止的 tripwire 机制，以及并行与阻塞的成本取舍。" />
-  <link rel="canonical" href="https://tools.specul.com/mcp/guides/guardrails.html" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Guardrails for agents" />
-  <meta property="og:url" content="https://tools.specul.com/mcp/guides/guardrails.html" />
-  <meta property="og:title" content="Guardrails for agents — 深水指南 | 投机取巧" />
-  <meta property="og:description" content="agent 的护栏：输入输出与工具三层防线、触发即止的 tripwire 机制，以及并行与阻塞的成本取舍。" />
-  <meta property="og:image" content="https://specul.com/home-shots/og-home.jpg?v=20261123d" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:locale" content="zh_CN" />
-  <meta property="og:locale:alternate" content="en_US" />
-  <meta name="theme-color" content="#16121f" />
-  <link rel="icon" type="image/png" href="../../assets/brand/dandelion-favicon-site.png" />
-  <link rel="apple-touch-icon" href="../../assets/brand/dandelion-apple-touch-site.png" />
-  <script src="../../brand.js?v=37d1072be69b"></script>
-  <link rel="stylesheet" href="../../brand.css?v=37d1072be69b" />
-  <link rel="stylesheet" href="../../site.css" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Guardrails for agents","description":"Input, output, and tool-level defenses, tripwires that halt on trigger, and the cost trade-off between parallel and blocking checks.","dateModified":"2026-10-30"}</script>
-</head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Guardrails for agents — 深水指南 | 投机取巧</title>
+<meta content="agent 的护栏：输入输出与工具三层防线、触发即止的 tripwire 机制，以及并行与阻塞的成本取舍。" name="description"/>
+<link href="https://tools.specul.com/mcp/guides/guardrails.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Guardrails for agents" property="og:site_name"/>
+<meta content="https://tools.specul.com/mcp/guides/guardrails.html" property="og:url"/>
+<meta content="Guardrails for agents — 深水指南 | 投机取巧" property="og:title"/>
+<meta content="agent 的护栏：输入输出与工具三层防线、触发即止的 tripwire 机制，以及并行与阻塞的成本取舍。" property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="zh_CN" property="og:locale"/>
+<meta content="en_US" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="../../assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="../../assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="../../brand.js?v=37d1072be69b"></script>
+<link href="../../brand.css?v=37d1072be69b" rel="stylesheet"/>
+<link href="../../site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Guardrails for agents","description":"Input, output, and tool-level defenses, tripwires that halt on trigger, and the cost trade-off between parallel and blocking checks.","dateModified":"2026-10-30"}</script>
+<link href="https://tools.specul.com/mcp/guides/guardrails.html" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/mcp/guides/guardrails.html" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/mcp/guides/guardrails.html" hreflang="x-default" rel="alternate"/></head>
 <!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
      同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
      而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
@@ -32,185 +32,181 @@
      ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
      （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
 <body class="brand-ambient has-tabbar has-tabbar-1row">
-  <a class="t-skip" href="#main"><span data-zh>跳到主要内容</span><span data-en>Skip to main content</span></a>
-  <header class="site-header">
-    <div class="container site-bar">
-      <a class="brand" href="https://specul.com/" title="投机取巧">
-        <span class="brand-dot" aria-hidden="true"></span>
-        <span class="brand-text">
-          <span class="brand-name" id="markName" data-zh-name="投机取巧" data-en-name="Speculative Speculation">投机取巧</span>
-          <span class="brand-sub" id="markSub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
-        </span>
-      </a>
-      <nav class="nav-links" aria-label="站点导航">
-        <a href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a>
-        <a href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a>
-        <a href="https://tools.specul.com/" aria-current="page"><span data-zh>工具</span><span data-en>Tools</span></a>
-        <a href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a>
-        <a href="https://demos.specul.com/"><span data-zh>作品演示</span><span data-en>Playground</span></a>
-        <a href="https://oss.specul.com/"><span data-zh>开源库</span><span data-en>OSS</span></a>
-        <a href="https://hardware.specul.com/"><span data-zh>硬件算力</span><span data-en>Compute</span></a>
-        <a href="https://papers.specul.com/"><span data-zh>AI 论文</span><span data-en>AI Papers</span></a>
-        <a href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a>
-        <a href="https://nav.specul.com/"><span data-zh>AI 导航</span><span data-en>AI Directory</span></a>
-      </nav>
-      <!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+<a class="t-skip" href="#main"><span data-zh="">跳到主要内容</span><span data-en="">Skip to main content</span></a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" data-en-name="Speculative Speculation" data-zh-name="投机取巧" id="markName">投机取巧</span>
+<span class="brand-sub" data-en-sub="" data-zh-sub="Speculative Speculation" id="markSub">Speculative Speculation</span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/"><span data-zh="">首页</span><span data-en="">Home</span></a>
+<a href="https://learn.specul.com/"><span data-zh="">学 AI</span><span data-en="">Learn</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span data-zh="">工具</span><span data-en="">Tools</span></a>
+<a href="https://models.specul.com/"><span data-zh="">模型</span><span data-en="">Models</span></a>
+<a href="https://demos.specul.com/"><span data-zh="">作品演示</span><span data-en="">Playground</span></a>
+<a href="https://oss.specul.com/"><span data-zh="">开源库</span><span data-en="">OSS</span></a>
+<a href="https://hardware.specul.com/"><span data-zh="">硬件算力</span><span data-en="">Compute</span></a>
+<a href="https://papers.specul.com/"><span data-zh="">AI 论文</span><span data-en="">AI Papers</span></a>
+<a href="https://chain.specul.com/"><span data-zh="">链</span><span data-en="">Chain</span></a>
+<a href="https://nav.specul.com/"><span data-zh="">AI 导航</span><span data-en="">AI Directory</span></a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
            放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
            （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
            链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
-      <span class="nav-tools">
-        <a class="icon-btn" href="https://specul.com/search.html" aria-label="搜索" data-ui-aria-label-zh="搜索" data-ui-aria-label-en="Search" title="搜索全站" data-ui-title-zh="搜索全站" data-ui-title-en="Search all sites"><span aria-hidden="true">⌕</span></a>
-        <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☾</button>
-        <button class="icon-btn" id="langBtn" type="button" aria-label="Switch language" title="Switch language">EN</button>
-      </span>
-      <!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+<span class="nav-tools">
+<a aria-label="搜索" class="icon-btn" data-ui-aria-label-en="Search" data-ui-aria-label-zh="搜索" data-ui-title-en="Search all sites" data-ui-title-zh="搜索全站" href="https://specul.com/search.html" title="搜索全站"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="Switch to English" class="icon-btn" href="/en/mcp/guides/guardrails.html" hreflang="en" id="langBtn" lang="en" title="Switch to English">EN</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
            行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
            无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
            「导航被藏进一个点了没反应的按钮」。 -->
-      <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="navDrawer">
-        <i></i><i></i><i></i>
-      </button>
-    </div>
-  </header>
-  <div class="nav-scrim"></div>
-  <aside class="nav-drawer" id="navDrawer" aria-hidden="true" aria-label="站点导航">
-    <div class="nav-drawer-h">
-      <span class="brand-name"><span data-zh>投机取巧</span><span data-en>Speculative Speculation</span></span>
-      <span class="brand-sub" data-zh-sub="Speculative Speculation" data-en-sub="">Speculative Speculation</span>
-      <button class="nav-dclose" type="button" aria-label="关闭">×</button>
-    </div>
-    <nav class="nav-drawer-list">
-      <a href="https://specul.com/"><span><span data-zh>首页</span><span data-en>Home</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://learn.specul.com/"><span><span data-zh>学 AI</span><span data-en>Learn</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://tools.specul.com/" aria-current="page"><span><span data-zh>工具</span><span data-en>Tools</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://models.specul.com/"><span><span data-zh>模型</span><span data-en>Models</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://demos.specul.com/"><span><span data-zh>作品演示</span><span data-en>Playground</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://oss.specul.com/"><span><span data-zh>开源库</span><span data-en>OSS</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://hardware.specul.com/" class="nav-group-start"><span><span data-zh>硬件算力</span><span data-en>Compute</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://papers.specul.com/"><span><span data-zh>AI 论文</span><span data-en>AI Papers</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://chain.specul.com/"><span><span data-zh>链</span><span data-en>Chain</span></span><span class="ar" aria-hidden="true">→</span></a>
-      <a href="https://nav.specul.com/" class="nav-group-start" data-nav-group="external"><span><span data-zh>AI 导航</span><span data-en>AI Directory</span></span><span class="ar" aria-hidden="true">↗</span></a>
-    </nav>
-    <div class="nav-drawer-foot">
-      <p><span data-zh>内容站覆盖学、用、选、跑；AI 导航是站外的 AI 网站目录，点出去看。</span><span data-en>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</span></p>
-      <nav><a href="https://specul.com/legal.html"><span data-zh>法律条款</span><span data-en>Legal terms</span></a></nav>
-    </div>
-  </aside>
-  <main id="main">
-    <div class="container detail">
-      <a class="back" href="../">← <span data-zh>深水指南</span><span data-en>Guides</span></a>
-      <div class="detail-head">
-        <div>
-          <h1><span data-zh>agent 的护栏</span><span data-en>Guardrails for agents</span></h1>
-          <div class="vendor is-caps"><span data-zh>护栏与安全</span><span data-en>Guardrails & safety</span></div>
-        </div>
-      </div>
-      <div class="panel-lead"><span data-zh><p>输入输出与工具三层防线、触发即止的 tripwire 机制，以及并行与阻塞的成本取舍。</p></span><span data-en><p>Input, output, and tool-level defenses, tripwires that halt on trigger, and the cost trade-off between parallel and blocking checks.</p></span></div>
-
-
-
-
-      <nav class="panel is-slim" aria-label="文章目录" data-ui-aria-label-zh="文章目录" data-ui-aria-label-en="Article contents"><p><span data-zh>按问题阅读</span><span data-en>On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></a></li><li><a href="#guide-section-1"><span data-zh>三层防线</span><span data-en>Three lines of defense</span></a></li><li><a href="#guide-section-2"><span data-zh>触发即止：tripwire</span><span data-en>Tripwires: halt on trigger</span></a></li><li><a href="#guide-section-3"><span data-zh>并行还是阻塞：一笔成本账</span><span data-en>Parallel or blocking</span></a></li><li><a href="#guide-section-4"><span data-zh>拿什么当检查器</span><span data-en>What runs the check</span></a></li><li><a href="#guide-section-5"><span data-zh>设计上的纪律</span><span data-en>Design discipline</span></a></li></ul></nav>
-      <div class="panel is-slim" id="guide-section-0">
-        <h2><span data-zh>这一篇讲什么</span><span data-en>What this guide covers</span></h2>
-        <span data-zh><p><strong>护栏就是给 agent 的输入输出加检查，不合格就当场拦下。</strong> 它和评测是两回事：评测测「好不好」，护栏管「行不行」。 模型会犯错、会被诱导，护栏是工程上的最后一道闸。</p></span><span data-en><p><strong>Guardrails mean putting checks on an agent&#39;s inputs and outputs, intercepting failures on the spot.</strong> They are a different thing from evaluation: evaluation measures &quot;how good&quot;, guardrails police &quot;is this allowed at all&quot;. Models err and can be manipulated; guardrails are engineering&#39;s last gate.</p></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-1">
-        <h2><span data-zh>三层防线</span><span data-en>Three lines of defense</span></h2>
-        <span data-zh><p>OpenAI Agents SDK 官方文档把 guardrails 定义为 <strong>&quot;Guardrails enable you to do checks and validations of user input and agent output.&quot;</strong> 在实践中分成三类，各自守在不同位置。</p>
-            <p><strong>输入护栏</strong>：检查用户原始输入，只对链路里的<strong>第一个</strong> agent 生效。 <strong>输出护栏</strong>：检查 agent 的最终输出，只对<strong>最后一个</strong> agent 生效。 <strong>工具护栏</strong>：包住具体函数工具，每次调用前后都过一遍。</p>
-            <p>官方特意点出一个常见误区： 如果流程里有 manager、handoff 或委派的专家 agent， 指望 agent 级输入/输出护栏在每一跳都生效是会落空的—— 要那种「每次工具调用前都查」的效果，就得用工具护栏。</p></span><span data-en><p>The OpenAI Agents SDK official docs define guardrails as <strong>&quot;Guardrails enable you to do checks and validations of user input and agent output.&quot;</strong> In practice they split into three kinds, each standing at a different position.</p>
-            <p><strong>Input guardrails</strong>: check the user&#39;s raw input, effective only on the <strong>first</strong> agent in the chain. <strong>Output guardrails</strong>: check the agent&#39;s final output, effective only on the <strong>last</strong> agent. <strong>Tool guardrails</strong>: wrap a specific function tool, checked before and after every call.</p>
-            <p>The official docs deliberately call out a common misconception: if the flow has a manager, handoffs, or delegated specialist agents, expecting agent-level input/output guardrails to fire at every hop is a disappointment — for a &quot;check before every tool call&quot; effect, you need tool guardrails.</p></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-2">
-        <h2><span data-zh>触发即止：tripwire</span><span data-en>Tripwires: halt on trigger</span></h2>
-        <span data-zh><p>护栏的核心机制是 tripwire（触发线）。 检查不通过时，runner 立刻抛出对应异常并<strong>中止执行</strong>：</p>
-            <div class="tbl-wrap"><table><thead><tr><th>防线</th><th>触发的异常</th></tr></thead><tbody><tr><td>输入护栏</td><td><code>InputGuardrailTripwireTriggered</code></td></tr><tr><td>输出护栏</td><td><code>OutputGuardrailTripwireTriggered</code></td></tr><tr><td>工具输入护栏</td><td><code>ToolInputGuardrailTripwireTriggered</code></td></tr><tr><td>工具输出护栏</td><td><code>ToolOutputGuardrailTripwireTriggered</code></td></tr></tbody></table></div>
-            <p>异常里带着上下文：是哪个护栏触发的、触发前已完成的结果列表。 接入方 catch 到异常后自行决定怎么回应用户。</p>
-            <p>护栏也能直接调外部分类器，不必再起一个 agent。 官方给的示例场景很有代表性： 面向客服的贵模型前面挂一个快模型护栏， 遇到「帮我写数学作业」这类滥用直接挡掉。</p></span><span data-en><p>The core mechanism of guardrails is the tripwire. When a check fails, the runner immediately raises the corresponding exception and <strong>halts execution</strong>:</p>
-            <div class="tbl-wrap"><table><thead><tr><th>Defense line</th><th>Exception raised</th></tr></thead><tbody><tr><td>Input guardrail</td><td><code>InputGuardrailTripwireTriggered</code></td></tr><tr><td>Output guardrail</td><td><code>OutputGuardrailTripwireTriggered</code></td></tr><tr><td>Tool input guardrail</td><td><code>ToolInputGuardrailTripwireTriggered</code></td></tr><tr><td>Tool output guardrail</td><td><code>ToolOutputGuardrailTripwireTriggered</code></td></tr></tbody></table></div>
-            <p>The exception carries context: which guardrail tripped, and the list of results completed before the trip. The integrating side catches the exception and decides how to respond to the user.</p>
-            <p>A guardrail can also call an external classifier directly, without spinning up another agent. The official example scenario is representative: in front of an expensive customer-service model, hang a fast-model guardrail that blocks abuse like &quot;write my math homework&quot; outright.</p></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-3">
-        <h2><span data-zh>并行还是阻塞：一笔成本账</span><span data-en>Parallel or blocking</span></h2>
-        <span data-zh><p>输入护栏有两种跑法，官方文档写明了代价差异。</p>
-            <p><strong>并行执行</strong>（默认）：护栏与 agent 同时跑，延迟最低。 但触发时 agent 可能已经烧过 token、执行过工具。</p>
-            <p><strong>阻塞执行</strong>：护栏先跑完，agent 后启动。 触发即止，token 与工具副作用都不会发生。 <strong>OpenAI 官方原文</strong>：阻塞执行 &quot;is ideal for cost optimization and when you want to avoid potential side effects from tool calls&quot;。</p>
-            <p>注意输出护栏不支持并行参数——它永远在 agent 完成后跑。</p></span><span data-en><p>Input guardrails have two run modes, and the official docs spell out the cost difference.</p>
-            <p><strong>Parallel execution</strong> (default): the guardrail and the agent run together, lowest latency. But when it trips, the agent may already have burned tokens and executed tools.</p>
-            <p><strong>Blocking execution</strong>: the guardrail finishes first, the agent starts after. Trip and halt — no tokens spent, no tool side effects. <strong>OpenAI official text</strong>: blocking execution &quot;is ideal for cost optimization and when you want to avoid potential side effects from tool calls&quot;.</p>
-            <p>Note output guardrails do not support the parallel flag — they always run after the agent completes.</p></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-4">
-        <h2><span data-zh>拿什么当检查器</span><span data-en>What runs the check</span></h2>
-        <span data-zh><p>文档层面是函数加判定输出；模型层面可以是用 LLM 当分类器。 Llama Guard 论文（arXiv 2312.06674）是这条路线的代表： 一个指令微调的安全分类模型，自带安全风险分类体系（taxonomy）， 对 prompt 和 response 做多分类，输出二值判定。</p>
-            <p><strong>论文摘要原文</strong>：&quot;matches or exceeds that of currently available content moderation tools&quot;。 注意这是 2023 年底的论文结果， 换成今天的模型与场景需自行复验。</p></span><span data-en><p>At the code level it is a function plus a verdict; at the model level it can be an LLM acting as a classifier. The Llama Guard paper (arXiv 2312.06674) represents this route: an instruction-tuned safety classifier with its own risk taxonomy (taxonomy), multi-label classification over prompts and responses, emitting binary verdicts.</p>
-            <p><strong>Paper abstract text</strong>: &quot;matches or exceeds that of currently available content moderation tools&quot;. Note these are late-2023 paper results; with today&#39;s models and scenarios you must re-verify yourself.</p></span>
-      </div>
-      <div class="panel is-slim" id="guide-section-5">
-        <h2><span data-zh>设计上的纪律</span><span data-en>Design discipline</span></h2>
-        <span data-zh><ol><li value="1">护栏管「行不行」，别顺手让它管「好不好」——那是评测的活。</li><li value="2">检查要快：挂在主流程前的护栏，本身不能成为延迟大头。</li><li value="3">失败要可见：拦了什么、为什么拦，要留痕，否则无法排查误杀。</li><li value="4">别只守门口：工具调用、交接、委派，每一跳都可能是入口。</li></ol>
-            <p>最后一句官方提醒值得放在案头： <strong>Anthropic 官方原文</strong>：&quot;The autonomous nature of agents means higher costs, and the potential for compounding errors.&quot; 护栏不是万能药，但它是把错误复合按在第一步的那只手。</p></span><span data-en><ol><li value="1">Guardrails police &quot;allowed or not&quot; — don&#39;t let them drift into &quot;how good&quot;; that is evaluation&#39;s job.</li><li value="2">Checks must be fast: a guardrail in front of the main flow must not itself become the latency hotspot.</li><li value="3">Failures must be visible: what was blocked and why must leave a trace, or false positives cannot be debugged.</li><li value="4">Don&#39;t guard only the front door: tool calls, handoffs, delegations — every hop can be an entry point.</li></ol>
-            <p>One last official reminder worth keeping on the desk: <strong>Anthropic official text</strong>: &quot;The autonomous nature of agents means higher costs, and the potential for compounding errors.&quot; Guardrails are not a cure-all, but they are the hand that pins compounding errors down at the first step.</p></span>
-      </div>
-<nav class="panel is-slim" aria-label="接下来做什么" data-ui-aria-label-zh="接下来做什么" data-ui-aria-label-en="What to do next">
-<h2><span data-zh>接下来做什么</span><span data-en>What to do next</span></h2><ul>
-<li><a href="toolkit-worksheets.html"><span data-zh>记录约束、验收与未确认项</span><span data-en>Record constraints, acceptance and unknowns</span></a></li>
-<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh>核对结果与来源</span><span data-en>Verify the result and its sources</span></a></li>
-<li><a href="failure-library.html#by-symptom"><span data-zh>按症状排查失败</span><span data-en>Troubleshoot by symptom</span></a></li>
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name"><span data-zh="">投机取巧</span><span data-en="">Speculative Speculation</span></span>
+<span class="brand-sub" data-en-sub="" data-zh-sub="Speculative Speculation">Speculative Speculation</span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/"><span><span data-zh="">首页</span><span data-en="">Home</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/"><span><span data-zh="">学 AI</span><span data-en="">Learn</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span><span data-zh="">工具</span><span data-en="">Tools</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/"><span><span data-zh="">模型</span><span data-en="">Models</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/"><span><span data-zh="">作品演示</span><span data-en="">Playground</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/"><span><span data-zh="">开源库</span><span data-en="">OSS</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/"><span><span data-zh="">硬件算力</span><span data-en="">Compute</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/"><span><span data-zh="">AI 论文</span><span data-en="">AI Papers</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/"><span><span data-zh="">链</span><span data-en="">Chain</span></span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/"><span><span data-zh="">AI 导航</span><span data-en="">AI Directory</span></span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p><span data-zh="">内容站覆盖学、用、选、跑；AI 导航是站外的 AI 网站目录，点出去看。</span><span data-en="">Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</span></p>
+<nav><a href="https://specul.com/legal.html"><span data-zh="">法律条款</span><span data-en="">Legal terms</span></a></nav>
+</div>
+</aside>
+<main id="main">
+<div class="container detail">
+<a class="back" href="../">← <span data-zh="">深水指南</span><span data-en="">Guides</span></a>
+<div class="detail-head">
+<div>
+<h1><span data-zh="">agent 的护栏</span><span data-en="">Guardrails for agents</span></h1>
+<div class="vendor is-caps"><span data-zh="">护栏与安全</span><span data-en="">Guardrails &amp; safety</span></div>
+</div>
+</div>
+<div class="panel-lead"><span data-zh=""><p>输入输出与工具三层防线、触发即止的 tripwire 机制，以及并行与阻塞的成本取舍。</p></span><span data-en=""><p>Input, output, and tool-level defenses, tripwires that halt on trigger, and the cost trade-off between parallel and blocking checks.</p></span></div>
+<nav aria-label="文章目录" class="panel is-slim" data-ui-aria-label-en="Article contents" data-ui-aria-label-zh="文章目录"><p><span data-zh="">按问题阅读</span><span data-en="">On this page</span></p><ul><li><a href="#guide-section-0"><span data-zh="">这一篇讲什么</span><span data-en="">What this guide covers</span></a></li><li><a href="#guide-section-1"><span data-zh="">三层防线</span><span data-en="">Three lines of defense</span></a></li><li><a href="#guide-section-2"><span data-zh="">触发即止：tripwire</span><span data-en="">Tripwires: halt on trigger</span></a></li><li><a href="#guide-section-3"><span data-zh="">并行还是阻塞：一笔成本账</span><span data-en="">Parallel or blocking</span></a></li><li><a href="#guide-section-4"><span data-zh="">拿什么当检查器</span><span data-en="">What runs the check</span></a></li><li><a href="#guide-section-5"><span data-zh="">设计上的纪律</span><span data-en="">Design discipline</span></a></li></ul></nav>
+<div class="panel is-slim" id="guide-section-0">
+<h2><span data-zh="">这一篇讲什么</span><span data-en="">What this guide covers</span></h2>
+<span data-zh=""><p><strong>护栏就是给 agent 的输入输出加检查，不合格就当场拦下。</strong> 它和评测是两回事：评测测「好不好」，护栏管「行不行」。 模型会犯错、会被诱导，护栏是工程上的最后一道闸。</p></span><span data-en=""><p><strong>Guardrails mean putting checks on an agent's inputs and outputs, intercepting failures on the spot.</strong> They are a different thing from evaluation: evaluation measures "how good", guardrails police "is this allowed at all". Models err and can be manipulated; guardrails are engineering's last gate.</p></span>
+</div>
+<div class="panel is-slim" id="guide-section-1">
+<h2><span data-zh="">三层防线</span><span data-en="">Three lines of defense</span></h2>
+<span data-zh=""><p>OpenAI Agents SDK 官方文档把 guardrails 定义为 <strong>"Guardrails enable you to do checks and validations of user input and agent output."</strong> 在实践中分成三类，各自守在不同位置。</p>
+<p><strong>输入护栏</strong>：检查用户原始输入，只对链路里的<strong>第一个</strong> agent 生效。 <strong>输出护栏</strong>：检查 agent 的最终输出，只对<strong>最后一个</strong> agent 生效。 <strong>工具护栏</strong>：包住具体函数工具，每次调用前后都过一遍。</p>
+<p>官方特意点出一个常见误区： 如果流程里有 manager、handoff 或委派的专家 agent， 指望 agent 级输入/输出护栏在每一跳都生效是会落空的—— 要那种「每次工具调用前都查」的效果，就得用工具护栏。</p></span><span data-en=""><p>The OpenAI Agents SDK official docs define guardrails as <strong>"Guardrails enable you to do checks and validations of user input and agent output."</strong> In practice they split into three kinds, each standing at a different position.</p>
+<p><strong>Input guardrails</strong>: check the user's raw input, effective only on the <strong>first</strong> agent in the chain. <strong>Output guardrails</strong>: check the agent's final output, effective only on the <strong>last</strong> agent. <strong>Tool guardrails</strong>: wrap a specific function tool, checked before and after every call.</p>
+<p>The official docs deliberately call out a common misconception: if the flow has a manager, handoffs, or delegated specialist agents, expecting agent-level input/output guardrails to fire at every hop is a disappointment — for a "check before every tool call" effect, you need tool guardrails.</p></span>
+</div>
+<div class="panel is-slim" id="guide-section-2">
+<h2><span data-zh="">触发即止：tripwire</span><span data-en="">Tripwires: halt on trigger</span></h2>
+<span data-zh=""><p>护栏的核心机制是 tripwire（触发线）。 检查不通过时，runner 立刻抛出对应异常并<strong>中止执行</strong>：</p>
+<div class="tbl-wrap"><table><thead><tr><th>防线</th><th>触发的异常</th></tr></thead><tbody><tr><td>输入护栏</td><td><code>InputGuardrailTripwireTriggered</code></td></tr><tr><td>输出护栏</td><td><code>OutputGuardrailTripwireTriggered</code></td></tr><tr><td>工具输入护栏</td><td><code>ToolInputGuardrailTripwireTriggered</code></td></tr><tr><td>工具输出护栏</td><td><code>ToolOutputGuardrailTripwireTriggered</code></td></tr></tbody></table></div>
+<p>异常里带着上下文：是哪个护栏触发的、触发前已完成的结果列表。 接入方 catch 到异常后自行决定怎么回应用户。</p>
+<p>护栏也能直接调外部分类器，不必再起一个 agent。 官方给的示例场景很有代表性： 面向客服的贵模型前面挂一个快模型护栏， 遇到「帮我写数学作业」这类滥用直接挡掉。</p></span><span data-en=""><p>The core mechanism of guardrails is the tripwire. When a check fails, the runner immediately raises the corresponding exception and <strong>halts execution</strong>:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Defense line</th><th>Exception raised</th></tr></thead><tbody><tr><td>Input guardrail</td><td><code>InputGuardrailTripwireTriggered</code></td></tr><tr><td>Output guardrail</td><td><code>OutputGuardrailTripwireTriggered</code></td></tr><tr><td>Tool input guardrail</td><td><code>ToolInputGuardrailTripwireTriggered</code></td></tr><tr><td>Tool output guardrail</td><td><code>ToolOutputGuardrailTripwireTriggered</code></td></tr></tbody></table></div>
+<p>The exception carries context: which guardrail tripped, and the list of results completed before the trip. The integrating side catches the exception and decides how to respond to the user.</p>
+<p>A guardrail can also call an external classifier directly, without spinning up another agent. The official example scenario is representative: in front of an expensive customer-service model, hang a fast-model guardrail that blocks abuse like "write my math homework" outright.</p></span>
+</div>
+<div class="panel is-slim" id="guide-section-3">
+<h2><span data-zh="">并行还是阻塞：一笔成本账</span><span data-en="">Parallel or blocking</span></h2>
+<span data-zh=""><p>输入护栏有两种跑法，官方文档写明了代价差异。</p>
+<p><strong>并行执行</strong>（默认）：护栏与 agent 同时跑，延迟最低。 但触发时 agent 可能已经烧过 token、执行过工具。</p>
+<p><strong>阻塞执行</strong>：护栏先跑完，agent 后启动。 触发即止，token 与工具副作用都不会发生。 <strong>OpenAI 官方原文</strong>：阻塞执行 "is ideal for cost optimization and when you want to avoid potential side effects from tool calls"。</p>
+<p>注意输出护栏不支持并行参数——它永远在 agent 完成后跑。</p></span><span data-en=""><p>Input guardrails have two run modes, and the official docs spell out the cost difference.</p>
+<p><strong>Parallel execution</strong> (default): the guardrail and the agent run together, lowest latency. But when it trips, the agent may already have burned tokens and executed tools.</p>
+<p><strong>Blocking execution</strong>: the guardrail finishes first, the agent starts after. Trip and halt — no tokens spent, no tool side effects. <strong>OpenAI official text</strong>: blocking execution "is ideal for cost optimization and when you want to avoid potential side effects from tool calls".</p>
+<p>Note output guardrails do not support the parallel flag — they always run after the agent completes.</p></span>
+</div>
+<div class="panel is-slim" id="guide-section-4">
+<h2><span data-zh="">拿什么当检查器</span><span data-en="">What runs the check</span></h2>
+<span data-zh=""><p>文档层面是函数加判定输出；模型层面可以是用 LLM 当分类器。 Llama Guard 论文（arXiv 2312.06674）是这条路线的代表： 一个指令微调的安全分类模型，自带安全风险分类体系（taxonomy）， 对 prompt 和 response 做多分类，输出二值判定。</p>
+<p><strong>论文摘要原文</strong>："matches or exceeds that of currently available content moderation tools"。 注意这是 2023 年底的论文结果， 换成今天的模型与场景需自行复验。</p></span><span data-en=""><p>At the code level it is a function plus a verdict; at the model level it can be an LLM acting as a classifier. The Llama Guard paper (arXiv 2312.06674) represents this route: an instruction-tuned safety classifier with its own risk taxonomy (taxonomy), multi-label classification over prompts and responses, emitting binary verdicts.</p>
+<p><strong>Paper abstract text</strong>: "matches or exceeds that of currently available content moderation tools". Note these are late-2023 paper results; with today's models and scenarios you must re-verify yourself.</p></span>
+</div>
+<div class="panel is-slim" id="guide-section-5">
+<h2><span data-zh="">设计上的纪律</span><span data-en="">Design discipline</span></h2>
+<span data-zh=""><ol><li value="1">护栏管「行不行」，别顺手让它管「好不好」——那是评测的活。</li><li value="2">检查要快：挂在主流程前的护栏，本身不能成为延迟大头。</li><li value="3">失败要可见：拦了什么、为什么拦，要留痕，否则无法排查误杀。</li><li value="4">别只守门口：工具调用、交接、委派，每一跳都可能是入口。</li></ol>
+<p>最后一句官方提醒值得放在案头： <strong>Anthropic 官方原文</strong>："The autonomous nature of agents means higher costs, and the potential for compounding errors." 护栏不是万能药，但它是把错误复合按在第一步的那只手。</p></span><span data-en=""><ol><li value="1">Guardrails police "allowed or not" — don't let them drift into "how good"; that is evaluation's job.</li><li value="2">Checks must be fast: a guardrail in front of the main flow must not itself become the latency hotspot.</li><li value="3">Failures must be visible: what was blocked and why must leave a trace, or false positives cannot be debugged.</li><li value="4">Don't guard only the front door: tool calls, handoffs, delegations — every hop can be an entry point.</li></ol>
+<p>One last official reminder worth keeping on the desk: <strong>Anthropic official text</strong>: "The autonomous nature of agents means higher costs, and the potential for compounding errors." Guardrails are not a cure-all, but they are the hand that pins compounding errors down at the first step.</p></span>
+</div>
+<nav aria-label="接下来做什么" class="panel is-slim" data-ui-aria-label-en="What to do next" data-ui-aria-label-zh="接下来做什么">
+<h2><span data-zh="">接下来做什么</span><span data-en="">What to do next</span></h2><ul>
+<li><a href="toolkit-worksheets.html"><span data-zh="">记录约束、验收与未确认项</span><span data-en="">Record constraints, acceptance and unknowns</span></a></li>
+<li><a href="https://learn.specul.com/guide/怎么验证%20AI%20的输出/"><span data-zh="">核对结果与来源</span><span data-en="">Verify the result and its sources</span></a></li>
+<li><a href="failure-library.html#by-symptom"><span data-zh="">按症状排查失败</span><span data-en="">Troubleshoot by symptom</span></a></li>
 </ul></nav>
-      <div class="panel is-slim">
-        <h2><span data-zh>出处</span><span data-en>Sources</span></h2>
-        <div class="tbl-wrap"><table><thead><tr><th><span data-zh>来源</span><span data-en>Source</span></th><th><span data-zh>链接</span><span data-en>URL</span></th></tr></thead><tbody>
-          <tr><td><span data-zh>OpenAI Agents SDK 官方文档 · Guardrails（2026-10-30 直抓 200）</span><span data-en>OpenAI Agents SDK official docs · Guardrails (direct fetch 200 on 2026-10-30)</span></td><td><a href="https://openai.github.io/openai-agents-python/guardrails/" target="_blank" rel="noopener"><span data-zh>https://openai.github.io/openai-agents-python/guardrails/</span><span data-en>https://openai.github.io/openai-agents-python/guardrails/</span></a></td></tr>
-          <tr><td><span data-zh>Llama Guard 论文（arXiv 2312.06674，2026-10-30 直抓摘要页）</span><span data-en>Llama Guard paper (arXiv 2312.06674, abstract page direct-fetched 2026-10-30)</span></td><td><a href="https://arxiv.org/abs/2312.06674" target="_blank" rel="noopener"><span data-zh>https://arxiv.org/abs/2312.06674</span><span data-en>https://arxiv.org/abs/2312.06674</span></a></td></tr>
-          <tr><td><span data-zh>Anthropic 工程博客 · Building effective agents（2026-10-30 直抓 200）</span><span data-en>Anthropic engineering blog · Building effective agents (official page verified via WebFetch on 2026-10-30)</span></td><td><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener"><span data-zh>https://www.anthropic.com/engineering/building-effective-agents</span><span data-en>https://www.anthropic.com/engineering/building-effective-agents</span></a></td></tr>
-        </tbody></table></div>
-        <p class="guide-foot"><span data-zh>资料快照日期：2026-10-30；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en>Source snapshot: 2026-10-30; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
-      </div>
-    </div>
-  </main>
-  <footer class="site-footer foot-single">
-    <div class="container foot-line">
-      <div class="foot-brand">
-        <span class="foot-brand-main">
-          <span class="brand-dot" aria-hidden="true"></span>
-          <span class="foot-copy"><span data-zh>投机取巧 · specul.com</span><span data-en>Specul · specul.com</span></span>
-        </span>
-        <span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt"><span data-zh>内容 CC BY 4.0</span><span data-en>Content CC BY 4.0</span></a><span class="sep" aria-hidden="true">·</span><a href="https://specul.com/LICENSE.txt"><span data-zh>代码 MIT</span><span data-en>Code MIT</span></a><span class="sep" aria-hidden="true">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" target="_blank" rel="noopener"><span data-zh>源码</span><span data-en>Source</span></a></span>
-      </div>
-      <nav class="foot-sites" aria-label="Footer site links">
-        <a class="site-link" href="https://specul.com/"><span data-zh>首页</span><span data-en>Home</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://learn.specul.com/"><span data-zh>学 AI</span><span data-en>Learn</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://tools.specul.com/"><span data-zh>工具</span><span data-en>Tools</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://models.specul.com/"><span data-zh>模型</span><span data-en>Models</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://demos.specul.com/"><span data-zh>演示</span><span data-en>Demos</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://oss.specul.com/"><span data-zh>开源</span><span data-en>OSS</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://hardware.specul.com/"><span data-zh>算力</span><span data-en>Compute</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://papers.specul.com/"><span data-zh>论文</span><span data-en>Papers</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://chain.specul.com/"><span data-zh>链</span><span data-en>Chain</span></a><span class="sep site-sep" aria-hidden="true">·</span>
-        <a class="site-link" href="https://nav.specul.com/"><span data-zh>导航</span><span data-en>Directory</span></a>
-      </nav>
-      <nav class="foot-legal" aria-label="Legal and corrections">
-        <a href="https://specul.com/legal.html"><span data-zh>法律</span><span data-en>Legal</span></a><span class="sep" aria-hidden="true">·</span>
-        <a href="https://specul.com/legal.html#s8"><span data-zh>隐私</span><span data-en>Privacy</span></a><span class="sep" aria-hidden="true">·</span>
-        <a href="https://specul.com/correct.html"><span data-zh>纠错</span><span data-en>Corrections</span></a>
-      </nav>
-    </div>
-  </footer>
-<nav class="nav-tabbar nav-tabbar-1row" aria-label="快捷导航">
-    <a href="https://specul.com/"><span class="ti" aria-hidden="true">◎</span><span data-zh>首页</span><span data-en>Home</span></a>
-    <a href="https://learn.specul.com/"><span class="ti" aria-hidden="true">▤</span><span data-zh>学AI</span><span data-en>Learn</span></a>
-    <a href="https://tools.specul.com/" aria-current="page"><span class="ti" aria-hidden="true">◈</span><span data-zh>工具</span><span data-en>Tools</span></a>
-    <a href="https://models.specul.com/"><span class="ti" aria-hidden="true">▦</span><span data-zh>模型</span><span data-en>Models</span></a>
-    <a href="https://demos.specul.com/"><span class="ti" aria-hidden="true">▷</span><span data-zh>演示</span><span data-en>Demos</span></a>
-    <a href="https://oss.specul.com/"><span class="ti" aria-hidden="true">▧</span><span data-zh>开源</span><span data-en>OSS</span></a>
-    <a href="https://hardware.specul.com/"><span class="ti" aria-hidden="true">▣</span><span data-zh>算力</span><span data-en>Chips</span></a>
-    <a href="https://papers.specul.com/"><span class="ti" aria-hidden="true">▥</span><span data-zh>论文</span><span data-en>Papers</span></a>
-    <a href="https://chain.specul.com/"><span class="ti" aria-hidden="true">◇</span><span data-zh>链</span><span data-en>Chain</span></a>
-    <a href="https://nav.specul.com/" data-nav-group="external"><span class="ti" aria-hidden="true">↗</span><span data-zh>导航</span><span data-en>Nav</span></a>
+<div class="panel is-slim">
+<h2><span data-zh="">出处</span><span data-en="">Sources</span></h2>
+<div class="tbl-wrap"><table><thead><tr><th><span data-zh="">来源</span><span data-en="">Source</span></th><th><span data-zh="">链接</span><span data-en="">URL</span></th></tr></thead><tbody>
+<tr><td><span data-zh="">OpenAI Agents SDK 官方文档 · Guardrails（2026-10-30 直抓 200）</span><span data-en="">OpenAI Agents SDK official docs · Guardrails (direct fetch 200 on 2026-10-30)</span></td><td><a href="https://openai.github.io/openai-agents-python/guardrails/" rel="noopener" target="_blank"><span data-zh="">https://openai.github.io/openai-agents-python/guardrails/</span><span data-en="">https://openai.github.io/openai-agents-python/guardrails/</span></a></td></tr>
+<tr><td><span data-zh="">Llama Guard 论文（arXiv 2312.06674，2026-10-30 直抓摘要页）</span><span data-en="">Llama Guard paper (arXiv 2312.06674, abstract page direct-fetched 2026-10-30)</span></td><td><a href="https://arxiv.org/abs/2312.06674" rel="noopener" target="_blank"><span data-zh="">https://arxiv.org/abs/2312.06674</span><span data-en="">https://arxiv.org/abs/2312.06674</span></a></td></tr>
+<tr><td><span data-zh="">Anthropic 工程博客 · Building effective agents（2026-10-30 直抓 200）</span><span data-en="">Anthropic engineering blog · Building effective agents (official page verified via WebFetch on 2026-10-30)</span></td><td><a href="https://www.anthropic.com/engineering/building-effective-agents" rel="noopener" target="_blank"><span data-zh="">https://www.anthropic.com/engineering/building-effective-agents</span><span data-en="">https://www.anthropic.com/engineering/building-effective-agents</span></a></td></tr>
+</tbody></table></div>
+<p class="guide-foot"><span data-zh="">资料快照日期：2026-10-30；单项复核范围与日期见对应正文或来源记录。产品功能与条款可能变化，使用前请核对原始来源。</span><span data-en="">Source snapshot: 2026-10-30; item-specific rechecks and their scope are recorded in the text or source notes. Features and terms may change; check the original sources before use.</span></p>
+</div>
+</div>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy"><span data-zh="">投机取巧 · specul.com</span><span data-en="">Specul · specul.com</span></span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt"><span data-zh="">内容 CC BY 4.0</span><span data-en="">Content CC BY 4.0</span></a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt"><span data-zh="">代码 MIT</span><span data-en="">Code MIT</span></a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank"><span data-zh="">源码</span><span data-en="">Source</span></a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/"><span data-zh="">首页</span><span data-en="">Home</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/"><span data-zh="">学 AI</span><span data-en="">Learn</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/"><span data-zh="">工具</span><span data-en="">Tools</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/"><span data-zh="">模型</span><span data-en="">Models</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/"><span data-zh="">演示</span><span data-en="">Demos</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/"><span data-zh="">开源</span><span data-en="">OSS</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/"><span data-zh="">算力</span><span data-en="">Compute</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/"><span data-zh="">论文</span><span data-en="">Papers</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/"><span data-zh="">链</span><span data-en="">Chain</span></a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/"><span data-zh="">导航</span><span data-en="">Directory</span></a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/legal.html"><span data-zh="">法律</span><span data-en="">Legal</span></a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/legal.html#s8"><span data-zh="">隐私</span><span data-en="">Privacy</span></a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/correct.html"><span data-zh="">纠错</span><span data-en="">Corrections</span></a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/"><span aria-hidden="true" class="ti">◎</span><span data-zh="">首页</span><span data-en="">Home</span></a>
+<a href="https://learn.specul.com/"><span aria-hidden="true" class="ti">▤</span><span data-zh="">学AI</span><span data-en="">Learn</span></a>
+<a aria-current="page" href="https://tools.specul.com/"><span aria-hidden="true" class="ti">◈</span><span data-zh="">工具</span><span data-en="">Tools</span></a>
+<a href="https://models.specul.com/"><span aria-hidden="true" class="ti">▦</span><span data-zh="">模型</span><span data-en="">Models</span></a>
+<a href="https://demos.specul.com/"><span aria-hidden="true" class="ti">▷</span><span data-zh="">演示</span><span data-en="">Demos</span></a>
+<a href="https://oss.specul.com/"><span aria-hidden="true" class="ti">▧</span><span data-zh="">开源</span><span data-en="">OSS</span></a>
+<a href="https://hardware.specul.com/"><span aria-hidden="true" class="ti">▣</span><span data-zh="">算力</span><span data-en="">Chips</span></a>
+<a href="https://papers.specul.com/"><span aria-hidden="true" class="ti">▥</span><span data-zh="">论文</span><span data-en="">Papers</span></a>
+<a href="https://chain.specul.com/"><span aria-hidden="true" class="ti">◇</span><span data-zh="">链</span><span data-en="">Chain</span></a>
+<a data-nav-group="external" href="https://nav.specul.com/"><span aria-hidden="true" class="ti">↗</span><span data-zh="">导航</span><span data-en="">Nav</span></a>
 </nav>
 </body>
 </html>

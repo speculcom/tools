@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html data-lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Local model runners | Tools</title>
+<meta content="Local model runners — open-weight models running on your own machine (Ollama / LM Studio / llama.cpp / vLLM class). The model_access / runtime axes are…" name="description"/>
+<link href="https://tools.specul.com/en/runner/" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Tools" property="og:site_name"/>
+<meta content="https://tools.specul.com/en/runner/" property="og:url"/>
+<meta content="Local model runners | Tools" property="og:title"/>
+<meta content="Local model runners — open-weight models running on your own machine (Ollama / LM Studio / llama.cpp / vLLM class). The model_access / runtime axes are…" property="og:description"/>
+<meta content="https://specul.com/home-shots/og-home.jpg?v=20261123d" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="zh_CN" property="og:locale:alternate"/>
+<meta content="#16121f" name="theme-color"/>
+<link href="/assets/brand/dandelion-favicon-site.png" rel="icon" type="image/png"/>
+<link href="/assets/brand/dandelion-apple-touch-site.png" rel="apple-touch-icon"/>
+<script src="/brand.js"></script>
+<link href="/brand.css" rel="stylesheet"/>
+<link href="/site.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Local model runners | Tools","description":"Local model runners — open-weight models running on your own machine (Ollama / LM Studio / llama.cpp / vLLM class). The model_access / runtime axes are…","url":"https://tools.specul.com/en/runner/","isPartOf":{"@type":"WebSite","name":"Local model runners | Tools","url":"https://tools.specul.com/en/runner/"},"about":[{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"},{"@type":"SoftwareApplication","name":"Local model runners | Tools","applicationCategory":"DeveloperApplication"}]}</script>
+<meta content="Local model runners | Tools" name="twitter:title"/><meta content="Local model runners — open-weight models running on your own machine (Ollama / LM Studio / llama.cpp / vLLM class). The model_access / runtime axes are…" name="twitter:description"/><link href="https://tools.specul.com/runner/" hreflang="zh-CN" rel="alternate"/><link href="https://tools.specul.com/en/runner/" hreflang="en" rel="alternate"/><link href="https://tools.specul.com/runner/" hreflang="x-default" rel="alternate"/></head>
+<!-- B6（2026-10-09）：--accent 原先在这里被**内联到 body 上**（style="--accent:X"），
+     同时头部又写了 :root{--accent:X} —— 两处同一份值，冗余。
+     而内联样式会**赢过任何选择器**，于是主题级覆盖（html[data-theme="light"]{--accent:…}）
+     完全无效：vg 的引擎名在亮色主题下一直是 1.62:1 的金色，就是因为这条内联。
+     现在只保留头部那一处 —— 单一真相源，且可被主题覆盖。
+     ⚠ 这段注释里**不能出现反引号**：它在模板字符串内部，反引号会提前结束模板
+     （写这段时踩了第 4 次；pitfalls 里早有记录）。 -->
+<body class="brand-ambient has-tabbar has-tabbar-1row">
+<a class="t-skip" href="#main">Skip to main content</a>
+<header class="site-header">
+<div class="container site-bar">
+<a class="brand" href="https://specul.com/en/" title="投机取巧">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="brand-text">
+<span class="brand-name" id="markName">Speculative Speculation</span>
+<span class="brand-sub" id="markSub"></span>
+</span>
+</a>
+<nav aria-label="站点导航" class="nav-links">
+<a href="https://specul.com/en/">Home</a>
+<a href="https://learn.specul.com/en/">Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/">Tools</a>
+<a href="https://models.specul.com/en/">Models</a>
+<a href="https://demos.specul.com/en/">Playground</a>
+<a href="https://oss.specul.com/en/">OSS</a>
+<a href="https://hardware.specul.com/en/">Compute</a>
+<a href="https://papers.specul.com/en/">AI Papers</a>
+<a href="https://chain.specul.com/en/">Chain</a>
+<a href="https://nav.specul.com/en/">AI Directory</a>
+</nav>
+<!-- 2026-10-10：.nav-tools 从 nav 元素**内部**移到外面，与 .nav-links 平级。
+           放里面时窄屏下它会跟着链接一起换行：链接占满整行 → 按钮被挤到第三条
+           （实测顶栏 134px、按钮组孤零零一行）。移出来后它与品牌同行，
+           链接独占第二行居中 —— 这才是下面注释里方案 B 想要的样子。 -->
+<span class="nav-tools">
+<a aria-label="Search" class="icon-btn" href="https://specul.com/en/search.html" title="Search all sites"><span aria-hidden="true">⌕</span></a>
+<button aria-label="切换明暗主题" class="icon-btn" id="themeBtn" title="切换明暗主题" type="button">☾</button>
+<a aria-label="切换到中文" class="icon-btn" href="/runner/" hreflang="zh-CN" id="langBtn" lang="zh-CN" title="切换到中文">中文</a>
+</span>
+<!-- B6（2026-10-09）：窄屏（≤900px）下 .nav-links 会隐藏，这个汉堡是替代入口。
+           行为在共享 brand.js 里（一处实现、十站共用），样式在共享 brand.css。
+           无脚本时 CSS 不会显示它，而是把 .nav-links 在窄屏放出来 —— 不会出现
+           「导航被藏进一个点了没反应的按钮」。 -->
+<button aria-controls="navDrawer" aria-expanded="false" aria-label="打开菜单" class="nav-burger" type="button">
+<i></i><i></i><i></i>
+</button>
+</div>
+</header>
+<div class="nav-scrim"></div>
+<aside aria-hidden="true" aria-label="站点导航" class="nav-drawer" id="navDrawer">
+<div class="nav-drawer-h">
+<span class="brand-name">Speculative Speculation</span>
+<span class="brand-sub"></span>
+<button aria-label="关闭" class="nav-dclose" type="button">×</button>
+</div>
+<nav class="nav-drawer-list">
+<a href="https://specul.com/en/"><span>Home</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://learn.specul.com/en/"><span>Learn</span><span aria-hidden="true" class="ar">→</span></a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span>Tools</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://models.specul.com/en/"><span>Models</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://demos.specul.com/en/"><span>Playground</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://oss.specul.com/en/"><span>OSS</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" href="https://hardware.specul.com/en/"><span>Compute</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://papers.specul.com/en/"><span>AI Papers</span><span aria-hidden="true" class="ar">→</span></a>
+<a href="https://chain.specul.com/en/"><span>Chain</span><span aria-hidden="true" class="ar">→</span></a>
+<a class="nav-group-start" data-nav-group="external" href="https://nav.specul.com/en/"><span>AI Directory</span><span aria-hidden="true" class="ar">↗</span></a>
+</nav>
+<div class="nav-drawer-foot">
+<p>Content sites cover learn, use, choose and run; AI Directory is a catalogue of off-site AI sites.</p>
+<nav><a href="https://specul.com/en/legal.html">Legal terms</a></nav>
+</div>
+</aside>
+<main id="main">
+<section class="hero">
+<div class="container">
+<p class="kicker">AI Tools</p>
+<h1 class="t-hero">Local model runners</h1>
+<p class="lede">Local model runners — open-weight models running on your own machine (Ollama / LM Studio / llama.cpp / vLLM class). The model_access / runtime axes are written in "format × quant tier" terms; the per-tier numbers live on the models site, cross-linked rather than duplicated.</p>
+</div>
+</section>
+<nav aria-label="Tool categories" class="part-bar">
+<div class="container">
+<a href="/en/coding/" style="--pa:var(--pa-coding)" title="Installed in an editor, a terminal, or a vendor cloud"><b>Coding</b></a>
+<a href="/en/chat/" style="--pa:var(--pa-chat)" title="General-purpose chat products, Chinese ones included"><b>Chat</b></a>
+<a href="/en/image/" style="--pa:var(--pa-image)" title="Text-to-image and image workbenches"><b>Image</b></a>
+<a href="/en/video/" style="--pa:var(--pa-video)" title="Text-to-video and digital humans"><b>Video</b></a>
+<a href="/en/audio/" style="--pa:var(--pa-audio)" title="Music generation, TTS and transcription"><b>Audio</b></a>
+<a href="/en/research/" style="--pa:var(--pa-research)" title="AI search, academic retrieval, research workbenches"><b>Research</b></a>
+<a href="/en/office/" style="--pa:var(--pa-office)" title="Docs, sheets, slides, meetings, translation and email"><b>Office</b></a>
+<a href="/en/automation/" style="--pa:var(--pa-automation)" title="Visual AI workflows and agents"><b>Automation</b></a>
+<a href="/en/framework/" style="--pa:var(--pa-framework)" title="Runtimes, orchestration frameworks, SDKs, robotics stacks"><b>Frameworks</b></a>
+<a href="/en/mcp/" style="--pa:var(--pa-mcp)" title="Fill the gap — MCP tools an agent can install"><b>MCP</b></a>
+<a aria-current="page" href="/en/runner/" style="--pa:var(--pa-runner)" title="Run open-weight models on your own machine"><b>Runners</b></a>
+<a href="/en/safety/" style="--pa:var(--pa-safety)" title="Constrain it, measure it, trace it back"><b>Safety</b></a>
+</div>
+</nav>
+<section class="section human-section" id="human">
+<div class="container">
+<div class="human-head">
+<p class="kicker">In plain words</p>
+<h2>Local model runners: who it works for</h2>
+</div>
+<div class="human-grid">
+<article class="human-card">
+<span class="hc-no">01</span>
+<h3>Who it is for</h3>
+<p>People running open models on their own hardware.</p>
+</article>
+<article class="human-card">
+<span class="hc-no">02</span>
+<h3>When not to use it</h3>
+<p>You lack a suitable GPU, or you do not want to deal with environments, quantisation and VRAM.</p>
+</article>
+<article class="human-card human-asks">
+<span class="hc-no">03</span>
+<h3>Three questions before paying</h3>
+<ol><li>How much VRAM, and can it run quantised?</li><li>Which formats are supported, and can it expose an existing API?</li><li>What are concurrency and first-token latency like?</li></ol>
+</article>
+</div>
+<div class="human-stats">
+<div class="hstat"><b>21</b><span>entries</span></div>
+<div class="hstat ok"><b>17</b><span>evidence checked</span></div>
+<div class="hstat cool"><b>21</b><span>local or hybrid</span></div>
+<div class="hstat cool"><b>17</b><span>direct in mainland</span></div>
+<div class="hstat warn"><b>4</b><span>upstream changed</span></div>
+</div>
+<div class="shape-panel">
+<div class="shape-copy">
+<h3>What this category actually looks like</h3>
+<p>Four slices from existing fields: how you use it, where it runs, whether it is still updated and how much is checked. See what dominates, then narrow with the filters above.</p>
+</div>
+<div class="shape-grid">
+<div class="shape-item">
+<div class="shape-item-head"><span>How you use it</span><small>21</small></div>
+<div aria-label="How you use it" class="shape-track" role="img"><i class="seg sf-1" style="width:62%" title="CLI 13"></i><i class="seg sf-2" style="width:38%" title="Local app 8"></i></div>
+<div class="shape-legend"><span class="shape-lg"><b class="dot sf-1"></b>CLI <em>13</em></span><span class="shape-lg"><b class="dot sf-2"></b>Local app <em>8</em></span></div>
+</div>
+<div class="shape-item">
+<div class="shape-item-head"><span>Where it runs</span><small>21</small></div>
+<div aria-label="Where it runs" class="shape-track" role="img"><i class="seg sd-1" style="width:100%" title="Local / self-hosted 21"></i></div>
+<div class="shape-legend"><span class="shape-lg"><b class="dot sd-1"></b>Local / self-hosted <em>21</em></span></div>
+</div>
+<div class="shape-item">
+<div class="shape-item-head"><span>Still updated</span><small>21</small></div>
+<div aria-label="Still updated" class="shape-track" role="img"><i class="seg sl-1" style="width:81%" title="Active 17"></i><i class="seg sl-2" style="width:14%" title="Slowing 3"></i><i class="seg sl-3" style="width:5%" title="Archived 1"></i></div>
+<div class="shape-legend"><span class="shape-lg"><b class="dot sl-1"></b>Active <em>17</em></span><span class="shape-lg"><b class="dot sl-2"></b>Slowing <em>3</em></span><span class="shape-lg"><b class="dot sl-3"></b>Archived <em>1</em></span></div>
+</div>
+<div class="shape-item">
+<div class="shape-item-head"><span>How much checked</span><small>21</small></div>
+<div aria-label="How much checked" class="shape-track" role="img"><i class="seg sc-1" style="width:81%" title="8 checked 17"></i><i class="seg sc-2" style="width:19%" title="Some open 4"></i></div>
+<div class="shape-legend"><span class="shape-lg"><b class="dot sc-1"></b>8 checked <em>17</em></span><span class="shape-lg"><b class="dot sc-2"></b>Some open <em>4</em></span></div>
+</div>
+</div>
+</div>
+<div class="job-panel">
+<div class="job-panel-head">
+<h3>What people mainly use these for</h3>
+<p>Tagged by job; one entry can appear under several jobs, so the total can exceed the entry count.</p>
+</div>
+<div class="job-bars"><div class="jb-row"><span class="jb-l">Run locally</span><span class="jb-track"><i style="width:100%"></i></span><span class="jb-n">21</span></div><div class="jb-row"><span class="jb-l">Build agents</span><span class="jb-track"><i style="width:5%"></i></span><span class="jb-n">1</span></div><div class="jb-row"><span class="jb-l">Research</span><span class="jb-track"><i style="width:5%"></i></span><span class="jb-n">1</span></div></div>
+</div>
+<details class="all-table">
+<summary><span class="at-title">All 21 in one table</span><span class="at-hint">Grouped by form; compare how you use it, licence, cost, mainland access, how much is checked side by side</span><span aria-hidden="true" class="at-arrow">↓</span></summary>
+<div class="table-wrap">
+<table class="cmp at">
+<thead><tr><th>Object</th><th>How</th><th>Licence</th><th>Cost</th><th>Mainland</th><th>Evidence</th></tr></thead>
+<tbody><tr class="at-group"><td colspan="6">CLI <span>13</span></td></tr><tr><td><a href="/en/runner/exllamav3.html">ExLlamaV3</a><small>turboderp-org</small></td><td>Local / self-hosted<br/><span class="at-sub">CLI</span></td><td>Open licence</td><td>Open source</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/runner/llama-cpp.html">llama.cpp</a><small>ggml-org</small></td><td>Local / self-hosted<br/><span class="at-sub">CLI</span></td><td>Open licence</td><td>Open source</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/runner/localai.html">LocalAI</a><small>Mudler T.（mudler）</small></td><td>Local / self-hosted<br/><span class="at-sub">CLI</span></td><td>Open licence</td><td>Open source</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/runner/mlc-llm.html">MLC LLM</a><small>MLCEngine（CMU 系，mlc-ai）</small></td><td>Local / self-hosted<br/><span class="at-sub">CLI</span></td><td>Open licence</td><td>Open source</td><td>Blocked</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/runner/mlx.html">MLX（mlx-lm）</a><small>Apple</small></td><td>Local / self-hosted<br/><span class="at-sub">CLI</span></td><td>Open licence</td><td>Open source</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/runner/tensorrt-llm.html">NVIDIA TensorRT-LLM</a><small>NVIDIA</small></td><td>Local / self-hosted<br/><span class="at-sub">CLI</span></td><td>Commercial terms</td><td>Not checked</td><td>Blocked</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/runner/ollama.html">Ollama</a><small>Ollama Inc.</small></td><td>Local / self-hosted<br/><span class="at-sub">CLI</span></td><td>Open licence</td><td>Open source</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/runner/openvino.html">OpenVINO</a><small>Intel</small></td><td>Local / self-hosted<br/><span class="at-sub">CLI</span></td><td>Open licence</td><td>Open source</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/runner/sglang.html">SGLang</a><small>LMSYS / sgl-project</small></td><td>Local / self-hosted<br/><span class="at-sub">CLI</span></td><td>Open licence</td><td>Open source</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/runner/tabbyapi.html">TabbyAPI</a><small>Royal Lab（theroyallab）</small></td><td>Local / self-hosted<br/><span class="at-sub">CLI</span></td><td>Open licence</td><td>Open source</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/runner/vllm.html">vLLM</a><small>vLLM 项目（PyTorch 基金会）</small></td><td>Local / self-hosted<br/><span class="at-sub">CLI</span></td><td>Open licence</td><td>Open source</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/runner/llamaedge.html">LlamaEdge</a><small>LlamaEdge 社区（WasmEdge / Second State 生态）</small></td><td>Local / self-hosted<br/><span class="at-sub">CLI</span></td><td>Open licence</td><td>Open source</td><td>Direct</td><td><span class="at-badge partial">Some open</span><br/><span class="at-sub">Slowing</span></td></tr><tr><td><a href="/en/runner/tgi.html">Text Generation Inference（TGI）</a><small>Hugging Face</small></td><td>Local / self-hosted<br/><span class="at-sub">CLI</span></td><td>Open licence</td><td>Open source</td><td>Blocked</td><td><span class="at-badge partial">Some open</span><br/><span class="at-sub">Archived</span></td></tr><tr class="at-group"><td colspan="6">Local app <span>8</span></td></tr><tr><td><a href="/en/runner/docker-model-runner.html">Docker Model Runner</a><small>Docker</small></td><td>Local / self-hosted<br/><span class="at-sub">Local app</span></td><td>Commercial terms</td><td>Not checked</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/runner/jan.html">Jan</a><small>Menlo Research</small></td><td>Local / self-hosted<br/><span class="at-sub">Local app</span></td><td>Open licence</td><td>Open source</td><td>Blocked</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/runner/koboldcpp.html">KoboldCpp</a><small>LostRuins（KoboldAI 社区）</small></td><td>Local / self-hosted<br/><span class="at-sub">Local app</span></td><td>Open licence</td><td>Open source</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/runner/lemonade.html">Lemonade</a><small>AMD / Lemonade 社区</small></td><td>Local / self-hosted<br/><span class="at-sub">Local app</span></td><td>Open licence</td><td>Open source</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/runner/lm-studio.html">LM Studio</a><small>Element Labs</small></td><td>Local / self-hosted<br/><span class="at-sub">Local app</span></td><td>Commercial terms</td><td>Not checked</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/runner/msty.html">Msty</a><small>Msty（CloudStack, LLC）</small></td><td>Local / self-hosted<br/><span class="at-sub">Local app</span></td><td>Commercial terms</td><td>Not checked</td><td>Direct</td><td><span class="at-badge verified">8 checked</span><br/><span class="at-sub">Active</span></td></tr><tr><td><a href="/en/runner/gpt4all.html">GPT4All</a><small>Nomic AI</small></td><td>Local / self-hosted<br/><span class="at-sub">Local app</span></td><td>Open licence</td><td>Open source</td><td>Direct</td><td><span class="at-badge partial">Some open</span><br/><span class="at-sub">Slowing</span></td></tr><tr><td><a href="/en/runner/text-generation-webui.html">text-generation-webui / textgen</a><small>oobabooga</small></td><td>Local / self-hosted<br/><span class="at-sub">Local app</span></td><td>Open licence</td><td>Open source</td><td>Direct</td><td><span class="at-badge partial">Some open</span><br/><span class="at-sub">Slowing</span></td></tr></tbody>
+</table>
+</div>
+<p class="at-note">Only fields already in the entry are shown. Anything unchecked says “not checked”; nothing is guessed. Open an entry for the eight questions and sources.</p>
+</details>
+</div>
+</section>
+<section class="section" id="filter">
+<div class="container">
+<h2>All objects</h2>
+<p class="section-desc">Everything answers the same set of questions. Open any object to see its full record across Model &amp; openness / Where it runs / Local files / Tasks after shutdown / Tools &amp; extensions / Context &amp; memory / Permissions &amp; limits / Best for, with source links and a list of unknowns.</p>
+<div class="afilter" role="search">
+<label class="af-f"><span class="af-h">Narrow down first</span>
+<input autocomplete="off" class="aq" placeholder="Cursor · Claude · Aider" type="search"/></label>
+<label class="af-f"><span class="af-h">Evidence</span>
+<select class="asel-conf"><option value="">All</option><option value="verified">8 axes checked</option><option value="partial">Some axes open</option></select></label>
+<label class="af-f"><span class="af-h">Still updated</span>
+<select class="asel-life" data-attr="lifecycle"><option value="">All</option><option value="active">Active</option><option value="archived">Archived</option><option value="maintenance">Slowing</option></select></label>
+<label class="af-f"><span class="af-h">Main job</span>
+<select class="asel-job" data-attr="job" data-multi="1"><option value="">All</option><option value="agent">Build agents</option><option value="local">Run locally</option><option value="research">Research</option></select></label>
+<label class="af-f"><span class="af-h">Licence / commercial use</span>
+<select class="asel-license" data-attr="license"><option value="">All</option><option value="open">Open licence</option><option value="terms">Commercial terms</option></select></label>
+<label class="af-f"><span class="af-h">Cost</span>
+<select class="asel-cost" data-attr="cost"><option value="">All</option><option value="open-source">Open source</option><option value="unknown">Not checked</option></select></label>
+<label class="af-f"><span class="af-h">Direct access</span>
+<select class="asel-cndirect" data-attr="data-cn-direct"><option value="">All</option><option value="yes">direct OK</option><option value="no">direct blocked</option></select></label>
+<label class="af-f"><span class="af-h">Sort</span>
+<select class="asel-sort"><option value="">Default</option><option value="done-desc">Completeness high–low</option><option value="done-asc">Completeness low–high</option></select></label>
+<span aria-live="polite" class="acount"></span>
+</div>
+<div class="grid">
+<article class="card" data-blob="docker model runner docker model runner docker **一句话**：docker model runner 把模型当成 oci 工件：从 docker hub、oci registry 或 hugging face 拉取，
+在本机通过 openai/ollama 兼容 api 提供服务。
+
+跨大类对照：[openai agents sdk](../framework/openai-agents-sdk.html)。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="unknown" data-deploy="local" data-done="8" data-family="" data-job="local" data-license="terms" data-lifecycle="active" data-name="Docker Model Runner" data-total="8" data-track="local-app" data-vendor-key="docker" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">DO</div>
+<div class="card-id">
+<h3><a href="/en/runner/docker-model-runner.html">Docker Model Runner</a></h3>
+<div class="vendor">Docker</div>
+</div>
+</div>
+<p class="tagline">Models as OCI artefacts: pull from Docker Hub, any OCI registr</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="Docker Model Runner details" class="more" href="/en/runner/docker-model-runner.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="exllamav3 exllamav3 turboderp-org exllamav3 是 exllamav2 的接续线。
+用 exl3 量化格式在 nvidia gpu 上做低延迟本地推理。
+它是引擎本体，不是 gguf 工具，也不是 api server。
+
+跨大类对照：[llamaindex](../framework/llamaindex.html)。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="open-source" data-deploy="local" data-done="8" data-family="" data-job="local" data-license="open" data-lifecycle="active" data-name="ExLlamaV3" data-total="8" data-track="cli" data-vendor-key="turboderp-org" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">EX</div>
+<div class="card-id">
+<h3><a href="/en/runner/exllamav3.html">ExLlamaV3</a></h3>
+<div class="vendor">turboderp-org</div>
+</div>
+</div>
+<p class="tagline">The successor to ExLlamaV2: low-latency local inference on NVI</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="ExLlamaV3 details" class="more" href="/en/runner/exllamav3.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="gpt4all nomic ai **gpt4all 是「人人设备上跑本地模型」的桌面工具**：（nomic ai，mit）：cpu 优先、桌面开箱、商用无附加条件。诚实标注：仓库最近推送 2025-05-27（api 快照）——热度在历史里。
+
+维护节奏要看当下。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="partial" data-cost="open-source" data-deploy="local" data-done="4" data-family="" data-job="local" data-license="open" data-lifecycle="maintenance" data-name="GPT4All" data-total="8" data-track="local-app" data-vendor-key="nomic ai" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">GP</div>
+<div class="card-id">
+<h3><a href="/en/runner/gpt4all.html">GPT4All</a></h3>
+<div class="vendor">Nomic AI</div>
+</div>
+</div>
+<p class="tagline">GPT4All is the founding standard-bearer of 'local models on ev</p>
+<div class="card-foot">
+<span class="t-state is-warn">Some axes open · Slowing</span>
+<a aria-label="GPT4All details" class="more" href="/en/runner/gpt4all.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="jan menlo research **jan 是「开源版 chatgpt 桌面替代」的长期主义者**：它走 100% 离线本地模型。apache-2.0 主体加一句署名请求。
+
+**依据：** 诚实标注：github api 标 noassertion 是机器判不了附加署名句。读 license 原文才准。官网直连 000（网络受限非死亡）。" data-cn-direct="no" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="open-source" data-deploy="local" data-done="7" data-family="" data-job="local" data-license="open" data-lifecycle="active" data-name="Jan" data-total="8" data-track="local-app" data-vendor-key="menlo research" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">JA</div>
+<div class="card-id">
+<h3><a href="/en/runner/jan.html">Jan</a></h3>
+<div class="vendor">Menlo Research</div>
+</div>
+</div>
+<p class="tagline">Jan is the long-standing open-source 'offline ChatGPT replacem</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="Jan details" class="more" href="/en/runner/jan.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="koboldcpp lostruins（koboldai 社区） **koboldcpp 是角色扮演与创意写作圈的本地推理老兵**：它单文件免安装，支持 gguf，延续 kobold 系上下文管理传统。agpl-3.0。
+
+商用集成前先读 copyleft 义务。诚实标注：官方仓在 lostruins 名下。koboldai 名下旧仓 404。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="open-source" data-deploy="local" data-done="8" data-family="" data-job="local" data-license="open" data-lifecycle="active" data-name="KoboldCpp" data-total="8" data-track="local-app" data-vendor-key="lostruins" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">KO</div>
+<div class="card-id">
+<h3><a href="/en/runner/koboldcpp.html">KoboldCpp</a></h3>
+<div class="vendor">LostRuins (KoboldAI community)</div>
+</div>
+</div>
+<p class="tagline">KoboldCpp is the veteran local runner of the roleplay/creative</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="KoboldCpp details" class="more" href="/en/runner/koboldcpp.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="lemonade lemonade amd / lemonade 社区 lemonade 是 amd 生态的本地模型服务器。
+在本机跑模型，提供 openai 兼容 api，
+支持 llama.cpp 后端。
+ryzen ai max+ 上另有实验性 vllm rocm 后端。
+
+跨大类对照：[openhands](../framework/openhands.html)。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="open-source" data-deploy="local" data-done="7" data-family="" data-job="local" data-license="open" data-lifecycle="active" data-name="Lemonade" data-total="8" data-track="local-app" data-vendor-key="amd / lemonade 社区" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">LE</div>
+<div class="card-id">
+<h3><a href="/en/runner/lemonade.html">Lemonade</a></h3>
+<div class="vendor">AMD / Lemonade community</div>
+</div>
+</div>
+<p class="tagline">An AMD-ecosystem local model server: run models on your machin</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="Lemonade details" class="more" href="/en/runner/lemonade.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="llama.cpp ggml-org **llama.cpp 是整个本地推理生态的地基**：gguf 格式由它定义，models 站的量化索引按它的口径建。ollama/lm studio/koboldcpp 都在它上面盖楼。
+
+mit、纯 c/c++、llama-server 提供官方 rest 线。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="open-source" data-deploy="local" data-done="8" data-family="" data-job="local" data-license="open" data-lifecycle="active" data-name="llama.cpp" data-total="8" data-track="cli" data-vendor-key="ggml-org" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">LL</div>
+<div class="card-id">
+<h3><a href="/en/runner/llama-cpp.html">llama.cpp</a></h3>
+<div class="vendor">ggml-org</div>
+</div>
+</div>
+<p class="tagline">llama.cpp is the bedrock of the entire local-inference ecosyst</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="llama.cpp details" class="more" href="/en/runner/llama-cpp.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="llamaedge llamaedge 社区（wasmedge / second state 生态） **llamaedge：wasmedge 运行时上的 gguf 推理 wasm 应用集**（apache-2.0，1,663★）——「run llm inference apps and create openai-compatible api services locally」：装 wasmedge → 下载 gguf + llama-chat.wasm → 即跑。
+
+.wasm 应用跨 cpu/gpu 设备可移植是核心卖点。
+
+口径要点：**主仓推送停 2026-02-08、release 0.29.0 同日——lifecycle=maintenance**（文档站在线非停运）。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="partial" data-cost="open-source" data-deploy="local" data-done="8" data-family="" data-job="local" data-license="open" data-lifecycle="maintenance" data-name="LlamaEdge" data-total="8" data-track="cli" data-vendor-key="llamaedge 社区" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">LL</div>
+<div class="card-id">
+<h3><a href="/en/runner/llamaedge.html">LlamaEdge</a></h3>
+<div class="vendor">LlamaEdge community (WasmEdge / Second State ecosystem)</div>
+</div>
+</div>
+<p class="tagline">LlamaEdge: GGUF inference Wasm apps on the WasmEdge runtime (A</p>
+<div class="card-foot">
+<span class="t-state is-warn">Some axes open · Slowing</span>
+<a aria-label="LlamaEdge details" class="more" href="/en/runner/llamaedge.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="lm studio element labs **lm studio 是桌面跑本地模型的主流图形入口**：应用内下载模型、双运行时（mlx + llama.cpp）、内置本地服务器。2026-10 快照。
+
+官网主推 bionic——本地 agent 叙事已盖过纯聊天。诚实标注：应用闭源。条款页动态加载按官网口径全文。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="unknown" data-deploy="local" data-done="8" data-family="" data-job="local agent" data-license="terms" data-lifecycle="active" data-name="LM Studio" data-total="8" data-track="local-app" data-vendor-key="element labs" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">LM</div>
+<div class="card-id">
+<h3><a href="/en/runner/lm-studio.html">LM Studio</a></h3>
+<div class="vendor">Element Labs</div>
+</div>
+</div>
+<p class="tagline">LM Studio is the mainstream graphical entry for local models o</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="LM Studio details" class="more" href="/en/runner/lm-studio.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="localai mudler t.（mudler） **localai 是「换 url 就转本地」的多模态运行时**：单二进制 openai 兼容前置。
+底下接多引擎
+文本/语音/视觉/agent 负载同一栈。
+mit、活跃维护（v4.8.0 官网直抓口径）。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="open-source" data-deploy="local" data-done="8" data-family="" data-job="local" data-license="open" data-lifecycle="active" data-name="LocalAI" data-total="8" data-track="cli" data-vendor-key="mudler t." style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">LO</div>
+<div class="card-id">
+<h3><a href="/en/runner/localai.html">LocalAI</a></h3>
+<div class="vendor">Mudler T.（mudler）</div>
+</div>
+</div>
+<p class="tagline">LocalAI is the 'change the URL and go local' multimodal runtim</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="LocalAI details" class="more" href="/en/runner/localai.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="mlc llm mlcengine（cmu 系，mlc-ai） **mlc llm**：编译式跨平台推理引擎，许可证 apache-2.0。仓库 23,284★，最近推送 2026-10-30。
+
+    **依据：** 官方定位「universal llm deployment engine with ml compilation」：把模型编译成目标平台原生码。
+
+一套 mlcengine 覆盖 nvidia/amd/intel gpu、apple metal（含 ios）、浏览器 webgpu/wasm（webllm）、android opencl，全部走 openai 兼容 api。
+
+    两条根口径：**safetensors 编译路线 ≠ gguf 预量化路线**。**发版线在 pypi 不在 github releases**（名义 v0.20.0/dev 标签 v0.26.dev0）。" data-cn-direct="no" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="open-source" data-deploy="local" data-done="8" data-family="" data-job="local" data-license="open" data-lifecycle="active" data-name="MLC LLM" data-total="8" data-track="cli" data-vendor-key="mlcengine" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">ML</div>
+<div class="card-id">
+<h3><a href="/en/runner/mlc-llm.html">MLC LLM</a></h3>
+<div class="vendor">MLCEngine (CMU lineage, mlc-ai)</div>
+</div>
+</div>
+<p class="tagline">MLC LLM: a compile-to-native cross-platform inference engine (</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="MLC LLM details" class="more" href="/en/runner/mlc-llm.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="mlx（mlx-lm） apple **mlx 是 apple 硅的官方本地推理栈**：统一内存架构的原生框架（mlx）+ 官方 llm 运行线（mlx-lm），
+mit、活跃维护。
+mac 用户跑本地模型的「亲儿子」路线——连微调都在同一栈里。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="open-source" data-deploy="local" data-done="8" data-family="" data-job="local" data-license="open" data-lifecycle="active" data-name="MLX（mlx-lm）" data-total="8" data-track="cli" data-vendor-key="apple" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">ML</div>
+<div class="card-id">
+<h3><a href="/en/runner/mlx.html">MLX（mlx-lm）</a></h3>
+<div class="vendor">Apple</div>
+</div>
+</div>
+<p class="tagline">MLX is Apple's official local-inference stack for Apple silico</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="MLX（mlx-lm） details" class="more" href="/en/runner/mlx.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="msty msty（cloudstack, llc） **msty 是本地加云端混合的桌面 llm 应用**：闭源，cloudstack, llc。studio 桌面应用跑本地 gguf，底座是 llama.cpp 系，也接云端 api。产品线四线，含 studio、go、nexus 与 stack。
+
+口径要点：**现役域 msty.ai（旧域 msty.app 301、www.msty.app 直连 000）**。闭源——隐私与能力口径按官网自述，不可代码核验。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="unknown" data-deploy="local" data-done="8" data-family="" data-job="local research" data-license="terms" data-lifecycle="active" data-name="Msty" data-total="8" data-track="local-app" data-vendor-key="msty" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">MS</div>
+<div class="card-id">
+<h3><a href="/en/runner/msty.html">Msty</a></h3>
+<div class="vendor">Msty（CloudStack, LLC）</div>
+</div>
+</div>
+<p class="tagline">Msty: a hybrid local+cloud desktop LLM app (closed-source, Clo</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="Msty details" class="more" href="/en/runner/msty.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="ollama ollama inc. **ollama 是「本地跑开源模型」的事实标准入口**：一条命令装完。
+从官方模型库一键拉模型
+本机起一个 openai 兼容 api。
+诚实标注：工具 mit，但权重许可跟着模型走。
+官方 readme 明写还有云端线。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="open-source" data-deploy="local" data-done="8" data-family="" data-job="local" data-license="open" data-lifecycle="active" data-name="Ollama" data-total="8" data-track="cli" data-vendor-key="ollama inc." style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">OL</div>
+<div class="card-id">
+<h3><a href="/en/runner/ollama.html">Ollama</a></h3>
+<div class="vendor">Ollama Inc.</div>
+</div>
+</div>
+<p class="tagline">Ollama is the de-facto entry point for running open models loc</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="Ollama details" class="more" href="/en/runner/ollama.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="openvino openvino intel openvino 是 intel 的推理运行时与模型服务器。
+先把模型转成 ir，再在 cpu/gpu/npu 上跑
+ovms 可暴露 openai 兼容端点。
+
+跨大类对照：[dify](../automation/dify.html)。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="open-source" data-deploy="local" data-done="8" data-family="" data-job="local" data-license="open" data-lifecycle="active" data-name="OpenVINO" data-total="8" data-track="cli" data-vendor-key="intel" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">OP</div>
+<div class="card-id">
+<h3><a href="/en/runner/openvino.html">OpenVINO</a></h3>
+<div class="vendor">Intel</div>
+</div>
+</div>
+<p class="tagline">Intel's inference runtime and model server: convert the model </p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="OpenVINO details" class="more" href="/en/runner/openvino.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="sglang lmsys / sgl-project **sglang 是服务化推理的「前缀复用」一代**：radixattention 把多轮/共享前缀的 kv 缓存复用做成主轴，agent 工作流场景收益直接。
+
+apache-2.0，lmsys 系学术开源。自报数字走 models 站 guides 快照口径。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="open-source" data-deploy="local" data-done="8" data-family="" data-job="local" data-license="open" data-lifecycle="active" data-name="SGLang" data-total="8" data-track="cli" data-vendor-key="lmsys / sgl-project" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">SG</div>
+<div class="card-id">
+<h3><a href="/en/runner/sglang.html">SGLang</a></h3>
+<div class="vendor">LMSYS / sgl-project</div>
+</div>
+</div>
+<p class="tagline">SGLang is the prefix-reuse generation of serving engines: Radi</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="SGLang details" class="more" href="/en/runner/sglang.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="tabbyapi royal lab（theroyallab） **tabbyapi：exllamav3 的官方 api 后端服务器**（agpl-3.0，1,502★ 推送 2026-10-30）——fastapi 本地推理服务，openai 兼容端点。
+
+官方 ghcr 镜像覆盖 cuda 12.8/13 与 amd rocm。
+
+两条硬口径。readme 官方警告「本仓是唯一官方信息源」，tabbyapi.com 反而非官方。**rolling release、github releases 为 0——变更记录线看 commits**。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="open-source" data-deploy="local" data-done="8" data-family="" data-job="local" data-license="open" data-lifecycle="active" data-name="TabbyAPI" data-total="8" data-track="cli" data-vendor-key="royal lab" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">TA</div>
+<div class="card-id">
+<h3><a href="/en/runner/tabbyapi.html">TabbyAPI</a></h3>
+<div class="vendor">Royal Lab（theroyallab）</div>
+</div>
+</div>
+<p class="tagline">TabbyAPI: the official API backend server for ExLlamaV3 (AGPL-</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="TabbyAPI details" class="more" href="/en/runner/tabbyapi.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="nvidia tensorrt-llm nvidia tensorrt-llm nvidia tensorrt-llm 是 nvidia 的生产级 llm 推理栈：先把模型编译成 tensorrt 引擎。
+再用 trtllm-serve 提供 openai 兼容端点。
+它面向 nvidia gpu 集群，不是单机开箱工具。
+
+跨大类对照：[langgraph](../framework/langgraph.html)。" data-cn-direct="no" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="unknown" data-deploy="local" data-done="8" data-family="" data-job="local" data-license="terms" data-lifecycle="active" data-name="NVIDIA TensorRT-LLM" data-total="8" data-track="cli" data-vendor-key="nvidia" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">NV</div>
+<div class="card-id">
+<h3><a href="/en/runner/tensorrt-llm.html">NVIDIA TensorRT-LLM</a></h3>
+<div class="vendor">NVIDIA</div>
+</div>
+</div>
+<p class="tagline">NVIDIA's production LLM inference stack: compile the model int</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="NVIDIA TensorRT-LLM details" class="more" href="/en/runner/tensorrt-llm.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="text-generation-webui / textgen oobabooga **text-generation-webui（现名 textgen）是本地 llm 的「瑞士军刀」一代**：多 loader、扩展生态、可结合多种社区扩展。
+
+诚实标注：仓库改名 oobabooga/textgen。最近推送 2026-08-17（api 快照）——维护节奏介于活跃与放缓之间。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="partial" data-cost="open-source" data-deploy="local" data-done="4" data-family="" data-job="local" data-license="open" data-lifecycle="maintenance" data-name="text-generation-webui / textgen" data-total="8" data-track="local-app" data-vendor-key="oobabooga" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">TE</div>
+<div class="card-id">
+<h3><a href="/en/runner/text-generation-webui.html">text-generation-webui / textgen</a></h3>
+<div class="vendor">oobabooga</div>
+</div>
+</div>
+<p class="tagline">text-generation-webui (now renamed textgen) is the Swiss-army </p>
+<div class="card-foot">
+<span class="t-state is-warn">Some axes open · Slowing</span>
+<a aria-label="text-generation-webui / textgen details" class="more" href="/en/runner/text-generation-webui.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="text generation inference（tgi） hugging face **tgi 是 hugging face 官方的服务化推理服务器**：权重、客户端与文档在同一门生态。apache-2.0。诚实标注：仓库已于 2026-03-21 归档只读（github api 核验 2026-10-30）。
+
+官方 readme 公告自陈进入 maintenance mode。只收小修小补。官方点名推荐改用 vllm、sglang 与 llama.cpp/mlx。
+
+存量部署可用，新项目按官方推荐选型。" data-cn-direct="no" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="partial" data-cost="open-source" data-deploy="local" data-done="3" data-family="" data-job="local" data-license="open" data-lifecycle="archived" data-name="Text Generation Inference（TGI）" data-total="8" data-track="cli" data-vendor-key="hugging face" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">TE</div>
+<div class="card-id">
+<h3><a href="/en/runner/tgi.html">Text Generation Inference（TGI）</a></h3>
+<div class="vendor">Hugging Face</div>
+</div>
+</div>
+<p class="tagline">TGI is Hugging Face's official serving-inference server: weigh</p>
+<div class="card-foot">
+<span class="t-state is-stop">Some axes open · Archived</span>
+<a aria-label="Text Generation Inference（TGI） details" class="more" href="/en/runner/tgi.html">Details →</a>
+</div>
+</article>
+<article class="card" data-blob="vllm vllm 项目（pytorch 基金会） **vllm 是开源模型的推理与服务化引擎**：pagedattention 把显存管理做成核心竞争力。openai 兼容 server 直接对接现有客户端。
+
+**依据：** apache-2.0、pytorch 基金会生态。数字口径：官方自报性能数字在 models 站 guides 已核验快照，本站不实测。" data-cn-direct="yes" data-cn-filing="not-filed" data-cn-origin="foreign" data-conf="verified" data-cost="open-source" data-deploy="local" data-done="8" data-family="" data-job="local" data-license="open" data-lifecycle="active" data-name="vLLM" data-total="8" data-track="cli" data-vendor-key="vllm 项目" style="--card-accent:#94a3b8">
+<div class="card-top">
+<div aria-hidden="true" class="mark">VL</div>
+<div class="card-id">
+<h3><a href="/en/runner/vllm.html">vLLM</a></h3>
+<div class="vendor">vLLM project (PyTorch Foundation)</div>
+</div>
+</div>
+<p class="tagline">vLLM is an inference and serving engine for open models: Paged</p>
+<div class="card-foot">
+<span class="t-state is-ok">8 axes checked · Active</span>
+<a aria-label="vLLM details" class="more" href="/en/runner/vllm.html">Details →</a>
+</div>
+</article>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<h2>What to look at when choosing</h2>
+<p class="section-desc">
+Every tool is broken down by the same questions, so you can compare them side by side.
+Open any entry to see the official wording and link; disagree and check it yourself.
+</p>
+<div class="t-mesh axis-mesh">
+<div class="axis-cell">
+<span class="t-index">01</span>
+<h3 class="axis-name">Model &amp; openness</h3>
+<p class="axis-ask">Whose model does it use? Can you switch to a third party? How is multi-model routing configured?</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">02</span>
+<h3 class="axis-name">Where it runs</h3>
+<p class="axis-ask">Local, cloud or hybrid? Is the index local or remote? Remote control is not the same as cloud execution.</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">03</span>
+<h3 class="axis-name">Local files</h3>
+<p class="axis-ask">How wide an area can it reach? How does it read large files you have not opened? How capable is it at the symbol level?</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">04</span>
+<h3 class="axis-name">Tasks after shutdown</h3>
+<p class="axis-ask">Does it keep running once the computer is off? This is the most common misconception about local forms.</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">05</span>
+<h3 class="axis-name">Tools &amp; extensions</h3>
+<p class="axis-ask">How wide is the toolchain: MCP · LSP · plugins · hooks · custom instructions?</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">06</span>
+<h3 class="axis-name">Context &amp; memory</h3>
+<p class="axis-ask">Indexing algorithm, context window, session resume and fork, and the boundary of cross-session memory.</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">07</span>
+<h3 class="axis-name">Permissions &amp; limits</h3>
+<p class="axis-ask">Sandbox and approval boundaries, credential handling, whether data leaves your machine, and how quota is charged.</p>
+</div>
+<div class="axis-cell">
+<span class="t-index">08</span>
+<h3 class="axis-name">Best for</h3>
+<p class="axis-ask">What tasks is it best at? When should you not use it?</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<h2>All data at a glance</h2>
+<p class="section-desc">The same table side by side. Click an object name to see per-cell evidence.</p>
+<div class="table-wrap">
+<table class="cmp">
+<thead>
+<tr>
+<th>Object</th><th>Form</th><th>Vendor</th><th>Best for</th><th>Checked</th><th>Evidence / still updated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/en/runner/docker-model-runner.html"><span class="td-mark" style="--card-accent:#94a3b8">DO</span>Docker Model Runner</a></td>
+<td class="td-vendor">Local app</td>
+<td class="td-vendor">Docker</td>
+<td class="td-fit">Fits teams already on Docker who want model distribution inside contai</td>
+<td class="td-date">2026-11-03</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/exllamav3.html"><span class="td-mark" style="--card-accent:#94a3b8">EX</span>ExLlamaV3</a></td>
+<td class="td-vendor">CLI form</td>
+<td class="td-vendor">turboderp-org</td>
+<td class="td-fit">Fits NVIDIA single/multi-GPU users chasing EXL3 quantisation and low-l</td>
+<td class="td-date">2026-11-04</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/gpt4all.html"><span class="td-mark" style="--card-accent:#94a3b8">GP</span>GPT4All</a></td>
+<td class="td-vendor">Local app</td>
+<td class="td-vendor">Nomic AI</td>
+<td class="td-fit">Fits: small models on low-spec/CPU machines, a clean MIT desktop optio</td>
+<td class="td-date">2026-10-30</td>
+<td><span class="td-conf partial">Some axes open</span><br/><span class="td-vendor">Slowing</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/jan.html"><span class="td-mark" style="--card-accent:#94a3b8">JA</span>Jan</a></td>
+<td class="td-vendor">Local app</td>
+<td class="td-vendor">Menlo Research</td>
+<td class="td-fit">Fits: auditable open-source offline desktop chat, built-in OpenAI-comp</td>
+<td class="td-date">2026-10-30</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/koboldcpp.html"><span class="td-mark" style="--card-accent:#94a3b8">KO</span>KoboldCpp</a></td>
+<td class="td-vendor">Local app</td>
+<td class="td-vendor">LostRuins (KoboldAI community)</td>
+<td class="td-fit">Fits: long-context roleplay and creative writing, zero-install single </td>
+<td class="td-date">2026-10-30</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/lemonade.html"><span class="td-mark" style="--card-accent:#94a3b8">LE</span>Lemonade</a></td>
+<td class="td-vendor">Local app</td>
+<td class="td-vendor">AMD / Lemonade community</td>
+<td class="td-fit">Fits AMD Ryzen AI / NPU users who want a local OpenAI-compatible endpo</td>
+<td class="td-date">2026-11-03</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/llama-cpp.html"><span class="td-mark" style="--card-accent:#94a3b8">LL</span>llama.cpp</a></td>
+<td class="td-vendor">CLI form</td>
+<td class="td-vendor">ggml-org</td>
+<td class="td-fit">Fits: fine-grained control (quant tiers/backends/params), GGUF on cons</td>
+<td class="td-date">2026-11-21</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/llamaedge.html"><span class="td-mark" style="--card-accent:#94a3b8">LL</span>LlamaEdge</a></td>
+<td class="td-vendor">CLI form</td>
+<td class="td-vendor">LlamaEdge community (WasmEdge / Second State ecosystem)</td>
+<td class="td-fit">Fits: the portable-WASM route, edge/embedded devices; WasmEdge-ecosyst</td>
+<td class="td-date">2026-10-31</td>
+<td><span class="td-conf partial">Some axes open</span><br/><span class="td-vendor">Slowing</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/lm-studio.html"><span class="td-mark" style="--card-accent:#94a3b8">LM</span>LM Studio</a></td>
+<td class="td-vendor">Local app</td>
+<td class="td-vendor">Element Labs</td>
+<td class="td-fit">Fits: local-model users who dislike the CLI, trying agents and voice t</td>
+<td class="td-date">2026-10-30</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/localai.html"><span class="td-mark" style="--card-accent:#94a3b8">LO</span>LocalAI</a></td>
+<td class="td-vendor">CLI form</td>
+<td class="td-vendor">Mudler T.（mudler）</td>
+<td class="td-fit">Fits: minimal-change local switch for existing OpenAI clients, CPU-onl</td>
+<td class="td-date">2026-10-30</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/mlc-llm.html"><span class="td-mark" style="--card-accent:#94a3b8">ML</span>MLC LLM</a></td>
+<td class="td-vendor">CLI form</td>
+<td class="td-vendor">MLCEngine (CMU lineage, mlc-ai)</td>
+<td class="td-fit">Fits: one engine deployed across platforms (especially mobile and brow</td>
+<td class="td-date">2026-11-21</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/mlx.html"><span class="td-mark" style="--card-accent:#94a3b8">ML</span>MLX（mlx-lm）</a></td>
+<td class="td-vendor">CLI form</td>
+<td class="td-vendor">Apple</td>
+<td class="td-fit">Fits: native performance on M-series Macs (unified-memory dividend), L</td>
+<td class="td-date">2026-10-30</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/msty.html"><span class="td-mark" style="--card-accent:#94a3b8">MS</span>Msty</a></td>
+<td class="td-vendor">Local app</td>
+<td class="td-vendor">Msty（CloudStack, LLC）</td>
+<td class="td-fit">Fits: hybrid local+cloud use in one app; private enterprise LLMs (Nexu</td>
+<td class="td-date">2026-10-31</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/ollama.html"><span class="td-mark" style="--card-accent:#94a3b8">OL</span>Ollama</a></td>
+<td class="td-vendor">CLI form</td>
+<td class="td-vendor">Ollama Inc.</td>
+<td class="td-fit">Fits: getting DeepSeek/Qwen/Llama running with one command, OpenAI-com</td>
+<td class="td-date">2026-11-21</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/openvino.html"><span class="td-mark" style="--card-accent:#94a3b8">OP</span>OpenVINO</a></td>
+<td class="td-vendor">CLI form</td>
+<td class="td-vendor">Intel</td>
+<td class="td-fit">Fits Intel CPU/GPU/NPU, edge deployment and squeezing models onto loca</td>
+<td class="td-date">2026-11-03</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/sglang.html"><span class="td-mark" style="--card-accent:#94a3b8">SG</span>SGLang</a></td>
+<td class="td-vendor">CLI form</td>
+<td class="td-vendor">LMSYS / sgl-project</td>
+<td class="td-fit">Fits: agent multi-turn calls, serving workloads with shared system pro</td>
+<td class="td-date">2026-10-30</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/tabbyapi.html"><span class="td-mark" style="--card-accent:#94a3b8">TA</span>TabbyAPI</a></td>
+<td class="td-vendor">CLI form</td>
+<td class="td-vendor">Royal Lab（theroyallab）</td>
+<td class="td-fit">Fits: the ExLlamaV3 (GPTQ family) wanting an OpenAI-compatible API; on</td>
+<td class="td-date">2026-10-31</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/tensorrt-llm.html"><span class="td-mark" style="--card-accent:#94a3b8">NV</span>NVIDIA TensorRT-LLM</a></td>
+<td class="td-vendor">CLI form</td>
+<td class="td-vendor">NVIDIA</td>
+<td class="td-fit">Fits NVIDIA GPU clusters that need production throughput and low laten</td>
+<td class="td-date">2026-11-03</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/text-generation-webui.html"><span class="td-mark" style="--card-accent:#94a3b8">TE</span>text-generation-webui / textgen</a></td>
+<td class="td-vendor">Local app</td>
+<td class="td-vendor">oobabooga</td>
+<td class="td-fit">Fits: power users wanting loader/extension flexibility, community play</td>
+<td class="td-date">2026-10-30</td>
+<td><span class="td-conf partial">Some axes open</span><br/><span class="td-vendor">Slowing</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/tgi.html"><span class="td-mark" style="--card-accent:#94a3b8">TE</span>Text Generation Inference（TGI）</a></td>
+<td class="td-vendor">CLI form</td>
+<td class="td-vendor">Hugging Face</td>
+<td class="td-fit">Fits: HF-Hub-heavy serving deployments, official Docker/client pairing</td>
+<td class="td-date">2026-10-30</td>
+<td><span class="td-conf partial">Some axes open</span><br/><span class="td-vendor">Archived</span></td>
+</tr>
+<tr>
+<td><a href="/en/runner/vllm.html"><span class="td-mark" style="--card-accent:#94a3b8">VL</span>vLLM</a></td>
+<td class="td-vendor">CLI form</td>
+<td class="td-vendor">vLLM project (PyTorch Foundation)</td>
+<td class="td-fit">Fits: production serving of many models/requests, GPU-cluster throughp</td>
+<td class="td-date">2026-10-30</td>
+<td><span class="td-conf verified">8 axes checked</span><br/><span class="td-vendor">Active</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<h2>Why there is no overall ranking</h2>
+<p class="section-desc">This is not an omission but a deliberate methodological choice.</p>
+<div class="panel">
+<ul>
+<li><strong>No shared measurement, no score.</strong> Benchmarks across tools use different rules — different questions, budgets and environments. A 90 and a B 88 are not comparable.</li>
+<li><strong>"Unknown" is a legitimate answer.</strong> If it cannot be found, we write "unknown" and explain why, instead of filling the gap with guesses. Missing information is itself information.</li>
+<li>Every field carries a source link, so you can go back to the original.</li>
+<li><strong>A recent check does not mean it stays valid.</strong> When upstream archives or changes, the entry is marked <code>active</code> / <code>maintenance</code> / <code>archived</code>.</li>
+<li><strong>Families are not mixed.</strong> Ready-made tools, things you build yourself, and plug-in-and-run components are three different roles with different ways of judging them; forcing them into one master table would manufacture false comparability.</li>
+</ul>
+</div>
+<div class="panel">
+<h2>How to read the confidence marks</h2>
+<p class="t-sm mb-3">Both the detail pages and the table above carry <code>confidence</code>, which reflects <strong>how complete this site's data is</strong>, not a judgement of the product.</p>
+<table class="src is-flush">
+<tbody>
+<tr><th class="w-24"><span class="td-conf verified">verified</span></th><td>all 8 dimensions have official sources and were updated within 90 days</td></tr>
+<tr><th><span class="td-conf partial">partial</span></th><td>some dimensions are marked unknown, the official docs were unreachable, or the info is over 90 days old</td></tr>
+<tr><th><span class="td-conf stale">stale</span></th><td>the vendor has shipped a significant change that this site has not updated yet</td></tr>
+</tbody>
+</table>
+</div>
+<div class="panel">
+<h2>Current completeness on this site</h2>
+<p class="t-sm mb-2">
+Recheck this figure with <code>node scripts/audit-gaps.mjs</code>.
+Computed from current data; info dated 2026-11-21:
+</p>
+<table class="src is-flush mb-3">
+<thead><tr><th>Category</th><th>Filled</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td class="nw">Local runners</td>
+<td class="nw"><strong>153/168</strong></td>
+<td class="td-vendor">Open-source projects document the most, but they release fast — these snapshots go stale first</td></tr>
+</tbody>
+</table>
+<p><strong class="em">Site-wide 2270/2352 dimensions filled（97%）</strong></p>
+<p class="t-sm">
+The remaining gaps fall into three kinds: <strong>not disclosed by the vendor</strong> (indexing algorithms, sandbox internals are simply not documented), <strong>requires measurement</strong> (behaviour on very large repositories, CI without a TTY), and <strong>unreachable through objective channels</strong>.
+</p>
+<p class="t-sm">
+We chose to leave a blank rather than fill in "supported" — the cost of an error is ultimately borne by whoever uses it.
+</p>
+</div>
+<div class="panel">
+<h2>Sources and how to re-check them</h2>
+<p>All data comes from the open-source repository <a class="link-brand" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">speculcom/ai-handbook</a> (CC BY 4.0).</p>
+<p>Every entry is plain Markdown plus frontmatter, carrying dimension records and an evidence chain with links, checked dates and confidence marks. The repository contains:</p>
+<ul>
+<li><code>tools/METHODOLOGY.md</code> —— the methodology charter and core rules</li>
+<li><code>tools/axes/</code> —— the definition and decision criteria for each dimension (with positive and negative examples)</li>
+<li><code>tools/SCHEMA.md</code> —— the data-format spec and build validation rules</li>
+<li><code>tools/protocols/&lt;category&gt;/_protocol.md</code> —— the measurement protocol (<strong>not yet run</strong>, so this site has no measured conclusions)</li>
+</ul>
+<p class="t-sm">Found an error or have new evidence? Open an issue or a PR — each correction notes its basis and blast radius.</p>
+</div>
+</div>
+</section>
+<!-- B2：索引页筛选与排序（脚本读独立文件 agent-filter.js，作用域 .afilter） -->
+<script>/* 工具站客户端筛选与排序（2026-11-21 扩展）
+ *
+ * 作用域：`.afilter`
+ *   搜索     data-blob
+ *   分组     data-attr（形态 / 抽象层；tools 页没有这一项）
+ *   证据     data-conf
+ *   用途     data-job（空格分隔多值，按 token 匹配）
+ *   部署     data-deploy（单值）
+ *   许可     data-license（单值）
+ *   费用     data-cost（单值）
+ *   中文生态 data-cn-origin / data-cn-direct / data-cn-filing
+ *   排序     data-done & data-total（只在同一 .grid 内重排）
+ *
+ * URL 可还原：?q=&form=&conf=&life=&job=&deploy=&license=&cost=&cnorigin=&cndirect=&cnfiling=&sort=
+ */
+(function () {
+  'use strict';
+
+  var box = document.querySelector('.afilter');
+  if (!box) return;
+
+  var q = box.querySelector('.aq');
+  var selForm = box.querySelector('.asel-form');
+  var selConf = box.querySelector('.asel-conf');
+  var selLife = box.querySelector('.asel-life');
+  var selSort = box.querySelector('.asel-sort');
+  var facetSels = [
+    { el: box.querySelector('.asel-job'), attr: 'data-job', key: 'job', multi: true },
+    { el: box.querySelector('.asel-deploy'), attr: 'data-deploy', key: 'deploy', multi: false },
+    { el: box.querySelector('.asel-license'), attr: 'data-license', key: 'license', multi: false },
+    { el: box.querySelector('.asel-cost'), attr: 'data-cost', key: 'cost', multi: false },
+  ].filter(function (x) { return x.el; });
+  var cnSels = [
+    { el: box.querySelector('.asel-cnorigin'), attr: 'data-cn-origin', key: 'cnorigin' },
+    { el: box.querySelector('.asel-cndirect'), attr: 'data-cn-direct', key: 'cndirect' },
+    { el: box.querySelector('.asel-cnfiling'), attr: 'data-cn-filing', key: 'cnfiling' },
+  ].filter(function (x) { return x.el; });
+  var count = box.querySelector('.acount');
+  var allCards = Array.prototype.slice.call(document.querySelectorAll('.grid > .card'));
+  if (!allCards.length) return;
+
+  function param(n) {
+    try { return new URLSearchParams(location.search).get(n) || ''; } catch (e) { return ''; }
+  }
+  function writeUrl() {
+    try {
+      var u = new URL(location.href);
+      var vals = {
+        q: q ? q.value.trim() : '',
+        form: selForm ? selForm.value : '',
+        conf: selConf ? selConf.value : '',
+        life: selLife ? selLife.value : '',
+        sort: selSort ? selSort.value : ''
+      };
+      facetSels.forEach(function (x) { vals[x.key] = x.el.value; });
+      cnSels.forEach(function (x) { vals[x.key] = x.el.value; });
+      Object.keys(vals).forEach(function (k) {
+        if (vals[k]) u.searchParams.set(k, vals[k]); else u.searchParams.delete(k);
+      });
+      history.replaceState(null, '', u.toString());
+    } catch (e) { /* file:// 等场景静默降级：功能可用，地址栏不同步 */ }
+  }
+
+  function ratio(c) {
+    var d = Number(c.getAttribute('data-done') || 0);
+    var t = Number(c.getAttribute('data-total') || 0);
+    return t ? d / t : 0;
+  }
+
+  function matchFacet(c, x) {
+    var want = x.el.value;
+    if (!want) return true;
+    var have = c.getAttribute(x.attr) || '';
+    if (x.multi) return have.split(/\s+/).indexOf(want) !== -1;
+    return have === want;
+  }
+
+  function apply() {
+    var term = q ? q.value.trim().toLowerCase() : '';
+    var form = selForm ? selForm.value : '';
+    var formAttr = selForm ? (selForm.getAttribute('data-attr') || 'track') : 'track';
+    var conf = selConf ? selConf.value : '';
+    var life = selLife ? selLife.value : '';
+    var shown = 0;
+    allCards.forEach(function (c) {
+      var okQ = !term || (c.getAttribute('data-blob') || '').indexOf(term) !== -1;
+      var okForm = !form || c.getAttribute('data-' + formAttr) === form;
+      var okConf = !conf || c.getAttribute('data-conf') === conf;
+      var okLife = !life || c.getAttribute('data-lifecycle') === life;
+      var okFacet = facetSels.every(function (x) { return matchFacet(c, x); });
+      var okCn = cnSels.every(function (x) {
+        return !x.el.value || (c.getAttribute(x.attr) || '') === x.el.value;
+      });
+      var on = okQ && okForm && okConf && okLife && okFacet && okCn;
+      c.hidden = !on;
+      if (on) shown++;
+    });
+    Array.prototype.slice.call(document.querySelectorAll('.fam-block')).forEach(function (b) {
+      var vis = Array.prototype.slice.call(b.querySelectorAll('.card')).some(function (c) { return !c.hidden; });
+      b.hidden = !vis;
+    });
+    if (count) {
+      count.textContent = shown + ' / ' + allCards.length;
+      count.setAttribute('data-zh', shown + ' / ' + allCards.length + ' 份档案');
+      count.setAttribute('data-en', shown + ' / ' + allCards.length + ' entries');
+    }
+  }
+
+  function sort() {
+    var mode = selSort ? selSort.value : '';
+    if (!mode) return;
+    Array.prototype.slice.call(document.querySelectorAll('.grid')).forEach(function (g) {
+      var cards = Array.prototype.slice.call(g.children).filter(function (c) { return c.classList.contains('card'); });
+      if (cards.length < 2) return;
+      cards.sort(function (a, b) {
+        var d = ratio(b) - ratio(a);
+        if (mode.indexOf('asc') !== -1) d = -d;
+        return d || (a.getAttribute('data-name') || '').localeCompare(b.getAttribute('data-name') || '', 'zh');
+      });
+      cards.forEach(function (c) { g.appendChild(c); });
+    });
+  }
+
+  function restore(el, key) {
+    if (!el) return;
+    var v = param(key);
+    if (!v) return;
+    var found = Array.prototype.some.call(el.options, function (o) { return o.value === v; });
+    if (!found) {
+      var extra = document.createElement('option');
+      extra.value = v; extra.textContent = v;
+      el.appendChild(extra);
+    }
+    el.value = v;
+  }
+
+  if (q) q.value = param('q');
+  restore(selForm, 'form');
+  restore(selConf, 'conf');
+  restore(selLife, 'life');
+  restore(selSort, 'sort');
+  facetSels.forEach(function (x) { restore(x.el, x.key); });
+  cnSels.forEach(function (x) { restore(x.el, x.key); });
+
+  if (q) q.addEventListener('input', function () { apply(); writeUrl(); });
+  if (selForm) selForm.addEventListener('change', function () { apply(); writeUrl(); });
+  if (selConf) selConf.addEventListener('change', function () { apply(); writeUrl(); });
+  if (selLife) selLife.addEventListener('change', function () { apply(); writeUrl(); });
+  facetSels.forEach(function (x) { x.el.addEventListener('change', function () { apply(); writeUrl(); }); });
+  cnSels.forEach(function (x) { x.el.addEventListener('change', function () { apply(); writeUrl(); }); });
+  if (selSort) selSort.addEventListener('change', function () { sort(); writeUrl(); });
+
+  sort();
+  apply();
+})();
+</script>
+</main>
+<footer class="site-footer foot-single">
+<div class="container foot-line">
+<div class="foot-brand">
+<span class="foot-brand-main">
+<span aria-hidden="true" class="brand-dot"></span>
+<span class="foot-copy">Specul · specul.com</span>
+</span>
+<span class="foot-license"><a href="https://specul.com/LICENSE-CONTENT.txt">Content CC BY 4.0</a><span aria-hidden="true" class="sep">·</span><a href="https://specul.com/LICENSE.txt">Code MIT</a><span aria-hidden="true" class="sep">·</span><a class="foot-source" href="https://github.com/speculcom/ai-handbook" rel="noopener" target="_blank">Source</a></span>
+</div>
+<nav aria-label="Footer site links" class="foot-sites">
+<a class="site-link" href="https://specul.com/en/">Home</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://learn.specul.com/en/">Learn</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://tools.specul.com/en/">Tools</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://models.specul.com/en/">Models</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://demos.specul.com/en/">Demos</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://oss.specul.com/en/">OSS</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://hardware.specul.com/en/">Compute</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://papers.specul.com/en/">Papers</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://chain.specul.com/en/">Chain</a><span aria-hidden="true" class="sep site-sep">·</span>
+<a class="site-link" href="https://nav.specul.com/en/">Directory</a>
+</nav>
+<nav aria-label="Legal and corrections" class="foot-legal">
+<a href="https://specul.com/en/legal.html">Legal</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/legal.html#s8">Privacy</a><span aria-hidden="true" class="sep">·</span>
+<a href="https://specul.com/en/correct.html">Corrections</a>
+</nav>
+</div>
+</footer>
+<nav aria-label="快捷导航" class="nav-tabbar nav-tabbar-1row">
+<a href="https://specul.com/en/"><span aria-hidden="true" class="ti">◎</span>Home</a>
+<a href="https://learn.specul.com/en/"><span aria-hidden="true" class="ti">▤</span>Learn</a>
+<a aria-current="page" href="https://tools.specul.com/en/"><span aria-hidden="true" class="ti">◈</span>Tools</a>
+<a href="https://models.specul.com/en/"><span aria-hidden="true" class="ti">▦</span>Models</a>
+<a href="https://demos.specul.com/en/"><span aria-hidden="true" class="ti">▷</span>Demos</a>
+<a href="https://oss.specul.com/en/"><span aria-hidden="true" class="ti">▧</span>OSS</a>
+<a href="https://hardware.specul.com/en/"><span aria-hidden="true" class="ti">▣</span>Chips</a>
+<a href="https://papers.specul.com/en/"><span aria-hidden="true" class="ti">▥</span>Papers</a>
+<a href="https://chain.specul.com/en/"><span aria-hidden="true" class="ti">◇</span>Chain</a>
+<a data-nav-group="external" href="https://nav.specul.com/en/"><span aria-hidden="true" class="ti">↗</span>Nav</a>
+</nav>
+</body>
+</html>
